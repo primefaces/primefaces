@@ -2,7 +2,7 @@
 
 AutoComplete provides live suggestions while an input is being typed.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.autocomplete-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.AutoComplete-1.html)
 
 ## Info
 

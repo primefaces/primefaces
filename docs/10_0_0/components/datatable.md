@@ -2,7 +2,7 @@
 
 DataTable displays data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.datatable-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataTable-1.html)
 
 ## Info
 

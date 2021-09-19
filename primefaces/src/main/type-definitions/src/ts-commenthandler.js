@@ -3,7 +3,7 @@
 const ts = require("typescript");
 const { depthFirstNode } = require("./ts-utils");
 const { mapCompute } = require("./lang");
-const { createDocComment, parseSingleComment } = require("./doc-comments");
+const { createDocComment, parseSingleComment, isParseResultEmpty } = require("./doc-comments");
 
 /**
  * @param {ts.SyntaxKind} kind
@@ -14,7 +14,7 @@ function prepareSyntheticComment(kind, commentText) {
     const firstLine = Array.isArray(commentText) ? commentText[0] || "" : commentText;
     if (kind === ts.SyntaxKind.MultiLineCommentTrivia && (firstLine.startsWith("*") || firstLine.startsWith(" *") || firstLine.startsWith("/**"))) {
         const lines = Array.isArray(commentText) ? commentText : commentText.split("\n");
-        if (lines[0].startsWith("/**")) {
+        if (lines[0]?.startsWith("/**")) {
             lines[0] = "*";
             lines[lines.length - 1] = " ";
         }
@@ -43,11 +43,11 @@ function makeCommentHandler(docsByNode) {
     return {
         getClosestDocComment(node) {
             const docs = getByNode(node);
-            return docs === undefined || docs.length === 0 ? undefined : docs[docs.length - 1].doc;
+            return docs?.[docs.length - 1]?.doc;
         },
         getDocComment(node, index) {
             const docs = getByNode(node);
-            return docs === undefined || index < 0 || index >= docs.length ? undefined : docs[index].doc;
+            return docs?.[index]?.doc;
         },
         getDocCommentCount(node) {
             const docs = getByNode(node)
@@ -67,13 +67,18 @@ function makeCommentHandler(docsByNode) {
                 /** @type {TsDocCommentWithPos} */
                 const commentWithPos = {
                     doc: comment,
-                    pos: docs.length === 0 ? node.pos : docs[docs.length - 1].pos,
+                    pos: docs?.[docs.length - 1]?.pos ?? node.pos,
                 };
-                if (docs.length === 0) {
-                    docs.push(commentWithPos);
+                if (isParseResultEmpty(comment)) {
+                    docs.pop()
                 }
                 else {
-                    docs[docs.length - 1] = commentWithPos;
+                    if (docs.length === 0) {
+                        docs.push(commentWithPos);
+                    }
+                    else {
+                        docs[docs.length - 1] = commentWithPos;
+                    }
                 }
             }
         },

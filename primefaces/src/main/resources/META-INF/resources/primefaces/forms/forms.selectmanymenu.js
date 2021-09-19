@@ -8,6 +8,12 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.SelectListboxCfg} cfg
  * 
+ * @prop {JQuery} [cursorItem] The last clicked item, used for selecting a range by holding down the shift
+ * key. 
+ * @prop {boolean} [checkboxClick] Whether a checkbox of the select menu was clicked. Reset after the list
+ * box was clicked.
+ * @prop {JQuery} [checkboxes] DOM elements of the checkboxes, if checkboxes are enabled.
+ * 
  * @prop {boolean} cfg.disabled Whether the select many menu is initially disabled.
  * @prop {boolean} cfg.metaKeySelection Whether the meta key (`SHIFT` or `CTRL`) must be held down to select multiple
  * items.

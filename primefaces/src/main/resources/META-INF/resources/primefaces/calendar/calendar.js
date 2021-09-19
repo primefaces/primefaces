@@ -37,6 +37,7 @@
  * @prop {JQuery} input DOM element of the plain-text input field for the date and/or time.
  * @prop {JQuery} jqEl The DOM element on which the JQuery plugin `datepicker` or `datetimepicker` was initialized. You
  * can use this element to interact with the date picker.
+ * @prop {boolean} [readonly] Whether the calendar is read-only and cannot be edited.
  * @prop {boolean} refocusInput Whether the input needs to be refocused.
  *
  * @interface {PrimeFaces.widget.CalendarCfg} cfg The configuration for the {@link  Calendar| Calendar widget}.

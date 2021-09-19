@@ -2,7 +2,7 @@
 
 DataScroller displays a collection of data with on demand loading using scrolling.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.datascroller-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataScroller-1.html)
 
 ## Info
 

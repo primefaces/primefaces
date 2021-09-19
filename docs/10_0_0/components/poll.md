@@ -2,7 +2,7 @@
 
 Poll is an ajax component that has the ability to send periodical ajax requests.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.poll-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Poll-1.html)
 
 ## Info
 

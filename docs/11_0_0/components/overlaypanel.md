@@ -2,7 +2,7 @@
 
 OverlayPanel is a generic panel component that can be displayed on top of other content.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.overlaypanel.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.OverlayPanel-1.html)
 
 ## Info
 

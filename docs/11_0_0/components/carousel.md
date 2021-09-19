@@ -2,7 +2,7 @@
 
 Carousel is a content slider featuring various customization options.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.carousel-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Carousel.html)
 
 ## Info
 

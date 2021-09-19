@@ -4,7 +4,6 @@
  * KeyFilter is used to filter keyboard input on specified input components.
  * 
  * @prop {JQuery} target The DOM element for the target input element to which this key filter is applied.
- * @prop {string} value The current value of the input field.
  * 
  * @interface {PrimeFaces.widget.KeyFilterCfg} cfg The configuration for the {@link  KeyFilter| KeyFilter widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

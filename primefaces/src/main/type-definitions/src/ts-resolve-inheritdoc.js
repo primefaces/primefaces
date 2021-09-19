@@ -52,8 +52,8 @@ function mergeTagsToOne(parentTypeName, nameBelongsToDescription, ...tags) {
         isOptional = isOptional ? isOptional : tag.optional;
     }
 
-    const tagKind = tags[0].tag;
-    const newTag = createTag(tagKind, {
+    const tagKind = tags[0]?.tag;
+    const newTag = createTag(tagKind ?? "", {
         default: defaultValue,
         description: description,
         name: tagName,
@@ -190,8 +190,9 @@ function mergeParamTags(parentTypeName, baseParamTags, parentParamTags, baseNode
  * @return {import("comment-parser").Tag[]}
  */
 function mergeUniqueTags(parentTypeName, ...tagsByKind) {
+    const firstSet = tagsByKind[0];
     /** @type {Set<string>} */
-    const tagKinds = tagsByKind.length > 0 ? new Set(tagsByKind[0].keys()) : new Set();
+    const tagKinds = firstSet !== undefined ? new Set(firstSet.keys()) : new Set();
     const uniqueTags = Array.from(
         tagKinds,
         tagKind => {
@@ -213,8 +214,9 @@ function mergeUniqueTags(parentTypeName, ...tagsByKind) {
  * @return {import("comment-parser").Tag[]}
  */
 function mergeUniqueDescTags(...descriptionsByKind) {
+    const firstSet = descriptionsByKind[0];
     /** @type {Set<string>} */
-    const tagKinds = descriptionsByKind.length > 0 ? new Set(descriptionsByKind[0].keys()) : new Set();
+    const tagKinds = firstSet !== undefined ? new Set(firstSet.keys()) : new Set();
     /** @type {import("comment-parser").Tag[]} */
     const result = [];
     for (const tagKind of tagKinds) {
@@ -243,8 +245,9 @@ function mergeUniqueDescTags(...descriptionsByKind) {
  * @return {import("comment-parser").Tag[]}
  */
 function mergeUniqueNameTags(parentTypeName, ...tagsByKind) {
+    const firstSet = tagsByKind[0];
     /** @type {Set<string>} */
-    const tagKinds = tagsByKind.length > 0 ? new Set(tagsByKind[0].keys()) : new Set();
+    const tagKinds = firstSet !== undefined ? new Set(firstSet.keys()) : new Set();
     const uniqueNameTags = Array.from(tagKinds)
         .flatMap(tagKind => {
             const uniqueTags = [];

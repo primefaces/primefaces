@@ -3,11 +3,13 @@
  * 
  * SelectManyCheckbox is an extended version of the standard SelectManyCheckbox.
  * 
- * @prop {JQuery} originalInputs The DOM elements for the hidden input fields of type checkbox storing the value of
- * this widget.
+ * @prop {boolean} [disabled] `true` if this many select element is disabled, `false` if enabled, `undefined`
+ * if the state is not known.
  * @prop {JQuery} enabledInputs The (cloned) DOM elements for the non-disabled hidden input fields of type checkbox
  * storing the value of this widget. 
  * @prop {JQuery} inputs The (cloned) DOM elements for the hidden input fields of type checkbox storing the value of
+ * this widget.
+ * @prop {JQuery} originalInputs The DOM elements for the hidden input fields of type checkbox storing the value of
  * this widget.
  * @prop {JQuery} outputs The DOM elements for the checkbox icons shown on the UI.
  * 
@@ -61,7 +63,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Sets up all event listenters required by this widget.
+     * Sets up all event listeners required by this widget.
      * @private
      */
     bindEvents: function() {

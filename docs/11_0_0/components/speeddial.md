@@ -2,7 +2,7 @@
 
 When pressed, a floating action button can display multiple primary actions that can be performed on a page.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.speeddial.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SpeedDial-1.html)
 
 ## Info
 
@@ -29,7 +29,7 @@ direction | "up" | String | Specifies the opening direction of actions. Valid va
 transitionDelay | 30 | Integer | Transition delay step for each action item.
 type | "linear" | String | Specifies the opening type of actions. Valid values are `linear`, `circle`, `semi-circle` and `quarter-circle`.
 radius | 0 | Integer | Radius for *circle types.
-mask | false | Boolean | Whether to show a mask element behind the speeddial.
+mask | false | Boolean | Whether to show a mask element behind the speed dial.
 hideOnClickOutside | true | Boolean | Whether the actions close when clicked outside.
 style | null | String | Inline style of the element.
 styleClass | null | String | Style class of the element.

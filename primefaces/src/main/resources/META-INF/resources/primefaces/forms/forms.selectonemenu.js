@@ -31,10 +31,9 @@
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the hidden input with the current value.
  * @prop {boolean} isDynamicLoaded Whether the contents of the overlay panel were loaded.
- * @prop {JQuery} items The DOM elements for the the available selectable options.
- * @prop {JQuery} itemContainer The DOM element for the container with the available selectable options.
- * @prop {JQuery} itemContainerWrapper The DOM element for the wrapper with the container with the available selectable
- * options.
+ * @prop {JQuery} [items] The DOM elements for the the available selectable options.
+ * @prop {JQuery} [itemsContainer] The DOM element for the container with the available selectable options.
+ * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable options.
  * @prop {JQuery} focusInput The hidden input that can be focused via the tab key etc.
  * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
  * @prop {JQuery} menuIcon The DOM element for the icon for bringing up the overlay panel.
@@ -246,7 +245,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up all event listenters required by this widget.
+     * Sets up all event listeners required by this widget.
      * @private
      */
     bindEvents: function() {
@@ -985,7 +984,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Puts focus on the filter input in the overlay panel.
-     * @param {number | undefined} timeout Amount of time in milliseconds to wait before attempting to focus the input. 
+     * @param {number} [timeout] Amount of time in milliseconds to wait before attempting to focus the input. 
      */
     focusFilter: function(timeout) {
         if(timeout) {

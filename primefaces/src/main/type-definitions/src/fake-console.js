@@ -1,7 +1,12 @@
 //@ts-check
 
 /**
- * @param  {any[]} args 
+ * @type {WeakMap<object, Console>}
+ */
+const ConsoleMap = new Map();
+
+/**
+ * @param  {unknown[]} args 
  */
 function noOp(...args) {
 }
@@ -44,14 +49,16 @@ function createFakeConsole() {
 }
 
 /**
- * @template {(...args: any[]) => any} F
- * @param {F} fn
- * @param {Parameters<F>} args
- * @return {Promise<AsyncReturnType<F>>}
+ * @template {unknown[]} A
+ * @template R
+ * @param {(...args: A) => R} fn
+ * @param {A} args
+ * @return {Promise<R>}
  */
 async function withFakeConsole(fn, ...args) {
     const oldConsole = global.console;
     try {
+        ConsoleMap.set(global, oldConsole);
         global.console = createFakeConsole();
         return await fn(...args);
     }
@@ -60,6 +67,14 @@ async function withFakeConsole(fn, ...args) {
     }
 }
 
+/**
+ * @returns {Console} The real console when a faked one is currently used.
+ */
+function getRealConsole() {
+    return ConsoleMap.get(global) ?? global.console;
+}
+
 module.exports = {
+    getRealConsole,
     withFakeConsole,
 };

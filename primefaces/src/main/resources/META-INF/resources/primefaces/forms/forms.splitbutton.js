@@ -82,7 +82,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Sets up all event listenters required by this widget.
+     * Sets up all event listeners required by this widget.
      * @private
      */
     bindEvents: function() {
@@ -90,10 +90,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinButton(this.button).skinButton(this.menuButton);
 
-        //mark button and descandants of button as a trigger for a primefaces overlay
+        // mark button and descendants of button as a trigger for a primefaces overlay
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
-        //toggle menu
+        // toggle menu
         this.menuButton.on("click", function() {
             if($this.menu.is(':hidden'))
                 $this.show();

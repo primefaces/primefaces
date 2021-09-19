@@ -4,30 +4,73 @@
  * SpeedDial is a component that consists of many actions and a floating action button.
  * When pressed, a floating action button can display multiple primary actions that can be performed on a page.
  *
- * @prop {JQuery} mask The DOM element for the mask of the speeddial.
- * @prop {JQuery} container The DOM element for the container of the speeddial that contains item container and button.
- * @prop {JQuery} button The DOM element for the floating action button of the speeddial.
- * @prop {JQuery} buttonIcon The DOM element for the icon of the floating action button of the speeddial.
- * @prop {JQuery} itemContainer The DOM element for the item container of the speeddial.
- * @prop {JQuery} items The DOM elements for the speeddial items.
+ * @typedef {"up" | "down" | "left" | "right" | "up-left" | "up-right" | "down-left" | "down-right"} PrimeFaces.widget.SpeedDial.OpeningDirection
+ * The opening animation direction for speed dial actions. `up`, `down`, `left` and `right` is applicable when
+ * {@link PrimeFaces.widget.SpeedDialCfg.type} is set to `semi-circle`, the others are applicable when type
+ * is set to `quarter-circle`.
+ * 
+ * @typedef {"linear" | "circle" | "semi-circle" | "quarter-circle"} PrimeFaces.widget.SpeedDial.OpeningType The
+ * opening animation type for speed dial actions.
+ * 
+ * @typedef PrimeFaces.widget.SpeedDial.OnClickCallback Callback invoked when the speed dial was clicked.
+ * @this {PrimeFaces.widget.SpeedDial} PrimeFaces.widget.SpeedDial.OnClickCallback
+ * @param {JQuery.TriggeredEvent} PrimeFaces.widget.SpeedDial.OnClickCallback.event The click event that occurred.
+ *
+ * @typedef PrimeFaces.widget.SpeedDial.OnHideCallback Callback invoked when the speed dial was closed. This is called
+ * after the visible change callback.
+ * @this {PrimeFaces.widget.SpeedDial} PrimeFaces.widget.SpeedDial.OnHideCallback
+ *
+ * @typedef PrimeFaces.widget.SpeedDial.OnShowCallback Callback invoked when the speed dial was opened. This is called
+ * after the visible change callback.
+ * @this {PrimeFaces.widget.SpeedDial} PrimeFaces.widget.SpeedDial.OnShowCallback
+ *
+ * @typedef PrimeFaces.widget.SpeedDial.OnVisibleChangeCallback Callback invoked when the visibility of the speed dial
+ * changed. This is called before the hide and show callbacks.
+ * @this {PrimeFaces.widget.SpeedDial} PrimeFaces.widget.SpeedDial.OnVisibleChangeCallback
+ * @param {PrimeFaces.widget.SpeedDial} PrimeFaces.widget.SpeedDial.OnVisibleChangeCallback.visible Whether the speed
+ * dial is now visible or hidden.
+ *
+ * @typedef PrimeFaces.widget.SpeedDial.OnDocumentClickCallback Callback invoked when the document was clicked. This is
+ * used to detect whether the user clicked outside the speed dial so that it can be closed.
+ * @param {Event} PrimeFaces.widget.SpeedDial.OnDocumentClickCallback.event Click event that occurred.
+ * 
+ * @prop {JQuery} button The DOM element for the floating action button of the speed dial.
+ * @prop {JQuery} buttonIcon The DOM element for the icon of the floating action button of the speed dial.
+ * @prop {JQuery} container The DOM element for the container of the speed dial that contains item container and button.
+ * @prop {PrimeFaces.widget.SpeedDial.OnDocumentClickCallback} [documentClickListener] Callback invoked when the
+ * document was clicked. This is used to detect whether the user clicked outside the speed dial so that it can be
+ * closed.
+ * @prop {boolean} [isItemClicked] Whether the speed dial was recently clicked. Used to determine whether the user
+ * clicked outside the speed dial after clicking inside of it. `undefined` when no clicks where performed yet.
+ * @prop {JQuery} itemContainer The DOM element for the item container of the speed dial.
+ * @prop {JQuery} items The DOM elements for the speed dial items.
  * @prop {number} itemsCount The number of action items.
+ * @prop {JQuery} mask The DOM element for the mask of the speed dial.
  * @prop {boolean} visible Whether overlay is visible or not.
  *
- * @interface {PrimeFaces.widget.SpeedDialCfg} cfg The configuration for the {@link  SpeedDial| SpeedDial widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * @interface {PrimeFaces.widget.SpeedDialCfg} cfg The configuration for the {@link  SpeedDial|SpeedDial widget}. You
+ * can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
- * @prop {boolean} cfg.visible Specifies the visibility of the overlay.
- * @prop {string} cfg.direction Specifies the opening direction of actions.
- * @prop {number} cfg.transitionDelay Transition delay step for each action item.
- * @prop {string} cfg.type Specifies the opening type of actions.
- * @prop {number} cfg.radius Radius for *circle types.
- * @prop {boolean} cfg.mask Whether to show a mask element behind the speeddial.
+ * @prop {PrimeFaces.widget.SpeedDial.OpeningDirection} cfg.direction Specifies the opening animation direction of
+ * actions.
+ * @prop {string} cfg.hideIcon The icon class of the hide button element.
  * @prop {boolean} cfg.hideOnClickOutside Whether the actions close when clicked outside.
- * @prop {boolean} cfg.rotateAnimation Sets rotate for show icon.
- * @prop {string} cfg.showIcon Show icon class of the button element.
- *
+ * @prop {boolean} cfg.mask Whether to show a mask element behind the speed dial.
+ * @prop {PrimeFaces.widget.SpeedDial.OnClickCallback} cfg.onClick The click event that occurred.
+ * @prop {PrimeFaces.widget.SpeedDial.OnHideCallback} cfg.onHide Callback invoked when the speed dial was closed. This
+ * is called after the visible change callback.
+ * @prop {PrimeFaces.widget.SpeedDial.OnShowCallback} cfg.onShow Callback invoked when the speed dial was opened. This
+ * is called after the visible change callback.
+ * @prop {PrimeFaces.widget.SpeedDial.OnVisibleChangeCallback} cfg.onVisibleChange Callback invoked when the visibility
+ * of the speed dial changed. This is called before the hide and show callbacks.
+ * @prop {number} cfg.radius Radius for when {@link type} is set to one of the circle types.
+ * @prop {boolean} cfg.rotateAnimation Whether to rotate the show icon.
+ * @prop {string} cfg.showIcon The icon class of the show button element.
+ * @prop {number} cfg.transitionDelay Transition delay step in milliseconds for each action item.
+ * @prop {PrimeFaces.widget.SpeedDial.OpeningType} cfg.type Specifies the opening animation type of actions.
+ * @prop {boolean} cfg.visible Specifies the visibility of the overlay.
  */
 PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -121,8 +164,8 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
             $this.onClick(e);
         });
 
-        this.items.on('click.speeddial', function(e) {
-            $this.onItemClick(e);
+        this.items.on('click.speeddial', function() {
+            $this.onItemClick();
         });
     },
 
@@ -153,7 +196,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Hides item container of the speeddial and changes or rotates floating action button icon.
+     * Hides item container of the speed dial and changes or rotates floating action button icon.
      */
     hide: function() {
         if (this.cfg.hideIcon) {
@@ -181,7 +224,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Changes visibility of the item container.
      * @private
-     * @param {Event} event Event that occurred.
+     * @param {JQuery.TriggeredEvent} event Event that occurred.
      */
     onClick: function(event) {
         this.visible ? this.hide() : this.show();
@@ -194,7 +237,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Hides item container of the speeddial.
+     * Hides item container of the speed dial.
      * @private
      */
     onItemClick: function() {
@@ -226,7 +269,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * Returns whether outside is clicked or not.
      * @private
      * @param {JQuery.TriggeredEvent} event Event that occurred.
-     * @return {boolean} outside is clicked.
+     * @return {boolean} Whether the outside was clicked.
      */
     isOutsideClicked: function(event) {
         var containerEl = this.container.get(0);
@@ -236,8 +279,8 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Calculates transition delay of the action items according to items' index.
      * @private
-     * @param {number} index index of the action item element
-     * @return {string} point styles of the action item
+     * @param {number} index Index of the action item element.
+     * @return {number} Delay in milliseconds for the transition.
      */
     calculateTransitionDelay: function(index) {
         var length = this.itemsCount;
@@ -249,8 +292,8 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Calculates point styles of the action items according to items' index.
      * @private
-     * @param {number} index index of the action item element
-     * @return {string} point styles of the action item
+     * @param {number} index Index of the action item element
+     * @return {JQuery.PlainObject<string | number>} Point styles of the action item.
      */
     calculatePointStyle: function(index) {
         var type = this.cfg.type;
@@ -311,8 +354,8 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Retrieves styles of the item according to items' index.
      * @private
-     * @param {number} index index of the action item element
-     * @return {string} styles of the action item
+     * @param {number} index Index of the action item element.
+     * @return {JQuery.PlainObject<string | number>} Styles of the action item
      */
     getItemStyle: function(index) {
         var transitionDelay = this.calculateTransitionDelay(index);

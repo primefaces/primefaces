@@ -46,7 +46,7 @@ function handleType(messages, program, docCommentAccessor, node) {
                 ),
                 severity: "error",
                 type: "tsMissingParentDoc",
-            });    
+            });
         }
     }
 }
@@ -61,10 +61,9 @@ function handleMethod(messages, program, docCommentAccessor, node) {
     const jsdoc = docCommentAccessor.getClosestDocComment(node);
     const typeName = tsx.getTypeName(node.parent);
     const propertyName = tsx.getPropertyName(node.name);
-    
-    const overriddenMethods = tsx.getOverridenMethodsRecursive(program.getTypeChecker(), node);
-    const isMethodOverriding = overriddenMethods.size > 0;
 
+    const overriddenMethods = tsx.getOverriddenMethodsRecursive(program.getTypeChecker(), node);
+    const isMethodOverriding = overriddenMethods.size > 0;
     const hasOverride = jsdoc && hasTag(jsdoc, Tags.Override, Tags.Overrides);
     const hasInheritDoc = jsdoc && hasTag(jsdoc, Tags.InheritDoc);
     const hasOverrideOrInheritDoc = hasOverride || hasInheritDoc;
@@ -89,14 +88,14 @@ function handleMethod(messages, program, docCommentAccessor, node) {
     }
 
     if (hasInheritDoc && !hasAnyParentDoc) {
-        // Create list of overriden methods in the format 'Type#method'
-        const overridenMethods = Array.from(
+        // Create list of overridden methods in the format 'Type#method'
+        const overrides = Array.from(
             overriddenMethods.keys(),
             type => `${tsx.getNameOfType(type)}#${propertyName}`
         );
         messages.push({
             message: newTsErrorMessage(
-                `'@inheritdoc found on property '${propertyName}' of type '${typeName}', but none of the parent methods ${overridenMethods.join(", ")} have got a doc comment. Add a doc comment.`,
+                `'@inheritdoc found on property '${propertyName}' of type '${typeName}', but none of the parent methods ${overrides.join(", ")} have got a doc comment. Add a doc comment.`,
                 node,
                 typeName,
             ),
@@ -106,14 +105,14 @@ function handleMethod(messages, program, docCommentAccessor, node) {
     }
 
     if (!hasOverride && isMethodOverriding) {
-        // Create list of overriden methods in the format 'Type#method'
-        const overridenMethods = Array.from(
+        // Create list of overridden methods in the format 'Type#method'
+        const overrides = Array.from(
             overriddenMethods.keys(),
             type => `${tsx.getNameOfType(type)}#${propertyName}`
         );
         messages.push({
             message: newTsErrorMessage(
-                `'@override' not found on method '${propertyName}' of type '${typeName}', but it does override the parent methods ${overridenMethods.join(", ")}. Add the '@override' tag.`,
+                `'@override' not found on method '${propertyName}' of type '${typeName}', but it does override the parent methods ${overrides.join(", ")}. Add the '@override' tag.`,
                 node,
                 typeName,
             ),

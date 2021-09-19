@@ -14,13 +14,13 @@ const { makeStackLine } = require("./error");
 /**
  * Checks whether the node is of the given type. Includes a type guard that narrows down
  * the node to the given type automatically. 
- * @template {import("acorn-walk").NodeType} K Name of the node type to check for.
- * @param {import("estree").Node} node Node to check.
+ * @template {import("acorn-walk").BuiltinNodeType} K Name of the node type to check for.
+ * @param {import("estree").Node | undefined | null} node Node to check.
  * @param {K} type Name of the node type to check for.
  * @return {node is import("acorn-walk").NarrowNode<K>} Whether the node is of the given type.
  */
 function is(node, type) {
-    return node.type === type;
+    return node !== undefined && node !== null && node.type === type;
 }
 
 /**
@@ -90,6 +90,27 @@ function isIdentMemberExpression(node, ...expectedPath) {
 }
 
 /**
+ * Makes an object with visitor functions similar to `acorn-walk#make`, but redirects compound nodes
+ * to their real node type.
+ * @template TState
+ * @param {TState} state Ignored. May be passed explicitly to let typescript deduce the type of the generics parameter `TState`.
+ * @return {import("acorn-walk").RecursiveVisitors<import("acorn-walk").BuiltinNodeType, TState>}
+ */
+function makeVisitorsBuiltin(state) {
+    return make({
+        Expression(node, state, callback) {
+            callback(node, state);
+        },
+        Pattern(node, state, callback) {
+            callback(node, state);
+        },
+        Statement(node, state, callback) {
+            callback(node, state);
+        },
+    });
+}
+
+/**
  * Makes an object with visitor functions that can be used by `acorn-walk#full`. If a visitor is not specified for
  * a certain node type, uses the default visitor (that just descends into the children).
  * @template TState
@@ -97,7 +118,7 @@ function isIdentMemberExpression(node, ...expectedPath) {
  * @param {TState} state Ignored. May be passed explicitly to let typescript deduce the type of the generics parameter `TState`.
  * @return {import("acorn-walk").RecursiveVisitors<import("acorn-walk").NodeType, TState>}
  */
-function makeVisitors(callback, state) {
+function makeVisitorsFiltered(callback, state) {
     /** @type {import("acorn-walk").RecursiveVisitors<import("acorn-walk").NodeType, TState>} */
     const visitors = make({});
     for (const key in visitors) {
@@ -114,7 +135,7 @@ function makeVisitors(callback, state) {
             }
         };
         // @ts-ignore
-        visitors[key] = newVisitor; 
+        visitors[key] = newVisitor;
     }
     return visitors;
 }
@@ -145,7 +166,7 @@ function parseToEstree(source, options) {
  * @param {string} sourceName Name of the program. 
  * @param {string} sourceLocation Location or source path of the script, does have to be a real file path. Added to the source
  * location of each node.
- * @param {3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 'latest'} ecmaVersion
+ * @param {import("acorn").Options["ecmaVersion"]} ecmaVersion
  * Ecma version to use for parsing.
  * @return {CommentedAst<import("estree").Program>} The parsed programs with access to the doc comments.
  */
@@ -164,14 +185,14 @@ function parseJsProgram(data, sourceName, sourceLocation, ecmaVersion) {
                 start,
                 end,
             });
-        }
+        },
+        ranges: true,
     };
     try {
         program = parseToEstree(data, Object.assign({}, DefaultParseOptions, overrideOptions));
     }
     catch (e) {
-        /** @type {AcornSyntaxError} */
-        const error = e;
+        const error = /** @type {AcornSyntaxError} */ (e);
         throw new Error(`Could not parse JavaScript source file\n${makeStackLine(sourceName, sourceLocation, error.loc.line, error.loc.column)}\n${error.stack}`);
     }
     return makeCommentedAst(program, comments);
@@ -181,7 +202,7 @@ function parseJsProgram(data, sourceName, sourceLocation, ecmaVersion) {
  * Takes a component and parses all JavaScript files it contains.
  * @param {string} basePath Base path (directory) with the files to parse.
  * @param {string[]} files One or more files to parse. If the path is relative, it must be relative to the given `basePath`
- * @param {3 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 'latest'} ecmaVersion
+ * @param {import("acorn").Options["ecmaVersion"]} ecmaVersion
  * Ecma version to use for parsing.
  * @return {AsyncIterable<CommentedAst<import("estree").Program>>} A list of parsed programs with access to the doc comments.
  */
@@ -195,18 +216,18 @@ async function* parseJs(files, ecmaVersion, basePath = "/") {
     }
 }
 
- /**
-  * Maps comments found in the source code to the source nodes. Later, this is used to retrieve the comments for a certain node.
-  * A node is considered as belonging to a comment if it is the first node following the comment, according to the position where it
-  * starts in the source code.
-  * @param {import("estree").Node} node Root node to start at.
-  * @param {CommentData[]} comments Comments that were encountered during parsing.
-  * @return {Map<import("estree").Node, CommentData[]>} A map between nodes and the associated comments.
-  */
- function buildCommentMap(node, comments) {
+/**
+ * Maps comments found in the source code to the source nodes. Later, this is used to retrieve the comments for a certain node.
+ * A node is considered as belonging to a comment if it is the first node following the comment, according to the position where it
+ * starts in the source code.
+ * @param {import("estree").Node} node Root node to start at.
+ * @param {CommentData[]} comments Comments that were encountered during parsing.
+ * @return {Map<import("estree").Node, CommentData[]>} A map between nodes and the associated comments.
+ */
+function buildCommentMap(node, comments) {
     /** @type {BuildCommentMapState} */
-    const state = {map: new Map(), index: 0, len: comments.length, start: -1, comments: []};
-    full(node, ()=>{}, makeVisitors((node, state) => {
+    const state = { map: new Map(), index: 0, len: comments.length, start: -1, comments: [] };
+    full(node, () => { }, makeVisitorsFiltered((node, state) => {
         /** @type {number} */
         //@ts-ignore
         const start = node.start;
@@ -215,13 +236,16 @@ async function* parseJs(files, ecmaVersion, basePath = "/") {
             state.comments = [];
         }
         if (state.index < state.len) {
-            if (start > comments[state.index].start) {
+            if (start > (comments[state.index]?.start ?? 0)) {
                 /** @type {CommentData[]} */
                 const c = [];
                 do {
-                    c.push(comments[state.index]);
+                    const comment = comments[state.index];
+                    if (comment !== undefined) {
+                        c.push(comment);
+                    }
                     state.index += 1;
-                } while( state.index < state.len && start > comments[state.index].start);
+                } while (state.index < state.len && start > (comments[state.index]?.start ?? 0));
                 state.map.set(node, c);
                 state.comments = c;
                 state.start = start;
@@ -272,7 +296,7 @@ function removeInitializerFromPattern(pattern) {
                     // remove initializer
                     if (property.value.type === "AssignmentPattern") {
                         property.value = property.value.left;
-                    }    
+                    }
                     // only descend into value, don't care about how computed values are computed
                     callback(property.value, state);
                 }
@@ -280,9 +304,9 @@ function removeInitializerFromPattern(pattern) {
                     callback(property, state)
                 }
             }
-        },    
+        },
     });
-    return pattern;        
+    return pattern;
 }
 
 /**
@@ -307,9 +331,9 @@ function makeCommentedAst(node, comments) {
  * @return {import("comment-parser").Comment} The result of parsing the last comment that is a block comment.
  */
 function findAndParseLastBlockComment(comments, severitySettings) {
-    for (let i = comments.length; i --> 0;) {
-        if (comments[i].isBlockComment) {
-            return parseSingleComment(severitySettings, comments[i].content);
+    for (let i = comments.length; i-- > 0;) {
+        if (comments[i]?.isBlockComment) {
+            return parseSingleComment(severitySettings, comments[i]?.content);
         }
     }
     return getEmptyDocComment();
@@ -334,7 +358,7 @@ function isNonEmptyReturn(node, type) {
  */
 function findFunctionNonEmptyReturnStatement(block) {
     /** @type {{found: import("estree").ReturnStatement | undefined}} */
-    const state = {found: undefined};
+    const state = { found: undefined };
     recursive(block, state, {
         ReturnStatement(node, state, callback) {
             if (isNonEmptyReturn(node, "ReturnStatement") && state.found === undefined) {
@@ -345,11 +369,23 @@ function findFunctionNonEmptyReturnStatement(block) {
                 callback(node.argument, state);
             }
         },
+        ArrowFunctionExpression(node, state, callback) {
+            // ignore return in nested functions / arrow function / methods
+        },
+        ClassBody(node, state, callback) {
+            // ignore return in nested functions / arrow function / methods
+        },
+        ClassDeclaration(node, state, callback) {
+            // ignore return in nested functions / arrow function / methods
+        },
+        ClassExpression(node, state, callback) {
+            // ignore return in nested functions / arrow function / methods
+        },
         FunctionDeclaration(node, state, callback) {
-            // ignore return in nested functions / lambdas
+            // ignore return in nested functions / arrow function / methods
         },
         FunctionExpression(node, state, callback) {
-            // ignore return in nested functions / lambdas
+            // ignore return in nested functions / arrow function / methods
         }
     });
     return state.found;
@@ -364,7 +400,7 @@ function findFunctionNonEmptyReturnStatement(block) {
  */
 function findFunctionYieldExpression(block) {
     /** @type {{found: import("estree").YieldExpression | undefined}} */
-    const state = {found: undefined};
+    const state = { found: undefined };
     recursive(block, state, {
         YieldExpression(node, state, callback) {
             if (state.found === undefined) {
@@ -391,7 +427,7 @@ function findFunctionYieldExpression(block) {
  */
 function findFunctionYieldStatement(block) {
     /** @type {{includes: Set<import("estree").YieldExpression>, excludes: Set<import("estree").YieldExpression>}} */
-    const state = {includes: new Set(), excludes: new Set()};
+    const state = { includes: new Set(), excludes: new Set() };
     recursive(block, state, {
         ExpressionStatement(node, state, callback) {
             if (node.expression.type === "YieldExpression") {
@@ -419,7 +455,7 @@ function findFunctionYieldStatement(block) {
  * @return {boolean} `true` if the block can complete normally, `false` otherwise.
  */
 function isCanCompleteNormally(block) {
-    const singularThrow = block.body.length === 1 && block.body[0].type === "ThrowStatement";
+    const singularThrow = block.body.length === 1 && block.body[0]?.type === "ThrowStatement";
     return !singularThrow;
     // further analyisis may be required in the future
 }
@@ -436,14 +472,14 @@ function parsePattern(pattern) {
         parsed = parseToEstreeExpressionAt(patternSource);
     }
     catch (e) {
-        throw new Error("Type of tag @structure must be a valid array or object pattern, but is: '" + pattern + "'\n" + e.stack);
+        throw new Error("Type of tag @structure must be a valid array or object pattern, but is: '" + pattern + "'\n" + (/** @type {Error} */(e)).stack);
     }
     if (is(parsed, "AssignmentExpression") && (is(parsed.left, "ArrayPattern") || is(parsed.left, "ObjectPattern"))) {
         return parsed.left;
     }
     else {
         throw new Error("Type of tag @structure must be a valid array or object pattern, but is: '" + pattern + "'");
-    }    
+    }
 }
 
 
@@ -457,7 +493,8 @@ module.exports = {
     is,
     isIdentMemberExpression,
     makeCommentedAst,
-    makeVisitors,
+    makeVisitorsBuiltin,
+    makeVisitorsFiltered,
     parsePattern,
     parseToEstree,
     parseToEstreeExpressionAt,

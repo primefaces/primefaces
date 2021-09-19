@@ -22,7 +22,9 @@
  * @prop {JQuery} filters The DOM elements for the filter buttons
  * @prop {PrimeFaces.widget.Log.Severity} severity The current severity level that controls which log messages are shown
  * 
- * @interface {PrimeFaces.widget.LogCfg} cfg
+ * @interface {PrimeFaces.widget.LogCfg} cfg The configuration for the {@link  Log|Log widget}. You can access this
+ * configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is
+ * usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  */
 PrimeFaces.widget.Log = PrimeFaces.widget.BaseWidget.extend({

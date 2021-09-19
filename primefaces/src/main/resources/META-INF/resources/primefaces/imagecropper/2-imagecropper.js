@@ -9,6 +9,7 @@
  * PF("myImageCropperWidget").image.cropper("rotate", 90);
  * ```
  * 
+ * @prop {boolean} [cropping] Whether the image is currently being cropped. 
  * @prop {Cropper} cropper The current {@link Cropper} instance.
  * @prop {JQuery} image DOM element of the image element to crop. You can use this element to access the {@link Cropper}.
  * @prop {JQuery} jqCoords DOM element of the hidden INPUT element that stores the selected crop area.

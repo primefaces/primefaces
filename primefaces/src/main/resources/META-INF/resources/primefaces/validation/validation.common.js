@@ -136,6 +136,7 @@ if (window.PrimeFaces) {
 
     /**
      * The module for enabling client side validation of form fields.
+     * @namespace
      */
     PrimeFaces.validation = {
 
@@ -294,13 +295,13 @@ if (window.PrimeFaces) {
         },
 
         /**
-         * NOTE: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
+         * __NOTE__: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
          * 
          * Performs a client-side validation of (the value of) the given input element. If the element is valid, removes old
          * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
          * messages.
          * @function
-         * @protected
+         * @internal
          * @param {JQuery} element A JQuery instance with a single input element to validate.
          * @param {boolean} highlight If the invalid element should be highlighted.
          */
@@ -406,15 +407,16 @@ if (window.PrimeFaces) {
         },
 
         /**
-         * NOTE: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
+         * __NOTE__: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
          *
-         * Performs a client-side validation of (the value of) the given container element. If the element is valid, removes old
-         * messages from the element. If the value of the element is invalid, adds the appropriate validation failure
-         * messages.
+         * Performs a client-side validation of (the value of) the given container element. If the element is valid,
+         * removes old messages from the element. If the value of the element is invalid, adds the appropriate
+         * validation failure messages.
          * @function
-         * @protected
+         * @internal
          * @param {JQuery} element A JQuery instance with a single input element to validate.
          * @param {boolean} highlight If the invalid element should be highlighted.
+         * @returns {boolean} `true` if the value of the element is valid, `false` otherwise.
          */
         validateComplex : function(element, highlight) {
             var vc = PrimeFaces.validation.ValidationContext;
@@ -585,12 +587,14 @@ if (window.PrimeFaces) {
     };
 
     /**
-     * @deprecated backward compatiblity, remove later
+     * @deprecated Backward compatibility, remove later
+     * @namespace
      */
     PrimeFaces.util.ValidationContext = PrimeFaces.validation.ValidationContext;
 
     /**
      * Mostly internal utility methods used to validate data on the client.
+     * @namespace
      */
     PrimeFaces.validation.Utils = {
 
@@ -627,6 +631,8 @@ if (window.PrimeFaces) {
          * falls back to the default English locale.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
          * `javax.faces.validator.LengthValidator.MINIMUM`.
+         * @param {string[]} params A list of parameters for the placeholders. The first item is ignored. The item at
+         * index `i` corresponds to the placeholder `{i-1}`.
          * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */

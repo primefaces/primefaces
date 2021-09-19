@@ -24,23 +24,26 @@ declare namespace Webcam {
          */
         (dataUri: string, canvas: HTMLCanvasElement, context2D: CanvasRenderingContext2D) => void;
 
+    /**
+     * Mapping between the event names supported by photo cam and the callback function type for the event.
+     */
     export interface WebcamEventMap {
         /**
          * Fires when the library finishes loading.
          */
-        load(): void;
+        load: () => void;
 
         /**
          * Fires when the user's camera goes live (i.e. showing a live preview). This will only happen after the user
          * allows access to their camera.
          */
-        live(): void;
+        live: () => void;
 
         /**
          * Fires when an error occurs.
          * @param errorMessage An error message describing the error that occurred.
          */
-        error(errorMessage: string): void;
+        error: (errorMessage: string) => void;
 
         /**
          * Fires repeatedly while an upload is in progress.
@@ -69,14 +72,14 @@ declare namespace Webcam {
          * @param progress A number between `0` and `1`, indicating the current progress. `0` means that the upload
          * just started, `1` means that the upload has finished.
          */
-        uploadProgress(progress: number): void;
+        uploadProgress: (progress: number) => void;
 
         /**
          * Fires once when the upload completes.
          * @param httpStatusCode Status code as received from the server.
          * @param rawResponseContent The raw response content as received from the server.
          */
-        uploadComplete(httpStatusCode: number, rawResponseContent: string): void;
+        uploadComplete: (httpStatusCode: number, rawResponseContent: string) => void;
     }
 
     /**

@@ -24,7 +24,7 @@ const { generateTypedocs } = require("./typedoc");
 /** @type {CliArgs} */
 const DefaultCliArgs = {
     declarationOutputDir: Paths.TargetMainDir,
-    exclusionTags: ["ignore", "exclude", "hidden"],
+    exclusionTags: [],
     additionalEntries: [],
     inputDir: Paths.ComponentsMainDir,
     outputFilename: Names.PrimeFacesDeclaration,
@@ -127,16 +127,18 @@ function trimSlashes(string) {
  * @return {string[]}
  */
 function resolveTypesVersions(packageJson) {
-    const typesVersions = packageJson.typesVersions || {};
+    const typesVersions = packageJson["typesVersions"] || {};
     const pattern = /(?<operator>\>=|\>|\<=|\<|=)(?<major>\d+)(?:\.(?<minor>\d+))?/;
-    const [major, minor] = require("typescript").versionMajorMinor.split(".").map(parseInt);
+    const versionParts = require("typescript").versionMajorMinor.split(".").map(parseInt);
+    const major = versionParts[0] ?? 0;
+    const minor = versionParts[1] ?? 0;
     for (const version of Object.keys(typesVersions)) {
         const match = pattern.exec(version);
         if (match) {
             let versionMatch = false;
-            const requestedMajor = parseInt(match.groups?.major ?? "0");
-            const requestedMinor = parseInt(match.groups?.minor ?? "0");
-            switch (match.groups?.operator) {
+            const requestedMajor = parseInt(match.groups?.["major"] ?? "0");
+            const requestedMinor = parseInt(match.groups?.["minor"] ?? "0");
+            switch (match.groups?.["operator"]) {
                 case "<":
                     versionMatch = major < requestedMajor || (major === requestedMajor && minor < requestedMinor);
                     break;
@@ -181,8 +183,8 @@ async function readMainTypesFile(dependency) {
     const packageJson = resolvePath(Paths.NpmNodeModulesDir, dependency, "package.json");
     const json = await readFileUtf8(packageJson);
     const parsed = parseJsonObject(json);
-    const types = trimSlashes(String(parsed.types || parsed.typings || ""));
-    const main = trimSlashes(String(parsed.main || ""));
+    const types = trimSlashes(String(parsed["types"] || parsed["typings"] || ""));
+    const main = trimSlashes(String(parsed["main"] || ""));
     const typesVersion = resolveTypesVersions(parsed);
     /** @type {string[]} */
     let file;
@@ -240,13 +242,13 @@ async function parsePackageArgs(packageJson) {
     if (packageJson && stats.exists === true && stats.type === "file") {
         const json = await readFileUtf8(packageJson);
         const parsed = parseJsonObject(json);
-        if (isJsonObject(parsed.jsdocs)) {
-            delete parsed.jsdocs.packageJson;
-            delete parsed.jsdocs.rootDir;
-            Object.assign(result, parsed.jsdocs);
+        if (isJsonObject(parsed["jsdocs"])) {
+            delete parsed["jsdocs"]["packageJson"];
+            delete parsed["jsdocs"]["rootDir"];
+            Object.assign(result, parsed["jsdocs"]);
         }
-        if (result.additionalEntries === undefined && isJsonObject(parsed.dependencies)) {
-            const modules = await asyncFlatMap(Object.keys(parsed.dependencies), readMainTypesFile);
+        if (result.additionalEntries === undefined && isJsonObject(parsed["dependencies"])) {
+            const modules = await asyncFlatMap(Object.keys(parsed["dependencies"]), readMainTypesFile);
             if (modules.length > 0) {
                 result.additionalEntries = [...new Set(modules)].sort();
             }
@@ -305,7 +307,7 @@ function parseCliArgs() {
                     console.log(` -e`);
                     console.log(` --exclusionTags`);
                     console.log(`     Comma separated list of tags in a doc comment that cause a constant, function, or class to be skipped and not documented`);
-                    console.log(`     Default to 'internal,ignore,exclude'`);
+                    console.log(`     Defaults to no tags`);
                     console.log(` -m`);
                     console.log(` --additionalEntries`);
                     console.log(`     Comma separated list of entry points to include in the generated typedoc files`);
@@ -471,8 +473,8 @@ async function writeOutput(bundle, cliArgs) {
     const outputFileAmbient = resolvePath(cliArgs.declarationOutputDir, cliArgs.outputFilename);
     const outputFileModule = resolvePath(cliArgs.declarationOutputDir, cliArgs.moduleOutputFilename);
 
-    console.log("Writing ambient output file to ", outputFileAmbient);
-    console.log("Writing module output file to ", outputFileModule);
+    console.log(`Writing ambient output file to ${outputFileAmbient}`);
+    console.log(`Writing module output file to ${outputFileModule}`);
 
     await Promise.all([
         writeFileUtf8(outputFileAmbient, { data: bundle.ambient }),

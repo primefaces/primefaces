@@ -1,10 +1,12 @@
 //@ts-check
 
 const ts = require("typescript");
-const { asyncForEach, asyncFlatMap, asyncReduce, splitLines } = require("./lang");
+const { asyncForEach, asyncFlatMap, asyncReduce, splitLines, withIndex } = require("./lang");
 const { createEmptyHooks } = require("./ts-postprocess-defaulthooks");
 const { createCommentHandler } = require("./ts-commenthandler");
 const { fixupNodes: fixupParents } = require("./ts-utils");
+const { promises: fs } = require("fs");
+const { formatError } = require("./error");
 
 /**
  * @template {(...args: any[]) => any} THook
@@ -92,7 +94,7 @@ async function validateProgram(program, sourceFiles, docCommentAccessor, postPro
         hook => invokeHook(hook, undefined, validationMessages),
     );
     if (errors.length > 0) {
-        return new Error("Program failed to validate:\n" + errors.map(error => error.stack).join("\n\n"));
+        return new Error(`Program failed to validate:\n${errors.map(formatError).join("\n\n")}`);
     }
     else {
         return undefined;
@@ -108,24 +110,24 @@ function fixupInlineBlockComments(sourceCode) {
     const lines = splitLines(sourceCode);
     /** @type {string[]} */
     const result = [];
-    for (let i = 0; i < lines.length; ++i) {
-        const line = lines[i].trimEnd();
-        const indexSlashStarStar = line.lastIndexOf("/**");
+    for (const [line, i] of withIndex(lines)) {
+        const trimmed = line.trimEnd();
+        const indexSlashStarStar = trimmed.lastIndexOf("/**");
         if (indexSlashStarStar >= 0 && i < lines.length - 1) {
-            const nextLine = lines[i + 1];
+            const nextLine = lines[i + 1] ?? "";
             const indexStar = nextLine.indexOf("*");
-            const lineBeforeComment = line.substr(0, indexSlashStarStar).trimRight();
+            const lineBeforeComment = trimmed.substr(0, indexSlashStarStar).trimRight();
             if (indexStar >= 0 && lineBeforeComment.length > 0 && nextLine.substr(0, indexStar).trim().length === 0) {
                 const commentBeginLine = " ".repeat(indexStar - 1) + "/**";
                 result.push(lineBeforeComment);
                 result.push(commentBeginLine);
             }
             else {
-                result.push(line);
+                result.push(trimmed);
             }
         }
         else {
-            result.push(line);
+            result.push(trimmed);
         }
     }
     return result.join("\n");
@@ -185,26 +187,37 @@ function getSourceFile(filePaths, program) {
 
 /**
  * Performs post-processing of  a `*.d.ts` file, such as whether it is valid.
- * @param {TypeDeclarationBundleFiles} filePaths Path of the declaration file to post-process.
+ * @param {TsPostProcessingHooks} resolvedHooks Path of the declaration file to post-process.
  * @param {SeveritySettingsConfig} severitySettings
- * @param {Partial<TsPostProcessingHooks>} postProcessorsHooks
- * @return {Promise<TypeDeclarationBundleContent>} Content of the post-processed file.
+ * @param {import("typescript").Program} program
+ * @param {TypeDeclarationBundleSourceFiles} sourceFiles
+ * @param {TsDocCommentHandler} commentHandler
+ * @return {Promise<void>} Content of the post-processed file.
  */
-async function postprocessDeclarationFile(filePaths, severitySettings, postProcessorsHooks = {}) {
-    // Read compiler options and parse program
-    const resolvedHooks = Object.assign(createEmptyHooks(), postProcessorsHooks);
-    const program = await createProgram(filePaths, resolvedHooks);
-    const sourceFiles = getSourceFile(filePaths, program);
-    // Prepare handler for modifying doc comment
-    fixupParents(program.getTypeChecker(), sourceFiles.ambient);
-    fixupParents(program.getTypeChecker(), sourceFiles.module);
-    const commentHandler = createCommentHandler(sourceFiles, severitySettings);
-    // Validate program
-    const error = await validateProgram(program, sourceFiles, commentHandler, resolvedHooks);
-    if (error) {
-        throw error;
-    }
-    // Perform other processing
+async function processFixup(resolvedHooks, severitySettings, program, sourceFiles, commentHandler) {
+    await asyncForEach(
+        resolvedHooks.process.fixupAst,
+        hook => invokeHook(
+            hook,
+            undefined,
+            program,
+            [sourceFiles.ambient, sourceFiles.module],
+            commentHandler,
+            severitySettings
+        )
+    );
+}
+
+/**
+ * Performs post-processing of  a `*.d.ts` file, such as whether it is valid.
+ * @param {TsPostProcessingHooks} resolvedHooks Path of the declaration file to post-process.
+ * @param {SeveritySettingsConfig} severitySettings
+ * @param {import("typescript").Program} program
+ * @param {TypeDeclarationBundleSourceFiles} sourceFiles
+ * @param {TsDocCommentHandler} commentHandler
+ * @return {Promise<void>} Content of the post-processed file.
+ */
+async function processProcessAst(resolvedHooks, severitySettings, program, sourceFiles, commentHandler) {
     await asyncForEach(
         resolvedHooks.process.processAst,
         hook => invokeHook(
@@ -216,10 +229,154 @@ async function postprocessDeclarationFile(filePaths, severitySettings, postProce
             severitySettings
         )
     );
+}
+
+/**
+ * @param {TypeDeclarationBundleFiles} filePaths Path of the declaration file to post-process.
+ * @param {TsPostProcessingHooks} resolvedHooks
+ * @param {SeveritySettingsConfig} severitySettings
+ * @return {Promise<{commentHandler: TsDocCommentHandler, program: import("typescript").Program, sourceFiles: TypeDeclarationBundleSourceFiles}>}
+ */
+async function readProgram(filePaths, resolvedHooks, severitySettings) {
+    const program = await createProgram(filePaths, resolvedHooks);
+    const sourceFiles = getSourceFile(filePaths, program);
+    // Prepare handler for modifying doc comment
+    fixupParents(program.getTypeChecker(), sourceFiles.ambient);
+    fixupParents(program.getTypeChecker(), sourceFiles.module);
+    const commentHandler = createCommentHandler(sourceFiles, severitySettings);
+    return { commentHandler, program, sourceFiles };
+}
+
+/**
+ * @param {import("typescript").Program} program
+ * @param {TsPostProcessingHooks} resolvedHooks
+ * @param {TypeDeclarationBundleSourceFiles} sourceFiles
+ * @param {TsDocCommentHandler} commentHandler
+ */
+async function runValidation(program, sourceFiles, commentHandler, resolvedHooks) {
+    const error = await validateProgram(program, sourceFiles, commentHandler, resolvedHooks);
+    if (error) {
+        throw error;
+    }
+}
+
+/**
+ * @param {TsPostProcessingHooks} resolvedHooks
+ * @param {TypeDeclarationBundleSourceFiles} sourceFiles
+ * @param {TsDocCommentHandler} commentHandler
+ */
+async function convertProgramToString(resolvedHooks, sourceFiles, commentHandler) {
     // Write declaration file back
     commentHandler.applyToSourceFile(sourceFiles.ambient);
     commentHandler.applyToSourceFile(sourceFiles.module);
     return stringifySourceFile(sourceFiles, resolvedHooks);
+}
+
+/**
+ * @param {TypeDeclarationBundleFiles} filePaths Path of the declaration file to post-process.
+ * @param {TypeDeclarationBundleContent} processed
+ */
+async function writeProgramToFileSystem(filePaths, processed) {
+    await fs.writeFile(filePaths.ambient, processed.ambient, { encoding: "utf-8" });
+    await fs.writeFile(filePaths.module, processed.module, { encoding: "utf-8" });
+}
+
+/**
+ * @param {TypeDeclarationBundleFiles} filePaths Path of the declaration file to read.
+ * @return {Promise<TypeDeclarationBundleRawContent>} filePaths Path of the declaration file.
+ */
+async function readFiles(filePaths) {
+    return {
+        ambient: await fs.readFile(filePaths.ambient, { encoding: "utf-8" }),
+        module: await fs.readFile(filePaths.module, { encoding: "utf-8" }),
+    };
+}
+
+/**
+ * @param {TypeDeclarationBundleFiles} filePaths Path of the declaration file to write.
+ * @param {TypeDeclarationBundleRawContent} files The content to write.
+ */
+async function writeFiles(filePaths, files) {
+    await fs.writeFile(filePaths.ambient, files.ambient, { encoding: "utf-8" });
+    await fs.writeFile(filePaths.module, files.module, { encoding: "utf-8" });
+}
+
+/**
+ * @param {TypeDeclarationBundleFiles} input Path of the declaration file to post-process.
+ * @param {TypeDeclarationBundleFiles} output Path of the declaration file to post-process.
+ * @param {SeveritySettingsConfig} severitySettings
+ * @param {TsPostProcessingHooks} resolvedHooks
+ * @return {Promise<TypeDeclarationBundleContent>} Content of the post-processed file.
+ */
+async function postProcessPass1(input, output, severitySettings, resolvedHooks) {
+    const { commentHandler, program, sourceFiles } = await readProgram(input, resolvedHooks, severitySettings);
+    // Fixup AST
+    await processFixup(resolvedHooks, severitySettings, program, sourceFiles, commentHandler);
+    // Write declaration file back
+    const processed = await convertProgramToString(resolvedHooks, sourceFiles, commentHandler);
+    await writeProgramToFileSystem(output, processed);
+    return processed;
+}
+
+/**
+ * @param {TypeDeclarationBundleFiles} input Path of the declaration file to post-process.
+ * @param {TypeDeclarationBundleFiles} output Path of the declaration file to post-process.
+ * @param {SeveritySettingsConfig} severitySettings
+ * @param {TsPostProcessingHooks} resolvedHooks
+ * @return {Promise<TypeDeclarationBundleContent>} Content of the post-processed file.
+ */
+async function postProcessPass2(input, output, severitySettings, resolvedHooks) {
+    const { commentHandler, program, sourceFiles } = await readProgram(input, resolvedHooks, severitySettings);
+    // Validate program
+    await runValidation(program, sourceFiles, commentHandler, resolvedHooks);
+    // Write declaration file back
+    const processed = await convertProgramToString(resolvedHooks, sourceFiles, commentHandler);
+    await writeProgramToFileSystem(output, processed);
+    return processed;
+}
+
+/**
+ * @param {TypeDeclarationBundleFiles} input Path of the declaration file to post-process.
+ * @param {TypeDeclarationBundleFiles} output Path of the declaration file to post-process.
+ * @param {SeveritySettingsConfig} severitySettings
+ * @param {TsPostProcessingHooks} resolvedHooks
+ * @return {Promise<TypeDeclarationBundleContent>} Content of the post-processed file.
+ */
+async function postProcessPass3(input, output, severitySettings, resolvedHooks) {
+    const { commentHandler, program, sourceFiles } = await readProgram(input, resolvedHooks, severitySettings);
+    // Perform other processing on AST
+    await processProcessAst(resolvedHooks, severitySettings, program, sourceFiles, commentHandler);
+    // Write declaration file back
+    const processed = await convertProgramToString(resolvedHooks, sourceFiles, commentHandler);
+    await writeProgramToFileSystem(output, processed);
+    return processed;
+}
+
+/**
+ * Performs post-processing of  a `*.d.ts` file, such as whether it is valid.
+ * @param {TypeDeclarationBundleFiles} filePaths Path of the declaration file to post-process.
+ * @param {SeveritySettingsConfig} severitySettings
+ * @param {Partial<TsPostProcessingHooks>} postProcessorsHooks
+ * @return {Promise<TypeDeclarationBundleContent>} Content of the post-processed file.
+ */
+async function postprocessDeclarationFile(filePaths, severitySettings, postProcessorsHooks = {}) {
+    // Read compiler options and parse program
+    const resolvedHooks = Object.assign(createEmptyHooks(), postProcessorsHooks);
+
+    const original = await readFiles(filePaths);
+
+    try {
+        console.log("Running pass 1...");
+        await postProcessPass1(filePaths, filePaths, severitySettings, resolvedHooks);
+        console.log("Running pass 2...");
+        await postProcessPass2(filePaths, filePaths, severitySettings, resolvedHooks);
+        console.log("Running pass 3...");
+        const result = await postProcessPass3(filePaths, filePaths, severitySettings, resolvedHooks);
+        return result;
+    }
+    finally {
+        await writeFiles(filePaths, original);
+    }
 }
 
 module.exports = {

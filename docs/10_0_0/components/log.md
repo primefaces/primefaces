@@ -2,7 +2,7 @@
 
 Log component is a visual console to display logs on JSF pages.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.log-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Log-1.html)
 
 ## Info
 

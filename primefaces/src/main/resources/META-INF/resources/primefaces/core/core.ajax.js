@@ -925,8 +925,8 @@ if (!PrimeFaces.ajax) {
 
             /**
              * Appends a request parameter to the given list of parameters.
-             * Optionally add a prefix to the name, this is used for Portlet namespacing.
-             * @template [TValue=any] Type of the parameter value.
+             * Optionally add a prefix to the name, this is used for portlet namespacing.
+             * @template [TValue=unknown] Type of the parameter value.
              * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} params List of parameters to which a new
              * parameter is added.
              * @param {string} name Name of the new parameter to add.
@@ -965,7 +965,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Adds a list of callback parameters to the given list. Optionally prepends a prefix to the name of each
              * added parameter.
-             * @template [TValue=any] Type of the parameter values.
+             * @template [TValue=unknown] Type of the parameter values.
              * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} params List of callback parameters to which
              * parameters are added.
              * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} paramsToAdd List of callback parameters to
@@ -989,7 +989,7 @@ if (!PrimeFaces.ajax) {
             /**
              * Adds a new request parameter to the given list. The value of the parameter is taken from the input
              * element of the given form. The input element must have the same name as the name of the parameter to add.
-             * Optionally add a prefix to the name, which used for Portlet namespacing.
+             * Optionally add a prefix to the name, which used for portlet namespacing.
              * @param {PrimeFaces.ajax.RequestParameter[]} params List of request parameters to the new
              * parameter is added.
              * @param {string} name Name of the new parameter to add
@@ -1062,7 +1062,7 @@ if (!PrimeFaces.ajax) {
              * Creates a new array with all parameters from the second array that are not in the first array. That is,
              * removes all parameters from the second array whose name is equal to one of the parameters in the first
              * array. The given input array are not modified.
-             * @template [TValue=any] Type of the parameter values.
+             * @template [TValue=unknown] Type of the parameter values.
              * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} arr1 A list of parameters for comparison.
              * @param {PrimeFaces.ajax.RequestParameter<string, TValue>[]} arr2 A list of additional parameters.
              * @return {PrimeFaces.ajax.RequestParameter<string, TValue>[]} An list of parameters that are in the second

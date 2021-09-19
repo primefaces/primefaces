@@ -188,6 +188,9 @@ declare namespace JQueryIdleTimer {
         idleTimer(method: "isIdle", element?: Document | HTMLElement, id?: string): boolean;
     }
 
+    /**
+     * Optional settings that can be specified when creating an idle timer.
+     */
     export interface IdleTimerOptions {
         /**
          * List of events that constitute an activity by the user. Defaults to
@@ -218,9 +221,13 @@ declare namespace JQueryIdleTimer {
      * The event that is triggered when the user comes back.
      */
     export interface ActiveEvent<
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TDelegateTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TData = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TCurrentTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TTarget = any
         > extends JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget> {
         type: "active";
@@ -230,9 +237,13 @@ declare namespace JQueryIdleTimer {
      * The event that is triggered when the user goes idle.
      */
     export interface IdleEvent<
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TDelegateTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TData = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TCurrentTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TTarget = any
         > extends JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget> {
         type: "idle";

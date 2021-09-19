@@ -2,7 +2,7 @@
 
 SelectCheckboxMenu is a multi select component that displays options in an overlay.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.selectcheckboxmenu-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectCheckboxMenu-1.html)
 
 ## Info
 

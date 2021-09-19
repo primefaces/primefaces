@@ -44,6 +44,9 @@ declare namespace JQuerySignature {
         lines: Polyline[];
     }
 
+    /**
+     * Optional settings that can be passed when creating a new signature instance to customize its behavior.
+     */
     export interface SignatureSettings {
         /**
          * The minimum distance (pixels) of movement to start a drag operation.

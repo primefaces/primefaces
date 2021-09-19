@@ -16,7 +16,6 @@
  * 
  * @prop {string} colorTheme Name of the color theme to use. You can use on of the keys defined in
  * `PrimeFaces.widget.Knob.ColorThemes`.
- * @prop {number} cursorExt Used for the computing the theme layout.
  * @prop {JQuery} input The DOM Element for the hidden input that stores the value of this widget.
  * @prop {JQuery} knob The DOM element on which the JQuery knob plugin was initialized.
  * @prop {number} min Minimum allowed value for this knob.

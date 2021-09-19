@@ -16,6 +16,7 @@
  * @prop {JQuery} icon The DOM element for the icon showing the current state of this checkbox widget.
  * @prop {JQuery} input The DOM element for the hidden input field storing the value of this widget.
  * @prop {JQuery} itemLabel The DOM element for the label of the checkbox.
+ * @prop {boolean} readonly Whether the user can change the state of the checkbox.
  * 
  * @interface {PrimeFaces.widget.TriStateCheckboxCfg} cfg The configuration for the {@link  TriStateCheckbox| TriStateCheckbox widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

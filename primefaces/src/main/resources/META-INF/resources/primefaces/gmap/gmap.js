@@ -9,7 +9,7 @@
  * 
  * @typedef PrimeFaces.widget.GMap.OnPointClickCallback Javascript callback to execute when a point on map is clicked.
  * See also {@link GMapCfg.onPointClick}.
- * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} PrimeFaces.widget.GMap.OnPointClickCallback.event The
+ * @param {google.maps.MapMouseEvent | google.maps.IconMouseEvent} PrimeFaces.widget.GMap.OnPointClickCallback.event The
  * mouse or click event that occurred.
  * 
  * @interface {PrimeFaces.widget.GMap.IdProviding} IdProviding Interface for objects that provide an ID that uniquely
@@ -191,7 +191,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Calls the behavior for when a marker was dragged.
      * @private
-     * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event Event that occurred.
+     * @param {google.maps.MapMouseEvent | google.maps.IconMouseEvent} event Event that occurred.
      * @param {google.maps.MarkerOptions} marker The marker that was dragged.
      */
     fireMarkerDragEvent: function(event, marker) {
@@ -336,7 +336,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Triggers the behavior for when an overlay shape was selected.
      * @private
-     * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that occurred.
+     * @param {google.maps.MapMouseEvent | google.maps.IconMouseEvent} event The event that occurred.
      * @param {PrimeFaces.widget.GMap.Overlay} overlay The shape that was selected.
      * @param {number} clickCount whether it was single or double click
      */
@@ -432,7 +432,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Triggers the behavior for when a point on the map was selected.
      * @private
-     * @param {google.maps.MouseEvent | google.maps.IconMouseEvent} event The event that triggered the point selection.
+     * @param {google.maps.MapMouseEvent | google.maps.IconMouseEvent} event The event that triggered the point selection.
      * @param {number} clickCount whether it was single or double click
      */
     firePointSelectEvent: function(event, clickCount) {

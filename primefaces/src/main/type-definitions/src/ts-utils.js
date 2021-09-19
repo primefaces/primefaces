@@ -1,7 +1,7 @@
 //@ts-check
 
 const ts = require("typescript");
-const { collectToMap, curry1, isNotUndefined, mergeIntoMap } = require("./lang");
+const { collectToMap, curry1, isNotUndefined, mergeIntoMap, withIndex } = require("./lang");
 
 /**
  * Regarding the various different function named `getHeritage...`, consider the following code:
@@ -83,6 +83,86 @@ function isTokenNode(node) {
  */
 function isMethodLike(node) {
     return ts.isMethodSignature(node) || ts.isMethodDeclaration(node);
+}
+
+/**
+ * @param {TsNode} node 
+ * @param {TsSyntaxKind} modifier
+ * @return {boolean}
+ */
+function isHasModifier(node, modifier) {
+    return node.modifiers?.some(mod => mod.kind === modifier) ?? false;
+}
+
+/**
+ * @param {MethodLikeNode | TypeLikeNode} node 
+ * @return {boolean}
+ */
+function isAbstract(node) {
+    return isHasModifier(node, ts.SyntaxKind.AbstractKeyword);
+}
+
+/**
+ * @param {MethodLikeNode} node 
+ * @return {boolean}
+ */
+function isOverride(node) {
+    return isHasModifier(node, ts.SyntaxKind.OverrideKeyword);
+}
+
+/**
+ * @param {MethodLikeNode | PropertyLikeNode} node 
+ * @return {boolean}
+ */
+function isProtected(node) {
+    return isHasModifier(node, ts.SyntaxKind.ProtectedKeyword);
+}
+
+/**
+ * @param {MethodLikeNode | PropertyLikeNode} node 
+ * @return {boolean}
+ */
+function isPublic(node) {
+    return isHasModifier(node, ts.SyntaxKind.PublicKeyword);
+}
+
+/**
+ * @param {MethodLikeNode | PropertyLikeNode} node 
+ * @return {boolean}
+ */
+function isPublic(node) {
+    return isHasModifier(node, ts.SyntaxKind.PublicKeyword);
+}
+
+/**
+ * @param {MethodLikeNode | PropertyLikeNode} node 
+ * @return {boolean}
+ */
+function isPrivate(node) {
+    return isHasModifier(node, ts.SyntaxKind.PrivateKeyword);
+}
+/**
+ * @param {MethodLikeNode} node 
+ * @return {boolean}
+ */
+function isAsync(node) {
+    return isHasModifier(node, ts.SyntaxKind.AsyncKeyword);
+}
+
+/**
+ * @param {PropertyLikeNode} node 
+ * @return {boolean}
+ */
+function isReadonly(node) {
+    return isHasModifier(node, ts.SyntaxKind.ReadonlyKeyword);
+}
+
+/**
+ * @param {MethodLikeNode} node 
+ * @return {boolean}
+ */
+function isStatic(node) {
+    return isHasModifier(node, ts.SyntaxKind.StaticKeyword);
 }
 
 /**
@@ -218,6 +298,30 @@ function isUndefinedType(type) {
  */
 function isObjectType(type) {
     return (type.flags & ts.TypeFlags.Object) !== 0;
+}
+
+/**
+ * @param {TsType} type 
+ * @return {type is import("typescript").InterfaceType}
+ */
+function isInterfaceType(type) {
+    return type.isClassOrInterface() && !type.isClass();
+}
+
+/**
+ * @param {TsType} type 
+ * @return {type is import("typescript").InterfaceType}
+ */
+ function isClassType(type) {
+    return type.isClass();
+}
+
+/**
+ * @param {ts.Symbol} symbol 
+ * @return {boolean}
+ */
+ function isMethodSymbol(symbol) {
+    return (symbol.getFlags() & ts.SymbolFlags.Method) !== 0;
 }
 
 /**
@@ -742,9 +846,9 @@ function getAllHeritageNodesRecursiveUntilMatching(checker, node, predicate) {
 /**
  * @param {import("typescript").TypeChecker} checker
  * @param {CallOrMethodLikeNode} node
- * @return {TsOverridenMethodsResult}
+ * @return {TsOverriddenMethodsResult}
  */
-function getOverridenMethods(checker, node) {
+function getOverriddenMethods(checker, node) {
     const classType = checker.getTypeAtLocation(node.parent);
     const propertyName = getPropertyNameOfCallLikeNode(node);
     return collectToMap(getHeritageTypes(checker, classType),
@@ -759,9 +863,9 @@ function getOverridenMethods(checker, node) {
 /**
  * @param {import("typescript").TypeChecker} checker
  * @param {CallOrMethodLikeNode} node 
- * @return {TsOverridenMethodsResult}
+ * @return {TsOverriddenMethodsResult}
  */
-function getOverridenMethodsRecursive(checker, node) {
+function getOverriddenMethodsRecursive(checker, node) {
     const classType = checker.getTypeAtLocation(node.parent);
     const propertyName = getPropertyNameOfCallLikeNode(node);
     return collectToMap(getHeritageTypesRecursive(checker, classType),
@@ -777,14 +881,14 @@ function getOverridenMethodsRecursive(checker, node) {
  * @param {import("typescript").TypeChecker} checker
  * @param {CallOrMethodLikeNode} node 
  * @param {(method: CallOrMethodLikeNode) => boolean} predicate
- * @return {TsOverridenMethodsResult}
+ * @return {TsOverriddenMethodsResult}
  */
 function getOverriddenMethodsRecursiveUntilMatching(checker, node, predicate) {
     const classType = checker.getTypeAtLocation(node.parent);
     const propertyName = getPropertyNameOfCallLikeNode(node);
     const stack = [classType];
     const processed = new Set();
-    /** @type {TsOverridenMethodsResult} */
+    /** @type {TsOverriddenMethodsResult} */
     const result = new Map();
     for (let item = stack.pop(); item !== undefined; item = stack.pop()) {
         if (!processed.has(item)) {
@@ -816,8 +920,7 @@ function getOverriddenMethodsRecursiveUntilMatching(checker, node, predicate) {
 function processBindingNames(stack, lookup) {
     for (let item = stack.pop(); item !== undefined; item = stack.pop()) {
         if (ts.isArrayBindingPattern(item.bindingPattern)) {
-            for (let i = 0, len = item.bindingPattern.elements.length; i < len; ++i) {
-                const arrayBindingElement = item.bindingPattern.elements[i];
+            for (const [arrayBindingElement, i] of withIndex(item.bindingPattern.elements)) {
                 if (ts.isBindingElement(arrayBindingElement)) {
                     const indexPart = arrayBindingElement.dotDotDotToken ? `[...${i}]` : `[${i}]`;
                     if (ts.isIdentifier(arrayBindingElement.name)) {
@@ -835,14 +938,12 @@ function processBindingNames(stack, lookup) {
             }
         }
         else {
-            for (let i = 0, len = item.bindingPattern.elements.length; i < len; ++i) {
-                const objectBindingElement = item.bindingPattern.elements[i];
-                // { propertyName: name }
-                const indexPart = objectBindingElement.propertyName ?
-                    ts.isComputedPropertyName(objectBindingElement.propertyName) ?
-                        String(objectBindingElement.propertyName.pos) :
-                        getPropertyName(objectBindingElement.propertyName) :
-                    undefined;
+            for (const [objectBindingElement, i] of withIndex(item.bindingPattern.elements)) {
+                const indexPart = objectBindingElement.propertyName
+                    ? ts.isComputedPropertyName(objectBindingElement.propertyName)
+                        ? String(objectBindingElement.propertyName.pos)
+                        : getPropertyName(objectBindingElement.propertyName)
+                    : undefined;
                 if (ts.isIdentifier(objectBindingElement.name)) {
                     const name = indexPart ?
                         indexPart :
@@ -985,8 +1086,8 @@ module.exports = {
     getNameOfType,
     getOwnMembersOfNode,
     getOwnMembersOfType,
-    getOverridenMethods,
-    getOverridenMethodsRecursive,
+    getOverriddenMethods,
+    getOverriddenMethodsRecursive,
     getOverriddenMethodsRecursiveUntilMatching,
     getPropertyName,
     getPropertyNameOfCallLikeNode,
@@ -1004,19 +1105,31 @@ module.exports = {
     hasCallSignature,
     hasHeritageTypes,
 
+    isAbstract,
     isAnyType,
+    isAsync,
     isBooleanType,
     isCallLike,
     isCallOrMethodLike,
+    isClassType,
     isConstructorLike,
+    isHasModifier,
+    isInterfaceType,
     isMethodLike,
     isMethodOverriding,
+    isMethodSymbol,
     isNeverType,
     isNonComputedPropertyName,
     isNullType,
     isNumberType,
     isObjectType,
+    isOverride,
+    isPrivate,
     isPropertyLike,
+    isProtected,
+    isPublic,
+    isReadonly,
+    isStatic,
     isStringType,
     isTokenNode,
     isTypeLike,

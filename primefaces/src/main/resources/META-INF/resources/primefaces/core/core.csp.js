@@ -99,10 +99,10 @@ if (!PrimeFaces.csp) {
         },
 
         /**
-         * CSP won't allow string-to-JavaScript methods like eval() and new Function().
-         * This method uses JQuery globalEval to safely evaluate the function if CSP enabled.
+         * CSP won't allow string-to-JavaScript methods like `eval()` and `new Function()`.
+         * This method uses JQuery `globalEval` to safely evaluate the function if CSP is enabled.
          *
-         * @param {any} id The element executing the function (aka `this`).
+         * @param {HTMLElement} id The element executing the function (aka `this`).
          * @param {string} js The JavaScript code to evaluate. Two variables will be in scope for the code: (a) the
          * `this` context, which is set to the given `id`, and (b) the `event` variable, which is set to the given `e`.
          * @param {JQuery.TriggeredEvent} e The event from the caller to pass through.

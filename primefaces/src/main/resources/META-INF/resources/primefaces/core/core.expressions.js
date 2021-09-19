@@ -8,7 +8,7 @@ if (!PrimeFaces.expressions) {
 
     /**
      * The interface of the object with all methods for working with search expressions.
-     * @interface
+     * @interface {PrimeFaces.expressions.SearchExpressionFacadeObject}
      * @constant {PrimeFaces.expressions.SearchExpressionFacade} . The object with all methods for working with search
      * expressions.
      */

@@ -23,16 +23,18 @@ if (!PrimeFaces.dialog) {
      * @interface {PrimeFaces.dialog.ExtendedConfirmDialogMessage} ExtendedConfirmDialogMessage An extended confirmation
      * message with an additional `source` attribute for specifying the source component or form.
      * @extends {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} ExtendedConfirmDialogMessage
-     * @prop {string | HTMLElement | JQuery} source The source component (command button, AJAX callback etc) that
-     * triggered the confirmation. When a string, it is interpreted as the client ID of the component. Otherwise, it
-     * must be the main DOM element of the source component.
+     * @prop {string | HTMLElement | JQuery} ExtendedConfirmDialogMessage.source The source component (command button,
+     * AJAX callback etc) that triggered the confirmation. When a string, it is interpreted as the client ID of the
+     * component. Otherwise, it must be the main DOM element of the source component.
      */
     PrimeFaces.dialog = {};
 
     /**
      * The interface of the object with all methods for working with dialogs and the dialog framework.
-     * @interface
+     * @interface {PrimeFaces.dialog.DialogHandlerObject}
      * @constant {PrimeFaces.dialog.DialogHandler} . The object with all methods for dialogs and the dialog framework.
+     * 
+     * @prop {PrimeFaces.widget.Dialog} messageDialog . Dialog used for showing messages, such as confirmation messages.
      */
     PrimeFaces.dialog.DialogHandler = {
 
@@ -356,7 +358,7 @@ if (!PrimeFaces.dialog) {
 
         /**
          * Displays a message in the messages dialog.
-         * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Details of the essage to show.
+         * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Details of the message to show.
          */
         showMessageInDialog: function(msg) {
             if(!this.messageDialog) {
