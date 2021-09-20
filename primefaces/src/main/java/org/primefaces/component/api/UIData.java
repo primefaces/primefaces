@@ -51,6 +51,8 @@ import org.primefaces.model.IterableDataModel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
+import org.primefaces.util.Lazy;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -80,7 +82,18 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     public boolean isLazy() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> getValue() instanceof LazyDataModel);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> {
+            // if not set by xhtml, we need to check the type of the value binding
+            Class<?> type = ELUtils.getType(getFacesContext(),
+                    getValueExpression(PropertyKeys.lazy.name()),
+                    new Lazy<>(() -> getValue()));
+            boolean lazy = LazyDataModel.class.isAssignableFrom(type);
+
+            // remember in ViewState, to not do the same check again
+            setLazy(true);
+
+            return lazy;
+        });
     }
 
     public void setLazy(boolean lazy) {

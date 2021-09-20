@@ -286,9 +286,9 @@ public class DataTable extends DataTableBase {
 
         // restore "value" from "filteredValue"
         if (event instanceof PostRestoreStateEvent
-                && !isLazy()
+                && this == event.getComponent()
                 && isFilteringEnabled()
-                && this == event.getComponent()) {
+                && !isLazy()) {
             Object filteredValue = getFilteredValue();
             if (filteredValue != null) {
                 setValue(filteredValue);
