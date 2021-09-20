@@ -2,7 +2,7 @@
 
 NotificationBar displays a multipurpose fixed positioned panel for notification.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.notificationbar-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.NotificationBar-1.html)
 
 ## Info
 

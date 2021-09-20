@@ -16,11 +16,16 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
+        "noImplicitOverride": true,
+        "noStrictGenericChecks": false,
+        "noUncheckedIndexedAccess": true,
         "strict": true,
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
+        "useUnknownInCatchVariables": true,
+        "noPropertyAccessFromIndexSignature": true,
         "baseUrl": ".",
         "paths": {
             "acorn-walk": [

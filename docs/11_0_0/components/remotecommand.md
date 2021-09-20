@@ -132,6 +132,6 @@ main("foo", "bar");
 Without support for async function, use `rc().then(...).catch(...)` instead.
 
 Note to TypeScript users: You can use the
-[PrimeFaces.ajax.RemoteCommand](../jsdocs/modules/src_primefaces.primefaces.ajax.html#remotecommand)
+[PrimeFaces.ajax.RemoteCommand](../jsdocs/modules/src_PrimeFaces.PrimeFaces.ajax.html#remotecommand)
 type to declare the available remote commands once in a declaration file in the
 window scope so they can be called by your code.

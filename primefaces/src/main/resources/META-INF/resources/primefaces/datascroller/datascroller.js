@@ -14,12 +14,15 @@
  * @prop {boolean} allLoaded `true` if all items were loaded and there are no more items to be loaded, or `false`
  * otherwise.
  * @prop {JQuery} content DOM element of the container for the content with the data scroller.
+ * @prop {number} [itemHeight] Height in pixels of each row, when virtual scrolling is enabled.
  * @prop {JQuery} list DOM element of the list with the data items.
  * @prop {boolean} loading `true` if an AJAX request for loading more items is currently process, or `false` otherwise.
  * @prop {JQuery} loaderContainer DOM element of the container with the `more` button for loading more items.
  * @prop {JQuery} loadStatus DOM element of the status text or icon shown while loading.
  * @prop {JQuery} loadTrigger DOM element of the `more` button for loading more item manually.
- *
+ * @prop {boolean} [virtualScrollActive] Whether virtual scrolling is currently active (if enabled at all).
+ * @prop {number} [scrollTimeout] Timeout ID of the timer for the scroll animation.
+ * 
  * @interface {PrimeFaces.widget.DataScrollerCfg} cfg The configuration for the {@link  DataScroller| DataScroller widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.

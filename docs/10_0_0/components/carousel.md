@@ -2,7 +2,7 @@
 
 Carousel is a multi purpose component to display a set of data or general content with slide effects.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.carousel-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Carousel.html)
 
 ## Info
 

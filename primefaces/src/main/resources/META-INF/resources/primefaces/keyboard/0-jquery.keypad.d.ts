@@ -39,6 +39,9 @@ declare namespace JQueryKeypad {
          */
         (this: HTMLInputElement | HTMLTextAreaElement, inputFieldValue: string, instance: KeypadInstance) => void;
 
+    /**
+     * Optional settings that can be passed when creating a new keypad instance to customize its behavior.
+     */
     export interface KeypadSettings {
         /**
          * Control when the keypad is displayed:
@@ -80,7 +83,7 @@ declare namespace JQueryKeypad {
          * });
          * ```
          */
-        showOptions: Record<string, any> | null;
+        showOptions: Record<string, unknown> | null;
 
         /**
          * Control the speed of the show/hide animation with this setting: `slow`, `normal`, `fast`, or a number of
@@ -279,7 +282,7 @@ declare namespace JQueryKeypad {
          * The button to erase the previous character 
          */
         BACK: string;
-        
+
         /**
          * The button to add a carriage return 
          */
@@ -304,7 +307,7 @@ declare namespace JQueryKeypad {
          * Blank space equivalent to one key 
          */
         SPACE: string;
-        
+
         /**
          * The button to add a tab character 
          */

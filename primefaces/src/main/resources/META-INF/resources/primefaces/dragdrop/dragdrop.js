@@ -21,6 +21,8 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * @extends {JQueryUI.DraggableOptions} cfg
  * 
+ * @prop {JQuery} jqTarget The DOM element of the target that should be made draggable.
+ * 
  * @prop {PrimeFaces.widget.Draggable.OnStartCallback} cfg.onStart Callback for when dragging starts.
  * @prop {PrimeFaces.widget.Draggable.OnStopCallback} cfg.onStop Callback for when dragging ends.
  * @prop {string} cfg.target ID of the target of this draggable.
@@ -67,10 +69,12 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
  * Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
  * 
  * @typedef PrimeFaces.widget.Droppable.OnDropCallback Callback for when an items is dropped. See also {@link
- * Droppable.onDrop}.
+ * DroppableCfg.onDrop}.
  * @this {PrimeFaces.widget.Droppable} PrimeFaces.widget.Droppable.OnDropCallback 
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.Droppable.OnDropCallback.event The drop event that occurred.
  * @param {JQueryUI.DroppableEventUIParam} PrimeFaces.widget.Droppable.OnDropCallback.ui Details about the drop event.
+ * 
+ * @prop {JQuery} jqTarget The DOM element of the target that should be made droppable.
  * 
  * @interface {PrimeFaces.widget.DroppableCfg} cfg The configuration for the {@link  Droppable| Droppable widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -78,7 +82,7 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * @extends {JQueryUI.DroppableOptions} cfg
  * 
- * @prop {PrimeFaces.widget.Droppable.OnDropCallback} onDrop Callback for when an items is dropped.
+ * @prop {PrimeFaces.widget.Droppable.OnDropCallback} cfg.onDrop Callback for when an items is dropped.
  * @prop {string} cfg.target ID of the target of this droppable.
  */
 PrimeFaces.widget.Droppable = PrimeFaces.widget.BaseWidget.extend({

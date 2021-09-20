@@ -2,7 +2,7 @@
 
 TabView is a container component to group content in tabs.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.tabview-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TabView-1.html)
 
 ## Info
 

@@ -2,7 +2,7 @@
 
 TriStateCheckbox adds a new state to a checkbox value.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.tristatecheckbox-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TriStateCheckbox-1.html)
 
 ## Info
 

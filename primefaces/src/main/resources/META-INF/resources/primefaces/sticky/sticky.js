@@ -20,8 +20,8 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
- * @prop {number} margin Margin to the top of the page during fixed scrolling.
- * @prop {string} target The client ID of the component to be made sticky.
+ * @prop {number} cfg.margin Margin to the top of the page during fixed scrolling.
+ * @prop {string} cfg.target The client ID of the component to be made sticky.
  */
 PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
 

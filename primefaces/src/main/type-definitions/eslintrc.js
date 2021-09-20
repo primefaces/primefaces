@@ -11,7 +11,6 @@ module.exports = {
     },
     "plugins": [
         "@typescript-eslint/eslint-plugin",
-        "@typescript-eslint/tslint",
         "import",
         "jsdoc",
         "eslint-comments"
@@ -37,6 +36,7 @@ module.exports = {
         "jsdoc/check-tag-names": ["error", {
             "definedTags": [
                 "typeparam",
+                "internal",
             ],
         }],
         "jsdoc/check-types": "error",
@@ -45,12 +45,32 @@ module.exports = {
         "jsdoc/require-description-complete-sentence": "off",
         "jsdoc/require-example": "off",
         "jsdoc/require-hyphen-before-param-description": "off",
-        "jsdoc/require-jsdoc": "error",
-        "jsdoc/require-param": "error",
+        "jsdoc/require-jsdoc": ["error", {
+            "contexts": [
+                "ClassDeclaration",
+                "ClassProperty",
+                "FunctionDeclaration",
+                "TSDeclareFunction",
+                "TSEnumDeclaration",
+                "TSInterfaceDeclaration:not([id.name=/^(JQuery|JQueryStatic|TypeToTriggeredEventMap)$/])",
+                "TSTypeAliasDeclaration",                
+            ],
+        }],
+        "jsdoc/require-param": ["error", {
+            "contexts": [
+                "FunctionDeclaration",
+                "TSDeclareFunction",
+            ],
+        }],
         "jsdoc/require-param-description": "error",
         "jsdoc/require-param-name": "error",
         "jsdoc/require-param-type": "off",
-        "jsdoc/require-returns": "error",
+        "jsdoc/require-returns": ["error", {
+            "contexts": [
+                "FunctionDeclaration",
+                "TSDeclareFunction",
+            ],
+        }],
         "jsdoc/require-returns-description": "error",
         "jsdoc/require-returns-check": "off",
         "jsdoc/require-returns-type": "off",
@@ -70,11 +90,11 @@ module.exports = {
             types: {
                 "Object": {
                     message: "Avoid using the `Object` type. Prefer using a specific shape, such `{key: string}`?",
-                    fixWith: "any",
+                    fixWith: "Record<string, unknown>",
                 },
                 "object": {
                     message: "Avoid using the `object` type. Prefer using a specific shape, such `{key: string}`?",
-                    fixWith: "{[key: any]: any} | null",
+                    fixWith: "Record<string, unknown>",
                 },
                 "Boolean": {
                     message: "Avoid using the `Boolean` type. Did you mean `boolean`?",
@@ -94,7 +114,7 @@ module.exports = {
                 },
                 "Function": {
                     message: "Avoid using the `Function` type. Prefer a specific function type, like `() => void`.",
-                    fixWith: "((...args: any[]) => any)",
+                    fixWith: "((...args: never[]) => unknown)",
                 },
             }
         }],
@@ -113,7 +133,7 @@ module.exports = {
         "@typescript-eslint/member-delimiter-style": "error",
         "@typescript-eslint/prefer-function-type": ["error"],
         "@typescript-eslint/no-empty-interface": "off",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-extra-semi": ["error"],
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-invalid-void-type": ["error"],
@@ -132,6 +152,7 @@ module.exports = {
         "@typescript-eslint/type-annotation-spacing": "off",
         "@typescript-eslint/quotes": ["error", "double"],
         "@typescript-eslint/semi": ["error"],
+        // Better auto completion for JQuery methods requires separate signatures
         "@typescript-eslint/unified-signatures": "off",
         "@typescript-eslint/typedef": ["error"],
 
@@ -153,9 +174,7 @@ module.exports = {
             "error",
             "as-needed",
         ],
-        "capitalized-comments": ["error", "always", {
-            "ignorePattern": "tslint",
-        }],
+        "capitalized-comments": ["error", "always"],
         "spaced-comment": ["error", "always", {
             "block": {
                 "balanced": true,
@@ -222,18 +241,5 @@ module.exports = {
         "use-isnan": "error",
         "valid-typeof": "off",
         "yoda": "off",
-
-        // Old tslint rules - remove once supported by typescript-eslint
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "rules": {
-                    "align": true,
-                    "completed-docs": false,
-                    "encoding": true,
-                    "number-literal-format": true,
-                },
-            },
-        ],
     },
 };

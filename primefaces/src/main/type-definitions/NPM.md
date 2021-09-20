@@ -31,3 +31,13 @@ like this (must be at the top of the file):
 // on a jQuery object. You can now also enjoy autocompletion.
 PF("dataTable").jq.search("tbody td");
 ```
+
+Or add it to the compiler settings in your `tsconfig.json`:
+
+```json
+{
+    "compilerOptions": {
+        "types": ["primefaces"]
+    }
+}
+```

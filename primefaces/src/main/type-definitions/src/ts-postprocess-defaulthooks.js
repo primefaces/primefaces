@@ -7,7 +7,9 @@ const { handleAndGetError } = require("./error");
 const { validateOverride } = require("./ts-check-override");
 const { validateSyntaxAndSemantics } = require("./ts-check-syntax-and-semantics");
 const { createFallbackCompilerHost, readCompilerOptionsFromTsConfig } = require("./ts-create-compiler");
+const { fixOverride } = require("./ts-fix-override");
 const { resolveInheritDocs } = require("./ts-resolve-inheritdoc");
+const { validateDeclaredProperties } = require("./ts-validate-props");
 
 /**
  * @return {TsHookFnCompilerHostCreate}
@@ -65,10 +67,16 @@ function createHookFnValidateProgram(verbose) {
         },
         (program, sourceFiles, docCommentAccessor) => {
             if (verbose) {
+                console.log("Validating properties declared by the code...");
+            }
+            return validateDeclaredProperties(program, sourceFiles, docCommentAccessor);
+        },
+        (program, sourceFiles, docCommentAccessor) => {
+            if (verbose) {
                 console.log("Validating @override and @inheritdoc...");
             }
             return validateOverride(program, sourceFiles, docCommentAccessor);
-        }
+        },
     ];
 }
 
@@ -104,6 +112,21 @@ function createHookFnProcessAst(verbose) {
                 console.info("Resolving inheritdoc...");
             }
             resolveInheritDocs(program, sourceFiles, docCommentAccessor, severitySettings);
+        },
+    ];
+}
+
+/**
+ * @param {boolean} verbose
+ * @return {TsHookFnFixupAst[]}
+ */
+ function createHookFnFixupAst(verbose) {
+    return [
+        (program, sourceFiles, docCommentAccessor, severitySettings) => {
+            if (verbose) {
+                console.info("Fixing override keyword...");
+            }
+            fixOverride(program, sourceFiles, docCommentAccessor, severitySettings);
         },
     ];
 }
@@ -145,6 +168,7 @@ function createDefaultHooks(severitySettings, verbose) {
     return {
         ...createBaseHooks(),
         process: {
+            fixupAst: createHookFnFixupAst(verbose),
             processAst: createHookFnProcessAst(verbose),
         },
         validateProgram: {

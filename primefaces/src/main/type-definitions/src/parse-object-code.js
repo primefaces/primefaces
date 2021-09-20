@@ -3,8 +3,45 @@
 // Parses the JavaScript code of an object for property and method signatures
 
 const { is, findAndParseLastBlockComment } = require("./acorn-util");
-const { isParseResultEmpty } = require("./doc-comments");
+const { Tags } = require("./constants");
+const { isParseResultEmpty, hasTag } = require("./doc-comments");
 const { handleError, newMethodErrorMessage, newPropErrorMessage } = require("./error");
+const { isNotUndefined } = require("./lang");
+const { scanMethodForThisProperties, combiningObjectCodePropertyInfo } = require("./scan-method-for-this-properties");
+
+/**
+ * @param {string} location
+ * @param {ObjectCodeProperty[]} properties
+ * @param {ObjectCodeMethod[]} methods
+ * @return {ObjectCodePropertyInfo}
+ */
+function getAllPropertiesDeclaredByCode(location, properties, methods) {
+    /** @type {ObjectCodePropertyInfo} */
+    const keyProperties = {
+        definitive: new Map(properties.map(p => [p.name, {
+            location: new Map([[`${location}#${p.name}`, new Set([p.node])]]),
+            name: p.name,
+        }])),
+    };
+
+    /** @type {ObjectCodePropertyInfo[]} */
+    const thisProperties = methods
+        // Exclude methods where the this context was changed explicitly
+        .filter(m => !hasTag(m.jsdoc, Tags.This))
+        .map(m => scanMethodForThisProperties(`${location}#${m.name}`, m.method ?? m.node))
+        .filter(isNotUndefined);
+
+    // Combine all
+    const objectProperties = [keyProperties, ...thisProperties]
+        .reduce(...combiningObjectCodePropertyInfo());
+
+    // Remove methods
+    for (const method of methods) {
+        objectProperties.definitive.delete(method.name);
+    }
+
+    return objectProperties;
+}
 
 /**
  * Parses the comments for the widget class and its properties. Returns all properties and methods
@@ -20,7 +57,7 @@ const { handleError, newMethodErrorMessage, newPropErrorMessage } = require("./e
 function parseObjectCode(objectDef, commentedProgram, inclusionHandler, severitySettings) {
     const jsdoc = findAndParseLastBlockComment(objectDef.comments, severitySettings);
     if (!inclusionHandler.isIncludeType(jsdoc, objectDef.name)) {
-        return undefined;        
+        return undefined;
     }
     /** @type {Map<string, ObjectCodeProperty>} */
     const propertyMap = new Map();
@@ -111,19 +148,19 @@ function parseObjectCode(objectDef, commentedProgram, inclusionHandler, severity
                 (property.key.type === "Identifier" || property.key.type === "Literal") &&
                 (
                     property.value.type !== "ObjectPattern" &&
-                    property.value.type !== "ArrayPattern"  &&
+                    property.value.type !== "ArrayPattern" &&
                     property.value.type !== "AssignmentPattern" &&
                     property.value.type !== "RestElement"
                 )
             ) {
-                 // Base property
-                 // x: 9
-                 const prop = propertyMap.get(propertyName);
-                 if (prop !== undefined) {
-                     handleError("codeDuplicateProperty", severitySettings, () => newPropErrorMessage(`Found duplicate property '${propertyName}' in object definition.`, prop, property));
-                 }
-                 else {
-                     /** @type {ObjectCodeProperty} */
+                // Base property
+                // x: 9
+                const prop = propertyMap.get(propertyName);
+                if (prop !== undefined) {
+                    handleError("codeDuplicateProperty", severitySettings, () => newPropErrorMessage(`Found duplicate property '${propertyName}' in object definition.`, prop, property));
+                }
+                else {
+                    /** @type {ObjectCodeProperty} */
                     const prop = {
                         name: propertyName,
                         jsdoc: jsdoc,
@@ -133,12 +170,14 @@ function parseObjectCode(objectDef, commentedProgram, inclusionHandler, severity
                         setter: undefined,
                     };
                     propertyMap.set(propertyName, prop);
-                    properties.push(prop);    
-                 }
+                    properties.push(prop);
+                }
             }
         }
     };
+    const allDeclaredProperties = getAllPropertiesDeclaredByCode(objectDef.name, properties, methods);
     return {
+        allDeclaredProperties: allDeclaredProperties,
         componentName: objectDef.name,
         jsdoc: jsdoc,
         methods: methods,

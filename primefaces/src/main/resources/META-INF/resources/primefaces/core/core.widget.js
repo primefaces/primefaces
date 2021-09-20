@@ -264,7 +264,7 @@ if (!PrimeFaces.widget) {
      * @prop {Record<string, PrimeFaces.Behavior>} cfg.behaviors A map with all behaviors that
      * were defined for this widget. The key is the name of the behavior, the value is the callback function that is
      * invoked when the behavior is called.
-     * @prop {string | undefined} cfg.formId ID of the form to use for AJAX requests.
+     * @prop {string} [cfg.formId] ID of the form to use for AJAX requests.
      * @prop {string | string[]} cfg.id The client-side ID of the widget, with all parent naming containers, such as
      * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
      * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
@@ -604,7 +604,6 @@ if (!PrimeFaces.widget) {
      * requires that the z-index of the overlays is managed globally. This base class takes care of that.
      *
      * @prop {string | null} appendTo The search expression for the element to which the overlay panel should be appended.
-     * @prop {boolean} blockScroll `true` to prevent the body from being scrolled, `false` otherwise.
      * @prop {JQuery} modalOverlay The DOM element that is displayed as an overlay with the appropriate `z-index` and
      * `position`. It is usually a child of the `body` element.
      *
@@ -612,7 +611,8 @@ if (!PrimeFaces.widget) {
      * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
      * configuration is usually meant to be read-only and should not be modified.
      * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
-     * 
+     *
+     * @prop {boolean} cfg.blockScroll `true` to prevent the body from being scrolled, `false` otherwise.
      */
     PrimeFaces.widget.DynamicOverlayWidget = PrimeFaces.widget.BaseWidget.extend({
 

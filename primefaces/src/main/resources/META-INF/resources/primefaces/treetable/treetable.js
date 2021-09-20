@@ -29,10 +29,13 @@
 
  * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.TreeTable>}
  *
+ * @prop {string} [ascMessage] Localized message for sorting items in ascending order. 
+ * @prop {string} [descMessage] Localized message for sorting items in descending order. 
  * @prop {JQuery} bodyTable The DOM element for the main TABLE element.
  * @prop {JQuery} clone The DOM element for the  clone of the table head.
  * @prop {boolean} columnWidthsFixed Whether the width of all columns needs to stay fixed.
- * @prop {boolean} contextMenuClick Whether a click was performed on the context menu.
+ * @prop {JQuery} [contextMenuCell] DOM element of the table cell for which the context menu was opened, set
+ * by the data table.
  * @prop {JQuery} currentCell The DOM element for the currently selected cell, when using inline editing.
  * @prop {JQuery} cursorNode The DOM element for the row at the cursor position, used for selecting multiple rows when
  * holding the shift key.
@@ -41,14 +44,15 @@
  * @prop {JQuery} footerTable The DOM element for the TABLE element of the footer.
  * @prop {JQuery} headerCols The DOM element for the TH columns in the header.
  * @prop {JQuery} headerTable The DOM element for the TABLE element of the header.
- * @prop {boolean} incellClick Whether a click was performed inside a cell.
  * @prop {JQuery} jqSelection The DOM element for the hidden input storing the selected rows.
  * @prop {string} marginRight CSS unit for the right margin of this tree table, determined from the scrollbar width.
+ * @prop {string} [otherMessage] Localized message for displaying the rows unsorted. 
  * @prop {PrimeFaces.widget.Paginator} paginator The paginator widget instance used for filtering.
  * @prop {boolean} percentageScrollHeight Whether the scroll height was specified in percent.
  * @prop {boolean} percentageScrollWidth Whether the scroll width was specified in percent.
  * @prop {number} relativeHeight The height of the visible scroll area relative to the total height of this tree table.
- * @prop {JQuery} resizableStateHolder INPUT element storing the current widths for each resizable column.
+ * @prop {string[]} [resizableState] Array storing the current widths for each resizable column.
+ * @prop {JQuery} [resizableStateHolder] INPUT element storing the current widths for each resizable column.
  * @prop {JQuery} resizerHelper The DOM element for the draggable handle for resizing columns.
  * @prop {JQuery} scrollBody The DOM element for the scrollable DIV with the body table.
  * @prop {JQuery} scrollFooter The DOM element for the scrollable DIV with the footer table.
@@ -699,38 +703,46 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.tbody.off(editEvent, cellSelector)
                 .on(editEvent, cellSelector, null, function(e) {
                     if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
-                        $this.incellClick = true;
-
                         var item = $(this);
                         var cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
 
                         if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
                             $this.showCellEditor($(this));
-
-                            if($this.cfg.editInitEvent === "dblclick") {
-                                $this.incellClick = false;
-                            }
                         }
                      }
                 });
 
-            $(document).off('click.treetable-cell-blur' + this.id)
-                        .on('click.treetable-cell-blur' + this.id, function(e) {
-                            var target = $(e.target);
-                            if(!$this.incellClick && (target.is('.ui-input-overlay') || target.closest('.ui-input-overlay').length || target.closest('.ui-datepicker-buttonpane').length)) {
-                                $this.incellClick = true;
-                            }
-                            
-                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing && $('.p-datepicker-panel:visible').length === 0) {
-                                if($this.cfg.saveOnCellBlur)
-                                    $this.saveCell($this.currentCell);
-                                else
-                                    $this.doCellEditCancelRequest($this.currentCell);
-                            }
-                            
-                            $this.incellClick = false;
-                            $this.contextMenuClick = false;
-                        });
+            // save/cancel on mouseup to queue the event request before whatever was clicked reacts
+            $(document).off('mouseup.treetable-cell-blur' + this.id)
+                .on('mouseup.treetable-cell-blur' + this.id, function(e) {
+                    // ignore if not editing
+                    if(!$this.currentCell)
+                        return;
+
+                    var currentCell = $($this.currentCell);
+                    var target = $(e.target);
+
+                    // ignore clicks inside edited cell
+                    if(currentCell.is(target) || currentCell.has(target).length)
+                        return;
+
+                    // ignore clicks inside input overlays like calendar popups etc
+                    var ignoredOverlay = '.ui-input-overlay, .ui-editor-popup, #keypad-div, .ui-colorpicker-container';
+                    // and menus - in case smth like menubutton is inside the table
+                    ignoredOverlay += ', .ui-datepicker-buttonpane, .ui-menuitem, .ui-menuitem-link';
+                    // and blockers
+                    ignoredOverlay += ', .ui-blockui, .blockUI';
+                    if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
+                        return;
+
+                    if($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length)
+                        return;
+
+                    if($this.cfg.saveOnCellBlur)
+                        $this.saveCell($this.currentCell);
+                    else
+                        $this.doCellEditCancelRequest($this.currentCell);
+                });
         }
     },
 
@@ -2019,8 +2031,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} c The cell TD element for which to activate the inline editor.
      */
     showCellEditor: function(c) {
-        this.incellClick = true;
-
         var cell = null;
 
         if(c) {

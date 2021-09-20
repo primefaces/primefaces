@@ -8,7 +8,7 @@
  * @prop {number} commandIndex 0-based index of the current command, used when scrolling back to previous commands via
  * the arrow keys.
  * @prop {JQuery} input The DOM element for the prompt input field.
- * @prop {JQuery} promptContainerThe DOM element for the container with the prompt input.
+ * @prop {JQuery} promptContainer The DOM element for the container with the prompt input.
  * @prop {JQuery} promptContainerParent The DOM element for the parent of the container with the prompt input.
  * 
  * @interface {PrimeFaces.widget.TerminalCfg} cfg The configuration for the {@link  Terminal| Terminal widget}.

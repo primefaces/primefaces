@@ -32,6 +32,7 @@ import org.mockito.Mockito;
 
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import org.mockito.ArgumentMatchers;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.contains;
@@ -98,7 +99,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter).endElement("body");
 
         verify(wrappedWriter).startElement("script", null);
-        verify(wrappedWriter).write("inline;");
+        verify(wrappedWriter).write(ArgumentMatchers.contains("inline;document.getElementById('"));
         verify(wrappedWriter).endElement("script");
 
         writer.endElement("html");

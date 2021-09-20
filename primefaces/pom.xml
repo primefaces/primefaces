@@ -261,8 +261,8 @@
                     <version>1.12.0</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
-                        <nodeVersion>v15.6.0</nodeVersion>
-                        <npmVersion>7.4.0</npmVersion>
+                        <nodeVersion>v16.8.0</nodeVersion>
+                        <npmVersion>7.22.0</npmVersion>
                         <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
                     </configuration>
                     <executions>
@@ -320,7 +320,7 @@
                             </goals>
                             <phase>deploy</phase>
                             <configuration>
-                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles ../LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
                             </configuration>
                         </execution>
                     </executions>

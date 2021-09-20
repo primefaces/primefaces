@@ -2,7 +2,7 @@
 
 Galleria is used to display a set of images.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.galleria.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Galleria.html)
 
 ## Info
 

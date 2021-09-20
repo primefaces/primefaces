@@ -25,8 +25,8 @@
  * @param {number} PrimeFaces.widget.TabView.OnTabShowCallback.index 0-based index of the tab that was
  * shown.
  *
- * @prop {JQuery} firstTab The DOM element for the first tab.
- * @prop {JQuery} focusedTab The DOM element for the tab that is currently focused.
+ * @prop {JQuery} [firstTab] The DOM element for the first tab.
+ * @prop {null} focusedTabHeader Always `null`.
  * @prop {JQuery} headerContainer The DOM element for the container element with the tab header.
  * @prop {JQuery} lastTab The DOM element for the last tab.
  * @prop {JQuery} navscroller The DOM element for the tab navigation bar.

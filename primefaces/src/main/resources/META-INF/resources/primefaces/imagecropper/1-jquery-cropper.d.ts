@@ -63,9 +63,13 @@ declare namespace JQueryCropper {
      */
     export interface CropPhaseEvent<
         K extends "cropstart" | "cropmove" | "cropend",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TDelegateTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TData = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TCurrentTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TTarget = any
         > extends JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget> {
         type: K;
@@ -76,9 +80,13 @@ declare namespace JQueryCropper {
      * This event fires when the canvas (image wrapper) or the crop box changed.
      */
     export interface CropEvent<
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TDelegateTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TData = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TCurrentTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TTarget = any
         > extends JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget> {
         type: "crop";
@@ -89,9 +97,13 @@ declare namespace JQueryCropper {
      * This event fires when a cropper instance starts to zoom in or zoom out its canvas (image wrapper).
      */
     export interface ZoomEvent<
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TDelegateTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TData = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TCurrentTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TTarget = any
         > extends JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget> {
         type: "zoom";
@@ -115,7 +127,7 @@ interface JQuery {
      * @return The value as it returned by the cropper instance method.
      */
     cropper<
-        K extends PrimeFaces.MatchingKeys<Cropper, (...args: any) => void>
+        K extends PrimeFaces.MatchingKeys<Cropper, (...args: never[]) => void>
     >(
         method: K,
         ...args: Parameters<Cropper[K]>

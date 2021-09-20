@@ -3,7 +3,7 @@
 ConfirmDialog is a replacement to the legacy javascript confirmation box. Skinning, customization
 and avoiding popup blockers are notable advantages over classic javascript confirmation.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.confirmdialog-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ConfirmDialog-1.html)
 
 ## Info
 

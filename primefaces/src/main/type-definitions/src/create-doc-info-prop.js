@@ -84,8 +84,8 @@ function createPropDocInfo(name, jsdoc, property, severitySettings) {
                 break;
             }
 
-            case Tags.Methodtemplate: {
-                typedefTagHandler.methodtemplate(tag, jsdoc.tags, true);
+            case Tags.MethodTemplate: {
+                typedefTagHandler.methodTemplate(tag, jsdoc.tags, true);
                 break;
             }
 

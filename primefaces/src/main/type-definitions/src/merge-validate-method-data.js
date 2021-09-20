@@ -27,7 +27,7 @@ function mergeAndValidateMethodConstructor(method, methodCodeInfo, methodDocInfo
 function mergeAndValidateMethodReturnAndYield(method, methodCodeInfo, methodDocInfo, severitySettings) {
     // return
     if (methodCodeInfo.return.node !== undefined && !methodDocInfo.return.hasReturn) {
-        handleError("tagMissingReturn", severitySettings, () => newMethodErrorMessage("Found explicit return statement in method, but no @return tag was specified in the doc comments", method, methodCodeInfo.return.node));
+        handleError("tagMissingReturn", severitySettings, () => newMethodErrorMessage("Found explicit return statement in method, but no @returns tag was specified in the doc comments", method, methodCodeInfo.return.node));
         methodDocInfo.return.hasReturn = true;
         methodDocInfo.return.typedef = "any";
         methodDocInfo.return.description = "";
@@ -179,6 +179,9 @@ function mergeAndValidateMethodArgsFromCode(method, methodCodeInfo, methodDocInf
 function mergeAndValidateMethodModifiers(methodCodeInfo, methodDocInfo, severitySettings) {
     // Abstract modifier can only be specified in comments
     methodCodeInfo.abstract = methodDocInfo.abstract;
+
+    // Override modifier can only be specified in comments
+    methodCodeInfo.override = methodDocInfo.override;
 
     // Visibility modifier can only be specified in comments
     methodCodeInfo.visibility = methodDocInfo.visibility;

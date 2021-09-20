@@ -44,6 +44,9 @@ declare namespace JQueryColorPicker {
          */
         b: number;
     } 
+    /**
+     * Optional settings that can be passed to the color picker when it is initialized on an input element. 
+     */
     interface CreateOptions {
         /**
          * The color to display initially.
