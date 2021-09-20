@@ -19,7 +19,7 @@ const { toExportFunctionSignature, toObjectShorthandMethodSignature, toExportPro
 function createCodeDoc(propertyDocs, methodDocs, indent) {
     /** @type {string[]} */
     const lines = [];
-            
+
     lines.push(...indentLines(propertyDocs, indent));
     lines.push(...indentLines(methodDocs, indent));
 
@@ -38,11 +38,25 @@ function validateObjectCodeAgainstComments(objectCode, objectDocInfo, severitySe
         const codeMethod = methodMap.get(name);
         const codeProp = propMap.get(name);
         if (codeMethod !== undefined) {
-            handleError("tagConflictingMethodInComments", severitySettings, () => newMethodErrorMessage(`Code already specifies method '${name}', but found additional '@method ${name}' or '@prop ${name}' in doc comments`, codeMethod));
+            handleError(
+                "tagConflictingMethodInComments",
+                severitySettings,
+                () => newMethodErrorMessage(
+                    `Code already specifies method '${name}', but found additional '@method ${name}' or '@prop ${name}' in doc comments`,
+                    codeMethod
+                )
+            );
             objectDocInfo.shape.props.delete(name);
         }
         if (codeProp !== undefined) {
-            handleError("tagConflictingPropInComments", severitySettings, () => newPropErrorMessage(`Code already specifies property '${name}', but found additional '@method ${name}' or '@prop ${name}' in doc comments`, codeProp));
+            handleError(
+                "tagConflictingPropInComments",
+                severitySettings,
+                () => newPropErrorMessage(
+                    `Code already specifies property '${name}', but found additional '@method ${name}' or '@prop ${name}' in doc comments`,
+                    codeProp
+                )
+            );
             objectDocInfo.shape.props.delete(name);
         }
     }
@@ -68,9 +82,9 @@ function documentSubPropertyObjects(propertyDocs, program, namespace, inclusionH
                     classDefinition: propertyDoc.subObject.objectNode,
                     comments: [{
                         content: createDocComment(propertyDoc.subObject.description, propertyDoc.subObject.tags).join("\n"),
-                        end: comments[0].start,
+                        end: comments[0]?.start ?? 0,
                         isBlockComment: true,
-                        start: comments[0].end,
+                        start: comments[0]?.end ?? 0,
                     }],
                     kind: "object",
                     name: propertyDoc.subObject.name,
@@ -83,7 +97,7 @@ function documentSubPropertyObjects(propertyDocs, program, namespace, inclusionH
                         generics: [],
                         implements: new Set(),
                         type: "unspecified",
-                    }        
+                    }
                 }, program, inclusionHandler, severitySettings, 0));
             }
         }
@@ -103,7 +117,7 @@ function documentObject(objectDefinition, program, inclusionHandler, severitySet
     const objectCode = parseObjectCode(objectDefinition, program, inclusionHandler, severitySettings);
     if (objectCode) {
         // Look at the properties and methods of the object
-        const objectDocInfo = createObjectDocInfo(objectCode.jsdoc, objectCode.node, severitySettings);
+        const objectDocInfo = createObjectDocInfo(objectCode, severitySettings);
 
         // Check for duplicate properties or methods in doc comments
         validateObjectCodeAgainstComments(objectCode, objectDocInfo, severitySettings);
@@ -122,10 +136,12 @@ function documentObject(objectDefinition, program, inclusionHandler, severitySet
         const propertyDocs = objectCode.properties
             .sort(compareBy(x => x.name))
             .flatMap(x => createPropertyDocs(namespaceOnly ? toExportPropSignature : toObjectPropSignature, x, severitySettings));
+
         // Create docs for methods
         const methodDocs = objectCode.methods
             .sort(compareBy(x => x.name))
             .flatMap(x => createInvocationDocs(namespaceOnly ? toExportFunctionSignature : toObjectShorthandMethodSignature, x, severitySettings));
+
         // Create docs for comments
         const commentDocInfo = parseObjectComment(objectDocInfo, objectCode.node, severitySettings);
 
@@ -160,14 +176,15 @@ function documentObject(objectDefinition, program, inclusionHandler, severitySet
             ...objectDocInfo.typedefs
         ], severitySettings, undefined, indent);
 
-        // Open iface or class
+        // Open interface or class
         if (ifaceSpec) {
             indent += ifaceSpec.indent;
             ifaceOpen.push(...ifaceSpec.open);
         }
-        
+
         // Create docs with namespace from properties & methods
         const codeDocs = createCodeDoc(propertyDocs.flatMap(x => x.docs), methodDocs.flatMap(x => x.docs), indent);
+
         // Create docs with namespace from object comments
         const commentDocs = createCommentDocs(commentDocInfo, objectCode.node, undefined, severitySettings, indent);
 

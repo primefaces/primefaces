@@ -5,7 +5,13 @@
  * @return {boolean}
  */
 function toBoolean(value) {
-    return new Set(["t", "y"]).has((value).toLowerCase()[0]);
+    switch (value.toLowerCase()[0]) {
+        case "t":
+        case "y":
+            return true;
+        default:
+            return false;
+    }
 }
 
 /**
@@ -21,7 +27,7 @@ function toStringArray(value) {
  * @param {(value: string) => void} consumer
  */
 function consumeString(stack, consumer) {
-    if (stack.length === 0 || stack[stack.length - 1].startsWith("--") || stack[stack.length - 1] === "''" || stack[stack.length - 1] === "\"\"") {
+    if (stack.length === 0 || stack[stack.length - 1]?.startsWith("--") || stack[stack.length - 1] === "''" || stack[stack.length - 1] === "\"\"") {
         // no argument given, skip
     }
     else {

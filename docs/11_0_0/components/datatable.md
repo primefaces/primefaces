@@ -2,7 +2,7 @@
 
 DataTable displays data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.datatable-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataTable-1.html)
 
 ## Info
 
@@ -75,7 +75,7 @@ DataTable displays data in tabular format.
 | rowExpandMode             | new                | String           | Defines row expand mode, valid values are "single" and "multiple" (default).
 | rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
 | rowIndexVar               | null               | String           | Name of iterator to refer each row index.
-| rowKey                    | null               | String           | Unique identifier of a row. Must be implemented when using selection.
+| rowKey                    | null               | String           | Unique identifier of a row. Must be defined when using selection together with non-lazy datasource (eg value-attribute bound to a instance of `java.util.List`).
 | rowSelectMode             | new                | String           | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.

@@ -90,7 +90,7 @@
 
         /**
          * Finds all widgets in the current page that are of the given type.
-         * @template {new(...args: any[]) => any} TWidget Type of the widgets of interest, e.g.
+         * @template {new(...args: never[]) => unknown} TWidget Type of the widgets of interest, e.g.
          * `PrimeFaces.widget.DataTable`.
          * @param {TWidget} type The (proto)type of the widgets of interest, e.g. `PrimeFaces.widget.DataTable`.
          * @return  {InstanceType<TWidget>[]} An array of widgets that are of the requested type. If no suitable widgets
@@ -651,7 +651,7 @@
         /**
          * Checks whether an items is contained in the given array. The items is compared against the array entries
          * via the `===` operator.
-         * @template [T=any] Type of the array items
+         * @template [T=unknown] Type of the array items
          * @param {T[]} arr An array with items
          * @param {T} item An item to check
          * @return {boolean} `true` if the given item is in the given array, `false` otherwise.
@@ -668,8 +668,9 @@
 
         /**
          * Checks whether a value is of type `number` and is neither `Infinity` nor `NaN`.
-         * @param {any} value A value to check
-         * @return {boolean} `true` if the given value is a finite number, `false` otherwise.
+         * @param {unknown} value A value to check
+         * @return {boolean} `true` if the given value is a finite number (neither `NaN` nor +/- `Infinity`),
+         * `false` otherwise.
          */
         isNumber: function(value) {
             return typeof value === 'number' && isFinite(value);

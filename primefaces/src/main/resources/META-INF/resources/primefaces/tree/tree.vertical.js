@@ -6,7 +6,8 @@
  * @typedef {"none" | "sibling"} PrimeFaces.widget.VerticalTree.DropRestrictMode Defines parent-child restrictions when
  * a node is dropped.
  * 
- * @interface {PrimeFaces.widget.VerticalTree.DroppedNodeParams} DroppedNodeParams
+ * @interface {PrimeFaces.widget.VerticalTree.DroppedNodeParams} DroppedNodeParams Describes a drag & drop operation
+ * when a tree node is being dragged. 
  * @prop {JQueryUI.DroppableOptions} DroppedNodeParams.ui Details about the drop event.
  * @prop {PrimeFaces.widget.VerticalTree} DroppedNodeParams.dragSource Tree widget of the dragged node.
  * @prop {JQuery} DroppedNodeParams.dragNode The node that was dragged.
@@ -34,7 +35,7 @@
  * 
  * @prop {string} cfg.collapsedIcon Named of the icon for collapsed nodes.
  * @prop {boolean} cfg.controlled Whether drag & drop operations of this tree table are controlled.
- * @prop {PrimeFaces.widget.VerticalTree.DropRestrictMode} dropRestrict Defines parent-child restrictions when a node is
+ * @prop {PrimeFaces.widget.VerticalTree.DropRestrictMode} cfg.dropRestrict Defines parent-child restrictions when a node is
  * dropped.
  * @prop {boolean} cfg.rtl `true` if text direction is right-to-left, or `false` otherwise.
  */
@@ -529,7 +530,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
         if(this.cfg.propagateDown) {
-            node.children('.ui-treenode-children').find('.ui-treenode:visible').find('.ui-chkbox').each(function() {
+            node.children('.ui-treenode-children').find('.ui-treenode:not(.ui-treenode-hidden)').find('.ui-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), checked);
             });
             children = node.find('> .ui-treenode-children > .ui-treenode');

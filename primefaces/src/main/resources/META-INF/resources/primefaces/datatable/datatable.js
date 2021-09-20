@@ -19,7 +19,7 @@
  * by multiple columns or only by a single column.
  *
  * @typedef {"single" | "multiple"} PrimeFaces.widget.DataTable.RowExpandMode Indicates whether multiple columns of a
- * DataTable can be expanded at the same time, or whether other expaned rows should be collapsed when a new row is
+ * DataTable can be expanded at the same time, or whether other expanded rows should be collapsed when a new row is
  * expanded.
  *
  * @typedef {"eager" | "lazy"} PrimeFaces.widget.DataTable.RowEditMode Indicates whether row editors are loaded eagerly
@@ -57,41 +57,46 @@
  * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.DataTable>}
  *
  * @prop {boolean} allLoadedLiveScroll Whether all available items were  already loaded.
- * @prop {string} ascMessage Localized message for sorting a column in ascending order.
+ * @prop {string} [ascMessage] Localized message for sorting a column in ascending order.
  * @prop {JQuery} bodyTable The DOM element for the body part of the table.
  * @prop {Record<number, string>} cacheMap Cache for the contents of a row. Key is the row index, value the HTML content
  * of the row.
  * @prop {number} cacheRows Number of rows to cache.
  * @prop {JQuery} checkAllToggler DOM element of the container with the `check all` checkbox in the header.
- * @prop {JQuery} checkAllTogglerInput DOM element of the `check all` checkbox in the header.
  * @prop {JQuery} clone Clone of the table header.
  * @prop {boolean} columnWidthsFixed Whether column widths are fixed or may be resized.
- * @prop {boolean} contextMenuClick Whether the context menu was clicked.
+ * @prop {JQuery} [contextMenuCell] DOM element of the table cell for which the context menu was opened.
  * @prop {PrimeFaces.widget.ContextMenu} contextMenuWidget Widget with the context menu for the DataTable.
  * @prop {JQuery} currentCell Current cell to be edited.
  * @prop {number | null} cursorIndex 0-based index of row where the the cursor is located.
- * @prop {string} descMessage Localized message for sorting a column in descending order.
+ * @prop {string} [descMessage] Localized message for sorting a column in descending order.
  * @prop {JQuery} dragIndicatorBottom DOM element of the icon that indicates a column is draggable.
  * @prop {JQuery} dragIndicatorTop DOM element of the icon that indicates a column is draggable.
+ * @prop {JQuery} [expansionHolder] DOM element of the hidden input that holds the row keys of the rows that
+ * are expanded. Used to preserve the expansion state during AJAX updates.
  * @prop {number[]} expansionProcess List of row indices to expand.
  * @prop {number} filterTimeout ID as returned by `setTimeout` used during filtering.
  * @prop {JQuery | null} focusedRow DOM element of the currently focused row.
  * @prop {boolean} focusedRowWithCheckbox Whether the focused row includes the checkbox for selecting the row.
  * @prop {JQuery} footerCols The DOM elements for the footer columns.
  * @prop {JQuery} footerTable The DOM elements for the footer table.
+ * @prop {JQuery} frozenThead The DOM element for the header THEAD.
  * @prop {JQuery} groupResizers The DOM elements for the resizer button of each group.
  * @prop {boolean} hasColumnGroup Whether the table has any column groups.
  * @prop {JQuery} headerTable The DOM elements for the header table.
  * @prop {JQuery} headers DOM elements for the `TH` headers of this DataTable.
- * @prop {boolean} incellClick Whether a click occurred inside a table cell.
+ * @prop {boolean} ignoreRowHoverEvent Whether to ignore row hover event.
  * @prop {boolean} isRTL Whether the writing direction is set to right-to-left.
  * @prop {boolean} isRowTogglerClicked Whether a row toggler was clicked.
  * @prop {boolean} liveScrollActive Whether live scrolling is currently active.
+ * @prop {string[]} [loadedExpansionRows] List of row keys of the expansion rows that had their content
+ * already loaded via AJAX.
  * @prop {boolean} loadingLiveScroll Whether data is currently being loaded due to the live scrolling feature.
  * @prop {boolean} mousedownOnRow Whether a mousedown event occurred on a row.
- * @prop {boolean} ignoreRowHoverEvent Whether to ignore row hover event.
  * @prop {JQuery} orderStateHolder INPUT element storing the current column / row order.
  * @prop {number | null} originRowIndex The original row index of the row that was clicked.
+ * @prop {string} [otherMessage] Localized message for removing the sort order and showing rows in their
+ * original order.
  * @prop {PrimeFaces.widget.Paginator} paginator When pagination is enabled: The paginator widget instance used for
  * paging.
  * @prop {boolean} percentageScrollHeight The current relative vertical scroll position.
@@ -102,6 +107,7 @@
  * @prop {JQuery} resizableStateHolder INPUT element storing the current widths for each resizable column.
  * @prop {number} resizeTimeout The set-timeout timer ID of the timer used for resizing.
  * @prop {JQuery} resizerHelper The DOM element for the resize helper.
+ * @prop {number} [rowHeight] Constant height in pixels for each row, when virtual scrolling is enabled.
  * @prop {string} rowSelector The CSS selector for the table rows.
  * @prop {string} rowSelectorForRowClick The CSS selector for the table rows that can be clicked.
  * @prop {JQuery} scrollBody The DOM element for the scrollable body of the table.
@@ -111,6 +117,7 @@
  * @prop {JQuery} scrollHeaderBox The DOM element for the scrollable header box of the table.
  * @prop {number} scrollOffset The current scroll position.
  * @prop {JQuery} scrollStateHolder INPUT element storing the current scroll position.
+ * @prop {JQuery} scrollTbody The DOM element for the scrollable TBODY.
  * @prop {number} scrollTimeout The set-timeout timer ID of the timer used for scrolling.
  * @prop {string} scrollbarWidth CSS attribute for the scrollbar width, eg. `20px`.
  * @prop {string[]} selection List of row keys for the currently selected rows.
@@ -144,7 +151,7 @@
  * @prop {string} cfg.editInitEvent Event that triggers row/cell editing.
  * @prop {PrimeFaces.widget.DataTable.CellEditMode} cfg.editMode Whether rows may be edited as a whole or whether each
  * cell can be edited individually.
- * @prop {boolean} cfg.editable Controls incell editing.
+ * @prop {boolean} cfg.editable Controls in-cell editing.
  * @prop {boolean} cfg.expansion `true` if rows are expandable, or `false` otherwise.
  * @prop {boolean} cfg.filter `true` if filtering is enabled, or `false` otherwise.
  * @prop {number} cfg.filterDelay Delay for filtering in milliseconds.
@@ -270,8 +277,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * @include
-     * @include
      * @override
      * @protected
      * @inheritdoc
@@ -451,7 +456,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Applies events related to sorting in a non-obstrusive way
+     * Applies events related to sorting in a non-obtrusive way
      * @private
      */
     bindSortEvents: function() {
@@ -639,10 +644,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Adds the given sorting to the list of sortings. Each sorting describes a column by which to sort. This DataTable
-     * may be sorted by multiple columns.
-     * @param {PrimeFaces.widget.DataTable.SortMeta} meta Sorting to add.
+     * Adds the given sorting to the list of sort rows. Each sorting describes a column by which to sort. This data
+     * table may be sorted by multiple columns.
      * @private
+     * @param {PrimeFaces.widget.DataTable.SortMeta} meta Sorting to add.
      */
     addSortMeta: function(meta) {
         this.sortMeta = $.grep(this.sortMeta, function(value) {
@@ -813,7 +818,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Applies events related to selection in a non-obstrusive way
+     * Applies events related to selection in a non-obtrusive way
      * @private
      */
     bindSelectionEvents: function() {
@@ -1227,7 +1232,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Applies events related to row expansion in a non-obstrusive way
+     * Applies events related to row expansion in a non-obtrusive way
      * @protected
      */
     bindExpansionEvents: function() {
@@ -1310,7 +1315,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             targetWidget.contextMenuCell.removeClass('ui-state-highlight');
         }
 
-        targetWidget.contextMenuClick = true;
         targetWidget.contextMenuCell = cell;
         targetWidget.contextMenuCell.addClass('ui-state-highlight');
     },
@@ -2030,9 +2034,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Updates and syncs the current pagination state with the server.
+     * @private
      * @param {PrimeFaces.widget.Paginator.PaginationState} newState The new values for the current page and the rows
      * per page count.
-     * @private
      */
     updatePageState: function(newState) {
         var $this = this,
@@ -2063,10 +2067,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Performs a sorting operation on the rows of this DataTable via AJAX
-     * @param {JQuery} columnHeader Header of the column by which to sort.
-     * @param {-1 | 0 | 1} order Whether to "unsort" or to sort by the column value in an ascending or descending order.
-     * @param {boolean} multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      * @private
+     * @param {JQuery} columnHeader Header of the column by which to sort.
+     * @param {-1 | 0 | 1} order `-1` to sort column values in ascending order, `+1` to sort column values in descending
+     * order, or `0` to remove the sorting order and display rows in their original order.
+     * @param {boolean} multi `true` if sorting by multiple columns is enabled, or `false` otherwise.
      */
     sort: function(columnHeader, order, multi) {
         var $this = this,
@@ -2371,7 +2376,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {boolean} silent `true` to prevent behaviors from being invoked, `false` otherwise.
      */
     onRowClick: function(event, rowElement, silent) {
-        //Check if rowclick triggered this event not a clickable element in row content
+        // Check if row click triggered this event not a clickable element in row content
         if($(event.target).is(this.rowSelectorForRowClick)) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
@@ -2380,7 +2385,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             this.assignFocusedRow(row);
 
-            //unselect a selected row if metakey is on
+            // Unselect a selected row if meta key is on
             if(selected && metaKey) {
                 this.unselectRow(row, silent);
             }
@@ -2427,7 +2432,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.clearSelection();
         }
 
-        //Check if rowclick triggered this event not a clickable element in row content
+        //Check if row click triggered this event not a clickable element in row content
         if($(event.target).is(this.rowSelectorForRowClick)) {
             var rowMeta = this.getRowMeta(row);
 
@@ -2610,7 +2615,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Unhighlights row so it is no longer marked as selected.
+     * Removes the highlight of a row so it is no longer marked as selected.
      * @protected
      * @param {JQuery} row Row to unhighlight.
      */
@@ -3143,7 +3148,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Binds editor events non-obstrusively
+     * Binds editor events non-obtrusively.
      * @private
      */
     bindEditEvents: function() {
@@ -3200,53 +3205,50 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         else if(this.cfg.editMode === 'cell') {
-            var originalCellSelector = '> tr > td.ui-editable-column'
+            var originalCellSelector = '> tr > td.ui-editable-column',
             cellSelector = this.cfg.cellSeparator || originalCellSelector,
             editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.datatable-cell click.datatable-cell' : 'click.datatable-cell';
 
-            if (this.cfg.cellSeparator) {
-                this.tbody.off(editEvent, originalCellSelector)
-                    .on(editEvent, originalCellSelector, null, function (e) {
-                        $this.incellClick = true;
-
-                        if (!$(this).hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent && $this.cfg.editInitEvent === "dblclick") {
-                            $this.incellClick = false;
-                        }
-                    });
-            }
-
             this.tbody.off(editEvent, cellSelector)
                         .on(editEvent, cellSelector, null, function(e) {
-                            $this.incellClick = true;
-
                             var item = $(this),
                             cell = item.hasClass('ui-editable-column') ? item : item.closest('.ui-editable-column');
 
                             if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
                                 $this.showCellEditor(cell);
-
-                                if($this.cfg.editInitEvent === "dblclick") {
-                                    $this.incellClick = false;
-                                }
                             }
                         });
 
-            $(document).off('click.datatable-cell-blur' + this.id)
-                        .on('click.datatable-cell-blur' + this.id, function(e) {
+            // save/cancel on mouseup to queue the event request before whatever was clicked reacts
+            $(document).off('mouseup.datatable-cell-blur' + this.id)
+                        .on('mouseup.datatable-cell-blur' + this.id, function(e) {
+                            // ignore if not editing
+                            if(!$this.currentCell)
+                                return;
+
+                            var currentCell = $($this.currentCell);
                             var target = $(e.target);
-                            if(!$this.incellClick && (target.is('.ui-input-overlay') || target.closest('.ui-input-overlay').length || target.closest('.ui-datepicker-buttonpane').length)) {
-                                $this.incellClick = true;
-                            }
 
-                            if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing && $('.p-datepicker-panel:visible').length === 0) {
-                                if($this.cfg.saveOnCellBlur)
-                                    $this.saveCell($this.currentCell);
-                                else
-                                    $this.doCellEditCancelRequest($this.currentCell);
-                            }
+                            // ignore clicks inside edited cell
+                            if(currentCell.is(target) || currentCell.has(target).length)
+                                return;
 
-                            $this.incellClick = false;
-                            $this.contextMenuClick = false;
+                            // ignore clicks inside input overlays like calendar popups etc
+                            var ignoredOverlay = '.ui-input-overlay, .ui-editor-popup, #keypad-div, .ui-colorpicker-container';
+                            // and menus - in case smth like menubutton is inside the table
+                            ignoredOverlay += ', .ui-datepicker-buttonpane, .ui-menuitem, .ui-menuitem-link';
+                            // and blockers
+                            ignoredOverlay += ', .ui-blockui, .blockUI';
+                            if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
+                                return;
+
+                            if($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length)
+                                return;
+
+                            if($this.cfg.saveOnCellBlur)
+                                $this.saveCell($this.currentCell);
+                            else
+                                $this.doCellEditCancelRequest($this.currentCell);
                         });
         }
     },
@@ -3370,8 +3372,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} c A cell (`TD`) of this DataTable to edit.
      */
     showCellEditor: function(c) {
-        this.incellClick = true;
-
         var cell = null;
 
         if(c) {
@@ -3747,7 +3747,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Sends an AJAX request to handle row save or cancel
      * @private
-     * @param {JQuery} rowEditor The curent row editor
+     * @param {JQuery} rowEditor The current row editor.
      * @param {PrimeFaces.widget.DataTable.RowEditAction} action Whether to save or cancel the row edit.
      */
     doRowEditRequest: function(rowEditor, action) {
@@ -4699,7 +4699,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Unchecks the `select all` checkbox in the header of this DataTable.
+     * Unchecks the `select all` checkbox in the header of this data table.
      * @private
      */
     uncheckHeaderCheckbox: function() {

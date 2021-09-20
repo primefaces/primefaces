@@ -19,6 +19,9 @@ declare namespace JQueryFileUpload {
      */
     type HttpUploadMethod = "POST" | "PUT" | "PATCH";
 
+    /**
+     * Enumeration of common HTTP methods that can be used with the jQuery file upload plugin.
+     */
     type HttpMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "CONNECT" | "OPTIONS" | "TRACE" | "PATCH";
 
     /**
@@ -1025,6 +1028,9 @@ declare namespace JQueryFileUpload {
         options: FileUploadOptions;
     }
 
+    /**
+     * Represents an item in the upload queue.
+     */
     interface ProcessingQueueItem {
         /**
          * MIME types a file must have to be accepted.

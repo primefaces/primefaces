@@ -15,6 +15,9 @@ declare namespace JQueryJScrollPane {
      */
     export type ArrowPosition = "split" | "before" | "after" | "os";
 
+    /**
+     * Optional settings that can be passed when the creating a new JScroll instance to customize its behavior.
+     */
     export interface JScrollPaneSettings {
         /**
          * Whether arrows should be shown on the generated scroll pane. When set to false only the scrollbar track and
@@ -196,6 +199,10 @@ declare namespace JQueryJScrollPane {
         trackClickRepeatFreq: number;
     }
 
+    /**
+     * The JScroll instance that is created when initializing an element via the jQuery plugin. It can be accessed via
+     * the `jsp` data attribute of the jQuery element: `$(scrollPanelElement).data("jsp")`.
+     */
     interface JScrollPaneInstance {
         /**
          * Reinitializes the scroll pane (if it's internal dimensions have changed since the last time it was

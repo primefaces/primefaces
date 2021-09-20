@@ -6,14 +6,16 @@ const { checkTagHasDescription, checkSymbolHasDescription, checkTagHasNoDescript
 const { handleError, newNodeErrorMessage } = require("./error");
 const { NativeInsertionOrderMap } = require("./InsertionOrderMap");
 const { createTypedefTagHandler } = require("./create-doc-info-typedef");
+const { map, toRecord, reduce } = require("./lang");
 
 /**
- * @param {import("estree").Node} node
- * @param {import("comment-parser").Comment} jsdoc 
+ * @param {ObjectCode} objectCode
  * @param {SeveritySettingsConfig} severitySettings
  * @return {ObjectDocInfo}
  */
-function createObjectDocInfo(jsdoc, node, severitySettings) {
+function createObjectDocInfo(objectCode, severitySettings) {
+    const { jsdoc, node } = objectCode;
+
     /** @type {MessageFactory} */
     const factory = message => newNodeErrorMessage(message, node);
 
@@ -30,11 +32,13 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
             type: "unspecified",
         },
         extends: new Set(),
+        forced: false,
         implements: new Set(),
         jsdoc: undefined,
         method: undefined,
         name: "",
         optional: false,
+        override: false,
         props: new Map(),
         readonly: false,
         templates: new NativeInsertionOrderMap(),
@@ -42,16 +46,40 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
     };
 
     /** @type {DocInfoTypedef[]} */
-    const typedefs = [];
+    const typeDefs = [];
+
+    /** @type {ObjectDocPropertyInfo} */
+    const codeProperties = {
+        definitive: reduce(objectCode.allDeclaredProperties.definitive.values(), toRecord(
+            prop => prop.name,
+            prop => ({
+                name: prop.name,
+                location: map(prop.location.entries(), ([name, nodes]) => ({
+                    name: name,
+                    nodes: map(nodes, node => ({
+                        loc: node.loc ? {
+                            endColumn: node.loc.end.column,
+                            endLine: node.loc.end.line,
+                            startColumn: node.loc.start.column,
+                            startLine: node.loc.start.line,
+                        } : undefined,
+                        range: node.range,
+                    })),
+                    sourceFile: node.loc?.source ?? "",
+                })),
+            })
+        )),
+    };
 
     /** @type {ObjectDocInfo} */
     const result = {
+        codeProperties: codeProperties,
         description: jsdoc.description || "",
         shape: root,
-        typedefs: typedefs,
+        typedefs: typeDefs,
     };
 
-    const typedefTagHandler = createTypedefTagHandler(node, severitySettings, typedefs);
+    const typedefTagHandler = createTypedefTagHandler(node, severitySettings, typeDefs);
 
     /** @type {string[][]} */
     const modifierPaths = [];
@@ -62,7 +90,7 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
             const isDot = oldTag.name === ".";
             const parts = isDot || oldTag.name === "" ? [] : oldTag.name.split(".");
             //const level = isDot ? 0 : parts.length;
-            let name = parts.length > 0 ? parts[parts.length - 1] : "";
+            let name = parts[parts.length - 1] ?? "";
             const tag = createTag(oldTag.tag, oldTag);
             switch (tag.tag) {
                 // Handle top-level object tags
@@ -172,6 +200,23 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
                         checkTagIsPlain(tag, severitySettings, factory, { checkName: false });
                         method.async = true;
                     }
+                    break;
+                }
+
+                // @override settings.show
+                case Tags.Override:
+                case Tags.Overrides: {
+                    tag.name = "";
+                    checkTagIsPlain(tag, severitySettings, factory, { checkName: false });
+                    const nested = getOrCreateNestedObjectDocShape(root, parts, 0);
+                    if (nested.override) {
+                        handleError("tagDuplicateOverride", severitySettings, () => factory(`Duplicate '@override ${tag.name}' found in doc comments`));
+                    }
+                    else {
+                        nested.additionalTags.push(shiftName(tag));
+                    }
+                    modifierPaths.push(parts);
+                    nested.override = true;
                     break;
                 }
 
@@ -314,8 +359,8 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
                     break;
                 }
 
-                case Tags.Methodtemplate: {
-                    typedefTagHandler.methodtemplate(tag, jsdoc.tags, true);
+                case Tags.MethodTemplate: {
+                    typedefTagHandler.methodTemplate(tag, jsdoc.tags, true);
                     break;
                 }
 
@@ -339,12 +384,22 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
                 // Handle properties
 
                 // @prop {boolean} cfg.enabled Whether it is enabled
+                case Tags.ForcedProp:
+                case Tags.ForcedProperty:
                 case Tags.Prop:
                 case Tags.Property: {
+                    const forced = tag.tag === Tags.ForcedProp || tag.tag === Tags.ForcedProperty
+                    if (tag.tag === Tags.ForcedProp) {
+                        tag.tag = Tags.Prop;
+                    }
+                    if (tag.tag === Tags.ForcedProperty) {
+                        tag.tag = Tags.Property;
+                    }
                     tag.description = checkTagHasDescription(tag, severitySettings, factory, jsdoc.tags, true);
                     tag.name = name;
                     const nested = getOrCreateNestedObjectDocShape(root, parts, 0);
                     nested.jsdoc = tag;
+                    nested.forced = forced;
                     if (tag.optional) {
                         if (nested.optional) {
                             handleError("tagDuplicateDefault", severitySettings, () => factory(`Property was already specified as optional by a '@default ${tag.name}' tag`));
@@ -371,7 +426,7 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
                     break;
                 }
 
-                // @abstract foo.mymethod
+                // @abstract foo.myMethod
                 case Tags.Abstract: {
                     tag.name = "";
                     checkTagIsPlain(tag, severitySettings, factory, { checkName: false });
@@ -408,10 +463,10 @@ function createObjectDocInfo(jsdoc, node, severitySettings) {
                     break;
                 }
 
-                // Typedefs
+                // TypeDefs
                 case Tags.Typedef: {
                     if (oldName.length > 0) {
-                        typedefs.push({
+                        typeDefs.push({
                             description: checkTagHasDescription(tag, severitySettings, factory, jsdoc.tags, true),
                             function: undefined,
                             name: oldName,
@@ -443,6 +498,7 @@ function processAbstractModifierForMethods(root, abstractModifierPaths) {
         const object = getNestedObjectDocShape(root, path, 0);
         if (object && object.method) {
             object.method.abstract = object.abstract;
+            object.method.override = object.override;
             object.method.visibility = object.visibility;
         }
     }
@@ -469,6 +525,7 @@ function getOrCreateMethodAtNestingLevel(node, current, path, offset) {
             name: "",
             next: undefined,
             node: node,
+            override: false,
             params: new NativeInsertionOrderMap(),
             return: undefined,
             templates: new Map(),
@@ -488,8 +545,8 @@ function getOrCreateMethodAtNestingLevel(node, current, path, offset) {
  */
 function getOrCreateNestedObjectDocShape(current, path, offset) {
     const actualPath = offset === 0 ? path : path.slice(0, offset);
-    for (let i = 0; i < actualPath.length; ++i) {
-        let sub = current.props.get(actualPath[i]);
+    for (const pathPart of actualPath) {
+        let sub = current.props.get(pathPart);
         if (sub === undefined) {
             sub = {
                 abstract: false,
@@ -501,17 +558,19 @@ function getOrCreateNestedObjectDocShape(current, path, offset) {
                     type: "unspecified",
                 },
                 extends: new Set(),
+                forced: false,
                 implements: new Set(),
                 jsdoc: undefined,
                 method: undefined,
-                name: actualPath[i],
+                name: pathPart,
                 optional: false,
+                override: false,
                 props: new Map(),
                 readonly: false,
                 templates: new NativeInsertionOrderMap(),
                 visibility: undefined,
             };
-            current.props.set(actualPath[i], sub);
+            current.props.set(pathPart, sub);
         }
         current = sub;
     }
@@ -526,8 +585,8 @@ function getOrCreateNestedObjectDocShape(current, path, offset) {
  */
 function getNestedObjectDocShape(current, path, offset) {
     const actualPath = offset === 0 ? path : path.slice(0, offset);
-    for (let i = 0; i < actualPath.length; ++i) {
-        let sub = current.props.get(actualPath[i]);
+    for (const pathPart of actualPath) {
+        let sub = current.props.get(pathPart);
         if (sub === undefined) {
             return undefined;
         }

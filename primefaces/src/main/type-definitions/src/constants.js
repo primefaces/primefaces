@@ -71,8 +71,8 @@ const Paths = {
         module: resolve(__dirname, "..", "src", Names.PrimeFacesModuleDeclaration),
     },
     PackageJsonFile: resolve(join(__dirname, "..", "package.json")),
-    PrimeFacesDeclarationFile: resolve(join(__dirname, "..", "..", "..", "..", "docs", Names.PrimeFacesDeclaration)),
-    PrimeFacesModuleDeclarationFile: resolve(join(__dirname, "..", "..", "..", "..", "docs", Names.PrimeFacesModuleDeclaration)),
+    PrimeFacesDeclarationFile: resolve(join(__dirname, "..", "..", "..", "..", "..", "docs", Names.PrimeFacesDeclaration)),
+    PrimeFacesModuleDeclarationFile: resolve(join(__dirname, "..", "..", "..", "..", "..", "docs", Names.PrimeFacesModuleDeclaration)),
     ProjectRootDir: resolve(__dirname, "..", "..", "..", ".."),
     TargetTestDir: resolve(join(__dirname, "..", "dist", "test")),
     TargetMainDir: resolve(join(__dirname, "..", "..", "..", "..", "target", "generated-resources", "type-definitions")),
@@ -97,6 +97,8 @@ const Tags = {
     Exception: "exception",
     Exclude: "exclude",
     Extends: "extends",
+    ForcedProp: "forcedprop",
+    ForcedProperty: "forcedproperty",
     Func: "func",
     Function: "function",
     Generator: "generator",
@@ -108,7 +110,7 @@ const Tags = {
     Internal: "internal",
     License: "license",
     Method: "method",
-    Methodtemplate: "methodtemplate",
+    MethodTemplate: "methodtemplate",
     Namespace: "namespace",
     Next: "next",
     Override: "override",
@@ -133,13 +135,15 @@ const Tags = {
     Type: "type",
     Typedef: "typedef",
     Typeparam: "typeparam",
+    ValidateDefinitiveProps: "validatedefinitiveprops",
+    ValidateForcedProps: "validateforcedprops",
     Version: "version",
     Yield: "yield",
     Yields: "yields",
 };
 
 /**
- * Tags for which the name has a semantic meaning and does not belong to the descrption.
+ * Tags for which the name has a semantic meaning and does not belong to the description.
  */
 const NamedTags = new Set([
     Tags.Class,

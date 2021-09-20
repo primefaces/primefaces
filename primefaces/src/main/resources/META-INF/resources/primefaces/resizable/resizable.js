@@ -23,6 +23,7 @@
  * @param {JQueryUI.ResizableUIParams} PrimeFaces.widget.Resizable.OnStopCallback.ui Details about the resize.
  * 
  * @prop {JQuery} jqTarget The DOM element for the target widget t o be resized.
+ * @prop {string | JQuery | HTMLElement} [target] Target for the resizable, when using AJAX resize.
  * 
  * @interface {PrimeFaces.widget.ResizableCfg} cfg The configuration for the {@link  Resizable| Resizable widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

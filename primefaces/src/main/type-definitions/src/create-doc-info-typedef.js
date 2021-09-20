@@ -166,8 +166,8 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
       const typedef = getOrCreateTypedefFunction(node, typedefs, parts, -1);
       if (typedef && typedef.function) {
         tag.description = checkTagHasDescription(tag, severitySettings, factory, allTags, true);
-        tag.name = parts[parts.length - 1];
-        typedef.function.params.set(parts[parts.length - 1], tag);
+        tag.name = parts[parts.length - 1] ?? "";
+        typedef.function.params.set(parts[parts.length - 1] ?? "", tag);
         return true;
       }
       else {
@@ -182,7 +182,7 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
       const typedef = getOrCreateTypedefFunction(node, typedefs, parts, 0);
       if (typedef && typedef.function) {
         tag.description = checkTagHasDescription(tag, severitySettings, factory, allTags, true);
-        tag.name = parts[parts.length - 1];
+        tag.name = parts[parts.length - 1] ?? "";
         typedef.function.return = tag;
         return true;
       }
@@ -196,8 +196,8 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
     structureOrPattern(tag, allTags, logMissing) {
       checkTagHasName(tag, severitySettings, factory);
       const parts = tag.name.split(".");
-      if (parts[parts.length - 1].length > 0) {
-        const index = parseInt(parts[parts.length - 1]);
+      if (parts[parts.length - 1]?.length ?? 0 > 0) {
+        const index = parseInt(parts[parts.length - 1] ?? "");
         if (isNaN(index) || index < 0) {
           handleError("tagNameInvalidIndex", severitySettings, () => factory(`'@pattern' must specify an index that is a number greater than or equal to 0, eg. "@pattern {[number, string]} 0"`));
           return false;
@@ -205,7 +205,7 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
         else {
           const typedefDestructuring = getOrCreateTypedefDestructuring(node, typedefs, parts, index);
           if (typedefDestructuring) {
-            tag.name = parts[parts.length - 1];
+            tag.name = parts[parts.length - 1] ?? "";
             if (tag.tag === Tags.Pattern) {
               if (typedefDestructuring.pattern !== undefined) {
                 handleError("tagDuplicatePattern", severitySettings, () => factory(`Found duplicate tag '@pattern ${tag.name}' in doc comments`));
@@ -235,14 +235,14 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
         return false;
       }
     },
-    methodtemplate(tag, allTags, logMissing) {
+    methodTemplate(tag, allTags, logMissing) {
       const parts = tag.name.split(".");
       const typedef = getOrCreateTypedefFunction(node, typedefs, parts, -1);
       if (typedef !== undefined && typedef.function !== undefined) {
         tag.description = checkTagHasDescription(tag, severitySettings, factory, allTags, true);
-        tag.name = parts[parts.length - 1];
+        tag.name = parts[parts.length - 1] ?? "";
         tag.tag = Tags.Template;
-        typedef.function.templates.set(parts[parts.length - 1], tag);
+        typedef.function.templates.set(parts[parts.length - 1] ?? "", tag);
         return true;
       }
       else {
@@ -273,9 +273,9 @@ function createTypedefTagHandler(node, severitySettings, typedefs) {
       const typedef = getOrCreateTypedef(typedefs, parts, -1);
       if (typedef !== undefined) {
         tag.description = checkTagHasDescription(tag, severitySettings, factory, allTags, true);
-        tag.name = parts[parts.length - 1];
+        tag.name = parts[parts.length - 1] ?? "";
         tag.tag = Tags.Template;
-        typedef.templates.set(parts[parts.length - 1], tag);
+        typedef.templates.set(parts[parts.length - 1] ?? "", tag);
         return true;
       }
       else {

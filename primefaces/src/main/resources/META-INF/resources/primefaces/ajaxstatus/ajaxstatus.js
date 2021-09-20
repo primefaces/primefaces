@@ -64,8 +64,8 @@
  * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxErrorCallback | jsf.ajax.OnErrorCallback} cfg.error Client-side callback
  * for when the AJAX behavior fails, i.e. when the request fails.
  * @prop {number} cfg.delay Delay in milliseconds before displaying the AJAX status. Default is `0`, meaning immediate.
- * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxStartCallback | jsf.ajax.OnEventCallback} start Client-side callback for
- * when the AJAX behavior starts, i.e. the request is about to be sent.
+ * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxStartCallback | jsf.ajax.OnEventCallback} cfg.start Client-side callback
+ * for when the AJAX behavior starts, i.e. the request is about to be sent.
  * @prop {PrimeFaces.widget.AjaxStatus.PfAjaxSuccessCallback | jsf.ajax.OnEventCallback} cfg.success Client-side
  * callback for when the AJAX  behavior completes successfully, i.e. when the request succeeds.
  */

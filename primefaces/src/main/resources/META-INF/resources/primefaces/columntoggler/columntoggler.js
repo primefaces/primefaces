@@ -3,20 +3,32 @@
  *
  * ColumnToggler is a helper component for the data table to toggle visibility of columns.
  *
- * @prop {JQuery} table Table to which this column toggle is attached.
- * @prop {JQuery} trigger Button that toggles this column toggler.
- * @prop {string} tableId ID of the table to which this column toggle is attached.
+ * @prop {JQuery} [closer] DOM element of the close button for closing the overlay with the available columns.
+ * @prop {JQuery} [columns] DOM elements for the `TH` columns of the data table.
+ * @prop {JQuery} [itemContainer] DOM elements for the `UL` items in the overlay with the available columns.
+ * @prop {number} [frozenColumnCount] The number of frozen column of table to which this column toggle is
+ * attached.
  * @prop {boolean} hasFrozenColumn Whether the table to which this column toggle is attached has got any frozen columns.
+ * @prop {boolean} [hasPriorityColumns] Whether any prioritized columns exist. Used for responsive mode. 
  * @prop {boolean} hasStickyHeader Whether the table to which this column toggle is attached has got a sticky header.
- * @prop {JQuery} thead The DOM element for the table head of the table to which this column toggle is attached.
+ * @prop {JQuery} [panel] Overlay column toggler panel with the available columns.
+ * @prop {JQuery} table Table to which this column toggle is attached.
+ * @prop {string} tableId ID of the table to which this column toggle is attached.
  * @prop {JQuery} tbody The DOM element for the table body of the table to which this column toggle is attached.
  * @prop {JQuery} tfoot The DOM element for the table foot of the table to which this column toggle is attached.
- * @prop {number} frozenColumnCount The number of frozen column of table to which this column toggle is attached.
+ * @prop {JQuery} thead The DOM element for the table head of the table to which this column toggle is attached.
+ * @prop {string[]} [togglerState] IDs of the columns that are selected.
+ * @prop {JQuery} [togglerStateHolder] DOM element of the hidden input that contains the columns that are
+ * selected. Used to preserve that state between AJAX updates.
+ * @prop {JQuery} trigger Button that toggles this column toggler.
  * @prop {boolean} visible Whether this column toggler is currently displayed.
+ * @prop {boolean} [widthAligned] Whether the width of the overlay panel with the available columns was
+ * aligned with the width of the toggler.    
  *
- * @interface {PrimeFaces.widget.ColumnTogglerCfg} cfg The configuration for the {@link  ColumnToggler| ColumnToggler widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
+ * @interface {PrimeFaces.widget.ColumnTogglerCfg} cfg The configuration for the
+ * {@link  ColumnToggler| ColumnToggler widget}. You can access this configuration via
+ * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
  * @prop {string} cfg.trigger ID of the button that toggles this column toggler.

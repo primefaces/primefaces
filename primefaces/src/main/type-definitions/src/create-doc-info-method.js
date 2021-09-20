@@ -34,6 +34,7 @@ function createMethodDocInfo(name, jsdoc, method, severitySettings) {
             hasNext: false,
             typedef: "",
         },
+        override: false,
         patterns: new Map(),
         return: {
             description: "",
@@ -158,8 +159,8 @@ function createMethodDocInfo(name, jsdoc, method, severitySettings) {
                 break;
             }
 
-            case Tags.Methodtemplate: {
-                typedefTagHandler.methodtemplate(tag, jsdoc.tags, true);
+            case Tags.MethodTemplate: {
+                typedefTagHandler.methodTemplate(tag, jsdoc.tags, true);
                 break;
             }
 
@@ -191,6 +192,20 @@ function createMethodDocInfo(name, jsdoc, method, severitySettings) {
                     handleError("tagDuplicateAbstract", severitySettings, () => factory(`Found duplicate tag '@abstract' in doc comments`));
                 }
                 docInfo.abstract = true;
+                break;
+            }
+
+            // @override
+            case Tags.Override:
+            case Tags.Overrides: {
+                checkTagIsPlain(tag, severitySettings, factory);
+                if (docInfo.override) {
+                    handleError("tagDuplicateOverride", severitySettings, () => factory(`Found duplicate tag '@override' in doc comments`));
+                }
+                else {
+                    docInfo.additionalTags.push(tag);
+                }
+                docInfo.override = true;
                 break;
             }
 

@@ -48,11 +48,11 @@
  * @prop {JQuery} focusedItem The DOM element for the currently focused pick list item, if any.
  * @prop {JQuery} items The DOM elements for the pick list items in the source and target list.
  * @prop {PrimeFaces.widget.PickList.ListName} itemListName When sorting items: to which list the items belong.
- * @prop {JQuery} sourceFilter The DOM element for the filter input for the source list.
+ * @prop {JQuery} [sourceFilter] The DOM element for the filter input for the source list.
  * @prop {JQuery} sourceInput The DOM element for the hidden input storing the value of the source list.
  * @prop {JQuery} sourceList The DOM element for the source list.
- * @prop {} targetFilter The DOM element for the filter input for the target list.
- * @prop {} targetInput The DOM element for the hidden input storing the value of the target list.
+ * @prop {JQuery} [targetFilter] The DOM element for the filter input for the target list.
+ * @prop {JQuery} targetInput The DOM element for the hidden input storing the value of the target list.
  * @prop {JQuery} targetList The DOM element for the target list.
  *
  * @interface {PrimeFaces.widget.PickListCfg} cfg The configuration for the {@link  PickList| PickList widget}.

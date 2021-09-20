@@ -134,7 +134,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up all event listenters required by this widget.
+     * Sets up all event listeners required by this widget.
      * @private
      */
     bindEvents: function() {

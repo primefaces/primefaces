@@ -139,7 +139,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @return {boolean} `true` if this rating widget is read-only, `false` otherwise.
      */
     isReadOnly: function() {
-        return this.input.is('[readonly]');
+        return this.cfg.readonly;
     },
 
     /**

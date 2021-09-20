@@ -2,7 +2,7 @@
 
 MenuButton displays different commands in a popup menu.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.menubutton.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.MenuButton.html)
 
 ## Info
 

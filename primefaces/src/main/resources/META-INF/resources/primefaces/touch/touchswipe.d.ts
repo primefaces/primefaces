@@ -294,6 +294,9 @@ declare namespace JQueryTouchSwipe {
         y: number;
     }
 
+    /**
+     * Optional settings that can be passed when creating a new touch swipe instance to customize its behavior.
+     */
     export interface TouchSwipeSettings {
         /**
          * A handler triggered when a user reaches {@link longTapThreshold} on the item.
@@ -495,6 +498,9 @@ declare namespace JQueryTouchSwipe {
         triggerOnTouchLeave: boolean;
     }
 
+    /**
+     * The main API entry point of the touch swipe jQuery plugin accessible via `$.swipe`.
+     */
     export interface TouchSwipeNamespace<TElement = HTMLElement> {
         /**
          * Initializes TouchSwipe with the given settings.

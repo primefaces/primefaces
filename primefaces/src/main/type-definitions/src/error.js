@@ -2,15 +2,18 @@
 
 const { resolve } = require("path");
 const ts = require("typescript");
-const {assertNever } = require("./lang");
+const { assertNever } = require("./lang");
+
+class TypedError extends Error {
+}
 
 /**
  * Creates a message that reference a stack element. Tested with vscode, it turns it into a link that
  * can be used to jump to the file quickly.
  * @param {string} name Name of the method or symbol that caused the error.
  * @param {string|undefined} file File where the error occurred. Should be an absolute path. If not, it is resolved against the cwd.
- * @param {number} line Line where the error occured.
- * @param {number} column Column where the error occured.
+ * @param {number} line Line where the error occurred.
+ * @param {number} column Column where the error occurred.
  */
 function makeStackLine(name, file, line, column) {
     const resolvedPath = file ? resolve(file) : "<unknown>";
@@ -20,7 +23,7 @@ function makeStackLine(name, file, line, column) {
 /**
  * @param {string} message 
  * @param {TsNode} node 
- * @param {string} location Human readable name of the method or location where the error occured.
+ * @param {string} location Human readable name of the method or location where the error occurred.
  * @return {string}
  */
 function newTsErrorMessage(message, node, location = "<unknown>") {
@@ -32,15 +35,32 @@ function newTsErrorMessage(message, node, location = "<unknown>") {
 
 /**
  * @param {string} message Message with details about the error.
- * @param {import("estree").Node} node Node where the error or issue occured.
- * @param {string} location Human readable name of the method or location where the error occured.
+ * @param {import("estree").Node} node Node where the error or issue occurred.
+ * @param {string} location Human readable name of the method or location where the error occurred.
  * @return {string}
  */
 function newNodeErrorMessage(message, node, location = "<unknown>") {
-    const source = node.loc && node.loc.source ? node.loc.source : undefined;
-    const line = node.loc ? node.loc.start.line : 0;
-    const column = node.loc ? node.loc.start.column : 0;
+    const source = node && node.loc && node.loc.source ? node.loc.source : undefined;
+    const line = node && node.loc ? node.loc.start.line : 0;
+    const column = node && node.loc ? node.loc.start.column : 0;
     return `${message}\n${makeStackLine(location, source, line, column)}`;
+}
+
+/**
+ * @param {string} message Message with details about the error.
+ * @param {Iterable<import("estree").Node>} nodes Node where the error or issue occurred.
+ * @param {string} location Human readable name of the method or location where the error occurred.
+ * @return {string}
+ */
+function newNodesErrorMessage(message, nodes, location = "<unknown>") {
+    const lines = [];
+    for (const node of nodes) {
+        const source = node.loc && node.loc.source ? node.loc.source : undefined;
+        const line = node.loc ? node.loc.start.line : 0;
+        const column = node.loc ? node.loc.start.column : 0;
+        lines.push(makeStackLine(location, source, line, column));
+    }
+    return `${message}\n${lines.join("\n")}`;
 }
 
 /**
@@ -112,7 +132,7 @@ function handleAndGetError(key, severitySettings, messageSupplier) {
     const level = severitySettings[key];
     switch (level) {
         case "fatal":
-            return [new Error(makeMessage(key, messageSupplier))];
+            return [new TypedError(makeMessage(key, messageSupplier))];
         case "error":
             console.error("[ERROR]", makeMessage(key, messageSupplier));
             return [];
@@ -122,14 +142,28 @@ function handleAndGetError(key, severitySettings, messageSupplier) {
         case "info":
             console.info("[INFO]", makeMessage(key, messageSupplier));
             return [];
-        case "ignore": 
+        case "ignore":
             // ignore this message
             return [];
         default: assertNever(level);
     }
 }
 
+/**
+ * @param {Error} error 
+ * @returns {string}
+ */
+function formatError(error) {
+    if (error instanceof TypedError) {
+        return error.message;
+    }
+    else {
+        return error.stack ?? error.message;
+    }
+}
+
 module.exports = {
+    formatError,
     handleError,
     handleAndGetError,
     makeStackLine,
@@ -137,6 +171,8 @@ module.exports = {
     newFunctionErrorMessage,
     newMethodErrorMessage,
     newNodeErrorMessage,
+    newNodesErrorMessage,
     newPropErrorMessage,
     newTsErrorMessage,
+    TypedError,
 };

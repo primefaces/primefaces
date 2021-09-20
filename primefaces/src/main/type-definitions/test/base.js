@@ -11,6 +11,13 @@ const { deleteFile, readDir, readFileUtf8, writeFileUtf8 } = require("../src/lan
 const { makeStackLine } = require("../src/error");
 
 /**
+ * @type {((name: string) => boolean)[]}
+ */
+ const TestsThatCheckValidateProperties = [
+    name => name.includes("ClassFields"),
+];
+
+/**
  * @param {(input: string, sourceName: string, sourceLocation: TypeDeclarationBundleFiles, inclusionHandler: InclusionHandler) => string[] | Promise<string[]>} processInput
  * @param {string} input
  * @param {string} sourceName
@@ -74,9 +81,9 @@ async function checkError(error, errorFilename, dir, dirEntry) {
     const projectRootDir = Paths.ProjectRootDir.replace(/\\/g, "/");
     while (i < expected.length && j < actual.length) {
         const expectedLine = expected[i]
-            .trim()
+            ?.trim()
             .replace(/\$\{PROJECT_BASEDIR\}/g, projectRootDir);
-        while (j < actual.length && actual[j].trim() !== expectedLine) {
+        while (j < actual.length && actual[j]?.trim() !== expectedLine) {
             j += 1;
         }
         if (j >= actual.length) {
@@ -88,6 +95,20 @@ async function checkError(error, errorFilename, dir, dirEntry) {
         i += 1;
     }
     return [];
+}
+
+/**
+ * @param {string} line 
+ * @param {import("fs").Dirent} dirEntry 
+ * @returns {boolean}
+ */
+function isLineApplicable(line, dirEntry) {
+    if (line.includes(`@${Tags.ValidateDefinitiveProps}`) || line.includes(`@${Tags.ValidateForcedProps}`)) {
+        if (!TestsThatCheckValidateProperties.some(t => t(dirEntry.name))) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /**
@@ -105,11 +126,18 @@ async function checkSuccess(actual, expectedFilename, dir, dirEntry) {
     catch (e) {
         return [`Test did not throw an error, but file '${expectedFilename}' with the expected output could not be read. Either add the expected output this file or fix the code / test.`];
     }
-    const expected = splitLines(fileContent);
-    const diffs = diffTrimmedLines(expected.join("\n"), actual.join("\n"), {
+    const projectRootDir = Paths.ProjectRootDir.replace(/\\/g, "/");
+    const expected = splitLines(fileContent)
+        .map(x => x.replace(/\$\{PROJECT_BASEDIR\}/g, projectRootDir));
+
+    const expectedCode = expected.join("\n");
+    const actualCode = actual.filter(line => isLineApplicable(line, dirEntry)).join("\n");
+
+    const diffs = diffTrimmedLines(expectedCode, actualCode, {
         newlineIsToken: true,
         ignoreWhitespace: true,
     });
+
     return diffs
         .flatMap((diff, line) => {
             if (diff.added === true || diff.removed === true) {

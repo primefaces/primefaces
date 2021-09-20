@@ -8,7 +8,7 @@ If you use the OutputPanel just as simple placeholder, it's better to use anothe
 <div jsf:id="..." jsf:rendered="#{...}">...</div>
 ```
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.outputpanel-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.OutputPanel-1.html)
 
 ## Info
 

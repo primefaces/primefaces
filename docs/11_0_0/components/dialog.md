@@ -2,7 +2,7 @@
 
 Dialog is a panel component that can overlay other elements on page.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.dialog-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Dialog-1.html)
 
 ## Info
 

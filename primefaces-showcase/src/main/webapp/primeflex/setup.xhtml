@@ -8,13 +8,24 @@
                 recommended to add PrimeFlex as it is likely to need such utilities when developing applications with PrimeFaces.</p>
 
             <h5>Install</h5>
-            <p>PrimeFlex is available at <a href="https://github.com/primefaces/primeflex">GitHub</a>. Download <i>primeflex.min.css</i>, add it to your application and include the path
+            <p>PrimeFlex is available at <a href="https://github.com/primefaces/primeflex/tree/2.0.0">GitHub</a>. Download <i>primeflex.min.css</i>, add it to your application and include the path
                 usign the <i>h:outputStylesheet</i> component.</p>
+            <p>PrimeFaces Showcase refers to version 2.0.0 of PrimeFlex. Alternative you can use (not backward compatible) cutting edge version 3.0.x of PrimeFlex.</p>
 
 <pre class="language-xml"><code>
 &lt;h:outputStylesheet name="%YOUR_PATH%/primeflex.min.css" /&gt;
-
 </code></pre>
+
+        <p>Or use WebJars...</p>
+       <pre class="language-xml"><code>
+        &lt;dependency&gt;
+           &lt;groupId>org.webjars.npm&lt;/groupId&gt;
+           &lt;artifactId>primeflex&lt;/artifactId&gt;
+           &lt;version>2.0.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        
+        &lt;h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" /&gt;
+        </code></pre>
 
             <p>PrimeFlex is a lightweight library, still it is possible to pick the utilities you need to make the file even smaller. For this, you need to remove the include paths and
                 create your own build by compiling it with SASS. For example, if you do not need to use the elevation utilities, comment it out and build your own file. Note that sass cli

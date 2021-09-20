@@ -28,13 +28,21 @@
  * @this {PrimeFaces.widget.SelectCheckboxMenu} PrimeFaces.widget.SelectCheckboxMenu.OnShowCallback 
  * 
  * @prop {JQuery} checkboxes The DOM element for the checkboxes that can be selected.
+ * @prop {JQuery} [closer] The DOM element for the button that closes the overlay panel with the select
+ * options (when the panel is shown).
  * @prop {JQuery} defaultLabel The DOM element for the default label.
  * @prop {boolean} disabled Whether this widget is currently disabled.
+ * @prop {JQuery} [filterInput] DOM element of the input element used for entering a filter text, if filtering is
+ * enabled.
+ * @prop {JQuery} [filterInputWrapper] DOM element of the wrapper that holds the input element used for entering a
+ * filter text, if filtering is enabled.
  * @prop {JQuery} groupHeaders The DOM elements for the headers of each option group.
  * @prop {PrimeFaces.widget.SelectCheckboxMenu.FilterFunction} filterMatcher The filter that was selected and is
  * currently used.
  * @prop {Record<PrimeFaces.widget.SelectCheckboxMenu.FilterMatchMode, PrimeFaces.widget.SelectCheckboxMenu.FilterFunction>} filterMatchers
  * Map between the available filter types and the filter implementation.
+ * @prop {JQuery} [header] DOM element of the header of the overlay panel with the available select items,
+ * when the overlay panel is shown.
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} inputs The DOM elements for the hidden inputs for each checkbox option.
  * @prop {boolean} isDynamicLoaded When loading the panel with the available options lazily: if they have been loaded
@@ -46,6 +54,7 @@
  * @prop {JQuery} keyboardTarget The DOM element for the hidden input element that that can be selected via pressing
  * tab. 
  * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
+ * @prop {JQuery} [labels] The DOM element with the labels for the available options in the overlay panel.
  * @prop {JQuery} labelContainer The DOM element for the container with the label indicating the currently selected
  * option.
  * @prop {string} labelId ID of the label element that indicates the currently selected option.
@@ -56,6 +65,10 @@
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {string} tabindex Tab index of this widget.
+ * @prop {JQuery} [toggler] The wrapping DOM element of the toggler for selecting or unselecting all options
+ * in the overlay panel with all selected items (when the overlay panel is shown).
+ * @prop {JQuery} [togglerBox] The DOM element with the toggler checkbox for selecting or unselecting all
+ * options in the overlay panel with all selected items (when the overlay panel is shown).
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
  * available checkbox options.
@@ -346,7 +359,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Sets up all event listenters required by this widget.
+     * Sets up all event listeners required by this widget.
      * @private
      */
     bindEvents: function() {

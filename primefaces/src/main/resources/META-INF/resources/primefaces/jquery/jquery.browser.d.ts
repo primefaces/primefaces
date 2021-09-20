@@ -4,6 +4,9 @@
  * Contains some additional types and interfaces required for the typings.
  */
 declare namespace JQueryBrowser {
+    /**
+     * Represents the retrieved information about the current browser, such as the type of browser and the OS.
+     */
     export interface BrowserInformation {
         /**
          * `true` if the current browser is an Android browser, `false` otherwise.
