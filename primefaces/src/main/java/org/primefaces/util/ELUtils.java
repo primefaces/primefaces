@@ -23,6 +23,7 @@
  */
 package org.primefaces.util;
 
+import java.util.function.Supplier;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
@@ -32,33 +33,38 @@ public class ELUtils {
     private ELUtils() {
     }
 
-    public static Class<?> getType(FacesContext context, ValueExpression ve, Lazy<Object> value) {
-
-        // no ValueExpression and no literal defined... skip
-        if (ve == null && value.get() == null) {
+    public static Class<?> getType(FacesContext context, ValueExpression ve) {
+        // no ValueExpression defined... skip
+        if (ve == null) {
             return null;
         }
 
-        Class<?> type = null;
-
         // try getExpectedType first, likely returns Object.class
-        if (ve != null) {
-            type = ve.getExpectedType();
-        }
+        Class<?> type = ve.getExpectedType();
 
         // fallback to getType
-        if ((type == null || type == Object.class) && ve != null) {
+        if (type == null || type == Object.class) {
             try {
                 type = ve.getType(context.getELContext());
             }
             catch (ELException e) {
                 // fails if the ValueExpression is actually a MethodExpression, see #7058
+                type = null;
             }
         }
 
+        return type;
+    }
+
+    public static Class<?> getType(FacesContext context, ValueExpression ve, Supplier<?> valueSupplier) {
+        Class<?> type = getType(context, ve);
+
         // fallback to the type of the value instance
-        if ((type == null || type == Object.class) && value.get() != null) {
-            type = value.get().getClass();
+        if ((type == null || type == Object.class) && valueSupplier != null) {
+            Object value = valueSupplier.get();
+            if (value != null) {
+                type = value.getClass();
+            }
         }
 
         return type;

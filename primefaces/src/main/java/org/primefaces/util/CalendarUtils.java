@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -334,15 +333,12 @@ public class CalendarUtils {
         }
         else {
             //Delegate to global defined converter (e.g. joda)
-            ValueExpression ve = calendar.getValueExpression("value");
-            if (ve != null) {
-                Class<?> type = ve.getType(context.getELContext());
-                if (type != null && type != Object.class && type != Date.class &&
-                        type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
-                    converter = context.getApplication().createConverter(type);
-                    if (converter != null) {
-                        return converter.getAsString(context, calendar, value);
-                    }
+            Class<?> type = ELUtils.getType(context, calendar.getValueExpression("value"));
+            if (type != null && type != Object.class && type != Date.class &&
+                    type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
+                converter = context.getApplication().createConverter(type);
+                if (converter != null) {
+                    return converter.getAsString(context, calendar, value);
                 }
             }
 

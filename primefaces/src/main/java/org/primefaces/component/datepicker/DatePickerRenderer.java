@@ -64,7 +64,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String pattern = datePicker.getPattern() == null ? datePicker.calculatePattern() : datePicker.getPattern();
 
         if (datePicker.isShowTimeWithoutDefault() == null) {
-            Class<?> type = datePicker.getTypeFromValueByValueExpression(context);
+            Class<?> type = datePicker.getValueType();
 
             if (type != null) {
                 datePicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
@@ -75,7 +75,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         }
 
         if (datePicker.isTimeOnlyWithoutDefault() == null) {
-            Class<?> type = datePicker.getTypeFromValueByValueExpression(context);
+            Class<?> type = datePicker.getValueType();
 
             if (type != null) {
                 datePicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
