@@ -3,7 +3,7 @@
 Wizard provides an ajax enhanced UI to implement a workflow easily in a single page. Wizard
 consists of several child tab components where each tab represents a step in the process.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.wizard-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Wizard-1.html)
 
 ## Info
 

@@ -61,7 +61,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         }
         else {
             String targetURL = getTargetURL(context, link);
-            if (LangUtils.isValueBlank(targetURL)) {
+            if (LangUtils.isBlank(targetURL)) {
                 targetURL = "#";
             }
 

@@ -5,7 +5,7 @@
 /// <reference types="chart.js" />
 /// <reference types="cropperjs" />
 /// <reference types="downloadjs" />
-/// <reference types="googlemaps" />
+/// <reference types="google.maps" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
 /// <reference types="moment-timezone" />
@@ -17,7 +17,7 @@
   * the printer component. Also note that while PrimeFaces currently uses
   * this library for printing, this is subject to change in future releases.
   */
- declare const printJS: typeof import("print-js");
+declare const printJS: typeof import("print-js");
 
 // Additional required type declarations for PrimeFaces that are not picked up from the source code
 
@@ -34,7 +34,7 @@
  * }
  * ```
  *
- * __Note to typescript users__: You will need to specify the type parameters explicitly. The best way to do so is by
+ * __Note to TypeScript users__: You will need to specify the type parameters explicitly. The best way to do so is by
  * defining the interfaces for the classes separately:
  * ```typescript
  * interface BaseWidgetCfg {
@@ -86,14 +86,6 @@ declare const Class: PrimeFaces.Class;
 
 declare namespace PrimeFaces {
     /**
-     * Construct a type with the properties of T except for those in type K.
-     *
-     * Same as the builtin TypeScript type `Omit`, but repeated here to support slightly older TypeScript versions (3.4
-     * and lower) that did not include it yet.
-     */
-    export type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
-
-    /**
      * Similar to `Partial<Base>`, but in addition to making the properties optional, also makes the properties
      * nullable.
      * @typeparam Base Type of an object with properties to make partial.
@@ -138,8 +130,9 @@ declare namespace PrimeFaces {
     export type ValueOf<T> = T[keyof T];
 
     /**
-     * Constructs an object type a union of two-tuples. The first item in the pair
-     * is used as the key, the second item as the type of the property's value.
+     * Constructs an object type out of a union of two-tuples. The first item in
+     * the pair is used as the key, the second item as the type of the
+     * property's value.
      * ```typescript
      * type Y = ["bar", RegExp] | ["foo", number];
      * type Z = KeyValueTupleToObject<Y>;
@@ -147,8 +140,8 @@ declare namespace PrimeFaces {
      * ```
      * @typeparam T A union of pairs with the key and value for the object's properties.
      */
-    export type KeyValueTupleToObject<T extends [keyof any, any]> = {
-        [K in T[0]]: Extract<T, [K, any]>[1]
+    export type KeyValueTupleToObject<T extends [PropertyKey, unknown]> = {
+        [K in T[0]]: Extract<T, [K, unknown]>[1]
     };
 
     /**
@@ -179,7 +172,7 @@ declare namespace PrimeFaces {
      * just `Base`.
      */
     export type BindThis<Base, ThisContext> =
-        Base extends (...args: any) => any ?
+        Base extends (...args: never[]) => unknown ?
         (this: ThisContext, ...args: Parameters<Base>) => ReturnType<Base> :
         Base;
 
@@ -198,7 +191,7 @@ declare namespace PrimeFaces {
      * additional property `_super` of type `Base` added. Otherwise, returns just `Base`.
      */
     export type BindThisAndSuper<Base, ThisContext> =
-        Base extends (...args: any) => any ?
+        Base extends (...args: never[]) => unknown ?
         (this: ThisContext & { _super: Base }, ...args: Parameters<Base>) => ReturnType<Base> :
         Base;
 
@@ -330,7 +323,7 @@ declare namespace PrimeFaces {
         new(): Class<TBase>;
         extend<
             TSub extends { init(...args: TArgs): void } & Omit<TBase, "init">,
-            TArgs extends any[],
+            TArgs extends never[],
             >(
                 prop: PartialBy<ClassExtendProps<TBase, TSub>, keyof Omit<TBase, "init">>
             ): Class<TSub> & (new (...args: TArgs) => TSub) & { prototype: TSub };
@@ -390,7 +383,7 @@ declare namespace PrimeFaces {
         moreLinkText?: string;
         list?: string;
         messages?: Record<string, string>;
-        [i18nKey: string]: any;
+        [i18nKey: string]: unknown;
     }
 }
 
@@ -410,7 +403,7 @@ declare namespace PrimeFaces {
     /**
      * A converter for converting string values to the correct data type.
      */
-    export interface Converter<T = any> {
+    export interface Converter<T = unknown> {
         /**
          * Converts a string value to the correct data type.
          * @param element Element for which the value was submitted.
@@ -423,7 +416,7 @@ declare namespace PrimeFaces {
     /**
      * A validator for checking whether the value of an element confirms to certain restrictions.
      */
-    export interface Validator<T = any> {
+    export interface Validator<T = unknown> {
         /**
          * Validates the given element. If it is not valid, the error message should be thrown.
          * @param element Element to validate
@@ -499,9 +492,16 @@ declare namespace PrimeFaces {
     export let confirmDialog: PrimeFaces.widget.ConfirmDialog | undefined;
 
     /**
-     * The main container element of the source component that issued the confirmation request.
+     * The main container element of the source component that issued the confirmation request, used e.g. by the
+     * `ConfirmDialog` widget.
      */
     export let confirmSource: JQuery | undefined | null;
+
+    /**
+     * The main container element of the source component that issued the popup confirmation request, used e.g. by the
+     * `ConfirmPopup` widget.
+     */
+    export let confirmPopupSource: JQuery | undefined | null;
 
     /**
      * CSS transition callbacks that can be passed to the methods in {@link CssTransitionHandler}.
@@ -519,26 +519,26 @@ declare namespace PrimeFaces {
          * no event is passed and the this context is the Window.
          */
         onEntering?: (this: JQuery.TriggeredEvent | Window) => void;
-        
+
         /**
          * Called when the entering process has finished.
          * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
          * no event is passed and the this context is the Window.
          */
         onEntered?: (this: JQuery.TriggeredEvent | Window) => void;
-        
+
         /**
          * Called when the exiting process is about to start.
          */
         onExit?: () => void;
-        
+
         /**
          * Called during the exiting process.
          * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
          * no event is passed and the this context is the Window.
          */
         onExiting?: (this: JQuery.TriggeredEvent | Window) => void;
-        
+
         /**
          * Called when the exiting process has finished.
          * @this The event that occurred. When animations are globally disabled, this callback may still be called, but
@@ -585,12 +585,12 @@ declare namespace PrimeFaces.ajax {
      * are available in this object. This is also how you can access pass values from the server to the client after
      * calling a remote command. See {@link PrimeFaces.ajax.pfXHR} and {@link PrimeFaces.ab}.
      */
-    export type PrimeFacesArgs = Record<string, any>;
+    export type PrimeFacesArgs = Record<string, unknown>;
 
     /**
      * Additional settings on a {@link JQuery.jqXHR} request, such as portlet forms and nonces.
      */
-    export type PrimeFacesSettings = Record<string, any>;
+    export type PrimeFacesSettings = Record<string, unknown>;
 
     /**
      * Callback for an AJAX request that is always called after the request completes, irrespective of whether it
@@ -764,7 +764,7 @@ declare namespace PrimeFaces.ajax {
      * @typeparam V Type of the value of the callback parameter. Please note that it will be converted to string
      * before it is passed to the server.
      */
-    export interface RequestParameter<K extends string = string, V = any> {
+    export interface RequestParameter<K extends string = string, V = unknown> {
         /**
          * The name of the parameter to pass to the server.
          */
@@ -853,7 +853,7 @@ declare namespace PrimeFaces.ajax {
         /**
          * Additional options that can be passed when sending an AJAX request to override the current options.
          */
-        ext: ConfigurationExtender;
+        ext: Partial<ConfigurationExtender>;
 
         /**
          * Additional search expression that is added to the `process` option.
@@ -958,7 +958,7 @@ declare namespace PrimeFaces.ajax {
     /**
      * Additional options that can be passed when sending an AJAX request to override the current options.
      */
-    export type ConfigurationExtender = Pick<Configuration, "update" | "process" | "onstart" | "params" | "onerror" | "onsuccess" | "oncomplete"> & {
+    export type ConfigurationExtender = Pick<Configuration, "update" | "process" | "onstart" | "params" | "partialSubmit" | "onerror" | "onsuccess" | "oncomplete"> & {
         /**
          * If given, this function is called once for each component. It is passed that serialized values for the
          * component and should return the filtered values that are to be sent to the server. If not given, no
@@ -1036,10 +1036,10 @@ declare namespace PrimeFaces.ajax {
      * This is done because multiple values for the same name should be send by including multiple items in the request
      * callback parameter array.
      */
-    export type RemoteCommandParams<T extends Record<string, any> = Record<string, any>> = {
+    export type RemoteCommandParams<T extends Record<string, unknown> = Record<string, unknown>> = {
         [P in keyof T]: P extends string
-            ? PrimeFaces.ajax.RequestParameter<P, T[P] extends (infer R)[] ? R : T[P]>
-            : never;
+        ? PrimeFaces.ajax.RequestParameter<P, T[P] extends (infer R)[] ? R : T[P]>
+        : never;
     }[keyof T][];
 
     /**
@@ -1088,9 +1088,9 @@ declare namespace PrimeFaces.ajax {
      * @typeparam R Object type of the data returned by the remote command.
      */
     export type RemoteCommand<
-        T extends Record<string, any> = Record<string, any>,
+        T extends Record<string, unknown> = Record<string, unknown>,
         R extends PrimeFacesArgs = PrimeFacesArgs
-    > =
+        > =
         /**
          * @param params Optional parameters that are passed to the remote command.
          * @return A promise that is settled when the remote command it complete. It is resolved with the data received
@@ -1122,11 +1122,11 @@ declare namespace PrimeFaces.validation {
     }
 
 
-   /**
-     * The options that can be passed to the Validation method. Note that you do not have to provide a value
-     * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
-     * do not.
-     */
+    /**
+      * The options that can be passed to the Validation method. Note that you do not have to provide a value
+      * for all these property. Most methods methods such as `PrimeFaces.vb` have got sensible defaults in case you
+      * do not.
+      */
     export interface Configuration {
 
         /**

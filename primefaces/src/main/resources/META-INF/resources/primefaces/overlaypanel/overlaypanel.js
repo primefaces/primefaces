@@ -279,6 +279,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
     show: function(target) {
+        if (this.isVisible()) {
+            return;
+        }
     	var thisPanel = this;
         this.showTimeout = setTimeout(function() {
             if (!thisPanel.loaded && thisPanel.cfg.dynamic) {

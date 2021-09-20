@@ -83,7 +83,7 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Sets up all event listenters required by this widget.
+     * Sets up all event listeners required by this widget.
      * @private
      */
     _bindEvents: function() {

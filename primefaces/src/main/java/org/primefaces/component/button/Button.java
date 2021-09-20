@@ -44,7 +44,7 @@ public class Button extends ButtonBase {
         Object value = getValue();
         String styleClass = "";
 
-        if (value != null && LangUtils.isValueBlank(icon)) {
+        if (value != null && LangUtils.isBlank(icon)) {
             styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
         else if (value != null && LangUtils.isNotBlank(icon)) {

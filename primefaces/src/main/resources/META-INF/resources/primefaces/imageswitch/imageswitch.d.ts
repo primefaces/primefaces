@@ -109,6 +109,10 @@ declare namespace JQueryCycle {
         left: number;
     }
 
+    /**
+     * Optional settings for the image switch jQuery plugin that can be passed when initializing an image switch
+     * instance.
+     */
     export interface Configuration {
         /**
          * Class name used for the active pager link

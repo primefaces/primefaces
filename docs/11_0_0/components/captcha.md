@@ -2,7 +2,7 @@
 
 Captcha is a form validation component based on Recaptcha API V2.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.captcha-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Captcha-1.html)
 
 ## Info
 

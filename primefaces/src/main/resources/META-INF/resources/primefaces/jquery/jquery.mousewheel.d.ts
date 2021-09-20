@@ -12,9 +12,13 @@ declare namespace JQueryMousewheel {
      * The event that is triggered when the mousewheel is rotated.
      */
     export interface MousewheelEvent<
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TDelegateTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TData = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TCurrentTarget = any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         TTarget = any
         > extends JQuery.TriggeredEvent<TDelegateTarget, TData, TCurrentTarget, TTarget> {
         type: "mousewheel";

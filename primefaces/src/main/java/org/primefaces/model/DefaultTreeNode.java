@@ -26,7 +26,7 @@ package org.primefaces.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class DefaultTreeNode implements TreeNode, Serializable {
+public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
 
     public static final String DEFAULT_TYPE = "default";
 
@@ -35,9 +35,9 @@ public class DefaultTreeNode implements TreeNode, Serializable {
 
     private String type;
 
-    private Object data;
+    private T data;
 
-    private List<TreeNode> children;
+    private List<TreeNode<T>> children;
 
     private TreeNode parent;
 
@@ -54,13 +54,13 @@ public class DefaultTreeNode implements TreeNode, Serializable {
         this.children = new TreeNodeChildren(this);
     }
 
-    public DefaultTreeNode(Object data) {
+    public DefaultTreeNode(T data) {
         this.type = DEFAULT_TYPE;
         this.children = new TreeNodeChildren(this);
         this.data = data;
     }
 
-    public DefaultTreeNode(Object data, TreeNode parent) {
+    public DefaultTreeNode(T data, TreeNode parent) {
         this.type = DEFAULT_TYPE;
         this.data = data;
         this.children = new TreeNodeChildren(this);
@@ -69,7 +69,7 @@ public class DefaultTreeNode implements TreeNode, Serializable {
         }
     }
 
-    public DefaultTreeNode(String type, Object data, TreeNode parent) {
+    public DefaultTreeNode(String type, T data, TreeNode parent) {
         this.type = type;
         this.data = data;
         this.children = new TreeNodeChildren(this);
@@ -89,27 +89,26 @@ public class DefaultTreeNode implements TreeNode, Serializable {
     }
 
     @Override
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
     @Override
-    public List<TreeNode> getChildren() {
+    public List<TreeNode<T>> getChildren() {
         return children;
     }
 
-    public void setChildren(List<TreeNode> children) {
+    public void setChildren(List<TreeNode<T>> children) {
         if (children instanceof TreeNodeChildren) {
             this.children = children;
         }
         else {
-            TreeNodeChildren nodeChildren = new TreeNodeChildren(this);
-            nodeChildren.addAll(children);
-            this.children = nodeChildren;
+            this.children = new TreeNodeChildren(this);
+            this.children.addAll(children);
         }
     }
 

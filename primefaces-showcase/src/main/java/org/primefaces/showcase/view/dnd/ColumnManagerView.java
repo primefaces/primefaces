@@ -23,7 +23,6 @@
  */
 package org.primefaces.showcase.view.dnd;
 
-import javax.faces.view.ViewScoped;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.showcase.domain.Product;
@@ -31,6 +30,7 @@ import org.primefaces.showcase.service.ProductService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -50,7 +50,7 @@ public class ColumnManagerView implements Serializable {
 
     private List<Product> products;
 
-    private TreeNode availableColumns;
+    private TreeNode<Product> availableColumns;
 
     @Inject
     private ProductService service;
@@ -102,7 +102,7 @@ public class ColumnManagerView implements Serializable {
         this.columns.add(dropColumnIndex, new ColumnModel(property.toUpperCase(), property));
 
         //remove from nodes
-        TreeNode root = availableColumns.getChildren().get(0);
+        TreeNode<?> root = availableColumns.getChildren().get(0);
         for (TreeNode node : root.getChildren()) {
             ColumnModel model = (ColumnModel) node.getData();
             if (model.getProperty().equals(property)) {

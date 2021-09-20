@@ -23,12 +23,12 @@
  */
 package org.primefaces.showcase.view.data.treetable;
 
-import javax.faces.view.ViewScoped;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.showcase.domain.Document;
 
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 
@@ -36,7 +36,7 @@ import java.io.Serializable;
 @ViewScoped
 public class PaginatorView implements Serializable {
 
-    private TreeNode root;
+    private TreeNode<Document> root;
 
     @PostConstruct
     public void init() {

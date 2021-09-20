@@ -30,14 +30,18 @@ import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.PostRestoreStateEvent;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
+import org.primefaces.component.treetable.feature.FilterFeature;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
@@ -54,6 +58,7 @@ import org.primefaces.util.MapBuilder;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 public class TreeTable extends TreeTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
@@ -99,16 +104,25 @@ public class TreeTable extends TreeTableBase {
 
     static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
             .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
+            .put(MatchMode.NOT_STARTS_WITH, new NegationFilterConstraintWrapper(new StartsWithFilterConstraint()))
             .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
+            .put(MatchMode.NOT_ENDS_WITH, new NegationFilterConstraintWrapper(new EndsWithFilterConstraint()))
             .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
+            .put(MatchMode.NOT_CONTAINS, new NegationFilterConstraintWrapper(new ContainsFilterConstraint()))
             .put(MatchMode.EXACT, new ExactFilterConstraint())
+            .put(MatchMode.NOT_EXACT, new NegationFilterConstraintWrapper(new ExactFilterConstraint()))
             .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
             .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
             .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
             .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
             .put(MatchMode.EQUALS, new EqualsFilterConstraint())
+            .put(MatchMode.NOT_EQUALS, new NegationFilterConstraintWrapper(new EqualsFilterConstraint()))
             .put(MatchMode.IN, new InFilterConstraint())
+            .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
+            .put(MatchMode.RANGE, new RangeFilterConstraint())
+            .put(MatchMode.BETWEEN, new RangeFilterConstraint())
+            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new RangeFilterConstraint()))
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -156,10 +170,6 @@ public class TreeTable extends TreeTableBase {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
     }
 
-    public boolean isSortRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_sorting");
-    }
-
     public boolean isPaginationRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
     }
@@ -178,10 +188,6 @@ public class TreeTable extends TreeTableBase {
 
     public boolean isCellEditInitRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellEditInit");
-    }
-
-    public boolean isFilterRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
     }
 
     @Override
@@ -288,6 +294,21 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+
+        // restore "value" from "filteredValue"
+        if (event instanceof PostRestoreStateEvent
+                && isFilteringEnabled()
+                && this == event.getComponent()) {
+            TreeNode<?> filteredValue = getFilteredValue();
+            if (filteredValue != null) {
+                setValue(filteredValue);
+            }
+        }
+    }
+
+    @Override
     public void processDecodes(FacesContext context) {
         if (isToggleRequest(context)) {
             decode(context);
@@ -301,10 +322,11 @@ public class TreeTable extends TreeTableBase {
     public void processValidators(FacesContext context) {
         super.processValidators(context);
 
-        if (isFilterRequest(context)) {
-            Map<String, FilterMeta> filterBy = initFilterBy(context);
-            updateFilterByValuesWithFilterRequest(context, filterBy);
-            setFilterByAsMap(filterBy);
+        //filters need to be decoded during PROCESS_VALIDATIONS phase,
+        //so that local values of each filters are properly converted and validated
+        FilterFeature feature = FilterFeature.getInstance();
+        if (feature.shouldDecode(context, this)) {
+            feature.decode(context, this);
 
             AjaxBehaviorEvent event = deferredEvents.get("filter");
             if (event != null) {
@@ -382,6 +404,12 @@ public class TreeTable extends TreeTableBase {
     @Override
     public Object saveState(FacesContext context) {
         resetDynamicColumns();
+
+        // reset value when filtering is enabled
+        // filtering stores the filtered values the value property, so it needs to be resetted; see #7336
+        if (isFilteringEnabled()) {
+            setValue(null);
+        }
 
         // reset component for MyFaces view pooling
         columns = null;
@@ -590,12 +618,12 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
     }
 
     @Override
-    public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), sortBy);
+    public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), filterBy);
     }
 
     @Override

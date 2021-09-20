@@ -204,6 +204,11 @@ public class LazyDataModelIteratorTest {
             }
             return page;
         }
+
+        @Override
+        public int count(Map<String, FilterMeta> filterBy) {
+            return totalItems;
+        }
     }
 
 }

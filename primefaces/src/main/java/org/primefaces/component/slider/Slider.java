@@ -149,7 +149,7 @@ public class Slider extends SliderBase {
             else {
                 submittedValueString = submittedValue.toString();
             }
-            if (LangUtils.isValueBlank(submittedValueString)) {
+            if (LangUtils.isBlank(submittedValueString)) {
                 return;
             }
 

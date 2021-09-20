@@ -159,7 +159,7 @@ public class PrimeFaces {
      * @param base the base component from which we will start to resolve the search expression.
      */
     public void focus(String expression, UIComponent base) {
-        if (LangUtils.isValueBlank(expression)) {
+        if (LangUtils.isBlank(expression)) {
             return;
         }
 
@@ -331,7 +331,7 @@ public class PrimeFaces {
 
             for (String expression : expressions) {
 
-                if (LangUtils.isValueBlank(expression)) {
+                if (LangUtils.isBlank(expression)) {
                     continue;
                 }
 
@@ -476,7 +476,7 @@ public class PrimeFaces {
         }
 
         /**
-         * Gets multiview state bean attached to a component in a specific view.
+         * Gets multiview state attached to a component in a specific view.
          *
          * @param viewId viewId of a page
          * @param clientId clientId of a component
@@ -497,6 +497,33 @@ public class PrimeFaces {
             }
 
             return state;
+        }
+
+        /**
+         * Gets or create the multiview state attached to a component in a specific view.
+         *
+         * @param viewId viewId of a page
+         * @param clientId clientId of a component
+         * @param supplier bean state instance
+         * @param <T> bean state generic
+         *
+         * @return multiview state bean attached to a component
+         */
+        public <T> T get(String viewId, String clientId, Supplier<T> supplier) {
+            return get(viewId, clientId, true, supplier);
+        }
+
+        /**
+         * Gets multiview state attached to a component in a specific view.
+         *
+         * @param viewId viewId of a page
+         * @param clientId clientId of a component
+         * @param <T> bean state generic
+         *
+         * @return multiview state bean attached to a component or null
+         */
+        public <T> T get(String viewId, String clientId) {
+            return get(viewId, clientId, false, null);
         }
 
         private Set<MVSKey> getMVSKeys() {

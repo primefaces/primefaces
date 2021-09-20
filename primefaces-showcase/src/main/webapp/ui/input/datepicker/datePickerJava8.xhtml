@@ -26,6 +26,7 @@
                 hourText: 'Hora',
                 minuteText: 'Minuto',
                 secondText: 'Segundo',
+                millisecondText: 'Milisegundo',
                 currentText: 'Fecha actual',
                 ampm: false,
                 month: 'Mes',
@@ -54,6 +55,7 @@
                 hourText: 'Stunde',
                 minuteText: 'Minute',
                 secondText: 'Sekunde',
+                millisecondText: 'Millisekunde',
                 currentText: 'Aktuelles Datum',
                 ampm: false,
                 month: 'Monat',
@@ -84,7 +86,7 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datepicker"/>
-    <ui:param name="widgetLink" value="datepicker-1"/>
+    <ui:param name="widgetLink" value="DatePicker-1"/>
 
     <ui:define name="implementation">
         <h:form id="form">
@@ -325,6 +327,12 @@
                     <div class="p-field p-col-12 p-md-4">
                         <p:outputLabel for="timeonly8" value="Time Only (with timeInput)"/>
                         <p:datePicker id="timeonly8" value="#{calendarJava8View.time8}" timeInput="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="timeonlyMilliseconds" value="Time Only (HH:mm:ss.SSS)"/>
+                        <p:datePicker id="timeonlyMilliseconds" value="#{calendarJava8View.time9}"
+                                      showSeconds="true" showMilliseconds="true" pattern="HH:mm:ss.SSS"/>
                     </div>
                 </div>
             </div>

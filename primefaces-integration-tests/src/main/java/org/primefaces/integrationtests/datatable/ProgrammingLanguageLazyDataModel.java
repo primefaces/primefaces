@@ -23,20 +23,21 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.MatchMode;
+import org.primefaces.model.SortMeta;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.MatchMode;
-import org.primefaces.model.SortMeta;
-
 public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingLanguage> {
 
     private static final long serialVersionUID = -3415081263308946252L;
+
     private final List<ProgrammingLanguage> langs;
 
     public ProgrammingLanguageLazyDataModel() {
@@ -47,11 +48,26 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     }
 
     @Override
-    public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
+    public int count(Map<String, FilterMeta> filterBy) {
+        List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(null, filterBy);
+        return (int) langsFiltered.size();
+    }
+
+    @Override
+    public List<ProgrammingLanguage> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        List<ProgrammingLanguage> langsFiltered = sortAndFilterInternal(sortBy, filterBy);
+        setRowCount(langsFiltered.size());
+
+        return langsFiltered.stream()
+                    .skip(first).limit(pageSize)
+                    .collect(Collectors.toList());
+    }
+
+    protected List<ProgrammingLanguage> sortAndFilterInternal(Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         Stream<ProgrammingLanguage> langsStream = langs.stream();
 
-        if (filterMeta != null && !filterMeta.isEmpty()) {
-            for (FilterMeta meta : filterMeta.values()) {
+        if (filterBy != null && !filterBy.isEmpty()) {
+            for (FilterMeta meta : filterBy.values()) {
                 if (meta.getFilterValue() != null) {
                     langsStream = langsStream.filter(lang -> {
                         if (meta.getField().equals("firstAppeared") && meta.getMatchMode() == MatchMode.GREATER_THAN_EQUALS) {
@@ -67,20 +83,13 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
             }
         }
 
-        if (sortMeta != null && !sortMeta.isEmpty()) {
-            for (SortMeta meta : sortMeta.values()) {
+        if (sortBy != null && !sortBy.isEmpty()) {
+            for (SortMeta meta : sortBy.values()) {
                 langsStream = langsStream.sorted(new ProgrammingLanguageLazySorter(meta));
             }
         }
 
-        return langsStream
-                    .skip(first).limit(pageSize)
-                    .collect(Collectors.toList());
-    }
-
-    @Override
-    public int getRowCount() {
-        return langs.size();
+        return langsStream.collect(Collectors.toList());
     }
 
     @Override
@@ -96,5 +105,9 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     public List<ProgrammingLanguage> getLangs() {
         return langs;
+    }
+
+    public void delete(ProgrammingLanguage language) {
+        langs.remove(language);
     }
 }

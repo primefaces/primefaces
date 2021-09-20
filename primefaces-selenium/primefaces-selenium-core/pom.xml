@@ -16,13 +16,6 @@
 
     <name>PrimeFaces Selenium - Core</name>
 
-    <properties>
-        <byte-buddy.version>1.11.1</byte-buddy.version>
-        <junit.version>5.7.2</junit.version>
-        <selenium.version>3.141.59</selenium.version>
-        <jakarta.faces.version>2.3.16</jakarta.faces.version>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -45,36 +38,37 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-api</artifactId>
-            <version>${selenium.version}</version>
+            <version>3.141.59</version>
         </dependency>
-
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
+            <version>3.141.59</version>
         </dependency>
 
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>${byte-buddy.version}</version>
+            <version>1.11.15</version>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
-            <version>${jakarta.faces.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -19,6 +19,7 @@ PrimeFaces.locales['tr'] = {
     hourText: 'Saat',
     minuteText: 'Dakika',
     secondText: 'Saniye',
+    millisecondText: 'Milisaniye',
     currentText: 'Geçerli Tarih',
     ampm: false,
     year: 'Yıl',

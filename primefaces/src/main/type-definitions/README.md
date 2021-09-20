@@ -1,7 +1,7 @@
 # JavaScript API doc generator
 
 This directory contains the script for generating the typescript declaration
-file and the typedocs for the JavaScript part of PrimeFaces.
+file and the type docs for the JavaScript part of PrimeFaces.
 
 It
 
@@ -107,9 +107,9 @@ node test/index.js -- "TsValidateTest#ValidationError" --verbose
 # Writes output to the given directory.
 # For local development, use some path outside this project.
 npm run generate-d-ts -- \
+  --packagejson src/main/type-definitions/package.json \
   --declarationoutputdir /path/to/temporary/output/directory \
-  --typedocoutputdir /path/to/temporary/output/directory \
-  --packagejson ./package.json
+  --typedocoutputdir /path/to/temporary/output/directory
 ```
 
 To see a list of all available options, run 
@@ -142,16 +142,17 @@ mvn deploy -P release \
   `src/main/type-definitions/package.json`.
 * The `LICENSE` and `src/main/type-definitions/NPM.md` are included as well.
 
-To manually publish the current type declarations to npm, run
+To manually publish the current type declarations to npm, run (this uses the major and minor version form the `pom.xml`)
 
 ```bash
+# Update JSDocs in docs/ directory
+mvn clean install -P jsdoc-update
+
+# Publish to NPM
 mvn \
   org.codehaus.mojo:build-helper-maven-plugin:parse-version \
   com.github.eirslett:frontend-maven-plugin:npm@publish-to-npm \
   "-Dnpm.token=token"
-
-# you can also just use a profile, but this compiles Java etc. and takes longer
-mvn package -P jsdoc-publish -DskipTests "-Dnpm.token=token"
 ```
 
 To publish with a different major and minor version, run
@@ -1117,9 +1118,9 @@ do not have to follow every single rule to the letter.
   tag, the parser will interpret it as part of the tag's description.
 * Some tags have multiple names, and while neither is wrong, to keep it
   consistent:
-    * use `@return` instead of `@returns`
+    * use `@returns` instead of `@return`
     * use `@prop` instead of `@property`
-    * use `@yield` instead of `@yield`
+    * use `@yields` instead of `@yield`
 * Keep tags of the same type together. If possible, try to keep tags in this
   order:
     * @typedef
@@ -1130,8 +1131,10 @@ do not have to follow every single rule to the letter.
     * @template
     * @prop
     * @method
+    * @this
     * @param
     * @return
+    * @throws
     * @see
     * @author
 

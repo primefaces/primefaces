@@ -23,21 +23,17 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.HasCapabilities;
+import org.primefaces.integrationtests.AbstractTableTest;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.By;
-import org.openqa.selenium.HasCapabilities;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.model.datatable.Row;
-
-public abstract class AbstractDataTableTest extends AbstractPrimePageTest {
+public abstract class AbstractDataTableTest extends AbstractTableTest {
 
     protected final List<ProgrammingLanguage> languages = new ProgrammingLanguageService().getLangs();
     protected final ProgrammingLanguageLazyDataModel model = new ProgrammingLanguageLazyDataModel();
@@ -87,40 +83,13 @@ public abstract class AbstractDataTableTest extends AbstractPrimePageTest {
     protected void assertRows(List<Row> rows, List<ProgrammingLanguage> langs) {
         int expectedSize = langs.size();
         Assertions.assertNotNull(rows);
-        if (expectedSize == 0) {
-            expectedSize = 1; // No records found.
-        }
         Assertions.assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (ProgrammingLanguage programmingLanguage : langs) {
             String rowText = rows.get(row).getCell(0).getText();
-            if (!rowText.equalsIgnoreCase("No records found.")) {
-                Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText));
-                row++;
-            }
-        }
-    }
-
-    protected void assertHeaderSorted(WebElement header, String sortDirection, int sortPriority) {
-        String directionClass = null;
-        switch (sortDirection) {
-            case "ASC":
-                directionClass = "ui-icon-triangle-1-n";
-                break;
-            case "DESC":
-                directionClass = "ui-icon-triangle-1-s";
-                break;
-            default:
-                break;
-        }
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
-        WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
-        if (sortPriority > 0) {
-            Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
-        }
-        else {
-            Assertions.assertEquals("", badge.getText());
+            Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
+            row++;
         }
     }
 
@@ -136,10 +105,4 @@ public abstract class AbstractDataTableTest extends AbstractPrimePageTest {
         }
     }
 
-    protected void filterGlobal(WebElement inputGlobalFilter, String filter) {
-        // maybe we can move some of this to PF Selenium (InputText?, DataTable?)
-        inputGlobalFilter.clear();
-        inputGlobalFilter.sendKeys(filter);
-        PrimeSelenium.guardAjax(inputGlobalFilter).sendKeys(Keys.TAB);
-    }
 }

@@ -3804,81 +3804,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Index of the first visible item.]]>
+                <![CDATA[Index of the first item.]]>
             </description>
-            <name>firstVisible</name>
+            <name>page</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Number of visible items per page. Default is 3.]]>
+                <![CDATA[Shortcut for header facet.]]>
             </description>
-            <name>numVisible</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets continuous scrolling. Default is false.]]>
-            </description>
-            <name>circular</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets vertical scrolling. Default is false]]>
-            </description>
-            <name>vertical</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.]]>
-            </description>
-            <name>autoPlayInterval</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines number of pageLinks of paginator.]]>
-            </description>
-            <name>pageLinks</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the animation effect slide or fade. Default is slide.]]>
-            </description>
-            <name>effect</name>
+            <name>headerText</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of the animation effect. Default is easeInOutCirc.]]>
+                <![CDATA[Shortcut for footer facet.]]>
             </description>
-            <name>easing</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Sets the speed of the scrolling animation in milliseconds. Default is 500.]]>
-            </description>
-            <name>effectDuration</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text format of the pager dropdown elements. Default is "{page}".]]>
-            </description>
-            <name>dropdownTemplate</name>
+            <name>footerText</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -3900,89 +3844,97 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Inline style of each item container.]]>
+                <![CDATA[Defines if scrolling would be infinite. Default is false.]]>
             </description>
-            <name>itemStyle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of each item container.]]>
-            </description>
-            <name>itemStyleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Shortcut for header facet.]]>
-            </description>
-            <name>headerText</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Shortcut for footer facet.]]>
-            </description>
-            <name>footerText</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[In responsive mode, carousel adjusts its content based on screen size.]]>
-            </description>
-            <name>responsive</name>
+            <name>circular</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets the time in milliseconds to have Carousel start scrolling automatically after being initialized. Default is 0.]]>
+            </description>
+            <name>autoplayInterval</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Number of visible items per page. Default is 1.]]>
+            </description>
+            <name>numVisible</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Number of items to scroll. Default is 1.]]>
+            </description>
+            <name>numScroll</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A list of options for responsive design.]]>
+            </description>
+            <name>responsiveOptions</name>
+            <required>false</required>
+            <type>java.util.List</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the layout of the component, valid values are "horizontal" and "vertical". Default is vertical.]]>
+            </description>
+            <name>orientation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to invoke after scroll.]]>
+            </description>
+            <name>onPageChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Height of the viewport in vertical layout. Default is 300px.]]>
+            </description>
+            <name>verticalViewPortHeight</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of main content.]]>
+            </description>
+            <name>contentStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the viewport container.]]>
+            </description>
+            <name>containerStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the paginator items.]]>
+            </description>
+            <name>indicatorsContentStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
                 <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
             </description>
             <name>touchable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Breakpoint value in pixels to switch between small and large viewport. Default is 640]]>
-            </description>
-            <name>breakpoint</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Makes panel toggleable. Default is false.]]>
-            </description>
-            <name>toggleable</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Speed of toggling in milliseconds. Default is 500]]>
-            </description>
-            <name>toggleSpeed</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Renders a toggleable panel as collapsed. Default is false.]]>
-            </description>
-            <name>collapsed</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When enabled, carousel state is saved in a cookie for the session. Default is false.]]>
-            </description>
-            <name>stateful</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -16859,6 +16811,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[When enabled, menu toggle state is saved globally across pages. If disabled then state is stored per view/page. Default is false.]]>
+            </description>
+            <name>statefulGlobal</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Applied only when overlay is set to true. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.]]>
             </description>
             <name>collision</name>
@@ -17107,6 +17067,22 @@
                 <![CDATA[The maximum height of the overlay menu that shows up when the menu button is clicked. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Useful in case the body of your layout does not scroll, especially in combination with the collision property.]]>
             </description>
             <name>maxHeight</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style of the button.]]>
+            </description>
+            <name>buttonStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class for the button.]]>
+            </description>
+            <name>buttonStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -17483,6 +17459,14 @@
             <name>binding</name>
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -18769,6 +18753,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Indicates that deferred loading is not needed. Default is false.]]>
+            </description>
+            <name>loaded</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -19284,9 +19276,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[When enabled, menu state is saved in a cookie for the session. Default is true.]]>
+                <![CDATA[When enabled, menu state is saved in HTML5 Local Storage. Default is true.]]>
             </description>
             <name>stateful</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, menu state is saved globally across pages. If disabled then state is stored per view/page. Default is false.]]>
+            </description>
+            <name>statefulGlobal</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -29145,7 +29145,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the selectionMode.]]>
+                <![CDATA[Defines the selectionMode, valid values are "single", "multiple" and "checkbox".]]>
             </description>
             <name>selectionMode</name>
             <required>false</required>
@@ -29517,7 +29517,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines the selectionMode, valid values are "single" and "multiple".]]>
+                <![CDATA[Defines the selectionMode, valid values are "single", "multiple" and "checkbox".]]>
             </description>
             <name>selectionMode</name>
             <required>false</required>
@@ -29931,6 +29931,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines upwards selection propagation for checkbox mode, default is true.]]>
+            </description>
+            <name>propagateSelectionUp</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines upwards selection propagation for checkbox mode, default is true.]]>
+            </description>
+            <name>propagateSelectionDown</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30115,6 +30131,14 @@
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -31739,6 +31763,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to show the milliseconds in time picker. Default is false.]]>
+            </description>
+            <name>showMilliseconds</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Hours to change per step. Default is 1.]]>
             </description>
             <name>stepHour</name>
@@ -31758,6 +31790,14 @@
                 <![CDATA[Seconds to change per step. Default is 1.]]>
             </description>
             <name>stepSecond</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Milliseconds to change per step. Default is 1.]]>
+            </description>
+            <name>stepMillisecond</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
@@ -31824,6 +31864,14 @@
             <name>view</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Detects if mobile browser and sets optimized interface for touch devices. Default is true.]]>
+            </description>
+            <name>autoDetectDisplay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -32100,6 +32148,30 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Saturation of dynamicColor (0 .. 100). Default is 100.]]>
+            </description>
+            <name>saturation</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Lightness of dynamicColor (0 .. 100). Default is 40.]]>
+            </description>
+            <name>lightness</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Alpha of dynamicColor (0 .. 100). Default is 100.]]>
+            </description>
+            <name>alpha</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -32223,6 +32295,14 @@
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to hide the badge (but render the children).]]>
+            </description>
+            <name>visible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -33268,6 +33348,224 @@
             <name>styleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+            <![CDATA[Speed Dial when pressed, a floating action button can display multiple primary actions that can be performed on a page.]]>
+        </description>
+        <tag-name>speedDial</tag-name>
+        <component>
+            <component-type>org.primefaces.component.SpeedDial</component-type>
+            <renderer-type>org.primefaces.component.SpeedDialRenderer</renderer-type>
+        </component>
+        <attribute>
+            <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the visibility of the overlay.]]>
+            </description>
+            <name>visible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the opening direction of actions. Valid values are 'up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left' and 'down-right'.]]>
+            </description>
+            <name>direction</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Transition delay step for each action item.]]>
+            </description>
+            <name>transitionDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies the opening type of actions.]]>
+            </description>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Radius for *circle types.]]>
+            </description>
+            <name>radius</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to show a mask element behind the speeddial.]]>
+            </description>
+            <name>mask</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the component is disabled.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the actions close when clicked outside.]]>
+            </description>
+            <name>hideOnClickOutside</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Show icon of the button element.]]>
+            </description>
+            <name>showIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Hide icon of the button element.]]>
+            </description>
+            <name>hideIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defined to rotate showIcon when hideIcon is not present.]]>
+            </description>
+            <name>rotateAnimation</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the container element.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the container element.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the button element.]]>
+            </description>
+            <name>buttonStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the button element.]]>
+            </description>
+            <name>buttonStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the mask element.]]>
+            </description>
+            <name>maskStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the mask element.]]>
+            </description>
+            <name>maskStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the visibility of element changed.]]>
+            </description>
+            <name>onVisibleChange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the button element clicked.]]>
+            </description>
+            <name>onClick</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the actions are visible.]]>
+            </description>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the actions are hidden.]]>
+            </description>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[MenuModel instance to create action items dynamically.]]>
+            </description>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.menu.MenuModel</type>
         </attribute>
     </tag>
 </facelet-taglib>

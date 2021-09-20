@@ -19,6 +19,7 @@ PrimeFaces.locales['ar'] = {
     hourText: 'ساعة',
     minuteText: 'دقيقة',
     secondText: 'ثانية',
+    millisecondText: 'ميلي ثانية',
     ampm: false,
     month: 'الشهر',
     week: 'الأسبوع',

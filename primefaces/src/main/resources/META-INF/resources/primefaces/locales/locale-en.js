@@ -1,6 +1,4 @@
- /**
-  * English
-  */
+ /** English */
  PrimeFaces.locales['en'] = {
      closeText: 'Close',
      prevText: 'Previous',
@@ -21,6 +19,7 @@
      hourText: 'Hour',
      minuteText: 'Minute',
      secondText: 'Second',
+     millisecondText: 'Millisecond',
      currentText: 'Current Date',
      ampm: false,
      year: 'Year',
@@ -38,6 +37,7 @@
          'calendar.BUTTON': 'Show Calendar',
          'datatable.sort.ASC': 'activate to sort column ascending',
          'datatable.sort.DESC': 'activate to sort column descending',
+         'datatable.sort.NONE': 'activate to remove sorting on column',
          'columntoggler.CLOSE': 'Close',
          'overlaypanel.CLOSE': 'Close'
      },

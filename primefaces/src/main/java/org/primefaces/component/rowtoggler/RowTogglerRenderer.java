@@ -41,7 +41,8 @@ public class RowTogglerRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         RowToggler toggler = (RowToggler) component;
         DataTable parentTable = toggler.getParentTable(context);
-        boolean expanded = parentTable.isExpandedRow();
+        String rowKey = parentTable.getRowKey(parentTable.getRowData());
+        boolean expanded = parentTable.isExpandedRow() || parentTable.getExpandedRowKeys().contains(rowKey);
         String icon = expanded ? RowToggler.EXPANDED_ICON : RowToggler.COLLAPSED_ICON;
         String expandLabel = toggler.getExpandLabel();
         String collapseLabel = toggler.getCollapseLabel();

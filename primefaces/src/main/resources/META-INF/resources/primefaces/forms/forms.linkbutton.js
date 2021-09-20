@@ -47,15 +47,14 @@ PrimeFaces.widget.LinkButton = PrimeFaces.widget.BaseWidget.extend({
      * Disables this link button so that it cannot be clicked.
      */
     disable: function () {
-        this.jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
-                .addClass('ui-state-disabled').attr('disabled', 'disabled');
+        PrimeFaces.utils.disableButton(this.jq);
     },
 
     /**
      * Enables this link button so that it can be clicked.
      */
     enable: function () {
-        this.jq.removeClass('ui-state-disabled').removeAttr('disabled');
+        PrimeFaces.utils.enableButton(this.jq);
     }
 
 });

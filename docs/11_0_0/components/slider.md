@@ -3,7 +3,7 @@
 Slider is used to provide input with various customization options like orientation, display modes
 and skinning.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.slider-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Slider-1.html)
 
 ## Info
 

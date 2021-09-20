@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.tree;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
-import java.io.IOException;
-import java.util.*;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
 import org.primefaces.model.MatchMode;
@@ -44,6 +32,17 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.*;
+
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -254,7 +253,7 @@ public class TreeRenderer extends CoreRenderer {
                 tree.initPreselection();
             }
 
-            if (root != null && (LangUtils.isValueBlank(filteredValue) || !tree.getFilteredRowKeys().isEmpty())) {
+            if (root != null && (LangUtils.isBlank(filteredValue) || !tree.getFilteredRowKeys().isEmpty())) {
                 encodeTreeNodeChildren(context, tree, root, root, clientId, tree.isDynamic(), tree.isCheckboxSelectionMode(), tree.isDroppable());
             }
         }
@@ -264,7 +263,7 @@ public class TreeRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeFilteredNodes(FacesContext context, Tree tree, TreeNode node, String filteredValue, Locale filterLocale)
+    protected void encodeFilteredNodes(FacesContext context, Tree tree, TreeNode<?> node, String filteredValue, Locale filterLocale)
             throws IOException {
         int childCount = node.getChildCount();
         if (childCount > 0) {
@@ -670,6 +669,7 @@ public class TreeRenderer extends CoreRenderer {
 
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
+        boolean hidden = false;
         if (filter && !filteredRowKeys.isEmpty()) {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
@@ -689,7 +689,7 @@ public class TreeRenderer extends CoreRenderer {
             }
 
             if (!match) {
-                return;
+                hidden = true;
             }
         }
 
@@ -716,6 +716,10 @@ public class TreeRenderer extends CoreRenderer {
         }
         else {
             containerClass += " ui-treenode-unselected";
+        }
+
+        if (hidden) {
+            containerClass += " ui-treenode-hidden";
         }
 
         containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
@@ -796,7 +800,7 @@ public class TreeRenderer extends CoreRenderer {
         }
     }
 
-    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode root, TreeNode node, String clientId, boolean dynamic,
+    public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode<?> root, TreeNode<?> node, String clientId, boolean dynamic,
                                        boolean checkbox, boolean droppable) throws IOException {
 
         int childCount = node.getChildCount();

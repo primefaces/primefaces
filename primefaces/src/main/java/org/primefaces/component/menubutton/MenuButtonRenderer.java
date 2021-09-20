@@ -75,17 +75,21 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean isIconLeft = button.getIconPos().equals("left");
         String value = button.getValue();
-        String buttonTextClass = isIconLeft ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
-        if (isValueBlank(value)) {
-            buttonTextClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
-        }
-        String buttonClass = disabled ? buttonTextClass + " ui-state-disabled" : buttonTextClass;
+        String buttonClass = getStyleClassBuilder(context)
+                .add(button.getButtonStyleClass())
+                .add(isIconLeft, HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS, HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS)
+                .add(isValueBlank(value), HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .build();
 
         writer.startElement("button", null);
         writer.writeAttribute("id", buttonId, null);
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        if (LangUtils.isNotEmpty(button.getButtonStyle())) {
+            writer.writeAttribute("style", button.getButtonStyle(), null);
+        }
         writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
@@ -124,7 +128,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
 
         writer.startElement("div", null);
-        if (!LangUtils.isValueEmpty(button.getMaxHeight())) {
+        if (!LangUtils.isEmpty(button.getMaxHeight())) {
             menuStyleClass = menuStyleClass + " " + Menu.CONTAINER_MAXHEIGHT_CLASS;
             // If maxHeight is a number, add the unit "px", otherwise use it as is
             char lastChar = button.getMaxHeight().charAt(button.getMaxHeight().length() - 1);

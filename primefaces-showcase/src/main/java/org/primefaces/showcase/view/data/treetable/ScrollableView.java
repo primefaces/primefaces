@@ -23,11 +23,12 @@
  */
 package org.primefaces.showcase.view.data.treetable;
 
-import javax.faces.view.ViewScoped;
 import org.primefaces.model.TreeNode;
+import org.primefaces.showcase.domain.Document;
 import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -36,9 +37,9 @@ import java.io.Serializable;
 @ViewScoped
 public class ScrollableView implements Serializable {
 
-    private TreeNode root1;
-    private TreeNode root2;
-    private TreeNode root3;
+    private TreeNode<Document> root1;
+    private TreeNode<Document> root2;
+    private TreeNode<Document> root3;
 
     @Inject
     private DocumentService service;
@@ -53,15 +54,15 @@ public class ScrollableView implements Serializable {
         root1.getChildren().get(1).setExpanded(true);
     }
 
-    public TreeNode getRoot1() {
+    public TreeNode<Document> getRoot1() {
         return root1;
     }
 
-    public TreeNode getRoot2() {
+    public TreeNode<Document> getRoot2() {
         return root2;
     }
 
-    public TreeNode getRoot3() {
+    public TreeNode<Document> getRoot3() {
         return root3;
     }
 

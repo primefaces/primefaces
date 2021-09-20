@@ -123,7 +123,8 @@
     cursor: pointer;
 }
 
-.ui-chkbox .ui-chkbox-box.ui-state-disabled {
+.ui-chkbox .ui-chkbox-box.ui-state-disabled,
+.ui-chkbox .ui-chkbox-box.ui-chkbox-readonly {
     cursor: default;
 }
 

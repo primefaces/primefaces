@@ -1,6 +1,6 @@
 //@ts-check
 
-// methods for working with typescript types
+// Methods for working with typescript types and generating type and function signatures
 
 const { generate } = require("astring");
 const { removeInitializerFromPattern } = require("./acorn-util");
@@ -19,7 +19,7 @@ function escapeObjectPropertyName(name) {
         return name;
     }
     else {
-        const escapedName = name.replace(/\"/g, "\\\"");
+        const escapedName = name.replace(/["\\]/g, c => `\\${c}`);
         return `"${escapedName}"`;
     }
 }
@@ -140,7 +140,6 @@ function createGenericsSignature(generics, allowExtends = true) {
     return signature;
 }
 
-
 /**
  * @param {ConstantCodeInfo} constantCodeInfo 
  * @return {ConstantSignature}
@@ -154,7 +153,7 @@ function createConstantSignature(constantCodeInfo) {
 }
 
 /**
- * Create the method signature with the type definitions.
+ * Create the method signature for a class with the type definitions.
  * @param {MethodCodeInfo} methodCodeInfo
  * @return {MethodSignature}
  */
@@ -164,6 +163,9 @@ function createMethodSignature(methodCodeInfo) {
 
     // Create abstract modifier
     const abstract = methodCodeInfo.abstract ? "abstract " : "";
+
+    // Create override modifier
+    const override = methodCodeInfo.override ? "override " : "";
 
     // Create async modifier
     const async = methodCodeInfo.isAsync ? "async " : "";
@@ -235,6 +237,7 @@ function createMethodSignature(methodCodeInfo) {
         generics: generics,
         generator: generator,
         name: methodCodeInfo.name,
+        override: override,
         returnType: returnType,
         visibility: visibility,
     };
@@ -382,6 +385,7 @@ function argsToSignature(args, ambientContext) {
  * Creates a signature like
  * ```typescript
  * abstract async foo<T>(x: T): string;
+ * abstract override foo<T>(x: T): string;
  * constructor<T>(x: T);
  * ```
  * @param {MethodSignature} signature Signature to convert.
@@ -394,7 +398,7 @@ function toObjectShorthandMethodSignature(signature, ambientContext) {
     const returnType = signature.constructor ? "" : `: ${signature.returnType}`;
     const escapedName = escapeObjectPropertyName(signatureName);
     return [
-        `${visibility}${signature.abstract}${ambientContext ? "" : signature.async}${escapedName}${signature.generics}(${argsToSignature(signature.args, ambientContext)})${returnType};`
+        `${visibility}${signature.abstract}${signature.override}${ambientContext ? "" : signature.async}${escapedName}${signature.generics}(${argsToSignature(signature.args, ambientContext)})${returnType};`
     ];
 }
 

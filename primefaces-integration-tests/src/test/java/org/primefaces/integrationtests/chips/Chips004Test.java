@@ -29,11 +29,11 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Chips;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
@@ -44,11 +44,8 @@ public class Chips004Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Chips: GitHub #1895/#6691: Chips allow pasting of delimited list")
+    @Tag("SafariExclude") // can't get copy and paste working on Safari
     public void testClipboardPaste(Page page) {
-        // can't get copy and paste working on Safari
-        if (PrimeSelenium.isSafari()) {
-            return;
-        }
         // Arrange
         Chips chips = page.chips;
         InputText clipboard = page.clipboard;

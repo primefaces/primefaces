@@ -39,6 +39,15 @@ public class SelectionFeature implements DataTableFeature {
 
     private static final String ALL_SELECTOR = "@all";
 
+    private static final SelectionFeature INSTANCE = new SelectionFeature();
+
+    private SelectionFeature() {
+    }
+
+    public static SelectionFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);

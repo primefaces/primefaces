@@ -23,18 +23,6 @@
  */
 package org.primefaces.component.tree;
 
-import java.util.*;
-
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.*;
 import org.primefaces.model.CheckboxTreeNode;
@@ -45,6 +33,17 @@ import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import java.util.*;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -79,16 +78,25 @@ public class Tree extends TreeBase {
 
     static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
             .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
+            .put(MatchMode.NOT_STARTS_WITH, new NegationFilterConstraintWrapper(new StartsWithFilterConstraint()))
             .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
+            .put(MatchMode.NOT_ENDS_WITH, new NegationFilterConstraintWrapper(new EndsWithFilterConstraint()))
             .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
+            .put(MatchMode.NOT_CONTAINS, new NegationFilterConstraintWrapper(new ContainsFilterConstraint()))
             .put(MatchMode.EXACT, new ExactFilterConstraint())
+            .put(MatchMode.NOT_EXACT, new NegationFilterConstraintWrapper(new ExactFilterConstraint()))
             .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
             .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
             .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
             .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
             .put(MatchMode.EQUALS, new EqualsFilterConstraint())
+            .put(MatchMode.NOT_EQUALS, new NegationFilterConstraintWrapper(new EqualsFilterConstraint()))
             .put(MatchMode.IN, new InFilterConstraint())
+            .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
+            .put(MatchMode.RANGE, new RangeFilterConstraint())
+            .put(MatchMode.BETWEEN, new RangeFilterConstraint())
+            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new RangeFilterConstraint()))
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -352,7 +360,7 @@ public class Tree extends TreeBase {
         }
     }
 
-    public TreeNode createCopyOfTreeNode(TreeNode node) {
+    public TreeNode createCopyOfTreeNode(TreeNode<?> node) {
         TreeNode newNode;
         if (node instanceof CheckboxTreeNode) {
             newNode = new CheckboxTreeNode(node.getData());

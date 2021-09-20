@@ -16,6 +16,8 @@
                 <p:ajax process="@this"/>
             </p:triStateCheckbox>
             <br/>
+            <p:triStateCheckbox id="readonly" value="#{triStateCheckbox001.readonly}" itemLabel="readonly" readonly="true"/>
+            <br/>
 
             <p:commandButton id="button" update="@form" value="Submit"/>
         </h:form>

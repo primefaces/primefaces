@@ -29,17 +29,40 @@ package org.primefaces.model;
 public enum MatchMode {
 
     STARTS_WITH("startsWith"),
+    NOT_STARTS_WITH("notStartsWith"),
+
     ENDS_WITH("endsWith"),
+    NOT_ENDS_WITH("notEndsWith"),
+
     CONTAINS("contains"),
+    NOT_CONTAINS("notContains"),
+
     EXACT("exact"),
+    NOT_EXACT("notExact"),
+
     LESS_THAN("lt"),
     LESS_THAN_EQUALS("lte"),
+
     GREATER_THAN("gt"),
     GREATER_THAN_EQUALS("gte"),
+
     EQUALS("equals"),
+    NOT_EQUALS("notEquals"),
+
     IN("in"),
-    RANGE("range"),
-    GLOBAL("global");
+    NOT_IN("notIn"),
+
+    BETWEEN("between"),
+    NOT_BETWEEN("notBetween"),
+
+    GLOBAL("global"),
+
+    /**
+     * Please use {@link MatchMode#BETWEEN}
+     * @deprecated
+     */
+    @Deprecated
+    RANGE("range");
 
     private final String operator;
 

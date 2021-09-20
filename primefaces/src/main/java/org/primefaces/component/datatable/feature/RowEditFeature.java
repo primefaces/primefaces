@@ -41,6 +41,15 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class RowEditFeature implements DataTableFeature {
 
+    private static final RowEditFeature INSTANCE = new RowEditFeature();
+
+    private RowEditFeature() {
+    }
+
+    public static RowEditFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         throw new FacesException("RowEditFeature should not decode.");
@@ -49,8 +58,7 @@ public class RowEditFeature implements DataTableFeature {
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
-            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
-            feature.decodeSelectionRowKeys(context, table);
+            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

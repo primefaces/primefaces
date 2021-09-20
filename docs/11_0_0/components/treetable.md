@@ -2,7 +2,7 @@
 
 Treetable is is used for displaying hierarchical data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.treetable-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TreeTable-1.html)
 
 ## Info
 
@@ -34,6 +34,8 @@ editMode | row | String | Defines edit mode, valid values are "row" (default) an
 emptyMessage | No records found | String | Text to display when there is no data to display.
 expandMode | children | String | Updates children only when set to “children” or the node itself with children when set to “self” on node expand.
 filterBy | null | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
+filterDelay | 300 | Integer | Delay in milliseconds before sending an ajax filter query.
+filterEvent | keyup | String | Event triggering filter for input filters.
 filteredValue  | null | TreeNode | TreeNode to keep filtered data.
 first | 0 | Integer | Index of the first data to display.
 globalFilter | null | String | Value of the global filter to use when filtering by default.
@@ -46,6 +48,8 @@ pageLinks | 10 | Integer | Maximum number of page links to display.
 paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
 paginatorPosition | both | String | Position of the paginator.
 paginatorTemplate | null | String | Template of the paginator.
+propagateSelectionUp | true | Boolean | Defines upwards selection propagation for checkbox mode.
+propagateSelectionDown | true | Boolean | Defines downwards selection propagation for checkbox mode.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 required | false | Boolean | Validation constraint for selection.
 requiredMessage | null | String | Message for required selection validation.

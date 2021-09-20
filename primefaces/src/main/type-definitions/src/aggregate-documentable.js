@@ -1,7 +1,7 @@
 //@ts-check
 
 const { full } = require("acorn-walk");
-const { makeVisitors } = require("./acorn-util");
+const { makeVisitorsFiltered } = require("./acorn-util");
 
 /**
  * Scans the entire source code (AST) for function, constants and classes that
@@ -24,7 +24,7 @@ function aggregateDocumentable(program, inclusionHandler, severitySettings, hand
 
     /** @type {DocumentableState} */
     const state = {};
-    full(program.node, ()=>{}, makeVisitors((node, state) => {
+    full(program.node, ()=>{}, makeVisitorsFiltered((node, state) => {
         let recurse = true;
         for (const handler of handlers) {
             const handleResult = handler(node, program, inclusionHandler, severitySettings);

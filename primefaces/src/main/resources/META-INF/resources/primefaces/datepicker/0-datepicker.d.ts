@@ -39,8 +39,10 @@ declare namespace JQueryPrimeDatePicker {
      * - `0`: Changes the hour.
      * - `1`: Changes the minutes.
      * - `2`: Changes the second.
+     * - `3`: Changes the millisecond.
+     * - `4`: Changes the half day period.
      */
-    export type ChangeTimeType = -1 | 0 | 1 | 2;
+    export type ChangeTimeType = -1 | 0 | 1 | 2 | 3 | 4;
 
     /**
      * Represents a one dimensional direction:
@@ -76,7 +78,7 @@ declare namespace JQueryPrimeDatePicker {
     /**
      * Callbacks for when a value has changed.
      */
-    export type MutationCallback<T extends any[]> =
+    export type MutationCallback<T extends unknown[]> =
         /**
          * @param newValues The value or set of values that represent the new state.
          */
@@ -85,7 +87,7 @@ declare namespace JQueryPrimeDatePicker {
     /**
      * Callback for when a value has changed. It is also passed the event that occurred.
      */
-    export type MutationEventCallback<T extends any[]> =
+    export type MutationEventCallback<T extends unknown[]> =
         /**
          * @param event The event that occurred.
          * @param newValues The value or set of values that represent the new state.
@@ -137,6 +139,11 @@ declare namespace JQueryPrimeDatePicker {
     export type SecondOfTheMinute = number;
 
     /**
+     * Integer value representing the millisecond segment of a time. `0` represents 0 milliseconds past the second.
+     */
+    export type MillisecondOfTheSecond = number;
+
+    /**
      * Represents the time of a day.
      */
     export interface TimeOfTheDay {
@@ -154,6 +161,11 @@ declare namespace JQueryPrimeDatePicker {
          * The second of the minute, between 0 and 59.
          */
         second: SecondOfTheMinute;
+
+        /**
+         * The millisecond of the second, between 0 and 999.
+         */
+        millisecond: MillisecondOfTheSecond;
     }
 
     // Instants representing an instant in time (to a certain precision)
@@ -427,6 +439,11 @@ declare namespace JQueryPrimeDatePicker {
         showSeconds: boolean;
 
         /**
+         * Whether to show the milliseconds in time picker. Default is `false`.
+         */
+        showMilliseconds: boolean;
+
+        /**
          * Defines the hour format, either 12 hour mode or 24 hour mode.
          */
         hourFormat: ClockConvention;
@@ -445,6 +462,11 @@ declare namespace JQueryPrimeDatePicker {
          * Second steps.
          */
         stepSecond: Cardinal;
+
+        /**
+         * Millisecond steps.
+         */
+        stepMillisecond: Cardinal;
 
         /**
          * The cutoff year for determining the century for a date. Any dates entered with a year value less than or
@@ -718,7 +740,7 @@ declare namespace JQueryPrimeDatePicker {
          * of time: repeatedly increment the minute or hour.
          * @param event Event that occurred, such as a click event.
          * @param interval Amount of time between successive increments.
-         * @param type Which part of the time is to be incremented or decremented (hour, minute, or second).
+         * @param type Which part of the time is to be incremented or decremented (hour, minute, second, or millisecond).
          * @param direction Whether to increment or decrement the time part.
          */
         repeat(event: JQuery.TriggeredEvent, interval: Cardinal, type: ChangeTimeType, direction: OneDimensionalDirection): void;
@@ -729,8 +751,9 @@ declare namespace JQueryPrimeDatePicker {
          * @param hour Current hour.
          * @param minute Current minute.
          * @param second Current second.
+         * @param millisecond Current millisecond.
          */
-        updateTime(event: JQuery.TriggeredEvent, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute): void;
+        updateTime(event: JQuery.TriggeredEvent, hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute, millsecond: MillisecondOfTheSecond): void;
 
         /**
          * After a time was entered, updates the time display so that is shows the given time.
@@ -1047,7 +1070,7 @@ declare namespace JQueryPrimeDatePicker {
 
         daylightSavingAdjust(date: Date): Date;
         populateTime(value: Date, timeString: string, ampm?: HalfDayPeriod): void;
-        validateTime(hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute, value: Date, direction: AlterationMode): boolean;
+        validateTime(hour: HourOfTheDay, minute: MinuteOfTheHour, second: SecondOfTheMinute, millisecond: MillisecondOfTheSecond, value: Date, direction: AlterationMode): boolean;
 
         // =================
         // === Rendering ===
@@ -1232,6 +1255,12 @@ declare namespace JQueryPrimeDatePicker {
         renderSecondPicker(): string;
 
         /**
+         * Creates the HTML snippet for the millisecond picker for selecting a millisecond.
+         * @return The rendered HTML snippet.
+         */
+        renderMillisecondPicker(): string;
+
+        /**
          * Creates the HTML snippet for the picker that lets the user choose between `a.m.` and `p.m.`.
          * @return The rendered HTML snippet.
          */
@@ -1244,22 +1273,28 @@ declare namespace JQueryPrimeDatePicker {
         renderSeparator(): string;
 
         /**
+         * Creates the HTML snippet for separator before fractional seconds (such as a dot).
+         * @return The rendered HTML snippet.
+         */
+        renderFractionSeparator(): string;
+
+        /**
          * Creates the HTML snippet for container with the up and down button.
          * @param containerClass Style class for the container.
          * @param text Text to shown in the time element container.
-         * @param type Whether to render the time elements of a hour, minute, or second.
+         * @param type Whether to render the time elements of a hour, minute, second, or millisecond.
          * @return The rendered HTML snippet.
          */
         renderTimeElements(containerClass: string, text: string, type: ChangeTimeType): string;
 
         /**
-         * Creates the HTML snippet for the button to increment the hour, minutes, or second.
+         * Creates the HTML snippet for the button to increment the hour, minutes, second, or millisecond.
          * @return The rendered HTML snippet.
          */
         renderTimePickerUpButton(): string;
 
         /**
-         * Creates the HTML snippet for the button to decrement the hour, minutes, or second.
+         * Creates the HTML snippet for the button to decrement the hour, minutes, second, or millisecond.
          * @return The rendered HTML snippet.
          */
         renderTimePickerDownButton(): string;
@@ -1343,7 +1378,7 @@ declare namespace JQueryPrimeDatePicker {
          * Callback that is invoked when the left mouse button was pressed down while the cursor is over the time picker
          * element.
          * @param event Event that occurred.
-         * @param type Whether the hour, minute, or second was clicked.
+         * @param type Whether the hour, minute, second, or millisecond was clicked.
          * @param direction Whether the up or down button was clicked.
          */
         onTimePickerElementMouseDown(event: JQuery.TriggeredEvent, type: ChangeTimeType, direction: OneDimensionalDirection): void;
@@ -1396,6 +1431,13 @@ declare namespace JQueryPrimeDatePicker {
         handleSecondsInput(input: HTMLElement, event: JQuery.TriggeredEvent): void;
 
         /**
+         * Callback that is invoked when a value was entered in the millisecond input.
+         * @param input Millisecond input element.
+         * @param event Event that occurred.
+         */
+        handleMillisecondsInput(input: HTMLElement, event: JQuery.TriggeredEvent): void;
+
+        /**
          * Callback that is invoked when the up button of the hour input was pressed.
          * @param event Event that occurred.
          */
@@ -1430,6 +1472,18 @@ declare namespace JQueryPrimeDatePicker {
          * @param event Event that occurred.
          */
         decrementSecond(event: JQuery.TriggeredEvent): void;
+
+        /**
+         * Callback that is invoked when the up button of the millisecond input was pressed.
+         * @param event Event that occurred.
+         */
+        incrementMillisecond(event: JQuery.TriggeredEvent): void;
+
+        /**
+         * Callback that is invoked when the down button of the millisecond input was pressed.
+         * @param event Event that occurred.
+         */
+        decrementMillisecond(event: JQuery.TriggeredEvent): void;
 
         /**
          * Callback that is invoked when button for navigating to the previous month was pressed.

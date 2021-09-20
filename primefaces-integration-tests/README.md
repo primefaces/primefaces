@@ -1,8 +1,3 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Actions Status](https://github.com/primefaces/primefaces/workflows/Java%20CI/badge.svg)](https://github.com/primefaces/primefaces/actions)
-[![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces-extensions)
-
-
 PrimeFaces Integration Tests
 ----------------------------
 

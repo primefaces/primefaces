@@ -23,42 +23,40 @@
  */
 package org.primefaces.component.carousel;
 
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.carousel.CarouselResponsiveOption;
 
-public abstract class CarouselBase extends UITabPanel implements Widget, TouchAware {
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import java.util.List;
+
+public abstract class CarouselBase extends UITabPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CarouselRenderer";
 
     public enum PropertyKeys {
-
         widgetVar,
-        firstVisible,
-        numVisible,
+        page,
         circular,
-        vertical,
-        autoPlayInterval,
-        pageLinks,
-        effect,
-        easing,
-        effectDuration,
-        dropdownTemplate,
+        autoplayInterval,
+        numVisible,
+        numScroll,
+        responsiveOptions,
+        orientation,
+        verticalViewPortHeight,
         style,
         styleClass,
-        itemStyle,
-        itemStyleClass,
+        contentStyleClass,
+        containerStyleClass,
+        indicatorsContentStyleClass,
         headerText,
         footerText,
-        responsive,
-        breakpoint,
-        toggleable,
-        toggleSpeed,
-        collapsed,
-        stateful,
-        touchable
+        touchable,
+        onPageChange
     }
 
     public CarouselBase() {
@@ -78,20 +76,12 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getFirstVisible() {
-        return (Integer) getStateHelper().eval(PropertyKeys.firstVisible, 0);
+    public int getPage() {
+        return (Integer) getStateHelper().eval(PropertyKeys.page, 0);
     }
 
-    public void setFirstVisible(int firstVisible) {
-        getStateHelper().put(PropertyKeys.firstVisible, firstVisible);
-    }
-
-    public int getNumVisible() {
-        return (Integer) getStateHelper().eval(PropertyKeys.numVisible, 3);
-    }
-
-    public void setNumVisible(int numVisible) {
-        getStateHelper().put(PropertyKeys.numVisible, numVisible);
+    public void setPage(int page) {
+        getStateHelper().put(PropertyKeys.page, page);
     }
 
     public boolean isCircular() {
@@ -102,60 +92,52 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
         getStateHelper().put(PropertyKeys.circular, circular);
     }
 
-    public boolean isVertical() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.vertical, false);
+    public int getAutoplayInterval() {
+        return (Integer) getStateHelper().eval(PropertyKeys.autoplayInterval, 0);
     }
 
-    public void setVertical(boolean vertical) {
-        getStateHelper().put(PropertyKeys.vertical, vertical);
+    public void setAutoplayInterval(int autoplayInterval) {
+        getStateHelper().put(PropertyKeys.autoplayInterval, autoplayInterval);
     }
 
-    public int getAutoPlayInterval() {
-        return (Integer) getStateHelper().eval(PropertyKeys.autoPlayInterval, 0);
+    public int getNumVisible() {
+        return (Integer) getStateHelper().eval(PropertyKeys.numVisible, 1);
     }
 
-    public void setAutoPlayInterval(int autoPlayInterval) {
-        getStateHelper().put(PropertyKeys.autoPlayInterval, autoPlayInterval);
+    public void setNumVisible(int numVisible) {
+        getStateHelper().put(PropertyKeys.numVisible, numVisible);
     }
 
-    public int getPageLinks() {
-        return (Integer) getStateHelper().eval(PropertyKeys.pageLinks, 3);
+    public int getNumScroll() {
+        return (Integer) getStateHelper().eval(PropertyKeys.numScroll, 1);
     }
 
-    public void setPageLinks(int pageLinks) {
-        getStateHelper().put(PropertyKeys.pageLinks, pageLinks);
+    public void setNumScroll(int numScroll) {
+        getStateHelper().put(PropertyKeys.numScroll, numScroll);
     }
 
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
+    public List<CarouselResponsiveOption> getResponsiveOptions() {
+        return (List<CarouselResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
     }
 
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
+    public void setResponsiveOptions(List<CarouselResponsiveOption> responsiveOptions) {
+        getStateHelper().put(PropertyKeys.responsiveOptions, responsiveOptions);
     }
 
-    public String getEasing() {
-        return (String) getStateHelper().eval(PropertyKeys.easing, null);
+    public String getOrientation() {
+        return (String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
     }
 
-    public void setEasing(String easing) {
-        getStateHelper().put(PropertyKeys.easing, easing);
+    public void setOrientation(String orientation) {
+        getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
-    public int getEffectDuration() {
-        return (Integer) getStateHelper().eval(PropertyKeys.effectDuration, Integer.MIN_VALUE);
+    public String getVerticalViewPortHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.verticalViewPortHeight, "300px");
     }
 
-    public void setEffectDuration(int effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
-    }
-
-    public String getDropdownTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.dropdownTemplate, "{page}");
-    }
-
-    public void setDropdownTemplate(String dropdownTemplate) {
-        getStateHelper().put(PropertyKeys.dropdownTemplate, dropdownTemplate);
+    public void setVerticalViewPortHeight(String verticalViewPortHeight) {
+        getStateHelper().put(PropertyKeys.verticalViewPortHeight, verticalViewPortHeight);
     }
 
     public String getStyle() {
@@ -174,20 +156,28 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public String getItemStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.itemStyle, null);
+    public String getContentStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
     }
 
-    public void setItemStyle(String itemStyle) {
-        getStateHelper().put(PropertyKeys.itemStyle, itemStyle);
+    public void setContentStyleClass(String contentStyleClass) {
+        getStateHelper().put(PropertyKeys.contentStyleClass, contentStyleClass);
     }
 
-    public String getItemStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
+    public String getContainerStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.containerStyleClass, null);
     }
 
-    public void setItemStyleClass(String itemStyleClass) {
-        getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
+    public void setContainerStyleClass(String containerStyleClass) {
+        getStateHelper().put(PropertyKeys.containerStyleClass, containerStyleClass);
+    }
+
+    public String getIndicatorsContentStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.indicatorsContentStyleClass, null);
+    }
+
+    public void setIndicatorsContentStyleClass(String indicatorsContentStyleClass) {
+        getStateHelper().put(PropertyKeys.indicatorsContentStyleClass, indicatorsContentStyleClass);
     }
 
     public String getHeaderText() {
@@ -206,54 +196,6 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
         getStateHelper().put(PropertyKeys.footerText, footerText);
     }
 
-    public boolean isResponsive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
-    }
-
-    public void setResponsive(boolean responsive) {
-        getStateHelper().put(PropertyKeys.responsive, responsive);
-    }
-
-    public int getBreakpoint() {
-        return (Integer) getStateHelper().eval(PropertyKeys.breakpoint, 640);
-    }
-
-    public void setBreakpoint(int breakpoint) {
-        getStateHelper().put(PropertyKeys.breakpoint, breakpoint);
-    }
-
-    public boolean isToggleable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
-    }
-
-    public void setToggleable(boolean toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, toggleable);
-    }
-
-    public int getToggleSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
-    }
-
-    public void setToggleSpeed(int toggleSpeed) {
-        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
-    }
-
-    public boolean isCollapsed() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
-    }
-
-    public void setCollapsed(boolean collapsed) {
-        getStateHelper().put(PropertyKeys.collapsed, collapsed);
-    }
-
-    public boolean isStateful() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
-    }
-
-    public void setStateful(boolean stateful) {
-        getStateHelper().put(PropertyKeys.stateful, stateful);
-    }
-
     @Override
     public boolean isTouchable() {
         return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
@@ -262,5 +204,13 @@ public abstract class CarouselBase extends UITabPanel implements Widget, TouchAw
     @Override
     public void setTouchable(boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public String getOnPageChange() {
+        return (String) getStateHelper().eval(PropertyKeys.onPageChange, null);
+    }
+
+    public void setOnPageChange(String onPageChange) {
+        getStateHelper().put(PropertyKeys.onPageChange, onPageChange);
     }
 }

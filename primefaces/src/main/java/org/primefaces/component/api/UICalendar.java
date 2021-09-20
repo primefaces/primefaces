@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import java.time.Instant;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
@@ -31,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
@@ -360,18 +362,22 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
      */
     public Class<?> getTypeFromValueByValueExpression(FacesContext context) {
         ValueExpression ve = getValueExpression("value");
-        if (ve != null) {
+        if (ve == null) {
+            return null;
+        }
+
+        try {
             return ve.getType(context.getELContext());
         }
-        else {
+        catch (PropertyNotFoundException ex) {
+            // #7615 return null to make it behave same as Calendar
             return null;
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public void validateMinMax(FacesContext context) {
-        Comparable minDate = (Comparable) getMindate();
-        Comparable maxDate = (Comparable) getMaxdate();
+        Instant minDate = CalendarUtils.getObjectAsInstant(context, this, getMindate(), PropertyKeys.mindate.name());
+        Instant maxDate = CalendarUtils.getObjectAsInstant(context, this, getMaxdate(), PropertyKeys.maxdate.name());
         if (minDate != null && maxDate != null && maxDate.compareTo(minDate) < 0) {
             String id = getClientId(context);
             String component = this.getClass().getSimpleName();

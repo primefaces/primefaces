@@ -115,7 +115,7 @@ public class Wizard extends WizardBase {
 
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.step.toString()));
+                getValueExpression(PropertyKeys.step.toString()), true);
         if (expr != null && !expr.isReadOnly(elContext)) {
             expr.setValue(elContext, getStep());
             resetStep();
@@ -124,7 +124,7 @@ public class Wizard extends WizardBase {
 
     public Tab getStepToProcess() {
         String currentStepId = getStep();
-        if (LangUtils.isValueBlank(currentStepId)) {
+        if (LangUtils.isBlank(currentStepId)) {
             return null;
         }
 

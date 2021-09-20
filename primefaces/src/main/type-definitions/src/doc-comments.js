@@ -105,7 +105,7 @@ function getTagsByTagKind(jsdoc) {
  * @param {string[]} tagNames Name of a tag to check.
  */
 function removeTags(jsdoc, ...tagNames) {
-    jsdoc.tags = jsdoc.tags.filter(tag => tagNames.some(x => x !== tag.tag));
+    jsdoc.tags = jsdoc.tags.filter(tag => !tagNames.some(x => x === tag.tag));
 }
 
 /**
@@ -186,7 +186,7 @@ function shiftName(tag) {
     const newTag = createTag(tag.tag, tag);
     const desc = tag.description = tag.description || "";
     const parts = desc.match(/^(\w+)\s*(.*)/);
-    newTag.name = parts ? parts[1] : tag.name;
+    newTag.name = parts ? parts[1] ?? "" : tag.name;
     newTag.description = parts ? (parts[2] || "") : tag.description;
     return newTag;
 }

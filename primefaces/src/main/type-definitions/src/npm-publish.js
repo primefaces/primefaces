@@ -415,7 +415,7 @@ async function findNewVersion(registry, packageName, majorVersion, minorVersion,
         catch (e) {
             // Fall back to base version when package does not exist yet
             console.log(`Package ${packageName} does not exist yet, just using specified version`);
-            if (e.code === "E404") {
+            if ((/** @type {any} */(e)).code === "E404") {
                 return `${majorVersion || 1}.${minorVersion || 0}.${patchVersion || 0}`;
             }
             else {
@@ -457,11 +457,11 @@ function createPackageTgz(files) {
 async function publish({ access, credentials, files, registry, dryRun }) {
     const client = new Registry({
     });
-    const packageJson = parseJsonObject(files[Names.NpmPackageJson]);
+    const packageJson = parseJsonObject(files[Names.NpmPackageJson] ?? "{}");
     if (packageJson === undefined) {
         throw new Error("No package.json was provided");
     }
-    const name = packageJson.name;
+    const name = packageJson["name"];
     if (typeof name !== "string" || name.length === 0) {
         throw new Error("package.json must contain a valid name");
     }
@@ -488,17 +488,17 @@ async function publish({ access, credentials, files, registry, dryRun }) {
  */
 async function readAndAdjustPackageJson(cliArgs) {
     const packageJson = parseJsonObject(await readFileUtf8(cliArgs.packageJson));
-    const packageName = typeof packageJson.name === "string" ? packageJson.name : "";
+    const packageName = typeof packageJson["name"] === "string" ? packageJson["name"] : "";
     if (!packageName) {
         throw new Error("package.json does not contain a 'name' field");
     }
-    packageJson.main = "";
-    packageJson.types = basename(cliArgs.declarations.entry);
-    packageJson.version = await findNewVersion(cliArgs.registry, packageName, cliArgs.version.major, cliArgs.version.minor, cliArgs.version.patch);
+    packageJson["main"] = "";
+    packageJson["types"] = basename(cliArgs.declarations.entry);
+    packageJson["version"] = await findNewVersion(cliArgs.registry, packageName, cliArgs.version.major, cliArgs.version.minor, cliArgs.version.patch);
     for (const excludedField of cliArgs.excludedPackageJsonFields) {
         delete packageJson[excludedField];
     }
-    console.log(`Adjusted package.json with version=${packageJson.version} and types=${packageJson.types}`);
+    console.log(`Adjusted package.json with version=${packageJson["version"]} and types=${packageJson["types"]}`);
     return packageJson;
 }
 
@@ -526,7 +526,7 @@ async function main() {
 
         // Publish
 
-        console.log(`Attempting to publish ${packageJson.name}@${packageJson.version} to ${cliArgs.registry}`);
+        console.log(`Attempting to publish ${packageJson["name"]}@${packageJson["version"]} to ${cliArgs.registry}`);
 
         await publish({
             access: cliArgs.access,
@@ -536,7 +536,7 @@ async function main() {
             registry: cliArgs.registry,
         });
 
-        console.log(`Successfully published ${packageJson.name}@${packageJson.version} to ${cliArgs.registry}`);
+        console.log(`Successfully published ${packageJson["name"]}@${packageJson["version"]} to ${cliArgs.registry}`);
     }
     else {
         console.log("Skipping npm publish")

@@ -13,10 +13,7 @@
  * @prop {string} [MindmapNode.fill] The fill color of this node.
  * @prop {boolean} [MindmapNode.selectable] `true` if this node can be selected, or `false` otherwise.
  * 
- * @prop {boolean} dragged Whether a node was being dragged.
  * @prop {import("raphael").RaphaelElement[]} nodes A list of all drawn mindmap nodes.
- * @prop {number} ox When a node is being dragged, the original horizontal coordinated where the drag started.
- * @prop {number} oy When a node is being dragged, the original vertical coordinated where the drag started.
  * @prop {import("raphael").RaphaelPaper} raphael The canvas on which the mindmap is drawn.
  * @prop {import("raphael").RaphaelElement} root The drawn root node for the mindmap. 
  * @prop {JQuery} tooltip The DOM element for the tooltip of a mindmap node.
@@ -144,6 +141,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked when the mouse cursor was moved over a mindmap node.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     mouseoverNode: function() {
         var _self = PF(this.data('widget'));
@@ -154,6 +152,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked when the mouse cursor was moved away from a mindmap node.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     mouseoutNode: function() {
         var _self = PF(this.data('widget'));
@@ -164,6 +163,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked when the mouse cursor was moved over a text label.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     mouseoverText: function() {
         var node = this.data('node'),
@@ -175,6 +175,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked when the mouse cursor was moved away from a text label.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     mouseoutText: function() {
         var node = this.data('node'),
@@ -302,8 +303,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Callback that is invoked when a click was performed on a mindmap node.
-     * @param {import("raphael").RaphaelElement} node The node that received the click.
      * @private
+     * @param {import("raphael").RaphaelElement} node The node that received the click.
      */
     handleNodeClick: function(node) {
         if(node.dragged) {
@@ -332,6 +333,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked when a click was performed on a mindmap node.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     clickNode: function() {
         var _self = PF(this.data('widget'));
@@ -342,6 +344,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked when a click was performed on a text label.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     clickNodeText: function() {
         var node = this.data('node'),
@@ -442,6 +445,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked once at the start when a node is dragged.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     nodeDragStart: function () {
         this.ox = this.attr("cx");
@@ -450,9 +454,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Callback that is invoked while a node is being dragged. Updates the UI.
+     * @private
+     * @this {import("raphael").RaphaelElement}
      * @param {number} dx Amount the node was dragged horizontally since the last call of this callback 
      * @param {number} dy Amount the node was dragged vertically since the last call of this callback
-     * @private
      */
     nodeDrag: function(dx, dy) {
         //update location
@@ -472,6 +477,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback invoked after a node was dragged.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     nodeDragEnd: function () {
     },
@@ -479,6 +485,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback that is invoked once at the start when a text label is dragged.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     textDragStart: function () {
         this.ox = this.attr("x");
@@ -487,9 +494,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Callback that is invoked while a text label is being dragged. Updates the UI.
+     * @private
+     * @this {import("raphael").RaphaelElement}
      * @param {number} dx Amount the text was dragged horizontally since the last call of this callback 
      * @param {number} dy Amount the text was dragged vertically since the last call of this callback
-     * @private
      */
     textDrag: function(dx, dy) {
         var node = this.data('node');
@@ -511,6 +519,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback invoked after a text label was dragged.
      * @private
+     * @this {import("raphael").RaphaelElement}
      */
     textDragEnd: function () {
     },
@@ -526,8 +535,6 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         for(var i = 0; i < connections.length; i++) {
             this.raphael.connection(connections[i]);
         }
-
-        this.raphael.safari();
     }
 });
 

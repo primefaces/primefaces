@@ -1,5 +1,6 @@
 [![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces/)
-[![Actions Status](https://github.com/primefaces/primefaces/workflows/Java%20CI/badge.svg)](https://github.com/primefaces/primefaces/actions)
+[![Actions Status CI](https://github.com/primefaces/primefaces/workflows/CI/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/build.yml)
+[![Actions Status Integration Tests](https://github.com/primefaces/primefaces/workflows/IT/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/nightly.yml)
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.primefaces%3Aprimefaces&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.primefaces%3Aprimefaces)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Discord Chat](https://img.shields.io/discord/591914197219016707.svg?color=7289da&label=chat&logo=discord&style=flat-square)](https://discord.gg/gzKFYnpmCY)
@@ -27,6 +28,7 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
+11.0.0| | | 2.0 - 3.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
 10.0.0| [primefaces-10.0.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | 2.0 - 3.0 | 1.8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
 8.0| [primefaces-8.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
 7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
@@ -87,7 +89,7 @@ For a full list of the available downloads, please visit the [download page](htt
       <groupId>com.github.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>master-SNAPSHOT</version>
-      <classifier>jakarta</classifier>  
+      <classifier>jakarta</classifier>
   </dependency>
 
   <repositories>
@@ -131,7 +133,7 @@ xmlns:p="http://primefaces.org/ui"
 
 ### Demo
 ***
-Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available as a separate [project]( https://github.com/primefaces/showcase-facelift).
+Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available within module [primefaces-showcase](https://github.com/primefaces/primefaces/tree/master/primefaces-showcase).
 
 ### Documentation
 ***
@@ -146,7 +148,7 @@ Visit the [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Cont
 - Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=11.0.0` to update all modules versions
 - Commit and push the changes to GitHub
 - In GitHub create a new Release titled `11.0.0` to tag this release
-- Run `mvn clean deploy -Prelease` to push to Maven Central
+- Run `mvn clean deploy -Pminify,release` to push to Maven Central
 
 
 ### License

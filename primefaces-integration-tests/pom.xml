@@ -24,16 +24,17 @@
         <webdriver.headless>false</webdriver.headless>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
+        <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+        <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
-        <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <lombok.version>1.18.20</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
         <mojarra.version>2.3.16</mojarra.version>
-        <junit.version>5.7.2</junit.version>
-        <tomee.version>8.0.6</tomee.version>
+        <tomee.version>8.0.8</tomee.version>
     </properties>
 
     <dependencies>
@@ -47,6 +48,11 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+        <!-- FeedReader -->
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
         </dependency>
 
         <!-- PROVIDED -->
@@ -67,13 +73,11 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -93,6 +97,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.primefaces</groupId>
@@ -105,6 +113,16 @@
             <artifactId>primefaces-selenium-components</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- add dependencies which get shaded by PrimeFaces so IDE´s like IntelliJ can run und debug multimoduled integration-tests -->
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
 
@@ -141,12 +159,27 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-            </plugin> 
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/WEB-INF/*.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
         </plugins>
@@ -176,6 +209,7 @@
                             <systemPropertyVariables>
                                 <webdriver.headless>${webdriver.headless}</webdriver.headless>
                                 <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
+                                <primefaces.UPLOADER>${primefaces.UPLOADER}</primefaces.UPLOADER>
                                 <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
                                 <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
@@ -213,13 +247,32 @@
                 <!--
                 <groups>SafariBasic</groups>
                 -->
+                <excludedGroups>SafariExclude</excludedGroups>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+            </properties>
+        </profile>
+        <profile>
+            <id>client-state-saving</id>
+            <properties>
+                <javax.faces.STATE_SAVING_METHOD>client</javax.faces.STATE_SAVING_METHOD>
             </properties>
         </profile>
         <profile>
             <id>csp</id>
             <properties>
                 <primefaces.CSP>true</primefaces.CSP>
+            </properties>
+        </profile>
+        <profile>
+            <id>uploader-native</id>
+            <properties>
+                <primefaces.UPLOADER>native</primefaces.UPLOADER>
+            </properties>
+        </profile>
+        <profile>
+            <id>uploader-commons</id>
+            <properties>
+                <primefaces.UPLOADER>commons</primefaces.UPLOADER>
             </properties>
         </profile>
         <profile>

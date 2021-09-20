@@ -30,6 +30,7 @@
  * @prop {JQuery} cursorNode When multiple nodes are selected, the selected node on which the user clicked most
  * recently.
  * @prop {JQuery|null} focusedNode DOM element of the node which is currently focused, if any.
+ * @prop {Document | string} [jqTargetId] Target of the context menu, when a context menu is used.
  * @prop {string} selections List of nodes which are currently selected. Each item is the row key of a selected node.
  * @prop {JQuery} selectionHolder DOM element of the hidden form element that holds the list of selected nodes.
  * 
@@ -53,7 +54,7 @@
  * @prop {boolean} cfg.filter `true` if filtering is enabeld, `false` otherwise.
  * @prop {PrimeFaces.widget.BaseTree.FilterMode} cfg.filterMode Mode for filtering.
  * @prop {boolean} cfg.highlight `true` if selected nodes are highlighted, or `false` otherwise.
- * @prop {Record<string, PrimeFaces.widget.BaseTree.NodeIconSet>} iconStates A map between the type of a node and the
+ * @prop {Record<string, PrimeFaces.widget.BaseTree.NodeIconSet>} cfg.iconStates A map between the type of a node and the
  * icons for that node.
  * @prop {boolean} cfg.multipleDrag When enabled, the selected multiple nodes can be dragged from a tree to another
  * tree.
@@ -135,7 +136,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         });
 
         $(document).off(containerEvent, this.jqTargetId).on(containerEvent, this.jqTargetId, null, function(e) {
-            if(targetWidget.isEmpty()) {
+            if(e.target.id == targetWidget.id && targetWidget.isEmpty()) {
                 menuWidget.show(e);
             }
         });
@@ -181,12 +182,12 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                                 this.showNodeChildren(node);
 
                                 if(this.cfg.draggable) {
-                                    this.makeDraggable(nodeChildrenContainer.find('span.ui-treenode-content'));
+                                    this.makeDraggable(nodeChildrenContainer.find('div.ui-treenode-content'));
                                 }
 
                                 if(this.cfg.droppable) {
                                     this.makeDropPoints(nodeChildrenContainer.find('li.ui-tree-droppoint'));
-                                    this.makeDropNodes(nodeChildrenContainer.find('span.ui-treenode-droppable'));
+                                    this.makeDropNodes(nodeChildrenContainer.find('div.ui-treenode-droppable'));
                                 }
                             }
                         });

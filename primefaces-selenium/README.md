@@ -1,14 +1,10 @@
-[![Maven](https://img.shields.io/maven-central/v/org.primefaces.extensions/primefaces-selenium.svg)](https://repo1.maven.org/maven2/org/primefaces/extensions/primefaces-selenium/)
-[![Javadocs](http://javadoc.io/badge/org.primefaces.extensions/primefaces-selenium.svg)](http://javadoc.io/doc/org.primefaces.extensions/primefaces-extensions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Actions Status](https://github.com/primefaces-extensions/primefaces-selenium/workflows/Java%20CI/badge.svg)](https://github.com/primefaces-extensions/primefaces-selenium/actions)
-[![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces-extensions)
-[![Discord Chat](https://img.shields.io/discord/591914197219016707.svg?color=7289da&label=chat&logo=discord&style=flat-square)](https://discord.gg/gzKFYnpmCY)
+[![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-selenium/)
+[![Javadocs](http://javadoc.io/badge/org.primefaces/primefaces-selenium.svg)](http://javadoc.io/doc/org.primefaces/primefaces-selenium)
 
 # primefaces-selenium
 
-PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. It also supports JUnit5 parallel test execution to speed up
-tests.
+PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. 
+It also supports JUnit5 parallel test execution to speed up tests.
 
 PrimeFaces-Selenium provides a hook-in to either startup a local server, use a remote adress and to instantiate the WebDriver.
 
@@ -28,11 +24,6 @@ Properties:
 |        httpTimeout       |   int   | 10      |      HTTP timeout for guards in seconds     |
 |    documentLoadTimeout   |   int   | 15      |       Document load timeout in seconds      |
 |    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
-
-
-### Compatibility
-
-Only tested on PrimeFaces 10.0.0+.
 
 ### Status
 
@@ -55,8 +46,10 @@ Currently, only the following components are implemented (partially):
 - ConfirmPopup
 - ~~DataList~~ (use DataView)
 - DataTable
+- DataView
 - DatePicker
 - Dialog
+- FileUpload  
 - InputMask
 - InputNumber
 - ~~InputSwitch~~ (use ToggleSwitch)
@@ -72,6 +65,7 @@ Currently, only the following components are implemented (partially):
 - SelectBooleanCheckbox
 - SelectBooleanButton
 - SelectManyCheckbox
+- SelectManyMenu  
 - SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
@@ -81,17 +75,11 @@ Currently, only the following components are implemented (partially):
 - TextEditor
 - Timeline
 - ToggleSwitch
+- Tree 
+- TreeTable
 - TriStateCheckbox
 
-Contributions are very welcome ;)
-
 ### Usage
-
-Creating component without annotations:
-
-```java
-InputText input=PrimeSelenium.createFragment(InputText.class,By.id("test"));
-```
 
 Example view:
 
@@ -167,13 +155,12 @@ public class IndexPageTest extends AbstractPrimePageTest {
 }
 ```
 
+Creating component without annotations:
+
+```java
+InputText input = PrimeSelenium.createFragment(InputText.class, By.id("test"));
+```
+
 ### Build & Run
 
 - Build by source `mvn clean install`
-
-### Releasing
-
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=8.0.5` to update all modules versions
-- Commit and push the changes to GitHub
-- In GitHub create a new Release titled `8.0.5` to tag this release
-- Run `mvn clean deploy -Prelease` to push to Maven Central

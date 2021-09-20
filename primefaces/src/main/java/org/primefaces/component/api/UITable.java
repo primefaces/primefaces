@@ -24,14 +24,12 @@
 package org.primefaces.component.api;
 
 import java.lang.reflect.Array;
+import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -53,61 +51,9 @@ import org.primefaces.util.LangUtils;
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
     /**
-     * Backward compatibility for column properties (e.g sortBy, filterBy)
-     * using old syntax #{car[column.property]}) instead of #{column.property}
-     */
-    Pattern OLD_SYNTAX_COLUMN_PROPERTY_REGEX = Pattern.compile("^#\\{\\w+\\[(.+)]}$");
-
-    /**
      * ID of the global filter component
      */
     String GLOBAL_FILTER_COMPONENT_ID = "globalFilter";
-
-    static String resolveStaticField(ValueExpression expression) {
-        if (expression != null) {
-            String expressionString = expression.getExpressionString();
-            if (expressionString.startsWith("#{")) {
-                expressionString = expressionString.substring(2, expressionString.indexOf('}')); //Remove #{}
-                return expressionString.substring(expressionString.indexOf('.') + 1); //Remove var
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get bean's property value from a value expression.
-     * Support old syntax (e.g #{car[column.property]}) instead of #{column.property}
-     * @param context
-     * @param exprVE
-     * @return
-     */
-    static String resolveDynamicField(FacesContext context, ValueExpression exprVE) {
-        if (exprVE == null) {
-            return null;
-        }
-
-        ELContext elContext = context.getELContext();
-        String exprStr = exprVE.getExpressionString();
-
-        Matcher matcher = OLD_SYNTAX_COLUMN_PROPERTY_REGEX.matcher(exprStr );
-        if (matcher.find()) {
-            exprStr = matcher.group(1);
-            exprVE = context.getApplication().getExpressionFactory()
-                    .createValueExpression(elContext, "#{" + exprStr  + "}", String.class);
-        }
-
-        return (String) exprVE.getValue(elContext);
-    }
-
-    static ValueExpression createValueExprFromVarField(FacesContext context, String var, String field) {
-        if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
-            throw new FacesException("Table 'var' and Column 'field' attributes must be non null.");
-        }
-
-        return context.getApplication().getExpressionFactory()
-                .createValueExpression(context.getELContext(), "#{" + var + "." + field + "}", Object.class);
-    }
 
     String getVar();
 
@@ -115,31 +61,24 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
-        boolean invalidate = !isFilterByAsMapDefined();
-        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
-        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
+        Map<String, FilterMeta> filterBy = new HashMap<>();
+        AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
         forEachColumn(c -> {
-            FilterMeta f = filterBy.get(c.getColumnKey());
-            if (f != null && !invalidate) {
-
-            }
-            else {
-                f = FilterMeta.of(context, getVar(), c);
-                if (f != null) {
-                    filterBy.put(f.getColumnKey(), f);
-                    filtered.set(filtered.get() || f.isActive());
-                }
+            FilterMeta meta = FilterMeta.of(context, getVar(), c);
+            if (meta != null) {
+                filterBy.put(meta.getColumnKey(), meta);
+                filtered.set(filtered.get() || meta.isActive());
             }
 
             return true;
         });
 
         // merge internal filterBy with user filterBy
-        Object userfilterBy = getFilterBy();
-        if (userfilterBy != null) {
-            updateFilterByWithUserFilterBy(context, filterBy, userfilterBy, filtered);
+        Object userFilterBy = getFilterBy();
+        if (userFilterBy != null) {
+            updateFilterByWithUserFilterBy(context, filterBy, userFilterBy, filtered);
         }
 
         // build global filterBy
@@ -191,13 +130,14 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         for (FilterMeta userFM : filterByTmp) {
             FilterMeta intlFM = intlFilterBy.values().stream()
-                    .filter(o -> o.getField().equals(userFM.getField()))
+                    .filter(o -> Objects.equals(o.getField(), userFM.getField()) || Objects.equals(o.getColumnKey(), userFM.getColumnKey()))
                     .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField() + "' has been found"));
+                    .orElseThrow(() -> new FacesException("No column with field '" + userFM.getField()
+                            + "' or columnKey '" + userFM.getColumnKey() + "' has been found"));
 
             ValueExpression filterByVE = userFM.getFilterBy();
             if (filterByVE == null) {
-                filterByVE = createValueExprFromVarField(context, getVar(), userFM.getField());
+                filterByVE = UIColumn.createValueExpressionFromField(context, getVar(), userFM.getField());
             }
 
             intlFM.setFilterValue(userFM.getFilterValue());
@@ -212,7 +152,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // #globalFilter sets the default value, which will be assigned to the "globalFilter" input
         String globalFilterDefaultValue = getGlobalFilter();
         // if #globalFilter is set, the "globalFilter" is mandatory
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilterDefaultValue)
+        Set<SearchExpressionHint> hint = LangUtils.isBlank(globalFilterDefaultValue)
                 ? SearchExpressionUtils.SET_IGNORE_NO_RESULT
                 : SearchExpressionUtils.SET_NONE;
         UIComponent globalFilterComponent = SearchExpressionFacade
@@ -248,18 +188,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 return true;
             }
 
-            UIComponent filterFacet = column.getFacet("filter");
-            boolean hasCustomFilter = filterFacet != null;
             if (column instanceof DynamicColumn) {
-                if (hasCustomFilter) {
-                    ((DynamicColumn) column).applyModel();
-                    // UIColumn#rendered might change after restoring p:columns state at the right index
-                    hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
-                }
-                else {
-                    ((DynamicColumn) column).applyStatelessModel();
-                }
+                ((DynamicColumn) column).applyModel();
             }
+
+            UIComponent filterFacet = getFilterComponent(column);
+            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
 
             Object filterValue;
             if (hasCustomFilter) {
@@ -274,7 +208,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
             // returns null if empty string/array/object
             if (filterValue != null
-                    && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
+                    && (filterValue instanceof String && LangUtils.isBlank((String) filterValue)
                     || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
                 filterValue = null;
             }
@@ -326,21 +260,21 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setGlobalFilterOnly(boolean globalFilterOnly);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortMeta = new HashMap<>();
+        Map<String, SortMeta> sortBy = new HashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
         if (headerRow != null) {
-            SortMeta s = SortMeta.of(context, getVar(), headerRow);
-            sortMeta.put(s.getColumnKey(), s);
+            SortMeta meta = SortMeta.of(context, getVar(), headerRow);
+            sortBy.put(meta.getColumnKey(), meta);
             sorted.set(true);
         }
 
         forEachColumn(c -> {
-            SortMeta s = SortMeta.of(context, getVar(), c);
-            if (s != null) {
-                sorted.set(sorted.get() || s.isActive());
-                sortMeta.put(s.getColumnKey(), s);
+            SortMeta meta = SortMeta.of(context, getVar(), c);
+            if (meta != null) {
+                sorted.set(sorted.get() || meta.isActive());
+                sortBy.put(meta.getColumnKey(), meta);
             }
 
             return true;
@@ -349,12 +283,14 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // merge internal sortBy with user sortBy
         Object userSortBy = getSortBy();
         if (userSortBy != null) {
-            updateSortByWithUserSortBy(context, sortMeta, userSortBy, sorted);
+            updateSortByWithUserSortBy(context, sortBy, userSortBy, sorted);
         }
 
         setDefaultSort(sorted.get());
 
-        return sortMeta;
+        setSortByAsMap(sortBy);
+
+        return sortBy;
     }
 
     default void updateSortByWithMVS(Map<String, SortMeta> tsSortBy) {
@@ -386,13 +322,14 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         for (SortMeta userSM : sortBy) {
             SortMeta intlSM = intlSortBy.values().stream()
-                    .filter(o -> o.getField().equals(userSM.getField()))
+                    .filter(o -> Objects.equals(o.getField(), userSM.getField()) || Objects.equals(o.getColumnKey(), userSM.getColumnKey()))
                     .findAny()
-                    .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField() + "' has been found"));
+                    .orElseThrow(() -> new FacesException("No column with field '" + userSM.getField()
+                            + "' or columnKey '" + userSM.getColumnKey() + "' has been found"));
 
             ValueExpression sortByVE = userSM.getSortBy();
             if (sortByVE == null) {
-                sortByVE = createValueExprFromVarField(context, getVar(), userSM.getField());
+                sortByVE = UIColumn.createValueExpressionFromField(context, getVar(), userSM.getField());
             }
 
             intlSM.setPriority(userSM.getPriority());
@@ -438,7 +375,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         // unlikely to happen, in case columns change between two ajax requests
         sortBy.put(s.getColumnKey(), s);
-        setSortByAsMap(sortBy);
+
         return true;
     }
 
@@ -461,7 +398,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setSortByAsMap(Map<String, SortMeta> sortBy);
 
     default boolean isFilteringEnabled() {
-        return !getFilterByAsMap().isEmpty();
+        return isFilterByAsMapDefined() && !getFilterByAsMap().isEmpty();
     }
 
     Object getSortBy();
@@ -485,7 +422,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (LangUtils.isNotBlank(columnTogglerStateParam)) {
             String[] columnStates = columnTogglerStateParam.split(",");
             for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
+                if (LangUtils.isBlank(columnState)) {
                     continue;
                 }
                 int seperatorIndex = columnState.lastIndexOf('_');
@@ -518,7 +455,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (LangUtils.isNotBlank(columnResizeStateParam)) {
             String[] columnStates = columnResizeStateParam.split(",");
             for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
+                if (LangUtils.isBlank(columnState)) {
                     continue;
                 }
 
@@ -551,7 +488,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default void decodeColumnDisplayOrderState(FacesContext context) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String columnOrderParam = params.get(getClientId(context) + "_columnOrder");
-        if (LangUtils.isValueBlank(columnOrderParam)) {
+        if (LangUtils.isBlank(columnOrderParam)) {
             return;
         }
 
@@ -561,7 +498,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         String[] columnKeys = columnOrderParam.split(",");
         for (int i = 0; i < columnKeys.length; i++) {
             String columnKey = columnKeys[i];
-            if (LangUtils.isValueBlank(columnKey)) {
+            if (LangUtils.isBlank(columnKey)) {
                 continue;
             }
 
@@ -584,12 +521,83 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
-        Object value = createValueExprFromVarField(context, getVar(), column.getField()).getValue(context.getELContext());
+        Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
         UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
         return ComponentUtils.getConvertedAsString(context, component, value);
     }
 
     default boolean isFilteringCurrentlyActive() {
         return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
+    }
+
+    default <C extends UIComponent & ValueHolder> C getFilterComponent(UIColumn column) {
+        UIComponent filterFacet = column.getFacet("filter");
+        if (filterFacet != null) {
+            if (filterFacet instanceof ValueHolder) {
+                return (C) filterFacet;
+            }
+
+            for (UIComponent child : filterFacet.getChildren()) {
+                if (!child.isRendered()) {
+                    continue;
+                }
+
+                if (child instanceof ValueHolder) {
+                    return (C) child;
+                }
+            }
+        }
+        return null;
+    }
+
+    default int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
+            Collator collator, Locale locale) {
+
+        try {
+            ValueExpression ve = sortMeta.getSortBy();
+
+            context.getExternalContext().getRequestMap().put(var, o1);
+            Object value1 = ve.getValue(context.getELContext());
+
+            context.getExternalContext().getRequestMap().put(var, o2);
+            Object value2 = ve.getValue(context.getELContext());
+
+            int result;
+
+            if (sortMeta.getFunction() == null) {
+                //Empty check
+                if (value1 == null && value2 == null) {
+                    result = 0;
+                }
+                else if (value1 == null) {
+                    result = sortMeta.getNullSortOrder();
+                }
+                else if (value2 == null) {
+                    result = -1 * sortMeta.getNullSortOrder();
+                }
+                else if (value1 instanceof String && value2 instanceof String) {
+                    if (sortMeta.isCaseSensitiveSort()) {
+                        result = collator.compare(value1, value2);
+                    }
+                    else {
+                        String str1 = (((String) value1).toLowerCase(locale));
+                        String str2 = (((String) value2).toLowerCase(locale));
+
+                        result = collator.compare(str1, str2);
+                    }
+                }
+                else {
+                    result = ((Comparable<Object>) value1).compareTo(value2);
+                }
+            }
+            else {
+                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
+            }
+
+            return sortMeta.getOrder().isAscending() ? result : -1 * result;
+        }
+        catch (Exception e) {
+            throw new FacesException(e);
+        }
     }
 }

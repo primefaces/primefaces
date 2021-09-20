@@ -26,6 +26,7 @@
                 hourText: 'Hora',
                 minuteText: 'Minuto',
                 secondText: 'Segundo',
+                millisecondText: 'Milisegundo',
                 currentText: 'Fecha actual',
                 ampm: false,
                 month: 'Mes',
@@ -54,6 +55,7 @@
                 hourText: 'Stunde',
                 minuteText: 'Minute',
                 secondText: 'Sekunde',
+                millisecondText: 'Millisekunde',
                 currentText: 'Aktuelles Datum',
                 ampm: false,
                 month: 'Monat',
@@ -90,7 +92,7 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/datepicker"/>
-    <ui:param name="widgetLink" value="datepicker-1"/>
+    <ui:param name="widgetLink" value="DatePicker-1"/>
 
     <ui:define name="implementation">
         <div class="card">
@@ -208,6 +210,12 @@
                         <p:outputLabel for="timeonlyMinMax" value="Time Only (Min-Max)"/>
                         <p:datePicker id="timeonlyMinMax" value="#{calendarView.date15}" timeOnly="true" pattern="HH:mm"
                                   mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="timeonlyMillis" value="Time Only with seconds and milliseconds"/>
+                        <p:datePicker id="timeonlyMillis" value="#{calendarView.date15}" timeOnly="true"
+                                      pattern="HH:mm:ss.SSS" showSeconds="true" showMilliseconds="true"/>
                     </div>
                 </div>
 

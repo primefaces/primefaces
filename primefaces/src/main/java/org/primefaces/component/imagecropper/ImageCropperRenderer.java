@@ -237,7 +237,7 @@ public class ImageCropperRenderer extends CoreRenderer {
                     }
                 }
                 else if (stream != null) {
-                    inputStream = stream.getStream();
+                    inputStream = stream.getStream().get();
                     contentType = stream.getContentType();
                 }
 

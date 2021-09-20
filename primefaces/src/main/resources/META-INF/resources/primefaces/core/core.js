@@ -90,7 +90,7 @@
 
         /**
          * Finds all widgets in the current page that are of the given type.
-         * @template {new(...args: any[]) => any} TWidget Type of the widgets of interest, e.g.
+         * @template {new(...args: never[]) => unknown} TWidget Type of the widgets of interest, e.g.
          * `PrimeFaces.widget.DataTable`.
          * @param {TWidget} type The (proto)type of the widgets of interest, e.g. `PrimeFaces.widget.DataTable`.
          * @return  {InstanceType<TWidget>[]} An array of widgets that are of the requested type. If no suitable widgets
@@ -229,11 +229,12 @@
          * Generates a unique key for using in HTML5 local storage by combining the context, view, id, and key.
          * @param {string} id ID of the component
          * @param {string} key a unique key name such as the component name
+         * @param {boolean} global if global then do not include the view id
          * @return {string} the generated key comprising of context + view + id + key
          */
-        createStorageKey : function(id, key) {
+        createStorageKey : function(id, key, global) {
             var sk = PrimeFaces.settings.contextPath.replace(/\//g, '-')
-                    + PrimeFaces.settings.viewId.replace(/\//g, '-')
+                    + (global ? '' : PrimeFaces.settings.viewId.replace(/\//g, '-'))
                     + id + '-'
                     + key;
             return sk.toLowerCase();
@@ -650,7 +651,7 @@
         /**
          * Checks whether an items is contained in the given array. The items is compared against the array entries
          * via the `===` operator.
-         * @template [T=any] Type of the array items
+         * @template [T=unknown] Type of the array items
          * @param {T[]} arr An array with items
          * @param {T} item An item to check
          * @return {boolean} `true` if the given item is in the given array, `false` otherwise.
@@ -667,8 +668,9 @@
 
         /**
          * Checks whether a value is of type `number` and is neither `Infinity` nor `NaN`.
-         * @param {any} value A value to check
-         * @return {boolean} `true` if the given value is a finite number, `false` otherwise.
+         * @param {unknown} value A value to check
+         * @return {boolean} `true` if the given value is a finite number (neither `NaN` nor +/- `Infinity`),
+         * `false` otherwise.
          */
         isNumber: function(value) {
             return typeof value === 'number' && isFinite(value);
@@ -1150,7 +1152,7 @@
          * Logs the current PrimeFaces and jQuery version to console.
          */
         version: function() {
-            var version = 'PrimeFaces ' + PrimeFaces.VERSION + ' (jQuery ' + jQuery.fn.jquery + ')';
+            var version = 'PrimeFaces ' + PrimeFaces.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
             console.log(version);
         },
 
@@ -1344,6 +1346,7 @@
             hourText: 'Hour',
             minuteText: 'Minute',
             secondText: 'Second',
+            millisecondText: 'Millisecond',
             currentText: 'Current Date',
             ampm: false,
             year: 'Year',
@@ -1359,6 +1362,7 @@
                 'calendar.BUTTON': 'Show Calendar',
                 'datatable.sort.ASC': 'activate to sort column ascending',
                 'datatable.sort.DESC': 'activate to sort column descending',
+                'datatable.sort.NONE': 'activate to remove sorting on column',
                 'columntoggler.CLOSE': 'Close',
                 'overlaypanel.CLOSE': 'Close'
             }

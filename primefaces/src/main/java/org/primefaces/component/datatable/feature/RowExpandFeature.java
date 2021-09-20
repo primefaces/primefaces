@@ -39,6 +39,15 @@ import org.primefaces.util.LangUtils;
 
 public class RowExpandFeature implements DataTableFeature {
 
+    private static final RowExpandFeature INSTANCE = new RowExpandFeature();
+
+    private RowExpandFeature() {
+    }
+
+    public static RowExpandFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

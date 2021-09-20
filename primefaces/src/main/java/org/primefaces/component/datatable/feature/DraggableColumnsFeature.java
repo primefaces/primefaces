@@ -33,6 +33,15 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 
+    private static final DraggableColumnsFeature INSTANCE = new DraggableColumnsFeature();
+
+    private DraggableColumnsFeature() {
+    }
+
+    public static DraggableColumnsFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         table.decodeColumnDisplayOrderState(context);

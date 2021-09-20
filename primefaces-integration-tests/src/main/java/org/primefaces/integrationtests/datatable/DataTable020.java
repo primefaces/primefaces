@@ -55,6 +55,11 @@ public class DataTable020 implements Serializable {
             }
 
             @Override
+            public int count(Map<String, FilterMeta> filterBy) {
+                return load(0, 0, null, null).size();
+            }
+
+            @Override
             public List<Integer> load(int i, int i1, Map<String, SortMeta> map, Map<String, FilterMeta> map1) {
                 return IntStream.of(1, 2, 3, 4, 5)
                         .boxed()

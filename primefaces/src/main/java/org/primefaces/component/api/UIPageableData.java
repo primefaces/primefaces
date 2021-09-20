@@ -194,7 +194,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         }
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression(PropertyKeys.rows.name()));
+                elContext, getValueExpression(PropertyKeys.rows.name()), true);
         if (isWriteable(elContext, rowsVe)) {
             rowsVe.setValue(elContext, rows);
         }
@@ -207,7 +207,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
     public void setFirst(int first) {
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression firstVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression("first"));
+                elContext, getValueExpression("first"), true);
         if (isWriteable(elContext, firstVe)) {
             firstVe.setValue(elContext, first);
         }
@@ -219,7 +219,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
     public void resetRows() {
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression rowsVe = ValueExpressionAnalyzer.getExpression(
-                elContext, getValueExpression(PropertyKeys.rows.name()));
+                elContext, getValueExpression(PropertyKeys.rows.name()), true);
         if (rowsVe != null) {
             //ValueExpression --> remove state to ensure the VE is re-evaluated
             getStateHelper().remove(PropertyKeys.rows);

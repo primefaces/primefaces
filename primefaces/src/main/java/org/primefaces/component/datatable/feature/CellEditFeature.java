@@ -36,6 +36,15 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class CellEditFeature implements DataTableFeature {
 
+    private static final CellEditFeature INSTANCE = new CellEditFeature();
+
+    private CellEditFeature() {
+    }
+
+    public static CellEditFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         throw new FacesException("CellEditFeature should not decode.");

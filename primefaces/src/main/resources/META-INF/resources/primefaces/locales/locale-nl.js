@@ -19,6 +19,7 @@ PrimeFaces.locales['nl'] = {
     hourText: 'Uur',
     minuteText: 'Minuut',
     secondText: 'Seconde',
+    millisecondText: 'Milliseconde',
     ampm: false,
     month: 'Maand',
     week: 'Week',
@@ -27,8 +28,9 @@ PrimeFaces.locales['nl'] = {
     aria: {
         'paginator.PAGE': 'Pagina {0}',
         'calendar.BUTTON': 'Toon kalender',
-        'datatable.sort.ASC': 'Activeer om kolom oplopend te sorteren',
-        'datatable.sort.DESC': 'Activeer om kolom aflopend te sorteren',
+        'datatable.sort.ASC': 'Kolom oplopend sorteren',
+        'datatable.sort.DESC': 'Kolom aflopend sorteren',
+        'datatable.sort.NONE': 'Kolomsortering opheffen',
         'columntoggler.CLOSE': 'Sluit',
         'overlaypanel.CLOSE': 'Sluit'
     },

@@ -64,7 +64,7 @@ public class BaseMenuModel implements MenuModel, Serializable {
         for (MenuElement element : elements) {
             // #1039 check if ID was already manually set
             String id = element.getId();
-            if (LangUtils.isValueBlank(id)) {
+            if (LangUtils.isBlank(id)) {
                 id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
                 element.setId(id);
             }

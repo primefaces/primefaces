@@ -68,4 +68,12 @@ public class BeanUtils {
 
         return true;
     }
+
+    public static boolean isPrimitiveOrPrimitiveWrapper(Class<?> valueClass) {
+        if (valueClass.isPrimitive()) {
+            return true;
+        }
+
+        return PRIMITIVES.contains(valueClass);
+    }
 }

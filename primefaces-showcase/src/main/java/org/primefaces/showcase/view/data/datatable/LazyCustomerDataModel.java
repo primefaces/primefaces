@@ -64,11 +64,14 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
     }
 
     @Override
-    public List<Customer> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        long rowCount = datasource.stream()
+    public int count(Map<String, FilterMeta> filterBy) {
+        return (int) datasource.stream()
                 .filter(o -> filter(FacesContext.getCurrentInstance(), filterBy.values(), o))
                 .count();
+    }
 
+    @Override
+    public List<Customer> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         // apply offset & filters
         List<Customer> customers = datasource.stream()
                 .skip(offset)
@@ -84,9 +87,6 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
             Comparator<Customer> cp = ComparatorUtils.chainedComparator(comparators); // from apache
             customers.sort(cp);
         }
-
-        // rowCount
-        setRowCount((int) rowCount);
 
         return customers;
     }
@@ -113,4 +113,5 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
 
         return matching;
     }
+
 }

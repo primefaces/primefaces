@@ -133,7 +133,7 @@ public class JQueryDateTimePatternBuilder {
     }
 
     public JQueryDateTimePatternBuilder appendLiteralText(String text) {
-        if (!LangUtils.isValueEmpty(text)) {
+        if (!LangUtils.isEmpty(text)) {
             if (isQuoteNeeded(text)) {
                 sb.append('\'');
                 appendEscapedLiteralText(text);

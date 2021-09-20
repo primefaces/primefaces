@@ -24,18 +24,32 @@
 package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
 
     private static final String BLOCK = "div";
     private static final String INLINE = "span";
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        OutputPanel panel = (OutputPanel) component;
+
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String clientId = panel.getClientId();
+
+        if (params.containsKey(clientId + "_load")) {
+            decodeBehaviors(context, component);
+        }
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -68,7 +82,13 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
 
         if (isDeferredNecessary(context, panel)) {
-            renderLoading(context, panel);
+            UIComponent loadingFacet = panel.getFacet("loading");
+            if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
+                loadingFacet.encodeAll(context);
+            }
+            else {
+                renderLoading(context, panel);
+            }
         }
         else {
             renderChildren(context, panel);
@@ -98,7 +118,13 @@ public class OutputPanelRenderer extends CoreRenderer {
     }
 
     protected boolean isDeferredNecessary(FacesContext context, OutputPanel panel) {
-        return !context.getPartialViewContext().isAjaxRequest() && panel.isDeferred();
+        if (!panel.isDeferred()) {
+            return false;
+        }
+        if (panel.getValueExpression(OutputPanel.PropertyKeys.loaded.name()) != null) {
+            return !panel.isLoaded();
+        }
+        return !context.getPartialViewContext().isAjaxRequest();
     }
 
     @Override

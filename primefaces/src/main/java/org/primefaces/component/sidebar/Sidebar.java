@@ -23,16 +23,23 @@
  */
 package org.primefaces.component.sidebar;
 
+import java.util.Collection;
+import java.util.Map;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.event.CloseEvent;
 
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
-public class Sidebar extends SidebarBase {
+public class Sidebar extends SidebarBase implements ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Sidebar";
 
@@ -40,6 +47,29 @@ public class Sidebar extends SidebarBase {
     public static final String TITLE_BAR_CLOSE_CLASS = "ui-sidebar-close ui-corner-all";
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-closethick";
     public static final String FULL_BAR_CLASS = "ui-sidebar-full";
+
+    private static final String DEFAULT_EVENT = "close";
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("close", CloseEvent.class)
+            .put("open", null)
+            .build();
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+        return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return DEFAULT_EVENT;
+    }
 
     @Override
     public void processDecodes(FacesContext context) {

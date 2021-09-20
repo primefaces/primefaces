@@ -15,7 +15,7 @@ Badge is a small status indicator for another element.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -25,6 +25,7 @@ Badge is a small status indicator for another element.
 | size | null | String | Size of the badge, valid options are "large" and "xlarge".
 | style | null | String | Style of the badge.
 | styleClass | null | String | StyleClass of the badge.
+| visible | true | Boolean | Whether to hide the badge (but render the children).
 
 ## Getting Started
 Badge can either be used as a standalone component, or it may contain components.
@@ -44,7 +45,7 @@ Different color options are available as severity levels.
 ```
 
 ## Sizes
-Badge sizes are adjusted with the ```size``` property that accepts "large" and "xlarge" as the possible alternatives 
+Badge sizes are adjusted with the `size` property that accepts "large" and "xlarge" as the possible alternatives
 to the default size.
 ```xhtml
 <p:badge value="2"></p:badge>
@@ -53,7 +54,7 @@ to the default size.
 ```
 
 ## Skinning of Badge
-Badge resides in a main container element which _style_ and _styleClass_ options apply. As skinning
+Badge resides in a main container element which `style` and `styleClass` options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
 structural style classes;
 

@@ -114,7 +114,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
                         sorted(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast))
                         .collect(Collectors.toList());
 
-            META: for (ColumnMeta meta : columnMetas) {
+            for (ColumnMeta meta : columnMetas) {
                 String columnKey = meta.getColumnKey();
                 for (UIColumn col : allColumns) {
                     if (col instanceof DynamicColumn) {
@@ -124,7 +124,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
                         if (col.isRendered() && col.isExportable()) {
                             exportcolumns.add(col);
                         }
-                        continue META;
+                        break;
                     }
                 }
             }

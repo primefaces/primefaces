@@ -88,7 +88,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 // evaluate the ValueExpression
                 value = context.getApplication().evaluateExpressionGet(context, value, String.class);
             }
-            if (!LangUtils.isValueEmpty(value)) {
+            if (!LangUtils.isEmpty(value)) {
                 target.add(value);
             }
         }

@@ -6,6 +6,7 @@
  * @prop {JQuery} input The DOM element for the hidden form field storing the current order of the items.
  * @prop {JQuery} items The DOM elements for the available items that can be reordered.
  * @prop {JQuery} list The DOM element for the container with the items.
+ * @prop {JQuery} [sourceList] The DOM element for the source list, when used with a pick list.
  * 
  * @interface {PrimeFaces.widget.OrderListCfg} cfg The configuration for the {@link  OrderList| OrderList widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

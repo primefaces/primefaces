@@ -1,8 +1,20 @@
 declare module "acorn-walk" {
-    type NodeType  = import("estree").Node["type"];
     type DiscriminateUnion<T, K extends keyof T, V extends T[K] = T[K]> = T extends Record<K, V> ? T : never;
-    type NarrowNode<K extends NodeType> = DiscriminateUnion<import("estree").Node, "type", K>;
-    
+
+    interface CompoundNodeTypeMap {
+        Expression: import("estree").Expression;
+        Function: import("estree").Function;
+        MemberPattern: import("estree").MemberExpression;
+        Pattern: import("estree").Pattern;
+        Statement: import("estree").Statement;
+    }
+    type BuiltinNodeType = import("estree").Node["type"];
+    type CompoundNodeType = keyof CompoundNodeTypeMap;
+    type NodeType = BuiltinNodeType | CompoundNodeType;
+    type NarrowNode<K extends NodeType> =
+        | DiscriminateUnion<import("estree").Node, "type", Exclude<K, CompoundNodeType>>
+        | CompoundNodeTypeMap[Exclude<K, BuiltinNodeType>];
+
     type FullWalkerCallback<TState> = (
         node: import("estree").Node,
         state: TState,
@@ -21,10 +33,10 @@ declare module "acorn-walk" {
         node: NarrowNode<K>,
         state: TState
     ) => void;
-    
+
     type AncestorWalkerFn<K extends NodeType, TState> = (
         node: NarrowNode<K>,
-        state: TState| import("estree").Node[],
+        state: TState | import("estree").Node[],
         ancestors: import("estree").Node[]
     ) => void;
 
@@ -33,7 +45,7 @@ declare module "acorn-walk" {
         state: TState,
         callback: WalkerCallback<TState>
     ) => void;
-    
+
     type SimpleVisitors<Types extends NodeType, TState> = {
         [Type in Types]: SimpleWalkerFn<Type, TState>
     };
@@ -41,9 +53,9 @@ declare module "acorn-walk" {
     type AncestorVisitors<Types extends NodeType, TState> = {
         [Type in Types]: AncestorWalkerFn<Type, TState>
     };
-    
+
     type RecursiveVisitors<Types extends NodeType, TState> = {
-        [Type in Types]: RecursiveWalkerFn<Type, TState>
+        [Type in Types]: RecursiveWalkerFn<Type, TState>;
     };
 
     type FindPredicate = (type: NodeType, node: import("estree").Node) => boolean;

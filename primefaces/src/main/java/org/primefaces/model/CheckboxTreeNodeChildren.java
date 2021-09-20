@@ -27,17 +27,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class CheckboxTreeNodeChildren extends TreeNodeList {
+public class CheckboxTreeNodeChildren<T> extends TreeNodeList<T> {
 
     private static final long serialVersionUID = 1L;
 
     private TreeNode parent;
 
-    public CheckboxTreeNodeChildren(TreeNode parent) {
+    public CheckboxTreeNodeChildren(TreeNode<T> parent) {
         this.parent = parent;
     }
 
-    private void eraseParent(TreeNode node) {
+    private void eraseParent(TreeNode<T> node) {
         TreeNode parentNode = node.getParent();
         if (parentNode != null) {
             parentNode.getChildren().remove(node);
@@ -46,7 +46,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public boolean add(TreeNode node) {
+    public boolean add(TreeNode<T> node) {
         if (node == null) {
             throw new NullPointerException();
         }
@@ -61,7 +61,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public void add(int index, TreeNode node) {
+    public void add(int index, TreeNode<T> node) {
         if (node == null) {
             throw new NullPointerException();
         }
@@ -78,7 +78,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public boolean addAll(Collection<? extends TreeNode> collection) {
+    public boolean addAll(Collection<? extends TreeNode<T>> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
         boolean changed = false;
         while (elements.hasNext()) {
@@ -103,7 +103,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends TreeNode> collection) {
+    public boolean addAll(int index, Collection<? extends TreeNode<T>> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
         boolean changed = false;
         while (elements.hasNext()) {
@@ -210,7 +210,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
         }
     }
 
-    private void updateRowKeys(TreeNode node) {
+    private void updateRowKeys(TreeNode<?> node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -223,7 +223,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
         }
     }
 
-    private void updateSelectionState(TreeNode node) {
+    private void updateSelectionState(TreeNode<?> node) {
         boolean allChildrenSelected = true;
         boolean partialSelected = false;
 

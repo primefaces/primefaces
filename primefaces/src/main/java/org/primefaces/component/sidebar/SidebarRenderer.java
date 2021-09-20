@@ -38,38 +38,38 @@ public class SidebarRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        Sidebar bar = (Sidebar) component;
+        Sidebar sidebar = (Sidebar) component;
 
-        if (bar.isContentLoadRequest(context)) {
-            renderChildren(context, bar);
+        if (sidebar.isContentLoadRequest(context)) {
+            renderChildren(context, sidebar);
         }
         else {
-            encodeMarkup(context, bar);
-            encodeScript(context, bar);
+            encodeMarkup(context, sidebar);
+            encodeScript(context, sidebar);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, Sidebar bar) throws IOException {
+    protected void encodeMarkup(FacesContext context, Sidebar sidebar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String style = bar.getStyle();
-        String styleClass = bar.getStyleClass();
+        String style = sidebar.getStyle();
+        String styleClass = sidebar.getStyleClass();
         styleClass = styleClass == null ? Sidebar.STYLE_CLASS : Sidebar.STYLE_CLASS + " " + styleClass;
-        styleClass = bar.isFullScreen() ? styleClass + " " + Sidebar.FULL_BAR_CLASS : styleClass;
-        styleClass += " ui-sidebar-" + bar.getPosition();
+        styleClass = sidebar.isFullScreen() ? styleClass + " " + Sidebar.FULL_BAR_CLASS : styleClass;
+        styleClass += " ui-sidebar-" + sidebar.getPosition();
 
-        writer.startElement("div", bar);
-        writer.writeAttribute("id", bar.getClientId(context), null);
+        writer.startElement("div", sidebar);
+        writer.writeAttribute("id", sidebar.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        if (bar.isShowCloseIcon()) {
+        if (sidebar.isShowCloseIcon()) {
             encodeCloseIcon(context);
         }
 
-        if (!bar.isDynamic()) {
-            renderChildren(context, bar);
+        if (!sidebar.isDynamic()) {
+            renderChildren(context, sidebar);
         }
 
         writer.endElement("div");
@@ -89,19 +89,21 @@ public class SidebarRenderer extends CoreRenderer {
         writer.endElement("a");
     }
 
-    private void encodeScript(FacesContext context, Sidebar bar) throws IOException {
+    private void encodeScript(FacesContext context, Sidebar sidebar) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("Sidebar", bar)
-                .attr("visible", bar.isVisible(), false)
-                .attr("modal", bar.isModal(), true)
-                .attr("blockScroll", bar.isBlockScroll(), false)
-                .attr("baseZIndex", bar.getBaseZIndex(), 0)
-                .attr("dynamic", bar.isDynamic(), false)
-                .attr("showCloseIcon", bar.isShowCloseIcon(), true)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, bar, bar.getAppendTo(),
+        wb.init("Sidebar", sidebar)
+                .attr("visible", sidebar.isVisible(), false)
+                .attr("modal", sidebar.isModal(), true)
+                .attr("blockScroll", sidebar.isBlockScroll(), false)
+                .attr("baseZIndex", sidebar.getBaseZIndex(), 0)
+                .attr("dynamic", sidebar.isDynamic(), false)
+                .attr("showCloseIcon", sidebar.isShowCloseIcon(), true)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, sidebar, sidebar.getAppendTo(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .callback("onHide", "function()", bar.getOnHide())
-                .callback("onShow", "function()", bar.getOnShow());
+                .callback("onHide", "function()", sidebar.getOnHide())
+                .callback("onShow", "function()", sidebar.getOnShow());
+
+        encodeClientBehaviors(context, sidebar);
 
         wb.finish();
     }

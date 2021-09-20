@@ -173,7 +173,7 @@ declare namespace JQueryUITimepickerAddon {
          * Log error or data to the console during error or debugging.
          * @param args Data to log.
          */
-        log(...args: any[]): void;
+        log(...args: readonly unknown[]): void;
     }
 
     /**

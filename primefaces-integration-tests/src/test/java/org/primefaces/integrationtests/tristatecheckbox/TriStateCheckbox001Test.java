@@ -114,6 +114,65 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
         assertConfiguration(triStateCheckbox.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(4)
+    @DisplayName("TriStateCheckbox: disabled")
+    public void testDisable(Page page) {
+        // Arrange
+        TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
+        triStateCheckbox.setValue("1");
+        Assertions.assertEquals("1", triStateCheckbox.getValue());
+
+        // Act
+        triStateCheckbox.disable();
+        triStateCheckbox.toggle();
+
+        // Assert - value should not be accepted
+        assertNotClickable(triStateCheckbox);
+        Assertions.assertEquals("1", triStateCheckbox.getValue());
+        Assertions.assertFalse(triStateCheckbox.isEnabled());
+        assertCss(triStateCheckbox, "ui-state-disabled");
+        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("TriStateCheckbox: enabled")
+    public void testEnabled(Page page) {
+        // Arrange
+        TriStateCheckbox triStateCheckbox = page.triStateCheckbox;
+        triStateCheckbox.setValue("1");
+        Assertions.assertEquals("1", triStateCheckbox.getValue());
+
+        // Act
+        triStateCheckbox.disable();
+        triStateCheckbox.enable();
+        triStateCheckbox.toggle();
+
+        // Assert - value should not be accepted
+        assertClickable(triStateCheckbox);
+        Assertions.assertEquals("2", triStateCheckbox.getValue());
+        Assertions.assertTrue(triStateCheckbox.isEnabled());
+        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("TriStateCheckbox: readonly")
+    public void testReadonly(Page page) {
+        // Arrange
+        TriStateCheckbox triStateCheckbox = page.readonly;
+        Assertions.assertEquals("0", triStateCheckbox.getValue());
+
+        // Act
+        triStateCheckbox.toggle();
+
+        // Assert - value should not be accepted
+        Assertions.assertEquals("0", triStateCheckbox.getValue());
+        assertCss(triStateCheckbox.getBox(), "ui-chkbox-readonly");
+        assertConfiguration(triStateCheckbox.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TriStateCheckbox Config = " + cfg);
@@ -123,6 +182,9 @@ public class TriStateCheckbox001Test extends AbstractPrimePageTest {
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:triStateCheckbox")
         TriStateCheckbox triStateCheckbox;
+
+        @FindBy(id = "form:readonly")
+        TriStateCheckbox readonly;
 
         @FindBy(id = "form:button")
         CommandButton button;

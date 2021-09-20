@@ -18,7 +18,9 @@
  * @prop {CanvasRenderingContext2D} ctx The 2D rendering context of the canvas used by this chart.
  * @prop {import("chart.js")} chart The chart.js instance creates for this chart widget.
  *
- * @interface {PrimeFaces.widget.BaseChartCfg} cfg
+ * @interface {PrimeFaces.widget.BaseChartCfg} cfg The configuration for the {@link  BaseChart|Base chart widget}. You
+ * can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+ * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
  *
  * @prop {import("chart.js").ChartConfiguration} cfg.config The configuration for the
@@ -178,9 +180,10 @@ PrimeFaces.widget.DonutChart = PrimeFaces.widget.BaseChart.extend({});
  * Polar area charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs
  * depending on the value.
  *
- * @interface {PrimeFaces.widget.PolarAreaChartCfg} cfg The configuration for the {@link  PolarAreaChart| PolarAreaChart widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
+ * @interface {PrimeFaces.widget.PolarAreaChartCfg} cfg The configuration for the
+ * {@link  PolarAreaChart| PolarAreaChart widget}. You can access this configuration via
+ * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseChartCfg} cfg
  */
 PrimeFaces.widget.PolarAreaChart = PrimeFaces.widget.BaseChart.extend({});
@@ -214,9 +217,10 @@ PrimeFaces.widget.BubbleChart = PrimeFaces.widget.BaseChart.extend({});
 /**
  * __PrimeFaces ScatterChart Widget__
  *
- * @interface {PrimeFaces.widget.ScatterChartCfg} cfg The configuration for the {@link  ScatterChart| ScatterChart widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
+ * @interface {PrimeFaces.widget.ScatterChartCfg} cfg The configuration for the
+ * {@link  ScatterChart| ScatterChart widget}. You can access this configuration via
+ * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseChartCfg} cfg
  */
 PrimeFaces.widget.ScatterChart = PrimeFaces.widget.BaseChart.extend({});

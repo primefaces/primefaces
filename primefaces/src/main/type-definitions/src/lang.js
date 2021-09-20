@@ -49,8 +49,8 @@ async function asyncMap(arr, mapper) {
     /** @type {S[]} */
     const result = [];
     if (arr) {
-        for (let index = 0; index < arr.length; ++index) {
-            const value = await mapper(arr[index], index);
+        for (const [item, index] of withIndex(arr)) {
+            const value = await mapper(item, index);
             if (value !== undefined) {
                 result.push(value);
             }
@@ -70,8 +70,8 @@ async function asyncFlatMap(arr, mapper) {
     /** @type {S[]} */
     const result = [];
     if (arr) {
-        for (let index = 0; index < arr.length; ++index) {
-            const value = await mapper(arr[index], index);
+        for (const [item, index] of withIndex(arr)) {
+            const value = await mapper(item, index);
             if (value !== undefined) {
                 if (Array.isArray(value)) {
                     result.push(...value);
@@ -122,6 +122,29 @@ function mapCompute(map, key, computer) {
     else {
         return oldValue;
     }
+}
+
+/**
+ * @template T
+ * @template {string} K
+ * @template V
+ * @param {(item: T) => K} keyExtractor
+ * @param {(item: T) => V} valueExtractor
+ * @param {(oldValue: V, newValue: V) => V} [merger]
+ * @returns {Reducer<T, Record<K, V>>}
+ */
+function toRecord(keyExtractor, valueExtractor, merger = (_, y) => y) {
+    return [
+        (accumulated, item) => {
+            const key = keyExtractor(item);
+            const newValue = valueExtractor(item);
+            const oldValue = accumulated[key] ?? newValue;
+            const value = key in accumulated ? merger(oldValue, newValue) : newValue;
+            accumulated[key] = value;
+            return accumulated;
+        },
+        /** @type {Record<K, V>}*/ ({})
+    ];
 }
 
 /**
@@ -246,10 +269,10 @@ function splitLines(str, {
 } = {}) {
     let lines = str.split(LineBreakPattern);
     if (removeTrailingLines) {
-        while (lines.length > 0 && lines[0].trim() === removeTrailingLines) {
+        while (lines.length > 0 && lines[0]?.trim() === removeTrailingLines) {
             lines.shift();
         }
-        while (lines.length > 0 && lines[lines.length - 1].trim() === removeTrailingLines) {
+        while (lines.length > 0 && lines[lines.length - 1]?.trim() === removeTrailingLines) {
             lines.pop();
         }
     }
@@ -329,8 +352,8 @@ function isNotBlank(string) {
  */
 async function asyncForEach(arr, fn) {
     if (arr) {
-        for (let index = 0; index < arr.length; ++index) {
-            await fn(arr[index], index);
+        for (const [item, index] of withIndex(arr)) {
+            await fn(item, index);
         }
     }
 }
@@ -344,8 +367,8 @@ async function asyncForEach(arr, fn) {
  */
 async function asyncReduce(arr, reducer, initialValue) {
     if (arr) {
-        for (let index = 0; index < arr.length; ++index) {
-            const result = await reducer(initialValue, arr[index], index);
+        for (const [item, index] of withIndex(arr)) {
+            const result = await reducer(initialValue, item, index);
             initialValue = result !== undefined ? result : initialValue;
         }
     }
@@ -358,6 +381,19 @@ async function asyncReduce(arr, reducer, initialValue) {
  */
 function createIndent(indent) {
     return Indentation.repeat(indent);
+}
+
+/**
+ * @template T
+ * @param {Iterable<T>} iterable 
+ * @returns {Iterable<[T, number]>}
+ */
+function* withIndex(iterable) {
+    let index = 0;
+    for (const item of iterable) {
+        yield [item, index];
+        index += 1;
+    }
 }
 
 /**
@@ -446,6 +482,47 @@ function collectToMap(items, keyMapper, valueMapper, {
 }
 
 /**
+ * Combines all maps into a single map, merging values at the same key with the given reducer.
+ * @template {string} K
+ * @template V
+ * @template S
+ * @param {Reducer<V, S>} valueReducer
+ * @returns {Reducer<Map<K,V>, Map<K,S>>}
+ */
+function mergingMapValues(valueReducer) {
+    return [
+        (accumulated, item) => {
+            for (const [key, value] of item.entries()) {
+                let accValue = accumulated.get(key);
+                if (accValue === undefined) {
+                    accValue = valueReducer[1];
+                }
+                const newValue = valueReducer[0](accValue, value);
+                accumulated.set(key, newValue);
+            }
+            return accumulated;
+        },
+        new Map(),
+    ];
+}
+
+/**
+ * @template T
+ * @returns {Reducer<Set<T>, Set<T>>}
+ */
+function mergingSets() {
+    return [
+        (accumulated, items) => {
+            for (const item of items) {
+                accumulated.add(item);
+            }
+            return accumulated;
+        },
+        new Set(),
+    ];
+}
+
+/**
  * @template T
  * @template {(item: T, ...args: any) => any} F
  * @param {F} fn
@@ -488,11 +565,97 @@ function mergeIntoMap(map, reducer, ...moreMaps) {
 
 /**
  * @template T
+ * @param {Set<T>} set1 
+ * @param {Set<T>} set2 
+ * @returns {Set<T>} The difference between two sets. 
+ */
+function setDiff(set1, set2) {
+    /** @type {Set<T>} */
+    const result = new Set([...set1]);
+    for (const item of set2) {
+        result.delete(item);
+    }
+    return result;
+}
+
+/**
+ * @template T
  * @param {T | undefined} item 
  * @return {T[]}
  */
 function singletonArray(item) {
     return item !== undefined ? [item] : [];
+}
+
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+function escapeRegExpLiteral(value) {
+    return value.replace(/[-\/\\^$*+?.()|[\]{}]/g, c => `\\${c}`);
+}
+
+/**
+ * @template T
+ * @template S
+ * @param {Iterable<T>} items 
+ * @param {Reducer<T, S>} reducer 
+ * @returns {S}
+ */
+function reduce(items, reducer) {
+    const [merge, initial] = reducer;
+    let accumulated = initial;
+    for (const item of items) {
+        accumulated = merge(accumulated, item);
+    }
+    return accumulated;
+}
+
+/**
+ * @template T
+ * @template S
+ * @param {Iterable<T>} items 
+ * @param {(item: T) => S} mapper 
+ * @returns {S[]}
+ */
+function map(items, mapper) {
+    /** @type {S[]} */
+    const mapped = [];
+    for (const item of items) {
+        mapped.push(mapper(item));
+    }
+    return mapped;
+}
+
+/**
+ * @param {Record<PropertyKey, unknown>} record 
+ * @returns {boolean}
+ */
+function isRecordEmpty(record) {
+    for (const key in record) {
+        if (Object.prototype.hasOwnProperty.call(record, key)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @template T
+ * @param {string} value 
+ * @param {T} defaultValue
+ * @returns {T}
+ */
+function parseJsonOrDefault(value, defaultValue) {
+    try {
+        if (value === undefined || value === "") {
+            return defaultValue;
+        }
+        return JSON.parse(value);
+    }
+    catch (e) {
+        return defaultValue;
+    }
 }
 
 module.exports = {
@@ -510,25 +673,35 @@ module.exports = {
     createIndent,
     curry1,
     entriesToObject,
+    escapeRegExpLiteral,
     indentLines,
     isBlank,
     isJsonObject,
     isEmpty,
+    isRecordEmpty,
     isNotBlank,
     isNotEmpty,
     isNotNull,
     isNotUndefined,
+    map,
     mapCompute,
     mergeIntoMap,
+    mergingMapValues,
+    mergingSets,
     newEmptyArray,
     normalizeLineBreaksUnix,
     pairsToObject,
     parseJson,
+    parseJsonOrDefault,
     parseJsonObject,
     pushToMappedArray,
+    reduce,
     reduceIntoFirstArray,
     removeLineBreaksFromStartAndEnd,
+    setDiff,
     singletonArray,
     splitLines,
     strJoin,
+    toRecord,
+    withIndex,
 };

@@ -23,11 +23,12 @@
  */
 package org.primefaces.showcase.view.data.treetable;
 
-import javax.faces.view.ViewScoped;
 import org.primefaces.model.TreeNode;
+import org.primefaces.showcase.domain.Document;
 import org.primefaces.showcase.service.DocumentService;
 
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -46,7 +47,7 @@ public class ColumnsView implements Serializable {
 
     private String columnTemplate = "name size type";
     private List<ColumnModel> columns;
-    private TreeNode root;
+    private TreeNode<Document> root;
 
     @PostConstruct
     public void init() {
@@ -55,7 +56,7 @@ public class ColumnsView implements Serializable {
         createDynamicColumns();
     }
 
-    public TreeNode getRoot() {
+    public TreeNode<Document> getRoot() {
         return root;
     }
 

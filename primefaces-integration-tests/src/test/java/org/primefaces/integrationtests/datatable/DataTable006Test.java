@@ -36,6 +36,7 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
+import org.primefaces.selenium.component.model.datatable.Row;
 
 public class DataTable006Test extends AbstractDataTableTest {
 
@@ -54,7 +55,35 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages, "1,3");
+        int cnt = 0;
+        for (Row row : dataTable.getRows()) {
+            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("ui-chkbox-icon"));
+            if (cnt == 0 || cnt ==2) {
+                assertCss(checkboxIcon, "ui-icon-check");
+            }
+            else {
+                assertCss(checkboxIcon, "ui-icon-blank");
+            }
+            cnt ++;
+        }
+
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
+
+        // Act - https://github.com/primefaces/primefaces/issues/7128
+        page.buttonUnselect.click();
+
+        // Assert
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("ProgrammingLanguages unselected via backing bean"));
+        for (Row row : dataTable.getRows()) {
+            WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("ui-chkbox-icon"));
+            assertCss(checkboxIcon, "ui-icon-blank");
+        }
+
+        // Act
+        page.submit.click();
+
+        // Assert
+        assertSelections(page.messages, "");
     }
 
     @Test
@@ -226,7 +255,7 @@ public class DataTable006Test extends AbstractDataTableTest {
 
     @Test
     @Order(7)
-    @DisplayName("DataTable: GitHub #7368 selection - with filtering")
+    @DisplayName("DataTable: GitHub #7368, #7737 selection - with filtering")
     public void testLazySelectionWithFiltering(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -289,6 +318,9 @@ public class DataTable006Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:button")
         CommandButton submit;
+
+        @FindBy(id = "form:buttonUnselect")
+        CommandButton buttonUnselect;
 
         @FindBy(id = "form:toggleSelectPageOnly")
         CommandButton toggleSelectPageOnly;

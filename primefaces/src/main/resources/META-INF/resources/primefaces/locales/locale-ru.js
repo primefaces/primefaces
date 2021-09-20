@@ -19,6 +19,7 @@ PrimeFaces.locales['ru'] = {
     hourText: 'Час',
     minuteText: 'Минута',
     secondText: 'Секунда',
+    millisecondText: 'Миллисекунда',
     currentText: 'Сегодня',
     ampm: false,
     month: 'Месяц',

@@ -23,30 +23,35 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.openqa.selenium.By;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.datatable.Row;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class DataTable002Test extends AbstractDataTableTest {
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
     @Order(1)
     @DisplayName("DataTable: Lazy: Basic & Paginator")
-    public void testLazyAndPaginator(Page page) {
+    public void testLazyAndPaginator(String xhtml) {
         // Arrange
-        DataTable dataTable = page.dataTable;
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
@@ -88,12 +93,14 @@ public class DataTable002Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
     @Order(2)
     @DisplayName("DataTable: Lazy: single sort")
-    public void testLazySortSingle(Page page) {
+    public void testLazySortSingle(String xhtml) {
         // Arrange
-        DataTable dataTable = page.dataTable;
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         List<ProgrammingLanguage> langsAsc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName)).collect(Collectors.toList());
         List<ProgrammingLanguage> langsDesc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName).reversed())
@@ -127,12 +134,14 @@ public class DataTable002Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
     @Order(3)
     @DisplayName("DataTable: Lazy: filter")
-    public void testLazyFilter(Page page) {
+    public void testLazyFilter(String xhtml) {
         // Arrange
-        DataTable dataTable = page.dataTable;
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
                     .filter(l -> l.getFirstAppeared() >= 1998)
@@ -153,24 +162,118 @@ public class DataTable002Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
     @Order(4)
-    @DisplayName("DataTable: Lazy: rowSelect")
-    public void testLazyRowSelect(Page page) {
+    @DisplayName("DataTable: Lazy: rowSelect-event")
+    public void testLazyRowSelect(String xhtml) {
         // Arrange
-        DataTable dataTable = page.dataTable;
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Act
         PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
 
         // Assert
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
+        Assertions.assertEquals(1, getMessages().getAllMessages().size());
+        Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
         String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
-        Assertions.assertEquals(row3ProgLang, page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
+    @Order(5)
+    @DisplayName("DataTable: Lazy: rowSelect-event with filter applied before")
+    public void testLazyRowSelectWithFilterApplied(String xhtml) {
+        // Arrange
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
+        Assertions.assertNotNull(dataTable);
+        dataTable.selectPage(1);
+        dataTable.sort("First Appeared");
+        dataTable.filter("First Appeared", "1998");
+
+        // Act
+        PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
+
+        // Assert
+        Assertions.assertEquals(1, getMessages().getAllMessages().size());
+        Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
+        String row3ProgLang = dataTable.getRow(3).getCell(0).getText() + " - " + dataTable.getCell(3, 1).getText();
+        Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
+    @Order(6)
+    @DisplayName("DataTable: Lazy: selection with filter applied before")
+    public void testLazySelectionWithFilterApplied(String xhtml) {
+        // Arrange
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
+        Assertions.assertNotNull(dataTable);
+        dataTable.selectPage(1);
+        dataTable.sort("First Appeared");
+        dataTable.filter("First Appeared", "1998");
+
+        // Act
+        PrimeSelenium.guardAjax(dataTable.getCell(3, 0).getWebElement()).click();
+        getButtonSubmit().click();
+
+        // Assert
+        Assertions.assertEquals(1, getMessages().getAllMessages().size());
+        Assertions.assertEquals("Selected ProgrammingLanguage", getMessages().getMessage(0).getSummary());
+        String row3ProgLang = getDataTable().getRow(3).getCell(0).getText();
+        Assertions.assertEquals(row3ProgLang, getMessages().getMessage(0).getDetail());
+
+        assertConfiguration(getDataTable().getWidgetConfiguration());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
+    @Order(7)
+    @DisplayName("DataTable: Lazy: delete rows from last page - https://github.com/primefaces/primefaces/issues/1921")
+    public void testLazyRowDeleteFromLastPage(String xhtml) {
+        // Arrange
+        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        DataTable dataTable = getDataTable();
+        Assertions.assertNotNull(dataTable);
+        dataTable.selectPage(dataTable.getPaginator().getPages().size());
+
+        // Act & Assert
+        for (int row=5; row>1; row--) {
+            Assertions.assertEquals(row, getDataTable().getRows().size());
+            PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+            Assertions.assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
+        }
+
+        // Act & Assert - delete last row on page 8
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
+        Assertions.assertEquals(10, getDataTable().getRows().size());
+
+        // Act & Assert - select first row on page 7
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, 0).getWebElement()).click();
+        Assertions.assertEquals(1, getMessages().getAllMessages().size());
+        Assertions.assertEquals("ProgrammingLanguage Selected", getMessages().getMessage(0).getSummary());
+        String row0ProgLang = getDataTable().getRow(0).getCell(0).getText() + " - " + getDataTable().getCell(0, 1).getText();
+        Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
+
+        // Act & Assert - delete first row on page 7
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        Assertions.assertEquals(1, getMessages().getAllMessages().size());
+        Assertions.assertEquals("ProgrammingLanguage Deleted", getMessages().getMessage(0).getSummary());
+        Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
+        Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
+        Assertions.assertEquals(9, getDataTable().getRows().size());
+
+        assertConfiguration(getDataTable().getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
@@ -179,16 +282,21 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertTrue(cfg.has("paginator"));
     }
 
-    public static class Page extends AbstractPrimePage {
-        @FindBy(id = "form:msgs")
-        Messages messages;
+    private static Stream<Arguments> provideXhtmls() {
+        return Stream.of(
+                Arguments.of("datatable/dataTable002.xhtml"),
+                Arguments.of("datatable/dataTable002RowCountOtherImpl.xhtml"));
+    }
 
-        @FindBy(id = "form:datatable")
-        DataTable dataTable;
+    private DataTable getDataTable() {
+        return PrimeSelenium.createFragment(DataTable.class, By.id("form:datatable"));
+    }
 
-        @Override
-        public String getLocation() {
-            return "datatable/dataTable002.xhtml";
-        }
+    private Messages getMessages() {
+        return PrimeSelenium.createFragment(Messages.class, By.id("form:msgs"));
+    }
+
+    private CommandButton getButtonSubmit() {
+        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonSubmit"));
     }
 }

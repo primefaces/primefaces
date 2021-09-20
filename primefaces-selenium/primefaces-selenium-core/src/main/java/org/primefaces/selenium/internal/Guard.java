@@ -23,26 +23,19 @@
  */
 package org.primefaces.selenium.internal;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.spi.WebDriverProvider;
-
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.spi.WebDriverProvider;
+
+import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Guard {
 
@@ -148,7 +141,7 @@ public class Guard {
     }
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getAjaxTimeout(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getAjaxTimeout(), 50);
         wait.until(d -> {
             return (Boolean) ((JavascriptExecutor) driver)
                         .executeScript("return document.readyState === 'complete'"
@@ -180,19 +173,41 @@ public class Guard {
         }
 
         Class<T> proxyClass = new ByteBuddy()
-                    .subclass(classToProxy)
-                    .implement(interfacesToImplement)
-                    .method(methods)
-                    .intercept(InvocationHandlerAdapter.of(handler))
-                    .make()
-                    .load(target.getClass().getClassLoader())
-                    .getLoaded();
+                .subclass(classToProxy)
+                .implement(interfacesToImplement)
+                .method(methods)
+                .intercept(InvocationHandlerAdapter.of(handler))
+                .make()
+                .load(target.getClass().getClassLoader())
+                .getLoaded();
 
         try {
-            return proxyClass.getDeclaredConstructor().newInstance();
+            try {
+                // try default constructor first
+                Constructor<T> defaultCtor = proxyClass.getDeclaredConstructor();
+                return defaultCtor.newInstance();
+            }
+            catch (NoSuchMethodException ex) {
+                // ignore
+            }
+
+            try {
+                // try WebElement constructor, used e.g. by Select
+                if (target instanceof WrapsElement) {
+                    Constructor<T> ctor = proxyClass.getDeclaredConstructor(WebElement.class);
+                    return ctor.newInstance(((WrapsElement) target).getWrappedElement());
+                }
+            }
+            catch (NoSuchMethodException ex) {
+                // ignore
+            }
         }
-        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+
+        throw new RuntimeException("Could not proxy class "
+                + classToProxy.getName()
+                + " because of missing constructor (default or WebElement)");
     }
 }

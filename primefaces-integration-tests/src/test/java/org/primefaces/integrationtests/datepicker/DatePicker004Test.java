@@ -170,10 +170,92 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         panel = datePicker.showPanel();
         datePicker.getTodayButton().click();
 
-        // Assert - clear button reset to NOW
+        // Assert - today button reset to NOW
         LocalDateTime now = LocalDateTime.now();
         assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
         assertTime(panel, "22", "20", "19");
+        Assertions.assertNotNull(datePicker.getValue());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("DatePicker: GitHub #7448 date with time HH:mm:ss.SSS.")
+    public void testDateAndTimeWithMilliseconds(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datePickerMilliseconds;
+        Assertions.assertEquals(LocalDateTime.of(2021, 6, 25, 23, 22, 21, 19_000_000), datePicker.getValue());
+        LocalDateTime value = LocalDateTime.of(1979, 3, 14, 13, 12, 11, 123_000_000);
+
+        // Act
+        datePicker.setValue(value);
+        WebElement panel = datePicker.showPanel(); // focus to bring up panel
+
+        // Assert Panel
+        assertDate(panel, "March", "1979");
+        assertTime(panel, "13", "12", "11", "123");
+        datePicker.hidePanel();
+
+        // Assert Submit Value
+        page.submitMilliseconds.click();
+        LocalDateTime newValue = datePicker.getValue();
+        Assertions.assertEquals(value, newValue);
+        // #6459 showTime="true" automatically detected because of LocalDateTime
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss.SSS");
+        assertConfiguration(datePicker.getWidgetConfiguration(), newValue.format(dateTimeFormatter));
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("DatePicker: GitHub #7448 Clear button must clear everything.")
+    public void testClearButtonMilliseconds(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datePickerMilliseconds;
+        Assertions.assertEquals(LocalDateTime.of(2021, 6, 25, 23, 22, 21, 19_000_000), datePicker.getValue());
+
+        // Act
+        WebElement panel = datePicker.showPanel();
+
+        // Assert Panel
+        assertDate(panel, "June", "2021");
+        assertTime(panel, "23", "22", "21", "019");
+        datePicker.hidePanel();
+
+        // Act - click Clear button
+        panel = datePicker.showPanel();
+        LocalDateTime now = LocalDateTime.now();
+        datePicker.getClearButton().click();
+
+        // Assert - clear button reset to NOW
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
+        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
+        assertTime(panel, Objects.toString(now.getHour()), null, null);
+        Assertions.assertNull(datePicker.getValue());
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("DatePicker: GitHub #7448 Today button must set to now.")
+    public void testTodayButtonMilliseconds(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datePickerMilliseconds;
+        Assertions.assertEquals(LocalDateTime.of(2021, 6, 25, 23, 22, 21, 19_000_000), datePicker.getValue());
+
+        // Act
+        WebElement panel = datePicker.showPanel();
+
+        // Assert Panel
+        assertDate(panel, "June", "2021");
+        assertTime(panel, "23", "22", "21", "019");
+        datePicker.hidePanel();
+
+        // Act - click Today button
+        panel = datePicker.showPanel();
+        datePicker.getTodayButton().click();
+
+        // Assert - today button reset to NOW
+        LocalDateTime now = LocalDateTime.now();
+        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
+        assertTime(panel, "23", "22", "21", "019");
         Assertions.assertNotNull(datePicker.getValue());
     }
 
@@ -200,6 +282,12 @@ public class DatePicker004Test extends AbstractDatePickerTest {
 
         @FindBy(id = "form2:btnSeconds")
         CommandButton submitSeconds;
+
+        @FindBy(id = "form3:dpMilliseconds")
+        DatePicker datePickerMilliseconds;
+
+        @FindBy(id = "form3:btnMilliseconds")
+        CommandButton submitMilliseconds;
 
         @Override
         public String getLocation() {

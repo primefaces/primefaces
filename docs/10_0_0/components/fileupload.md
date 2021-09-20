@@ -3,7 +3,7 @@
 FileUpload goes beyond the browser input type="file" functionality and features an HTML5
 powered rich solution with graceful degradation for legacy browsers.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.fileupload-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.FileUpload-1.html)
 
 ## Info
 
@@ -36,7 +36,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | dragDropSupport | true | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
 | fileLimit | null | Integer | Maximum number of files allowed to upload.
 | fileLimitMessage | Maximum number of files exceeded | String | Message to display when file limit exceeds.
-| global | true | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is false.
+| global | true | Boolean | Global AJAX requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is true.
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 | invalidFileMessage | Invalid file type | String | Message to display when file is not accepted.
 | invalidSizeMessage | Invalid file size | String | Message to display when size limit exceeds.
@@ -160,6 +160,20 @@ In `advanced` mode, it does not send all files in one request, but always uses a
 
 ```xhtml
 <p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true" />
+```
+
+**Attention**: Since the files are send asynchronously in parallel to the server, the backing bean has to be **@RequestScoped**!<br/>
+Each file upload request is processed in a separate thread on server side. Special care has to be taken on thread safty.<br/>
+Be aware each file upload runs through the entire JSF lifecycle which implies that several attributes of the component
+(such as `process`, `update`, `oncomplete` and others) are processed or updated for each file. Consider to use `p:remoteCommand`
+which is called from client side after _all_ files are uploaded by checking the widgets `files` property. E.g.
+
+```xhtml
+<p:remoteCommand name="updateAfterAllFilesUploaded"
+    update="..." actionListener="..."/>
+<p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true"
+    widgetVar="fileUpload"
+    oncomplete="if (!PF('fileUpload').files.length) updateAfterAllFilesUploaded();"/>
 ```
 
 However, in `simple` mode, it is possible to get all updated files at once via the `UploadedFiles` model:
@@ -326,6 +340,7 @@ FileUpload is able to resume uploads that have been canceled (e.g user abort, lo
 ```
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
+**Note** that resuming chunked file uploads is not supported with commons uploader.
 
 ### Deleting aborted chunked uploads
 For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal

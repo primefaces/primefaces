@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datepicker;
 
+import java.text.DecimalFormat;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
@@ -42,6 +43,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DatePickerRenderer";
 
     protected String timeSeparator;
+    protected String fractionSeparator;
 
     public enum PropertyKeys {
 
@@ -64,9 +66,11 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         showTime,
         hourFormat,
         showSeconds,
+        showMilliseconds,
         stepHour,
         stepMinute,
         stepSecond,
+        stepMillisecond,
         showButtonBar,
         panelStyleClass,
         panelStyle,
@@ -75,6 +79,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         maxDateCount,
         numberOfMonths,
         view,
+        autoDetectDisplay,
         touchUI,
         dateTemplate,
         appendTo,
@@ -251,6 +256,18 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         getStateHelper().put(PropertyKeys.showSeconds, showSeconds);
     }
 
+    public boolean isShowMilliseconds() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMilliseconds, false);
+    }
+
+    public Boolean isShowMillisecondsWithoutDefault() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMilliseconds);
+    }
+
+    public void setShowMilliseconds(boolean showMilliseconds) {
+        getStateHelper().put(PropertyKeys.showMilliseconds, showMilliseconds);
+    }
+
     public int getStepHour() {
         return (Integer) getStateHelper().eval(PropertyKeys.stepHour, 1);
     }
@@ -273,6 +290,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setStepSecond(int stepSecond) {
         getStateHelper().put(PropertyKeys.stepSecond, stepSecond);
+    }
+
+    public int getStepMillisecond() {
+        return (Integer) getStateHelper().eval(PropertyKeys.stepMillisecond, 1);
+    }
+
+    public void setStepMillisecond(int stepMillisecond) {
+        getStateHelper().put(PropertyKeys.stepMillisecond, stepMillisecond);
     }
 
     public boolean isShowButtonBar() {
@@ -337,6 +362,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setView(String view) {
         getStateHelper().put(PropertyKeys.view, view);
+    }
+
+    public boolean isAutoDetectDisplay() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoDetectDisplay, true);
+    }
+
+    public void setAutoDetectDisplay(boolean autoDetectDisplay) {
+        getStateHelper().put(PropertyKeys.autoDetectDisplay, autoDetectDisplay);
     }
 
     public boolean isTouchUI() {
@@ -463,8 +496,12 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
             boolean ampm = "12".equals(getHourFormat());
             timeOnlyPattern = ampm ? "hh" : "HH";
             timeOnlyPattern += (separator + "mm");
-            if (isShowSeconds()) {
+            if (isShowSeconds() || isShowMilliseconds()) {
                 timeOnlyPattern += (separator + "ss");
+            }
+            if (isShowMilliseconds()) {
+                String fractSeparator = getFractionSeparator();
+                timeOnlyPattern += (fractSeparator + "SSS");
             }
             if (ampm) {
                 timeOnlyPattern += " a";
@@ -483,6 +520,13 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         return timeSeparator;
     }
 
-
-
+    public String getFractionSeparator() {
+        if (fractionSeparator == null) {
+            // Determine separator for locale
+            Locale locale = calculateLocale(getFacesContext());
+            char ds = ((DecimalFormat) DecimalFormat.getInstance(locale)).getDecimalFormatSymbols().getDecimalSeparator();
+            fractionSeparator = Character.toString(ds);
+        }
+        return fractionSeparator;
+    }
 }

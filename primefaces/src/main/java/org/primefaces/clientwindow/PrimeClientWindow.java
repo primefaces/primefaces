@@ -60,7 +60,7 @@ public class PrimeClientWindow extends ClientWindow {
 
         boolean post = PrimeClientWindowUtils.isPost(context);
 
-        if (LangUtils.isValueBlank(id) && post) {
+        if (LangUtils.isBlank(id) && post) {
             id = context.getExternalContext().getRequestParameterMap().get(ResponseStateManager.CLIENT_WINDOW_PARAM);
         }
 
@@ -68,7 +68,7 @@ public class PrimeClientWindow extends ClientWindow {
             id = PrimeClientWindowUtils.secureWindowId(id);
         }
 
-        if (LangUtils.isValueBlank(id)) {
+        if (LangUtils.isBlank(id)) {
             id = PrimeClientWindowUtils.generateNewWindowId();
 
             if (!post) {
@@ -139,7 +139,7 @@ public class PrimeClientWindow extends ClientWindow {
             String name = entry.getKey();
 
             for (String value : entry.getValue()) {
-                if (LangUtils.isValueEmpty(name) && LangUtils.isValueEmpty(value)) {
+                if (LangUtils.isEmpty(name) && LangUtils.isEmpty(value)) {
                     continue;
                 }
 

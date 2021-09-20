@@ -40,7 +40,7 @@ function generatePropertyDoc(propCodeInfo, propDocInfo) {
     // Part 2: create property signature
     const propSignature = createPropSignature(propCodeInfo);
     return {
-        doc: propDocComment, 
+        doc: propDocComment,
         signature: propSignature,
     };
 }
@@ -107,8 +107,9 @@ function createFunctionDoc(severitySettings, fnInfo) {
         ...fnInfo,
         abstract: false,
         constructor: false,
-        name: "",
         method: undefined,
+        name: "",
+        override: false,
         visibility: undefined,
     };
     const methodCodeInfo = createMethodCodeInfoFromTags(severitySettings, method, []);
@@ -183,7 +184,7 @@ function createTypedefSignatureWithDocs(severitySettings, namespacedName, typede
         }
         signature.push(`${signatureBase} ${typedef.typedef};`);
     }
-    
+
     if (indentSpec) {
         indent -= indentSpec.indent;
     }
@@ -236,7 +237,7 @@ function createMethodDocComment(methodDocInfo, sortedDocVariables) {
     const positionalParamTags = Array.from(methodDocInfo.patterns.values()).map(pattern => createTagForPositionalParameter(
         pattern.index,
         pattern.description,
-        pattern.initializer,        
+        pattern.initializer,
         pattern.required,
     ));
     // @param ...
@@ -283,8 +284,8 @@ function createPropertyDocs(signatureConverter, property, severitySettings) {
     const external = [];
 
     // Check doc comment on property / getter / setter
-    const getterJsDoc  = property.getter !== undefined  && property.getter.hasComment ? property.getter.jsdoc : undefined;
-    const setterJsDoc  = property.setter !== undefined && property.setter.hasComment ? property.setter.jsdoc : undefined;
+    const getterJsDoc = property.getter !== undefined && property.getter.hasComment ? property.getter.jsdoc : undefined;
+    const setterJsDoc = property.setter !== undefined && property.setter.hasComment ? property.setter.jsdoc : undefined;
     if (getterJsDoc !== undefined && setterJsDoc !== undefined) {
         handleError("docOnGetterAndSetter", severitySettings, () => factory(`Doc comments for property '${property.name}' must not be present on both the getter and setter.`));
     }
@@ -311,12 +312,12 @@ function createPropertyDocs(signatureConverter, property, severitySettings) {
                 propertyNode: property.nodeProperty,
                 name: property.name,
                 tags: propDocInfo.subObject.tags,
-            };    
+            };
         }
     }
     else {
         for (const constInfo of propDocInfo.constants) {
-            external.push(...createConstDocs(constInfo, propCodeInfo.typedef, 0));            
+            external.push(...createConstDocs(constInfo, propCodeInfo.typedef, 0));
         }
     }
 
@@ -352,7 +353,7 @@ function createConstantDocs(signatureConverter, constant, severitySettings) {
             ...constantDoc.doc,
             ...signatureConverter(constantDoc.signature),
         ],
-        typedefs: constantDocInfo.typedefs, 
+        typedefs: constantDocInfo.typedefs,
     };
 }
 
@@ -375,7 +376,7 @@ function createInvocationDocs(signatureConverter, method, severitySettings) {
             ...methodDoc.doc,
             ...signatureConverter(methodDoc.signature, true),
         ],
-        typedefs: methodDocInfo.typedefs, 
+        typedefs: methodDocInfo.typedefs,
     };
 }
 
@@ -401,7 +402,7 @@ function createIndentSpec(docs, namespacedName, currentIndent) {
                 ...tagsTemplate,
                 ...docs.additionalTags
             ],
-            description: docs.export.description,    
+            description: docs.export.description,
         });
     }
     else {
@@ -415,10 +416,11 @@ function createIndentSpec(docs, namespacedName, currentIndent) {
             extends: docs.extends,
             generics: docs.templates,
             implements: docs.implements,
+            override: docs.override,
             type: exportType,
         };
         if (namespacedName.namespace.length > 0) {
-            return createNamespaceWithType(namespacedName, currentIndent, typeSpec, getEmptyNamespaceSpec());    
+            return createNamespaceWithType(namespacedName, currentIndent, typeSpec, getEmptyNamespaceSpec());
         }
         else {
             return createType(namespacedName.name, currentIndent, typeSpec, false);
@@ -454,7 +456,7 @@ function createCommentDocs(doc, node, name = undefined, severitySettings, indent
     }];
 
     for (let stackEl = stack.pop(); stackEl !== undefined; stackEl = stack.pop()) {
-        let {nestedDoc, namespacedName, indent: currentIndent, lines, path} = stackEl;
+        let { nestedDoc, namespacedName, indent: currentIndent, lines, path } = stackEl;
         if (nestedDoc.docs) {
             // Do not create constants for root (top level) objects
             if (path.length > 0) {
@@ -478,7 +480,7 @@ function createCommentDocs(doc, node, name = undefined, severitySettings, indent
                 }
                 else {
                     lines.push(...indentLines(nestedDoc.docs.method.doc, currentIndent));
-                    lines.push(...indentLines(toAnonymousMethodSignature(nestedDoc.docs.method.signature, true), currentIndent));    
+                    lines.push(...indentLines(toAnonymousMethodSignature(nestedDoc.docs.method.signature, true), currentIndent));
                 }
             }
             for (const [name, prop] of nestedDoc.docs.props) {
@@ -608,7 +610,7 @@ function createMethodConstants(constants, signature) {
  * @return {string[]}
  */
 function createConstDocs(constInfo, type, indent) {
-    const {name, namespace} = typeToNamespacedName(constInfo.name || "");
+    const { name, namespace } = typeToNamespacedName(constInfo.name || "");
     /** @type {string[]} */
     const lines = [];
     if (name.length > 0) {
@@ -656,7 +658,7 @@ function createTypedefDocs(typedefs, severitySettings, internalNamespace = undef
             result.internal.push(...typedefDocs);
         }
     }
-    
+
     return result;
 }
 
@@ -688,7 +690,7 @@ function parseObjectComment(objectDocInfo, node, severitySettings) {
         docs: undefined,
     }
     validateObjectDocInfo(objectDocInfo, node, severitySettings);
-    for (const {path, shape} of eachNestedShape(objectDocInfo.shape)) {
+    for (const { path, shape } of eachNestedShape(objectDocInfo.shape)) {
         const nested = getOrCreateNestedObjectDocAtPath(result, path);
         const docs = createObjectDocsFromShape(severitySettings, shape);
         nested.docs = docs;
@@ -713,6 +715,7 @@ function createObjectDocsFromShape(severitySettings, shape) {
         hasProperty: shape.jsdoc !== undefined,
         name: shape.name,
         method: undefined,
+        override: shape.override,
         optional: shape.jsdoc ? shape.jsdoc.optional : false,
         props: new Map(),
         readonly: shape.readonly,
@@ -804,7 +807,7 @@ function validateObjectDocInfo(objectDocInfo, node, severitySettings) {
     /** @type {MessageFactory} */
     const factory = message => newNodeErrorMessage(message, node);
 
-    for (const {path, shape} of eachNestedShape(objectDocInfo.shape)) {
+    for (const { path, shape } of eachNestedShape(objectDocInfo.shape)) {
         if (shape.method !== undefined) {
             for (const [key, data] of Array.from(shape.method.destructuring)) {
                 if (data.pattern === undefined && data.structure !== undefined) {
@@ -818,7 +821,7 @@ function validateObjectDocInfo(objectDocInfo, node, severitySettings) {
             }
             if (shape.method.method === undefined) {
                 handleError("tagMissingMethod", severitySettings, () => factory(`Method tags for property path '${path.join(".")}' were found in doc comments, but no corresponding '@method ${path.join(".")}' was found`));
-                shape.method = undefined;    
+                shape.method = undefined;
             }
         }
         if (shape.name !== "" && shape.jsdoc === undefined && shape.method === undefined && shape.export.type === "unspecified") {
@@ -838,19 +841,20 @@ function* eachNestedShape(shape) {
         shape: shape,
     }];
     while (shapeStack.length > 0) {
-        const {path, shape} = shapeStack[shapeStack.length - 1];
+        const item = shapeStack[shapeStack.length - 1];
         shapeStack.pop();
-        for (const prop of shape.props.values()) {
-            shapeStack.push({
-                path: path.concat(prop.name),
-                shape: prop,
-            });
+        if (item !== undefined) {
+            const { path, shape } = item;
+            for (const prop of shape.props.values()) {
+                shapeStack.push({
+                    path: path.concat(prop.name),
+                    shape: prop,
+                });
+            }
+            yield { path, shape };
         }
-        yield {path, shape};
     }
 }
-
-
 
 module.exports = {
     createConstDocs,

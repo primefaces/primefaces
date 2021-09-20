@@ -8,7 +8,7 @@
 }
 
 .ui-datascroller .ui-datascroller-content {
-    padding:4px 10px;
+    padding: 4px 10px;
 }
 
 .ui-datascroller-inline .ui-datascroller-content {
@@ -16,7 +16,7 @@
 }
 
 .ui-datascroller .ui-datascroller-list {
-    list-style-type: none; 
+    list-style-type: none;
     margin: 0;
     padding: 0;
 }
@@ -25,18 +25,13 @@
     border: 0 none;
 }
 
-.ui-datascroller .ui-datascroller-loader {
-    text-align: center;
-    padding: 4px 10px;
-}
-
-.ui-datascroller .ui-datascroller-loading {
+.ui-datascroller .ui-datascroller-loading .ui-datascroller-loading-default {
     background: url("#{resource['primefaces:datascroller/images/loading.gif']}") center center no-repeat;
     width: 220px;
     height: 19px;
     padding: 0;
-    margin: 0;
-    display: inline-block;
+    margin: 4px auto;
+    display: block;
 }
 
 .ui-datascroller .ui-datascroller-virtualscroll-wrapper {

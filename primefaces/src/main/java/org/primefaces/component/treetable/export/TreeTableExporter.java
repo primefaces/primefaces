@@ -23,13 +23,12 @@
  */
 package org.primefaces.component.treetable.export;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.component.export.TableExporter;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.model.TreeNode;
+import org.primefaces.util.Constants;
+
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIColumn;
@@ -38,12 +37,13 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.component.export.TableExporter;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.model.TreeNode;
-import org.primefaces.util.Constants;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class TreeTableExporter extends TableExporter<TreeTable> {
 
@@ -256,7 +256,7 @@ public abstract class TreeTableExporter extends TableExporter<TreeTable> {
         return outputStream;
     }
 
-    protected static int getTreeRowCount(TreeNode node) {
+    protected static int getTreeRowCount(TreeNode<?> node) {
         int count = 1;
         if (node.getChildren() != null) {
             for (TreeNode childNode : node.getChildren()) {
@@ -278,7 +278,7 @@ public abstract class TreeTableExporter extends TableExporter<TreeTable> {
      * @param rowIndex
      * @return data of found treenode
      */
-    protected static Object traverseTree(TreeNode node, MutableInt rowIndex) {
+    protected static Object traverseTree(TreeNode<?> node, MutableInt rowIndex) {
 
         int index = rowIndex.getValue();
         rowIndex.decrement();

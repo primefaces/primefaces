@@ -116,7 +116,7 @@ if (window.PrimeFaces) {
         EMAIL_ADDRESS_REGEX: /^([!#-'*+\/-9=?A-Z^-~-]+(\.[!#-'*+\/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-'*+\/-9=?A-Z^-~-]+(\.[!#-'*+\/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*\])$/,
 
         validate: function(element, value) {
-            if(value !== null && !EMAIL_ADDRESS_REGEX.test(value)) {
+            if(value !== null && !this.EMAIL_ADDRESS_REGEX.test(value)) {
                 var vc = PrimeFaces.validation.ValidationContext;
                 return vc.getMessageBV(element, this.MESSAGE_ID, element.data('p-email-msg'));
             }
@@ -334,8 +334,8 @@ if (window.PrimeFaces) {
         }
     };
 
-    PrimeFaces.validation.ValidationContext.getMessageBV = function(element, defaultKey, msg) {
-        return PrimeFaces.validation.Utils.getMessageBV(element, defaultKey, msg);
+    PrimeFaces.validation.ValidationContext.getMessageBV = function() {
+        return PrimeFaces.validation.Utils.getMessageBV.apply(null, arguments);
     };
 
     /**
@@ -398,8 +398,8 @@ if (window.PrimeFaces) {
      */
     PrimeFaces.validation.Utils.formatBV = function(str, params) {
         var s = str;
-        for(var i = 3; i < params.length; i++) {       
-            var reg = new RegExp('\\{' + (i - 3) + '\\}', 'gm');             
+        for(var i = 3; i < params.length; i++) {
+            var reg = new RegExp('\\{' + (i - 3) + '\\}', 'gm');
             s = s.replace(reg, params[i]);
         }
 

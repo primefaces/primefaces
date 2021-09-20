@@ -79,6 +79,7 @@ const DefaultSeveritySettings = {
     tagDuplicateImplements: Level.fatal,
     tagDuplicateMethod: Level.fatal,
     tagDuplicateNext: Level.fatal,
+    tagDuplicateOverride: Level.fatal,
     tagDuplicateParameter: Level.fatal,
     tagDuplicatePattern: Level.fatal,
     tagDuplicateReadonly: Level.fatal,
@@ -98,7 +99,12 @@ const DefaultSeveritySettings = {
     tagSuperfluousPattern: Level.fatal,
     tagSuperfluousYield: Level.fatal,
     tagSuperfluousTypedef: Level.fatal,
+
+    tagUnusedMethodInComments: Level.fatal,
+    tagUnusedPropInComments: Level.fatal,
     
+    propDocMissing: Level.fatal,
+    propDocSuperfluous: Level.fatal,
     propDuplicateIfaceOrClass: Level.fatal,
     propInvalidIfaceOrClass: Level.fatal,
 

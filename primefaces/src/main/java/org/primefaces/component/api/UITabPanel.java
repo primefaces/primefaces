@@ -589,8 +589,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public void setIndex(int index) {
-        // save child state
-        //_saveChildState();
         if (index < -1) {
             throw new IllegalArgumentException("index is less than -1");
         }
@@ -644,7 +642,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
 
         // restore child state
-        //_restoreChildState();
         if (_index == -1) {
             // reset components to initial state
             // If no initial state, skip row restore state code
@@ -732,7 +729,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
 
         _end = size;
-        //_step = step;
     }
 
     public void process(FacesContext faces, PhaseId phase) {
@@ -1318,7 +1314,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
 
-        if (LangUtils.isValueBlank(paramValue)) {
+        if (LangUtils.isBlank(paramValue)) {
             return true;
         }
 

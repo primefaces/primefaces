@@ -45,27 +45,23 @@ public class DatePicker007Test extends AbstractDatePickerTest {
     public void testBasic(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalTime.of(12, 4), datePicker.getValue().toLocalTime());
+        Assertions.assertEquals(LocalTime.of(0, 4), datePicker.getValue().toLocalTime());
 
         // Act
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
 
         // Assert Panel (12:04 AM)
         Assertions.assertNotNull(panel);
-        String text = panel.getText();
-        Assertions.assertTrue(text.contains("12"));
-        Assertions.assertTrue(text.contains("04"));
-        Assertions.assertTrue(text.contains("PM")); //TODO: When #6636 is fixed this should be AM
+        assertTime(panel, "12", "04", null);
+        Assertions.assertTrue(panel.getText().contains("AM"));
 
         // Act (go down by 1 hour)
         WebElement hourPicker = panel.findElement(By.className("ui-hour-picker"));
         hourPicker.findElement(By.className("ui-picker-down")).click();
 
         // Assert (new time should be 11:04 PM)
-        text = panel.getText();
-        Assertions.assertTrue(text.contains("11"));
-        Assertions.assertTrue(text.contains("04"));
-        Assertions.assertTrue(text.contains("AM")); //TODO: When #6636 is fixed this should be PM
+        assertTime(panel, "11", "04", null);
+        Assertions.assertTrue(panel.getText().contains("PM"));
         assertConfiguration(datePicker.getWidgetConfiguration(), "12:04 AM");
     }
 

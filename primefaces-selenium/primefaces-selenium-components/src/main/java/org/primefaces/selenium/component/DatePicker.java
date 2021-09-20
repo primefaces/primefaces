@@ -23,11 +23,10 @@
  */
 package org.primefaces.selenium.component;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -159,12 +158,9 @@ public abstract class DatePicker extends AbstractInputComponent {
             return null;
         }
 
-        String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
-
-        // Parse time string and move into server-timezone
-        LocalDateTime dateTime = LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME);
-        dateTime = LocalDateTime.ofInstant(dateTime.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-
+        Number epoch = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getTime();");
+        // Move epoch into server-timezone
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(epoch.longValue()), ZoneId.systemDefault());
         return dateTime;
     }
 

@@ -83,7 +83,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         }
 
         if (datePicker.isShowSecondsWithoutDefault() == null) {
-            datePicker.setShowSeconds(pattern.contains("s"));
+            datePicker.setShowSeconds(pattern.contains("s") || pattern.contains("S"));
+        }
+
+        if (datePicker.isShowMillisecondsWithoutDefault() == null) {
+            datePicker.setShowMilliseconds(pattern.contains("S"));
         }
 
         super.encodeEnd(context, component);
@@ -191,6 +195,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("maxDateCount", datePicker.getMaxDateCount(), Integer.MAX_VALUE)
             .attr("numberOfMonths", datePicker.getNumberOfMonths(), 1)
             .attr("view", datePicker.getView(), null)
+            .attr("autoDetectDisplay", datePicker.isAutoDetectDisplay(), true)
             .attr("touchUI", datePicker.isTouchUI(), false)
             .attr("showWeek", datePicker.isShowWeek(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datePicker, datePicker.getAppendTo(),
@@ -198,6 +203,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("icon", datePicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datePicker.getRangeSeparator(), "-")
             .attr("timeSeparator", datePicker.getTimeSeparator(), ":")
+            .attr("fractionSeparator", datePicker.getFractionSeparator(), ".")
             .attr("timeInput", datePicker.isTimeInput())
             .attr("touchable", ComponentUtils.isTouchable(context, datePicker), true)
             .attr("lazyModel", datePicker.getModel() instanceof LazyDateMetadataModel, false);
@@ -248,9 +254,11 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                 .attr("hourFormat", datePicker.getHourFormat(), null)
                 .attr("timeOnly", datePicker.isTimeOnly(), false)
                 .attr("showSeconds", datePicker.isShowSeconds(), false)
+                .attr("showMilliseconds", datePicker.isShowMilliseconds(), false)
                 .attr("stepHour", datePicker.getStepHour(), 1)
                 .attr("stepMinute", datePicker.getStepMinute(), 1)
                 .attr("stepSecond", datePicker.getStepSecond(), 1)
+                .attr("stepMillisecond", datePicker.getStepSecond(), 1)
                 .attr("hideOnDateTimeSelect", datePicker.isHideOnDateTimeSelect(), false);
         }
 

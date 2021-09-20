@@ -119,6 +119,10 @@ public class CommandLinkRenderer extends CoreRenderer {
                 else {
                     writer.writeAttribute("onclick", onclick.toString(), "onclick");
                 }
+                renderPassThruAttributes(context, link, HTML.LINK_WITHOUT_CLICK_ATTRS);
+            }
+            else {
+                renderPassThruAttributes(context, link, HTML.LINK_ATTRS);
             }
 
             List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
@@ -127,8 +131,6 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (dialogReturnBehavior != null) {
                 writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);
             }
-
-            renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
 
             if (label != null) {
                 writer.writeText(label, "value");

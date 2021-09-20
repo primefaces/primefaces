@@ -24,7 +24,10 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -66,9 +69,7 @@ public class DataTableRenderer extends DataRenderer {
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
 
-        for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-            DataTableFeature feature = it.next();
-
+        for (DataTableFeature feature : DataTable.FEATURES) {
             if (feature.shouldDecode(context, table)) {
                 feature.decode(context, table);
             }
@@ -82,9 +83,7 @@ public class DataTableRenderer extends DataRenderer {
         DataTable table = (DataTable) component;
 
         if (table.shouldEncodeFeature(context)) {
-            for (Iterator<DataTableFeature> it = DataTable.FEATURES.values().iterator(); it.hasNext(); ) {
-                DataTableFeature feature = it.next();
-
+            for (DataTableFeature feature : DataTable.FEATURES) {
                 if (feature.shouldEncode(context, table)) {
                     feature.encode(context, this, table);
                 }
@@ -109,7 +108,9 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void preRender(FacesContext context, DataTable table) {
-        table.initFilterBy(context);
+        // trigger init, otherwise column state might be confused when rendering and init at the same time
+        table.getSortByAsMap();
+        table.getFilterByAsMap();
 
         if (table.isMultiViewState()) {
             table.restoreMultiViewState();
@@ -137,20 +138,17 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             if (table.isDefaultSort()) {
-                SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
-                sortFeature.sort(context, table);
+                SortFeature.getInstance().sort(context, table);
                 table.setRowIndex(-1);
             }
 
             if (table.isDefaultFilter()) {
-                FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-                filterFeature.filter(context, table);
+                FilterFeature.getInstance().filter(context, table);
             }
         }
 
         if (table.isSelectionEnabled()) {
-            SelectionFeature selectionFeature = (SelectionFeature) table.getFeature(DataTableFeatureKey.SELECT);
-            selectionFeature.decodeSelectionRowKeys(context, table);
+            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
         }
 
         if (table.isPaginator()) {
@@ -535,8 +533,14 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
-        if (LangUtils.isNotBlank(scrollHeight) && scrollHeight.indexOf('%') == -1) {
-            writer.writeAttribute("style", "max-height:" + scrollHeight + "px", null);
+        if (LangUtils.isNotBlank(scrollHeight)) {
+            if (!endsWithLenghtUnit(scrollHeight)) {
+                scrollHeight = scrollHeight + "px";
+            }
+            // % handle specially in the JS code
+            if (scrollHeight.indexOf('%') == -1) {
+                writer.writeAttribute("style", "max-height:" + scrollHeight, null);
+            }
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
@@ -754,8 +758,9 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isGlobalFilterOnly()) {
             return;
         }
+
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent filterFacet = column.getFacet("filter");
+        UIComponent filterFacet = table.getFilterComponent(column);
 
         if (!ComponentUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, table, column, writer);
@@ -1051,16 +1056,10 @@ public class DataTableRenderer extends DataRenderer {
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
-
-                if (column instanceof Column) {
-                    encodeColumnHeader(context, table, column);
+                if (column instanceof DynamicColumn) {
+                    ((DynamicColumn) column).applyModel();
                 }
-                else if (column instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) column;
-                    dynamicColumn.applyModel();
-
-                    encodeColumnHeader(context, table, dynamicColumn);
-                }
+                encodeColumnHeader(context, table, column);
             }
 
             writer.endElement("tr");
@@ -1240,6 +1239,7 @@ public class DataTableRenderer extends DataRenderer {
         //Preselection
         boolean selected = table.getSelectedRowKeys().contains(rowKey);
         boolean disabled = table.isDisabledSelection();
+        boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
@@ -1248,7 +1248,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(selected && !disabled, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
-                .add(table.isExpandedRow(), DataTable.EXPANDED_ROW_CLASS)
+                .add(expanded, DataTable.EXPANDED_ROW_CLASS)
                 .build();
 
         writer.startElement("tr", null);
@@ -1281,8 +1281,8 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.endElement("tr");
 
-        if (table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey))) {
-            ((RowExpandFeature) table.getFeature(DataTableFeatureKey.ROW_EXPAND)).encodeExpansion(context, this, table, rowIndex);
+        if (expanded) {
+            RowExpandFeature.getInstance().encodeExpansion(context, this, table, rowIndex);
         }
 
         return true;
@@ -1350,13 +1350,20 @@ public class DataTableRenderer extends DataRenderer {
             encodeDefaultFieldCell(context, table, column, writer);
         }
         else if (column instanceof DynamicColumn) {
-            column.encodeAll(context);
+            encodeDynamicCell(context, table, column);
         }
         else {
             column.renderChildren(context);
         }
 
         writer.endElement("td");
+    }
+
+    /**
+     * Encodes dynamic column. Allows to override default behavior.
+     */
+    protected void encodeDynamicCell(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        column.encodeAll(context);
     }
 
     protected void encodeDefaultFieldCell(FacesContext context, DataTable table, UIColumn column, ResponseWriter writer) throws IOException {

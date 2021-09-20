@@ -53,10 +53,14 @@ public interface ColumnAware {
     }
 
     default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, Function<UIColumn, Boolean> callback) {
-        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, callback);
+        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, true, callback);
     }
 
-    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, boolean skipUnrendered,
+    default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, boolean visitColumnGroups, Function<UIColumn, Boolean> callback) {
+        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, visitColumnGroups, callback);
+    }
+
+    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, boolean skipUnrendered, boolean visitColumnGroups,
             Function<UIColumn, Boolean> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
@@ -86,15 +90,15 @@ public interface ColumnAware {
                     return false;
                 }
             }
-            else if (child instanceof ColumnGroup) {
+            else if (child instanceof ColumnGroup && visitColumnGroups) {
                 // columnGroup must contain p:row(s) as child
                 for (int j = 0; j < child.getChildCount(); j++) {
-                    UIComponent row = ((UIComponent) child).getChildren().get(j);
+                    UIComponent row = child.getChildren().get(j);
                     if (skipUnrendered && !row.isRendered()) {
                         continue;
                     }
 
-                    if (!forEachColumn(context, row, unwrapDynamicColumns, skipUnrendered, callback)) {
+                    if (!forEachColumn(context, row, unwrapDynamicColumns, skipUnrendered, visitColumnGroups, callback)) {
                         return false;
                     }
                 }
@@ -107,7 +111,7 @@ public interface ColumnAware {
                         continue;
                     }
 
-                    if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, skipUnrendered, callback)) {
+                    if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, skipUnrendered, visitColumnGroups, callback)) {
                         return false;
                     }
                 }
@@ -295,7 +299,7 @@ public interface ColumnAware {
     default int getColumnsCount(boolean visibleOnly) {
         final LongAdder columnsCount = new LongAdder();
 
-        forEachColumn(column -> {
+        forEachColumn(true, true, false, column -> {
             if (!visibleOnly || column.isVisible()) {
                 columnsCount.increment();
             }
@@ -312,7 +316,7 @@ public interface ColumnAware {
     default int getColumnsCountWithSpan(boolean visibleOnly) {
         final LongAdder columnsCountWithSpan = new LongAdder();
 
-        forEachColumn(column -> {
+        forEachColumn(true, true, false, column -> {
             if (!visibleOnly || column.isVisible()) {
                 columnsCountWithSpan.add(column.getColspan());
             }

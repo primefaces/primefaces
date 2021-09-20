@@ -3,7 +3,7 @@
 
 InputText is an extension to standard inputText with skinning capabilities.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.inputtext.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputText.html)
 
 ## Info
 

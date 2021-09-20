@@ -118,6 +118,24 @@ public abstract class InputRenderer extends CoreRenderer {
         renderAccessibilityAttributes(context, component, isDisabled(component), isReadOnly(component));
     }
 
+    /**
+     * Inputs of type="hidden" according to WCAG accessibility criterion 4.1.1 should not ever use
+     * readonly or aria-readonly attributes.
+     * <pre>
+     * "aria-required" if the component is required
+     * "aria-invalid" if the component is invalid
+     * "aria-labelledby" if the component has a labelledby attribute
+     * "disabled" and "aria-disabled" if the component is disabled
+     * </pre>
+     *
+     * @param context the {@link FacesContext}
+     * @param component  the {@link UIInput} component to add attributes for
+     * @throws IOException if any error occurs writing the response
+     */
+    protected void renderAccessibilityAttributesHidden(FacesContext context, UIInput component) throws IOException {
+        renderAccessibilityAttributes(context, component, isDisabled(component), false);
+    }
+
     protected void renderAccessibilityAttributes(FacesContext context, UIInput component, boolean disabled, boolean readonly)
                 throws IOException {
         ResponseWriter writer = context.getResponseWriter();
