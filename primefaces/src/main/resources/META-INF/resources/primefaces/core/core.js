@@ -1152,7 +1152,7 @@
          * Logs the current PrimeFaces and jQuery version to console.
          */
         version: function() {
-            var version = 'PrimeFaces ' + PrimeFaces.VERSION + ' (jQuery ' + jQuery.fn.jquery + ')';
+            var version = 'PrimeFaces ' + PrimeFaces.VERSION + ' (jQuery ' + jQuery.fn.jquery + ' / UI ' + $.ui.version + ')';
             console.log(version);
         },
 
