@@ -90,7 +90,7 @@ public class UIData extends javax.faces.component.UIData {
             boolean lazy = LazyDataModel.class.isAssignableFrom(type);
 
             // remember in ViewState, to not do the same check again
-            setLazy(true);
+            setLazy(lazy);
 
             return lazy;
         });
