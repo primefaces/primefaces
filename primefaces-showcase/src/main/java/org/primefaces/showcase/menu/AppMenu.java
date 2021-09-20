@@ -212,6 +212,7 @@ public class AppMenu {
         dataScrollerMenuItems.add(new MenuItem("Basic", "/ui/data/datascroller/basic"));
         dataScrollerMenuItems.add(new MenuItem("Inline", "/ui/data/datascroller/inline"));
         dataScrollerMenuItems.add(new MenuItem("Loader", "/ui/data/datascroller/loader"));
+        dataScrollerMenuItems.add(new MenuItem("Loading", "/ui/data/datascroller/loading"));
         dataMenuItems.add(new MenuItem("DataScroller", dataScrollerMenuItems));
 
         //DataTable Nested MenuItem
