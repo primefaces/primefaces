@@ -181,7 +181,8 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child.getFacetCount() > 0)) {
                 for (UIComponent facet : child.getFacets().values()) {
                     process(context, facet, phaseId);
@@ -800,11 +801,9 @@ public class UIData extends javax.faces.component.UIData {
                     for (int j = 0; j < row.getChildCount(); j++) {
                         UIComponent col = row.getChildren().get(j);
                         if (col instanceof Column) {
-                            if (col.getFacetCount() > 0) {
-                                boolean value = visitColumnFacets(context, callback, col);
-                                if (value) {
-                                    return true;
-                                }
+                            boolean value = visitColumnFacets(context, callback, col);
+                            if (value) {
+                                return true;
                             }
                         }
                         else if (col instanceof Columns) {
@@ -832,9 +831,11 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected boolean visitColumnFacets(VisitContext context, VisitCallback callback, UIComponent component) {
-        for (UIComponent columnFacet : component.getFacets().values()) {
-            if (columnFacet.visitTree(context, callback)) {
-                return true;
+        if (component.getFacetCount() > 0) {
+            for (UIComponent columnFacet : component.getFacets().values()) {
+                if (columnFacet.visitTree(context, callback)) {
+                    return true;
+                }
             }
         }
 
