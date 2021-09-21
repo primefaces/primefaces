@@ -84,7 +84,7 @@ public class UIData extends javax.faces.component.UIData {
         return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> {
             // if not set by xhtml, we need to check the type of the value binding
             Class<?> type = ELUtils.getType(getFacesContext(),
-                    getValueExpression(PropertyKeys.lazy.name()),
+                    getValueExpression("value"),
                     () -> getValue());
             boolean lazy = LazyDataModel.class.isAssignableFrom(type);
 
