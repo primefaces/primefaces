@@ -133,23 +133,23 @@ public class LangUtilsTest {
         
         field = LangUtils.getFieldRecursive(AbstractClass.class, "container.string");        
         Assertions.assertNotNull(field);
-        Assertions.assertEquals(field.getDeclaringClass(), Container.class);
-        Assertions.assertEquals(field.getName(), "string");
+        Assertions.assertEquals(Container.class, field.getDeclaringClass());
+        Assertions.assertEquals("string", field.getName());
         
         field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container.string");
         Assertions.assertNotNull(field);
-        Assertions.assertEquals(field.getDeclaringClass(), Container.class);
-        Assertions.assertEquals(field.getName(), "string");
+        Assertions.assertEquals(Container.class, field.getDeclaringClass());
+        Assertions.assertEquals( "string", field.getName());
         
         field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container");
         Assertions.assertNotNull(field);
-        Assertions.assertEquals(field.getDeclaringClass(), Container.class);
-        Assertions.assertEquals(field.getName(), "container");
+        Assertions.assertEquals(Container.class, field.getDeclaringClass());
+        Assertions.assertEquals("container", field.getName());
 
         field = LangUtils.getField(SimpleClass.class, "strings");
         Assertions.assertNotNull(field);
-        Assertions.assertEquals(field.getDeclaringClass(), SimpleClass.class);
-        Assertions.assertEquals(field.getName(), "strings");
+        Assertions.assertEquals(SimpleClass.class, field.getDeclaringClass());
+        Assertions.assertEquals("strings", field.getName());
         
         Assertions.assertNotNull(LangUtils.getField(AbstractClass.class, "ints"));
         Assertions.assertNotNull(LangUtils.getField(ConcreteClass.class, "ints"));
