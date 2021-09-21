@@ -999,7 +999,10 @@ public class TreeTableRenderer extends DataRenderer {
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("value", value, null);
+        writer.writeAttribute("autocomplete", "off", null);
+        if (value != null) {
+            writer.writeAttribute("value", value, null);
+        }
         writer.endElement("input");
     }
 
