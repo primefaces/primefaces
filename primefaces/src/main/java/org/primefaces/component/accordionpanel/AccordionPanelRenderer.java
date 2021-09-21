@@ -145,17 +145,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = accordionPanel.getClientId(context);
         String stateHolderId = clientId + "_active";
 
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", stateHolderId, null);
-        writer.writeAttribute("name", stateHolderId, null);
-        writer.writeAttribute("value", accordionPanel.getActiveIndex(), null);
-        writer.writeAttribute("autocomplete", "off", null);
-        writer.endElement("input");
+        renderHiddenInput(context, stateHolderId, accordionPanel.getActiveIndex(), false);
     }
 
     protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {

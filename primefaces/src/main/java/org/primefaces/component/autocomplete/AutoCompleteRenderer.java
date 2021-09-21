@@ -262,20 +262,8 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, ac);
-        String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
-
-        writer.startElement("input", null);
-        writer.writeAttribute("id", clientId + "_hinput", null);
-        writer.writeAttribute("name", clientId + "_hinput", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", autocompleteProp, null);
-        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-        if (valueToRender != null) {
-            writer.writeAttribute("value", valueToRender, null);
-        }
-        writer.endElement("input");
+        renderHiddenInput(context, clientId + "_hinput", valueToRender, ac.isDisabled());
     }
 
     protected void encodeHiddenSelect(FacesContext context, AutoComplete ac, String clientId, List<String> values) throws IOException {

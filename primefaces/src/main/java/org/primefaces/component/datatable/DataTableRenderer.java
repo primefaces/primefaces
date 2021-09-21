@@ -1482,17 +1482,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", id, null);
-        writer.writeAttribute("autocomplete", "off", null);
-        if (value != null) {
-            writer.writeAttribute("value", value, null);
-        }
-        writer.endElement("input");
+        renderHiddenInput(context, id, value, false);
     }
 
     @Override
