@@ -108,15 +108,10 @@ public class SignatureRenderer extends InputRenderer {
     protected void encodeInputField(FacesContext context, Signature signature, String name, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", name, null);
-        writer.writeAttribute("name", name, null);
-        writer.writeAttribute("autocomplete", "off", null);
+        String valueToRender = null;
         if (value != null) {
-            writer.writeAttribute("value", value, null);
+            valueToRender = value.toString();
         }
-        renderAccessibilityAttributesHidden(context, signature);
-        writer.endElement("input");
+        renderHiddenInput(context, name, valueToRender, isDisabled(signature));
     }
 }
