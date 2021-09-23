@@ -148,7 +148,6 @@ public class FieldsetRenderer extends CoreRenderer {
             writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
 
             if (fieldset.isToggleable()) {
-                writer.writeAttribute("role", "button", null);
                 writer.writeAttribute("tabindex", fieldset.getTabindex(), null);
 
                 String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
@@ -175,15 +174,8 @@ public class FieldsetRenderer extends CoreRenderer {
     }
 
     protected void encodeStateHolder(FacesContext context, Fieldset fieldset) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String name = fieldset.getClientId(context) + "_collapsed";
-
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", name, null);
-        writer.writeAttribute("name", name, null);
-        writer.writeAttribute("value", String.valueOf(fieldset.isCollapsed()), null);
-        writer.endElement("input");
+        renderHiddenInput(context, name, String.valueOf(fieldset.isCollapsed()), false);
     }
 
     @Override

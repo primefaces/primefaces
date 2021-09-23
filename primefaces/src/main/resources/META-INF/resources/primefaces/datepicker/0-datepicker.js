@@ -1851,8 +1851,6 @@
             else {
                 this.hideOverlay();
             }
-
-            this.datepickerClick = true;
         },
 
         onPanelClick: function (event) {
@@ -2173,13 +2171,13 @@
                     $this.datepickerClick = false;
                 };
 
-                document.addEventListener('click', this.documentClickListener);
+                $(document).on('click', this.documentClickListener);
             }
         },
 
         unbindDocumentClickListener: function () {
             if (this.documentClickListener) {
-                document.removeEventListener('click', this.documentClickListener);
+                $(document).off('click', this.documentClickListener);
                 this.documentClickListener = null;
             }
         },
@@ -2212,14 +2210,14 @@
             };
 
             for (var i = 0; i < this.scrollableParents.length; i++) {
-                this.scrollableParents[i].addEventListener('scroll', this.scrollableListener);
+                $(this.scrollableParents[i]).on('scroll', this.scrollableListener);
             }
         },
 
         unbindScrollListener: function() {
             if (this.scrollableParents && this.scrollableListener) {
                 for (var i = 0; i < this.scrollableParents.length; i++) {
-                    this.scrollableParents[i].removeEventListener('scroll', this.scrollableListener);
+                    $(this.scrollableParents[i]).off('scroll', this.scrollableListener);
                 }
 
                 this.scrollableListener = null;

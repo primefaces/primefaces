@@ -21,7 +21,7 @@
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <mojarra.version>2.3.16</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
-        <resteasy.version>4.7.0.Final</resteasy.version>
+        <resteasy.version>4.7.1.Final</resteasy.version>
         <jetty.version>9.4.43.v20210629</jetty.version>
     </properties>
 
@@ -52,10 +52,6 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <exclusions>
-                <exclusion>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-compress</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>com.github.virtuald</groupId>
                     <artifactId>curvesapi</artifactId>
@@ -139,7 +135,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.9.4</version>
+            <version>3.9.6</version>
         </dependency>
 
         <!-- HTML sanitizer for the textEditor -->
@@ -162,6 +158,13 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <!-- JAXB required for JDK9+ -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.5</version>
         </dependency>
     </dependencies>
 

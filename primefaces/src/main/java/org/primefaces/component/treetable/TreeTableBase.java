@@ -27,6 +27,7 @@ import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
+import org.primefaces.model.TreeNode;
 import org.primefaces.util.MessageFactory;
 
 public abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable,
@@ -374,11 +375,11 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.first, first);
     }
 
-    public Object getFilteredValue() {
-        return getStateHelper().eval(PropertyKeys.filteredValue, null);
+    public TreeNode<?> getFilteredValue() {
+        return (TreeNode<?>) getStateHelper().eval(PropertyKeys.filteredValue, null);
     }
 
-    public void setFilteredValue(Object filteredValue) {
+    public void setFilteredValue(TreeNode<?> filteredValue) {
         getStateHelper().put(PropertyKeys.filteredValue, filteredValue);
     }
 

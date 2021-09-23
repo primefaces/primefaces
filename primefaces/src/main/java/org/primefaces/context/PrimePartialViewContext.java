@@ -117,7 +117,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             ResetInputContextCallback contextCallback = null;
 
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
-                if (LangUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
+                if (LangUtils.isBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
                     continue;
                 }
 

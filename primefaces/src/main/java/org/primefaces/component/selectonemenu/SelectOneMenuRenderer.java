@@ -215,9 +215,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeAriaLabel(ResponseWriter writer, SelectOneMenu menu) throws IOException {
         String ariaLabel =  Objects.toString(menu.getAttributes().get(HTML.ARIA_LABEL), null);
-        if (LangUtils.isValueBlank(ariaLabel)) {
+        if (LangUtils.isBlank(ariaLabel)) {
             String label = menu.getLabel();
-            ariaLabel = LangUtils.isValueBlank(label) ? menu.getPlaceholder() : label;
+            ariaLabel = LangUtils.isBlank(label) ? menu.getPlaceholder() : label;
         }
         if (LangUtils.isNotBlank(ariaLabel)) {
             writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);

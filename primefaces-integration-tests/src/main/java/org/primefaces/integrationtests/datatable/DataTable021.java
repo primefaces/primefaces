@@ -25,6 +25,7 @@ package org.primefaces.integrationtests.datatable;
 
 import lombok.Data;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.LangUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -34,6 +35,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Named
 @ViewScoped
@@ -60,11 +62,19 @@ public class DataTable021 implements Serializable {
         progLanguages = service.getLangs(); //progLanguages may have been sorted from DataTable
     }
 
-    public void remove(ProgrammingLanguage programmingLanguage) {
+    public void removeV1(ProgrammingLanguage programmingLanguage) {
         this.progLanguages.remove(programmingLanguage);
         if (this.filteredProgLanguages != null) {
             this.filteredProgLanguages.remove(programmingLanguage); // see https://github.com/primefaces/primefaces/issues/7336
         }
+
+//        updateDataTableFilterWorkaround(); // work-around for PF 10.0.0
+    }
+
+    public void removeV2(ProgrammingLanguage programmingLanguage) {
+        this.progLanguages.remove(programmingLanguage);
+        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datatable");
+        dataTable.filterAndSort();
 
 //        updateDataTableFilterWorkaround(); // work-around for PF 10.0.0
     }
@@ -92,4 +102,24 @@ public class DataTable021 implements Serializable {
 //        SortFeature sortFeature = (SortFeature) dataTable.getFeature(DataTableFeatureKey.SORT);
 //        sortFeature.sort(FacesContext.getCurrentInstance(), dataTable);
 //    }
+
+    public void deleteJavaProgrammingLanguage() {
+        ProgrammingLanguage java = this.progLanguages.stream().filter(l -> l.getName().equals("Java")).findFirst().get();
+        this.progLanguages.remove(java);
+
+        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datatable");
+        dataTable.filterAndSort();
+    }
+
+    public boolean globalFilterFunction(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase();
+        if (LangUtils.isBlank(filterText)) {
+            return true;
+        }
+
+        ProgrammingLanguage programmingLanguage = (ProgrammingLanguage) value;
+
+        return programmingLanguage.getName().toLowerCase().contains(filterText)
+                || programmingLanguage.getType().toString().toLowerCase().contains(filterText);
+    }
 }

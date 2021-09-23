@@ -108,7 +108,7 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
             this.children = children;
         }
         else {
-            CheckboxTreeNodeChildren<T> nodeChildren = new CheckboxTreeNodeChildren<T>(this);
+            CheckboxTreeNodeChildren<T> nodeChildren = new CheckboxTreeNodeChildren(this);
             nodeChildren.addAll(children);
             this.children = nodeChildren;
         }

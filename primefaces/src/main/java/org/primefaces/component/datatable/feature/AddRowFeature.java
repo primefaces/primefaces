@@ -32,6 +32,15 @@ import java.io.IOException;
 
 public class AddRowFeature implements DataTableFeature {
 
+    private static final AddRowFeature INSTANCE = new AddRowFeature();
+
+    private AddRowFeature() {
+    }
+
+    public static AddRowFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         throw new FacesException("AddRowFeature should not encode.");
@@ -40,8 +49,7 @@ public class AddRowFeature implements DataTableFeature {
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
-            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
-            feature.decodeSelectionRowKeys(context, table);
+            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
         }
 
         String clientId = table.getClientId(context);

@@ -2,7 +2,7 @@
 
 Chips is used to enter multiple values on an inputfield.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.chips.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Chips.html)
 
 ## Info
 

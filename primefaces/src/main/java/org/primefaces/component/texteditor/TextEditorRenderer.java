@@ -109,14 +109,7 @@ public class TextEditorRenderer extends InputRenderer {
         }
         writer.endElement("div");
 
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("name", inputId, null);
-        // #2905
-        if (valueToRender != null) {
-            writer.writeAttribute("value", valueToRender, null);
-        }
-        writer.endElement("input");
+        renderHiddenInput(context, inputId, valueToRender, editor.isDisabled());
 
         writer.endElement("div");
     }

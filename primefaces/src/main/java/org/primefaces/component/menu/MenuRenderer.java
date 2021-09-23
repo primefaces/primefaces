@@ -45,7 +45,8 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PlainMenu", menu)
-                .attr("toggleable", menu.isToggleable(), false);
+                .attr("toggleable", menu.isToggleable(), false)
+                .attr("statefulGlobal", menu.isStatefulGlobal(), false);
 
         if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
@@ -69,7 +70,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
         writer.startElement("div", menu);
-        if (!LangUtils.isValueEmpty(menu.getMaxHeight())) {
+        if (!LangUtils.isEmpty(menu.getMaxHeight())) {
             styleClass = styleClass + " "  + Menu.CONTAINER_MAXHEIGHT_CLASS;
             style = style != null ? style : "";
             style += ";max-height:" + menu.getMaxHeight();

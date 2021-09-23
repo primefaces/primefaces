@@ -104,7 +104,7 @@ public class LifecyclePhaseListener implements PhaseListener {
         }
 
         String source = facesContext.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-        if (LangUtils.isValueBlank(source)) {
+        if (LangUtils.isBlank(source)) {
             return false;
         }
 

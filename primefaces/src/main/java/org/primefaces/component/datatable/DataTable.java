@@ -23,25 +23,6 @@
  */
 package org.primefaces.component.datatable;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostRestoreStateEvent;
-import javax.faces.model.DataModel;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -60,6 +41,18 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import javax.faces.model.DataModel;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -145,20 +138,19 @@ public class DataTable extends DataTableBase {
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
 
-    public static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
-            .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
-            .put(DataTableFeatureKey.FILTER, new FilterFeature())
-            .put(DataTableFeatureKey.PAGE, new PageFeature())
-            .put(DataTableFeatureKey.SORT, new SortFeature())
-            .put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature())
-            .put(DataTableFeatureKey.SELECT, new SelectionFeature())
-            .put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature())
-            .put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature())
-            .put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature())
-            .put(DataTableFeatureKey.SCROLL, new ScrollFeature())
-            .put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature())
-            .put(DataTableFeatureKey.ADD_ROW, new AddRowFeature())
-            .build();
+    public static final List<DataTableFeature> FEATURES = Collections.unmodifiableList(Arrays.asList(
+            DraggableColumnsFeature.getInstance(),
+            FilterFeature.getInstance(),
+            PageFeature.getInstance(),
+            SortFeature.getInstance(),
+            ResizableColumnsFeature.getInstance(),
+            SelectionFeature.getInstance(),
+            RowEditFeature.getInstance(),
+            CellEditFeature.getInstance(),
+            RowExpandFeature.getInstance(),
+            ScrollFeature.getInstance(),
+            DraggableRowsFeature.getInstance(),
+            AddRowFeature.getInstance()));
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
@@ -205,10 +197,6 @@ public class DataTable extends DataTableBase {
         expandedRowKeys,
         columnMeta,
         width;
-    }
-
-    public DataTableFeature getFeature(DataTableFeatureKey key) {
-        return FEATURES.get(key);
     }
 
     public boolean shouldEncodeFeature(FacesContext context) {
@@ -297,10 +285,10 @@ public class DataTable extends DataTableBase {
         super.processEvent(event);
 
         // restore "value" from "filteredValue"
-        if (isFilteringEnabled()
-                && !isLazy()
-                && event instanceof PostRestoreStateEvent
-                && (this == event.getComponent())) {
+        if (event instanceof PostRestoreStateEvent
+                && this == event.getComponent()
+                && isFilteringEnabled()
+                && !isLazy()) {
             Object filteredValue = getFilteredValue();
             if (filteredValue != null) {
                 setValue(filteredValue);
@@ -314,14 +302,14 @@ public class DataTable extends DataTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        DataTableFeature feature = FEATURES.get(DataTableFeatureKey.FILTER);
+        FilterFeature feature = FilterFeature.getInstance();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
-            AjaxBehaviorEvent ajaxEvt = deferredEvents.get("filter");
-            if (ajaxEvt != null) {
-                FilterEvent evt = new FilterEvent(this, ajaxEvt.getBehavior(), getFilterByAsMap());
-                evt.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
-                super.queueEvent(evt);
+            AjaxBehaviorEvent event = deferredEvents.get("filter");
+            if (event != null) {
+                FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
+                wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                super.queueEvent(wrappedEvent);
             }
         }
     }
@@ -469,6 +457,9 @@ public class DataTable extends DataTableBase {
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
+            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
+            lazyModel.setRowCount(lazyModel.count(filterBy));
+
             calculateFirst();
 
             FacesContext context = getFacesContext();
@@ -480,8 +471,8 @@ public class DataTable extends DataTableBase {
                 first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), getActiveFilterMeta());
-            lazyModel.setPageSize(getRows());
+            List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), filterBy);
+            lazyModel.setPageSize(rows);
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
@@ -1020,8 +1011,7 @@ public class DataTable extends DataTableBase {
     }
 
     public void updateSelectionWithMVS(Set<String> rowKeys) {
-        SelectionFeature feature = (SelectionFeature) FEATURES.get(DataTableFeatureKey.SELECT);
-        feature.decodeSelection(getFacesContext(), this, rowKeys);
+        SelectionFeature.getInstance().decodeSelection(getFacesContext(), this, rowKeys);
     }
 
     public void updateExpansionWithMVS(Set<String> rowKeys) {
@@ -1061,7 +1051,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, Collections::emptyMap);
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
     }
 
     @Override
@@ -1114,9 +1104,14 @@ public class DataTable extends DataTableBase {
             return;
         }
 
-        FilterFeature filterFeature = (FilterFeature) getFeature(DataTableFeatureKey.FILTER);
-        filterFeature.filter(FacesContext.getCurrentInstance(), this);
-        SortFeature sortFeature = (SortFeature) getFeature(DataTableFeatureKey.SORT);
-        sortFeature.sort(FacesContext.getCurrentInstance(), this);
+        /*
+         * setDataModel is defined by UIData. So different implementations for Mojarra and MyFaces.
+         * But PrimeFaces comes with it´s own UIData which extends/modifies UIData provided by JSF-impl.
+         * But PrimeFaces UIData does not know all impl-specifics, so ....
+         */
+        setDataModel(null); // for MyFaces 2.3 - compatibility
+
+        FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this);
+        SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
     }
 }

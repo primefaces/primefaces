@@ -57,7 +57,7 @@ public class DataTable019 implements Serializable {
 
     public boolean globalFilterFunction(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase();
-        if (LangUtils.isValueBlank(filterText)) {
+        if (LangUtils.isBlank(filterText)) {
             return true;
         }
         int filterInt = getInteger(filterText);

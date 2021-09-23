@@ -164,20 +164,10 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String inputId = listbox.getClientId(context) + "_input";
         String valueToRender = ComponentUtils.getValueToRender(context, listbox);
 
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", inputId, null);
-        writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("autocomplete", "off", null);
-        if (valueToRender != null) {
-            writer.writeAttribute("value", valueToRender, null);
-        }
-        renderAccessibilityAttributes(context, listbox);
-        writer.endElement("input");
+        renderHiddenInput(context, inputId, valueToRender, listbox.isDisabled());
     }
 
     @Override

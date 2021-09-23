@@ -12,8 +12,17 @@
     <h:body>
 
         <h:form id="form">
-            <p:dataTable id="datatable" value="#{dataTable021.progLanguages}" var="lang"
-                         filteredValue="#{dataTable021.filteredProgLanguages}">
+            <p:dataTable id="datatable" value="#{dataTable021.progLanguages}" var="lang" widgetVar="datatable"
+                         filteredValue="#{dataTable021.filteredProgLanguages}"
+                         globalFilterFunction="#{dataTable021.globalFilterFunction}">
+
+                <f:facet name="header">
+                    <div class="products-table-header">
+                        <span style="font-weight: bold; text-transform: capitalize;">programming languages</span>
+                        <p:inputText id="globalFilter" onchange="PF('datatable').filter()" placeholder="Search" />
+                    </div>
+                </f:facet>
+
                 <p:column headerText="ID" sortBy="#{lang.id}">
                     <h:outputText value="#{lang.id}"/>
                 </p:column>
@@ -27,12 +36,23 @@
                 </p:column>
 
                 <p:column>
-                    <p:commandButton id="remove"
+                    <p:commandButton id="removeV1"
                                      update="form:datatable"
-                                     actionListener="#{dataTable021.remove(lang)}"
-                                     value="remove row">
+                                     actionListener="#{dataTable021.removeV1(lang)}"
+                                     value="remove row V1">
                     </p:commandButton>
                 </p:column>
+                <p:column>
+                    <p:commandButton id="removeV2"
+                                     update="form:datatable"
+                                     actionListener="#{dataTable021.removeV2(lang)}"
+                                     value="remove row V2">
+                    </p:commandButton>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton process="@this form:datatable" update="datatable" value="Delete row" action="#{dataTable021.deleteJavaProgrammingLanguage}" id="buttonDeleteRow" />
+                </f:facet>
             </p:dataTable>
 
             <p:commandButton id="button" value="Submit" update="@form"/>

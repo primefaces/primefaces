@@ -113,7 +113,7 @@ public class ColorPickerRenderer extends InputRenderer {
 
         renderPassThruAttributes(context, colorPicker);
         renderValidationMetadata(context, colorPicker);
-        renderAccessibilityAttributes(context, colorPicker);
+        renderAccessibilityAttributesHidden(context, colorPicker);
 
         if (value != null) {
             writer.writeAttribute("value", value, null);

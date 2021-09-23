@@ -284,6 +284,10 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         return eval(PropertyKeys.ignoreComponentNotFound, Boolean.FALSE);
     }
 
+    public void setIgnoreComponentNotFound(Boolean ignoreComponentNotFound) {
+        put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
     @Override
     protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();

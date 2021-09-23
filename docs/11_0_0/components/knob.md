@@ -2,7 +2,7 @@
 
 Knob is an input component to insert numeric values in a range.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.knob-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Knob-1.html)
 
 ## Info
 

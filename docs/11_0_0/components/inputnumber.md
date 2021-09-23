@@ -3,7 +3,7 @@
 InputNumber formats input fields with numeric Strings. It supports currency symbols, minimum
 and maximum value, negative numbers, and a lot of round methods.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.inputnumber-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputNumber-1.html)
 
 ## Info
 

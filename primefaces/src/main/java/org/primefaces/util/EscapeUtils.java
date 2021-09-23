@@ -173,7 +173,7 @@ public class EscapeUtils {
      * @return valid XML element name
      */
     public static String forXmlTag(String intag) {
-        if (XMLChar.isValidName(intag) || LangUtils.isValueEmpty(intag)) {
+        if (XMLChar.isValidName(intag) || LangUtils.isEmpty(intag)) {
             return intag;
         }
 

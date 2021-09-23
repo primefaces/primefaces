@@ -57,7 +57,7 @@ public class SplitButton extends SplitButtonBase {
     private String confirmationScript;
 
     public String resolveStyleClass() {
-        boolean iconBlank = LangUtils.isValueBlank(getIcon());
+        boolean iconBlank = LangUtils.isBlank(getIcon());
         boolean valueBlank = getValue() == null;
         boolean modelBlank = getModel() == null;
         String styleClass = "";

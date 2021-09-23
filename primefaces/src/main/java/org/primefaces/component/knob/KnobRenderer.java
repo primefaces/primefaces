@@ -68,7 +68,7 @@ public class KnobRenderer extends CoreRenderer {
 
         Knob knob = (Knob) component;
 
-        if (!LangUtils.isValueEmpty(submittedValue)) {
+        if (!LangUtils.isEmpty(submittedValue)) {
             int submittedInt = Integer.parseInt(submittedValue);
             if (submittedInt < knob.getMin() || submittedInt > knob.getMax()) {
                 return;
@@ -119,12 +119,7 @@ public class KnobRenderer extends CoreRenderer {
 
         writer.endElement("input");
 
-        writer.startElement("input", null);
-        writer.writeAttribute("id", knob.getClientId() + "_hidden", null);
-        writer.writeAttribute("name", knob.getClientId() + "_hidden", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("value", value.toString(), null);
-        writer.endElement("input");
+        renderHiddenInput(context, knob.getClientId() + "_hidden", value.toString(), knob.isDisabled());
     }
 
     private void encodeScript(FacesContext context, Knob knob) throws IOException {

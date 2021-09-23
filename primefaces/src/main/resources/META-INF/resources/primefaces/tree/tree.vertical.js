@@ -6,7 +6,8 @@
  * @typedef {"none" | "sibling"} PrimeFaces.widget.VerticalTree.DropRestrictMode Defines parent-child restrictions when
  * a node is dropped.
  * 
- * @interface {PrimeFaces.widget.VerticalTree.DroppedNodeParams} DroppedNodeParams
+ * @interface {PrimeFaces.widget.VerticalTree.DroppedNodeParams} DroppedNodeParams Describes a drag & drop operation
+ * when a tree node is being dragged. 
  * @prop {JQueryUI.DroppableOptions} DroppedNodeParams.ui Details about the drop event.
  * @prop {PrimeFaces.widget.VerticalTree} DroppedNodeParams.dragSource Tree widget of the dragged node.
  * @prop {JQuery} DroppedNodeParams.dragNode The node that was dragged.
@@ -34,7 +35,7 @@
  * 
  * @prop {string} cfg.collapsedIcon Named of the icon for collapsed nodes.
  * @prop {boolean} cfg.controlled Whether drag & drop operations of this tree table are controlled.
- * @prop {PrimeFaces.widget.VerticalTree.DropRestrictMode} dropRestrict Defines parent-child restrictions when a node is
+ * @prop {PrimeFaces.widget.VerticalTree.DropRestrictMode} cfg.dropRestrict Defines parent-child restrictions when a node is
  * dropped.
  * @prop {boolean} cfg.rtl `true` if text direction is right-to-left, or `false` otherwise.
  */
@@ -217,10 +218,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                 case keyCode.UP:
                     var nodeToFocus = null,
-                    prevNode = $this.focusedNode.prev();
+                    prevNode = $this.previousNode($this.focusedNode);
 
                     if(prevNode.length) {
-                        nodeToFocus = prevNode.find('li.ui-treenode:visible:last');
+                        nodeToFocus = prevNode.find('li.ui-treenode:visible:not(.ui-tree-droppoint)').last();
                         if(!nodeToFocus.length) {
                             nodeToFocus = prevNode;
                         }
@@ -238,13 +239,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                 case keyCode.DOWN:
                     var nodeToFocus = null,
-                    firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:first");
+                    firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:not(.ui-tree-droppoint)").first();
 
                     if(firstVisibleChildNode.length) {
                         nodeToFocus = firstVisibleChildNode;
                     }
-                    else if($this.focusedNode.next().length) {
-                        nodeToFocus = $this.focusedNode.next();
+                    else if($this.nextNode($this.focusedNode).length) {
+                        nodeToFocus = $this.nextNode($this.focusedNode);
                     }
                     else {
                         var rowkey = $this.focusedNode.data('rowkey').toString();
@@ -325,13 +326,41 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     },
 
     /**
+     * Returns the previous node, skipping droppoints (if present), starting at the given node.
+     * @private
+     * @param {JQuery} node Node where to start the search.
+     * @return {JQuery} The previous node.
+     */
+    previousNode: function(node) {
+        var prevNode = node.prev();
+        if (prevNode.length && (prevNode.hasClass("ui-tree-droppoint") || prevNode.hasClass("ui-treenode-hidden"))) {
+            prevNode = prevNode.prev();
+        }
+        return prevNode;
+    },
+
+    /**
+     * Returns the next node, skipping droppoints (if present), starting at the given node.
+     * @private
+     * @param {JQuery} node Node where to start the search.
+     * @return {JQuery} The next node.
+     */
+    nextNode: function(node) {
+        var nextNode = node.next();
+        if (nextNode.length && (nextNode.hasClass("ui-tree-droppoint") || nextNode.hasClass("ui-treenode-hidden"))) {
+            nextNode = nextNode.next();
+        }
+        return nextNode;
+    },
+
+    /**
      * Searches for a node to focus, starting at the given node.
      * @private
      * @param {JQuery} node Node where to start the search.
      * @return {JQuery} A node to focus.
      */
     searchDown: function(node) {
-        var nextOfParent = node.closest('ul').parent('li').next(),
+        var nextOfParent = $this.nextNode(node.closest('ul').parent('li')),
         nodeToFocus = null;
 
         if(nextOfParent.length) {
@@ -500,16 +529,29 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         checkbox = node.find('> .ui-treenode-content > .ui-chkbox'),
         checked = checkbox.find('> .ui-chkbox-box > .ui-chkbox-icon').hasClass('ui-icon-check');
 
-        this.toggleCheckboxState(checkbox, checked);
-
         if(this.cfg.propagateDown) {
-            node.children('.ui-treenode-children').find('.ui-chkbox').each(function() {
+            node.children('.ui-treenode-children').find('.ui-treenode:not(.ui-treenode-hidden)').find('.ui-chkbox').each(function() {
                 $this.toggleCheckboxState($(this), checked);
             });
+            children = node.find('> .ui-treenode-children > .ui-treenode');
+            if(checked) {
+                if(children.filter('.ui-treenode-unselected').length === children.length)
+                    $this.uncheck(checkbox);
+                else
+                    $this.partialCheck(checkbox);
+            }
+            else {
+                if(children.filter('.ui-treenode-selected').length === children.length)
+                    $this.check(checkbox);
+                else
+                    $this.partialCheck(checkbox);
+            }
 
             if(this.cfg.dynamic) {
                 this.removeDescendantsFromSelection(node.data('rowkey'));
             }
+        } else {
+            this.toggleCheckboxState(checkbox, checked);
         }
 
         if(this.cfg.propagateUp) {
@@ -1349,7 +1391,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} The first node of this tree.
      */
     getFirstNode: function() {
-        return this.jq.find('> ul.ui-tree-container > li:first-child');
+        return this.jq.find("> ul.ui-tree-container > li.ui-treenode").first();
     },
 
     /**
@@ -1358,7 +1400,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} The element with the label for the given node.
      */
     getNodeLabel: function(node) {
-        return node.find('> span.ui-treenode-content > span.ui-treenode-label');
+        return node.find('> div.ui-treenode-content > span.ui-treenode-label');
     },
 
     /**

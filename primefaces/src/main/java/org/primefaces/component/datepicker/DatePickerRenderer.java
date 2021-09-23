@@ -64,7 +64,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         String pattern = datePicker.getPattern() == null ? datePicker.calculatePattern() : datePicker.getPattern();
 
         if (datePicker.isShowTimeWithoutDefault() == null) {
-            Class<?> type = datePicker.getTypeFromValueByValueExpression(context);
+            Class<?> type = datePicker.getValueType();
 
             if (type != null) {
                 datePicker.setShowTime(LocalDateTime.class.isAssignableFrom(type));
@@ -75,7 +75,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         }
 
         if (datePicker.isTimeOnlyWithoutDefault() == null) {
-            Class<?> type = datePicker.getTypeFromValueByValueExpression(context);
+            Class<?> type = datePicker.getValueType();
 
             if (type != null) {
                 datePicker.setTimeOnly(LocalTime.class.isAssignableFrom(type));
@@ -195,6 +195,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("maxDateCount", datePicker.getMaxDateCount(), Integer.MAX_VALUE)
             .attr("numberOfMonths", datePicker.getNumberOfMonths(), 1)
             .attr("view", datePicker.getView(), null)
+            .attr("autoDetectDisplay", datePicker.isAutoDetectDisplay(), true)
             .attr("touchUI", datePicker.isTouchUI(), false)
             .attr("showWeek", datePicker.isShowWeek(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datePicker, datePicker.getAppendTo(),

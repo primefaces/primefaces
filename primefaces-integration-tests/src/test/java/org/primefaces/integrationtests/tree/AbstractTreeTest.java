@@ -32,9 +32,13 @@ import org.primefaces.selenium.component.model.Msg;
 public abstract class AbstractTreeTest extends AbstractPrimePageTest {
 
     protected void assertConfiguration(JSONObject cfg) {
+        assertConfiguration(cfg, "tree");
+    }
+
+    protected void assertConfiguration(JSONObject cfg, String widgetVar) {
         assertNoJavascriptErrors();
         System.out.println("Tree Config = " + cfg);
-        Assertions.assertEquals("tree", cfg.getString("widgetVar"));
+        Assertions.assertEquals(widgetVar, cfg.getString("widgetVar"));
     }
 
     protected void assertMessage(Messages messages, int index, String summary, String detail) {

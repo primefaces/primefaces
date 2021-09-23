@@ -26,10 +26,8 @@ package org.primefaces.component.selectoneradio;
 import java.io.IOException;
 import java.util.List;
 
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -405,20 +403,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
         String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
-        return LangUtils.isValueBlank(itemStrValue)
-                ? LangUtils.isValueBlank(currentValue)
+        return LangUtils.isBlank(itemStrValue)
+                ? LangUtils.isBlank(currentValue)
                 : itemStrValue.equals(currentValue);
     }
 
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
 
-    }
-
-    protected Class getValueType(FacesContext context, UIInput input) {
-        ValueExpression ve = input.getValueExpression("value");
-        Class<?> type = ve == null ? String.class : ve.getType(context.getELContext());
-
-        return type == null ? String.class : type;
     }
 
     @Override

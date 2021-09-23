@@ -196,6 +196,7 @@
   - [SlideMenu](/components/slidemenu.md)
   - [Slider](/components/slider.md)
   - [Spacer](/components/spacer.md)
+  - [SpeedDial](/components/speeddial.md)
   - [Spinner](/components/spinner.md)
   - [SplitButton](/components/splitbutton.md)
   - [Splitter](/components/splitter.md)

@@ -24,6 +24,7 @@
 package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractTable;
 import org.primefaces.selenium.component.model.datatable.Cell;
 import org.primefaces.selenium.component.model.datatable.Row;
@@ -37,10 +38,12 @@ import java.util.stream.Collectors;
 public abstract class DataTable extends AbstractTable<Row> {
 
     public List<Row> getRows() {
-        return getRowsWebElement().stream().map(rowElt -> {
-            List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
-            return new Row(rowElt, cells);
-        }).collect(Collectors.toList());
+        return getRowsWebElement().stream()
+                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message"))
+                .map(rowElt -> {
+                    List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
+                    return new Row(rowElt, cells);
+                }).collect(Collectors.toList());
     }
 
     @Override

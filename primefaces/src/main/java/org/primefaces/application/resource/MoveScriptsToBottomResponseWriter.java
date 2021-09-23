@@ -265,10 +265,13 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                         .replace("PrimeFaces.ab", "pf.ab")
                         .replace("window.PrimeFaces", "pf");
 
-                    minimized = "var pf=window.PrimeFaces;"
-                            + minimized
-                            + "if(window.$){$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();}";
+                    minimized = "var pf=window.PrimeFaces;" + minimized;
                 }
+
+                if (!minimized.endsWith(";")) {
+                    minimized += ";";
+                }
+                minimized += "document.getElementById('" + id + "').remove();";
             }
         }
 

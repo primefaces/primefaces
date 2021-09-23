@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.faces.application.ProjectStage;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -38,6 +37,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -246,7 +246,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
             writer.endElement("span");
 
-            encodeInputField(context, fileUpload, clientId);
+            encodeInputField(context, fileUpload, clientId, null);
 
             writer.endElement("span");
 
@@ -304,13 +304,13 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (!disabled) {
-            encodeInputField(context, fileUpload, clientId);
+            encodeInputField(context, fileUpload, clientId, "-1");
         }
 
         writer.endElement("span");
     }
 
-    protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
+    protected void encodeInputField(FacesContext context, FileUpload fileUpload, String clientId, String tabIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -318,8 +318,10 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("type", "file", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("tabindex", "-1", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        if (LangUtils.isNotBlank(tabIndex)) {
+            writer.writeAttribute("tabindex", tabIndex, null);
+        }
 
         if (fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);

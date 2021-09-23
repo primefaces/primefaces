@@ -8,7 +8,10 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.TieredMenuCfg} cfg
  *
- * @prop {number} cfg.delay Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
+ * @prop {JQuery | null} [activeitem] The currently active (highlighted) menu item.
+ * @prop {number} [timeoutId] Timeout ID, used for the animation when the menu is shown.
+ * 
+ * @prop {number} cfg.delay Delay in milliseconds before displaying the sub menu. Default is 0 meaning immediate.
  */
 PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
 

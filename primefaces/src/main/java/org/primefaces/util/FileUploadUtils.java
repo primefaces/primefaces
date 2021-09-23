@@ -65,7 +65,7 @@ public class FileUploadUtils {
     }
 
     public static String getValidFilename(String filename) {
-        if (LangUtils.isValueBlank(filename)) {
+        if (LangUtils.isBlank(filename)) {
             return null;
         }
 
@@ -93,7 +93,7 @@ public class FileUploadUtils {
     }
 
     public static String getValidFilePath(String filePath) throws ValidationException {
-        if (LangUtils.isValueBlank(filePath)) {
+        if (LangUtils.isBlank(filePath)) {
             throw new FacesException("Path can not be the empty string or null");
         }
 
@@ -133,7 +133,9 @@ public class FileUploadUtils {
      * Check if an uploaded file meets all specifications regarding its filename and content type. It evaluates {@link FileUpload#getAllowTypes}
      * as well as {@link FileUpload#getAccept} and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
      * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
-     * @param fileUpload the fileUpload component
+     *
+     * @param context the {@link PrimeApplicationContext}
+     * @param fileUpload the {@link FileUpload} component
      * @param uploadedFile the details of the uploaded file
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
@@ -159,12 +161,12 @@ public class FileUploadUtils {
 
     private static boolean isValidFileName(FileUpload fileUpload, UploadedFile uploadedFile) {
         String javascriptRegex = fileUpload.getAllowTypes();
-        if (LangUtils.isValueBlank(javascriptRegex)) {
+        if (LangUtils.isBlank(javascriptRegex)) {
             return true;
         }
 
         String javaRegex = convertJavaScriptRegex(javascriptRegex);
-        if (LangUtils.isValueBlank(javaRegex)) {
+        if (LangUtils.isBlank(javaRegex)) {
             return true;
         }
 
@@ -211,7 +213,7 @@ public class FileUploadUtils {
             }
             return true;
         }
-        if (LangUtils.isValueBlank(fileUpload.getAccept())) {
+        if (LangUtils.isBlank(fileUpload.getAccept())) {
             //Short circuit
             return true;
         }

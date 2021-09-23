@@ -1,11 +1,12 @@
 
 /* classes attached to <body> */
-
+/* TODO: make fc-event selector work when calender in shadow DOM */
 .fc-not-allowed,
 .fc-not-allowed .fc-event { /* override events' custom cursors */
   cursor: not-allowed;
 }
 
+/* TODO: not attached to body. attached to specific els. move */
 .fc-unselectable {
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -1131,14 +1132,14 @@ A VERTICAL event
     min-height: 100%; /* liquid-hack is below */
     position: relative;
   }
-.fc-liquid-hack .fc-timegrid-col-frame {
+.fc-media-screen.fc-liquid-hack .fc-timegrid-col-frame {
   height: auto;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  }
+    }
 .fc-media-screen .fc-timegrid-cols {
     position: absolute; /* no z-index. children will decide and go above slots */
     top: 0;

@@ -889,6 +889,11 @@
     </component>
 
     <component>
+        <component-type>org.primefaces.component.SpeedDial</component-type>
+        <component-class>org.primefaces.component.speeddial.SpeedDial</component-class>
+    </component>
+
+    <component>
         <component-type>org.primefaces.component.Stack</component-type>
         <component-class>org.primefaces.component.stack.Stack</component-class>
     </component>
@@ -1723,6 +1728,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.SpotlightRenderer</renderer-type>
             <renderer-class>org.primefaces.component.spotlight.SpotlightRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SpeedDialRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.speeddial.SpeedDialRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

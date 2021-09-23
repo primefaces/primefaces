@@ -67,12 +67,17 @@
             <id>melloware</id>
             <name>Emil Lefkof</name>
         </developer>
+        <developer>
+            <id>sqores</id>
+            <name>Burak Unsal</name>
+        </developer>
     </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <junit.version>5.8.1</junit.version>
 
         <npm.token/>
         <npm.username/>
@@ -111,6 +116,7 @@
         <module>primefaces-showcase</module>
         <module>primefaces-selenium</module>
         <module>primefaces-integration-tests</module>
+        <module>primefaces-cli</module>
     </modules>
 
     <build>
@@ -163,7 +169,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <sourcepath>${basedir}/src/main/java;</sourcepath>
                     <doclint>none</doclint>
@@ -209,7 +215,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
             </plugin>
 
             <plugin>
@@ -269,11 +275,16 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.44</version>
+                        <version>9.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+            </plugin>
         </plugins>
     </build>
 
@@ -382,7 +393,7 @@
             <dependency>
                 <groupId>io.nayuki</groupId>
                 <artifactId>qrcodegen</artifactId>
-                <version>1.6.0</version>
+                <version>1.7.0</version>
             </dependency>
             <dependency>
                 <groupId>net.sf.barcode4j</groupId>
@@ -394,12 +405,12 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.7.2</version>
+                <version>${junit.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
-                <version>5.7.2</version>
+                <version>${junit.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

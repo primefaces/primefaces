@@ -21,12 +21,22 @@
  * @prop {boolean} active Whether the autocomplete is active.
  * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
  * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout.
+ * @prop {boolean} [checkMatchedItem] Whether the click event is fired on the selected items when a `blur` occurs.
+ * @prop {number} [colspan] Column span count for the options in the overlay panel with the available completion items. 
+ * @prop {string} [currentGroup] Current option group when creating the options in the overlay  with the available
+ * completion items.
+ * @prop {string} currentInputValue Current value in the input field where the user can search for completion items.
+ * @prop {string[]} [currentItems] Currently selected items, when `forceSelection` is enabled.
+ * @prop {string} [currentText] Text currently entered in the input field.
  * @prop {JQuery} dropdown The DOM element for the container with the dropdown suggestions.
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the input element.
  * @prop {boolean} isDynamicLoaded If dynamic loading is enabled, whether the content was loaded already.
  * @prop {boolean} isTabPressed Whether the tab key is currently pressed.
  * @prop {JQuery} hinput The DOM element for the hidden input with the selected value.
+ * @prop {JQuery} inputContainer When multiple mode is enabled that allows multiple items to be selected: The DOM
+ * element of the container with the input element used to enter text and search for an item to select.
+ * @prop {boolean} [isSearchWithDropdown] Whether to use a drop down menu when searching for completion options.
  * @prop {JQuery} [items] The DOM elements for the suggestion items.
  * @prop {JQuery} itemtip The DOM element for the tooltip of a suggestion item.
  * @prop {boolean} [itemClick] Whether an item was clicked.
@@ -35,10 +45,16 @@
  * @prop {JQuery} [multiItemContainer] The DOM element for the container with multiple selection items.
  * @prop {JQuery} panel The DOM element for the overlay panel with the suggestion items.
  * @prop {string} panelId The client ID of the overlay panel with the suggestion items.
+ * @prop {string} placeholder Placeholder shown in the input field when no text is entered.
+ * @prop {boolean} [preventInputChangeEvent] Whether to suppress the change event when the input's value changes.
+ * @prop {string} [previousText] Text previously entered in the input field.
+ * @prop {boolean} [querying] Whether an AJAX request for the autocompletion items is currently in progress.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {JQuery} status The DOM element for the autocomplete status ARIA element.
  * @prop {boolean} suppressInput Whether key input events should be ignored currently.
+ * @prop {number} [timeout] Timeout ID for the timer used to clear the autocompletion cache in regular
+ * intervals.
  * @prop {boolean} touchToDropdownButton Whether a touch is made on the dropdown button.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {string} wrapperStartTag The starting HTML with the wrapper element of the suggestions box.
@@ -227,7 +243,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Binds events for multiple selection mode
+     * Binds events for multiple selection mode.
      * @private
      */
     setupMultipleMode: function() {

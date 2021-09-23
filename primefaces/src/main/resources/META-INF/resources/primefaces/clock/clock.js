@@ -7,17 +7,28 @@
  * 
  * @template {PrimeFaces.widget.SimpleDateFormatCfg} [TCfg=PrimeFaces.widget.SimpleDateFormatCfg] Type of the configuration
  * object for this widget.
- * @interface {PrimeFaces.widget.SimpleDateFormatCfg} cfg The configuration for the {@link  SimpleDateFormat| SimpleDateFormat widget}.
- * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
- * configuration is usually meant to be read-only and should not be modified.
+ * @interface {PrimeFaces.widget.SimpleDateFormatCfg} cfg The configuration for the
+ * {@link  SimpleDateFormat| SimpleDateFormat widget}. You can access this configuration via
+ * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
+ * read-only and should not be modified.
  * 
- * @prop {RegExp} cfg.regex A regex for splitting a date format into its components.
- * @prop {Record<string, number>} cfg.types Object with the different keywords used by the date format.
- * @prop {string} cfg.locale The locale for formatting dates. 
- * @prop {string[]} cfg.monthNames Localized month names (`January`, `February` etc.)
+ * @prop {PrimeFaces.PartialWidgetCfg<PrimeFaces.widget.SimpleDateFormatCfg>} cfg The configuration of this widget
+ * instance. Please note that no property is guaranteed to be present, you should always check for `undefined` before
+ * accessing a property. This is partly because the value of a property is not transmitted from the server to the client
+ * when it equals the default.
+ * 
  * @prop {string[]} cfg.dayNames Localized day names (`Monday`, `Tuesday` etc.)
+ * @prop {string | string[]} cfg.id The client-side ID of this widget, with all parent naming containers, such as
+ * `myForm:myWidget`. This is also the ID of the container HTML element for this widget. In case the widget needs
+ * multiple container elements (such as {@link Paginator}), this may also be an array if IDs.
+ * @prop {string} cfg.locale The locale for formatting dates. 
  * @prop {number} cfg.minimalDaysInFirstWeek Minimal number of days a week is allowed to have to be considered a "full"
  * week, used by `getWeekInMonth` in `getWeekInYear`.
+ * @prop {string[]} cfg.monthNames Localized month names (`January`, `February` etc.)
+ * @prop {RegExp} cfg.regex A regex for splitting a date format into its components.
+ * @prop {Record<string, number>} cfg.types Object with the different keywords used by the date format.
+ * @prop {string} cfg.widgetVar The name of the widget variables of this widget. The widget variable can be used to
+ * access a widget instance by calling `PF('myWidgetVar')`.
  */
 PrimeFaces.widget.SimpleDateFormat = Class.extend({
 

@@ -258,7 +258,7 @@ public class PickList extends PickListBase {
 
         if (values != null) {
             for (String item : values) {
-                if (LangUtils.isValueBlank(item)) {
+                if (LangUtils.isBlank(item)) {
                     continue;
                 }
 

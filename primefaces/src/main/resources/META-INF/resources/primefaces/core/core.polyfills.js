@@ -21,7 +21,7 @@ if (!String.prototype.includes) {
 
       if (search instanceof RegExp) {
         throw TypeError('first argument must not be a RegExp');
-      } 
+      }
       if (start === undefined) { start = 0; }
       return this.indexOf(search, start) !== -1;
     };
@@ -55,3 +55,12 @@ if (!Array.prototype.includes) {
         }
     });
 }
+
+if (!('remove' in Element.prototype)) {
+    Element.prototype['remove'] = function() {
+        if (this.parentNode) {
+            this.parentNode.removeChild(this);
+        }
+    };
+}
+

@@ -12,15 +12,39 @@
  * {@link DialogCfg.onShow}
  * @this {PrimeFaces.widget.Dialog} PrimeFaces.widget.Dialog.OnShowCallback
  * 
+ * @interface {PrimeFaces.widget.Dialog.ClientState} ClientState The client-side state of the dialog such as its width
+ * and height. The client-side state can be preserved during AJAX updates by sending it to the server.
+ * @prop {number} ClientState.contentHeight The total height in pixels of the content area of the dialog.
+ * @prop {number} ClientState.contentWidth The total width in pixels of the content area of the dialog..
+ * @prop {number} ClientState.height The total height of the dialog in pixels, including the header and its content.
+ * @prop {JQuery.Coordinates} [ClientState.offset] Vertical and horizontal offset of the top-left corner of the dialog.
+ * @prop {number} ClientState.width The total width of the dialog in pixels, including the header and its content.
+ * @prop {number} ClientState.windowScrollLeft Horizontal scroll position of the window.
+ * @prop {number} ClientState.windowScrollTop Vertical scroll position of the window.
+ * 
  * @prop {JQuery} closeIcon DOM element of the icon for closing this dialog, when this dialog is closable (an `x` by
  * default).
  * @prop {JQuery} content DOM element of the container for the content of this dialog.
+ * @prop {JQuery} [iframeFix] The DOM element of the overlay that is put over iframes during a resize.
  * @prop {JQuery} footer DOM element of the container with the footer of this dialog.
  * @prop {JQuery} icons DOM elements of the title bar icons of this dialog.
  * @prop {HTMLElement} jqEl The native DOM element instance of the container element of this widget (same element as the
  * `jq` property).
+ * @prop {number} [lastScrollTop] The last known vertical scrolling position.
+ * @prop {boolean} [loaded] Whether the dialog content was already loaded (when dynamic loading via AJAX is
+ * enabled.)
+ * @prop {boolean} [maximized] Whether the dialog is currently maximized.
  * @prop {JQuery} maximizeIcon DOM element of the icon for maximizing this dialog, when this dialog can be maximized.
+ * @prop {boolean} [minimized] Whether the dialog is currently minimized.
  * @prop {JQuery} minimizeIcon DOM element of the icon for minimizing this dialog, when this dialog can be minimized.
+ * @prop {JQuery} parent The DOM element of the parent that contains this dialog, i.e the element to which the dialog
+ * was appended.
+ * @prop {boolean} positionInitialized Whether the position of the dialog was already set. If not, it must be set the
+ * next time the dialog is shown.
+ * @prop {JQuery} [resizers] The DOM element of the resize icons for resizing the dialog, if resizing is
+ * enabled.
+ * @prop {PrimeFaces.widget.Dialog.ClientState} [state] The client-side state of the dialog such as its width
+ * and height. The client-side state can be preserved during AJAX updates by sending it to the server.
  * @prop {JQuery} titlebar DOM element of the title bar container of this dialog.
  * 
  * @interface {PrimeFaces.widget.DialogCfg} cfg The configuration for the {@link  Dialog| Dialog widget}.

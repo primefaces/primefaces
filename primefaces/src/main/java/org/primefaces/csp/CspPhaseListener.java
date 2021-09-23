@@ -33,7 +33,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.servlet.http.HttpServletResponse;
 import org.primefaces.PrimeFaces;
 import org.primefaces.util.Lazy;
 
@@ -64,17 +63,14 @@ public class CspPhaseListener implements PhaseListener {
 
         FacesContext context = event.getFacesContext();
         ExternalContext externalContext = context.getExternalContext();
-        // TODO Support portlet environments?
-        if (externalContext.getResponse() instanceof HttpServletResponse) {
-            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-            CspState state = PrimeFacesContext.getCspState(context);
 
-            String policy = LangUtils.isValueBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
-            response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
+        CspState state = PrimeFacesContext.getCspState(context);
 
-            String init = "PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');";
-            PrimeFaces.current().executeInitScript(init);
-        }
+        String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
+        externalContext.addResponseHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
+
+        String init = "PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');";
+        PrimeFaces.current().executeInitScript(init);
     }
 
     @Override

@@ -4,7 +4,7 @@ ToggleSwitch is used to select a boolean value.
 
 > ToggleSwitch is designed to replace the old p:inputSwitch component.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.toggleswitch.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ToggleSwitch.html)
 
 ## Info
 

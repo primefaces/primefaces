@@ -40,7 +40,10 @@ public abstract class AvatarBase extends UIComponentBase {
         style,
         styleClass,
         gravatar,
-        gravatarConfig
+        gravatarConfig,
+        saturation,
+        lightness,
+        alpha
     }
 
     public AvatarBase() {
@@ -122,6 +125,30 @@ public abstract class AvatarBase extends UIComponentBase {
 
     public void setGravatarConfig(String gravatarConfig) {
         getStateHelper().put(AvatarBase.PropertyKeys.gravatarConfig, gravatarConfig);
+    }
+
+    public Integer getSaturation() {
+        return (Integer) getStateHelper().eval(PropertyKeys.saturation, 100);
+    }
+
+    public void setSaturation(Integer size) {
+        getStateHelper().put(PropertyKeys.saturation, size);
+    }
+
+    public Integer getLightness() {
+        return (Integer) getStateHelper().eval(PropertyKeys.lightness, 40);
+    }
+
+    public void setLightness(Integer size) {
+        getStateHelper().put(PropertyKeys.lightness, size);
+    }
+
+    public Integer getAlpha() {
+        return (Integer) getStateHelper().eval(PropertyKeys.alpha, 100);
+    }
+
+    public void setAlpha(Integer size) {
+        getStateHelper().put(PropertyKeys.alpha, size);
     }
 
 }

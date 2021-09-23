@@ -34,7 +34,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Map;
 import java.util.function.Consumer;
-import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -53,33 +52,7 @@ public class DynamicContentSrcBuilder {
     }
 
     public static String build(FacesContext context, UIComponent component, ValueExpression ve, Lazy<Object> value, boolean cache, boolean stream) {
-
-        // no ValueExpression and no literal defined... skip
-        if (ve == null && value.get() == null) {
-            return "";
-        }
-
-        Class<?> type = null;
-
-        // try getExpectedType first, likely returns Object.class
-        if (ve != null) {
-            type = ve.getExpectedType();
-        }
-
-        // fallback to getType
-        if ((type == null || type == Object.class) && ve != null) {
-            try {
-                type = ve.getType(context.getELContext());
-            }
-            catch (ELException e) {
-                // fails if the ValueExpression is actually a MethodExpression, see #7058
-            }
-        }
-
-        // fallback to the type of the value instance
-        if ((type == null || type == Object.class) && value.get() != null) {
-            type = value.get().getClass();
-        }
+        Class<?> type = ELUtils.getType(context, ve, value);
 
         // skip null type
         if (type == null) {
@@ -100,7 +73,7 @@ public class DynamicContentSrcBuilder {
                 if (streamedContent.getWriter() != null) {
                     return buildBase64(context, streamedContent.getWriter(), streamedContent.getContentType());
                 }
-                return buildBase64(context, streamedContent.getStream(), streamedContent.getContentType());
+                return buildBase64(context, streamedContent.getStream().get(), streamedContent.getContentType());
             }
         }
         else if (byte[].class.isAssignableFrom(type)) {

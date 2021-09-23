@@ -23,38 +23,35 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import javax.faces.FacesException;
+import org.primefaces.util.SerializableConsumer;
 
 /**
  * Default implementation of a StreamedContent
  */
 public class DefaultStreamedContent implements StreamedContent, Serializable {
 
-    private Lazy<InputStream> stream;
+    private SerializableSupplier<InputStream> stream;
     private String contentType;
     private String name;
     private String contentEncoding;
     private Integer contentLength;
-    private Consumer<OutputStream> writer;
+    private SerializableConsumer<OutputStream> writer;
 
     public DefaultStreamedContent() {
         // NOOP
     }
 
     @Override
-    public InputStream getStream() {
-        InputStream result = null;
-        if (this.stream != null) {
-            result = stream.get();
-        }
-        return result;
+    public Supplier<InputStream> getStream() {
+        return stream;
     }
 
     @Override
@@ -95,7 +92,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
         }
 
         public Builder stream(SerializableSupplier<InputStream> is) {
-            streamedContent.stream = new Lazy<>(is);
+            streamedContent.stream = is;
             return this;
         }
 
@@ -119,7 +116,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
             return this;
         }
 
-        public Builder writer(Consumer<OutputStream> writer) {
+        public Builder writer(SerializableConsumer<OutputStream> writer) {
             streamedContent.writer = writer;
             return this;
         }

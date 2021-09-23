@@ -5,6 +5,10 @@
  * 
  * @typedef {"hover" | "click"} PrimeFaces.widget.TieredMenu.ToggleEvent Allowed event types for toggling a tiered menu.
  * 
+ * @prop {boolean} [active] Whether the menu is currently active.
+ * @prop {JQuery | null} [activeitem] The active menu item, if any.
+ * @prop {boolean} [itemClick] Set to `true` an item was clicked and se to `false` when the user clicks
+ * outside the menu.
  * @prop {JQuery} links DOM element with all links for the menu entries of this tiered menu.
  * @prop {JQuery} rootLinks DOM element with all links for the root (top-level) menu entries of this tiered menu.
  * 
@@ -49,10 +53,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @protected
      */
     bindItemEvents: function() {
-        if(this.cfg.toggleEvent === 'hover')
-            this.bindHoverModeEvents();
-        else if(this.cfg.toggleEvent === 'click')
+        if(this.cfg.toggleEvent === 'click' || PrimeFaces.env.isTouchable(this.cfg))
             this.bindClickModeEvents();
+        else if(this.cfg.toggleEvent === 'hover')
+            this.bindHoverModeEvents();
     },
 
     /**

@@ -41,7 +41,8 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, ClientB
         styleClass,
         deferred,
         deferredMode,
-        layout
+        layout,
+        loaded
     }
 
     public OutputPanelBase() {
@@ -91,5 +92,13 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, ClientB
 
     public void setLayout(String layout) {
         getStateHelper().put(PropertyKeys.layout, layout);
+    }
+
+    public boolean isLoaded() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.loaded, false);
+    }
+
+    public void setLoaded(boolean loaded) {
+        getStateHelper().put(PropertyKeys.loaded, loaded);
     }
 }

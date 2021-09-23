@@ -23,12 +23,14 @@
  */
 package org.primefaces.util;
 
+import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
 
@@ -124,6 +126,42 @@ public class LangUtilsTest {
         assertEquals("My Über String", LangUtils.toCapitalCase("myÜberString"));
     }
 
+    @Test
+    public void getField() {
+        Field field = null;
+        
+        
+        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.string");        
+        Assertions.assertNotNull(field);
+        Assertions.assertEquals(Container.class, field.getDeclaringClass());
+        Assertions.assertEquals("string", field.getName());
+        
+        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container.string");
+        Assertions.assertNotNull(field);
+        Assertions.assertEquals(Container.class, field.getDeclaringClass());
+        Assertions.assertEquals( "string", field.getName());
+        
+        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container");
+        Assertions.assertNotNull(field);
+        Assertions.assertEquals(Container.class, field.getDeclaringClass());
+        Assertions.assertEquals("container", field.getName());
+
+        field = LangUtils.getField(SimpleClass.class, "strings");
+        Assertions.assertNotNull(field);
+        Assertions.assertEquals(SimpleClass.class, field.getDeclaringClass());
+        Assertions.assertEquals("strings", field.getName());
+        
+        Assertions.assertNotNull(LangUtils.getField(AbstractClass.class, "ints"));
+        Assertions.assertNotNull(LangUtils.getField(ConcreteClass.class, "ints"));
+        Assertions.assertNotNull(LangUtils.getField(AbstractGenericClass.class, "values"));
+        Assertions.assertNotNull(LangUtils.getField(ConcreteGenericClass.class, "values"));
+        Assertions.assertNotNull(LangUtils.getField(DetailedConcreteGenericClass.class, "values"));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getField(DetailedConcreteGenericClass.class, "rasdasd"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container2.stringss"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container.stringss"));        
+    }
+
     class SimpleClass {
         private List<String> strings;
 
@@ -138,6 +176,7 @@ public class LangUtilsTest {
 
     abstract class AbstractClass {
         private List<Integer> ints;
+        private Container container;
 
         public List<Integer> getInts() {
             return ints;
@@ -145,6 +184,14 @@ public class LangUtilsTest {
 
         public void setInts(List<Integer> ints) {
             this.ints = ints;
+        }
+
+        public Container getContainer() {
+            return container;
+        }
+
+        public void setContainer(Container container) {
+            this.container = container;
         }
     }
 
@@ -170,5 +217,26 @@ public class LangUtilsTest {
 
     class DetailedConcreteGenericClass extends ConcreteGenericClass {
 
+    }
+    
+    class Container {
+        private Container container;
+        private String string;
+
+        public String getString() {
+            return string;
+        }
+
+        public void setString(String string) {
+            this.string = string;
+        }
+
+        public Container getContainer() {
+            return container;
+        }
+
+        public void setContainer(Container container) {
+            this.container = container;
+        }
     }
 }

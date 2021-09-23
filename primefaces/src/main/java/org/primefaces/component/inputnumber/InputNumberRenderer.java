@@ -70,7 +70,7 @@ public class InputNumberRenderer extends InputRenderer {
         }
 
         try {
-            if (LangUtils.isValueBlank(submittedValue)) {
+            if (LangUtils.isBlank(submittedValue)) {
                 ValueExpression valueExpression = inputNumber.getValueExpression("value");
                 if (valueExpression != null) {
                     Class<?> type = valueExpression.getType(context.getELContext());

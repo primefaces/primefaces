@@ -1,9 +1,11 @@
 /**
- * __PrimeFaces SelecyManyButton Widget__
+ * __PrimeFaces SelectManyButton Widget__
  * 
  * SelectManyButton is a multi select component using button UI.
  * 
  * @prop {JQuery} buttons The DOM elements for the selectable buttons.
+ * @prop {boolean} [disabled] `true` if this many select element is disabled, `false` if enabled, `undefined`
+ * if the state is not known.
  * @prop {JQuery} inputs The DOM elements for the hidden input fields of type checkbox storing which buttons are
  * selected.
  * 
@@ -31,7 +33,7 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Sets up all event listenters required by this widget.
+     * Sets up all event listeners required by this widget.
      * @private
      */
     bindEvents: function() {

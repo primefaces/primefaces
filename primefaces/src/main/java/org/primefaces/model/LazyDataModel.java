@@ -30,24 +30,60 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.convert.Converter;
+import javax.faces.model.DataModelEvent;
+import javax.faces.model.DataModelListener;
 
 /**
- * Lazy loading DataModel to deal with huge datasets
+ * DataModel to deal with huge datasets with by lazy loading, page by page.
+ *
+ * @param <T> The model class.
  */
 public abstract class LazyDataModel<T> extends ListDataModel<T> implements SelectableDataModel<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Converter converter;
     private int rowCount;
-
     private int pageSize;
+
+    // overwrite to restore serialization support; see #7699
+    private int rowIndex = -1;
+    private List<T> data;
+
+    /**
+     * For serialization only
+     */
+    public LazyDataModel() {
+        super();
+    }
+
+    /**
+     * This constructor allows to skip the implementation of {@link #getRowData(java.lang.String)} and
+     * {@link #getRowKey(java.lang.Object)}, when selection is used.
+     *
+     * @param converter The converter used to convert rowKey to rowData and vice versa.
+     */
+    public LazyDataModel(Converter converter) {
+        super();
+        this.converter = converter;
+    }
+
+    /**
+     * Counts the all available data for the given filters.
+     * In case of SQL, this would execute a "SELECT COUNT ... WHERE ...".
+     *
+     * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
+     * @return the data count
+     */
+    public abstract int count(Map<String, FilterMeta> filterBy);
 
     /**
      * Loads the data for the given parameters.
      *
      * @param first the first entry
      * @param pageSize the page size
-     * @param sortBy a list with all sort information (only relevant for DataTable, not for eg DataView)
+     * @param sortBy a map with all sort information (only relevant for DataTable, not for eg DataView)
      * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
      * @return the data
      */
@@ -55,22 +91,93 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     @Override
     public T getRowData(String rowKey) {
+        if (converter != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            return (T) converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+        }
+
         throw new UnsupportedOperationException(
-                getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+                getMessage("Provide a Converter via constructor or implement getRowData(String rowKey) in %s"
+                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     @Override
     public String getRowKey(T object) {
+        if (converter != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            return converter.getAsString(context, UIComponent.getCurrentComponent(context), object);
+        }
+
         throw new UnsupportedOperationException(
-                getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+                getMessage("Provide a Converter via constructor or implement getRowKey(T object) in %s"
+                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    private String getMessage(String format) {
+    protected String getMessage(String msg) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String viewId = facesContext.getViewRoot().getViewId();
         UIComponent component = UIComponent.getCurrentComponent(facesContext);
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
-        return String.format(format, getClass().getName(), clientId, viewId);
+        return String.format(msg, getClass().getName(), clientId, viewId);
+    }
+
+
+    @Override
+    public boolean isRowAvailable() {
+        if (data == null) {
+            return false;
+        }
+
+        return rowIndex >= 0 && rowIndex < data.size();
+    }
+
+    @Override
+    public T getRowData() {
+        return data.get(rowIndex);
+    }
+
+    @Override
+    public List<T> getWrappedData() {
+        return data;
+    }
+
+    @Override
+    public void setWrappedData(Object list) {
+        this.data = (List) list;
+    }
+
+    @Override
+    public int getRowIndex() {
+        return this.rowIndex;
+    }
+
+    @Override
+    public void setRowIndex(int rowIndex) {
+        int oldIndex = this.rowIndex;
+
+        if (rowIndex == -1 || pageSize == 0) {
+            this.rowIndex = -1;
+        }
+        else {
+            this.rowIndex = (rowIndex % pageSize);
+        }
+
+        if (data == null) {
+            return;
+        }
+
+        DataModelListener[] listeners = getDataModelListeners();
+        if (listeners != null && oldIndex != this.rowIndex) {
+            Object rowData = null;
+            if (isRowAvailable()) {
+                rowData = getRowData();
+            }
+
+            DataModelEvent dataModelEvent = new DataModelEvent(this, rowIndex, rowData);
+            for (int i = 0; i < listeners.length; i++) {
+                listeners[i].rowSelected(dataModelEvent);
+            }
+        }
     }
 
     @Override
@@ -87,25 +194,6 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         return rowCount;
     }
 
-    @Override
-    public void setRowIndex(int rowIndex) {
-        if (rowIndex != -1) {
-            if (pageSize == 0) {
-                rowIndex = -1;
-            }
-            else {
-                rowIndex = rowIndex % pageSize;
-            }
-        }
-
-        super.setRowIndex(rowIndex);
-    }
-
-    @Override
-    public List<T> getWrappedData() {
-        return (List<T>) super.getWrappedData();
-    }
-
     public int getPageSize() {
         return pageSize;
     }
@@ -116,5 +204,13 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
+    }
+
+    public Converter getConverter() {
+        return converter;
+    }
+
+    public void setConverter(Converter converter) {
+        this.converter = converter;
     }
 }

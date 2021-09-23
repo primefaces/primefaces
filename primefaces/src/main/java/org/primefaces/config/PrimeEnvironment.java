@@ -113,7 +113,7 @@ public class PrimeEnvironment {
 
         // This should only happen if PF + the webapp is openend and started in the same netbeans instance
         // Fallback to a UID to void a empty version in the resourceUrls
-        if (LangUtils.isValueBlank(buildVersion)) {
+        if (LangUtils.isBlank(buildVersion)) {
             buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         }
 

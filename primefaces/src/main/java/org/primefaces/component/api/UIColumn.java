@@ -55,8 +55,8 @@ public interface UIColumn {
     /**
      * Used to extract UIColumn#field if not defined. Supports strictly two kind of expressions:
      *
-     * #{car.name} -> name (for static columns)
-     * #{car[column.property]} -> name (for dynamic columns)
+     * #{car.name}: name (for static columns)
+     * #{car[column.property]}: name (for dynamic columns)
      *
      * @param context the {@link FacesContext}
      * @param expression the {@link ValueExpression} like "filterBy" or "sortBy"
@@ -90,7 +90,7 @@ public interface UIColumn {
      * Used to build a valid {@link ValueExpression} using {@link UIData#getVar()} and {@link UIColumn#getField()}
      * Mostly used if sortBy and/or filterBy are not defined.
      *
-     * var="car" and field="name" -> #{car.name}
+     * var="car" and field="name" -&gt; #{car.name}
      *
      * @param context the {@link FacesContext}
      * @param var the "var" attribute of the parent table
@@ -98,7 +98,7 @@ public interface UIColumn {
      * @return the {@link ValueExpression}
      */
     static ValueExpression createValueExpressionFromField(FacesContext context, String var, String field) {
-        if (LangUtils.isValueBlank(var) || LangUtils.isValueBlank(field)) {
+        if (LangUtils.isBlank(var) || LangUtils.isBlank(field)) {
             throw new FacesException("Table 'var' and Column 'field' attributes must be non null.");
         }
 

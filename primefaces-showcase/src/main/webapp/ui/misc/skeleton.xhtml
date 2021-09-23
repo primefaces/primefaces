@@ -147,6 +147,18 @@
                 </p:dataTable>
             </div>
         </div>
+
+        <div class="card" style="min-height: 150px">
+            <p:outputPanel deferred="true" deferredMode="visible">
+                <p:ajax event="load" listener="#{outputPanelView.loadData}"/>
+                <f:facet name="loading">
+                    <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+                    <p:skeleton width="100%" height="42px"/>
+                </f:facet>
+                <h5>#{outputPanelView.data.title}</h5>
+                <p>#{outputPanelView.data.body}</p>
+            </p:outputPanel>
+        </div>
     </ui:define>
 
 </ui:composition>

@@ -72,7 +72,7 @@ public class SelectOneMenu007 implements Serializable {
     }
 
     public void submit() {
-        if (!LangUtils.isValueBlank(countryGroup)) {
+        if (!LangUtils.isBlank(countryGroup)) {
             TestUtils.addMessage("Country", countryGroup);
         }
     }

@@ -3,7 +3,7 @@
 Sticky component positions other components as fixed so that these components stay in window
 viewport during scrolling.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.sticky-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Sticky-1.html)
 
 ## Info
 

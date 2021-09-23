@@ -27,6 +27,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -47,15 +48,25 @@ public class LangUtils {
     private LangUtils() {
     }
 
+    @Deprecated
     public static boolean isValueEmpty(String value) {
+        return isEmpty(value);
+    }
+
+    public static boolean isEmpty(String value) {
         return value == null || value.isEmpty();
     }
 
     public static boolean isNotEmpty(String value) {
-        return !isValueEmpty(value);
+        return !isEmpty(value);
     }
 
+    @Deprecated
     public static boolean isValueBlank(String str) {
+        return isBlank(str);
+    }
+
+    public static boolean isBlank(String str) {
         if (str == null) {
             return true;
         }
@@ -74,7 +85,7 @@ public class LangUtils {
     }
 
     public static boolean isNotBlank(String value) {
-        return !isValueBlank(value);
+        return !isBlank(value);
     }
 
     /**
@@ -97,7 +108,7 @@ public class LangUtils {
      * @since 3.4
      */
     public static int countMatches(final String str, final char ch) {
-        if (isValueEmpty(str)) {
+        if (isEmpty(str)) {
             return 0;
         }
         int count = 0;
@@ -436,7 +447,7 @@ public class LangUtils {
      * @return the returned value in capital case or empty string if blank
      */
     public static String toCapitalCase(String value) {
-        if (LangUtils.isValueBlank(value)) {
+        if (LangUtils.isBlank(value)) {
             return Constants.EMPTY_STRING;
         }
 
@@ -466,7 +477,7 @@ public class LangUtils {
      * @since 3.4
      */
     public static boolean isNumeric(final String str) {
-        if (isValueEmpty(str)) {
+        if (isEmpty(str)) {
             return false;
         }
         if (str.charAt(str.length() - 1) == '.') {
@@ -496,5 +507,53 @@ public class LangUtils {
             }
         }
         return true;
+    }
+
+    public static Field getFieldRecursive(Class<?> clazz, String name) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("clazz must not be null!");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("name must not be null!");
+        }
+
+        Class<?> nextClazz = clazz;
+        String nextName = name;
+        while (nextName.contains(".")) {
+            String currentName = nextName.substring(0, nextName.indexOf("."));
+            nextName = nextName.substring(currentName.length() + 1, nextName.length());
+            Field field = getField(nextClazz, currentName);
+            nextClazz = field.getType();
+        }
+
+        return getField(nextClazz, nextName);
+    }
+
+    public static Field getField(Class<?> clazz, String name) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("clazz must not be null!");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("name must not be null!");
+        }
+
+        Class<?> current = clazz;
+        while (current != null && current != Object.class) {
+            try {
+                Field field = current.getDeclaredField(name);
+                field.setAccessible(true);
+                return field;
+            }
+            catch (NoSuchFieldException e) {
+                // Try parent
+            }
+            catch (Exception e) {
+                throw new IllegalArgumentException("Cannot access field " + name + " in " + clazz.getName(), e);
+            }
+
+            current = current.getSuperclass();
+        }
+
+        throw new IllegalArgumentException("Cannot find field " + name + " in " + clazz.getName());
     }
 }

@@ -48,27 +48,31 @@
  * widget.
  * @prop {JQuery} UploadFile.row Row of an uploaded file.
  *
- * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
- * @prop {JQuery} form The DOM element for the form containing this upload widget.
  * @prop {JQuery} buttonBar The DOM element for the bar with the buttons of this widget.
  * @prop {number} dragoverCount Amount of dragover on drop zone and its children.
  * @prop {string} customDropZone Custom drop zone to use for drag and drop.
  * @prop {string} dropZone Drop zone to use for drag and drop.
- * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
- * @prop {JQuery} uploadButton The DOM element for the button for starting the file upload.
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
+ * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
+ *  * @prop {string} clearMessagesSelector Selector for the button to clear the error messages.
+ * @prop {JQuery} clearMessageLink The DOM element for the button to clear the file upload messages (which inform the
+ * user about whether a file was uploaded).
  * @prop {JQuery} content The DOM element for the content of this widget.
- * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
- * @prop {string[]} sizes Suffixes for formatting files sizes.
- * @prop {File[]} files List of currently selected files.
  * @prop {number} fileAddIndex Current index where to add files.
- * @prop {number} uploadedFileCount Number of currently uploaded files.
  * @prop {string} fileId ID of the current file.
- * @prop {number} width Width of the preview.
- * @prop {number} height Height of the preview.
+ * @prop {File[]} files List of currently selected files.
+ * @prop {JQuery} filesTbody The DOM element for the table tbody with the files.
+ * @prop {JQuery} form The DOM element for the form containing this upload widget.
+ * @prop {JQuery} messageContainer The DOM element of the container with the file upload messages which inform the user
+ * about whether a file was uploaded.
+ * @prop {JQuery} messageList The DOM element of the UL list element with the file upload messages which inform the user
+ * about whether a file was uploaded.
  * @prop {string} rowActionSelector Selector for the available actions (buttons) of a row.
  * @prop {string} rowCancelActionSelector Selector for the button for canceling a file upload.
- * @prop {string} clearMessagesSelector Selector for the button to clear the error messages.
+ * @prop {string[]} sizes Suffixes for formatting files sizes.
+ * @prop {JQueryFileUpload.FileUploadOptions} ucfg Options for the BlueImp jQuery file upload plugin.
+ * @prop {JQuery} uploadButton The DOM element for the button for starting the file upload.
+ * @prop {number} uploadedFileCount Number of currently uploaded files.
  *
  * @interface {PrimeFaces.widget.FileUploadCfg} cfg The configuration for the {@link  FileUpload| FileUpload widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this

@@ -1,24 +1,24 @@
 /**
  * __PrimeFaces Sidebar Widget__
- * 
+ *
  * Sidebar is a panel component displayed as an overlay at the edges of the screen.
- * 
+ *
  * @prop {JQuery} closeIcon The DOM element for the icon that closes this sidebar.
  * @prop {boolean} loaded When dynamic loading is enabled, whether the content was already loaded.
- * 
+ *
  * @typedef PrimeFaces.widget.Sidebar.OnHideCallback Callback that is invoked when the sidebar is opened. See also
  * {@link SidebarCfg.onHide}.
- * @this {PrimeFaces.widget.Sidebar} PrimeFaces.widget.Sidebar.OnHideCallback 
- * 
+ * @this {PrimeFaces.widget.Sidebar} PrimeFaces.widget.Sidebar.OnHideCallback
+ *
  * @typedef PrimeFaces.widget.Sidebar.OnShowCallback Callback that is invoked when the sidebar is closed. See also
  * {@link SidebarCfg.onShow}.
- * @this {PrimeFaces.widget.Sidebar} PrimeFaces.widget.Sidebar.OnShowCallback 
- * 
+ * @this {PrimeFaces.widget.Sidebar} PrimeFaces.widget.Sidebar.OnShowCallback
+ *
  * @interface {PrimeFaces.widget.SidebarCfg} cfg The configuration for the {@link  Sidebar| Sidebar widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DynamicOverlayWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.modal Whether the sidebar is modal and blocks the main content and other dialogs.
  * @prop {boolean} cfg.showCloseIcon Whether the close icon is displayed.
  * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
@@ -127,6 +127,8 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @private
      */
     postShow: function() {
+        this.callBehavior('open');
+
         PrimeFaces.invokeDeferredRenders(this.id);
 
         //execute user defined callback
@@ -166,6 +168,8 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {unknown} ui Currently unused.
      */
     onHide: function(event, ui) {
+        this.callBehavior('close');
+
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }

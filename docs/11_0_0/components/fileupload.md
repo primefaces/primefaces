@@ -3,7 +3,7 @@
 FileUpload goes beyond the browser input type="file" functionality and features an HTML5
 powered rich solution with graceful degradation for legacy browsers.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.fileupload-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.FileUpload-1.html)
 
 ## Info
 
@@ -225,6 +225,20 @@ public class FileUploadView {
 }
 ```
 
+**Attention**: Since the files are send asynchronously in parallel to the server, the backing bean has to be **@RequestScoped**!<br/>
+Each file upload request is processed in a separate thread on server side. Special care has to be taken on thread safty.<br/>
+Be aware each file upload runs through the entire JSF lifecycle which implies that several attributes of the component
+(such as `process`, `update`, `oncomplete` and others) are processed or updated for each file. Consider to use `p:remoteCommand`
+which is called from client side after _all_ files are uploaded by checking the widgets `files` property. E.g.
+
+```xhtml
+<p:remoteCommand name="updateAfterAllFilesUploaded"
+    update="..." actionListener="..."/>
+<p:fileUpload listener="#{fileBean.handleFileUpload}" multiple="true"
+    widgetVar="fileUpload"
+    oncomplete="if (!PF('fileUpload').files.length) updateAfterAllFilesUploaded();"/>
+```
+
 #### Partial Page Update
 After the upload process completes, you can use the PrimeFaces PPR to update any component on the page.
 FileUpload is equipped with the `update` attribute for this purpose.
@@ -372,6 +386,7 @@ At first, you'll need to enable chunking and add this servlet:
 ```
 
 > You're free to choose `url-pattern` mapping, as long it doesn't conflict with an existing page
+**Note** that resuming chunked file uploads is not supported with commons uploader.
 
 #### Deleting aborted chunked uploads
 For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal

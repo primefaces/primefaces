@@ -13,10 +13,12 @@
 
         <h:form id="form">
 
-            <p:fileUpload id="fileupload" value="#{fileUploadHandler.files}"
+            <p:fileUpload id="fileupload"
+                          value="#{fileUploadHandler.files}"
                           mode="simple" skinSimple="true" multiple="true" auto="true"
                           process="@this" update="uploadedfiles"
-                          listener="#{fileUploadHandler.handleFilesUpload}"/>
+                          listener="#{fileUploadHandler.handleFilesUpload}"
+                          fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
                 <p:column headerText="Name">

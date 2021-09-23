@@ -34,6 +34,15 @@ import org.primefaces.component.datatable.DataTableRenderer;
 
 public class ScrollFeature implements DataTableFeature {
 
+    private static final ScrollFeature INSTANCE = new ScrollFeature();
+
+    private ScrollFeature() {
+    }
+
+    public static ScrollFeature getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void decode(FacesContext context, DataTable table) {
         throw new FacesException("ScrollFeature should not decode.");
@@ -64,8 +73,7 @@ public class ScrollFeature implements DataTableFeature {
         }
 
         if (table.isSelectionEnabled()) {
-            SelectionFeature feature = (SelectionFeature) DataTable.FEATURES.get(DataTableFeatureKey.SELECT);
-            feature.decodeSelectionRowKeys(context, table);
+            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
         }
 
         int firstIndex = (isLazy && isVirtualScroll) ? 0 : scrollOffset;

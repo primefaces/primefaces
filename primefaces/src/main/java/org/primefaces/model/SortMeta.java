@@ -114,7 +114,7 @@ public class SortMeta implements Serializable, Comparable<SortMeta> {
         SortOrder order = SortOrder.of(headerRow.getSortOrder());
         ValueExpression groupByVE = headerRow.getValueExpression(HeaderRowBase.PropertyKeys.groupBy.name());
 
-        if (groupByVE == null && LangUtils.isValueBlank(headerRow.getField())) {
+        if (groupByVE == null && LangUtils.isBlank(headerRow.getField())) {
             throw new FacesException("HeaderRow must have 'groupBy' or 'field' attribute value");
         }
 

@@ -58,7 +58,7 @@ public class AutoUpdatePhaseListener implements PhaseListener {
 
                 if (on != null) {
                     String update = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_UPDATE_PARAM);
-                    if (LangUtils.isValueBlank(update) || !update.contains("@obs(" + on + ")")) {
+                    if (LangUtils.isBlank(update) || !update.contains("@obs(" + on + ")")) {
                         continue;
                     }
                 }

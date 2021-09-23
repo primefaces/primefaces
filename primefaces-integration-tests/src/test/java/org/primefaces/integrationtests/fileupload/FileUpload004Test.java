@@ -53,8 +53,7 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -72,8 +71,7 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
     @Test
@@ -100,14 +98,91 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         // Assert
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles, file1, file2, file3, file4);
-        assertConfiguration(fileUpload.getWidgetConfiguration());
-        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
+        assertConfiguration(fileUpload);
     }
 
-    private void assertConfiguration(JSONObject cfg) {
+    @Test
+    @Order(4)
+    public void testBasicAutoMultipleUploadFileLimit(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
+        Assertions.assertNotNull(fileLimitMsg);
+        Assertions.assertFalse(fileLimitMsg.isEmpty());
+
+        // Act
+        File file1 = locateClientSideFile("file1.csv");
+        File file2 = locateClientSideFile("file2.csv");
+        File file3 = locateClientSideFile("file3.csv");
+        PrimeSelenium.guardAjax(fileUpload).setValue(file1, file2, file3);
+
+        // for a very short time the widget value shows a message, assume the message disapeared already
+        Assertions.assertEquals("", fileUpload.getWidgetValue());
+
+        // Assert
+        assertNoJavascriptErrors();
+        // Primefaces sends "empty" request if mode=simple skinSimple=true
+        assertUploadedFiles(page.uploadedFiles);
+        assertConfiguration(fileUpload);
+    }
+
+    @Test
+    @Order(5)
+    //@Disabled("NPE, enable if #7617 is fixed")
+    public void testBasicAutoMultipleUploadSizeLimit(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
+        Assertions.assertNotNull(invalidSizeMsg);
+        Assertions.assertFalse(invalidSizeMsg.isEmpty());
+
+        // Act
+        File file = locateClientSideFile("file3.csv");
+        PrimeSelenium.guardAjax(fileUpload).setValue(file);
+        // for a very short time the widget value shows a message, assume the message disapeared already
+        Assertions.assertEquals("", fileUpload.getWidgetValue());
+
+        // Assert
+        assertNoJavascriptErrors();
+        // Primefaces sends "empty" request if mode=simple skinSimple=true
+        assertUploadedFiles(page.uploadedFiles);
+        assertConfiguration(fileUpload);
+    }
+
+    @Test
+    @Order(6)
+    public void testBasicAutoMultipleUploadAllowTypes(Page page) {
+        // Arrange
+        FileUpload fileUpload = page.fileupload;
+        Assertions.assertEquals("", fileUpload.getValue());
+        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
+        Assertions.assertNotNull(invalidTypeMsg);
+        Assertions.assertFalse(invalidTypeMsg.isEmpty());
+
+        // Act
+        File file = locateClientSideFile("file1.png");
+        PrimeSelenium.guardAjax(fileUpload).setValue(file);
+        // for a very short time the widget value shows a message, assume the message disapeared already
+        Assertions.assertEquals("", fileUpload.getWidgetValue());
+
+        // Assert
+        assertNoJavascriptErrors();
+        // Primefaces sends "empty" request if mode=simple skinSimple=true
+        assertUploadedFiles(page.uploadedFiles);
+        assertConfiguration(fileUpload);
+    }
+
+    private void assertConfiguration(FileUpload fileUpload) {
+        JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
         Assertions.assertTrue(cfg.getBoolean("skinSimple"));
         Assertions.assertTrue(cfg.getBoolean("auto"));
+        Assertions.assertEquals(2, cfg.getInt("fileLimit"));
+        Assertions.assertEquals(100, cfg.getInt("maxFileSize"));
+        Assertions.assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
+        Assertions.assertNotNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
     public static class Page extends AbstractPrimePage {

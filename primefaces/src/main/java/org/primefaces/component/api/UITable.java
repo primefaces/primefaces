@@ -24,6 +24,7 @@
 package org.primefaces.component.api;
 
 import java.lang.reflect.Array;
+import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -60,31 +61,24 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
-        boolean invalidate = !isFilterByAsMapDefined();
-        Map<String, FilterMeta> filterBy = invalidate ? new HashMap<>() : getFilterByAsMap();
-        AtomicBoolean filtered = invalidate ? new AtomicBoolean() : new AtomicBoolean(isDefaultFilter());
+        Map<String, FilterMeta> filterBy = new HashMap<>();
+        AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
         forEachColumn(c -> {
-            FilterMeta f = filterBy.get(c.getColumnKey());
-            if (f != null && !invalidate) {
-
-            }
-            else {
-                f = FilterMeta.of(context, getVar(), c);
-                if (f != null) {
-                    filterBy.put(f.getColumnKey(), f);
-                    filtered.set(filtered.get() || f.isActive());
-                }
+            FilterMeta meta = FilterMeta.of(context, getVar(), c);
+            if (meta != null) {
+                filterBy.put(meta.getColumnKey(), meta);
+                filtered.set(filtered.get() || meta.isActive());
             }
 
             return true;
         });
 
         // merge internal filterBy with user filterBy
-        Object userfilterBy = getFilterBy();
-        if (userfilterBy != null) {
-            updateFilterByWithUserFilterBy(context, filterBy, userfilterBy, filtered);
+        Object userFilterBy = getFilterBy();
+        if (userFilterBy != null) {
+            updateFilterByWithUserFilterBy(context, filterBy, userFilterBy, filtered);
         }
 
         // build global filterBy
@@ -158,7 +152,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // #globalFilter sets the default value, which will be assigned to the "globalFilter" input
         String globalFilterDefaultValue = getGlobalFilter();
         // if #globalFilter is set, the "globalFilter" is mandatory
-        Set<SearchExpressionHint> hint = LangUtils.isValueBlank(globalFilterDefaultValue)
+        Set<SearchExpressionHint> hint = LangUtils.isBlank(globalFilterDefaultValue)
                 ? SearchExpressionUtils.SET_IGNORE_NO_RESULT
                 : SearchExpressionUtils.SET_NONE;
         UIComponent globalFilterComponent = SearchExpressionFacade
@@ -214,7 +208,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
             // returns null if empty string/array/object
             if (filterValue != null
-                    && (filterValue instanceof String && LangUtils.isValueBlank((String) filterValue)
+                    && (filterValue instanceof String && LangUtils.isBlank((String) filterValue)
                     || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
                 filterValue = null;
             }
@@ -266,21 +260,21 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setGlobalFilterOnly(boolean globalFilterOnly);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortMeta = new HashMap<>();
+        Map<String, SortMeta> sortBy = new HashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
         if (headerRow != null) {
-            SortMeta s = SortMeta.of(context, getVar(), headerRow);
-            sortMeta.put(s.getColumnKey(), s);
+            SortMeta meta = SortMeta.of(context, getVar(), headerRow);
+            sortBy.put(meta.getColumnKey(), meta);
             sorted.set(true);
         }
 
         forEachColumn(c -> {
-            SortMeta s = SortMeta.of(context, getVar(), c);
-            if (s != null) {
-                sorted.set(sorted.get() || s.isActive());
-                sortMeta.put(s.getColumnKey(), s);
+            SortMeta meta = SortMeta.of(context, getVar(), c);
+            if (meta != null) {
+                sorted.set(sorted.get() || meta.isActive());
+                sortBy.put(meta.getColumnKey(), meta);
             }
 
             return true;
@@ -289,12 +283,14 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // merge internal sortBy with user sortBy
         Object userSortBy = getSortBy();
         if (userSortBy != null) {
-            updateSortByWithUserSortBy(context, sortMeta, userSortBy, sorted);
+            updateSortByWithUserSortBy(context, sortBy, userSortBy, sorted);
         }
 
         setDefaultSort(sorted.get());
 
-        return sortMeta;
+        setSortByAsMap(sortBy);
+
+        return sortBy;
     }
 
     default void updateSortByWithMVS(Map<String, SortMeta> tsSortBy) {
@@ -379,7 +375,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
         // unlikely to happen, in case columns change between two ajax requests
         sortBy.put(s.getColumnKey(), s);
-        setSortByAsMap(sortBy);
+
         return true;
     }
 
@@ -402,7 +398,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setSortByAsMap(Map<String, SortMeta> sortBy);
 
     default boolean isFilteringEnabled() {
-        return !getFilterByAsMap().isEmpty();
+        return isFilterByAsMapDefined() && !getFilterByAsMap().isEmpty();
     }
 
     Object getSortBy();
@@ -426,7 +422,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (LangUtils.isNotBlank(columnTogglerStateParam)) {
             String[] columnStates = columnTogglerStateParam.split(",");
             for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
+                if (LangUtils.isBlank(columnState)) {
                     continue;
                 }
                 int seperatorIndex = columnState.lastIndexOf('_');
@@ -459,7 +455,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (LangUtils.isNotBlank(columnResizeStateParam)) {
             String[] columnStates = columnResizeStateParam.split(",");
             for (String columnState : columnStates) {
-                if (LangUtils.isValueBlank(columnState)) {
+                if (LangUtils.isBlank(columnState)) {
                     continue;
                 }
 
@@ -492,7 +488,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default void decodeColumnDisplayOrderState(FacesContext context) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String columnOrderParam = params.get(getClientId(context) + "_columnOrder");
-        if (LangUtils.isValueBlank(columnOrderParam)) {
+        if (LangUtils.isBlank(columnOrderParam)) {
             return;
         }
 
@@ -502,7 +498,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         String[] columnKeys = columnOrderParam.split(",");
         for (int i = 0; i < columnKeys.length; i++) {
             String columnKey = columnKeys[i];
-            if (LangUtils.isValueBlank(columnKey)) {
+            if (LangUtils.isBlank(columnKey)) {
                 continue;
             }
 
@@ -552,5 +548,56 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
         }
         return null;
+    }
+
+    default int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
+            Collator collator, Locale locale) {
+
+        try {
+            ValueExpression ve = sortMeta.getSortBy();
+
+            context.getExternalContext().getRequestMap().put(var, o1);
+            Object value1 = ve.getValue(context.getELContext());
+
+            context.getExternalContext().getRequestMap().put(var, o2);
+            Object value2 = ve.getValue(context.getELContext());
+
+            int result;
+
+            if (sortMeta.getFunction() == null) {
+                //Empty check
+                if (value1 == null && value2 == null) {
+                    result = 0;
+                }
+                else if (value1 == null) {
+                    result = sortMeta.getNullSortOrder();
+                }
+                else if (value2 == null) {
+                    result = -1 * sortMeta.getNullSortOrder();
+                }
+                else if (value1 instanceof String && value2 instanceof String) {
+                    if (sortMeta.isCaseSensitiveSort()) {
+                        result = collator.compare(value1, value2);
+                    }
+                    else {
+                        String str1 = (((String) value1).toLowerCase(locale));
+                        String str2 = (((String) value2).toLowerCase(locale));
+
+                        result = collator.compare(str1, str2);
+                    }
+                }
+                else {
+                    result = ((Comparable<Object>) value1).compareTo(value2);
+                }
+            }
+            else {
+                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
+            }
+
+            return sortMeta.getOrder().isAscending() ? result : -1 * result;
+        }
+        catch (Exception e) {
+            throw new FacesException(e);
+        }
     }
 }

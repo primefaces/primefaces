@@ -132,7 +132,7 @@ public class InplaceRenderer extends CoreRenderer {
         }
 
         String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
-        if (LangUtils.isValueBlank(value)) {
+        if (LangUtils.isBlank(value)) {
             String emptyLabel = inplace.getEmptyLabel();
             if (emptyLabel != null) {
                 return emptyLabel;

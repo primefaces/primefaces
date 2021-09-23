@@ -29,6 +29,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
@@ -140,6 +143,39 @@ public class Tree001Test extends AbstractTreeTest {
 
         firstOfFirst = firstChildren.get(0);
         Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
+
+        assertConfiguration(tree.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("Tree: Tab and arrow keys to select")
+    public void testTabbing(Page page) {
+        // Arrange
+        Tree tree = page.tree;
+        Assertions.assertNotNull(tree);
+
+        // Act
+        Actions actions = new Actions(page.getWebDriver());
+        Action actionUnselect = actions.sendKeys(Keys.TAB, Keys.ARROW_DOWN, Keys.ARROW_RIGHT).build();
+        PrimeSelenium.guardAjax(actionUnselect).perform();
+
+        // Assert
+        List<TreeNode> children = tree.getChildren();
+        Assertions.assertNotNull(children);
+        Assertions.assertEquals(3, children.size());
+
+        TreeNode second = children.get(1);
+        Assertions.assertEquals("Events", second.getLabelText());
+        Assertions.assertTrue(second.getWebElement().isDisplayed());
+
+        List<TreeNode> secondChildren = second.getChildren();
+        Assertions.assertNotNull(secondChildren);
+        Assertions.assertEquals(3, secondChildren.size());
+
+        Assertions.assertTrue(secondChildren.get(0).getWebElement().isDisplayed());
+        Assertions.assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
+        Assertions.assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }

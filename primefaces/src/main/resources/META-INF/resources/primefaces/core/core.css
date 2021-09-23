@@ -30,6 +30,16 @@ ui-overlay-visible * {
     overflow: hidden;
 }
 
+.ui-reset {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	text-decoration: none;
+	font-size: 100%;
+	list-style: none;
+}
+
 .ui-datepicker .ui-datepicker-current.ui-priority-secondary {
     opacity: 1;
 }

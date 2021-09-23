@@ -23,12 +23,13 @@
  */
 package org.primefaces.integrationtests.tristatecheckbox;
 
-import lombok.Data;
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -37,6 +38,7 @@ public class TriStateCheckbox001 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
     private String value;
+    private String readonly;
 
     @PostConstruct
     public void init() {

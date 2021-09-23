@@ -138,11 +138,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         renderImage(context, cropper, clientId);
 
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", coordsHolderId, null);
-        writer.writeAttribute("name", coordsHolderId, null);
-        writer.endElement("input");
+        renderHiddenInput(context, coordsHolderId, null, false);
 
         writer.endElement("div");
     }
@@ -237,7 +233,7 @@ public class ImageCropperRenderer extends CoreRenderer {
                     }
                 }
                 else if (stream != null) {
-                    inputStream = stream.getStream();
+                    inputStream = stream.getStream().get();
                     contentType = stream.getContentType();
                 }
 

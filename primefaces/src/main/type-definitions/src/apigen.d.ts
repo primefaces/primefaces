@@ -64,6 +64,7 @@ interface SeveritySettingsConfig {
     tagDuplicateImplements: SeverityLevel;
     tagDuplicateMethod: SeverityLevel;
     tagDuplicateNext: SeverityLevel;
+    tagDuplicateOverride: SeverityLevel;
     tagDuplicateParameter: SeverityLevel;
     tagDuplicatePattern: SeverityLevel;
     tagDuplicateReadonly: SeverityLevel;
@@ -83,9 +84,13 @@ interface SeveritySettingsConfig {
     tagSuperfluousPattern: SeverityLevel;
     tagSuperfluousYield: SeverityLevel;
     tagSuperfluousTypedef: SeverityLevel;
+    tagUnusedMethodInComments: SeverityLevel;
+    tagUnusedPropInComments: SeverityLevel;
 
     propDuplicateIfaceOrClass: SeverityLevel;
     propInvalidIfaceOrClass: SeverityLevel;
+    propDocMissing: SeverityLevel,
+    propDocSuperfluous: SeverityLevel,
 
     tagOverriddenMissingDesc: SeverityLevel;
     symbolOverriddenMissingDesc: SeverityLevel;
@@ -129,13 +134,15 @@ type ExportInfoType = "interface" | "class" | "namespace" | "unspecified";
 
 type Json = null | boolean | number | string | JsonArray | JsonObject;
 type JsonArray = Json[];
-type JsonObject = {[key: string]: Json};
+type JsonObject = { [key: string]: Json };
 
 type MessageFactory = (message: string) => string;
 
 type MethodSignatureConverter = (signature: MethodSignature, ambientContext: boolean) => string[];
 
 type PropSignatureConverter = (signature: PropSignature, typeReferencesNamespace: boolean) => string[];
+
+type Reducer<T, S> = [accumulator: (accumulated: S, item: T) => S, initial: S];
 
 type Result<T> = undefined | void | T | Promise<T | undefined>;
 
@@ -156,12 +163,15 @@ type VisibilityModifier = "public" | "private" | "protected";
 type TsType = import("typescript").Type;
 type TsSignature = import("typescript").Signature;
 type TsNode = import("typescript").Node;
+type TsModifier = import("typescript").Modifier;
+type TsSyntaxKind = import("typescript").SyntaxKind;
 type ConstructorLikeNode = import("typescript").ConstructSignatureDeclaration | import("typescript").ConstructorDeclaration;
 type TypeLikeNode = import("typescript").ClassLikeDeclaration | import("typescript").InterfaceDeclaration;
 type MethodLikeNode = import("typescript").MethodSignature | import("typescript").MethodDeclaration;
 type CallOrMethodLikeNode = CallLikeNode | MethodLikeNode;
 type CallLikeNode = import("typescript").CallSignatureDeclaration;
 type PropertyLikeNode = import("typescript").PropertySignature | import("typescript").PropertyDeclaration;
+type ParameterNode = import("typescript").ParameterDeclaration;
 
 type TypedefTagHandler =
     /**
@@ -244,7 +254,7 @@ interface PublishCliArgs {
     version: {
         major?: number;
         minor?: number;
-        patch?: number;    
+        patch?: number;
     },
 }
 
@@ -542,6 +552,7 @@ interface MethodCodeInfo {
     generics: DocInfoTemplate[];
     name: string;
     next: NextInfo,
+    override: boolean;
     return: ReturnInfo;
     thisTypedef: string;
     variables: VariableInfo[];
@@ -560,6 +571,7 @@ interface MethodDocInfo {
     additionalTags: import("comment-parser").Tag[];
     description: string;
     next: DocInfoNext;
+    override: boolean;
     patterns: Map<number, DocInfoPattern>;
     return: DocInfoReturn;
     templates: DocInfoTemplate[];
@@ -580,6 +592,7 @@ interface MethodDocShape extends TypedefFunctionInfo {
     constructor: boolean;
     method: import("comment-parser").Tag | undefined;
     name: string;
+    override: boolean;
     visibility: VisibilityModifier | undefined;
 }
 
@@ -591,6 +604,7 @@ interface MethodSignature {
     generator: string;
     generics: string;
     name: string;
+    override: string;
     returnType: string;
     visibility: VisibilityModifier;
 }
@@ -613,11 +627,31 @@ interface NamespaceSpec {
 }
 
 interface ObjectCode {
+    allDeclaredProperties: ObjectCodePropertyInfo;
     componentName: string;
     jsdoc: import("comment-parser").Comment;
     methods: ObjectCodeMethod[];
     node: import("estree").Node;
     properties: ObjectCodeProperty[];
+}
+
+interface ObjectDocPropertyInfo {
+    definitive: Record<string, ObjectDocPropertyData>;
+}
+
+
+interface ObjectCodePropertyInfo {
+    definitive: Map<string, ObjectCodePropertyData>;
+}
+
+interface ObjectDocPropertyData {
+    name: string;
+    location: SerializableCodeLocation[];
+}
+
+interface ObjectCodePropertyData {
+    location: Map<string, Set<import("estree").Node>>;
+    name: string;
 }
 
 interface ObjectCodeMethod {
@@ -653,15 +687,17 @@ interface ObjectDef {
 }
 
 interface ObjectDocInfo {
+    codeProperties: ObjectDocPropertyInfo;
     description: string;
     shape: ObjectDocShape;
-    typedefs: DocInfoTypedef[]
+    typedefs: DocInfoTypedef[];
 }
 
 interface ObjectDocShape {
     abstract: boolean;
     additionalTags: import("comment-parser").Tag[];
     constants: ConstantInfo[];
+    forced: boolean;
     jsdoc: import("comment-parser").Tag | undefined;
     export: ExportInfo;
     extends: Set<string>;
@@ -669,6 +705,7 @@ interface ObjectDocShape {
     method: MethodDocShape | undefined;
     name: string;
     optional: boolean;
+    override: boolean;
     props: Map<string, ObjectDocShape>;
     readonly: boolean;
     templates: InsertionOrderMap<string, import("comment-parser").Tag>;
@@ -686,6 +723,7 @@ interface ObjectShapeDoc {
     method: MethodDoc | undefined;
     name: string;
     optional: boolean;
+    override: boolean;
     props: Map<string, CodeWithDocComment>;
     readonly: boolean,
     templates: DocInfoTemplate[];
@@ -793,6 +831,7 @@ type TsHookFnCompilerHostCreate = (options: import("typescript").CompilerOptions
 type TsHookFnCompilerOptionsCreate = () => Result<import("typescript").CompilerOptions>;
 type TsHookFnCompilerOptionsModify = (options: import("typescript").CompilerOptions) => Result<import("typescript").CompilerOptions>;
 type TsHookFnProcessAst = (program: import("typescript").Program, sourceFiles: import("typescript").SourceFile[], docCommentAccessor: TsDocCommentAccessor, severitySettings: SeveritySettingsConfig) => void;
+type TsHookFnFixupAst = (program: import("typescript").Program, sourceFiles: import("typescript").SourceFile[], docCommentAccessor: TsDocCommentAccessor, severitySettings: SeveritySettingsConfig) => void;
 
 interface TsValidationMessage {
     message: string,
@@ -822,6 +861,7 @@ interface TsHookEmit {
 }
 
 interface TsHookProcess {
+    fixupAst: TsHookFnFixupAst[];
     processAst: TsHookFnProcessAst[];
 }
 
@@ -835,6 +875,10 @@ interface TsHookCompilerHost {
 }
 
 interface TsHookCompilerOptions {
+    /**
+     * Handler that creates the initial compiler options. They may later be modified by
+     * {@link modifyCompilerOptions}.
+     */
     createCompilerOptions: TsHookFnCompilerOptionsCreate;
     /**
      * Handlers that may modify the compiler options, either by directly modifying the options or by returning a new
@@ -861,7 +905,7 @@ interface TsDocCommentWithPos {
     doc: import("comment-parser").Comment;
 }
 
-type TsOverridenMethodsResult = Map<TsType, CallOrMethodLikeNode[]>;
+type TsOverriddenMethodsResult = Map<TsType, CallOrMethodLikeNode[]>;
 
 interface TsNodeMembersResult {
     constructors: ConstructorLikeNode[];
@@ -872,6 +916,11 @@ interface TsNodeMembersResult {
 interface TypeDeclarationBundleContent {
     ambient: string[];
     module: string[];
+}
+
+interface TypeDeclarationBundleRawContent {
+    ambient: string;
+    module: string;
 }
 
 interface TypeDeclarationBundleFiles {
@@ -908,7 +957,7 @@ interface TypedefTagHandlers {
     async: TypedefTagHandler;
     _constructor: TypedefTagHandler;
     generator: TypedefTagHandler;
-    methodtemplate: TypedefTagHandler;
+    methodTemplate: TypedefTagHandler;
     next: TypedefTagHandler;
     params: TypedefTagHandler;
     return: TypedefTagHandler;
@@ -984,4 +1033,56 @@ type MergeDocParams = MergeDocParamsMethod | MergeDocParamsType;
 interface LoadedTest {
     name: string;
     startTest: StartTestFn;
+}
+
+interface ExtendedScopeManager {
+    objectPatternById: Map<import("estree").Identifier, import("estree").ObjectPattern>;
+    referencesById: Map<import("estree").Identifier, import("eslint-scope").Reference>;
+    scopeByThis: Map<import("estree").ThisExpression, import("eslint-scope").Scope>;
+    topScope: import("eslint-scope").Scope;
+    variablesById: Map<import("estree").Identifier, import("eslint-scope").Variable>;
+    wrapped: import("eslint-scope").ScopeManager;
+}
+
+interface EscapeSpecialCharsSettings {
+    /** Characters to escape. */
+    charactersToEscape: string;
+    /** Characters to escape. */
+    escapeChar: string;
+    /** Separator character for items. */
+    separator: string;
+    /** Prefix added to escaped string. */
+    prefix: string;
+    /** Suffix added to escaped string. */
+    suffix: string;
+    /** Always add the prefix and suffix, even when the string does not contain any characters to escape. */
+    alwaysSurround: boolean;
+}
+
+interface ParseSpecialCharsSettings {
+    /** Characters to escape. */
+    escapeChar: string;
+    /** Separator character for items. */
+    separator: string;
+    /** Prefix added to escaped string. */
+    prefix: string;
+    /** Suffix added to escaped string. */
+    suffix: string;
+    /** Whether items are trimmed. */
+    trim: boolean;
+}
+
+interface SerializableCodeLocation {
+    name: string;
+    nodes: {
+        loc?: {
+            endColumn: number;
+            endLine: number;
+            source?: string | undefined;
+            startColumn: number;
+            startLine: number;
+        };
+        range?: [number, number] | undefined;
+    }[];
+    sourceFile: string;
 }

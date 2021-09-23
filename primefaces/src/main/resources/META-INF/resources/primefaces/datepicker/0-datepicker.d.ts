@@ -78,7 +78,7 @@ declare namespace JQueryPrimeDatePicker {
     /**
      * Callbacks for when a value has changed.
      */
-    export type MutationCallback<T extends any[]> =
+    export type MutationCallback<T extends unknown[]> =
         /**
          * @param newValues The value or set of values that represent the new state.
          */
@@ -87,7 +87,7 @@ declare namespace JQueryPrimeDatePicker {
     /**
      * Callback for when a value has changed. It is also passed the event that occurred.
      */
-    export type MutationEventCallback<T extends any[]> =
+    export type MutationEventCallback<T extends unknown[]> =
         /**
          * @param event The event that occurred.
          * @param newValues The value or set of values that represent the new state.

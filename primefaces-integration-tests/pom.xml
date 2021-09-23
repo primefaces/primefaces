@@ -24,7 +24,9 @@
         <webdriver.headless>false</webdriver.headless>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
+        <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+        <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
@@ -32,7 +34,7 @@
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
         <mojarra.version>2.3.16</mojarra.version>
-        <tomee.version>8.0.6</tomee.version>
+        <tomee.version>8.0.8</tomee.version>
     </properties>
 
     <dependencies>
@@ -94,6 +96,10 @@
                     <artifactId>myfaces-impl</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
         </dependency>
 
         <dependency>
@@ -161,6 +167,21 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/WEB-INF/*.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -188,6 +209,7 @@
                             <systemPropertyVariables>
                                 <webdriver.headless>${webdriver.headless}</webdriver.headless>
                                 <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
+                                <primefaces.UPLOADER>${primefaces.UPLOADER}</primefaces.UPLOADER>
                                 <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
                                 <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
@@ -230,9 +252,27 @@
             </properties>
         </profile>
         <profile>
+            <id>client-state-saving</id>
+            <properties>
+                <javax.faces.STATE_SAVING_METHOD>client</javax.faces.STATE_SAVING_METHOD>
+            </properties>
+        </profile>
+        <profile>
             <id>csp</id>
             <properties>
                 <primefaces.CSP>true</primefaces.CSP>
+            </properties>
+        </profile>
+        <profile>
+            <id>uploader-native</id>
+            <properties>
+                <primefaces.UPLOADER>native</primefaces.UPLOADER>
+            </properties>
+        </profile>
+        <profile>
+            <id>uploader-commons</id>
+            <properties>
+                <primefaces.UPLOADER>commons</primefaces.UPLOADER>
             </properties>
         </profile>
         <profile>

@@ -186,8 +186,8 @@ public class Schedule extends ScheduleBase {
 
         ELContext elContext = getFacesContext().getELContext();
         ValueExpression expr = ValueExpressionAnalyzer.getExpression(elContext,
-                getValueExpression(PropertyKeys.view.toString()));
-        if (expr != null) {
+                getValueExpression(PropertyKeys.view.toString()), true);
+        if (expr != null && !expr.isReadOnly(elContext)) {
             expr.setValue(elContext, getView());
             getStateHelper().remove(PropertyKeys.view);
         }

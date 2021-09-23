@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-Deployable version of **PrimeFaces Showcase** war file can be downloaded manually or build it from sources.
+Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manually or build it from sources.
 
 #### Prebuilt WAR
 
@@ -19,7 +19,7 @@ mvn clean                    -- clean temp files from target folder
 mvn package -Pee             -- create war file (under target directory)
 ```
 
-##### Build from sources (for a Servlet Container like Tomcat / Jetty)
+#### Build from sources (for a Servlet Container like Tomcat / Jetty)
 
 ###### Mojarra 2.3.x
 
@@ -43,7 +43,7 @@ mvn clean                                                         -- clean temp 
 mvn package -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war file (under target directory)
 ```
 
-##### Run from local sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
+#### Run from local sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
 
 ###### Mojarra 2.3.x
 

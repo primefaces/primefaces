@@ -24,13 +24,14 @@
 package org.primefaces.util;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
 
 /**
  * Inspired by commons-lang LazyInitializer.
  *
  * @param <T> The type to be lazy initialized.
  */
-public class Lazy<T> implements Serializable {
+public class Lazy<T> implements Serializable, Supplier<T> {
 
     private static final Object NOT_INITIALIZED = new Object();
 

@@ -22,7 +22,7 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/selectoneradio"/>
-    <ui:param name="widgetLink" value="selectoneradio"/>
+    <ui:param name="widgetLink" value="SelectOneRadio"/>
 
     <ui:define name="implementation">
         <div class="card">
@@ -36,12 +36,12 @@
 
                 <h5>Grid</h5>
                 <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
-                    <f:selectItems value="#{radioView.cities}" var="c" itemLabel="#{city}" itemValue="#{city}"/>
+                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
 
                 <h5>Responsive</h5>
                 <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3">
-                    <f:selectItems value="#{radioView.cities}" var="c" itemLabel="#{city}" itemValue="#{city}"/>
+                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
 
                 <h5>Custom Layout</h5>

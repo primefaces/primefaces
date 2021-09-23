@@ -280,7 +280,7 @@ public class DataViewRenderer extends DataRenderer {
                 for (int j = 0; j < columns; j++) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", columnClass, null);
-                    if (!LangUtils.isValueEmpty(columnInlineStyle)) {
+                    if (!LangUtils.isEmpty(columnInlineStyle)) {
                         writer.writeAttribute("style", columnInlineStyle, null);
                     }
 

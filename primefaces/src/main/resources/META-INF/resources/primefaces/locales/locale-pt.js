@@ -37,6 +37,7 @@ PrimeFaces.locales['pt_PT'] = {
         'calendar.BUTTON': 'Mostrar Calendário',
         'datatable.sort.ASC': 'ative para ordenar a coluna em ordem crescente',
         'datatable.sort.DESC': 'ative para ordenar a coluna em ordem decrescente',
+        'datatable.sort.NONE': 'ativar para remover ordenação na coluna',
         'columntoggler.CLOSE': 'Fechar',
         'overlaypanel.CLOSE': 'Fechar'
     },
@@ -148,6 +149,7 @@ PrimeFaces.locales['pt_BR'] = {
         'calendar.BUTTON': 'Mostrar Calendário',
         'datatable.sort.ASC': 'ative para classificar a coluna em ordem crescente',
         'datatable.sort.DESC': 'ative para classificar a coluna em ordem decrescente',
+        'datatable.sort.NONE': 'ativar para remover ordenação na coluna',
         'columntoggler.CLOSE': 'Fechar',
         'overlaypanel.CLOSE': 'Fechar'
     },

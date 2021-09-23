@@ -55,9 +55,9 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
      *
      * The up-to-three arguments will be routed to jQuery as-is.
      *
-     * @param {any} [a1] First parameter passed through to jQuery UI.
-     * @param {any} [a2] Second parameter passed through to jQuery UI.
-     * @param {any} [a3] Third parameter passed through to jQuery UI.
+     * @param {JQuery.Duration} [a1] First parameter passed through to jQuery UI.
+     * @param {string} [a2] Second parameter passed through to jQuery UI.
+     * @param {(this: unknown) => void} [a3] Third parameter passed through to jQuery UI.
      *
      * @see http://api.jquery.com/slidedown/
      * @see http://api.jquery.com/fadein/

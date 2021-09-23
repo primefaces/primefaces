@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.11.2</version>
+            <version>3.12.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -171,7 +171,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.50</version>
+            <version>9.0.53</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -191,7 +191,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.2.1</version>
+            <version>4.2.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -209,7 +209,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.9.4</version>
+            <version>3.9.6</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -261,8 +261,8 @@
                     <version>1.12.0</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
-                        <nodeVersion>v15.6.0</nodeVersion>
-                        <npmVersion>7.4.0</npmVersion>
+                        <nodeVersion>v16.8.0</nodeVersion>
+                        <npmVersion>7.22.0</npmVersion>
                         <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
                     </configuration>
                     <executions>
@@ -320,7 +320,7 @@
                             </goals>
                             <phase>deploy</phase>
                             <configuration>
-                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles ../LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
                             </configuration>
                         </execution>
                     </executions>
@@ -590,6 +590,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/scrolltop/scrolltop.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/splitter/splitter.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/speeddial/speeddial.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/toolbar/toolbar.css</include>
@@ -698,6 +699,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spinner/spinner.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/splitter/splitter.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/spotlight/spotlight.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/speeddial/speeddial.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/sticky/sticky.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tabview/tabview.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tagcloud/tagcloud.js</include>
@@ -939,7 +941,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -1131,7 +1132,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.2.2</version>
+                        <version>6.3.1</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>

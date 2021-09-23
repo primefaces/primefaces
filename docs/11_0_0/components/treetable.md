@@ -2,7 +2,7 @@
 
 Treetable is is used for displaying hierarchical data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.treetable-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TreeTable-1.html)
 
 ## Info
 

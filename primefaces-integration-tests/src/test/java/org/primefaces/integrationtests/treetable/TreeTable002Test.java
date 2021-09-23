@@ -36,7 +36,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.model.TreeNode;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.model.TreeTable;
+import org.primefaces.selenium.component.TreeTable;
 
 public class TreeTable002Test extends AbstractTreeTableTest {
 
@@ -58,7 +58,7 @@ public class TreeTable002Test extends AbstractTreeTableTest {
         WebElement eltSortSize = treeTable.getHeader().getCell(1).getWebElement();
         assertHeaderSorted(eltSortName, "ASC", 1);
         assertHeaderSorted(eltSortSize, "DESC", 2);
-        //assertRows(treeTable, treeSorted); // TODO: activate after https://github.com/primefaces/primefaces/issues/7537 is fixed
+        assertRows(treeTable, treeSorted);
 
         // ... undo expand first node
         treeTable.getRow(0).toggle();

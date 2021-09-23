@@ -1,403 +1,189 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PrimeFaces JavaScript API Docs</title>
-	<meta name="description" content="Documentation for PrimeFaces JavaScript API Docs">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-	<script async src="assets/js/search.js" id="search-script"></script>
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">PrimeFaces JavaScript API Docs</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<h1>PrimeFaces JavaScript API Docs</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#javascript-api-docs-for-primefaces" id="javascript-api-docs-for-primefaces" style="color: inherit; text-decoration: none;">
-					<h1>JavaScript API Docs for PrimeFaces</h1>
-				</a>
-				<p>This is the documentation for the client-side JavaScript part of PrimeFaces, please visit
-					<a href="https://www.primefaces.org">PrimeFaces.org</a> for more information. You may also  be interested in the
-				<a href="https://primefaces.github.io/primefaces/">user guide</a>.</p>
-				<p><a href="https://www.primefaces.org/showcase"><img src="https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png" alt="PrimeFaces Logo"></a></p>
-				<ul>
-					<li><a href="#type-declarations-file">Type declarations file</a></li>
-					<li><a href="#api-overview">API Overview</a><ul>
-							<li><a href="#core">Core</a></li>
-							<li><a href="#widgets">Widgets</a></li>
-							<li><a href="#jquery-extensions">JQuery extensions</a></li>
-							<li><a href="#third-party-libraries">Third-party libraries</a></li>
-						</ul>
-					</li>
-				</ul>
-				<a href="#type-declarations-file" id="type-declarations-file" style="color: inherit; text-decoration: none;">
-					<h2>Type declarations file</h2>
-				</a>
-				<p>To enable code autocompletion or type checking etc, a type declaration file
-				(<code>*.d.ts</code>) is available as well:</p>
-				<ul>
-					<li>You can download it from here: <a href="../PrimeFaces.d.ts">main</a> and <a href="../PrimeFaces-module.d.ts">sub</a></li>
-					<li>It references some types from other libraries. You may need to install:</li>
-				</ul>
-				<details>
-					<summary>Click to see required types from NPM packages </summary>
-					<pre><code class="language-sh"><span style="color: #000000">npm install --save-dev  \</span>
-<span style="color: #000000">  @fullcalendar/common \</span>
-<span style="color: #000000">  @fullcalendar/core \</span>
-<span style="color: #000000">  @fullcalendar/daygrid</span>
-<span style="color: #000000">  @fullcalendar/interaction </span>
-<span style="color: #000000">  @fullcalendar/list </span>
-<span style="color: #000000">  @fullcalendar/moment \</span>
-<span style="color: #000000">  @fullcalendar/timegrid \</span>
-<span style="color: #000000">  @types/chart.js \</span>
-<span style="color: #000000">  @types/download.js \</span>
-<span style="color: #000000">  @types/googlemaps \</span>
-<span style="color: #000000">  @types/hammerjs \</span>
-<span style="color: #000000">  @types/inputmask \</span>
-<span style="color: #000000">  @types/jquery \</span>
-<span style="color: #000000">  @types/jqueryui \</span>
-<span style="color: #000000">  @types/js-cookie \</span>
-<span style="color: #000000">  @types/quill \</span>
-<span style="color: #000000">  @types/raphael \</span>
-<span style="color: #000000">  autonumeric \</span>
-<span style="color: #000000">  cropperjs \</span>
-<span style="color: #000000">  jsplumb \</span>
-<span style="color: #000000">  moment \</span>
-<span style="color: #000000">  moment-timezone \</span>
-<span style="color: #000000">  vis-data \</span>
-<span style="color: #000000">  vis-timeline \</span>
-<span style="color: #000000">  vis-util</span>
-</code></pre>
-				</details>
-				<p>PrimeFaces is a global library that adds methods and constants in the global window scope. To use the type declarations
-					in a JavaScript or TypeScript file, use a
-					<a href="https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-path-">triple-slash directive</a>
-				like this (must be at the top of the file):</p>
-				<pre><code class="language-javascript"><span style="color: #008000">/// </span><span style="color: #800000">&lt;reference</span><span style="color: #008000"> </span><span style="color: #FF0000">path</span><span style="color: #000000">=</span><span style="color: #A31515">&quot;./path/to/PrimeFaces.d.ts&quot;</span><span style="color: #008000"> </span><span style="color: #800000">/&gt;</span>
+<!DOCTYPE html><html class="default no-js"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>PrimeFaces JavaScript API Docs</title><meta name="description" content="Documentation for PrimeFaces JavaScript API Docs"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">PrimeFaces JavaScript API Docs</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> PrimeFaces JavaScript API Docs</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#javascript-api-docs-for-primefaces" id="javascript-api-docs-for-primefaces" style="color: inherit; text-decoration: none;">
+  <h1>JavaScript API Docs for PrimeFaces</h1>
+</a>
+<p>This is the documentation for the client-side JavaScript part of PrimeFaces, please visit
+<a href="https://www.primefaces.org">PrimeFaces.org</a> for more information. You may also  be interested in the
+<a href="https://primefaces.github.io/primefaces/">user guide</a>.</p>
+<p><a href="https://www.primefaces.org/showcase"><img src="https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png" alt="PrimeFaces Logo"></a></p>
+<ul>
+<li><a href="#type-declarations-file">Type declarations file</a></li>
+<li><a href="#api-overview">API Overview</a><ul>
+<li><a href="#core">Core</a></li>
+<li><a href="#widgets">Widgets</a></li>
+<li><a href="#jquery-extensions">JQuery extensions</a></li>
+<li><a href="#third-party-libraries">Third-party libraries</a></li>
+</ul>
+</li>
+</ul>
 
-<span style="color: #008000">// Now your IDE or transpiler can issue a warning that &quot;search&quot; does</span>
-<span style="color: #008000">// not exist on a jQuery object. You also get autocompletion.</span>
-<span style="color: #795E26">PF</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;dataTable&quot;</span><span style="color: #000000">).</span><span style="color: #001080">jq</span><span style="color: #000000">.</span><span style="color: #795E26">search</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;tbody td&quot;</span><span style="color: #000000">);</span>
+<a href="#type-declarations-file" id="type-declarations-file" style="color: inherit; text-decoration: none;">
+  <h2>Type declarations file</h2>
+</a>
+<p>To enable code autocompletion or type checking etc, a type declaration file
+(<code>*.d.ts</code>) is available as well via NPM:</p>
+<pre><code><span class="hl-0"># </span><span class="hl-1">via</span><span class="hl-0"> </span><span class="hl-1">npm</span><br/><span class="hl-1">npm</span><span class="hl-0"> </span><span class="hl-1">install</span><span class="hl-0"> -</span><span class="hl-2">D</span><span class="hl-0"> </span><span class="hl-1">primefaces</span><br/><br/><span class="hl-0"># </span><span class="hl-1">via</span><span class="hl-0"> </span><span class="hl-1">yarn</span><br/><span class="hl-1">yarn</span><span class="hl-0"> </span><span class="hl-1">add</span><span class="hl-0"> -</span><span class="hl-2">D</span><span class="hl-0"> </span><span class="hl-1">primefaces</span>
 </code></pre>
-				<p>Make sure the <code>PrimeFaces-module.d.ts</code> is in the same directory. See the
-					<a href="https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html">TypeScript page</a> for more info on
-				type declaration files.</p>
-				<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
-					<h2>API Overview</h2>
-				</a>
-				<p>The main entry point of the PrimeFaces client-side JavaScript API is the global object
-					<a href="./modules/src_primefaces.primefaces.html">window.PrimeFaces</a> (or just <code>PrimeFaces</code> for short). It contains several
-					utility methods as well as the <a href="./modules/src_primefaces.primefaces.widget.html">widget registry</a> with all available
-				PrimeFaces widgets.</p>
-				<a href="#core" id="core" style="color: inherit; text-decoration: none;">
-					<h3>Core</h3>
-				</a>
-				<p>The core includes all the generic functionality required by the PrimeFaces framework.</p>
-				<ul>
-					<li><a href="./modules/src_primefaces.primefaces.html">PrimeFaces</a> The global object itself contains some utility methods, such as <code>scrollTo</code> or
-					<code>escapeHTML</code>.</li>
-					<li><a href="./modules/src_primefaces.primefaces.ajax.html">PrimeFaces.ajax</a> The AJAX module with functionality related to AJAX requests. These
-					requests are made, for example, when a form or a component is updated.</li>
-					<li><a href="./modules/src_primefaces.primefaces.clientwindow.html">PrimeFaces.clientwindow</a> The module for enabling multiple window support in
-					PrimeFaces applications.</li>
-					<li><a href="./modules/src_primefaces.primefaces.csp.html">PrimeFaces.csp</a> Functions for enabling CSP. For example, to use CSP
-					you must use <code>Primefaces.csp.eval</code> instead of <code>$.globalEval</code>.</li>
-					<li><a href="./modules/src_primefaces.primefaces.dialog.html">PrimeFaces.dialog</a> The dialog module for working with dialogs.</li>
-					<li><a href="./modules/src_primefaces.primefaces.expressions.html">PrimeFaces.expressions</a> The search expressions module. It contains some
-					methods to resolve search expressions such as <code>@form</code> on the client.</li>
-					<li><a href="./modules/src_primefaces.primefaces.resources.html">PrimeFaces.resources</a> The resources submodule. It contains some methods to
-					generate JSF resource URLs.</li>
-					<li><a href="./modules/src_primefaces.primefaces.settings.html">PrimeFaces.settings</a> The settings module which contains the locale
-					(translations) shared by all widgets.</li>
-					<li><a href="./modules/src_primefaces.primefaces.utils.html">PrimeFaces.utils</a> The utility module with more advanced utility methods.</li>
-					<li><a href="./modules/src_primefaces.primefaces.validation.html">PrimeFaces.validation</a> The validation submodule. It contains methods for
-					handling client side validation.</li>
-				</ul>
-				<a href="#widgets" id="widgets" style="color: inherit; text-decoration: none;">
-					<h3>Widgets</h3>
-				</a>
-				<ul>
-					<li><a href="./modules/src_primefaces.primefaces.widget.html">PrimeFaces.widget</a> contains all available widget classes. A widget is
-						usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a widget instance via
-					<code>instanceof</code>. You can also use these as a base class when you create your own widgets.</li>
-					<li><a href="./modules/src_primefaces.primefaces.html#widgets"><code>PrimeFaces.widgets</code></a> is an object with all instantiated widgets that
-					are available on the current page.</li>
-					<li><a href="./modules/src_primefaces.html#pf">window.PF</a> is a method for finding a widget by its widget variable. When the widget
-					does not exist, it logs a warning.</li>
-				</ul>
-				<p>For example, if you have got a data table widget defined in your XHTML view like this:</p>
-				<pre><code class="language-xml"><span style="color: #800000">&lt;p:dataTable</span><span style="color: #000000"> </span><span style="color: #FF0000">id</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;table&quot;</span><span style="color: #000000"> </span><span style="color: #FF0000">widgetVar</span><span style="color: #000000">=</span><span style="color: #0000FF">&quot;tableVar&quot;</span><span style="color: #000000"> </span><span style="color: #800000">/&gt;</span>
+<p>To use the declarations, either add a triple-slash directive:</p>
+<pre><code class="language-typescript"><span class="hl-3">/// </span><span class="hl-4">&lt;</span><span class="hl-5">reference</span><span class="hl-3"> </span><span class="hl-6">types</span><span class="hl-0">=</span><span class="hl-7">&quot;primefaces&quot;</span><span class="hl-3"> </span><span class="hl-4">/&gt;</span>
 </code></pre>
-				<p>Then you can access the widget instance from JavaScript like this:</p>
-				<pre><code class="language-javascript"><span style="color: #008000">// Find the widget instance</span>
-<span style="color: #0000FF">var</span><span style="color: #000000"> </span><span style="color: #001080">widget</span><span style="color: #000000"> = </span><span style="color: #795E26">PF</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;tableVar&quot;</span><span style="color: #000000">);</span>
-<span style="color: #008000">// Check whether it is really a data table</span>
-<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">widget</span><span style="color: #000000"> </span><span style="color: #0000FF">instanceof</span><span style="color: #000000"> </span><span style="color: #267F99">PrimeFaces</span><span style="color: #000000">.</span><span style="color: #267F99">widget</span><span style="color: #000000">.</span><span style="color: #267F99">DataTable</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #008000">// Do something with the data table</span>
-<span style="color: #000000">    </span><span style="color: #001080">widget</span><span style="color: #000000">.</span><span style="color: #795E26">unselectAllRows</span><span style="color: #000000">();</span>
-<span style="color: #000000">}</span>
+<p>Or add it to the compiler settings in your <code>tsconfig.json</code>:</p>
+<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">    </span><span class="hl-8">&quot;compilerOptions&quot;</span><span class="hl-0">: {</span><br/><span class="hl-0">        </span><span class="hl-8">&quot;types&quot;</span><span class="hl-0">: [</span><span class="hl-7">&quot;primefaces&quot;</span><span class="hl-0">]</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">}</span>
 </code></pre>
-				<a href="#jquery-extensions" id="jquery-extensions" style="color: inherit; text-decoration: none;">
-					<h3>JQuery extensions</h3>
-				</a>
-				<p>PrimeFaces relies heavily on <a href="https://jquery.com/">JQuery</a> for interacting with the DOM. Many JQuery plugins are
-					included that are used by the various widgets. You can make use of these plugins, but please note that they are not
-				parts of the officially supported API and may be removed or replaced at any time.</p>
-				<p>Also, as most JQuery plugins are specific to a certain widget, please note that some plugins may only be available when
-				that widget is included in the page.</p>
-				<ul>
-					<li>See the <a href="./interfaces/src_primefaces.jquery-1.html">JQuery</a> interface for methods that can be called on JQuery instances
-					(<code>$.fn</code>). This includes methods from jQuery plugins added by the various libraries used by PrimeFaces.</li>
-					<li>See the <a href="./interfaces/src_primefaces.jquerystatic.html">JQueryStatic</a> interface for constants and methods available on the
-					global JQuery object (<code>$</code> / <code>jQuery</code>).</li>
-					<li>See the <a href="./interfaces/src_primefaces.jquery.typetotriggeredeventmap.html">TypeToTriggeredEventMap</a> for additional events
-					defined by JQuery extensions.</li>
-					<li>Convention for JQuery plugins for which the type declarations are provided by PrimeFaces: Types and interfaces
-						required by the JQuery extension are declared in a their own namespace <code>JQuery*</code>. These namespaces are only for the
-					types and do not contain any objects that are available at runtime. </li>
-				</ul>
-				<a href="#third-party-libraries" id="third-party-libraries" style="color: inherit; text-decoration: none;">
-					<h3>Third-party libraries</h3>
-				</a>
-				<p>PrimeFaces makes use of many third-party libraries for providing advanced features, such charts and masked inputs. Many
-					of these do not have typescript declarations. But fear not, PrimeFaces added them for you. For your convenience, the
-				API docs for all third-party libraries are included in this documentation.</p>
-				<p>Please note that these third-party libraries may be exchanged at any time by a different library. Some of the most
-				notable ones are:</p>
-				<ul>
-					<li><a href="./classes/node_modules_autonumeric.export_-1.html">AutoNumeric.js</a><ul>
-							<li>The <a href="http://autonumeric.org/">AutoNumeric.js library</a> that automatically formats your numbers and currencies.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/src_primefaces.html#autosize-1">autosize</a><ul>
-							<li>The <a href="https://github.com/jackmoore/autosize">Autosize library</a>, a small, stand-alone script to automatically adjust
-							the height of a textarea to fit the text. </li>
-						</ul>
-					</li>
-					<li><a href="./classes/node_modules__types_chart_js.export_-1.html">chart.js</a><ul>
-							<li>The <a href="https://www.chartjs.org/">chart.js</a> library for drawing diagrams.</li>
-						</ul>
-					</li>
-					<li><a href="./classes/src_primefaces.contentflow.html">ContentFlow</a><ul>
-							<li><a href="https://web.archive.org/web/20120108070056/http://www.jacksasylum.eu/ContentFlow/index.php">The ContentFlow library</a>
-							a flexible ImageFlow like flow written in javascript, which can handle any kind of content.</li>
-						</ul>
-					</li>
-					<li><a href="./classes/node_modules_cropperjs_types.cropper-1.html">Cropper.js</a><ul>
-							<li>The <a href="https://fengyuanchen.github.io/cropperjs/">Cropper.js</a> library, a visual JavaScript image cropper.</li>
-						</ul>
-					</li>
-					<li><a href="./classes/node_modules__fullcalendar_core_main.calendar.html">FullCalendar</a><ul>
-							<li>The <a href="https://fullcalendar.io/">FullCalendar library</a>, a full-sized drag &amp; drop JavaScript event calendar.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/node_modules__types_googlemaps.google.maps.html">Google Maps</a><ul>
-							<li>The <a href="https://developers.google.com/maps/documentation/javascript/tutorial">Google Maps JavaScript API</a> for
-							including maps in a web page.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/node_modules_jsplumb.export_.html">jsplumb</a><ul>
-							<li>The <a href="https://github.com/jsplumb/jsplumb">jsPlumb library</a>, to visually connect elements on web pages.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/src_primefaces.juxtapose.html">JuxtaposeJS</a><ul>
-							<li>The <a href="https://juxtapose.knightlab.com/">JuxtaposeJs library</a>, a simple, open source tool for creating before or
-							after image sliders.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/node_modules_moment_ts3_1_typings_moment.html">moment.js</a><ul>
-							<li>The <a href="https://momentjs.com/">Moment.js</a> library to parse, validate, manipulate, and display dates and times in
-							JavaScript.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/node_modules__types_quill.html">Quill</a><ul>
-							<li>The <a href="https://quilljs.com/">Quill Editor</a>, a modern rich text editor for the web.</li>
-						</ul>
-					</li>
-					<li><a href="./interfaces/node_modules__types_raphael.raphaelstatic.html">Raphaël</a><ul>
-							<li>The <a href="https://dmitrybaranovskiy.github.io/raphael/">Raphaël vector graphics library</a> for drawing onto a canvas.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/node_modules_vis_timeline_declarations.html">Timeline / Graph2D</a><ul>
-							<li>The <a href="https://github.com/visjs/vis-timeline">Timeline / Timeline</a> is an interactive visualization chart to visualize
-							data in time.</li>
-						</ul>
-					</li>
-					<li><a href="./modules/src_primefaces.webcam.html">WebcamJS</a><ul>
-							<li>The <a href="https://github.com/jhuckaby/webcamjs">WebcamJS library</a> for accessing a camera.</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class=" ">
-						<a href="modules.html">Modules</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__fullcalendar_common_main.html">node_<wbr>modules/@fullcalendar/common/main</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__fullcalendar_core_main.html">node_<wbr>modules/@fullcalendar/core/main</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__fullcalendar_daygrid_main.html">node_<wbr>modules/@fullcalendar/daygrid/main</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__fullcalendar_interaction_main.html">node_<wbr>modules/@fullcalendar/interaction/main</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__fullcalendar_list_main.html">node_<wbr>modules/@fullcalendar/list/main</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__fullcalendar_moment_main.html">node_<wbr>modules/@fullcalendar/moment/main</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__fullcalendar_timegrid_main.html">node_<wbr>modules/@fullcalendar/timegrid/main</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_chart_js.html">node_<wbr>modules/@types/chart.js</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_downloadjs.html">node_<wbr>modules/@types/downloadjs</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_googlemaps.html">node_<wbr>modules/@types/googlemaps</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_hammerjs.html">node_<wbr>modules/@types/hammerjs</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_inputmask.html">node_<wbr>modules/@types/inputmask</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_jquery.html">node_<wbr>modules/@types/jquery</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_jqueryui.html">node_<wbr>modules/@types/jqueryui</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_js_cookie.html">node_<wbr>modules/@types/js-<wbr>cookie</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_quill.html">node_<wbr>modules/@types/quill</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules__types_raphael.html">node_<wbr>modules/@types/raphael</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_autonumeric.html">node_<wbr>modules/autonumeric</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_cropperjs_types.html">node_<wbr>modules/cropperjs/types</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_jsplumb.html">node_<wbr>modules/jsplumb</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_moment_timezone.html">node_<wbr>modules/moment-<wbr>timezone</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_moment_ts3_1_typings_moment.html">node_<wbr>modules/moment/ts3.1-<wbr>typings/moment</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_vis_data_declarations.html">node_<wbr>modules/vis-<wbr>data/declarations</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_vis_timeline_declarations.html">node_<wbr>modules/vis-<wbr>timeline/declarations</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/node_modules_vis_util_declarations.html">node_<wbr>modules/vis-<wbr>util/declarations</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/src_primefaces.html">src/<wbr>Prime<wbr>Faces</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/src_primefaces_module.html">src/<wbr>Prime<wbr>Faces-<wbr>module</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-</body>
-</html>
+<p>You can also view the declarations file here: <a href="../PrimeFaces.d.ts">main</a> and <a href="../PrimeFaces-module.d.ts">sub</a></p>
+<p>PrimeFaces is a global library that adds methods and constants in the global window scope. To use the type declarations
+in a JavaScript or TypeScript file, use a
+<a href="https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-path-">triple-slash directive</a>
+like this (must be at the top of the file):</p>
+<pre><code class="language-javascript"><span class="hl-3">/// </span><span class="hl-4">&lt;</span><span class="hl-5">reference</span><span class="hl-3"> </span><span class="hl-6">path</span><span class="hl-0">=</span><span class="hl-7">&quot;./path/to/PrimeFaces.d.ts&quot;</span><span class="hl-3"> </span><span class="hl-4">/&gt;</span><br/><br/><span class="hl-3">// Now your IDE or transpiler can issue a warning that &quot;search&quot; does</span><br/><span class="hl-3">// not exist on a jQuery object. You also get autocompletion.</span><br/><span class="hl-9">PF</span><span class="hl-0">(</span><span class="hl-7">&quot;dataTable&quot;</span><span class="hl-0">).</span><span class="hl-1">jq</span><span class="hl-0">.</span><span class="hl-9">search</span><span class="hl-0">(</span><span class="hl-7">&quot;tbody td&quot;</span><span class="hl-0">);</span>
+</code></pre>
+<p>Make sure the <code>PrimeFaces-module.d.ts</code> is in the same directory. See the
+<a href="https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html">TypeScript page</a> for more info on
+type declaration files.</p>
+
+<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
+  <h2>API Overview</h2>
+</a>
+<p>The main entry point of the PrimeFaces client-side JavaScript API is the global object
+<a href="./modules/src_PrimeFaces.PrimeFaces.html">window.PrimeFaces</a> (or just <code>PrimeFaces</code> for short). It contains several
+utility methods as well as the <a href="./modules/src_PrimeFaces.PrimeFaces.widget.html">widget registry</a> with all available
+PrimeFaces widgets.</p>
+
+<a href="#core" id="core" style="color: inherit; text-decoration: none;">
+  <h3>Core</h3>
+</a>
+<p>The core includes all the generic functionality required by the PrimeFaces framework.</p>
+<ul>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.html">PrimeFaces</a> The global object itself contains some utility methods, such as <code>scrollTo</code> or
+<code>escapeHTML</code>.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.ajax.html">PrimeFaces.ajax</a> The AJAX module with functionality related to AJAX requests. These
+requests are made, for example, when a form or a component is updated.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.clientwindow.html">PrimeFaces.clientwindow</a> The module for enabling multiple window support in
+PrimeFaces applications.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.csp.html">PrimeFaces.csp</a> Functions for enabling CSP. For example, to use CSP
+you must use <code>Primefaces.csp.eval</code> instead of <code>$.globalEval</code>.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.dialog.html">PrimeFaces.dialog</a> The dialog module for working with dialogs.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.expressions.html">PrimeFaces.expressions</a> The search expressions module. It contains some
+methods to resolve search expressions such as <code>@form</code> on the client.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.resources.html">PrimeFaces.resources</a> The resources submodule. It contains some methods to
+generate JSF resource URLs.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.settings.html">PrimeFaces.settings</a> The settings module which contains the locale
+(translations) shared by all widgets.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.utils.html">PrimeFaces.utils</a> The utility module with more advanced utility methods.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.validation.html">PrimeFaces.validation</a> The validation submodule. It contains methods for 
+handling client side validation.</li>
+</ul>
+
+<a href="#widgets" id="widgets" style="color: inherit; text-decoration: none;">
+  <h3>Widgets</h3>
+</a>
+<ul>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.widget.html">PrimeFaces.widget</a> contains all available widget classes. A widget is
+usually instantiated by PrimeFaces, but you may use this, for example, to check the type of a widget instance via
+<code>instanceof</code>. You can also use these as a base class when you create your own widgets.</li>
+<li><a href="./modules/src_PrimeFaces.PrimeFaces.html#widgets"><code>PrimeFaces.widgets</code></a> is an object with all instantiated widgets that
+are available on the current page.</li>
+<li><a href="./modules/src_PrimeFaces.html#pf">window.PF</a> is a method for finding a widget by its widget variable. When the widget
+does not exist, it logs a warning.</li>
+</ul>
+<p>For example, if you have got a data table widget defined in your XHTML view like this:</p>
+<pre><code class="language-xml"><span class="hl-4">&lt;</span><span class="hl-5">p:dataTable</span><span class="hl-0"> </span><span class="hl-6">id</span><span class="hl-0">=</span><span class="hl-10">&quot;table&quot;</span><span class="hl-0"> </span><span class="hl-6">widgetVar</span><span class="hl-0">=</span><span class="hl-10">&quot;tableVar&quot;</span><span class="hl-0"> </span><span class="hl-4">/&gt;</span>
+</code></pre>
+<p>Then you can access the widget instance from JavaScript like this:</p>
+<pre><code class="language-javascript"><span class="hl-3">// Find the widget instance</span><br/><span class="hl-11">var</span><span class="hl-0"> </span><span class="hl-1">widget</span><span class="hl-0"> = </span><span class="hl-9">PF</span><span class="hl-0">(</span><span class="hl-7">&quot;tableVar&quot;</span><span class="hl-0">);</span><br/><span class="hl-3">// Check whether it is really a data table</span><br/><span class="hl-12">if</span><span class="hl-0"> (</span><span class="hl-1">widget</span><span class="hl-0"> </span><span class="hl-11">instanceof</span><span class="hl-0"> </span><span class="hl-13">PrimeFaces</span><span class="hl-0">.</span><span class="hl-13">widget</span><span class="hl-0">.</span><span class="hl-13">DataTable</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-3">// Do something with the data table</span><br/><span class="hl-0">    </span><span class="hl-1">widget</span><span class="hl-0">.</span><span class="hl-9">unselectAllRows</span><span class="hl-0">();</span><br/><span class="hl-0">}</span>
+</code></pre>
+
+<a href="#jquery-extensions" id="jquery-extensions" style="color: inherit; text-decoration: none;">
+  <h3>JQuery extensions</h3>
+</a>
+<p>PrimeFaces relies heavily on <a href="https://jquery.com/">JQuery</a> for interacting with the DOM. Many JQuery plugins are
+included that are used by the various widgets. You can make use of these plugins, but please note that they are not
+parts of the officially supported API and may be removed or replaced at any time.</p>
+<p>Also, as most JQuery plugins are specific to a certain widget, please note that some plugins may only be available when
+that widget is included in the page.</p>
+<ul>
+<li>See the <a href="./interfaces/src_PrimeFaces.JQuery-1.html">JQuery</a> interface for methods that can be called on JQuery instances
+(<code>$.fn</code>). This includes methods from jQuery plugins added by the various libraries used by PrimeFaces.</li>
+<li>See the <a href="./interfaces/src_PrimeFaces.JQueryStatic.html">JQueryStatic</a> interface for constants and methods available on the
+global JQuery object (<code>$</code> / <code>jQuery</code>).</li>
+<li>See the <a href="./interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html">TypeToTriggeredEventMap</a> for additional events
+defined by JQuery extensions.</li>
+<li>Convention for JQuery plugins for which the type declarations are provided by PrimeFaces: Types and interfaces
+required by the JQuery extension are declared in a their own namespace <code>JQuery*</code>. These namespaces are only for the
+types and do not contain any objects that are available at runtime.</li>
+</ul>
+
+<a href="#third-party-libraries" id="third-party-libraries" style="color: inherit; text-decoration: none;">
+  <h3>Third-party libraries</h3>
+</a>
+<p>PrimeFaces makes use of many third-party libraries for providing advanced features, such charts and masked inputs. Many
+of these do not have typescript declarations. But fear not, PrimeFaces added them for you. For your convenience, the
+API docs for all third-party libraries are included in this documentation.</p>
+<p>Please note that these third-party libraries may be exchanged at any time by a different library.</p>
+<p>Many third-party libraries are jQuery plugins, see <a href="./interfaces/src_PrimeFaces.JQuery-1.html">JQuery</a> and
+<a href="./interfaces/src_PrimeFaces.JQueryStatic.html">JQueryStatic</a>. Other libraries used by PrimeFaces include:</p>
+<ul>
+<li><a href="./classes/node_modules_autonumeric.export_-1.html">AutoNumeric.js</a><ul>
+<li>The <a href="http://autonumeric.org/">AutoNumeric.js library</a> that automatically formats your numbers and currencies.</li>
+</ul>
+</li>
+<li><a href="./modules/src_PrimeFaces.html#autosize-1">autosize</a><ul>
+<li>The <a href="https://github.com/jackmoore/autosize">Autosize library</a>, a small, stand-alone script to automatically adjust
+the height of a textarea to fit the text.</li>
+</ul>
+</li>
+<li><a href="./classes/node_modules__types_chart_js.export_-1.html">chart.js</a><ul>
+<li>The <a href="https://www.chartjs.org/">chart.js</a> library for drawing diagrams.</li>
+</ul>
+</li>
+<li><a href="./classes/src_PrimeFaces.ContentFlow.html">ContentFlow</a><ul>
+<li><a href="https://web.archive.org/web/20120108070056/http://www.jacksasylum.eu/ContentFlow/index.php">The ContentFlow library</a>
+a flexible ImageFlow like flow written in javascript, which can handle any kind of content.</li>
+</ul>
+</li>
+<li><a href="./classes/node_modules_cropperjs_types.Cropper-1.html">Cropper.js</a><ul>
+<li>The <a href="https://fengyuanchen.github.io/cropperjs/">Cropper.js</a> library, a visual JavaScript image cropper.</li>
+</ul>
+</li>
+<li><a href="./classes/node_modules__fullcalendar_core_main.Calendar.html">FullCalendar</a><ul>
+<li>The <a href="https://fullcalendar.io/">FullCalendar library</a>, a full-sized drag &amp; drop JavaScript event calendar.</li>
+</ul>
+</li>
+<li><a href="./modules/node_modules__types_google_maps.google.maps.html">Google Maps</a><ul>
+<li>The <a href="https://developers.google.com/maps/documentation/javascript/tutorial">Google Maps JavaScript API</a> for
+including maps in a web page.</li>
+</ul>
+</li>
+<li><a href="./modules/node_modules_jsplumb.export_.html">jsplumb</a><ul>
+<li>The <a href="https://github.com/jsplumb/jsplumb">jsPlumb library</a>, to visually connect elements on web pages.</li>
+</ul>
+</li>
+<li><a href="./modules/src_PrimeFaces.juxtapose.html">JuxtaposeJS</a><ul>
+<li>The <a href="https://juxtapose.knightlab.com/">JuxtaposeJs library</a>, a simple, open source tool for creating before or
+after image sliders.</li>
+</ul>
+</li>
+<li><a href="./modules/node_modules_moment_ts3_1_typings_moment.html">moment.js</a><ul>
+<li>The <a href="https://momentjs.com/">Moment.js</a> library to parse, validate, manipulate, and display dates and times in
+JavaScript.</li>
+</ul>
+</li>
+<li><a href="./modules/node_modules__types_quill.html">Quill</a><ul>
+<li>The <a href="https://quilljs.com/">Quill Editor</a>, a modern rich text editor for the web.</li>
+</ul>
+</li>
+<li><a href="./interfaces/node_modules__types_raphael.RaphaelStatic.html">Raphaël</a><ul>
+<li>The <a href="https://dmitrybaranovskiy.github.io/raphael/">Raphaël vector graphics library</a> for drawing onto a canvas.</li>
+</ul>
+</li>
+<li><a href="./modules/node_modules_vis_timeline_declarations.html">Timeline / Graph2D</a><ul>
+<li>The <a href="https://github.com/visjs/vis-timeline">Timeline / Timeline</a> is an interactive visualization chart to visualize
+  data in time.</li>
+</ul>
+</li>
+<li><a href="./modules/src_PrimeFaces.Webcam.html">WebcamJS</a><ul>
+<li>The <a href="https://github.com/jhuckaby/webcamjs">WebcamJS library</a> for accessing a camera.</li>
+</ul>
+</li>
+</ul>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__fullcalendar_common_main.html">node_<wbr/>modules/@fullcalendar/common/main</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__fullcalendar_core_main.html">node_<wbr/>modules/@fullcalendar/core/main</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__fullcalendar_daygrid_main.html">node_<wbr/>modules/@fullcalendar/daygrid/main</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__fullcalendar_interaction_main.html">node_<wbr/>modules/@fullcalendar/interaction/main</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__fullcalendar_list_main.html">node_<wbr/>modules/@fullcalendar/list/main</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__fullcalendar_moment_main.html">node_<wbr/>modules/@fullcalendar/moment/main</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__fullcalendar_timegrid_main.html">node_<wbr/>modules/@fullcalendar/timegrid/main</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_chart_js.html">node_<wbr/>modules/@types/chart.js</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_downloadjs.html">node_<wbr/>modules/@types/downloadjs</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_google_maps.html">node_<wbr/>modules/@types/google.maps</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_hammerjs.html">node_<wbr/>modules/@types/hammerjs</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_inputmask.html">node_<wbr/>modules/@types/inputmask</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_jquery.html">node_<wbr/>modules/@types/jquery</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_jqueryui.html">node_<wbr/>modules/@types/jqueryui</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_js_cookie.html">node_<wbr/>modules/@types/js-<wbr/>cookie</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_quill.html">node_<wbr/>modules/@types/quill</a></li><li class=" tsd-kind-module"><a href="modules/node_modules__types_raphael.html">node_<wbr/>modules/@types/raphael</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_autonumeric.html">node_<wbr/>modules/autonumeric</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_cropperjs_types.html">node_<wbr/>modules/cropperjs/types</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_jsplumb.html">node_<wbr/>modules/jsplumb</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_moment_timezone.html">node_<wbr/>modules/moment-<wbr/>timezone</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_moment_ts3_1_typings_moment.html">node_<wbr/>modules/moment/ts3.1-<wbr/>typings/moment</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_print_js_src.html">node_<wbr/>modules/print-<wbr/>js/src</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_vis_data_declarations.html">node_<wbr/>modules/vis-<wbr/>data/declarations</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_vis_timeline_declarations.html">node_<wbr/>modules/vis-<wbr/>timeline/declarations</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_vis_util_declarations.html">node_<wbr/>modules/vis-<wbr/>util/declarations</a></li><li class=" tsd-kind-module"><a href="modules/node_modules_xss_typings_xss.html">node_<wbr/>modules/xss/typings/xss</a></li><li class=" tsd-kind-module"><a href="modules/src_PrimeFaces.html">src/<wbr/>Prime<wbr/>Faces</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li><li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li><li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li><li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

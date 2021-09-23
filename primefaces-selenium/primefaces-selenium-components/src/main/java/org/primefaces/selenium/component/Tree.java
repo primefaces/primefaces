@@ -43,7 +43,7 @@ public abstract class Tree extends AbstractComponent {
     public static final String NODE_CONTENT_CLASS = "ui-treenode-content";
     public static final String LEAF_NODE_CLASS = "ui-treenode-leaf";
 
-    public static final String CHILD_SELECTOR = ".ui-tree-container>li";
+    public static final String CHILD_SELECTOR = ".ui-tree-container>.ui-treenode";
 
     public List<TreeNode> getChildren() {
         return findElements(By.cssSelector(CHILD_SELECTOR)).stream().map(e -> new TreeNode(e, CHILD_SELECTOR, this))

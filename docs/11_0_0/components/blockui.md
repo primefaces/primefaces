@@ -2,7 +2,7 @@
 
 BlockUI is used to block interactivity of JSF components with optional ajax integration.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.blockui.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.BlockUI.html)
 
 ## Info
 

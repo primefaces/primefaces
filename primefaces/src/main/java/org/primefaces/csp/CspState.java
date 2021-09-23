@@ -72,7 +72,7 @@ public class CspState {
      * @throws FacesException if any errors validating the nonce
      */
     private void validate(String nonce) throws FacesException {
-        if (LangUtils.isValueEmpty(nonce)) {
+        if (LangUtils.isEmpty(nonce)) {
             throw new FacesException("Missing CSP nonce");
         }
         try {

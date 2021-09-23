@@ -26,6 +26,7 @@ package org.primefaces.model;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public interface StreamedContent {
 
@@ -42,7 +43,7 @@ public interface StreamedContent {
      *
      * @return the {@link InputStream}
      */
-    InputStream getStream();
+    Supplier<InputStream> getStream();
 
     /**
      * {@link Consumer} to write directly to the response.

@@ -124,7 +124,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         if (input instanceof InputNumber) {
             InputNumber inputNumber = (InputNumber) input;
 
-            if (LangUtils.isValueBlank(inputNumber.getMaxValue())) {
+            if (LangUtils.isBlank(inputNumber.getMaxValue())) {
                 if (annotationType.equals(Max.class)) {
                     Max max = (Max) constraint;
                     inputNumber.setMaxValue(String.valueOf(max.value()));
@@ -141,7 +141,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 }
             }
 
-            if (LangUtils.isValueBlank(inputNumber.getMinValue())) {
+            if (LangUtils.isBlank(inputNumber.getMinValue())) {
                 if (annotationType.equals(Min.class)) {
                     Min min = (Min) constraint;
                     inputNumber.setMinValue(String.valueOf(min.value()));
@@ -158,7 +158,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 }
             }
 
-            if (annotationType.equals(Digits.class) && LangUtils.isValueBlank(inputNumber.getDecimalPlaces())) {
+            if (annotationType.equals(Digits.class) && LangUtils.isBlank(inputNumber.getDecimalPlaces())) {
                 Digits digits = (Digits) constraint;
                 inputNumber.setDecimalPlaces(String.valueOf(digits.fraction()));
             }

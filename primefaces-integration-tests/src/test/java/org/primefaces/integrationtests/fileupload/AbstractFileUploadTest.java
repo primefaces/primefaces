@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
+import org.junit.jupiter.api.Assertions;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Assertions;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.model.datatable.Row;
 
 public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
 
@@ -56,13 +57,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         String actualFiles = uploadedFiles.getRows().stream().map(r -> r.getCell(0).getText())
                 .collect(Collectors.joining(","));
         String diag = expectedFiles + " <> " + actualFiles;
-        if (files.length == 0) {
-            // emptyMessage
-            Assertions.assertEquals(1, uploadedFiles.getRows().size(), diag);
-            Assertions.assertEquals(1, uploadedFiles.getRow(0).getCells().size(), diag);
-        } else {
-            Assertions.assertEquals(files.length, uploadedFiles.getRows().size(), diag);
-        }
+        Assertions.assertEquals(files.length, uploadedFiles.getRows().size(), diag);
 
         // sequence is not guarateed to be the same, so sort by name and size
         Arrays.sort(files, (f1, f2) -> {
@@ -83,4 +78,5 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
             Assertions.assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
         }
     }
+
 }

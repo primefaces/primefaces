@@ -38,7 +38,7 @@ public class BadgeRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String value = badge.getValue();
         boolean hasChild = badge.getChildCount() > 0;
-        boolean valueEmpty = LangUtils.isValueEmpty(value);
+        boolean valueEmpty = LangUtils.isEmpty(value);
         String severity = badge.getSeverity();
         String size = badge.getSize();
         String styleClass = getStyleClassBuilder(context)
@@ -46,6 +46,7 @@ public class BadgeRenderer extends CoreRenderer {
                     .add(badge.getStyleClass())
                     .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
                     .add(valueEmpty, Badge.DOT_CLASS)
+                    .add(!badge.isVisible(), "ui-state-hidden")
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
                     .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)
@@ -69,7 +70,7 @@ public class BadgeRenderer extends CoreRenderer {
             writer.writeAttribute("style", badge.getStyle(), "style");
         }
 
-        if (!valueEmpty) {
+        if (!valueEmpty && badge.isVisible()) {
             writer.write(value);
         }
         writer.endElement("span");

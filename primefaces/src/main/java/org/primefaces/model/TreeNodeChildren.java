@@ -50,13 +50,12 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
         if (node == null) {
             throw new NullPointerException();
         }
-        else {
-            eraseParent(node);
-            boolean result = super.add(node);
-            node.setParent(parent);
-            updateRowKeys(parent.getChildCount() - 1, parent);
-            return result;
-        }
+
+        eraseParent(node);
+        boolean result = super.add(node);
+        node.setParent(parent);
+        updateRowKeys(parent.getChildCount() - 1, parent);
+        return result;
     }
 
     @Override
@@ -64,64 +63,63 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
         if (node == null) {
             throw new NullPointerException();
         }
-        else if ((index < 0) || (index > size())) {
+        if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException();
         }
-        else {
-            eraseParent(node);
-            super.add(index, node);
-            node.setParent(parent);
-            updateRowKeys(index, parent);
-        }
+
+        eraseParent(node);
+        super.add(index, node);
+        node.setParent(parent);
+        updateRowKeys(index, parent);
     }
 
     @Override
     public boolean addAll(Collection<? extends TreeNode<T>> collection) {
         Iterator<TreeNode<T>> elements = (new ArrayList<TreeNode<T>>(collection)).iterator();
-        int index = collection.size();
+        int size = this.size();
+
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
             if (node == null) {
                 throw new NullPointerException();
             }
-            else {
-                eraseParent(node);
-                super.add(node);
-                node.setParent(parent);
-                changed = true;
-            }
+
+            eraseParent(node);
+            super.add(node);
+            node.setParent(parent);
+            changed = true;
         }
 
         if (changed) {
-            updateRowKeys(index, parent);
+            updateRowKeys(size, parent);
         }
 
-        return (changed);
+        return changed;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends TreeNode<T>> collection) {
         Iterator<TreeNode<T>> elements = (new ArrayList<TreeNode<T>>(collection)).iterator();
+
         boolean changed = false;
         while (elements.hasNext()) {
             TreeNode node = elements.next();
             if (node == null) {
                 throw new NullPointerException();
             }
-            else {
-                eraseParent(node);
-                super.add(index++, node);
-                node.setParent(parent);
-                changed = true;
-            }
+
+            eraseParent(node);
+            super.add(index++, node);
+            node.setParent(parent);
+            changed = true;
         }
 
         if (changed) {
             updateRowKeys(index, parent);
         }
 
-        return (changed);
+        return changed;
     }
 
     @Override
@@ -129,21 +127,20 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
         if (node == null) {
             throw new NullPointerException();
         }
-        else if ((index < 0) || (index >= size())) {
+        if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException();
         }
-        else {
-            if (!parent.equals(node.getParent())) {
-                eraseParent(node);
-            }
 
-            TreeNode previous = get(index);
-            super.set(index, node);
-            previous.setParent(null);
-            node.setParent(parent);
-            updateRowKeys(parent, node, index);
-            return previous;
+        if (!parent.equals(node.getParent())) {
+            eraseParent(node);
         }
+
+        TreeNode previous = get(index);
+        super.set(index, node);
+        previous.setParent(null);
+        node.setParent(parent);
+        updateRowKeys(parent, node, index);
+        return previous;
     }
 
     /**
@@ -158,20 +155,19 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
         if (node == null) {
             throw new NullPointerException();
         }
-        else if ((index < 0) || (index >= size())) {
+        if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException();
         }
-        else {
-            if (!parent.equals(node.getParent())) {
-                eraseParent(node);
-            }
 
-            TreeNode previous = get(index);
-            super.set(index, node);
-            node.setParent(parent);
-            updateRowKeys(parent, node, index);
-            return previous;
+        if (!parent.equals(node.getParent())) {
+            eraseParent(node);
         }
+
+        TreeNode previous = get(index);
+        super.set(index, node);
+        node.setParent(parent);
+        updateRowKeys(parent, node, index);
+        return previous;
     }
 
     @Override

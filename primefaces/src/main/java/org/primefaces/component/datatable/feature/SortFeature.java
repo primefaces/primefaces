@@ -44,6 +44,15 @@ import org.primefaces.component.api.DynamicColumn;
 
 public class SortFeature implements DataTableFeature {
 
+    private static final SortFeature INSTANCE = new SortFeature();
+
+    private SortFeature() {
+    }
+
+    public static SortFeature getInstance() {
+        return INSTANCE;
+    }
+
     private boolean isSortRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
     }
@@ -119,8 +128,7 @@ public class SortFeature implements DataTableFeature {
             //update filtered value accordingly to take account sorting
             if (table.isFilteringCurrentlyActive()) {
                 if (table.isFullUpdateRequest(context)) {
-                    FilterFeature filterFeature = (FilterFeature) table.getFeature(DataTableFeatureKey.FILTER);
-                    filterFeature.filter(context, table);
+                    FilterFeature.getInstance().filter(context, table);
                 }
                 else {
                     table.updateFilteredValue(context, resolveList(table.getValue()));
@@ -200,7 +208,7 @@ public class SortFeature implements DataTableFeature {
         }
     }
 
-    protected int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
+    public static int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
             Collator collator, Locale locale) {
 
         try {

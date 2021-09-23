@@ -46,7 +46,7 @@ public class RatingRenderer extends InputRenderer {
         String clientId = rating.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if (!LangUtils.isValueEmpty(submittedValue)) {
+        if (!LangUtils.isEmpty(submittedValue)) {
             int submittedStars = Integer.parseInt(submittedValue);
             if (submittedStars < 1 || submittedStars > rating.getStars()) {
                 return;
@@ -128,17 +128,6 @@ public class RatingRenderer extends InputRenderer {
     }
 
     protected void encodeInput(FacesContext context, Rating rating, String id, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", id, null);
-        writer.writeAttribute("autocomplete", "off", null);
-        if (value != null) {
-            writer.writeAttribute("value", value, null);
-        }
-        renderAccessibilityAttributes(context, rating);
-        writer.endElement("input");
+        renderHiddenInput(context, id, value, rating.isDisabled());
     }
 }

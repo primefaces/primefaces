@@ -1,4 +1,4 @@
-/** Spanish */
+ /** Spanish */
 PrimeFaces.locales['es'] = {
     closeText: 'Cerrar',
     prevText: 'Anterior',
@@ -9,6 +9,7 @@ PrimeFaces.locales['es'] = {
     dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
     dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
     weekHeader: 'Semana',
+    weekNumberTitle: 'S',
     firstDay: 1,
     isRTL: false,
     showMonthAfterYear: false,
@@ -21,12 +22,25 @@ PrimeFaces.locales['es'] = {
     millisecondText: 'Milisegundo',
     currentText: 'Fecha actual',
     ampm: false,
+    year: 'Año',
     month: 'Mes',
     week: 'Semana',
     day: 'Día',
     today: 'Hoy',
     clear: 'Limpiar',
+    list: 'Agenda',
     allDayText: 'Todo el día',
+    moreLinkText: 'Más....',
+    noEventsText: 'No hay eventos',
+    aria: {
+         'paginator.PAGE': 'Página {0}',
+         'calendar.BUTTON': 'Mostrar calendario',
+         'datatable.sort.ASC': 'ordenar columna ascendente',
+         'datatable.sort.DESC': 'ordenar columna descendente',
+         'datatable.sort.NONE': 'eliminar la clasificación en la columna',
+         'columntoggler.CLOSE': 'Cerrar',
+         'overlaypanel.CLOSE': 'Cerrar'
+    },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Error de validación: se necesita un valor.',
         'javax.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' debe ser un número formado por uno o varios dígitos.',

@@ -93,7 +93,7 @@ public class SearchExpressionFacade {
                 for (String splittedExpression : splittedExpressions) {
                     String expression = splittedExpression.trim();
 
-                    if (LangUtils.isValueBlank(expression)) {
+                    if (LangUtils.isBlank(expression)) {
                         continue;
                     }
 
@@ -169,7 +169,7 @@ public class SearchExpressionFacade {
      */
     public static String resolveClientIds(FacesContext context, UIComponent source, String expressions, Set<SearchExpressionHint> hints) {
 
-        if (LangUtils.isValueBlank(expressions)) {
+        if (LangUtils.isBlank(expressions)) {
             if (hints.contains(SearchExpressionHint.PARENT_FALLBACK)) {
                 return source.getParent().getClientId(context);
             }
@@ -188,7 +188,7 @@ public class SearchExpressionFacade {
             for (int i = 0; i < splittedExpressions.length; i++) {
                 String expression = splittedExpressions[i].trim();
 
-                if (LangUtils.isValueBlank(expression)) {
+                if (LangUtils.isBlank(expression)) {
                     continue;
                 }
 
@@ -287,7 +287,7 @@ public class SearchExpressionFacade {
             Set<SearchExpressionHint> hints) {
 
         if (hints.contains(SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
-            if (LangUtils.isValueBlank(component.getRendererType())) {
+            if (LangUtils.isBlank(component.getRendererType())) {
                 LOGGER.log(Level.WARNING, "Can not update component \"{0}\" with id \"{1}\" without an attached renderer. "
                         + "Expression \"{2}\" referenced from \"{3}\"",
                         new Object[]{component.getClass().getName(), component.getClientId(context), expression, source.getClientId(context)});
@@ -319,7 +319,7 @@ public class SearchExpressionFacade {
     public static String resolveClientId(FacesContext context, UIComponent source, String expression,
             Set<SearchExpressionHint> hints) {
 
-        if (LangUtils.isValueBlank(expression)) {
+        if (LangUtils.isBlank(expression)) {
             return null;
         }
 
@@ -441,7 +441,7 @@ public class SearchExpressionFacade {
     public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression,
             Set<SearchExpressionHint> hints) {
 
-        if (LangUtils.isValueBlank(expression)) {
+        if (LangUtils.isBlank(expression)) {
             if (hints.contains(SearchExpressionHint.PARENT_FALLBACK)) {
                 return source.getParent();
             }
@@ -459,7 +459,7 @@ public class SearchExpressionFacade {
             return null;
         }
 
-        if (LangUtils.isValueBlank(expression)) {
+        if (LangUtils.isBlank(expression)) {
             return null;
         }
 
@@ -508,7 +508,7 @@ public class SearchExpressionFacade {
 
                 String subExpression = subExpressions[j].trim();
 
-                if (LangUtils.isValueBlank(subExpression)) {
+                if (LangUtils.isBlank(subExpression)) {
                     continue;
                 }
 
@@ -571,7 +571,7 @@ public class SearchExpressionFacade {
 
                 String subExpression = subExpressions[i].trim();
 
-                if (LangUtils.isValueBlank(subExpression)) {
+                if (LangUtils.isBlank(subExpression)) {
                     continue;
                 }
 
@@ -645,7 +645,7 @@ public class SearchExpressionFacade {
 
                 String subExpression = subExpressions[i].trim();
 
-                if (LangUtils.isValueBlank(subExpression)) {
+                if (LangUtils.isBlank(subExpression)) {
                     continue;
                 }
 
@@ -817,7 +817,7 @@ public class SearchExpressionFacade {
      */
     public static String[] split(FacesContext context, String value, char... separators) {
 
-        if (LangUtils.isValueBlank(value)) {
+        if (LangUtils.isBlank(value)) {
             return null;
         }
 

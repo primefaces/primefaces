@@ -46,8 +46,10 @@ Currently, only the following components are implemented (partially):
 - ConfirmPopup
 - ~~DataList~~ (use DataView)
 - DataTable
+- DataView
 - DatePicker
 - Dialog
+- FileUpload  
 - InputMask
 - InputNumber
 - ~~InputSwitch~~ (use ToggleSwitch)
@@ -63,6 +65,7 @@ Currently, only the following components are implemented (partially):
 - SelectBooleanCheckbox
 - SelectBooleanButton
 - SelectManyCheckbox
+- SelectManyMenu  
 - SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
@@ -72,6 +75,8 @@ Currently, only the following components are implemented (partially):
 - TextEditor
 - Timeline
 - ToggleSwitch
+- Tree 
+- TreeTable
 - TriStateCheckbox
 
 ### Usage
