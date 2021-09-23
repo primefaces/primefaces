@@ -54,7 +54,7 @@ Columns is used by datatable to create columns dynamically.
 | groupRow | false | Boolean | Speficies whether to group rows based on the column data.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportFooterValue | null | String | Defines if the footer value of column to be exported.
-| nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
+| nullSortOrder             | 1                  | Integer          |  Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | sortOrder                 | asc                | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
 | sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
 | sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Lower values have more priority.
