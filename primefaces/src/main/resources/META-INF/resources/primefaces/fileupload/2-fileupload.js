@@ -54,7 +54,7 @@
  * @prop {string} dropZone Drop zone to use for drag and drop.
  * @prop {JQuery} cancelButton The DOM element for the button for canceling a file upload.
  * @prop {JQuery} chooseButton The DOM element for the button for selecting a file.
- *  * @prop {string} clearMessagesSelector Selector for the button to clear the error messages.
+ * @prop {string} clearMessagesSelector Selector for the button to clear the error messages.
  * @prop {JQuery} clearMessageLink The DOM element for the button to clear the file upload messages (which inform the
  * user about whether a file was uploaded).
  * @prop {JQuery} content The DOM element for the content of this widget.
