@@ -57,7 +57,7 @@ DataTable displays data in tabular format.
 | liveScrollBuffer          | 0                  | Integer          | Percentage height of the buffer between the bottom of the page and the scroll position to initiate the load for the new chunk. Value is defined in integer and default is 0.
 | multiViewState            | false              | Boolean          | Whether to keep table state across views, defaults to false.
 | nativeElements            | false              | Boolean          | Uses native radio-checkbox elements for row selection.
-| nullSortOrder             | 1                  | Integer          | Defines where the null values are placed in ascending sort order. Default value is "1"
+| nullSortOrder             | 1                  | Integer          |  Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | onExpandStart             | null               | String           | Client side callback to execute before expansion.
 | onRowClick                | null               | String           | Client side callback to execute after clicking row.
 | pageLinks                 | 10                 | Integer          | Maximum number of page links to display.
