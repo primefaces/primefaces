@@ -9,6 +9,8 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Badge: added `visible` attribute to hide the badge but render the children.
   * DataScroller: added `loading` facet to show UI while loading is in progress.
   * Carousel: completely overhauled by PrimeTek to be in line with PrimeReact/Vue/NG carousel.
+  * Galleria: completely overhauled by PrimeTek to be in line with PrimeReact/Vue/NG galleria.
+  * SpeedDial: new component designed as a floating action button
   * DataTable: new built-in `JpaLazyDataModel`, which provides basic functionality for JPA users and lazy loading
   * Hotkey: added `bindMac` to use alternative binding on macOS.
   * Inplace: added `tabindex` for keyboard focus and toggle support.
