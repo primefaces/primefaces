@@ -471,7 +471,20 @@ public class AppMenu {
         multimediaMenuItems.add(new MenuItem("Cropper", cropperMenuItems));
 
         multimediaMenuItems.add(new MenuItem("Graphic Image", "/ui/multimedia/graphicImage"));
-        multimediaMenuItems.add(new MenuItem("Galleria", "/ui/multimedia/galleria"));
+
+        //Galleria Nested MenuItem
+        List<MenuItem> galleriaMenuItems = new ArrayList<>();
+        galleriaMenuItems.add(new MenuItem("Basic", "/ui/multimedia/galleria/basic"));
+        galleriaMenuItems.add(new MenuItem("Programmatic", "/ui/multimedia/galleria/programmatic"));
+        galleriaMenuItems.add(new MenuItem("Indicator", "/ui/multimedia/galleria/indicator"));
+        galleriaMenuItems.add(new MenuItem("Thumbnail", "/ui/multimedia/galleria/thumbnail"));
+        galleriaMenuItems.add(new MenuItem("Navigator", "/ui/multimedia/galleria/navigator"));
+        galleriaMenuItems.add(new MenuItem("Responsive", "/ui/multimedia/galleria/responsive"));
+        galleriaMenuItems.add(new MenuItem("FullScreen", "/ui/multimedia/galleria/fullscreen"));
+        galleriaMenuItems.add(new MenuItem("AutoPlay", "/ui/multimedia/galleria/autoplay"));
+        galleriaMenuItems.add(new MenuItem("Caption", "/ui/multimedia/galleria/caption"));
+        multimediaMenuItems.add(new MenuItem("Galleria", galleriaMenuItems));
+
         multimediaMenuItems.add(new MenuItem("Media", "/ui/multimedia/media"));
 
         //PhotoCam Nested MenuItem

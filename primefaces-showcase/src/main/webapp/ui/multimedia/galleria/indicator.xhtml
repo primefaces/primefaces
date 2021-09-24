@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">Indicator</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Indicators allow quick navigation between the items.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="widgetLink" value="Galleria"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Indicators with Click Event</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showThumbnails="false" showIndicators="true" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Indicators with Hover Event</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Inside Content</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true" showIndicatorsOnItem="true" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Positioned at Top</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true" showIndicatorsOnItem="true" indicatorsPosition="top" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Positioned at Left</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true" showIndicatorsOnItem="true" indicatorsPosition="left" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Positioned at Right</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true" showIndicatorsOnItem="true" indicatorsPosition="right" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+    </ui:define>
+
+</ui:composition>
