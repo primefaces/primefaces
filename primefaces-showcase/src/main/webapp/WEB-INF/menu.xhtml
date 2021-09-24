@@ -27,7 +27,7 @@
                 <div class="menu-category">#{menuCategory.label}</div>
                 <div class="menu-items">
                     <ui:repeat value="#{menuCategory.menuItems}" var="menuItem">
-                        <h:outputLink rendered="#{empty menuItem.url and not empty menuItem.badge}" styleClass="hidden">
+                        <h:outputLink rendered="#{empty menuItem.url and not empty menuItem.badge and empty menuItem.menuItems}" styleClass="hidden">
                             #{menuItem.label}<p:tag value="#{menuItem.badge}" severity="warning" styleClass="p-ml-2" rendered="#{not empty menuItem.badge}"/>
                         </h:outputLink>
                         <h:outputLink value="#{menuItem.url}" rendered="#{not empty menuItem.url and empty menuItem.badge and not menuItem.url.startsWith('/') and empty menuItem.menuItems}">
@@ -38,7 +38,7 @@
                         </h:link>
                         <p:outputPanel rendered="#{not empty menuItem.menuItems}">
                             <a id="sl_#{menuItem.label.toLowerCase()}" tabindex="0" class="submenu-link">
-                                #{menuItem.label}
+                                #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="p-ml-2" rendered="#{not empty menuItem.badge}"/>
                             </a>
                             <div class="submenu">
                                 <ul>
