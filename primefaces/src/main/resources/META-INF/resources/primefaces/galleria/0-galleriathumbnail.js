@@ -444,7 +444,7 @@
                 });
         },
     
-        _renderBackwardNavigator() {
+        _renderBackwardNavigator: function () {
             if (this.options.showThumbnailNavigators) {
                 var iconStyleClass = PrimeFaces.utils.styleClass('ui-galleria-thumbnail-prev-icon ui-icon', {
                     'ui-icon-circle-triangle-w': !this.options.isVertical,
@@ -461,7 +461,7 @@
             return '';
         },
     
-        _renderForwardNavigator() {
+        _renderForwardNavigator: function () {
             if (this.options.showThumbnailNavigators) {
                 var iconStyleClass = PrimeFaces.utils.styleClass('ui-galleria-thumbnail-next-icon ui-icon', {
                     'ui-icon-circle-triangle-e': !this.options.isVertical,
