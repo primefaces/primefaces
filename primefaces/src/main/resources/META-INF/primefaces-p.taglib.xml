@@ -10579,7 +10579,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Galleria is used to display a set of images.]]>
+            <![CDATA[Galleria is a content gallery component.]]>
         </description>
         <tag-name>galleria</tag-name>
         <component>
@@ -10623,7 +10623,7 @@
                 <![CDATA[Collection of images.]]>
             </description>
             <name>value</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.Object</type>
         </attribute>
         <attribute>
@@ -10631,7 +10631,15 @@
                 <![CDATA[Name of the iterator to display a collection of images.]]>
             </description>
             <name>var</name>
-            <required>true</required>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the exported request scoped variable for the status of the iteration.]]>
+            </description>
+            <name>varStatus</name>
+            <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -10652,79 +10660,71 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Name of animation to use on transitions. Default is fade.]]>
+                <![CDATA[Index of the first item.]]>
             </description>
-            <name>effect</name>
+            <name>activeIndex</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to display the component on fullscreen.]]>
+            </description>
+            <name>fullScreen</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Close icon on fullscreen mode.]]>
+            </description>
+            <name>closeIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Duration of animation in milliseconds. Default is 500.]]>
+                <![CDATA[Number of items per page.]]>
             </description>
-            <name>effectSpeed</name>
+            <name>numVisible</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Width of the filmstrip frames.]]>
+                <![CDATA[A model of options for responsive design.]]>
             </description>
-            <name>frameWidth</name>
+            <name>responsiveOptions</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.Object</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Height of the filmstrip frames.]]>
+                <![CDATA[Whether to display thumbnail container.]]>
             </description>
-            <name>frameHeight</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Defines visibility of filmstrip.]]>
-            </description>
-            <name>showFilmstrip</name>
+            <name>showThumbnails</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Images are displayed with a slideshow in autoPlay mode, default is true.]]>
+                <![CDATA[Whether to display indicator container.]]>
             </description>
-            <name>autoPlay</name>
+            <name>showIndicators</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Time in milliseconds between each slide in autoPlay mode.]]>
+                <![CDATA[When enabled, indicator container is displayed on item container.]]>
             </description>
-            <name>transitionInterval</name>
+            <name>showIndicatorsOnItem</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Width of the content panel.]]>
-            </description>
-            <name>panelWidth</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Height of the content panel.]]>
-            </description>
-            <name>panelHeight</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Displays information retrieved from title and alt attributes of images in content caption.]]>
+                <![CDATA[Whether to display caption container.]]>
             </description>
             <name>showCaption</name>
             <required>false</required>
@@ -10732,11 +10732,91 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Whether to display navigation buttons in item container.]]>
             </description>
-            <name>touchable</name>
+            <name>showItemNavigators</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to display navigation buttons in thumbnail container.]]>
+            </description>
+            <name>showThumbnailNavigators</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to display navigation buttons on item container's hover.]]>
+            </description>
+            <name>showItemNavigatorsOnHover</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, item is changed on indicator item's hover.]]>
+            </description>
+            <name>changeItemOnIndicatorHover</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if scrolling would be infinite.]]>
+            </description>
+            <name>circular</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Items are displayed with a slideshow in autoPlay mode.]]>
+            </description>
+            <name>autoPlay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Time in milliseconds to scroll items.]]>
+            </description>
+            <name>transitionInterval</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of thumbnails. Valid values are "bottom", "top", "left" and "right".]]>
+            </description>
+            <name>thumbnailsPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Height of the viewport in vertical thumbnail.]]>
+            </description>
+            <name>verticalThumbnailViewPortHeight</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of indicators. Valid values are "bottom", "top", "left" and "right".]]>
+            </description>
+            <name>indicatorsPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the output in the tabbing order. Default: "0".]]>
+            </description>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>

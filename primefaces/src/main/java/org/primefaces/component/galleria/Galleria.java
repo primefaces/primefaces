@@ -32,13 +32,20 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "galleria/galleria.js")
-@ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 public class Galleria extends GalleriaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Galleria";
 
     public static final String CONTAINER_CLASS = "ui-galleria ui-widget ui-widget-content ui-corner-all";
-    public static final String PANEL_WRAPPER_CLASS = "ui-galleria-panel-wrapper";
-    public static final String PANEL_CLASS = "ui-galleria-panel ui-helper-hidden";
-    public static final String PANEL_CONTENT_CLASS = "ui-galleria-panel-content";
+    public static final String CONTENT_CLASS = "ui-galleria-content";
+    public static final String HEADER_CLASS = "ui-galleria-header";
+    public static final String FOOTER_CLASS = "ui-galleria-footer";
+    public static final String ITEMS_CLASS = "ui-galleria-items";
+    public static final String ITEM_CLASS = "ui-galleria-item";
+    public static final String CAPTION_ITEMS_CLASS = "ui-galleria-caption-items";
+    public static final String CAPTION_ITEM_CLASS = "ui-galleria-caption-item";
+    public static final String THUMBNAIL_ITEMS_CLASS = "ui-galleria-thumbnail-items";
+    public static final String THUMBNAIL_ITEM_CLASS = "ui-galleria-thumbnail-item";
+    public static final String THUMBNAIL_ITEM_CONTENT_CLASS = "ui-galleria-thumbnail-item-content";
+
 }

@@ -806,6 +806,39 @@ if (!PrimeFaces.utils) {
                 count += partCount === 1 ? 1 : partCount - 1;
             }
             return count;
+        },
+        /**
+         * This method concatenates the classes into a string according to the condition of the arguments and returns it.
+         * @private
+         * @return {string} class
+         */
+        styleClass: function() {
+            var args = Array.prototype.slice.call(arguments);
+
+            if (args) {
+                var classes = [];
+
+                for (var i = 0; i < args.length; i++) {
+                    var className = args[i];
+
+                    if (!className) continue;
+
+                    var type = typeof className;
+
+                    if (type === 'string' || type === 'number') {
+                        classes.push(className);
+                    }
+                    else if (type === 'object') {
+                        var _classes = Array.isArray(className) ? className : Object.keys(className).map(function(key) { return !!className[key] ? key : null });
+
+                        classes = _classes.length ? classes.concat(_classes.filter(function(c) { return !!c })) : classes;
+                    }
+                }
+
+                return classes.join(' ');
+            }
+
+            return undefined;
         }
     };
 
