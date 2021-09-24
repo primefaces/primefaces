@@ -29,7 +29,7 @@
         
         <div class="card">
             <h5>Positioned at Left</h5>
-            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="4" thumbnailsPosition="left" responsiveOptions="#{galleriaView.responsiveOptions3}" style="max-width: 640px">
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" thumbnailsPosition="left" verticalViewPortHeight="480px" responsiveOptions="#{galleriaView.responsiveOptions1}" style="max-width: 640px">
                 <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
                 <f:facet name="thumbnail">
                     <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
@@ -39,7 +39,7 @@
         
         <div class="card">
             <h5>Positioned at Right</h5>
-            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="4" thumbnailsPosition="right" responsiveOptions="#{galleriaView.responsiveOptions3}" style="max-width: 640px">
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" thumbnailsPosition="right" verticalViewPortHeight="480px" responsiveOptions="#{galleriaView.responsiveOptions1}" style="max-width: 640px">
                 <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
                 <f:facet name="thumbnail">
                     <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />

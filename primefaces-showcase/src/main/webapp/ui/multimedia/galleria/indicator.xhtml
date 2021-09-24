@@ -4,6 +4,25 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
+    
+    <ui:define name="head">
+        <style type="text/css">
+            .custom-indicator-galleria .ui-galleria-indicator {
+                width: 100%;
+                text-align: center;
+                font-weight: bold;
+            }
+            
+            .custom-indicator-galleria .indicator-text {
+                color: #e9ecef;
+                cursor: pointer;
+            }
+
+            .custom-indicator-galleria .ui-state-highlight .indicator-text {
+                color: var(--primary-color);
+            }
+        </style>
+    </ui:define>
 
     <ui:define name="title">
         Galleria <span class="subitem">Indicator</span>
@@ -62,6 +81,20 @@
             <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
                         showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true" showIndicatorsOnItem="true" indicatorsPosition="right" style="max-width: 640px">
                 <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Indicator Template</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" varStatus="status" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showThumbnails="false" showIndicators="true" changeItemOnIndicatorHover="true" showIndicatorsOnItem="true" indicatorsPosition="left"
+                        styleClass="custom-indicator-galleria" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+                <f:facet name="indicator">
+                    <span class="indicator-text">
+                        #{status.index + 1}
+                    </span>
+                </f:facet>
             </p:galleria>
         </div>
     </ui:define>

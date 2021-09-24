@@ -48,8 +48,6 @@ public class GalleriaView implements Serializable {
 
     private List<ResponsiveOption> responsiveOptions3;
 
-    private List<ResponsiveOption> responsiveOptions4;
-
     private int activeIndex = 0;
 
     @Inject
@@ -71,14 +69,10 @@ public class GalleriaView implements Serializable {
         responsiveOptions2.add(new ResponsiveOption("560px", 1));
 
         responsiveOptions3 = new ArrayList<>();
-        responsiveOptions3.add(new ResponsiveOption("768px", 3));
+        responsiveOptions3.add(new ResponsiveOption("1500px", 5));
+        responsiveOptions3.add(new ResponsiveOption("1024px", 3));
+        responsiveOptions3.add(new ResponsiveOption("768px", 2));
         responsiveOptions3.add(new ResponsiveOption("560px", 1));
-
-        responsiveOptions4 = new ArrayList<>();
-        responsiveOptions4.add(new ResponsiveOption("1500px", 5));
-        responsiveOptions4.add(new ResponsiveOption("1024px", 3));
-        responsiveOptions4.add(new ResponsiveOption("768px", 2));
-        responsiveOptions4.add(new ResponsiveOption("560px", 1));
     }
 
     public void changeActiveIndex() {
@@ -100,10 +94,6 @@ public class GalleriaView implements Serializable {
 
     public List<ResponsiveOption> getResponsiveOptions3() {
         return responsiveOptions3;
-    }
-
-    public List<ResponsiveOption> getResponsiveOptions4() {
-        return responsiveOptions4;
     }
 
     public int getActiveIndex() {
