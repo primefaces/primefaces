@@ -30,17 +30,25 @@ import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Random;
+import java.util.UUID;
 
 
 public class PrimeFacesSeleniumTomcatAdapter extends PrimeSeleniumAdapter {
 
     private Tomcat tomcat;
 
+    private Path tempDir;
+
     @Override
     public void startup() throws Exception {
+        tempDir = Files.createTempDirectory(UUID.randomUUID().toString());
 
         tomcat = new Tomcat();
+        tomcat.setBaseDir(tempDir.toString());
         tomcat.setPort(createRandomPort());
 
         String contextPath = "";
@@ -68,6 +76,16 @@ public class PrimeFacesSeleniumTomcatAdapter extends PrimeSeleniumAdapter {
     public void shutdown() throws LifecycleException {
         tomcat.getServer().stop();
         tomcat.getServer().destroy();
+
+        try {
+            Files.walk(tempDir)
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private static int createRandomPort() {
