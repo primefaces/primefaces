@@ -5681,12 +5681,17 @@ body .ui-galleria .ui-galleria-thumbnail-container .ui-galleria-thumbnail-next .
 }
 body .ui-galleria .ui-galleria-thumbnail-container .ui-galleria-thumbnail-item-content {
   transition: box-shadow 0.2s;
-  margin: 0.2rem 0;
+  margin: 0.2rem;
+  margin-left: 0;
+  margin-right: 0;
 }
 body .ui-galleria .ui-galleria-thumbnail-container .ui-galleria-thumbnail-item-content:focus {
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
+body .ui-galleria.ui-galleria-thumbnails-left .ui-galleria-thumbnail-container .ui-galleria-thumbnail-item-content, body .ui-galleria.ui-galleria-thumbnails-right .ui-galleria-thumbnail-container .ui-galleria-thumbnail-item-content {
+  margin: 0.2rem;
 }
 body .ui-galleria .ui-galleria-link:focus {
   outline: 0 none;
