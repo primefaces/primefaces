@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11, 17-ea]
+        java: [8, 11, 17]
         profile: [ 'firefox,theme-saga,myfaces-2.3.x', 'firefox,csp,theme-saga,myfaces-2.3.x', 'chrome,theme-saga,myfaces-2.3.x', 'chrome,theme-saga,myfaces-next-2.3.x','chrome,csp,theme-nova,myfaces-2.3.x', 'chrome,csp,theme-nova,mojarra-2.3.x', 'chrome,client-state-saving,theme-nova,mojarra-2.3.x' ]
 
     steps:
@@ -20,8 +20,9 @@ jobs:
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
+          cache: 'maven'
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
