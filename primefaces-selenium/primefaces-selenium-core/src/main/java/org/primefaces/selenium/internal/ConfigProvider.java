@@ -43,6 +43,10 @@ public class ConfigProvider {
     private int httpTimeout = 10;
     private int documentLoadTimeout = 15;
 
+    private String driverBrowser;
+    private boolean driverHeadless = false;
+    private String driverVersion;
+
     private boolean disableAnimations = true;
     private PrimeSeleniumAdapter adapter;
     private List<String> onloadScripts;
@@ -82,6 +86,21 @@ public class ConfigProvider {
                 String adapter = properties.getProperty("adapter");
                 if (adapter != null && !adapter.trim().isEmpty()) {
                     this.adapter = (PrimeSeleniumAdapter) Class.forName(adapter).getDeclaredConstructor().newInstance();
+                }
+
+                String driverBrowser = properties.getProperty("driver.browser");
+                if (driverBrowser != null && !driverBrowser.trim().isEmpty()) {
+                    this.driverBrowser = driverBrowser;
+                }
+
+                String driverHeadless = properties.getProperty("driver.headless");
+                if (driverHeadless != null && !driverHeadless.trim().isEmpty()) {
+                    this.driverHeadless = Boolean.parseBoolean(driverHeadless);
+                }
+
+                String driverVersion = properties.getProperty("driver.version");
+                if (driverVersion != null && !driverVersion.trim().isEmpty()) {
+                    this.driverVersion = driverVersion;
                 }
             }
 
@@ -137,6 +156,18 @@ public class ConfigProvider {
 
     public List<String> getOnloadScripts() {
         return onloadScripts;
+    }
+
+    public String getDriverBrowser() {
+        return driverBrowser;
+    }
+
+    public boolean isDriverHeadless() {
+        return driverHeadless;
+    }
+
+    public String getDriverVersion() {
+        return driverVersion;
     }
 
     public static synchronized ConfigProvider getInstance() {

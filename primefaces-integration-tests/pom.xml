@@ -20,8 +20,8 @@
     </description>
 
     <properties>
-        <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEEFirefoxAdapterImpl</primefaces-selenium.adapter>
         <webdriver.headless>false</webdriver.headless>
+        <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
         <primefaces.UPLOADER>auto</primefaces.UPLOADER>
@@ -230,19 +230,19 @@
         <profile>
             <id>chrome</id>
             <properties>
-                <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEEChromeAdapterImpl</primefaces-selenium.adapter>
+                <webdriver.browser>chrome</webdriver.browser>
             </properties>
         </profile>
         <profile>
             <id>firefox</id>
             <properties>
-                <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEEFirefoxAdapterImpl</primefaces-selenium.adapter>
+                <webdriver.browser>firefox</webdriver.browser>
             </properties>
         </profile>
         <profile>
             <id>safari</id>
             <properties>
-                <primefaces-selenium.adapter>org.primefaces.integrationtests.PrimeFacesSeleniumTomEESafariAdapterImpl</primefaces-selenium.adapter>
+                <webdriver.browser>safari</webdriver.browser>
                 <!-- optionally only run tests with specific @Tag -->
                 <!--
                 <groups>SafariBasic</groups>

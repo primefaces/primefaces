@@ -24,20 +24,65 @@
 package org.primefaces.selenium.spi;
 
 import java.util.List;
+import java.util.logging.Level;
+import org.openqa.selenium.PageLoadStrategy;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
+import org.primefaces.selenium.internal.ConfigProvider;
 
-public interface PrimeSeleniumAdapter {
+public abstract class PrimeSeleniumAdapter {
 
-    WebDriver createWebDriver();
+    public WebDriver createWebDriver() {
+        ConfigProvider config = ConfigProvider.getInstance();
+        if (config.getDriverBrowser() == null) {
+            throw new RuntimeException("No driver.browser configured; Please either configure it or implement PrimeSeleniumAdapter#getWebDriver!");
+        }
 
-    void startup() throws Exception;
+        switch (config.getDriverBrowser()) {
+            case "firefox":
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                firefoxOptions.setHeadless(config.isDriverHeadless());
+                return new FirefoxDriver(firefoxOptions);
+            case "chrome":
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                chromeOptions.setHeadless(config.isDriverHeadless());
+                LoggingPreferences logPrefs = new LoggingPreferences();
+                logPrefs.enable(LogType.BROWSER, Level.ALL);
+                chromeOptions.setCapability("goog:loggingPrefs", logPrefs);
+                chromeOptions.setExperimentalOption("w3c", false);
+                return new ChromeDriver(chromeOptions);
+            case "safari":
+                SafariOptions safariOptions = new SafariOptions();
+                /*
+                 * Safari does not support headless as of september 2020
+                 * https://github.com/SeleniumHQ/selenium/issues/5985
+                 * https://discussions.apple.com/thread/251837694
+                 */
+                //safariOptions.setHeadless(config.isDriverHeadless());
+                safariOptions.setCapability("safari:diagnose", "true");
+                return new SafariDriver(safariOptions);
+        }
 
-    String getBaseUrl();
+        throw new RuntimeException("Current supported browsers are: safari, firefox, chrome");
+    }
 
-    void shutdown() throws Exception;
+    public abstract void startup() throws Exception;
 
-    default void registerOnloadScripts(List<String> scripts) {
+    public abstract String getBaseUrl();
+
+    public abstract void shutdown() throws Exception;
+
+    public void registerOnloadScripts(List<String> scripts) {
 
     }
 }

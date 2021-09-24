@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium.internal.junit;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.primefaces.selenium.internal.ConfigProvider;
@@ -38,7 +39,24 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
     public void beforeAll(ExtensionContext context) throws Exception {
         synchronized (SYNCHRONIZER) {
             if (!started) {
-                PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
+                ConfigProvider configProvider = ConfigProvider.getInstance();
+                if ("firefox".equals(configProvider.getDriverBrowser())) {
+                    if (!System.getProperties().contains("webdriver.gecko.driver")) {
+                        WebDriverManager.firefoxdriver().setup();
+                    }
+                }
+                else if ("chrome".equals(configProvider.getDriverBrowser())) {
+                    if (!System.getProperties().contains("webdriver.gecko.driver")) {
+                        WebDriverManager.chromedriver().setup();
+                    }
+                }
+                else if ("safari".equals(configProvider.getDriverBrowser())) {
+                    if (!System.getProperties().contains("webdriver.safari.driver")) {
+                        WebDriverManager.safaridriver().setup();
+                    }
+                }
+
+                PrimeSeleniumAdapter adapter = configProvider.getAdapter();
                 adapter.startup();
 
                 // The following line registers a callback hook when the root test context is shut down

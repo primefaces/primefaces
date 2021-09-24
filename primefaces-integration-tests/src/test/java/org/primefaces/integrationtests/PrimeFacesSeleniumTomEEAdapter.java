@@ -31,19 +31,11 @@ import java.util.Random;
 
 import org.apache.tomee.embedded.Configuration;
 import org.apache.tomee.embedded.Container;
-import org.openqa.selenium.WebDriver;
 import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
 
-public abstract class PrimeFacesSeleniumTomEEAdapter implements PrimeSeleniumAdapter {
-
-    protected static final String HEADLESS_MODE_SYSPROP_NAME = "webdriver.headless";
-
-    protected static final String HEADLESS_MODE_SYSPROP_VAL_DEFAULT = "false";
+public class PrimeFacesSeleniumTomEEAdapter extends PrimeSeleniumAdapter {
 
     private Container container;
-
-    @Override
-    public abstract WebDriver createWebDriver();
 
     @Override
     public void startup() throws Exception {
@@ -100,10 +92,6 @@ public abstract class PrimeFacesSeleniumTomEEAdapter implements PrimeSeleniumAda
 
     public Container getContainer() {
         return container;
-    }
-
-    public static boolean isHeadless() {
-        return Boolean.parseBoolean(System.getProperty(HEADLESS_MODE_SYSPROP_NAME, HEADLESS_MODE_SYSPROP_VAL_DEFAULT));
     }
 
 }
