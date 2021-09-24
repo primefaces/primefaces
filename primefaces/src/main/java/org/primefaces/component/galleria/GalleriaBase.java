@@ -59,7 +59,7 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, ClientB
         autoPlay,
         transitionInterval,
         thumbnailsPosition,
-        verticalThumbnailViewPortHeight,
+        verticalViewPortHeight,
         indicatorsPosition,
         tabindex
     }
@@ -243,12 +243,12 @@ public abstract class GalleriaBase extends UITabPanel implements Widget, ClientB
         getStateHelper().put(PropertyKeys.thumbnailsPosition, thumbnailsPosition);
     }
 
-    public String getVerticalThumbnailViewPortHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.verticalThumbnailViewPortHeight, "300px");
+    public String getVerticalViewPortHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.verticalViewPortHeight, "450px");
     }
 
-    public void setVerticalThumbnailViewPortHeight(String verticalThumbnailViewPortHeight) {
-        getStateHelper().put(PropertyKeys.verticalThumbnailViewPortHeight, verticalThumbnailViewPortHeight);
+    public void setVerticalViewPortHeight(String verticalViewPortHeight) {
+        getStateHelper().put(PropertyKeys.verticalViewPortHeight, verticalViewPortHeight);
     }
 
     public String getIndicatorsPosition() {

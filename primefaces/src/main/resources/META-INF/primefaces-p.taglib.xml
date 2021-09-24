@@ -10796,9 +10796,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Height of the viewport in vertical thumbnail.]]>
+                <![CDATA[Height of the viewport in vertical layout. Default is 450px.]]>
             </description>
-            <name>verticalThumbnailViewPortHeight</name>
+            <name>verticalViewPortHeight</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

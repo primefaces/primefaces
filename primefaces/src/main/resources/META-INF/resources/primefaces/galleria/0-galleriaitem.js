@@ -40,18 +40,22 @@
 
         _create: function () {
             this.container = this.element;
-            this.captionContainer = this.container.next('.ui-galleria-caption-items');
+            this.captionContainer = this.container.nextAll('.ui-galleria-caption-items');
+            this.indicatorContainer = this.container.nextAll('.ui-galleria-indicators');
+            this.indicators = this.indicatorContainer.children('.ui-galleria-indicator');
             this.items = this.container.children('.ui-galleria-item');
 
             this._setInitValues();
             this._render();
 
             this.wrapper = this.container.closest('.ui-galleria-item-wrapper');
-            this.indicators = this.wrapper.find('> .ui-galleria-indicators > .ui-galleria-indicator');
             this.containerInWrapper = this.wrapper.children('.ui-galleria-item-container');
             this.navBackwardBtn = this.containerInWrapper.children('.ui-galleria-item-prev');
             this.navForwardBtn = this.containerInWrapper.children('.ui-galleria-item-next');
-            this.thumbnailWrapper = this.wrapper.nextAll('.ui-galleria-thumbnail-wrapper');
+            
+            if (this.indicatorContainer.length === 0) {
+                this.indicators = this.wrapper.find('> .ui-galleria-indicators > .ui-galleria-indicator');
+            }
 
             this._bindEvents();
             this.mounted();
@@ -129,10 +133,6 @@
         },
 
         mounted: function () {
-            if (this.options.isVertical && this.thumbnailWrapper.length) {
-                this.container.css('height', this.thumbnailWrapper.children('.ui-galleria-thumbnail-container').outerHeight());
-            }
-            
             this._updateUI();
         },
 
@@ -248,11 +248,11 @@
         _renderIndicators: function () {
             if (this.options.showIndicators) {
                 var indicators = '';
-    
+
                 for (var i = 0; i < this.items.length; i++) {
                     indicators += this._renderIndicator();
                 }
-    
+
                 return (
                     '<ul class="ui-galleria-indicators">' +
                         indicators +
@@ -267,18 +267,18 @@
             var backwardNavigator = this._renderBackwardNavigator();
             var forwardNavigator = this._renderForwardNavigator();
             var caption = this._renderCaption();
-            var indicators = this._renderIndicators();
+            var indicators = this.indicatorContainer.length ? this.indicatorContainer : this._renderIndicators();
 
             this.container.wrap(
                 '<div class="ui-galleria-item-wrapper">' +
                     '<div class="ui-galleria-item-container">' +
                     '</div>' +
-                    indicators +
                 '</div>'
             );
 
             this.container.before(backwardNavigator);
             this.container.after(forwardNavigator, caption);
+            this.container.parent().after(indicators);
         }
     });
 

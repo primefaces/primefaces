@@ -31,7 +31,6 @@
             responsiveOptions: null,
             circular: false,
             isVertical: false,
-            contentHeight: "300px",
             showThumbnailNavigators: true,
             slideShowActive: false,
             activeIndex: 0,
@@ -479,7 +478,6 @@
         },
 
         _renderContent: function () {
-            var height = this.options.isVertical ? this.options.contentHeight : '';
             var backwardNavigator = this._renderBackwardNavigator();
             var forwardNavigator = this._renderForwardNavigator();
 
@@ -490,7 +488,7 @@
                 '</div>'
             );
 
-            this.container.parent().before(backwardNavigator).after(forwardNavigator).css('height', height);
+            this.container.parent().before(backwardNavigator).after(forwardNavigator);
 
             return this.container.closest('.ui-galleria-thumbnail-container');
         },

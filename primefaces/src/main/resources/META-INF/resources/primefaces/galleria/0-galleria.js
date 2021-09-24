@@ -46,7 +46,7 @@
             autoPlay: false,
             transitionInterval: 4000,
             thumbnailsPosition: "bottom",
-            verticalThumbnailViewPortHeight: "300px",
+            verticalViewPortHeight: "450px",
             indicatorsPosition: "bottom",
             onItemChange: null,
             onShow: null,
@@ -218,6 +218,10 @@
         },
 
         mounted: function () {
+            if (this.isVertical()) {
+                this.content.css('height', this.options.verticalViewPortHeight);
+            }
+            
             if (this.options.autoPlay) {
                 this.startSlideShow();
             }
@@ -285,7 +289,6 @@
                 responsiveOptions: this.options.responsiveOptions,
                 circular: this.options.circular,
                 isVertical: this.isVertical(),
-                contentHeight: this.options.verticalThumbnailViewPortHeight,
                 showThumbnailNavigators: this.options.showThumbnailNavigators,
                 slideShowActive: this.state.slideShowActive,
                 activeIndex: this.state.activeIndex,

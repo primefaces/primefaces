@@ -26,7 +26,7 @@
  * @prop {boolean} cfg.autoPlay Items are displayed with a slideshow in autoPlay mode.
  * @prop {number} cfg.transitionInterval Time in milliseconds to scroll items.
  * @prop {string} cfg.thumbnailsPosition Position of thumbnails. Valid values are "bottom", "top", "left" and "right".
- * @prop {string} cfg.verticalThumbnailViewPortHeight Height of the viewport in vertical thumbnail.
+ * @prop {string} cfg.verticalViewPortHeight Height of the viewport in vertical layout.
  * @prop {string} cfg.indicatorsPosition Position of indicators. Valid values are "bottom", "top", "left" and "right".
  * @prop {{breakpoint:string, numVisible:number}[]} cfg.responsiveOptions A model of options for responsive design.
  */

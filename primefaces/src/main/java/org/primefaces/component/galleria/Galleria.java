@@ -44,6 +44,8 @@ public class Galleria extends GalleriaBase {
     public static final String ITEM_CLASS = "ui-galleria-item";
     public static final String CAPTION_ITEMS_CLASS = "ui-galleria-caption-items";
     public static final String CAPTION_ITEM_CLASS = "ui-galleria-caption-item";
+    public static final String INDICATORS_CLASS = "ui-galleria-indicators";
+    public static final String INDICATOR_CLASS = "ui-galleria-indicator";
     public static final String THUMBNAIL_ITEMS_CLASS = "ui-galleria-thumbnail-items";
     public static final String THUMBNAIL_ITEM_CLASS = "ui-galleria-thumbnail-item";
     public static final String THUMBNAIL_ITEM_CONTENT_CLASS = "ui-galleria-thumbnail-item-content";

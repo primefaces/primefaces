@@ -92,6 +92,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
         encodeItems(context, galleria);
         encodeCaptions(context, galleria);
+        encodeIndicators(context, galleria);
         encodeThumbnails(context, galleria);
 
         writer.endElement("div");
@@ -123,7 +124,7 @@ public class GalleriaRenderer extends CoreRenderer {
             String varStatus = galleria.getVarStatus();
             Object varStatusBackup = varStatus == null ? null : requestMap.get(varStatus);
 
-            for (int i = 0; i < galleria.getRowCount(); i++) {
+            for (int i = 0; i < rowCount; i++) {
                 galleria.setIndex(i);
 
                 IterationStatus status = new IterationStatus((i == 0), (i == (rowCount - 1)), i, i, 0, rowCount - 1, 1);
@@ -186,12 +187,12 @@ public class GalleriaRenderer extends CoreRenderer {
                 if (facet instanceof UIPanel) {
                     for (UIComponent kid : facet.getChildren()) {
                         if (kid.isRendered()) {
-                            encodeThumbnail(context, galleria, kid, false);
+                            encodeCaption(context, galleria, kid, false);
                         }
                     }
                 }
                 else {
-                    encodeThumbnail(context, galleria, facet, false);
+                    encodeCaption(context, galleria, facet, false);
                 }
             }
 
@@ -204,6 +205,78 @@ public class GalleriaRenderer extends CoreRenderer {
 
         writer.startElement("li", null);
         writer.writeAttribute("class", Galleria.CAPTION_ITEM_CLASS, null);
+
+        if (hasVar) {
+            child.encodeAll(context);
+        }
+        else {
+            renderChild(context, child);
+        }
+
+        writer.endElement("li");
+    }
+
+    public void encodeIndicators(FacesContext context, Galleria galleria) throws IOException {
+        UIComponent facet = galleria.getFacet("indicator");
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+
+        if (galleria.isShowIndicators() && shouldRenderFacet) {
+            ResponseWriter writer = context.getResponseWriter();
+            String var = galleria.getVar();
+
+            writer.startElement("ul", null);
+            writer.writeAttribute("class", Galleria.INDICATORS_CLASS, null);
+
+            if (var != null) {
+                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+                int rowCount = galleria.getRowCount();
+                String varStatus = galleria.getVarStatus();
+                Object varStatusBackup = varStatus == null ? null : requestMap.get(varStatus);
+
+                for (int i = 0; i < rowCount; i++) {
+                    galleria.setIndex(i);
+
+                    IterationStatus status = new IterationStatus((i == 0), (i == (rowCount - 1)), i, i, 0, rowCount - 1, 1);
+                    if (varStatus != null) {
+                        requestMap.put(varStatus, status);
+                    }
+
+                    encodeIndicator(context, galleria, galleria.getFacet("indicator"), true);
+                }
+
+                galleria.setIndex(-1);
+
+                if (varStatus != null) {
+                    if (varStatusBackup == null) {
+                        requestMap.remove(varStatus);
+                    }
+                    else {
+                        requestMap.put(varStatus, varStatusBackup);
+                    }
+                }
+            }
+            else {
+                if (facet instanceof UIPanel) {
+                    for (UIComponent kid : facet.getChildren()) {
+                        if (kid.isRendered()) {
+                            encodeIndicator(context, galleria, kid, false);
+                        }
+                    }
+                }
+                else {
+                    encodeIndicator(context, galleria, facet, false);
+                }
+            }
+
+            writer.endElement("ul");
+        }
+    }
+
+    public void encodeIndicator(FacesContext context, Galleria galleria, UIComponent child, boolean hasVar) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("li", null);
+        writer.writeAttribute("class", Galleria.INDICATOR_CLASS, null);
 
         if (hasVar) {
             child.encodeAll(context);
@@ -297,7 +370,7 @@ public class GalleriaRenderer extends CoreRenderer {
                 .attr("autoPlay", galleria.isAutoPlay(), false)
                 .attr("transitionInterval", galleria.getTransitionInterval(), 4000)
                 .attr("thumbnailsPosition", galleria.getThumbnailsPosition(), "bottom")
-                .attr("verticalThumbnailViewPortHeight", galleria.getVerticalThumbnailViewPortHeight(), "300px")
+                .attr("verticalViewPortHeight", galleria.getVerticalViewPortHeight(), "450px")
                 .attr("indicatorsPosition", galleria.getIndicatorsPosition(), "bottom");
 
         if (responsiveOptions != null) {
