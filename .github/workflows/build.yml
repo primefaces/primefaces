@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11, 17-ea]
+        java: [8, 11, 17]
         jsfimpl: [ 'mojarra-2.3.x', 'myfaces-2.3.x', 'myfaces-next-2.3.x' ]
 
     steps:
@@ -17,11 +17,11 @@ jobs:
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-#        if: matrix.jsfimpl == 'myfaces-2.3.x' || matrix.java == 11 || matrix.java == 16 || matrix.java == '17-ea'
+#        if: matrix.jsfimpl == 'myfaces-2.3.x' || matrix.java == 11 || matrix.java == 16 || matrix.java == '17'
         run: mvn clean install -Psecurity-checks,jsdoc,minify -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
       - name: SonarCloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 11 && matrix.jsfimpl == 'myfaces-2.3.x'
@@ -30,5 +30,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Integration Tests
-#        if: matrix.java == 11 || matrix.java == 16 || matrix.java == '17-ea'
+#        if: matrix.java == 11 || matrix.java == 16 || matrix.java == '17'
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
