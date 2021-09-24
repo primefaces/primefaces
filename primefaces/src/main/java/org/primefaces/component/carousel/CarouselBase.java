@@ -27,7 +27,7 @@ import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
-import org.primefaces.model.carousel.CarouselResponsiveOption;
+import org.primefaces.model.ResponsiveOption;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import java.util.List;
@@ -116,11 +116,11 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
         getStateHelper().put(PropertyKeys.numScroll, numScroll);
     }
 
-    public List<CarouselResponsiveOption> getResponsiveOptions() {
-        return (List<CarouselResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
+    public List<ResponsiveOption> getResponsiveOptions() {
+        return (List<ResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
     }
 
-    public void setResponsiveOptions(List<CarouselResponsiveOption> responsiveOptions) {
+    public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
         getStateHelper().put(PropertyKeys.responsiveOptions, responsiveOptions);
     }
 
