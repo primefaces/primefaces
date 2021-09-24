@@ -19,14 +19,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Log github.ref
-        run: echo "${{ github.ref }}"
+          cache: 'maven'
       - name: Build
 #        if: matrix.jsfimpl == 'myfaces-2.3.x' || matrix.java == 11 || matrix.java == 16 || matrix.java == '17-ea'
         run: mvn clean install -Psecurity-checks,jsdoc,minify -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
