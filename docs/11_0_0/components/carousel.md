@@ -29,11 +29,11 @@ Carousel is a content slider featuring various customization options.
 | numScroll | 1 | Integer | Number of items to scroll.
 | widgetVar | null | String | Name of the client side widget.
 | circular | false | Boolean | Defines if scrolling would be infinite.
-| autoplayInterval | null | Integer | Time in milliseconds to scroll items automatically.
+| autoplayInterval | 0 | Integer | Time in milliseconds to scroll items automatically.
 | responsiveOptions | null | List<CarouselResponsiveOption> | A list of options for responsive design.
-| orientation | 0 | Integer | Specifies the layout of the component, valid values are "horizontal" and "vertical".
-| verticalViewPortHeight | "300px" | String | Height of the viewport in vertical layout.
-| style | "horizontal" | String | Inline style of the component.
+| orientation | horizontal | Integer | Specifies the layout of the component, valid values are "horizontal" and "vertical".
+| verticalViewPortHeight | 300px | String | Height of the viewport in vertical layout.
+| style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
 | contentStyleClass | null | String | Style class of main content.
 | containerStyleClass | null | String | Style class of the viewport container.
