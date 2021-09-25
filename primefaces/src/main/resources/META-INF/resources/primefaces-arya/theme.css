@@ -649,41 +649,65 @@ body .ui-splitbutton .ui-button.ui-splitbutton-menubutton .ui-icon.ui-icon-trian
   content: "\e902";
 }
 
-body .ui-carousel {
-  padding: 0;
+body .ui-speeddial-button.ui-button.ui-button-icon-only {
+  width: 4rem;
+  height: 4rem;
 }
-body .ui-carousel .ui-carousel-header {
-  background: #1e1e1e;
-  color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
-  border: 1px solid #383838;
+body .ui-speeddial-button.ui-button.ui-button-icon-only .ui-button-icon {
+  font-size: 1.3rem;
+}
+body .ui-speeddial-action {
+  width: 3rem;
+  height: 3rem;
+  background: rgba(255, 255, 255, 0.87);
+  color: #121212;
+}
+body .ui-speeddial-action:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: #121212;
+}
+body .ui-speeddial-direction-up .ui-speeddial-item {
+  margin: 0.25rem 0;
+}
+body .ui-speeddial-direction-up .ui-speeddial-item:first-child {
+  margin-bottom: 0.5rem;
+}
+body .ui-speeddial-direction-down .ui-speeddial-item {
+  margin: 0.25rem 0;
+}
+body .ui-speeddial-direction-down .ui-speeddial-item:first-child {
+  margin-top: 0.5rem;
+}
+body .ui-speeddial-direction-left .ui-speeddial-item {
+  margin: 0 0.25rem;
+}
+body .ui-speeddial-direction-left .ui-speeddial-item:first-child {
+  margin-right: 0.5rem;
+}
+body .ui-speeddial-direction-right .ui-speeddial-item {
+  margin: 0 0.25rem;
+}
+body .ui-speeddial-direction-right .ui-speeddial-item:first-child {
+  margin-left: 0.5rem;
+}
+body .ui-speeddial-circle .ui-speeddial-item,
+body .ui-speeddial-semi-circle .ui-speeddial-item,
+body .ui-speeddial-quarter-circle .ui-speeddial-item {
   margin: 0;
-  font-weight: 700;
 }
-body .ui-carousel .ui-carousel-header .ui-carousel-header-title {
-  padding: 0;
-  width: auto;
-}
-body .ui-carousel .ui-carousel-footer {
-  background: #1e1e1e;
-  color: rgba(255, 255, 255, 0.87);
-  padding: 1rem;
-  border: 1px solid #383838;
+body .ui-speeddial-circle .ui-speeddial-item:first-child, body .ui-speeddial-circle .ui-speeddial-item:last-child,
+body .ui-speeddial-semi-circle .ui-speeddial-item:first-child,
+body .ui-speeddial-semi-circle .ui-speeddial-item:last-child,
+body .ui-speeddial-quarter-circle .ui-speeddial-item:first-child,
+body .ui-speeddial-quarter-circle .ui-speeddial-item:last-child {
   margin: 0;
 }
-body .ui-carousel .ui-carousel-viewport {
-  border: 1px solid #383838;
-  background: #1e1e1e;
-  color: rgba(255, 255, 255, 0.87);
-  padding: 0;
+body .ui-speeddial-mask {
+  background-color: rgba(0, 0, 0, 0.4);
 }
-body .ui-carousel .ui-carousel-viewport .ui-carousel-item {
-  border: 1px solid #383838;
-}
-body .ui-carousel .ui-carousel-button {
-  margin: 0 0 0 0.5rem;
-  position: relative;
-  top: 0.143em;
+
+body .ui-carousel .ui-carousel-content .ui-carousel-prev,
+body .ui-carousel .ui-carousel-content .ui-carousel-next {
   width: 2rem;
   height: 2rem;
   background: transparent;
@@ -695,79 +719,34 @@ body .ui-carousel .ui-carousel-button {
   line-height: 2rem;
   padding: 0;
   user-select: none;
+  margin: 0.5rem;
 }
-body .ui-carousel .ui-carousel-button:hover {
+body .ui-carousel .ui-carousel-content .ui-carousel-prev:hover,
+body .ui-carousel .ui-carousel-content .ui-carousel-next:hover {
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.87);
   border-color: transparent;
 }
-body .ui-carousel .ui-carousel-button.ui-carousel-next-button {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
+body .ui-carousel .ui-carousel-indicators {
+  padding: 1rem;
 }
-body .ui-carousel .ui-carousel-button.ui-carousel-next-button:before {
-  content: "\e901";
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
-body .ui-carousel .ui-carousel-button.ui-carousel-prev-button {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
-}
-body .ui-carousel .ui-carousel-button.ui-carousel-prev-button:before {
-  content: "\e900";
-}
-body .ui-carousel .ui-carousel-dropdown, body .ui-carousel .ui-carousel-mobiledropdown {
-  margin: 0 0.5rem 0 0;
-}
-body .ui-carousel .ui-carousel-page-links {
-  margin: 0 0.5rem;
-  position: relative;
-  top: 0.143em;
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link {
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button {
+  background-color: #383838;
   width: 2rem;
-  height: 2rem;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.6);
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-  border-radius: 50%;
-  border: 0 none;
-  text-align: center;
-  line-height: 2rem;
-  padding: 0;
-  user-select: none;
-  text-decoration: none;
+  height: 0.5rem;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, opacity 0.2s ease-in-out;
+  border-radius: 0;
 }
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link:hover {
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button:hover {
   background: rgba(255, 255, 255, 0.03);
+}
+body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator.ui-state-highlight button {
+  background: rgba(100, 181, 246, 0.16);
   color: rgba(255, 255, 255, 0.87);
-  border-color: transparent;
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-off {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-off:before {
-  content: "\e912";
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on {
-  font-family: "primeicons" !important;
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  background: none;
-  color: #90CAF9;
-}
-body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on:before {
-  content: "\e911";
 }
 
 body .ui-chronoline .ui-chronoline-event-marker {
