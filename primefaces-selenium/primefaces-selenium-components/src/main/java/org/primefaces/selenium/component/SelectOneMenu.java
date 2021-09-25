@@ -157,6 +157,8 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         JSONObject widgetConfiguration = getWidgetConfiguration();
 
         if (widgetConfiguration.has("filter") && widgetConfiguration.getBoolean("filter")) {
+            show(); //listElt.isDisplayed only works when panel is visible
+
             return getItems().findElements(By.cssSelector("li.ui-selectonemenu-item")).stream()
                     .filter(listElt -> listElt.isDisplayed())
                     .map(e -> e.getAttribute("innerHTML"))
