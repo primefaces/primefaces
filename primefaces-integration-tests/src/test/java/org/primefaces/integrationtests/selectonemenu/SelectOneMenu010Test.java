@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,6 @@ import org.primefaces.selenium.component.SelectOneMenu;
 
 public class SelectOneMenu010Test extends AbstractPrimePageTest {
 
-    @Disabled
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: basic usecase with groups")
