@@ -81,21 +81,21 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     /**
-     * Shows images on fullscreen mode.
+     * Shows content on fullscreen mode.
      */
     show: function() {
         this.primeGalleriaWidget.show();
     },
     
     /**
-     * Moves to the next image that comes after the currently shown image.
+     * Moves to the next content that comes after the currently shown content.
      */
     next: function() {
         this.primeGalleriaWidget.next();
     },
 
     /**
-     * Moves to the previous image that comes before the currently shown image.
+     * Moves to the previous content that comes before the currently shown content.
      */
     prev: function() {
         this.primeGalleriaWidget.prev();

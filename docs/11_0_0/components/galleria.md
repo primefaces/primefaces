@@ -135,6 +135,15 @@ public class GalleriaView {
 
 ```
 
+## Client Side API
+Widget: _PrimeFaces.widget.Galleria_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| show() | - | void | Shows content on fullscreen mode. |
+| next() | - | void | Moves to the next content that comes after the currently shown content. |
+| prev() | - | void | Moves to the previous content that comes before the currently shown content. |
+
 ## Skinning
 Galleria resides in a main container element which _style_ and _styleClass_ options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
