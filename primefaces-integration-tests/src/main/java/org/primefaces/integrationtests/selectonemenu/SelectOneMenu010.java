@@ -49,7 +49,7 @@ public class SelectOneMenu010 implements Serializable {
     private RealDriverService driverService;
     private List<SelectItemGroup> drivers;
 
-    private int value;
+    private Driver value;
 
     @PostConstruct
     public void init() {
@@ -59,7 +59,6 @@ public class SelectOneMenu010 implements Serializable {
             group.setSelectItems(new SelectItem[]{new SelectItem(driver)});
             drivers.add(group);
         }
-        value = 1;
     }
 
     public void onAjax() {

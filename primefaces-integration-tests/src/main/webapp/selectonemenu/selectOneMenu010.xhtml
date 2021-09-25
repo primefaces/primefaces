@@ -12,7 +12,7 @@
     <h:body>
 
         <h:form id="form">
-            <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu010.value}">
+            <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu010.value}" converter="#{realDriverConverter}">
                 <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true"/>
                 <f:selectItems value="#{selectOneMenu010.drivers}" var="driver" itemLabel="#{driver.value.name}" itemValue="#{driver.value.id}"/>
                 <p:ajax event="itemSelect" process="@this" listener="#{selectOneMenu010.onAjax}"/>
