@@ -37,7 +37,7 @@
     position: absolute;
 }
 
-.ui-speeddial-rotate {
+.ui-speeddial-button.ui-speeddial-rotate {
     transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     will-change: transform;
 }
@@ -56,6 +56,10 @@
     pointer-events: none;
     opacity: 1;
     transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ui-speeddial-opened.ui-speeddial {
+    z-index: 2;
 }
 
 .ui-speeddial-opened .ui-speeddial-list {
