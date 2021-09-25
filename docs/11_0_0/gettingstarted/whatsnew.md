@@ -12,6 +12,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Galleria: completely overhauled by PrimeTek to be in line with PrimeReact/Vue/NG galleria.
   * SpeedDial: new component designed as a floating action button
   * DataTable: new built-in `JpaLazyDataModel`, which provides basic functionality for JPA users and lazy loading
+  * FileUpload: added `dropZone` attribute to create a custom drop zone. See https://primefaces.github.io/primefaces/11_0_0/#/components/fileupload?id=custom-drop-zone
   * Hotkey: added `bindMac` to use alternative binding on macOS.
   * Inplace: added `tabindex` for keyboard focus and toggle support.
   * InputText, InputTextarea: counter can count bytes instead of characters.
