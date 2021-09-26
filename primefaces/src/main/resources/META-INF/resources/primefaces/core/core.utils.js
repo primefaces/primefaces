@@ -357,7 +357,7 @@ if (!PrimeFaces.utils) {
 
         /**
          * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
-         * attribute. Also makes sure the overlay widget is handled propertly during AJAX updates.
+         * attribute. Also makes sure the overlay widget is handled properly during AJAX updates.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget An overlay widget instance.
          * @param {JQuery} overlay The DOM element for the overlay.
          * @param {string} overlayId The ID of the overlay, usually the widget ID.
