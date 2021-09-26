@@ -4810,7 +4810,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function(e) {
-            var _delay = e.data.delay;
+            var _delay = e.data.delay || 0;
 
             if (_delay !== null && typeof _delay === 'number' && _delay > -1) {
                 if ($this.resizeTimeout) {
