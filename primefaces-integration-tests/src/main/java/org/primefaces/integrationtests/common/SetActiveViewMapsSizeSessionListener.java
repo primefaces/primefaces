@@ -33,6 +33,7 @@ public class SetActiveViewMapsSizeSessionListener implements HttpSessionListener
     public void sessionCreated(HttpSessionEvent event) {
         try {
             // avoid issues with Mojarra + OWB (see class com.sun.faces.application.view.ViewScopeManager)
+            // TODO: may be removed after Mojarra 2.3.17-release (see https://github.com/eclipse-ee4j/mojarra/issues/4642)
             event.getSession().setAttribute( "com.sun.faces.application.view.activeViewMapsSize", 100);
         }
         catch (Exception ex) {
