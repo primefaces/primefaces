@@ -52,6 +52,7 @@
  * @prop {boolean} percentageScrollWidth Whether the scroll width was specified in percent.
  * @prop {number} relativeHeight The height of the visible scroll area relative to the total height of this tree table.
  * @prop {string[]} [resizableState] Array storing the current widths for each resizable column.
+ * @prop {number} resizeTimeout The set-timeout timer ID of the timer used for resizing.
  * @prop {JQuery} [resizableStateHolder] INPUT element storing the current widths for each resizable column.
  * @prop {JQuery} resizerHelper The DOM element for the draggable handle for resizing columns.
  * @prop {JQuery} scrollBody The DOM element for the scrollable DIV with the body table.
@@ -661,9 +662,28 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id + '_align', null, function() {
-            $this.stickyContainer.width(table.outerWidth());
-        });
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function(e) {
+            var _delay = e.data.delay || 0;
+
+            if (_delay !== null && typeof _delay === 'number' && _delay > -1) {
+                if ($this.resizeTimeout) {
+                    clearTimeout($this.resizeTimeout);
+                }
+
+                $this.stickyContainer.hide();
+                $this.resizeTimeout = setTimeout(function() {
+                    $this.stickyContainer.css('left', orginTableContent.offset().left + 'px');
+                    $this.stickyContainer.width(table.outerWidth());
+                    $this.stickyContainer.show();
+                }, _delay);
+            }
+            else {
+                $this.stickyContainer.width(table.outerWidth());
+            }
+        }, { delay: null });
+
+        //filter support
+        this.clone.find('.ui-column-filter').prop('disabled', true);
     },
 
     /**
