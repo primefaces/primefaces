@@ -27,6 +27,7 @@ Properties:
 |    webdriver.adapter     | org.primefaces.extensions.selenium.spi.WebDriverAdapter  |        | Adapter implementation to create a WebDriver  |
 |    webdriver.browser     | String  |        |       firefox / chrome / safari              |
 |   webdriver.headless     | boolean | false  |       if browser should be openend headless  |
+|   webdriver.version      | String  | newest  |      the webdriver version which should be used |
 |       timeout.gui        |   int   | 2       |       GUI timeout for waits in seconds      |
 |       timeout.ajax       |   int   | 10      |      AJAX timeout for guards in seconds     |
 |       timeout.http       |   int   | 10      |      HTTP timeout for guards in seconds     |
