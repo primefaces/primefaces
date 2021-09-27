@@ -127,6 +127,11 @@ public class ConfigProvider {
                 if (webdriverVersion != null && !webdriverVersion.trim().isEmpty()) {
                     this.webdriverVersion = webdriverVersion;
                 }
+
+                String onloadScriptsAdapter = properties.getProperty("onloadScripts.adapter");
+                if (onloadScriptsAdapter != null && !onloadScriptsAdapter.trim().isEmpty()) {
+                    this.onloadScriptsAdapter = (OnloadScriptsAdapter) Class.forName(onloadScriptsAdapter).getDeclaredConstructor().newInstance();
+                }
             }
 
             if (webdriverAdapter == null) {
