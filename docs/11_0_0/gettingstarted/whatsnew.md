@@ -31,7 +31,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Selenium Support
     * PrimeSelenium standalone library for testing PrimeFaces applications
     * Integration test suite verifying every pull request with 486 passing tests using PrimeSelenium
-   * Project
+  * Project
     * Refactored into a multi-module build
     * Updated to work under JDK LTS 8, 11, and 17
 
