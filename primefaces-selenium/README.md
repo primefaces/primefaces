@@ -3,26 +3,34 @@
 
 # primefaces-selenium
 
-PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. 
+PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments.
 It also supports JUnit5 parallel test execution to speed up tests.
 
-PrimeFaces-Selenium provides a hook-in to either startup a local server, use a remote adress and to instantiate the WebDriver.
+PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`),
+or use a remote adress (`deployment.baseUrl`).
+
+PrimeFaces-Selenium will also automatically manage and download the Selenium WebDriver. Currently supported: firefox, chrome, safari.
+You can also manage it by yourself via `webdriver.adapter`.
 
 This is the successor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
 
 ## Configuration
 
-PrimeFaces-Selenium requires a `/primefaces-selenium/config.properties` to set a `PrimeSeleniumAdapter`.
-A sample implementation, which starts a local TomEE, can be found here: [Tomcat Adapter](https://github.com/primefaces/primefaces/blob/master/primefaces-integration-tests/src/test/java/org/primefaces/integrationtests/PrimeFacesSeleniumTomcatAdapter.java)
+PrimeFaces-Selenium can be configuredy by providing a `/primefaces-selenium/config.properties`.
+A sample `DeploymentAdapter` for Tomcat can be found here: [Tomcat Adapter](https://github.com/primefaces/primefaces/blob/master/primefaces-integration-tests/src/test/java/org/primefaces/integrationtests/TomcatDeploymentAdapter.java)
 
 Properties:
 |       property name      |   type  | default |                 description                 |
 |:------------------------:|:-------:|---------|:-------------------------------------------:|
-|          adapter         | org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter    |         | Adapter/Hook-In implementation class |
-|        guiTimeout        |   int   | 2       |       GUI timeout for waits in seconds      |
-|        ajaxTimeout       |   int   | 10      |      AJAX timeout for guards in seconds     |
-|        httpTimeout       |   int   | 10      |      HTTP timeout for guards in seconds     |
-|    documentLoadTimeout   |   int   | 15      |       Document load timeout in seconds      |
+|   deploymment.baseUrl    | String  |         | the base URL                                |
+|   deploymment.adapter    | org.primefaces.extensions.selenium.spi.DeploymentAdapter |         | Adapter implementation to start/stop a container |
+|    webdriver.adapter     | org.primefaces.extensions.selenium.spi.WebDriverAdapter  |        | Adapter implementation to create a WebDriver  |
+|    webdriver.browser     | String  |        |       firefox / chrome / safari              |
+|   webdriver.headless     | boolean | false  |       if browser should be openend headless  |
+|       timeout.gui        |   int   | 2       |       GUI timeout for waits in seconds      |
+|       timeout.ajax       |   int   | 10      |      AJAX timeout for guards in seconds     |
+|       timeout.http       |   int   | 10      |      HTTP timeout for guards in seconds     |
+|   timeout.documentLoad   |   int   | 15      |       Document load timeout in seconds      |
 |    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
 
 ### Status
@@ -49,7 +57,7 @@ Currently, only the following components are implemented (partially):
 - DataView
 - DatePicker
 - Dialog
-- FileUpload  
+- FileUpload
 - InputMask
 - InputNumber
 - ~~InputSwitch~~ (use ToggleSwitch)
@@ -65,7 +73,7 @@ Currently, only the following components are implemented (partially):
 - SelectBooleanCheckbox
 - SelectBooleanButton
 - SelectManyCheckbox
-- SelectManyMenu  
+- SelectManyMenu
 - SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
@@ -75,7 +83,7 @@ Currently, only the following components are implemented (partially):
 - TextEditor
 - Timeline
 - ToggleSwitch
-- Tree 
+- Tree
 - TreeTable
 - TriStateCheckbox
 
@@ -149,7 +157,7 @@ public class IndexPageTest extends AbstractPrimePageTest {
         Thread.sleep(2000);
 
         another.goTo();
-        
+
         ...
     }
 }
