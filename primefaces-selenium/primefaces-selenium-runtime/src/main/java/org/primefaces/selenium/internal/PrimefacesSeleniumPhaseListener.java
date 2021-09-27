@@ -23,14 +23,17 @@
  */
 package org.primefaces.selenium.internal;
 
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-
 import org.primefaces.selenium.internal.component.PrimeFacesSeleniumSystemEventListener;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.faces.event.PreRenderViewEvent;
 
 public class PrimefacesSeleniumPhaseListener implements PhaseListener {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5173838784550587093L;
 
     @Override
     public void beforePhase(PhaseEvent phaseEvent) {

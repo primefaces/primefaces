@@ -77,11 +77,5 @@
             <artifactId>byte-buddy</artifactId>
             <version>1.11.18</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>jakarta.faces</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 </project>
