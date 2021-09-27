@@ -101,7 +101,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             toggleDropdown();
         }
 
-        for (WebElement element : getItems().findElements(By.tagName("li"))) {
+        for (WebElement element : getItems().findElements(By.cssSelector("li.ui-selectonemenu-item"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 break;
@@ -122,7 +122,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             toggleDropdown();
         }
 
-        for (WebElement element : getItems().findElements(By.tagName("li"))) {
+        for (WebElement element : getItems().findElements(By.cssSelector("li.ui-selectonemenu-item"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 break;
