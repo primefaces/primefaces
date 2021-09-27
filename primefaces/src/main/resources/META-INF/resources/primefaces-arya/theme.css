@@ -6074,8 +6074,8 @@ body .ui-dialog.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-erro
 body .ui-dialog.ui-confirm-dialog .ui-dialog-content > span.ui-icon.ui-icon-error:before {
   content: "\e90c";
 }
-body .ui-dialog .ui-resizable-handle {
-  display: none !important;
+body .ui-dialog.ui-resizable .ui-dialog-content {
+  box-sizing: content-box;
 }
 body .ui-dialog.ui-message-dialog .ui-dialog-content {
   padding: 0 1.5rem 2rem 1.5rem;
