@@ -30,6 +30,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.OnloadScriptsEventListener;
+import org.primefaces.selenium.internal.ScrollElementIntoViewOnTopClickListener;
 
 public class WebDriverProvider {
 
@@ -84,6 +85,10 @@ public class WebDriverProvider {
 
             EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
             eventDriver.register(new OnloadScriptsEventListener());
+
+            if (ConfigProvider.getInstance().isScrollElementIntoViewOnTop()) {
+                eventDriver.register(new ScrollElementIntoViewOnTopClickListener());
+            }
 
             set(eventDriver);
 

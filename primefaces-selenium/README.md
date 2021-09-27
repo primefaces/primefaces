@@ -33,6 +33,7 @@ Properties:
 |       timeout.http       |   int   | 10      |      HTTP timeout for guards in seconds     |
 |   timeout.documentLoad   |   int   | 15      |       Document load timeout in seconds      |
 |    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
+| scrollElementIntoViewOnTop | boolean | false | Scroll the element to be clicked into view on top. This is useful for sticky footers |
 
 ### Status
 

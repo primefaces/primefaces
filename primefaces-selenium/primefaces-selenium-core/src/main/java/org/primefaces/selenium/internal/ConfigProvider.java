@@ -45,6 +45,8 @@ public class ConfigProvider {
     private int timeoutHttp = 10;
     private int timeoutDocumentLoad = 15;
 
+    private boolean scrollElementIntoViewOnTop = false;
+
     private boolean disableAnimations = true;
 
     private WebDriverAdapter webdriverAdapter;
@@ -89,6 +91,11 @@ public class ConfigProvider {
                 String disableAnimations = properties.getProperty("disableAnimations");
                 if (disableAnimations != null && !disableAnimations.trim().isEmpty()) {
                     this.disableAnimations = Boolean.parseBoolean(disableAnimations);
+                }
+
+                String scrollElementIntoViewOnTop = properties.getProperty("scrollElementIntoViewOnTop");
+                if (scrollElementIntoViewOnTop != null && !scrollElementIntoViewOnTop.trim().isEmpty()) {
+                    this.scrollElementIntoViewOnTop = Boolean.parseBoolean(scrollElementIntoViewOnTop);
                 }
 
                 String deploymentBaseUrl = properties.getProperty("deployment.baseUrl");
@@ -172,6 +179,10 @@ public class ConfigProvider {
 
     public int getTimeoutDocumentLoad() {
         return timeoutDocumentLoad;
+    }
+
+    public boolean isScrollElementIntoViewOnTop() {
+        return scrollElementIntoViewOnTop;
     }
 
     public boolean isDisableAnimations() {
