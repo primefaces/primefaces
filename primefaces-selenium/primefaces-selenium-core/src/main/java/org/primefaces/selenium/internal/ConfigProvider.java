@@ -32,23 +32,31 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
+import org.primefaces.selenium.spi.WebDriverAdapter;
+import org.primefaces.selenium.spi.DeploymentAdapter;
+import org.primefaces.selenium.spi.OnloadScriptsAdapter;
 
 public class ConfigProvider {
 
     private static ConfigProvider configProvider = null;
 
-    private int guiTimeout = 2;
-    private int ajaxTimeout = 10;
-    private int httpTimeout = 10;
-    private int documentLoadTimeout = 15;
-
-    private String driverBrowser;
-    private boolean driverHeadless = false;
-    private String driverVersion;
+    private int timeoutGui = 2;
+    private int timeoutAjax = 10;
+    private int timeoutHttp = 10;
+    private int timeoutDocumentLoad = 15;
 
     private boolean disableAnimations = true;
-    private PrimeSeleniumAdapter adapter;
+
+    private WebDriverAdapter webdriverAdapter;
+    private String webdriverBrowser;
+    private boolean webdriverHeadless = false;
+    private String webdriverVersion;
+
+    private String deploymentBaseUrl;
+    private DeploymentAdapter deploymentAdapter;
+
+    private OnloadScriptsAdapter onloadScriptsAdapter;
+
     private List<String> onloadScripts;
 
     public ConfigProvider() {
@@ -58,24 +66,24 @@ public class ConfigProvider {
                 Properties properties = new Properties();
                 properties.load(config);
 
-                String guiTimeout = properties.getProperty("guiTimeout");
-                if (guiTimeout != null && !guiTimeout.trim().isEmpty()) {
-                    this.guiTimeout = Integer.parseInt(guiTimeout);
+                String timeoutGui = properties.getProperty("timeout.gui");
+                if (timeoutGui != null && !timeoutGui.trim().isEmpty()) {
+                    this.timeoutGui = Integer.parseInt(timeoutGui);
                 }
 
-                String ajaxTimeout = properties.getProperty("ajaxTimeout");
-                if (ajaxTimeout != null && !ajaxTimeout.trim().isEmpty()) {
-                    this.ajaxTimeout = Integer.parseInt(ajaxTimeout);
+                String timeoutAjax = properties.getProperty("timeout.ajax");
+                if (timeoutAjax != null && !timeoutAjax.trim().isEmpty()) {
+                    this.timeoutAjax = Integer.parseInt(timeoutAjax);
                 }
 
-                String httpTimeout = properties.getProperty("httpTimeout");
-                if (httpTimeout != null && !httpTimeout.trim().isEmpty()) {
-                    this.httpTimeout = Integer.parseInt(httpTimeout);
+                String timeoutHttp = properties.getProperty("timeout.http");
+                if (timeoutHttp != null && !timeoutHttp.trim().isEmpty()) {
+                    this.timeoutHttp = Integer.parseInt(timeoutHttp);
                 }
 
-                String documentLoadTimeout = properties.getProperty("documentLoadTimeout");
-                if (documentLoadTimeout != null && !documentLoadTimeout.trim().isEmpty()) {
-                    this.documentLoadTimeout = Integer.parseInt(documentLoadTimeout);
+                String timeoutDocumentLoad = properties.getProperty("timeout.documentLoad");
+                if (timeoutDocumentLoad != null && !timeoutDocumentLoad.trim().isEmpty()) {
+                    this.timeoutDocumentLoad = Integer.parseInt(timeoutDocumentLoad);
                 }
 
                 String disableAnimations = properties.getProperty("disableAnimations");
@@ -83,29 +91,44 @@ public class ConfigProvider {
                     this.disableAnimations = Boolean.parseBoolean(disableAnimations);
                 }
 
-                String adapter = properties.getProperty("adapter");
-                if (adapter != null && !adapter.trim().isEmpty()) {
-                    this.adapter = (PrimeSeleniumAdapter) Class.forName(adapter).getDeclaredConstructor().newInstance();
+                String deploymentBaseUrl = properties.getProperty("deployment.baseUrl");
+                if (deploymentBaseUrl != null && !deploymentBaseUrl.trim().isEmpty()) {
+                    this.deploymentBaseUrl = deploymentBaseUrl;
                 }
 
-                String driverBrowser = properties.getProperty("driver.browser");
-                if (driverBrowser != null && !driverBrowser.trim().isEmpty()) {
-                    this.driverBrowser = driverBrowser;
+                String deploymentAdapter = properties.getProperty("deployment.adapter");
+                if (deploymentAdapter != null && !deploymentAdapter.trim().isEmpty()) {
+                    this.deploymentAdapter = (DeploymentAdapter) Class.forName(deploymentAdapter).getDeclaredConstructor().newInstance();
                 }
 
-                String driverHeadless = properties.getProperty("driver.headless");
-                if (driverHeadless != null && !driverHeadless.trim().isEmpty()) {
-                    this.driverHeadless = Boolean.parseBoolean(driverHeadless);
+                String webdriverAdapter = properties.getProperty("webdriver.adapter");
+                if (webdriverAdapter != null && !webdriverAdapter.trim().isEmpty()) {
+                    this.webdriverAdapter = (WebDriverAdapter) Class.forName(webdriverAdapter).getDeclaredConstructor().newInstance();
                 }
 
-                String driverVersion = properties.getProperty("driver.version");
-                if (driverVersion != null && !driverVersion.trim().isEmpty()) {
-                    this.driverVersion = driverVersion;
+                String webdriverBrowser = properties.getProperty("webdriver.browser");
+                if (webdriverBrowser != null && !webdriverBrowser.trim().isEmpty()) {
+                    this.webdriverBrowser = webdriverBrowser;
+                }
+
+                String webdriverHeadless = properties.getProperty("webdriver.headless");
+                if (webdriverHeadless != null && !webdriverHeadless.trim().isEmpty()) {
+                    this.webdriverHeadless = Boolean.parseBoolean(webdriverHeadless);
+                }
+
+                String webdriverVersion = properties.getProperty("webdriver.version");
+                if (webdriverVersion != null && !webdriverVersion.trim().isEmpty()) {
+                    this.webdriverVersion = webdriverVersion;
                 }
             }
 
-            if (adapter == null) {
-                throw new RuntimeException("No 'adapter' set via config.properties!");
+            if (webdriverAdapter == null) {
+                webdriverAdapter = new DefaultWebDriverAdapter();
+            }
+
+            if (deploymentBaseUrl == null && deploymentAdapter == null) {
+                throw new RuntimeException("Please either provide a deployment.baseUrl for remote testing "
+                        + "or deployment.adapter via config.properties!");
             }
 
             buildOnloadScripts();
@@ -127,47 +150,61 @@ public class ConfigProvider {
             onloadScripts.add("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
         }
 
-        adapter.registerOnloadScripts(onloadScripts);
+        if (onloadScriptsAdapter != null) {
+            onloadScriptsAdapter.registerOnloadScripts(onloadScripts);
+        }
     }
 
-    public int getGuiTimeout() {
-        return guiTimeout;
+    public int getTimeoutGui() {
+        return timeoutGui;
     }
 
-    public int getAjaxTimeout() {
-        return ajaxTimeout;
+    public int getTimeoutAjax() {
+        return timeoutAjax;
     }
 
-    public int getHttpTimeout() {
-        return httpTimeout;
+    public int getTimeoutHttp() {
+        return timeoutHttp;
     }
 
-    public int getDocumentLoadTimeout() {
-        return documentLoadTimeout;
+    public int getTimeoutDocumentLoad() {
+        return timeoutDocumentLoad;
     }
 
     public boolean isDisableAnimations() {
         return disableAnimations;
     }
 
-    public PrimeSeleniumAdapter getAdapter() {
-        return adapter;
+    public String getDeploymentBaseUrl() {
+        return deploymentBaseUrl;
+    }
+
+    public DeploymentAdapter getDeploymentAdapter() {
+        return deploymentAdapter;
     }
 
     public List<String> getOnloadScripts() {
         return onloadScripts;
     }
 
-    public String getDriverBrowser() {
-        return driverBrowser;
+    public WebDriverAdapter getWebdriverAdapter() {
+        return webdriverAdapter;
     }
 
-    public boolean isDriverHeadless() {
-        return driverHeadless;
+    public OnloadScriptsAdapter getOnloadScriptsAdapter() {
+        return onloadScriptsAdapter;
     }
 
-    public String getDriverVersion() {
-        return driverVersion;
+    public String getWebdriverBrowser() {
+        return webdriverBrowser;
+    }
+
+    public boolean isWebdriverHeadless() {
+        return webdriverHeadless;
+    }
+
+    public String getWebdriverVersion() {
+        return webdriverVersion;
     }
 
     public static synchronized ConfigProvider getInstance() {

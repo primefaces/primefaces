@@ -25,7 +25,6 @@ package org.primefaces.integrationtests;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
-import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -35,9 +34,10 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
+import org.primefaces.selenium.spi.DeploymentAdapter;
 
 
-public class PrimeFacesSeleniumTomcatAdapter extends PrimeSeleniumAdapter {
+public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
     private Tomcat tomcat;
 

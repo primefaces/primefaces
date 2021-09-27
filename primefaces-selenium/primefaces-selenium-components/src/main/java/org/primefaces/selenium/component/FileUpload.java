@@ -132,7 +132,7 @@ public abstract class FileUpload extends AbstractInputComponent {
         WebDriver driver = WebDriverProvider.get();
 
         // todo: Should there be a separate configuration entry for file upload?
-        WebDriverWait wait = new WebDriverWait(driver, config.getAjaxTimeout(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutAjax(), 100);
         // all files are uploaded if widgets file array is empty
         String jsScript = "if (" + getWidgetByIdScript() + ".files.length === 0) return true;";
         wait.until(ExpectedConditions.jsReturnsValue(jsScript));

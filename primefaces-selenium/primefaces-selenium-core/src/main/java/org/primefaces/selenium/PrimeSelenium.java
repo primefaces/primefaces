@@ -30,8 +30,8 @@ import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
 import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
-import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
 import org.primefaces.selenium.spi.WebDriverProvider;
+import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public final class PrimeSelenium {
 
@@ -116,11 +116,11 @@ public final class PrimeSelenium {
      * @return the URL of the page
      */
     public static String getUrl(AbstractPrimePage page) {
-        PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
+        DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
 
         String baseLocation = page.getBaseLocation();
-        if (adapter != null) {
-            baseLocation = adapter.getBaseUrl();
+        if (deploymentAdapter != null) {
+            baseLocation = getBaseUrl();
         }
 
         return baseLocation + page.getLocation();
@@ -133,8 +133,15 @@ public final class PrimeSelenium {
      * @return the full URL
      */
     public static String getUrl(String url) {
-        PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
-        return adapter.getBaseUrl() + url;
+        return getBaseUrl() + url;
+    }
+
+    public static String getBaseUrl() {
+        DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+        if (deploymentAdapter != null) {
+            return deploymentAdapter.getBaseUrl();
+        }
+        return ConfigProvider.getInstance().getDeploymentBaseUrl();
     }
 
     /**
@@ -367,7 +374,7 @@ public final class PrimeSelenium {
     public static WebDriverWait waitGui() {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
-        WebDriverWait wait = new WebDriverWait(driver, config.getGuiTimeout(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutGui(), 100);
         return wait;
     }
 
@@ -380,7 +387,7 @@ public final class PrimeSelenium {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
 
-        WebDriverWait wait = new WebDriverWait(driver, config.getDocumentLoadTimeout(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutDocumentLoad(), 100);
         wait.until(PrimeExpectedConditions.documentLoaded());
 
         return wait;

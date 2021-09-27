@@ -52,7 +52,7 @@ public class WebDriverProvider {
     public static WebDriver get(boolean create) {
         WebDriver driver = WEB_DRIVER.get();
         if (driver == null && create) {
-            PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
+            WebDriverAdapter adapter = ConfigProvider.getInstance().getWebdriverAdapter();
             int fails = 0;
 
             do {

@@ -21,12 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.spi;
+package org.primefaces.selenium.internal;
 
-import java.util.List;
 import java.util.logging.Level;
 import org.openqa.selenium.PageLoadStrategy;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -36,26 +34,27 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.primefaces.selenium.internal.ConfigProvider;
+import org.primefaces.selenium.spi.WebDriverAdapter;
 
-public abstract class PrimeSeleniumAdapter {
+public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
+    @Override
     public WebDriver createWebDriver() {
         ConfigProvider config = ConfigProvider.getInstance();
-        if (config.getDriverBrowser() == null) {
+        if (config.getWebdriverBrowser() == null) {
             throw new RuntimeException("No driver.browser configured; Please either configure it or implement PrimeSeleniumAdapter#getWebDriver!");
         }
 
-        switch (config.getDriverBrowser()) {
+        switch (config.getWebdriverBrowser()) {
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                firefoxOptions.setHeadless(config.isDriverHeadless());
+                firefoxOptions.setHeadless(config.isWebdriverHeadless());
                 return new FirefoxDriver(firefoxOptions);
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                chromeOptions.setHeadless(config.isDriverHeadless());
+                chromeOptions.setHeadless(config.isWebdriverHeadless());
                 LoggingPreferences logPrefs = new LoggingPreferences();
                 logPrefs.enable(LogType.BROWSER, Level.ALL);
                 chromeOptions.setCapability("goog:loggingPrefs", logPrefs);
@@ -74,15 +73,5 @@ public abstract class PrimeSeleniumAdapter {
         }
 
         throw new RuntimeException("Current supported browsers are: safari, firefox, chrome");
-    }
-
-    public abstract void startup() throws Exception;
-
-    public abstract String getBaseUrl();
-
-    public abstract void shutdown() throws Exception;
-
-    public void registerOnloadScripts(List<String> scripts) {
-
     }
 }

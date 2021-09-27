@@ -27,7 +27,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.primefaces.selenium.internal.ConfigProvider;
-import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
+import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
 
@@ -40,24 +40,24 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
         synchronized (SYNCHRONIZER) {
             if (!started) {
                 ConfigProvider configProvider = ConfigProvider.getInstance();
-                if ("firefox".equals(configProvider.getDriverBrowser())) {
+                if ("firefox".equals(configProvider.getWebdriverBrowser())) {
                     if (!System.getProperties().contains("webdriver.gecko.driver")) {
                         WebDriverManager.firefoxdriver().setup();
                     }
                 }
-                else if ("chrome".equals(configProvider.getDriverBrowser())) {
+                else if ("chrome".equals(configProvider.getWebdriverBrowser())) {
                     if (!System.getProperties().contains("webdriver.gecko.driver")) {
                         WebDriverManager.chromedriver().setup();
                     }
                 }
-                else if ("safari".equals(configProvider.getDriverBrowser())) {
+                else if ("safari".equals(configProvider.getWebdriverBrowser())) {
                     if (!System.getProperties().contains("webdriver.safari.driver")) {
                         WebDriverManager.safaridriver().setup();
                     }
                 }
 
-                PrimeSeleniumAdapter adapter = configProvider.getAdapter();
-                adapter.startup();
+                DeploymentAdapter deploymentAdapter = configProvider.getDeploymentAdapter();
+                deploymentAdapter.startup();
 
                 // The following line registers a callback hook when the root test context is shut down
                 context.getRoot().getStore(ExtensionContext.Namespace.GLOBAL).put(BootstrapExtension.class.getName(), this);
@@ -69,8 +69,8 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
 
     @Override
     public void close() throws Exception {
-        PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
-        adapter.shutdown();
+        DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+        deploymentAdapter.shutdown();
     }
 
 }
