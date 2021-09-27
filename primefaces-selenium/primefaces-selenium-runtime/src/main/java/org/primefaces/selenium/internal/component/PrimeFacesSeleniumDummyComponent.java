@@ -37,9 +37,6 @@ public class PrimeFacesSeleniumDummyComponent extends UIComponentBase {
     public PrimeFacesSeleniumDummyComponent() {
         FacesContext context = FacesContext.getCurrentInstance();
         Application application = context.getApplication();
-//        if (ConfigProvider.getInstance().isDisableAnimations()) {
-//            addResource(context, application, "pfselenium.disableanimations.css");
-//        }
         addResource(context, application, "pfselenium.core.csp.js");
     }
 

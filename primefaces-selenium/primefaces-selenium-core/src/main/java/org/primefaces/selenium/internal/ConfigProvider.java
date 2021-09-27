@@ -148,6 +148,9 @@ public class ConfigProvider {
 
         if (disableAnimations) {
             onloadScripts.add("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
+            // CHECKSTYLE:OFF
+            onloadScripts.add("document.head.insertAdjacentHTML('beforeend', '<style>*, *:before, *:after { -webkit-transition: none !important; -moz-transition: none !important; -ms-transition: none !important; -o-transition: none !important; transition: none !important; }</style>');");
+            // CHECKSTYLE:ON
         }
 
         if (onloadScriptsAdapter != null) {
