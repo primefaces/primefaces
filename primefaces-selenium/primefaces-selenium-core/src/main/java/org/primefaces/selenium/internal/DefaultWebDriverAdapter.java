@@ -42,7 +42,7 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
     public WebDriver createWebDriver() {
         ConfigProvider config = ConfigProvider.getInstance();
         if (config.getWebdriverBrowser() == null) {
-            throw new RuntimeException("No driver.browser configured; Please either configure it or implement PrimeSeleniumAdapter#getWebDriver!");
+            throw new RuntimeException("No webdriver.browser configured; Please either configure it or implement WebDriverAdapter#getWebDriver!");
         }
 
         switch (config.getWebdriverBrowser()) {
