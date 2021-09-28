@@ -30,7 +30,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added support to align input text using classes: `text-left`, `text-center`, `text-right`.
   * Selenium Support
     * PrimeSelenium standalone library for testing PrimeFaces applications
-    * Integration test suite verifying every pull request with 486 passing tests using PrimeSelenium
+    * Integration test suite verifying every pull request with 490 passing tests using PrimeSelenium
   * Project
     * Refactored into a multi-module build
     * Updated to work under JDK LTS 8, 11, and 17
