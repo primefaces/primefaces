@@ -300,7 +300,6 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeStateParam(FacesContext context, Schedule schedule) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String id = schedule.getClientId(context) + "_view";
         String view = schedule.getView();
 

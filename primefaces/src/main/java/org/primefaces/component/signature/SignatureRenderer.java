@@ -106,8 +106,6 @@ public class SignatureRenderer extends InputRenderer {
     }
 
     protected void encodeInputField(FacesContext context, Signature signature, String name, Object value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
         String valueToRender = null;
         if (value != null) {
             valueToRender = value.toString();
