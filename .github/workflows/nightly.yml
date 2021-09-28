@@ -23,15 +23,9 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
       - name: Log github.ref
         run: echo "${{ github.ref }}"
       - name: Build
-        run: mvn clean install --batch-mode --show-version
+        run: mvn clean install -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true --batch-mode --show-version
       - name: Integration Tests
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,${{ matrix.profile }}
