@@ -59,15 +59,3 @@ mvn clean jetty:run -Pjsf-mojarra,cdi-owb,bv-hibernate,jaxrs-resteasy
 ```
 mvn clean jetty:run -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy
 ```
-
-### Documentation
-
-User Guide is available at [documentation](http://www.primefaces.org/documentation) page along with other additional resoures.
-
-### Contribution
-
-Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for the detailed information.
-
-### License
-
-Licensed under the MIT License.
