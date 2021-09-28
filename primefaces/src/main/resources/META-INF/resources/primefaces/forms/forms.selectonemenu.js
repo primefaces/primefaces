@@ -1,21 +1,21 @@
 /**
  * __PrimeFaces SelectOneMenu Widget__
- * 
+ *
  * SelectOneMenu is an extended version of the standard SelectOneMenu.
- * 
+ *
  * @typedef {"slow" | "normal" | "fast"} PrimeFaces.widget.SelectOneMenu.EffectSpeed Duration of toggle animation of the
  * overlay panel.
- * 
+ *
  * @typedef {"startsWith" |  "contains" |  "endsWith" | "custom"} PrimeFaces.widget.SelectOneMenu.FilterMatchMode
  * Available modes for filtering the options of a select list box. When `custom` is set, a `filterFunction` must be
  * specified.
- * 
+ *
  * @typedef PrimeFaces.widget.SelectOneMenu.FilterFunction A function for filtering the options of a select list box.
  * @param {string} PrimeFaces.widget.SelectOneMenu.FilterFunction.itemLabel The label of the currently selected text.
  * @param {string} PrimeFaces.widget.SelectOneMenu.FilterFunction.filterValue The value to search for.
  * @return {boolean} PrimeFaces.widget.SelectOneMenu.FilterFunction `true` if the item label matches the filter value,
  * or `false` otherwise.
- * 
+ *
  * @prop {boolean} changed Whether the value of this widget was changed from its original value.
  * @prop {JQuery} customInput The DOM element for the input field that lets the user enter a custom value which does not
  * have to match one of the available options.
@@ -51,12 +51,12 @@
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
  * available selectable options.
  * @prop {string} value The current value of this select one menu.
- * 
+ *
  * @interface {PrimeFaces.widget.SelectOneMenuCfg} cfg The configuration for the {@link  SelectOneMenu| SelectOneMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.DeferredWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.alwaysDisplayLabel `true` if the label of the selected item should always be set on the visible
  * input, `false` otherwise.
  * @prop {string} cfg.appendTo Appends the overlay to the element defined by search expression. Defaults to the document
@@ -227,7 +227,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Adjust the width of the overlay panel.
-     * @private 
+     * @private
      */
     alignPanelWidth: function() {
         //align panel and container
@@ -379,7 +379,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
-     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a 
+     * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
@@ -403,7 +403,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
-    
+
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
@@ -528,7 +528,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Finds the index of the given selectable option.
      * @param {JQuery} item One of the available selectable options.
-     * @return {number} The index of the given item. 
+     * @return {number} The index of the given item.
      */
     resolveItemIndex: function(item) {
         if(this.optGroupsSize === 0)
@@ -686,7 +686,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Finds all options that match the given search string.
      * @private
      * @param {string} text The search string against which to match the options.
-     * @return {JQuery} All selectable options that match (contain) the given search string. 
+     * @return {JQuery} All selectable options that match (contain) the given search string.
      */
     matchOptions: function(text) {
         if(!text) {
@@ -984,7 +984,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Puts focus on the filter input in the overlay panel.
-     * @param {number} [timeout] Amount of time in milliseconds to wait before attempting to focus the input. 
+     * @param {number} [timeout] Amount of time in milliseconds to wait before attempting to focus the input.
      */
     focusFilter: function(timeout) {
         if(timeout) {
@@ -1127,7 +1127,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     selectValue : function(value) {
         if(!this.items || this.items.length === 0) {
-           this.callHandleMethod(null, null); 
+           this.callHandleMethod(null, null);
         }
 
         var option = this.options.filter('[value="' + $.escapeSelector(value) + '"]');
@@ -1270,7 +1270,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Finds the value of the currently selected item, if any.
-     * @return {string} The value of the currently selected item. Empty string if none is selected. 
+     * @return {string} The value of the currently selected item. Empty string if none is selected.
      */
     getSelectedValue: function() {
         return this.input.val();
@@ -1278,7 +1278,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Finds the label of the currently selected item, if any.
-     * @return {string} The label of the currently selected item. Empty string if none is selected. 
+     * @return {string} The label of the currently selected item. Empty string if none is selected.
      */
     getSelectedLabel: function() {
         return this.options.filter(':selected').text();
@@ -1300,7 +1300,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Adjusts the value of the aria attributes for the given selectable option.
      * @private
-     * @param {JQuery} item An option for which to set the aria attributes. 
+     * @param {JQuery} item An option for which to set the aria attributes.
      */
     changeAriaValue: function (item) {
         var itemId = item.attr('id');
@@ -1358,8 +1358,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Invokes the given method after making sure that the overlay panel was loaded (in case dynamic mode is enabled).
      * @private
      * @param {(this: PrimeFaces.widget.SelectOneMenu, event: JQuery.TriggeredEvent) => void} handleMethod Callback method to
-     * invoke after the dynamic overlay panel was loaded. 
-     * @param {JQuery.TriggeredEvent} event An event that is passed to the callback. 
+     * invoke after the dynamic overlay panel was loaded.
+     * @param {JQuery.TriggeredEvent} event An event that is passed to the callback.
      */
     callHandleMethod: function(handleMethod, event) {
         var $this = this;
@@ -1459,11 +1459,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
             cssClass = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
             if (isGrouped) {
-                cssClass += " ui-selectonemenu-item-group-children"
+                cssClass += " ui-selectonemenu-item-group-children";
             }
         }
 
-        var dataLabel = label.replace(/(<([^>]+)>)/gi, "");
+        var dataLabel = label.replace(/(<([^>]+)>)/gi, "").replaceAll('"', '&quot;');
         if ($item.data("noselection-option")) {
             cssClass += " ui-noselection-option";
         }
@@ -1490,7 +1490,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Updates the style class of the label that indicates the currently selected item.
-     * @param {boolean} add `true` if a placeholder should be displayed, or `false` otherwise. 
+     * @param {boolean} add `true` if a placeholder should be displayed, or `false` otherwise.
      */
     updatePlaceholderClass: function(add) {
         if (add) {
