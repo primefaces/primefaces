@@ -34,6 +34,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
+import org.apache.commons.io.FileUtils;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
 
@@ -50,10 +51,18 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         tomcat = new Tomcat();
         tomcat.setBaseDir(tempDir.toString());
         tomcat.setPort(createRandomPort());
-
-        String contextPath = "";
+        
         tomcat.getHost().setAppBase(".");
-        tomcat.addWebapp(contextPath, new File("target/primefaces-integration-tests/").getAbsolutePath());
+
+        // create docbase directory without WEB-INF/lib as embedded Tomcat also uses the current CP
+        // and therefore JARs are scanned/used duplicate times
+        File docbase = new File("target/docbase/");
+        FileUtils.deleteDirectory(docbase);
+        FileUtils.copyDirectory(new File("target/primefaces-integration-tests/"), docbase);
+        FileUtils.deleteDirectory(new File("target/docbase/WEB-INF/lib"));
+
+        tomcat.addWebapp("", docbase.getAbsolutePath());
+
         tomcat.start();
 
         Thread.sleep(1000);
