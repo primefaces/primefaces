@@ -30,7 +30,7 @@ Carousel is a content slider featuring various customization options.
 | widgetVar | null | String | Name of the client side widget.
 | circular | false | Boolean | Defines if scrolling would be infinite.
 | autoplayInterval | 0 | Integer | Time in milliseconds to scroll items automatically.
-| responsiveOptions | null | List<CarouselResponsiveOption> | A list of options for responsive design.
+| responsiveOptions | null | List<ResponsiveOption> | A list of options for responsive design.
 | orientation | horizontal | Integer | Specifies the layout of the component, valid values are "horizontal" and "vertical".
 | verticalViewPortHeight | 300px | String | Height of the viewport in vertical layout.
 | style | null | String | Inline style of the component.
@@ -90,7 +90,7 @@ the `numScroll` attribute.
 
 ## Responsive
 For responsive design, `numVisible` and `numScroll` can be defined using the `responsiveOptions` attribute that should be 
-a list of CarouselResponsiveOption objects whose breakpoint defines the max-width to apply the settings.
+a list of ResponsiveOption objects whose breakpoint defines the max-width to apply the settings.
 
 ```xhtml
 <p:carousel value="#{carouselView.products}" var="product" numVisible="3" numScroll="3"
@@ -127,7 +127,7 @@ public class CarouselView implements Serializable {
 
     private List<Product> products;
 
-    private List<CarouselResponsiveOption> responsiveOptions;
+    private List<ResponsiveOption> responsiveOptions;
 
     @Inject
     private ProductService service;
@@ -136,9 +136,9 @@ public class CarouselView implements Serializable {
     public void init() {
         products = service.getProducts(9);
         responsiveOptions = new ArrayList<>();
-        responsiveOptions.add(new CarouselResponsiveOption("1024px", 3, 3));
-        responsiveOptions.add(new CarouselResponsiveOption("768px", 2, 2));
-        responsiveOptions.add(new CarouselResponsiveOption("560px", 1, 1));
+        responsiveOptions.add(new ResponsiveOption("1024px", 3, 3));
+        responsiveOptions.add(new ResponsiveOption("768px", 2, 2));
+        responsiveOptions.add(new ResponsiveOption("560px", 1, 1));
     }
 
     //getter setter
