@@ -7,7 +7,8 @@ Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manuall
 
 ## Prebuilt WAR
 
-For a full list of the available downloads, please visit the [download page](http://www.primefaces.org/downloads). Scroll down to showcase for WAR file link.
+The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase) or
+via the [PrimeFaces download page](http://www.primefaces.org/downloads) (scroll down to showcase for WAR file link)
 
 ## Build from sources (for a EE Application Server)
 
@@ -44,7 +45,7 @@ mvn clean                                                         -- clean temp 
 mvn package -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war file (under target directory)
 ```
 
-## Run from local sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
+## Run from sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
 
 ##### Mojarra 2.3.x
 
