@@ -60,7 +60,7 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>11.0.0-RC1/version>
+      <version>11.0.0-RC1</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
