@@ -18,7 +18,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * MenuButton: added `buttonStyle` and `buttonStyleClass` attributes.
   * DataTable
     * New built-in `JpaLazyDataModel`, which provides basic functionality for JPA users and lazy loading
-    * FilterMatchMode for NOT criteria
+    * New negation filter MatchModes
   * DataExporter
     * TreeTable now supports exporting
     * Excel export now supports "currency" cells formatted properly in Excel
