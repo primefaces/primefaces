@@ -33,7 +33,7 @@
         <lombok.version>1.18.20</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.52</tomcat.version>
+        <tomcat.version>10.0.11</tomcat.version>
         <resteasy.version>4.7.2.Final</resteasy.version>
         <owb.version>2.0.23</owb.version>
         <jetty.version>9.4.43.v20210629</jetty.version>
