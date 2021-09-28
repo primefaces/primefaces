@@ -1,5 +1,7 @@
-PrimeFaces Integration Tests
-----------------------------
+[![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-integration-tests/)
+[![Javadocs](http://javadoc.io/badge/org.primefaces/primefaces-selenium.svg)](http://javadoc.io/doc/org.primefaces/primefaces-integration-tests)
+
+# primefaces-integration-tests
 
 To provide an integration and regression test suite for PrimeFaces.
 
