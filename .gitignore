@@ -7,9 +7,11 @@ nbactions.xml
 *.iml
 *~
 .classpath
+.
 .project
 .vscode/
 .checkstyle
+.factorypath
 nb-configuration.xml
 faces-config.NavData
 dependency-reduced-pom.xml
