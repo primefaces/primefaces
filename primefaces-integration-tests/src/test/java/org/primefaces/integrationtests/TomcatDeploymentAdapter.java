@@ -34,7 +34,8 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
-import org.apache.commons.io.FileUtils;
+import org.apache.catalina.Context;
+import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
 
@@ -54,16 +55,11 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         
         tomcat.getHost().setAppBase(".");
 
-        // create docbase directory without WEB-INF/lib as embedded Tomcat also uses the current CP
-        // and therefore JARs are scanned/used duplicate times
-        /*
-        File docbase = new File("target/docbase/");
-        FileUtils.deleteDirectory(docbase);
-        FileUtils.copyDirectory(new File("target/primefaces-integration-tests/"), docbase);
-        FileUtils.deleteDirectory(new File("target/docbase/WEB-INF/lib"));
-        tomcat.addWebapp("", docbase.getAbsolutePath());
-        */
-        tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
+        Context context = tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
+        StandardJarScanner jarScanner = new StandardJarScanner();
+        jarScanner.setScanClassPath(false);
+        jarScanner.setScanBootstrapClassPath(false);
+        context.setJarScanner(jarScanner);
 
         tomcat.start();
 
