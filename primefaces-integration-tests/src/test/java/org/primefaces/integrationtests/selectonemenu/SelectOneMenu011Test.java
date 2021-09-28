@@ -38,6 +38,9 @@ public class SelectOneMenu011Test extends AbstractPrimePageTest {
     @Order(1)
     @DisplayName("SelectOneMenu: test quote escaping")
     public void testBasic(Page page) {
+        Assertions.assertTrue(page.selectOneMenu.getLabel(1).contains("\"")
+                || page.selectOneMenu.getLabel(1).contains("&quot;"));
+
         page.selectOneMenu.select(1);
         Assertions.assertTrue(page.selectOneMenu.getSelectedLabel().contains("\"")
                 || page.selectOneMenu.getSelectedLabel().contains("&quot;"));
