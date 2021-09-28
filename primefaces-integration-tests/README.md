@@ -35,10 +35,10 @@ Keep in mind there are - as of january 2021 - following limitations for Safari w
 
 #### Misc
 
-  - `headless`
-  - `client-state-saving`
-  - `csp`
+  - `headless` - headless browser
+  - `client-state-saving` - ClientSide instead of ServerSide JSF state saving
+  - `csp` - enabled Content Security Policy 
   - `uploader-native` - FileUpload configured to use the native servlet implementation
   - `uploader-commons` - FileUpload configured to use the Apache commons-fileupload
-  - `theme-nova`
-  - `theme-saga`
+  - `theme-nova` - Nova theme
+  - `theme-saga` - Saga theme
