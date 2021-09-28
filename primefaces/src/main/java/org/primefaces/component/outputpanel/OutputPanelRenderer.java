@@ -25,11 +25,9 @@ package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -121,7 +119,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         if (!panel.isDeferred()) {
             return false;
         }
-        if (panel.getValueExpression(OutputPanel.PropertyKeys.loaded.name()) != null) {
+        if (panel.isLoaded() != null) {
             return !panel.isLoaded();
         }
         return !context.getPartialViewContext().isAjaxRequest();

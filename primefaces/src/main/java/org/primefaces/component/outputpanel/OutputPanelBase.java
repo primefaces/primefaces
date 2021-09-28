@@ -25,7 +25,6 @@ package org.primefaces.component.outputpanel;
 
 import javax.faces.component.UIPanel;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
@@ -94,11 +93,11 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, ClientB
         getStateHelper().put(PropertyKeys.layout, layout);
     }
 
-    public boolean isLoaded() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.loaded, false);
+    public Boolean isLoaded() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.loaded, null);
     }
 
-    public void setLoaded(boolean loaded) {
+    public void setLoaded(Boolean loaded) {
         getStateHelper().put(PropertyKeys.loaded, loaded);
     }
 }
