@@ -56,12 +56,14 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
         // create docbase directory without WEB-INF/lib as embedded Tomcat also uses the current CP
         // and therefore JARs are scanned/used duplicate times
+        /*
         File docbase = new File("target/docbase/");
         FileUtils.deleteDirectory(docbase);
         FileUtils.copyDirectory(new File("target/primefaces-integration-tests/"), docbase);
         FileUtils.deleteDirectory(new File("target/docbase/WEB-INF/lib"));
-
         tomcat.addWebapp("", docbase.getAbsolutePath());
+        */
+        tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
 
         tomcat.start();
 

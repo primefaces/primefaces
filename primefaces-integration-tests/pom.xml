@@ -430,9 +430,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <jsfListener>org.apache.myfaces.webapp.StartupServletContextListener</jsfListener>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
@@ -450,9 +447,6 @@
         </profile>
         <profile>
             <id>myfaces-next-2.3.x</id>
-            <properties>
-                <jsfListener>org.apache.myfaces.webapp.StartupServletContextListener</jsfListener>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
@@ -470,9 +464,6 @@
         </profile>
         <profile>
             <id>mojarra-2.3.x</id>
-            <properties>
-                <jsfListener>com.sun.faces.config.ConfigureListener</jsfListener>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>
