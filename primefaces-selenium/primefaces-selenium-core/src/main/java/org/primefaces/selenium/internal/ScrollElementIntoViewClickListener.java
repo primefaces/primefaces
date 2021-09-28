@@ -28,7 +28,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.primefaces.selenium.PrimeSelenium;
 
-public class ScrollElementIntoViewOnTopClickListener  extends AbstractWebDriverEventListener {
+public class ScrollElementIntoViewClickListener extends AbstractWebDriverEventListener {
+
+    private String option;
+
+    public ScrollElementIntoViewClickListener() {
+
+    }
+
+    public ScrollElementIntoViewClickListener(String option) {
+        this.option = option;
+    }
 
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
@@ -42,6 +52,6 @@ public class ScrollElementIntoViewOnTopClickListener  extends AbstractWebDriverE
         // See:
         // https://developer.mozilla.org/de/docs/Web/API/Element/scrollIntoView
         // https://www.w3.org/TR/webdriver/#dfn-scrolls-into-view
-        PrimeSelenium.executeScript("arguments[0].scrollIntoView(true)", element);
+        PrimeSelenium.executeScript("arguments[0].scrollIntoView(" + option + ")", element);
     }
 }

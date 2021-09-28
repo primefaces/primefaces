@@ -22,19 +22,19 @@ A sample `DeploymentAdapter` for Tomcat can be found here: [Tomcat Adapter](http
 Properties:
 |       property name      |   type  | default |                 description                 |
 |:------------------------:|:-------:|---------|:-------------------------------------------:|
-|   deployment.baseUrl    | String  |         | the base URL                                |
-|   deployment.adapter    | org.primefaces.extensions.selenium.spi.DeploymentAdapter |         | Adapter implementation to start/stop a container |
-|    webdriver.adapter     | org.primefaces.extensions.selenium.spi.WebDriverAdapter  |        | Adapter implementation to create a WebDriver  |
-|    webdriver.browser     | String  |        |       firefox / chrome / safari              |
-|   webdriver.headless     | boolean | false  |       if browser should be openend headless  |
-|   webdriver.version      | String  | newest  |      the webdriver version which should be used |
+|   deployment.baseUrl     | String  |         | the base URL                                |
+|   deployment.adapter     | org.primefaces.extensions.selenium.spi.DeploymentAdapter |      | Adapter implementation to start/stop a container |
+|    webdriver.adapter     | org.primefaces.extensions.selenium.spi.WebDriverAdapter  |      | Adapter implementation to create a WebDriver  |
+|    webdriver.browser     | String  |         |       firefox / chrome / safari             |
+|   webdriver.headless     | boolean | false   |    if browser should be openend headless    |
+|   webdriver.version      | String  | newest  |  the webdriver version which should be used |
 |       timeout.gui        |   int   | 2       |       GUI timeout for waits in seconds      |
 |       timeout.ajax       |   int   | 10      |      AJAX timeout for guards in seconds     |
 |       timeout.http       |   int   | 10      |      HTTP timeout for guards in seconds     |
 |   timeout.documentLoad   |   int   | 15      |       Document load timeout in seconds      |
-|   onloadScripts.adapter   | org.primefaces.extensions.selenium.spi.OnloadScriptsAdapter | | Adapter implementation to provide custom onload scripts  |
+|   onloadScripts.adapter  | org.primefaces.extensions.selenium.spi.OnloadScriptsAdapter | | Adapter implementation to provide custom onload scripts  |
 |    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
-| scrollElementIntoViewOnTop | boolean | false | Scroll the element to be clicked into view on top. This is useful for sticky footers |
+|  scrollElementIntoView   | String  |         | Scroll the element to be clicked into view via the configured #scrollIntoView option. Valid options are a boolean or object |
 
 ### Status
 

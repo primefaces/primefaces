@@ -45,7 +45,7 @@ public class ConfigProvider {
     private int timeoutHttp = 10;
     private int timeoutDocumentLoad = 15;
 
-    private boolean scrollElementIntoViewOnTop = false;
+    private String scrollElementIntoView;
 
     private boolean disableAnimations = true;
 
@@ -93,9 +93,9 @@ public class ConfigProvider {
                     this.disableAnimations = Boolean.parseBoolean(disableAnimations);
                 }
 
-                String scrollElementIntoViewOnTop = properties.getProperty("scrollElementIntoViewOnTop");
-                if (scrollElementIntoViewOnTop != null && !scrollElementIntoViewOnTop.trim().isEmpty()) {
-                    this.scrollElementIntoViewOnTop = Boolean.parseBoolean(scrollElementIntoViewOnTop);
+                String scrollElementIntoView = properties.getProperty("scrollElementIntoView");
+                if (scrollElementIntoView != null && !scrollElementIntoView.trim().isEmpty()) {
+                    this.scrollElementIntoView = scrollElementIntoView;
                 }
 
                 String deploymentBaseUrl = properties.getProperty("deployment.baseUrl");
@@ -186,8 +186,8 @@ public class ConfigProvider {
         return timeoutDocumentLoad;
     }
 
-    public boolean isScrollElementIntoViewOnTop() {
-        return scrollElementIntoViewOnTop;
+    public String getScrollElementIntoView() {
+        return scrollElementIntoView;
     }
 
     public boolean isDisableAnimations() {
