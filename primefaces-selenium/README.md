@@ -13,6 +13,21 @@ You can also manage it by yourself via `webdriver.adapter`.
 
 This is the successor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
 
+## Dependencies
+
+```xml
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces-selenium-core</artifactId>
+    <version>11.0.0-RC1</version>
+</dependency>
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces-selenium-components</artifactId>
+    <version>11.0.0-RC1</version>
+</dependency>
+```
+
 ## Configuration
 
 PrimeFaces-Selenium can be configuredy by providing a `/primefaces-selenium/config.properties`.
