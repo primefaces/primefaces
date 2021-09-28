@@ -45,7 +45,7 @@ public final class MapBuilder<K, V> {
     }
 
     public static <K, V> MapBuilder<K, V> builder() {
-        return new MapBuilder<>(new HashMap<K, V>());
+        return new MapBuilder<>(new HashMap<>());
     }
 
     public MapBuilder<K, V> put(K key, V value) {
