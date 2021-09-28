@@ -8,7 +8,7 @@ It also supports JUnit5 parallel test execution to speed up tests.
 PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`),
 or use a remote adress (`deployment.baseUrl`).
 
-It also manage and download the Selenium WebDriver. Currently supported: `firefox`, `chrome and `safari`
+It also manage and download the Selenium WebDriver. Currently supported: `firefox`, `chrome` and `safari`  
 You can also manage it by yourself via `webdriver.adapter`.
 
 ## Dependencies
