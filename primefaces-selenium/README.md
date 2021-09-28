@@ -48,7 +48,7 @@ Properties:
 |    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
 |  scrollElementIntoView   | String  |         | Scroll the element to be clicked into view via the configured #scrollIntoView option. Valid options are a boolean or object |
 
-### Status
+## Status
 
 Currently, only the following components are implemented (partially):
 
@@ -102,7 +102,7 @@ Currently, only the following components are implemented (partially):
 - TreeTable
 - TriStateCheckbox
 
-### Usage
+## Usage
 
 Example view:
 
@@ -184,6 +184,6 @@ Creating component without annotations:
 InputText input = PrimeSelenium.createFragment(InputText.class, By.id("test"));
 ```
 
-### Build & Run
+## Build & Run
 
 - Build by source `mvn clean install`
