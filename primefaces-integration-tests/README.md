@@ -3,18 +3,7 @@
 
 # primefaces-integration-tests
 
-To provide an integration and regression test suite for PrimeFaces.
-
-## Prerequisites
-
-This project uses [selenium webdriver](https://www.selenium.dev/) for web browser automation. Currently, a native installation
-of [Firefox](https://firefox.com/) and/or [Chrome](https://www.google.com/chrome/) and/or Safari is required. Additionally, the selenium webdriver corresponding
-to the browser(s) must also be installed. These can be downloaded from the following locations:
-
-- [firefox (gecko) webdriver](https://github.com/mozilla/geckodriver)
-- [chrome webdriver](https://chromedriver.chromium.org/)
-
-Safari already comes with webdriver OOTB - look for more information into https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
+To provide an integration and regression test suite for PrimeFaces, based on our own [PrimeFaces Selenium](https://github.com/primefaces/primefaces/tree/master/primefaces-selenium)
 
 ## Build & Run
 
