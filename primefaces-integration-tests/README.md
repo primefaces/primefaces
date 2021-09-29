@@ -11,8 +11,8 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
 
 - Build the project: `mvn clean package`
 - When running an integration test the profile `integration-tests` has to be activated and a JSF implementation has to be selected.
-- Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,mojarra-2.3.x`
-- Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3.x -Dit.test=org.primefaces.integrationtests.datepicker.DatePicker001Test`
+- Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,mojarra-2.3`
+- Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3 -Dit.test=org.primefaces.integrationtests.datepicker.DatePicker001Test`
 
 ## Profiles
 
@@ -29,15 +29,15 @@ Keep in mind there are - as of january 2021 - following limitations for Safari w
 
 #### JSF Implementations
 
-  - `mojarra-2.3.x` - Mojarra 2.3 JSF implementation
-  - `myfaces-2.3.x` - MyFaces 2.3 JSF implementation
-  - `myfaces-next-2.3.x` - MyFaces 2.3 next JSF implementation
+  - `mojarra-2.3` - Mojarra 2.3 JSF implementation
+  - `myfaces-2.3` - MyFaces 2.3 JSF implementation
+  - `myfaces-next-2.3` - MyFaces 2.3 next JSF implementation
 
 #### Misc
 
   - `headless` - headless browser
   - `client-state-saving` - ClientSide instead of ServerSide JSF state saving
-  - `csp` - enabled Content Security Policy 
+  - `csp` - enabled Content Security Policy
   - `uploader-native` - FileUpload configured to use the native servlet implementation
   - `uploader-commons` - FileUpload configured to use the Apache commons-fileupload
   - `theme-nova` - Nova theme

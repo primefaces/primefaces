@@ -420,7 +420,7 @@
             </properties>
         </profile>
         <profile>
-            <id>myfaces-2.3.x</id>
+            <id>myfaces-2.3</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -440,7 +440,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>myfaces-next-2.3.x</id>
+            <id>myfaces-next-2.3</id>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
@@ -457,7 +457,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>mojarra-2.3.x</id>
+            <id>mojarra-2.3</id>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>

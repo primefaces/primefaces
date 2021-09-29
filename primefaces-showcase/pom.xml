@@ -290,7 +290,7 @@
         </profile>
 
         <profile>
-            <id>mojarra-2.3.x</id>
+            <id>mojarra-2.3</id>
             <properties>
                 <jsfVersion>Eclipse Mojarra-${mojarra.version}</jsfVersion>
             </properties>
@@ -308,7 +308,7 @@
             </build>
         </profile>
         <profile>
-            <id>myfaces-2.3.x</id>
+            <id>myfaces-2.3</id>
             <properties>
                 <jsfVersion>Apache MyFaces-${myfaces.version}</jsfVersion>
             </properties>
@@ -331,7 +331,7 @@
             </build>
         </profile>
         <profile>
-            <id>myfaces-next-2.3.x</id>
+            <id>myfaces-next-2.3</id>
             <properties>
                 <jsfVersion>Apache MyFaces Next-${myfaces-next.version}</jsfVersion>
             </properties>
