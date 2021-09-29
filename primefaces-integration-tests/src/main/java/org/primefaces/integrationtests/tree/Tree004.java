@@ -63,4 +63,8 @@ public class Tree004 implements Serializable {
         }
     }
 
+    public void filter(javax.faces.event.AjaxBehaviorEvent event) {
+        TestUtils.addMessage("filter-event");
+    }
+
 }
