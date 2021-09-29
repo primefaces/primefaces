@@ -291,9 +291,6 @@
 
         <profile>
             <id>mojarra-2.3</id>
-            <properties>
-                <jsfVersion>Eclipse Mojarra-${mojarra.version}</jsfVersion>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>
@@ -309,9 +306,6 @@
         </profile>
         <profile>
             <id>myfaces-2.3</id>
-            <properties>
-                <jsfVersion>Apache MyFaces-${myfaces.version}</jsfVersion>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
@@ -332,9 +326,6 @@
         </profile>
         <profile>
             <id>myfaces-next-2.3</id>
-            <properties>
-                <jsfVersion>Apache MyFaces Next-${myfaces-next.version}</jsfVersion>
-            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
