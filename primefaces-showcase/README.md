@@ -18,7 +18,7 @@ cd primefaces/primefaces
 mvn clean install            -- first build PrimeFaces
 cd ../primefaces-showcase
 mvn clean                    -- clean temp files from target folder
-mvn package -Pee             -- create war file (under target directory)
+mvn package                  -- create war file (under target directory)
 ```
 
 ## Build from sources (for a Servlet Container like Tomcat / Jetty)
