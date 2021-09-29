@@ -10,7 +10,7 @@ Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manuall
 The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase) or
 via the [PrimeFaces download page](http://www.primefaces.org/downloads) (scroll down to showcase for WAR file link)
 
-## Build from sources (for a EE Application Server)
+## Build from sources
 
 ```
 git clone https://github.com/primefaces/primefaces.git
@@ -18,32 +18,27 @@ cd primefaces/primefaces
 mvn clean install            -- first build PrimeFaces
 cd ../primefaces-showcase
 mvn clean                    -- clean temp files from target folder
+```
+
+#### for a EE Application Server
+
+```
 mvn package                  -- create war file (under target directory)
 ```
 
-## Build from sources (for a Servlet Container like Tomcat / Jetty)
-
-```
-git clone https://github.com/primefaces/primefaces.git
-cd primefaces/primefaces
-mvn clean install                                         -- first build PrimeFaces
-cd ../primefaces-showcase
-mvn clean                                                 -- clean temp files from target folder
-``
-
-##### Mojarra 2.3.x
+#### for a Servlet Container with Mojarra 2.3.x
 
 ```
 mvn package -Pnon-ee,mojarra-2.3.x                        -- create war file (under target directory)
 ```
 
-##### MyFaces 2.3.x
+#### for a Servlet Container with MyFaces 2.3.x
 
 ```
 mvn package -Pnon-ee,myfaces-2.3.x                        -- create war file (under target directory)
 ```
 
-##### MyFaces 2.3.x-next
+#### for a Servlet Container with MyFaces 2.3.x-next
 
 ```
 mvn package -Pnon-ee,myfaces-next-2.3.x                   -- create war file (under target directory)
