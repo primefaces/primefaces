@@ -15,14 +15,15 @@ stream the binary data. FileDownload presents an easier way to do the same.
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | value | null | StreamedContent | A streamed content instance.
-| contentDisposition | attachment | String | Specifies display mode on non-ajax downloads.
+| contentDisposition | attachment | String | Specifies display mode on non-AJAX downloads.
 | monitorKey | null | String | Optional key to support monitoring multiple filedownloads on same page.
 
 ## Getting started with FileDownload
 A user command action is required to trigger the filedownload process.
+
 FileDownload can be attached to any command component like a `commandButton` or `commandLink`.
-The value of the FileDownload must be an _org.primefaces.model.StreamedContent_ instance.
-We suggest using the built-in _DefaultStreamedContent_ implementation.
+The value of the FileDownload must be an `org.primefaces.model.StreamedContent` instance.
+We suggest using the built-in `DefaultStreamedContent` implementation.
 First parameter of the constructor is the binary stream, second is the mimeType and the third parameter is the name of the file.
 
 ```java
@@ -62,18 +63,18 @@ Similarly a more graphical presentation would be to use a `commandlink` with an 
 ## AJAX downloading
 Before PrimeFaces 10, you had to disable AJAX on commandButton and commandLink. As of version 10 that's no longer needed.
 
-The AJAX download uses the same principle you may know from the _p:graphicImage_ component. Basically we generate a URI
-based on the _DefaultStreamedContent_ which is handled by JavaScript triggering a download.
+The AJAX download uses the same principle you may know from the `p:graphicImage` component. Basically we generate a URI
+based on the `DefaultStreamedContent` which is handled by JavaScript triggering a download.
 Please see our core documentation about it [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
 
 ## ContentDisposition
-On regular (non-AJAX) downloads, by default, content is displayed as an _attachment_ with a download dialog box,
-another alternative is the _inline_ mode, in this case browser will try to open the file internally without a prompt.
+On regular (non-AJAX) downloads, by default, content is displayed as an `attachment` with a download dialog box,
+another alternative is the `inline` mode, in this case browser will try to open the file internally without a prompt.
 Note that content disposition is not part of the http standard although it is widely implemented.
 
 ## Monitor Status
 When fileDownload is used without AJAX, ajaxStatus cannot apply. Still PrimeFaces provides a feature
-to monitor file downloads via client side _monitorDownload(startFunction, endFunction)_ method.
+to monitor file downloads via client side `monitorDownload(startFunction, endFunction)` method.
 Example below displays a modal dialog when dowload begins and hides it on complete.
 
 ```js
