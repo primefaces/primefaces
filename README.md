@@ -149,7 +149,8 @@ Visit the [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Cont
 - Commit and push the changes to GitHub
 - In GitHub create a new Release titled `11.0.0` to tag this release
 - Run `mvn clean deploy -Pminify,release` to push to Maven Central
-- Rename Milestone in GitHub Issues and create a new Milestone
+- Rename Milestone in GitHub Issues and close it
+- Create a new Milestone
 
 
 ### License
