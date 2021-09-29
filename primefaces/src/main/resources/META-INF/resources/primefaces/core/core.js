@@ -1147,6 +1147,16 @@
         toISOString: function(date) {
             return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
         },
+        
+        /**
+         * Converts a date into an ISO-8601 date using the browser timezone offset.
+         *
+         * @param {Date} date the date to convert
+         * @return {string} ISO-8601 version of the date
+         */
+        toOffsetISOString: function(date) {
+            return new Date(date.getTime()).toISOString();
+        },
 
         /**
          * Logs the current PrimeFaces and jQuery version to console.
