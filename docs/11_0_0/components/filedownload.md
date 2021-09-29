@@ -12,14 +12,14 @@ stream the binary data. FileDownload presents an easier way to do the same.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 | value | null | StreamedContent | A streamed content instance.
 | contentDisposition | attachment | String | Specifies display mode on non-ajax downloads.
 | monitorKey | null | String | Optional key to support monitoring multiple filedownloads on same page.
 
 ## Getting started with FileDownload
-A user command action is required to trigger the filedownload process.  
+A user command action is required to trigger the filedownload process.
 FileDownload can be attached to any command component like a `commandButton` or `commandLink`.
 The value of the FileDownload must be an _org.primefaces.model.StreamedContent_ instance.
 We suggest using the built-in _DefaultStreamedContent_ implementation.
@@ -72,7 +72,7 @@ another alternative is the _inline_ mode, in this case browser will try to open 
 Note that content disposition is not part of the http standard although it is widely implemented.
 
 ## Monitor Status
-As fileDownload process is non-AJAX, ajaxStatus cannot apply. Still PrimeFaces provides a feature
+When fileDownload is used without AJAX, ajaxStatus cannot apply. Still PrimeFaces provides a feature
 to monitor file downloads via client side _monitorDownload(startFunction, endFunction)_ method.
 Example below displays a modal dialog when dowload begins and hides it on complete.
 
