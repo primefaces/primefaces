@@ -35,7 +35,6 @@ import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
-import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -335,23 +334,4 @@ public class DatePicker extends DatePickerBase {
         return disabledDates;
     }
 
-    protected void loadInitialLazyMetadata(FacesContext context) {
-        DateMetadataModel model = getModel();
-        if (model instanceof LazyDateMetadataModel) {
-            LocalDate startDate = getInitalStartDate(context);
-            LocalDate endDate = startDate.plusMonths(getNumberOfMonths()).minusDays(1);
-
-            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
-            lazyModel.clear();
-            lazyModel.loadDateMetadata(startDate, endDate);
-        }
-    }
-
-    protected LocalDate getInitalStartDate(FacesContext context) {
-        LocalDate date = CalendarUtils.getObjectAsLocalDate(context, this, getValue());
-        if (date == null) {
-            date = LocalDate.from(CalendarUtils.now(this));
-        }
-        return date.withDayOfMonth(1);
-    }
 }
