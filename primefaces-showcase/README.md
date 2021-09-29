@@ -23,26 +23,30 @@ mvn package                  -- create war file (under target directory)
 
 ## Build from sources (for a Servlet Container like Tomcat / Jetty)
 
-##### Mojarra 2.3.x
-
 ```
 git clone https://github.com/primefaces/primefaces.git
 cd primefaces/primefaces
-mvn clean install                                                 -- first build PrimeFaces
+mvn clean install                                         -- first build PrimeFaces
 cd ../primefaces-showcase
-mvn clean                                                         -- clean temp files from target folder
-mvn package -Pjsf-mojarra,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war file (under target directory)
+mvn clean                                                 -- clean temp files from target folder
+``
+
+##### Mojarra 2.3.x
+
+```
+mvn package -Pnon-ee,mojarra-2.3.x                        -- create war file (under target directory)
 ```
 
 ##### MyFaces 2.3.x
 
 ```
-git clone https://github.com/primefaces/primefaces.git
-cd primefaces/primefaces
-mvn clean install                                                 -- first build PrimeFaces
-cd ../primefaces-showcase
-mvn clean                                                         -- clean temp files from target folder
-mvn package -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war file (under target directory)
+mvn package -Pnon-ee,myfaces-2.3.x                        -- create war file (under target directory)
+```
+
+##### MyFaces 2.3.x-next
+
+```
+mvn package -Pnon-ee,myfaces-next-2.3.x                   -- create war file (under target directory)
 ```
 
 ## Run from sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
@@ -50,11 +54,18 @@ mvn package -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war 
 ##### Mojarra 2.3.x
 
 ```
-mvn clean jetty:run -Pjsf-mojarra,cdi-owb,bv-hibernate,jaxrs-resteasy
+mvn clean jetty:run -Pnon-ee,mojarra-2.3.x
 ```
 
 ##### MyFaces 2.3.x
 
 ```
-mvn clean jetty:run -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy
+mvn clean jetty:run -Pnon-ee,myfaces-2.3.x
 ```
+
+##### MyFaces 2.3.x-next
+
+```
+mvn clean jetty:run -Pnon-ee,myfaces-next-2.3.x
+```
+
