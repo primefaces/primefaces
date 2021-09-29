@@ -17,34 +17,40 @@ git clone https://github.com/primefaces/primefaces.git
 cd primefaces/primefaces
 mvn clean install            -- first build PrimeFaces
 cd ../primefaces-showcase
-mvn clean                    -- clean temp files from target folder
 ```
 
 #### for a EE Application Server
 
 ```
-mvn package                               -- create war file (under target directory)
+mvn clean package                               -- create war file (under target directory)
 ```
 
 #### for a Servlet Container with Mojarra 2.3.x
 
 ```
-mvn package -Pnon-ee,mojarra-2.3.x        -- create war file (under target directory)
+mvn clean package -Pnon-ee,mojarra-2.3.x        -- create war file (under target directory)
 ```
 
 #### for a Servlet Container with MyFaces 2.3.x
 
 ```
-mvn package -Pnon-ee,myfaces-2.3.x        -- create war file (under target directory)
+mvn clean package -Pnon-ee,myfaces-2.3.x        -- create war file (under target directory)
 ```
 
 #### for a Servlet Container with MyFaces 2.3.x-next
 
 ```
-mvn package -Pnon-ee,myfaces-next-2.3.x   -- create war file (under target directory)
+mvn clean package -Pnon-ee,myfaces-next-2.3.x   -- create war file (under target directory)
 ```
 
 ## Run from sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
+
+```
+git clone https://github.com/primefaces/primefaces.git
+cd primefaces/primefaces
+mvn clean install            -- first build PrimeFaces
+cd ../primefaces-showcase
+```
 
 ##### Mojarra 2.3.x
 
