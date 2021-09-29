@@ -25,22 +25,22 @@ cd ../primefaces-showcase
 mvn clean package                               -- create war file (under target directory)
 ```
 
-#### for a Servlet Container with Mojarra 2.3.x
+#### for a Servlet Container with Mojarra 2.3
 
 ```
-mvn clean package -Pnon-ee,mojarra-2.3.x        -- create war file (under target directory)
+mvn clean package -Pnon-ee,mojarra-2.3        -- create war file (under target directory)
 ```
 
-#### for a Servlet Container with MyFaces 2.3.x
+#### for a Servlet Container with MyFaces 2.3
 
 ```
-mvn clean package -Pnon-ee,myfaces-2.3.x        -- create war file (under target directory)
+mvn clean package -Pnon-ee,myfaces-2.3        -- create war file (under target directory)
 ```
 
-#### for a Servlet Container with MyFaces 2.3.x-next
+#### for a Servlet Container with MyFaces 2.3-next
 
 ```
-mvn clean package -Pnon-ee,myfaces-next-2.3.x   -- create war file (under target directory)
+mvn clean package -Pnon-ee,myfaces-next-2.3   -- create war file (under target directory)
 ```
 
 ## Run from sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
@@ -52,21 +52,21 @@ mvn clean install            -- first build PrimeFaces
 cd ../primefaces-showcase
 ```
 
-##### Mojarra 2.3.x
+##### Mojarra 2.3
 
 ```
-mvn clean jetty:run -Pnon-ee,mojarra-2.3.x
+mvn clean jetty:run -Pnon-ee,mojarra-2.3
 ```
 
-##### MyFaces 2.3.x
+##### MyFaces 2.3
 
 ```
-mvn clean jetty:run -Pnon-ee,myfaces-2.3.x
+mvn clean jetty:run -Pnon-ee,myfaces-2.3
 ```
 
-##### MyFaces 2.3.x-next
+##### MyFaces 2.3-next
 
 ```
-mvn clean jetty:run -Pnon-ee,myfaces-next-2.3.x
+mvn clean jetty:run -Pnon-ee,myfaces-next-2.3
 ```
 
