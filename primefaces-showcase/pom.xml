@@ -21,6 +21,7 @@
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
         <mojarra.version>2.3.16</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
+        <myfaces-next.version>2.3-next-M6</myfaces-next.version>
         <resteasy.version>4.7.2.Final</resteasy.version>
         <jetty.version>9.4.43.v20210629</jetty.version>
     </properties>
@@ -289,9 +290,9 @@
         </profile>
 
         <profile>
-            <id>jsf-mojarra</id>
+            <id>mojarra-2.3.x</id>
             <properties>
-                <jsfVersion>Mojarra-${mojarra.version}</jsfVersion>
+                <jsfVersion>Eclipse Mojarra-${mojarra.version}</jsfVersion>
             </properties>
             <dependencies>
                 <dependency>
@@ -307,7 +308,7 @@
             </build>
         </profile>
         <profile>
-            <id>jsf-myfaces</id>
+            <id>myfaces-2.3.x</id>
             <properties>
                 <jsfVersion>Apache MyFaces-${myfaces.version}</jsfVersion>
             </properties>
@@ -329,10 +330,84 @@
                 </filters>
             </build>
         </profile>
+        <profile>
+            <id>myfaces-next-2.3.x</id>
+            <properties>
+                <jsfVersion>Apache MyFaces Next-${myfaces-next.version}</jsfVersion>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-api</artifactId>
+                    <version>${myfaces-next.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+                    <version>${myfaces-next.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <filters>
+                    <filter>${basedir}/src/main/resources/filters/myfaces.properties</filter>
+                </filters>
+            </build>
+        </profile>
 
         <profile>
-            <id>cdi-owb</id>
+            <id>non-ee</id>
             <dependencies>
+                <dependency>
+                    <groupId>org.hibernate.validator</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                    <version>${hibernate-validator.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-core</artifactId>
+                    <version>${resteasy.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.spec.javax.xml.bind</groupId>
+                            <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>jakarta.activation</groupId>
+                            <artifactId>jakarta.activation-api</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-servlet-initializer</artifactId>
+                    <version>${resteasy.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-cdi</artifactId>
+                    <version>${resteasy.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.weld</groupId>
+                            <artifactId>weld-api</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jackson2-provider</artifactId>
+                    <version>${resteasy.version}</version>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>jakarta.activation</groupId>
+                            <artifactId>jakarta.activation-api</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-atinject_1.0_spec</artifactId>
@@ -362,53 +437,9 @@
             </dependencies>
             <build>
                 <filters>
-                    <filter>${basedir}/src/main/resources/filters/owb.properties</filter>
+                    <filter>${basedir}/src/main/resources/filters/non-ee.properties</filter>
                 </filters>
             </build>
-        </profile>
-
-        <profile>
-            <id>bv-hibernate</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.hibernate.validator</groupId>
-                    <artifactId>hibernate-validator</artifactId>
-                    <version>${hibernate-validator.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <profile>
-            <id>jaxrs-resteasy</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.jboss.resteasy</groupId>
-                    <artifactId>resteasy-servlet-initializer</artifactId>
-                    <version>${resteasy.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.resteasy</groupId>
-                    <artifactId>resteasy-cdi</artifactId>
-                    <version>${resteasy.version}</version>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.jboss.weld</groupId>
-                            <artifactId>weld-api</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-                <dependency>
-                    <groupId>org.jboss.resteasy</groupId>
-                    <artifactId>resteasy-jackson2-provider</artifactId>
-                    <version>${resteasy.version}</version>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>jakarta.activation</groupId>
-                            <artifactId>jakarta.activation-api</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-            </dependencies>
         </profile>
     </profiles>
 
