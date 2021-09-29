@@ -278,6 +278,9 @@
     <profiles>
         <profile>
             <id>ee</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <filters>
                     <filter>${basedir}/src/main/resources/filters/ee.properties</filter>
@@ -287,9 +290,6 @@
 
         <profile>
             <id>jsf-mojarra</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <jsfVersion>Mojarra-${mojarra.version}</jsfVersion>
             </properties>
