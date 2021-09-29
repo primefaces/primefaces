@@ -153,11 +153,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
-        ComponentUtils.sendKeys(filter, "Pro");
-        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.messages));
-        page.messages.findElement(By.className("ui-messages-close")).click();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:1_1"))));
+        PrimeSelenium.guardAjax(filter).sendKeys("Pro");
 
         // Assert
         children = tree.getChildren();
@@ -176,11 +172,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act
         filter.clear();
-        ComponentUtils.sendKeys(filter, Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
-        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.messages));
-        page.messages.findElement(By.className("ui-messages-close")).click();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:0"))));
+        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
 
         // Assert
         children = tree.getChildren();
@@ -211,11 +203,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
-        ComponentUtils.sendKeys(filter, "Pro");
-        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.messages));
-        page.messages.findElement(By.className("ui-messages-close")).click();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:1_1"))));
+        PrimeSelenium.guardAjax(filter).sendKeys("Pro");
         children = tree.getChildren();
         tree.getChildren().get(1).getChildren().get(1).select();
 
@@ -227,11 +215,7 @@ public class Tree004Test extends AbstractTreeTest {
 
         // Act Pt. 2
         filter.clear();
-        ComponentUtils.sendKeys(filter, Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
-        PrimeSelenium.wait(300 + 100); // 300ms are hardcoded as filterDelay in tree.vertical.js
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.messages));
-        page.messages.findElement(By.className("ui-messages-close")).click();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(tree.findElement(By.id("form:tree:0"))));
+        PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
 
         // Assert Pt. 2
         page.buttonShowSelectedNodes.click();
