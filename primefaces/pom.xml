@@ -957,6 +957,8 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
                     <minimizeJar>true</minimizeJar>
+                    <createSourcesJar>true</createSourcesJar>
+                    <shadeSourcesContent>true</shadeSourcesContent>
                     <relocations>
                         <relocation>
                             <pattern>org.json</pattern>
