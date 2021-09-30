@@ -31,6 +31,7 @@ import java.time.ZoneId;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
@@ -265,6 +266,42 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public long getTimezoneOffset() {
         return (Long) PrimeSelenium.executeScript("return new Date().getTimezoneOffset();");
+    }
+
+    /**
+     * Open the month select dropdown.
+     */
+    public void toggleMonthDropdown() {
+        WebElement monthDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-month"));
+        monthDropDown.click();
+    }
+
+    /**
+     * Select a month from the drodown.
+     *
+     * @param month the month to select
+     */
+    public void selectMonthDropdown(int month) {
+        Select monthDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-month")));
+        monthDropDown.selectByValue(Integer.toString(month));
+    }
+
+    /**
+     * Open the year select dropdown.
+     */
+    public void toggleYearDropdown() {
+        WebElement yearDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-year"));
+        yearDropDown.click();
+    }
+
+    /**
+     * Select a year from the drodown.
+     *
+     * @param year the year to select
+     */
+    public void selectYearDropdown(int year) {
+        Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
+        yearDropDown.selectByValue(Integer.toString(year));
     }
 
 }

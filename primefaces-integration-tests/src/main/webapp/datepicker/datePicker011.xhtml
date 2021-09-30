@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true" redisplay="false">
+                <p:autoUpdate/>
+            </p:messages>
+            <div>
+                <h:outputText id="outside" value="Click me"/>
+                <p:commandButton id="clean" value="Clear msgs">
+                    <p:ajax event="click" listener="#{datePicker011.onSelect}"/>
+                </p:commandButton>
+            </div>
+            <div>
+                <p:datePicker id="datepicker0" pattern="yyyy-MM-dd" value="#{datePicker011.date0}"
+                              model="#{datePicker011.model}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                </p:datePicker>
+                <p:datePicker id="datepicker1" pattern="yyyy-MM-dd" value="#{datePicker011.date1}"
+                              model="#{datePicker011.model}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                    <p:ajax event="dateSelect" listener="#{datePicker011.onDateSelect}"/>
+                </p:datePicker>
+                <p:datePicker id="datepicker2" pattern="yyyy-MM-dd" value="#{datePicker011.date2}"
+                              model="#{datePicker011.model}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                    <p:ajax event="viewChange" listener="#{datePicker011.onViewChange}"/>
+                </p:datePicker>
+                <p:datePicker id="datepicker3" pattern="yyyy-MM-dd" value="#{datePicker011.date3}"
+                              model="#{datePicker011.model}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                    <p:ajax event="close" listener="#{datePicker011.onClose}"/>
+                </p:datePicker>
+            </div>
+            <div>
+                <p:datePicker id="datepicker4" pattern="yyyy-MM-dd" value="#{datePicker011.date4}"
+                              model="#{datePicker011.modelLazy}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                </p:datePicker>
+                <p:datePicker id="datepicker5" pattern="yyyy-MM-dd" value="#{datePicker011.date5}"
+                              model="#{datePicker011.modelLazy}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                    <p:ajax event="dateSelect" listener="#{datePicker011.onDateSelect}"/>
+                </p:datePicker>
+                <p:datePicker id="datepicker6" pattern="yyyy-MM-dd" value="#{datePicker011.date6}"
+                              model="#{datePicker011.modelLazy}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                    <p:ajax event="viewChange" listener="#{datePicker011.onViewChange}"/>
+                </p:datePicker>
+                <p:datePicker id="datepicker7" pattern="yyyy-MM-dd" value="#{datePicker011.date7}"
+                              model="#{datePicker011.modelLazy}" monthNavigator="true" yearNavigator="true" showButtonBar="true">
+                    <p:ajax event="close" listener="#{datePicker011.onClose}"/>
+                </p:datePicker>
+            </div>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
