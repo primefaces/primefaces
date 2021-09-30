@@ -107,10 +107,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     $this.jqEl.prop("readonly", true);
                 }
 
-                //user callback
+                // user callback
                 var preShow = $this.cfg.preShow;
                 if(preShow) {
                     return $this.cfg.preShow.call($this, inst);
+                }
+
+                // #7457 trigger view change if lazy model is used
+                if ($this.cfg.lazyModel) {
+                    $this.fireViewChangeEvent($this.getViewDate());
                 }
             };
         }
@@ -308,6 +313,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.cfg.onViewDateChange = function(event, date) {
             $this.viewDateOption = date;
+            // #7457 don't fire a change event when the picker is closed if lazy model is used
+            if ($this.cfg.lazyModel && !event) {
+                return;
+            }
             $this.fireViewChangeEvent(date);
         };
     },
