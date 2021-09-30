@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:datePicker id="datepicker1" value="#{datePicker002.localDate1}" pattern="MM/dd/yyyy" showOtherMonths="false"/>
+            <p:datePicker id="datepicker2" value="#{datePicker002.localDate2}" pattern="MM/dd/yyyy" showOtherMonths="true"/>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

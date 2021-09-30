@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-splitbutton {
+                margin-right: .5rem;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        SplitButton
+    </ui:define>
+
+    <ui:define name="description">
+        SplitButton displays a default command and additional ones in an overlay.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/splitbutton"/>
+    <ui:param name="widgetLink" value="SplitButton-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages"/>
+
+                <h5 class="p-mt-0">Basic</h5>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+
+                <h5>Programmatic Menu</h5>
+                <p:splitButton value="Save" model="#{buttonView.model}" action="#{buttonView.save}"
+                                   update="messages" icon="pi pi-save"/>
+
+                <h5>Advanced</h5>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" filter="true" filterMatchMode="startsWith">
+                    <p:submenu label="Ajax">
+                        <p:menuitem value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save"/>
+                        <p:menuitem value="Update" action="#{buttonView.update}" update="messages"
+                                    icon="pi pi-refresh"/>
+                    </p:submenu>
+                    <p:submenu label="Non-Ajax">
+                        <p:menuitem value="Delete" action="#{buttonView.delete}" update="messages" ajax="false"
+                                    icon="pi pi-times"/>
+                    </p:submenu>
+                    <p:submenu label="Navigations">
+                        <p:menuitem value="External" url="http://www.primefaces.org" icon="pi pi-home"/>
+                    </p:submenu>
+                    <p:divider />
+                    <p:menuitem value="sInternal" icon="pi pi-star"/>
+                </p:splitButton>
+
+                <h5>Severities</h5>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" styleClass="ui-button-secondary">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" styleClass="ui-button-success">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" styleClass="ui-button-info">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" styleClass="ui-button-warning">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" styleClass="ui-button-help">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+                <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save" styleClass="ui-button-danger">
+                    <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:divider />
+                    <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                </p:splitButton>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinRadarChart() {
+                Chart.defaults.startAngle = 36;
+                Chart.defaults.plugins.tooltip.cornerRadius = 3;
+                Chart.defaults.plugins.tooltip.enabled = true;
+                Chart.defaults.plugins.tooltip.mode = 'point';
+                Chart.defaults.plugins.tooltip.position = 'nearest';
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        Charts <span class="subitem">Radar</span>
+    </ui:define>
+
+    <ui:define name="description">
+        RadarChart is created with a RadarChartModel.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/charts?id=radarchart"/>
+    <ui:param name="widgetLink" value="RadarChart"/>
+
+    <ui:define name="implementation">
+        <div class="p-grid">
+            <div class="p-col-12 p-lg-6 p-xl-4">
+                <div class="card">
+                    <p:radarChart model="#{chartJsView.radarModel}"/>
+                </div>
+            </div>
+
+            <div class="p-col-12 p-lg-6 p-xl-4">
+                <div class="card">
+                    <p:radarChart model="#{chartJsView.radarModel2}"/>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

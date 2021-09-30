@@ -2,7 +2,7 @@
 
 AutoComplete provides live suggestions while an input is being typed.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.autocomplete-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.AutoComplete-1.html)
 
 ## Info
 
@@ -114,7 +114,7 @@ calling a server side completeMethod that takes a single string parameter which 
 
 ```java
 public class Bean {
-    private | String | text;
+    private String text;
 
     public List<String> complete(String query) {
         List<String> results = new ArrayList<String>();
@@ -155,7 +155,7 @@ public class PlayerBean {
 ```
 ``` java
 public class Player {
-    private | String | name;
+    private String name;
     //getter setter
 }
 ```

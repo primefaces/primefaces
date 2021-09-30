@@ -2,7 +2,8 @@
 
 ## PrimeFaces.validation.validate
 
-This is the main method used by PrimeFaces commands like `p:commandButton` when `validateClient` is activated.
+[PrimeFaces.validation.validate](../jsdocs/modules/src_PrimeFaces.PrimeFaces.validation.html#validate) is the main
+method used by PrimeFaces commands like `p:commandButton` when `validateClient` is activated.
 
 ```js
 /**
@@ -28,7 +29,8 @@ PrimeFaces.validation.validate($('#myForm'), $('#myForm'), true, true, true, fal
 
 ## PrimeFaces.validation.validateInstant
 
-This is the main method used by `p:clientBehavior` which only validates a single input.
+[PrimeFaces.validation.validateInstant](../jsdocs/modules/src_PrimeFaces.PrimeFaces.validation.html#validateInstant) is
+the main method used by `p:clientBehavior` which only validates a single input.
 
 ```js
 /**

@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">ContextMenu</span>
+    </ui:define>
+
+    <ui:define name="description">
+        ContextMenu has special integration with TreeTable. Even different menus can be assigned to different node types by matching node types.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:treeTable id="docs" value="#{ttContextMenuView.root}" var="document" selectionMode="single"
+                             selection="#{ttContextMenuView.selectedNode}">
+                    <f:facet name="header">
+                        Document Viewer
+                    </f:facet>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+
+                <p:contextMenu for="docs">
+                    <p:menuitem value="View" update="documentPanel" icon="pi pi-search"
+                                oncomplete="PF('documentDialog').show()"/>
+                    <p:menuitem value="Delete" action="#{ttContextMenuView.deleteNode}" update="docs"
+                                icon="pi pi-times"/>
+                </p:contextMenu>
+
+                <p:dialog id="dialog" header="Document Detail" showEffect="fade" widgetVar="documentDialog" modal="true" resizable="false" width="250">
+                    <p:outputPanel id="documentPanel">
+                        <h:panelGrid columns="2" rendered="#{not empty ttContextMenuView.selectedNode}" cellpadding="7">
+                            <h:outputLabel for="name" value="Name" />
+                            <h:outputText id="name" value="#{ttContextMenuView.selectedNode.data.name}" styleClass="p-text-bold"/>
+
+                            <h:outputLabel for="size" value="Size"/>
+                            <h:outputText id="size" value="#{ttContextMenuView.selectedNode.data.size}" styleClass="p-text-bold" />
+
+                            <h:outputLabel for="type" value="Type "/>
+                            <h:outputText id="type" value="#{ttContextMenuView.selectedNode.data.type}" styleClass="p-text-bold" />
+                    </h:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

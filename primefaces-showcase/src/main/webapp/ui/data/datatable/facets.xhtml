@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Header and Footer</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Header and Footer section are defined using facets.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:dataTable var="product" value="#{dtBasicView.products}">
+                <f:facet name="header">
+                    List of Products
+                </f:facet>
+
+                <p:column headerText="Code">
+                    <h:outputText value="#{product.code}" />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{product.name}" />
+                </p:column>
+
+                <p:column headerText="Category">
+                    <h:outputText value="#{product.category}" />
+                </p:column>
+
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{product.quantity}" />
+                </p:column>
+
+                <f:facet name="footer">
+                    <span class="p-text-bold">In total there are #{fn:length(dtBasicView.products)} products.</span>
+                </f:facet>
+            </p:dataTable>
+        </div>
+    </ui:define>
+
+</ui:composition>

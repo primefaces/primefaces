@@ -3,7 +3,7 @@
 InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining
 characters counter and theming features.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.inputtextarea.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputTextarea.html)
 
 ## Info
 
@@ -140,6 +140,15 @@ public class AutoCompleteBean {
 ```xhtml
 <p:inputTextarea rows="10" cols="50" minQueryLength="4" completeMethod="#{autoCompleteBean.completeArea}" />
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.InputTextarea_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
 
 ## Skinning
 InputTextarea renders a textarea element which _style_ and _styleClass_ options apply. Following is the

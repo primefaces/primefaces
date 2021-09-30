@@ -1,0 +1,113 @@
+.ui-speeddial {
+    position: absolute;
+    display: flex;
+    z-index: 1;
+}
+
+.ui-speeddial-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: top 0s linear 0.2s;
+    pointer-events: none;
+}
+
+.ui-speeddial-item {
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, opacity 0.8s;
+    will-change: transform;
+}
+
+.ui-speeddial-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.ui-speeddial-circle .ui-speeddial-item,
+.ui-speeddial-semi-circle .ui-speeddial-item,
+.ui-speeddial-quarter-circle .ui-speeddial-item {
+    position: absolute;
+}
+
+.ui-speeddial-button.ui-speeddial-rotate {
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    will-change: transform;
+}
+
+.ui-speeddial-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 250ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ui-speeddial-mask-visible {
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.ui-speeddial-opened.ui-speeddial {
+    z-index: 2;
+}
+
+.ui-speeddial-opened .ui-speeddial-list {
+    pointer-events: auto;
+}
+
+.ui-speeddial-opened .ui-speeddial-item {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.ui-speeddial-opened .ui-speeddial-rotate {
+    transform: rotate(45deg);
+}
+
+/* Direction */
+.ui-speeddial-direction-up {
+    align-items: center;
+    flex-direction: column-reverse;
+}
+
+.ui-speeddial-direction-up .ui-speeddial-list {
+    flex-direction: column-reverse;
+}
+
+.ui-speeddial-direction-down {
+    align-items: center;
+    flex-direction: column;
+}
+
+.ui-speeddial-direction-down .ui-speeddial-list {
+    flex-direction: column;
+}
+
+.ui-speeddial-direction-left {
+    justify-content: center;
+    flex-direction: row-reverse;
+}
+
+.ui-speeddial-direction-left .ui-speeddial-list {
+    flex-direction: row-reverse;
+}
+
+.ui-speeddial-direction-right {
+    justify-content: center;
+    flex-direction: row;
+}
+
+.ui-speeddial-direction-right .ui-speeddial-list {
+    flex-direction: row;
+}

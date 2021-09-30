@@ -2,7 +2,7 @@
 
 SelectManyButton is a multi select component using button UI.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.selectmanybutton.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectManyButton.html)
 
 ## Info
 
@@ -41,6 +41,15 @@ hideNoSelectionOption | false | boolean  | Flag indicating that, if this compone
 
 ## Getting started with SelectManyButton
 SelectManyButton usage is same as selectManyCheckbox, buttons just replace checkboxes.
+
+## Client Side API
+Widget: _PrimeFaces.widget.SelectManyButton_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
 
 ## Skinning
 SelectManyButton resides in a main container which _style_ and _styleClass_ attributes apply. As

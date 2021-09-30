@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        InputText
+    </ui:define>
+
+    <ui:define name="description">
+        InputText extends standard InputText with skinning capabilities.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inputtext"/>
+    <ui:param name="widgetLink" value="InputText"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Basic</h5>
+            <p:inputText/>
+
+            <h5>Floating Label</h5>
+            <span class="ui-float-label">
+               <p:inputText id="float-input" value="#{inputTextView.text}"/>
+               <p:outputLabel for="@previous" value="Username"/>
+           </span>
+
+            <h5>Left Icon</h5>
+            <span class="ui-input-icon-left">
+                <i class="pi pi-search" />
+                <p:inputText placeholder="Search" />
+            </span>
+
+            <h5>Right Icon</h5>
+            <span class="ui-input-icon-right">
+                <i class="pi pi-spin pi-spinner" />
+                <p:inputText />
+            </span>
+
+            <h5>Help Text</h5>
+            <div class="p-field">
+                <p:outputLabel for="username1" styleClass="p-d-block">Username</p:outputLabel>
+                <p:inputText id="username1" styleClass="p-d-block"/>
+                <small class="p-d-block">Enter your username to reset your password.</small>
+            </div>
+
+            <h5>Invalid</h5>
+            <div class="p-field">
+                <p:outputLabel for="username2" styleClass="p-d-block">Username</p:outputLabel>
+                <p:inputText id="username2" styleClass="p-d-block ui-state-error"/>
+                <small class="p-d-block ui-state-error">Username is not available.</small>
+            </div>
+
+            <h5>Disabled</h5>
+            <p:inputText disabled="true" />
+        </div>
+    </ui:define>
+
+</ui:composition>

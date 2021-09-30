@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImageCropper
+    </ui:define>
+
+    <ui:define name="description">
+        ImageCropper can work tightly with FileUpload handling images on the fly.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/imagecropper"/>
+    <ui:param name="widgetLink" value="ImageCropper"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:fileUpload mode="advanced"
+                              multiple="false"
+                              sizeLimit="102400" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                              invalidSizeMessage="Maximum file size allowed is 100 KB"
+                              invalidFileMessage="only gif | jpg | jpeg | png is allowed"
+                              update="messages cropperPanel"
+                              listener="#{cropUploaderBean.handleFileUpload}"/>
+
+                <p:outputPanel id="cropperPanel">
+
+                    <h:panelGrid columns="1" rendered="#{not empty cropUploaderBean.originalImageFile}">
+
+                        <p:commandButton value="Crop"
+                                         action="#{cropUploaderBean.crop}"
+                                         update="cropped messages" styleClass="p-my-3"/>
+
+                        <h:panelGrid columns="2" cellpadding="7">
+
+                            <p:imageCropper
+                                    value="#{cropUploaderBean.croppedImage}"
+                                    id="imageCropper" cache="false"
+                                    image="#{cropUploaderBean.image}"
+                                    initialCoords="50,50,150,100"
+                                    minSize="50,50" maxSize="350,350"/>
+
+                            <p:outputPanel id="cropped">
+                                <p:graphicImage cache="false"
+                                                rendered="#{not empty cropUploaderBean.croppedImage}"
+                                                value="#{cropUploaderBean.cropped}"/>
+                            </p:outputPanel>
+
+                        </h:panelGrid>
+
+                        
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

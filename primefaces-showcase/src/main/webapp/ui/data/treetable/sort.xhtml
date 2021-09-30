@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-treetable table {
+                table-layout: fixed
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Sort</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Sibling nodes can be sorted within a parent.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card">
+                <p:treeTable value="#{ttBasicView.root}" var="document" sortMode="single" style="margin-top: 20px;"
+                             allowUnsorting="true">
+                    <f:facet name="header">
+                        Document Viewer (single sort, allowUnsorting)
+                    </f:facet>
+                    <p:column headerText="Name" sortBy="#{document.name}">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size" sortBy="#{document.size}">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" sortBy="#{document.type}">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+            <div class="card">
+                <p:treeTable value="#{ttBasicView.root}" var="document">
+                    <f:facet name="header">
+                        Document Viewer (multi sort)
+                    </f:facet>
+                    <p:column headerText="Name" sortBy="#{document.name}">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size" sortBy="#{document.size}">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" sortBy="#{document.type}">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+            <div class="card">
+                <p:treeTable value="#{ttBasicView.root}" var="document" style="margin-top: 20px;">
+                    <f:facet name="header">
+                        Document Viewer (multi sort, predefined sort in markup)
+                    </f:facet>
+                    <p:column headerText="Name" sortBy="#{document.name}" sortOrder="desc" sortPriority="1">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size" sortBy="#{document.size}" sortOrder="asc" sortPriority="2">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" sortBy="#{document.type}">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+            <div class="card">
+                <p:treeTable value="#{ttBasicView.root}" var="document" sortMode="single" style="margin-top: 20px;"
+                             sortBy="#{ttBasicView.sortBy}">
+                    <f:facet name="header">
+                        Document Viewer (single sort, predefined sort via code)
+                    </f:facet>
+                    <p:column headerText="Name" sortBy="#{document.name}">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size" sortBy="#{document.size}">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" sortBy="#{document.type}">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

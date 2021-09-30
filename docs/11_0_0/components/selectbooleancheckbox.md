@@ -2,7 +2,7 @@
 
 SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.selectbooleancheckbox.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectBooleanCheckbox.html)
 
 ## Info
 
@@ -56,6 +56,8 @@ Widget: _PrimeFaces.widget.SelectBooleanCheckbox_
 check() | - | void | Checks the checkbox.
 uncheck() | - | void | Unchecks the checkbox.
 toggle() | - | void | Toggles check state.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 
 ## Skinning
 SelectBooleanCheckbox resides in a main container which _style_ and _styleClass_ attributes apply. As

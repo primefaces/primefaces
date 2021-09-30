@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Poll</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Poll component makes remote calls periodically.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/poll"/>
+    <ui:param name="widgetLink" value="Poll-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h1 class="p-text-center">
+                    <h:outputText id="txt_count" value="#{pollView.number}"/>
+                </h1>
+                
+                <p:poll interval="2" listener="#{pollView.increment}" update="txt_count"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript">
+            var currentMarker = null;
+
+            function handlePointClick(event) {
+                if (currentMarker === null) {
+                    document.getElementById('lat').value = event.latLng.lat();
+                    document.getElementById('lng').value = event.latLng.lng();
+
+                    currentMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())
+                    });
+
+                    PF('map').addOverlay(currentMarker);
+
+                    PF('dlg').show();
+                }
+            }
+
+            function markerAddComplete() {
+                var title = document.getElementById('title');
+                currentMarker.setTitle(title.value);
+                title.value = "";
+
+                currentMarker = null;
+                PF('dlg').hide();
+            }
+
+            function cancel() {
+                PF('dlg').hide();
+                currentMarker.setMap(null);
+                currentMarker = null;
+
+                return false;
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        GMap <span class="subitem">Adding Markers</span>
+    </ui:define>
+
+    <ui:define name="description">
+        This examples demonstrates how to add a marker and keep client side representation in sync with the server side model. Even though you use Google Maps as a JSF component you can still take advantage of the full Google Maps API.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gmap"/>
+    <ui:param name="widgetLink" value="GMap-1"/>
+
+    <ui:define name="implementation">
+
+        <p:growl id="messages" showDetail="true"/>
+        <div class="card">
+            <p:gmap id="gmap" center="36.890257,30.707417" zoom="13" type="HYBRID" style="width:100%;height:400px"
+                    model="#{addMarkersView.emptyModel}" onPointClick="handlePointClick(event);" widgetVar="map"/>
+        </div>
+        <p:dialog widgetVar="dlg" showEffect="fade">
+            <h:form prependId="false">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="title" value="Title:"/>
+                    <p:inputText id="title" value="#{addMarkersView.title}"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Add" action="#{addMarkersView.addMarker}" update=":messages"
+                                         oncomplete="markerAddComplete()"/>
+                        <p:commandButton value="Cancel" onclick="return cancel()"/>
+                    </f:facet>
+                </h:panelGrid>
+
+                <h:inputHidden id="lat" value="#{addMarkersView.lat}"/>
+                <h:inputHidden id="lng" value="#{addMarkersView.lng}"/>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

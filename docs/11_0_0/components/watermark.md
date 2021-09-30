@@ -4,7 +4,7 @@ Watermark applies a HTML5 placeholder attribute on an target input field.
 
 > :warning: **This component should only be used in environments, where no passthrough attributes are available yet (pre JSF 2.2)!**
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.watermark.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Watermark.html)
 
 ## Info
 

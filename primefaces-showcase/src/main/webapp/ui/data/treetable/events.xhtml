@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Events</span>
+    </ui:define>
+
+    <ui:define name="description">
+        An ajax behavior callback is provided for each event such as expand, collapse, select and unselect.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:treeTable value="#{ttEventsView.root}" var="document" selectionMode="single"
+                             selection="#{ttEventsView.selectedNode}">
+                    <p:ajax event="expand" listener="#{ttEventsView.onNodeExpand}" update="@form:messages"/>
+                    <p:ajax event="collapse" listener="#{ttEventsView.onNodeCollapse}" update="@form:messages"/>
+                    <p:ajax event="select" listener="#{ttEventsView.onNodeSelect}" update="@form:messages"/>
+                    <p:ajax event="unselect" listener="#{ttEventsView.onNodeUnselect}" update="@form:messages"/>
+                    <p:ajax event="filter" listener="#{ttEventsView.onFilter}" update="@form:messages"/>
+                    <p:ajax event="sort" listener="#{ttEventsView.onSort}" update="@form:messages"/>
+
+                    <f:facet name="header">
+                        Document Viewer
+                    </f:facet>
+                    <p:column headerText="Name" sortBy="#{document.name}" filterBy="#{document.name}">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size" sortBy="#{document.size}" filterBy="#{document.size}">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" sortBy="#{document.type}" filterBy="#{document.type}">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

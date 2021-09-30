@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatable" value="#{dataTable015.progLanguages}" var="lang" paginator="true" rows="3"
+                         filteredValue="#{dataTable015.filteredProgLanguages}" filterEvent="enter"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="2,3,5,10" multiViewState="true">
+                <p:column headerText="ID" sortBy="#{lang.id}">
+                    <h:outputText value="#{lang.id}"/>
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains">
+                    <h:outputText value="#{lang.name}"/>
+                </p:column>
+
+                <p:column headerText="First appeared" sortBy="#{lang.firstAppeared}" filterBy="#{lang.firstAppeared}" filterMatchMode="gte">
+                    <h:outputText value="#{lang.firstAppeared}"/>
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+            <p:commandButton id="buttonClearTableState" value="clear table state" update="@form" action="#{dataTable015.clearTableState()}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

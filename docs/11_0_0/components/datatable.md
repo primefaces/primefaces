@@ -2,7 +2,7 @@
 
 DataTable displays data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.datatable-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataTable-1.html)
 
 ## Info
 
@@ -49,6 +49,7 @@ DataTable displays data in tabular format.
 | frozenColumns             | 0                  | Integer          | Number of columns to freeze from start index 0.
 | frozenRows                | null               | Object           | Collection to display as fixed in scrollable mode.
 | globalFilter              | null               | String           | Value of the global filter to use when filtering by default.
+| globalFilterOnly          | false              | Boolean          | When true this will hide all column filters and allow all columns to be filtered by global filter only.
 | globalFilterFunction      | null               | MethodExpression | Custom implementation to globally filter a value against a constraint.
 | id                        | null               | String           | Unique identifier of the component
 | lazy                      | false              | Boolean          | Controls lazy loading. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
@@ -74,7 +75,7 @@ DataTable displays data in tabular format.
 | rowExpandMode             | new                | String           | Defines row expand mode, valid values are "single" and "multiple" (default).
 | rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
 | rowIndexVar               | null               | String           | Name of iterator to refer each row index.
-| rowKey                    | null               | String           | Unique identifier of a row.
+| rowKey                    | null               | String           | Unique identifier of a row. Must be defined when using selection together with non-lazy datasource (eg value-attribute bound to a instance of `java.util.List`).
 | rowSelectMode             | new                | String           | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
@@ -282,6 +283,7 @@ Or
 Ajax based filtering is enabled by setting _field_ or _filterBy_ at column level and providing a list to keep the
 filtered sublist. It is suggested to use a scope longer than request like viewscope to keep the
 filteredValue so that filtered list is still accessible after filtering.
+(Attention: Please be aware sessionscope is not supported for this. Instead set multiViewState="true" to keep table state including filter across views.)
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}">
@@ -525,8 +527,7 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected
-rows. You can either define this key by using the rowKey attribute or by binding a data model
-which implements _org.primefaces.model.SelectableDataModel_.
+rows. You must define this key by using the `rowKey` attribute.
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns
@@ -534,9 +535,9 @@ component is used to define the columns programmatically. It requires a collecti
 iterator variables called _var_ and _columnIndexVar_.
 
 ```xhtml
-<p:dataTable var="cars" value="#{tableBean.cars}">
-    <p:columns value="#{tableBean.columns}" var="column" headerText="#{column.header}" sortBy="#{column.property}" filterBy="#{column.property}">
-        <h:outputText value="#{cars[column.property]}" />
+<p:dataTable var="car" value="#{tableBean.cars}">
+    <p:columns value="#{tableBean.columns}" var="column" headerText="#{column.header}" sortBy="#{car[column.property]}" filterBy="#{car[column.property]}">
+        <h:outputText value="#{car[column.property]}" />
     </p:columns>
 </p:dataTable>
 ```
@@ -639,7 +640,7 @@ For frozen columns, use _frozenHeader_ , _frozenFooter_ , _scrollableHeader_ and
 Rows can be grouped in two ways, using headerRow, summaryRow components or with groupRow
 attribute on a column.
 
-!> Row Grouping does not work with Lazy Loading and LiveScroll as the grouping needs to know about all rows to properly 
+!> Row Grouping does not work with Lazy Loading and LiveScroll as the grouping needs to know about all rows to properly
 group the rows.
 
 ```xhtml
@@ -779,12 +780,12 @@ Another option for incell editing is cell editing, in this mode a cell switches 
 clicked, losing focus triggers an ajax event to save the change value.
 
 ## Lazy Loading
-Lazy Loading is an approach to deal with huge datasets efficiently, regular ajax based pagination
-works by rendering only a particular page but still requires all data to be loaded into memory. Lazy
-loading datatable renders a particular page similarly but also only loads the page data into memory
-not the whole dataset. In order to implement this, you’d need to bind a
-_org.primefaces.model.LazyDataModel_ as the value and implement _load_ method and enable _lazy_
-option. Also it is required to implement _getRowData_ and _getRowKey_ if you have selection enabled.
+Lazy Loading is an approach to deal with huge datasets efficiently, regular AJAX based pagination
+works by rendering only a particular page but still requires all data to be loaded into memory.
+Lazy loading DataTable renders a particular page similarly but also only loads the page data into memory not the whole dataset.
+In order to implement this, you’d need to bind a _org.primefaces.model.LazyDataModel_ as the value and
+implement _load_ and _count_ method.
+If you have selection enabled, you either need to implement _getRowData_ and _getRowKey_, or pass a existing JSF `Converter` to the constructor.
 
 
 ```xhtml
@@ -799,12 +800,15 @@ public class CarBean {
     public CarBean() {
         model = new LazyDataModel() {
             @Override
+            public int count(Map<String, FilterMeta> filterBy) {
+                //logical row count based on a count query
+            }
+
+            @Override
             public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
                 //load physical data
             }
         };
-        int totalRowCount = //logical row count based on a count query
-        model.setRowCount(totalRowCount);
     }
     public LazyDataModel getModel() {
         return model;
@@ -819,12 +823,42 @@ following parameters:
 - **sortBy**: Active sorters map (field as key)
 - **filterBy**: Active filters map (field as key).
 
-In addition to load method, totalRowCount needs to be provided so that paginator can display itself
+In addition to _load_ method, _count_ method needs to be implemented, so that paginator can display itself
 according to the logical number of rows to display.
 
 It is suggested to use _field_ attribute of column component to define the field names passed as
 sortBy and filterBy, otherwise these fields would be tried to get extracted from the value
 expression which is not possible in cases like composite components.
+
+### JpaLazyDataModel
+
+PrimeFaces provides a OOTB implementation for JPA users, which supports basic features.
+
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
+```
+
+If you have selection enabled, you can either pass the rowKey field name in the constructor:
+
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, "id");
+```
+
+or provide a existing JSF `Converter`:
+
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, myConverter);
+```
+
+Also you can add global filters via:
+```
+new JpaLazyDataModel<>(MyEntity.class, () -> entityManager) {
+    @Override
+    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<MyEntity> root, List<Predicate> predicates) {
+        predicates.add(cb.isNull(root.get("id")));
+    }
+};
+```
 
 ## Sticky Header
 Sticky Header feature makes the datatable header visible on page scrolling.

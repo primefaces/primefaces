@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        PhotoCam
+    </ui:define>
+
+    <ui:define name="description">
+        It is possible to set a specific device, like a USB camera or a different onboard camera, to retrieve images.
+        Note that, in mobile devices, usually "user" stands for the front camera and "environment" stands for the rear camera.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/photocam"/>
+    <ui:param name="widgetLink" value="PhotoCam-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputPanel id="photoCamPnl">
+                        <p:photoCam widgetVar="pc" listener="#{photoCamView.oncapture}" update="photo"/>
+                        <select onchange="reload()" class="photoCamDevices">
+                            <option value="">Select device</option>
+                            <option value="user">"user" device</option>
+                            <option value="environment">"environment" device</option>
+                        </select>
+                    </p:outputPanel>
+                    <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()"/>
+                    <p:outputPanel id="photo">
+                        <p:graphicImage name="demo/images/photocam/#{photoCamView.filename}.jpeg"
+                                        rendered="#{not empty photoCamView.filename}"/>
+                    </p:outputPanel>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <script type="text/javascript">
+
+            //<![CDATA[
+
+            function reload() {
+                var cam = PF('pc');
+                var deviceSelector = document.querySelector("select.photoCamDevices");
+                var device = deviceSelector.value;
+                cam.device = device;
+                cam.reload();
+            }
+
+            function populateDeviceMenu() {
+                var photoCam = PF('pc');
+                var deviceSelector = document.querySelector("select");
+                var availableDevices = photoCam.getAvailableDevices();
+                if (availableDevices) {
+                    availableDevices.then(devices => devices.forEach(device => {
+                            var option = document.createElement("option");
+                            option.text = device.label;
+                            option.value = device.deviceId;
+                            deviceSelector.appendChild(option);
+                        })
+                    );
+                } else {
+                    console.log("no devices available");
+                }
+            }
+
+            populateDeviceMenu();
+
+            //]]>
+
+        </script>
+
+    </ui:define>
+
+</ui:composition>

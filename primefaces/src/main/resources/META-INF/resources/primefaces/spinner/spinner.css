@@ -1,0 +1,122 @@
+.ui-spinner {
+    display: inline-block;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    vertical-align: middle;
+}
+input.ui-spinner-input {
+    vertical-align: middle;
+    text-align: right;
+    padding-right: 20px;
+    font-family: var(--font-family);
+    font-size: 1em;
+    box-sizing: border-box;
+    width: 100%;
+}
+.ui-spinner.text-left .ui-spinner-input {
+    text-align: left;
+}
+.ui-spinner.text-center .ui-spinner-input {
+    text-align: center;
+}
+.ui-spinner.text-right .ui-spinner-input {
+    text-align: right;
+}
+.ui-spinner-button {
+    cursor: default;
+    display: block;
+    font-size: 0.5em;
+    height: 50%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    vertical-align: middle;
+    width: 16px;
+    z-index: 100;
+}
+.ui-spinner .ui-icon {
+    left: 0;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+}
+.ui-spinner-up {
+    top: 0;
+}
+.ui-spinner-down {
+    bottom: 0;
+}
+.ui-spinner .ui-icon-triangle-1-s {
+    background-position: -65px -16px;
+}
+
+.ui-spinner .ui-icon-triangle-1-n {
+    margin-top: -9px;
+}
+
+.ui-spinner-input::-ms-clear {
+    display: none;
+}
+
+.ui-spinner-horizontal .ui-spinner-input {
+    padding-left: 20px;
+}
+
+body .ui-spinner.ui-spinner-horizontal .ui-spinner-button.ui-button.ui-spinner-up,
+body .ui-spinner.ui-spinner-horizontal-after .ui-spinner-button.ui-button.ui-spinner-up {
+    border-radius: 0 4px 4px 0;
+}
+
+body .ui-spinner.ui-spinner-horizontal .ui-spinner-button.ui-button.ui-spinner-down {
+    border-radius: 4px 0 0 4px;
+}
+
+body .ui-spinner.ui-spinner-horizontal-after .ui-spinner-button.ui-button.ui-spinner-down {
+    border-radius: 0;
+}
+
+.ui-spinner-horizontal .ui-spinner-button, .ui-spinner-horizontal-after .ui-spinner-button {
+    height: 100%;
+    top: 0;
+}
+
+.ui-spinner-horizontal .ui-spinner-down {
+    right: unset;
+}
+
+body .ui-fluid .ui-spinner-horizontal-after .ui-spinner-input, body .ui-spinner-horizontal-after .ui-spinner-input {
+    padding-right: 5.214rem;
+}
+
+.ui-spinner-horizontal-after .ui-spinner-down {
+    right: 2.357rem;
+}
+
+body .ui-fluid .ui-spinner.ui-spinner-vertical .ui-spinner-input, body .ui-spinner.ui-spinner-vertical .ui-spinner-input {
+    padding-right: unset;
+    padding: 2.857rem 0;
+    text-align: center;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button {
+    width: 100%;
+    height: 2.357rem;
+    right: unset;
+}
+
+.ui-spinner-vertical .ui-spinner-down {
+    right: unset;
+    bottom: 0;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-up {
+    border-radius: 4px 4px 0 0;
+}
+
+body .ui-spinner.ui-spinner-vertical .ui-spinner-button.ui-button.ui-spinner-down {
+    border-radius: 0 0 4px 4px;
+}

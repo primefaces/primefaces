@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <!-- GitHub #6506 using java.sql.Date in min and max date -->
+            <p:datePicker id="datepicker" value="#{datePicker006.localDate}" pattern="MM/dd/yyyy" mindate="#{datePicker006.minDate}"
+                          maxdate="#{datePicker006.maxDate}"/>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{datePicker006.submit}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

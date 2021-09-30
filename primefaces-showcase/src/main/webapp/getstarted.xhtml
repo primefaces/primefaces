@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="content-section documentation">
+            <h1>Getting Started</h1>
+            <p>PrimeFaces is a lightweight library with one jar, zero-configuration and no required dependencies. You just need to download PrimeFaces, add the primefaces-{version}.jar to your classpath and import the namespace to get started.</p>
+
+            <h5>Download</h5>
+            <p>PrimeFaces can be downloaded manually or via maven.</p>
+<pre><code class="language-xml">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.primefaces&lt;/groupId&gt;
+    &lt;artifactId&gt;primefaces&lt;/artifactId&gt;
+    &lt;version&gt;10.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+
+            <h5>Namespaces</h5>
+            <p>PrimeFaces namespace is necessary to add PrimeFaces components to your pages.</p>
+
+<pre><code class="language-xml">
+&lt;html xmlns:p="http://primefaces.org/ui"&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+            <h5>Test Run</h5>
+            <p>That’s it, now you can add a test component to see if everything is ok..</p>
+
+<pre><code class="language-xml">
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"&gt;
+    
+    &lt;h:head&gt;
+    &lt;/h:head&gt;
+
+    &lt;h:body&gt;
+        &lt;p:spinner /&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+        </div>
+    </ui:define>
+</ui:composition>

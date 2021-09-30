@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .start { background: #81c784; }
+            .deadline { background: #ef9a9a; }
+            .ui-datepicker-calendar .ui-state-disabled { opacity: .2; }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        DatePicker <span class="subitem">Metadata</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Metadata for the dates in the date picker calendar. Allows you to lazily change attributes like
+        <code>disabled</code> and <code>styleClass</code> for dates when the calendar view changes.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datepicker"/>
+    <ui:param name="widgetLink" value="DatePicker-1"/>
+
+    <ui:define name="implementation">
+        <p:growl id="growl"/>
+
+        <div class="card">
+            <h:form id="form">
+                <h:panelGrid columns="2" cellpadding="7">
+                    <p:outputLabel for="basic" value="Basic"/>
+                    <p:datePicker id="basic" value="#{datePickerMetadataView.date1}"
+                                  model="#{datePickerMetadataView.model}"/>
+
+                    <p:outputLabel for="lazy" value="Lazy and Navigator"/>
+                    <p:datePicker pattern="yyyy-MM-dd" id="lazy" value="#{datePickerMetadataView.date2}"
+                                  model="#{datePickerMetadataView.modelLazy}"
+                                  monthNavigator="true" yearNavigator="true"/>
+
+                    <p:outputLabel for="basicEvent" value="Basic and Event"/>
+                    <p:datePicker id="basicEvent" value="#{datePickerMetadataView.date3}"
+                                  model="#{datePickerMetadataView.model}">
+                        <p:ajax event="viewChange" listener="#{datePickerMetadataView.onViewChange}" update="growl"/>
+                    </p:datePicker>
+
+                    <p:outputLabel for="lazyEvent" value="Lazy and Event"/>
+                    <p:datePicker pattern="yyyy-MM-dd" id="lazyEvent" value="#{datePickerMetadataView.date4}"
+                                  model="#{datePickerMetadataView.modelLazy}">
+                        <p:ajax event="viewChange" listener="#{datePickerMetadataView.onViewChange}" update="growl"/>
+                    </p:datePicker>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

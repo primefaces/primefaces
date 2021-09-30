@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataExporter <span class="subitem">Lazy</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Lazy loading is fully supported when data is being exported.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dataexporter"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+               
+                <div class="p-d-flex p-jc-between">
+                    <div>
+                        <h5>Standard</h5>
+                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="xls" target="tbl" fileName="customers"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="customers"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="pdf" target="tbl" fileName="customers"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="csv" target="tbl" fileName="customers" />
+                        </p:commandButton>
+    
+                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="xml" target="tbl" fileName="customers"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="TXT" styleClass="p-mr-2 p-mb-2">
+                            <p:dataExporter type="txt" target="tbl" fileName="customers" exporter="#{dataExporterView.textExporter}"/>
+                        </p:commandButton>
+                    </div>
+
+                    <div>
+                        <h5>Page Only</h5>
+                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="xls" target="tbl" fileName="customers" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="customers" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="pdf" target="tbl" fileName="customers" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="csv" target="tbl" fileName="customers" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="xml" target="tbl" fileName="customers" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="TXT" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                            <p:dataExporter type="txt" target="tbl" fileName="customers" pageOnly="true"
+                                            exporter="#{dataExporterView.textExporter}"/>
+                        </p:commandButton>
+                    </div>
+                </div>
+
+                <p:dataTable id="tbl" var="customer" value="#{deLazyView.lazyModel}"
+                             sortMode="single" filteredValue="#{deLazyView.filteredCustomers}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                             paginator="true" rows="10" styleClass="p-mt-2">
+
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" sortBy="#{customer.country}" filterBy="#{customer.country}">
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
+                    </p:column>
+                    <p:column headerText="Company" sortBy="#{customer.company}" filterBy="#{customer.company}">
+                        <h:outputText value="#{customer.company}"/>
+                    </p:column>
+                    <p:column headerText="Representative" sortBy="#{customer.representative}"
+                              filterBy="#{customer.representative}">
+                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo"
+                                        width="32" style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/view/data/dataexporter/TextExporter.java"/>
+    </ui:define>
+
+</ui:composition>

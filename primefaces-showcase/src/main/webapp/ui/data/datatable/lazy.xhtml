@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Lazy</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataTable has built-in support to deal with huge datasets. In order to enable lazy loading, a LazyDataModel needs to be implemented
+        to query the datasource when pagination, sorting, filtering or live scrolling happens. This example uses an in-memory list to mimic a real datasource like a database.
+        In a real application, loading should be executed with the query built using the information passed to the load method.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:dataTable var="customer" value="#{dtLazyView.lazyModel}" paginator="true" rows="10"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="5,10,15" selectionMode="single"
+                             selection="#{dtLazyView.selectedCustomer}"
+                             id="customerTable">
+                    <p:ajax event="rowSelect" listener="#{dtLazyView.onRowSelect}" update=":form:customerDetail"
+                            oncomplete="PF('customerDialog').show()"/>
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
+                        <h:outputText value="#{customer.name}"/>
+                    </p:column>
+                    <p:column headerText="Country" sortBy="#{customer.country}" filterBy="#{customer.country}">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.country.name}"/>
+                    </p:column>
+                    <p:column headerText="Company" sortBy="#{customer.company}" filterBy="#{customer.company}">
+                        <h:outputText value="#{customer.company}"/>
+                    </p:column>
+                    <p:column headerText="Representative" sortBy="#{customer.representative}"
+                              filterBy="#{customer.representative}">
+                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo"
+                                        width="32" style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog header="Customer Detail" widgetVar="customerDialog" modal="true" showEffect="fade"
+                          hideEffect="fade" resizable="false">
+                    <p:outputPanel id="customerDetail" style="text-align:center;">
+                        <p:panelGrid columns="2" rendered="#{not empty dtLazyView.selectedCustomer}"
+                                     columnClasses="label,value">
+
+                            <h:outputText value="Name:"/>
+                            <h:outputText value="#{dtLazyView.selectedCustomer.name}"/>
+
+                            <h:outputText value="Country"/>
+                            <p:column>
+                                <span class="flag flag-#{dtLazyView.selectedCustomer.country.code}"
+                                      style="width: 30px; height: 20px"/>
+                                <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                              value="#{dtLazyView.selectedCustomer.country.name}"/>
+                            </p:column>
+
+                            <h:outputText value="Company:"/>
+                            <h:outputText value="#{dtLazyView.selectedCustomer.company}"/>
+
+                            <h:outputText value="Representative:"/>
+                            <p:column>
+                                <p:graphicImage name="images/avatar/#{dtLazyView.selectedCustomer.representative.image}"
+                                                library="demo"
+                                                width="32" style="vertical-align: middle"/>
+                                <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                              value="#{dtLazyView.selectedCustomer.representative.name}"/>
+                            </p:column>
+
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/view/data/datatable/LazySorter.java"/>
+        <p:tab title="/org/primefaces/showcase/view/data/datatable/LazyCustomerDataModel.java"/>
+    </ui:define>
+</ui:composition>

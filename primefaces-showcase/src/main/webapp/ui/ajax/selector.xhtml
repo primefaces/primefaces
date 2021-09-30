@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">PFS</span>
+    </ui:define>
+
+    <ui:define name="description">
+        PFS (PrimeFaces Selectors) enables using <a
+            href="http://api.jquery.com/category/selectors/">jQuery Selector API</a> when referencing components.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/searchexpression?id=primefaces-selectors-pfs"/>
+    <ui:param name="primefacesClientApiLink" value="modules/src_PrimeFaces.PrimeFaces.expressions.html#SearchExpressionFacade" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:panel header="Form">
+                    <h:panelGrid columns="4" cellpadding="5" styleClass="p-mb-3">
+                        <h:outputLabel for="txt1" value="Text 1"/>
+                        <p:inputText id="txt1" value="#{selectorView.text1}" required="true" label="Text 1">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="txt1"/>
+                        <h:outputText value="#{selectorView.text1}"/>
+    
+                        <h:outputLabel for="txt2" value="Text 2"/>
+                        <p:inputText id="txt2" value="#{selectorView.text2}" required="true" label="Text 2"/>
+                        <p:message for="txt2"/>
+                        <h:outputText value="#{selectorView.text2}"/>
+    
+                        <h:outputLabel for="txt3" value="Text 3"/>
+                        <h:selectOneMenu id="txt3" value="#{selectorView.text3}" required="true" label="Text 3">
+                            <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Option 1" itemValue="1"/>
+                            <f:selectItem itemLabel="Option 2" itemValue="2"/>
+                            <f:selectItem itemLabel="Option 3" itemValue="3"/>
+                        </h:selectOneMenu>
+                        <p:message for="txt3"/>
+                        <h:outputText value="#{selectorView.text3}"/>
+                    </h:panelGrid>
+    
+                    <p:commandButton update="@(form)" value="All Forms" styleClass="p-mr-2"/>
+                    <p:commandButton update="@(form:last)" value="Last Form" styleClass="p-mr-2"/>
+                    <p:commandButton update="@(.ui-panel)" value="All Panels" styleClass="p-mr-2"/>
+                    <p:commandButton process="@(.ui-panel :input)" update="@(.ui-panel)" value="Inputs of Panel" styleClass="p-mr-2"/>
+                    <p:commandButton process="@(.ui-panel :input:not(select))" update="@(.ui-panel)" value="Inputs Except Select"/>
+    
+                    <p:growl id="messages"/>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

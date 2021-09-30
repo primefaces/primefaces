@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-chart {
+                margin-bottom: 50px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Charts <span class="subitem">Scatter</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Scatter charts are based on basic line charts with the x axis changed to a linear axis. To use a scatter chart, data must be passed as objects containing X and Y properties.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/charts"/>
+    <ui:param name="widgetLink" value="ScatterChart"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:scatterChart model="#{chartJsView.scatterModel}" style="width: 100%; height: 500px;"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

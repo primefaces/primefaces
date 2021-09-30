@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">Programmatic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Galleria can be controlled programmatically using the <b>next</b> and <b>prev</b> client methods.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="widgetLink" value="Galleria"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card">
+                <div class="p-py-2">
+                    <p:commandButton icon="pi pi-minus" onclick="PF('galleriaWidget').prev()" class="ui-button-secondary" />
+                    <p:commandButton icon="pi pi-plus" onclick="PF('galleriaWidget').next()" class="ui-button-secondary p-ml-2" />
+                </div>
+
+                <p:galleria widgetVar="galleriaWidget" value="#{galleriaView.photos}" var="photo" activeIndex="2" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}" style="max-width: 640px">
+                    <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
+                    <f:facet name="thumbnail">
+                        <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block" />
+                    </f:facet>
+                </p:galleria>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Selection</span>
+    </ui:define>
+
+    <ui:define name="description">
+        There are various ways to select rows from the datatable.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+            <div class="card">
+                <h5>Basic</h5>
+                <p:dataTable id="basicDT" var="product" value="#{dtSelectionView.products1}">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                    
+                    <p:column style="width:3rem;text-align: center">
+                        <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()"
+                                         icon="pi pi-search" title="View">
+                            <f:setPropertyActionListener value="#{product}"
+                                                         target="#{dtSelectionView.selectedProduct}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Single with Row Click</h5>
+                <p:dataTable id="singleDT" var="product" value="#{dtSelectionView.products2}" selectionMode="single"
+                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.id}">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton process="singleDT" update=":form:productDetail" icon="pi pi-search"
+                                         value="View"
+                                         oncomplete="PF('productDialog').show()"/>
+                    </f:facet>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Select Events</h5>
+                <p:dataTable id="eventsDT" var="product" value="#{dtSelectionView.products3}" selectionMode="single"
+                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.id}">
+                    <p:ajax event="rowSelect" listener="#{dtSelectionView.onRowSelect}" update=":form:msgs"/>
+                    <p:ajax event="rowUnselect" listener="#{dtSelectionView.onRowUnselect}" update=":form:msgs"/>
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Multiple with Meta and Shift keys</h5>
+                <p:dataTable id="multipleDT" var="product" value="#{dtSelectionView.products4}" selectionMode="multiple"
+                             selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.id}">
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>RadioButton</h5>
+                <p:dataTable id="radioDT" var="product" value="#{dtSelectionView.products5}"
+                             selection="#{dtSelectionView.selectedProduct}" rowKey="#{product.id}">
+                    <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton process="radioDT" update=":form:productDetail" icon="pi pi-search" value="View"
+                                         oncomplete="PF('productDialog').show()"/>
+                    </f:facet>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Checkbox</h5>
+                <p:dataTable id="checkboxDT" var="product" value="#{dtSelectionView.products6}"
+                             selection="#{dtSelectionView.selectedProducts}" rowKey="#{product.id}"
+                             style="margin-bottom:0" paginator="true" rows="5" selectionPageOnly="false">
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade"
+                      hideEffect="fade" resizable="false">
+                <p:outputPanel id="productDetail" style="text-align:center;">
+                    <p:column rendered="#{not empty dtSelectionView.selectedProduct}">
+                        <div class="product">
+                            <div class="product-grid-item card" style="margin-bottom: 0">
+                                <div class="product-grid-item-top">
+                                    <div>
+                                        <i class="pi pi-tag product-category-icon"/>
+                                        <span class="product-category">#{dtSelectionView.selectedProduct.category}</span>
+                                    </div>
+                                    <span class="product-badge status-#{dtSelectionView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dtSelectionView.selectedProduct.inventoryStatus.text}</span>
+                                </div>
+                                <div class="product-grid-item-content">
+                                    <p:graphicImage
+                                            name="demo/images/product/#{dtSelectionView.selectedProduct.image}"/>
+                                    <div class="product-name">#{dtSelectionView.selectedProduct.name}</div>
+                                    <div class="product-description">#{dtSelectionView.selectedProduct.description}</div>
+                                    <p:rating readonly="true" value="#{dtSelectionView.selectedProduct.rating}"/>
+                                </div>
+                                <div class="product-grid-item-bottom">
+                                    <h:outputText value="#{dtSelectionView.selectedProduct.price}"
+                                                  styleClass="product-price">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                    <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                     disabled="#{dtSelectionView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
+                                        <f:setPropertyActionListener value="#{dtSelectionView.selectedProduct}"
+                                                                     target="#{dtSelectionView.selectedProduct}"/>
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </p:column>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

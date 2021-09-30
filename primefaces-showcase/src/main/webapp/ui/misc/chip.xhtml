@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-chip.custom-chip {
+                background: var(--primary-color);
+                color: var(--primary-color-text);
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Chip
+    </ui:define>
+
+    <ui:define name="description">
+        Chip represents entities using icons, labels and images.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chip"/>
+    <ui:param name="widgetLink" value="Chip" />
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5>Basic</h5>
+                <div class="p-d-flex p-ai-center p-flex-wrap">
+                    <p:chip label="Action" styleClass="p-mr-2"/>
+                    <p:chip label="Comedy" styleClass="p-mr-2"/>
+                    <p:chip label="Mystery" styleClass="p-mr-2"/>
+                    <p:chip label="Thriller" removable="true"/>
+                </div>
+
+                <h5>Icon</h5>
+                <div class="p-d-flex p-ai-center p-flex-wrap">
+                    <p:chip label="Apple" icon="pi pi-apple" styleClass="p-mr-2"/>
+                    <p:chip label="Facebook" icon="pi pi-facebook" styleClass="p-mr-2"/>
+                    <p:chip label="Google" icon="pi pi-google" styleClass="p-mr-2"/>
+                    <p:chip label="Microsoft" icon="pi pi-microsoft" removable="true"/>
+                </div>
+
+                <h5>Image</h5>
+                <div class="p-d-flex p-ai-center p-flex-wrap">
+                    <p:chip label="Amy Elsner" image="../../resources/demo/images/avatar/amyelsner.png" styleClass="p-mr-2"/>
+                    <p:chip label="Asiya Javayant" image="../../resources/demo/images/avatar/asiyajavayant.png"
+                            styleClass="p-mr-2"/>
+                    <p:chip label="Onyama Limba" image="../../resources/demo/images/avatar/onyamalimba.png"
+                            styleClass="p-mr-2"/>
+                    <p:chip label="Xuxue Feng" image="../../resources/demo/images/avatar/xuxuefeng.png"
+                            removable="true"/>
+                </div>
+
+                <h5>Styling</h5>
+                <div class="p-d-flex p-ai-center p-flex-wrap">
+                    <p:chip label="Action" styleClass="p-mr-2 custom-chip"/>
+                    <p:chip label="Apple" icon="pi pi-apple" styleClass="p-mr-2 custom-chip"/>
+                    <p:chip label="Onyama Limba" image="../../resources/demo/images/avatar/onyamalimba.png"
+                            styleClass="p-mr-2 custom-chip"/>
+                    <p:chip label="Xuxue Feng" image="../../resources/demo/images/avatar/xuxuefeng.png"
+                            styleClass="custom-chip" removable="true"/>
+                </div>
+
+                <h5>Event</h5>
+                <div class="p-d-flex p-ai-center p-flex-wrap">
+                    <p:chip label="Action" styleClass="p-mr-2">
+                        <p:ajax listener="#{chipView.onSelect}" update="messages"/>
+                    </p:chip>
+                    <p:chip label="Apple" icon="pi pi-apple" styleClass="p-mr-2" removable="true">
+                        <p:ajax listener="#{chipView.onSelect}" update="messages"/>
+                        <p:ajax event="close" listener="#{chipView.onClose}" update="messages"/>
+                    </p:chip>
+                    <p:chip label="Onyama Limba" image="../../resources/demo/images/avatar/onyamalimba.png"
+                            styleClass="p-mr-2" removable="true">
+                        <p:ajax listener="#{chipView.onSelect}" update="messages"/>
+                        <p:ajax event="close" listener="#{chipView.onClose}" update="messages"/>
+                    </p:chip>
+                    <p:chip label="Xuxue Feng" image="../../resources/demo/images/avatar/xuxuefeng.png"
+                            removable="true">
+                        <p:ajax listener="#{chipView.onSelect}" update="messages"/>
+                        <p:ajax event="close" listener="#{chipView.onClose}" update="messages"/>
+                    </p:chip>
+                </div>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

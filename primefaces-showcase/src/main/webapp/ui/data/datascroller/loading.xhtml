@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataScroller <span class="subitem">Loading</span>
+    </ui:define>
+
+    <ui:define name="description">
+        The <code>loading</code> facet can be used to show UI while data is being loaded.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datascroller"/>
+    <ui:param name="widgetLink" value="datascroller-1" />
+
+    <ui:define name="implementation">
+        <div class="product card">
+            <h:form>
+                <p:dataScroller widgetVar="ds" value="#{dataScrollerView.products}" var="product" chunkSize="5">
+                    <f:facet name="loading">
+                        <div class="product">
+                            <div class="product-list-item p-p-5">
+                                <p:skeleton height="100px" width="150px" style="margin-right:2rem"/>
+                                <div class="product-list-detail">
+                                    <p:skeleton width="200px" height="34px" style="margin-bottom:14px"/>
+                                    <p:skeleton width="130px" height="17.5px" style="margin-bottom:7px"/>
+                                    <p:skeleton width="200px" height="14px"/>
+                                </div>
+                                <div class="product-list-action" style="width:120px">
+                                    <p:skeleton width="80px" height="24px" style="margin-bottom:7px;align-self:flex-end;"/>
+                                    <p:skeleton height="33px" style="margin-bottom:7px"/>
+                                    <p:skeleton height="21px"/>
+                                </div>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <div class="product">
+                        <div class="product-list-item p-p-5">
+                            <p:graphicImage name="demo/images/product/#{product.image}"/>
+                            <div class="product-list-detail">
+                                <div class="product-name">#{product.name}</div>
+                                <div class="product-description">#{product.description}</div>
+                                <p:rating readonly="true" value="#{product.rating}"/>
+                                <i class="pi pi-tag product-category-icon"/><span
+                                    class="product-category">#{product.category}</span>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{product.price}" styleClass="product-price">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                                <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                 disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                </p:commandButton>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <f:facet name="loader">
+                        <div class="p-text-center">
+                            <p:commandButton type="button" value="More" icon="pi pi-refresh"/>
+                        </div>
+                    </f:facet>
+                </p:dataScroller>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

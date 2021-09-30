@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript">
+            function geocode() {
+                PF('geoMap').geocode(document.getElementById('address').value);
+            }
+
+            function reverseGeocode() {
+                var lat = document.getElementById('lat').value,
+                    lng = document.getElementById('lng').value;
+
+                PF('revGeoMap').reverseGeocode(lat, lng);
+            }
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        GMap <span class="subitem">Geocode</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Geocoding support is provided with geocode and reverseGeocode ajax behavior events.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gmap"/>
+    <ui:param name="widgetLink" value="GMap-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form prependId="false">
+
+            <div class="card">
+                <h5 style="margin-top:0">Geocode</h5>
+                <h:panelGrid columns="3" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="address" value="Address:"/>
+                    <p:inputText id="address"/>
+                    <p:commandButton value="Geocode" icon="pi pi-search" onclick="geocode()" type="button"/>
+                </h:panelGrid>
+
+                <p:gmap id="geoGmap" widgetVar="geoMap" center="#{geocodeView.centerGeoMap}" zoom="2" type="ROADMAP"
+                        model="#{geocodeView.geoModel}" style="width:100%;height:400px">
+                    <p:ajax event="geocode" listener="#{geocodeView.onGeocode}" update="@this"/>
+                </p:gmap>
+            </div>
+
+            <div class="card">
+                <h5>Reverse Geocode</h5>
+                <h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="lat" value="Lat:"/>
+                    <p:inputText id="lat"/>
+                    <p:outputLabel for="lng" value="Lng:"/>
+                    <p:inputText id="lng"/>
+                    <p:commandButton value="Reverse Geocode" icon="pi pi-search" onclick="reverseGeocode()"
+                                     type="button"/>
+                </h:panelGrid>
+
+                <p:gmap id="revGeoGmap" widgetVar="revGeoMap" center="#{geocodeView.centerRevGeoMap}" zoom="2"
+                        type="ROADMAP" model="#{geocodeView.revGeoModel}" style="width:100%;height:400px">
+                    <p:ajax event="reverseGeocode" listener="#{geocodeView.onReverseGeocode}" update="@this"/>
+                </p:gmap>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

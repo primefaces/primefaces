@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SelectCheckboxMenu
+    </ui:define>
+
+    <ui:define name="description">
+        SelectManyCheckbox is used to choose multiple items displayed in an overlay.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectcheckboxmenu"/>
+    <ui:param name="widgetLink" value="SelectCheckboxMenu-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <h5 class="p-mt-0">Basic</h5>
+                <p:selectCheckboxMenu id="menu" value="#{checkboxView.selectedCities}" label="Cities" style="width: 15rem"
+                                        filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
+                    <f:selectItems value="#{checkboxView.cities}"/>
+                </p:selectCheckboxMenu>
+
+                <h5>Multiple</h5>
+                <p:selectCheckboxMenu id="multiple" value="#{checkboxView.selectedCities2}" label="Cities" style="min-width: 15rem"
+                                          multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+                        <p:ajax event="itemUnselect" listener="#{checkboxView.onItemUnselect}"/>
+                        <f:selectItems value="#{checkboxView.cities}"/>
+                    </p:selectCheckboxMenu>
+
+                <h5>Grouped</h5>
+                <p:selectCheckboxMenu id="grouped" value="#{checkboxView.selectedCountries}" label="Countries" style="width: 15rem"
+                                        multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
+                    <f:selectItems value="#{checkboxView.countries}"/>
+                </p:selectCheckboxMenu>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

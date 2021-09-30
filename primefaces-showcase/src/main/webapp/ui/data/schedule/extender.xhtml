@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Schedule <span class="subitem">Extender</span>
+    </ui:define>
+
+    <ui:define name="description">
+        The schedule component provides many options already, but it does not offer the full suite of options supported
+        by the underlying FullCalendar library. This is an advanced option that lets you configure the schedule to your
+        your needs. Use the <em>extender</em> option and provide a custom JavaScript function. That function is called
+        before the schedule is initialized. Within that function, you can use the <em>this</em> keyword to access the
+        current schedule widget and modify the <em>this.cfg</em> options passed to FullCalendar. See the
+        <a href="https://fullcalendar.io/docs" target="_blank" rel="nofollow noopener">FullCalendar documentation</a>
+        for more details and all available options.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/schedule"/>
+    <ui:param name="widgetLink" value="Schedule-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" widgetVar="messagesGrowl" showDetail="true"
+                         globalOnly="true"/>
+
+                <p:panel id="settings" header="Extender settings" styleClass="p-mb-6">
+
+                    <!-- Additional CSS or JavaScript required by the extender example -->
+                    <h:outputText escape="false"
+                                  value="#{not empty scheduleJava8View.extenderExample ? scheduleJava8View.extenderExample.html : ''}">
+                    </h:outputText>
+
+                    <p:panelGrid columns="2" layout="flex" styleClass="ui-noborder"
+                                 columnClasses="p-col-12 p-xl-12, p-col-12 p-xl-12">
+
+                        <p:selectOneMenu id="examples" label="Examples"
+                                         style="width: 100%;"
+                                         value="#{scheduleJava8View.selectedExtenderExample}">
+                            <f:selectItem noSelectionOption="true"
+                                          itemLabel="Select an example..." itemValue=""/>
+                            <f:selectItems value="#{scheduleJava8View.extenderExamples}"/>
+                            <f:selectItem itemLabel="Custom extender code" itemValue="custom"/>
+                            <p:ajax event="change" update="@form" process="@this"
+                                    listener="#{scheduleJava8View.onExtenderExampleSelect}"/>
+                        </p:selectOneMenu>
+
+                        <p:message id="examplesMessage" escape="false" severity="info"
+                                   showSummary="true" for="examples"
+                                   rendered="#{not empty scheduleJava8View.extenderExample}"/>
+
+                        <h:outputLink value="#{scheduleJava8View.extenderExample.link}"
+                                      target="_blank" rel="nofollow noopener"
+                                      rendered="#{not empty scheduleJava8View.extenderExample and not empty scheduleJava8View.extenderExample.link}">
+                            <h:outputText
+                                    value="See FullCalendar docs for more details on this option."/>
+                        </h:outputLink>
+
+                        <p:inputTextarea id="extenderCustomCode" rows="6"
+                                         style="width: 100%;" autoResize="true"
+                                         value="#{scheduleJava8View.extenderCode}"
+                                         rendered="#{scheduleJava8View.selectedExtenderExample eq 'custom'}"/>
+
+                        <ui:fragment
+                                rendered="#{not empty scheduleJava8View.extenderExample}">
+                            <pre id="extenderCode" name="extenderCode"
+                                 class="brush:js">#{scheduleJava8View.extenderCode}</pre>
+                            <script type="text/javascript">SyntaxHighlighter.highlight(document.getElementById('extenderCode'))</script>
+                        </ui:fragment>
+
+                        <ui:fragment
+                                rendered="#{not empty scheduleJava8View.extenderExample and not empty scheduleJava8View.extenderExample.html}">
+                            <h:outputText
+                                    value="Additional CSS or JavaScript required for this example"/>
+                            <pre id="extenderHtml" name="html"
+                                 class="brush:html">#{scheduleJava8View.extenderExample.html}</pre>
+                            <script type="text/javascript">SyntaxHighlighter.highlight(document.getElementById('extenderHtml'))</script>
+                        </ui:fragment>
+
+                        <p:commandButton id="update" styleClass="extender-update"
+                                         value="Apply extender and update schedule" process="@form"
+                                         update="@form:schedulePanel" icon="pi pi-refresh"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:outputPanel id="schedulePanel">
+
+                    <!-- Load the extender and catch errors -->
+                    <script type="text/javascript">
+                        window.ExtenderShowcase = undefined;
+                    </script>
+                    <script type="text/javascript">
+                        window.ExtenderShowcase = function () {
+                            try {
+                                #{ scheduleJava8View.extenderCode }
+                            } catch (e) {
+                                console.error("Error while running extender", e);
+                                PF("messagesGrowl").renderMessage({
+                                    severity: "error",
+                                    summary: "Invalid extender",
+                                    detail: "The extender you entered threw an error - you might want to check your browser's dev tools. The error was: " + e.message
+                                });
+                            }
+                        };
+                    </script>
+                    <script type="text/javascript">
+                        if (typeof window.ExtenderShowcase === "undefined") {
+                            PF("messagesGrowl").renderMessage({
+                                severity: "error",
+                                summary: "Invalid extender",
+                                detail: "The extender you entered seems to be syntactically invalid - you might want to check your browser's dev tools."
+                            });
+                        }
+                    </script>
+
+                    <!-- Remote command for deleting events, for the 'delete button' example -->
+                    <p:remoteCommand id="deleteEvent" name="deleteEvent"
+                                     actionListener="#{scheduleJava8View.onEventDelete}" process="@this"
+                                     update="@none" oncomplete="PF('schedule').update()">
+                    </p:remoteCommand>
+
+                    <!-- The actual schedule component -->
+                    <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}"
+                                widgetVar="schedule" extender="window.ExtenderShowcase"/>
+                </p:outputPanel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

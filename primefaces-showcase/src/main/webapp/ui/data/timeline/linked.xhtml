@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function onrangechange1() {
+                var second = PF('timelineSecondWdgt');
+                if (second.jq.data("rangeFired")) {
+                    second.jq.data("rangeFired", null);
+                    return;
+                }
+                var first = PF('timelineFirstWdgt');
+                var range = first.getVisibleRange();
+                first.jq.data("rangeFired", true);
+                PF('timelineSecondWdgt').setVisibleRange(range.start, range.end);
+            }
+
+            function onrangechange2() {
+                var first = PF('timelineFirstWdgt');
+                if (first.jq.data("rangeFired")) {
+                    first.jq.data("rangeFired", null);
+                    return;
+                }
+                var second = PF('timelineSecondWdgt');
+                var range = second.getVisibleRange();
+                second.jq.data("rangeFired", true);
+                PF('timelineFirstWdgt').setVisibleRange(range.start, range.end);
+            }
+
+            //]]>
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Two Linked Timelines</span>
+    </ui:define>
+
+    <ui:define name="description">
+        When moving one timeline, the other moves along. Use mouse scroll wheel for zoom-in and zoom-out. A click on an event in the first timeline
+        selects an event in the second timeline (Project A or Project B).
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+            <p:growl id="growl" showSummary="true" showDetail="false">
+                <p:autoUpdate/>
+            </p:growl>
+
+            <div class="card">
+                <h5 style="margin-top: 0">Events</h5>
+                <p:timeline id="timelineFirst" value="#{linkedTimelinesView.modelFirst}" var="task"
+                            height="250px" widgetVar="timelineFirstWdgt">
+                    <p:ajax event="rangechange" process="@none" onstart="onrangechange1(); return false;"/>
+                    <p:ajax event="select" listener="#{linkedTimelinesView.onSelect}"/>
+
+                    <h:panelGroup layout="block" rendered="#{not task.period}" style="padding-bottom:5px">
+                        <h:outputText value="#{task.title}"/>
+                    </h:panelGroup>
+                    <p:graphicImage library="demo" name="#{task.imagePath}" height="26px"/>
+                    <h:panelGroup rendered="#{task.period}" style="padding:8px">
+                        <h:outputText value="#{task.title}"/>
+                    </h:panelGroup>
+                </p:timeline>
+            </div>
+
+            <div class="card">
+                <h5>Projects</h5>
+                <p:timeline id="timelineSecond" value="#{linkedTimelinesView.modelSecond}"
+                            height="150px" widgetVar="timelineSecondWdgt">
+                    <p:ajax event="rangechange" process="@none" onstart="onrangechange2(); return false;"/>
+                </p:timeline>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

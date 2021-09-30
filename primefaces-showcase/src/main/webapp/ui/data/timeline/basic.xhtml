@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Timeline is an interactive visualization chart to visualize events in time.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+        <h:form id="form">
+            <p:growl id="growl" showSummary="true" showDetail="true">
+                <p:autoUpdate />
+            </p:growl>
+
+            <div class="card">
+                <p:timeline id="timeline" value="#{basicTimelineView.model}"
+                    height="250px" selectable="#{basicTimelineView.selectable}"
+                    zoomable="#{basicTimelineView.zoomable}"
+                    moveable="#{basicTimelineView.moveable}"
+                    stackEvents="#{basicTimelineView.stackEvents}"
+                    eventStyle="#{basicTimelineView.eventStyle}"
+                    showCurrentTime="#{basicTimelineView.showCurrentTime}">
+
+                    <p:ajax event="select" listener="#{basicTimelineView.onSelect}" />
+
+                </p:timeline>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

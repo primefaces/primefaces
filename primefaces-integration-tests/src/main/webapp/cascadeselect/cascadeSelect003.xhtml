@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:cascadeSelect id="cascadeSelect" value="#{cascadeSelect003.selectedDriver}" placeholder="Select a driver" converter="realDriverConverter">
+                <f:selectItems value="#{cascadeSelect003.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver}" />
+                <p:ajax event="itemSelect" process="@this" listener="#{cascadeSelect003.onItemSelect}"/>
+            </p:cascadeSelect>
+
+            <p:commandButton id="button" action="#{cascadeSelect003.submit}" update="@form" value="Submit"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

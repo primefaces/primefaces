@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+    </ui:define>
+
+    <ui:define name="title">
+        GMap <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Center, zoom and type attributes are required to create a map.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gmap"/>
+    <ui:param name="widgetLink" value="GMap-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

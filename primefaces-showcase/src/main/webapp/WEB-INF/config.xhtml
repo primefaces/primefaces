@@ -1,0 +1,314 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="layout-config">
+        <div class="layout-config-content-wrapper">
+            <a id="layout-config-button" tabindex="0" class="layout-config-button">
+                <i class="pi pi-cog"/>
+            </a>
+            <a id="layout-config-close-button" tabindex="0" class="layout-config-close">
+                <i class="pi pi-times"/>
+            </a>
+
+            <div class="layout-config-content">
+                <h:form>
+                    <h4>Locale</h4>
+                    <p>Change the locale of the datepicker, schedule and client side validation messages.</p>
+                    <p:selectOneMenu id="locale" value="#{app.locale}" converter="#{localeConverter}"
+                                     style="width:300px" panelStyle="width:300px;height:350px;" height="350px"
+                                     effect="fade" var="l" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{countryService.locales}" var="locale"
+                                       itemLabel="#{locale.displayLanguage}" itemValue="#{locale}"/>
+                        <p:ajax oncomplete="window.location.reload();"/>
+                        <p:column style="width:10%">
+                            <span class="flag flag-#{l.code}" style="width: 30px; height: 20px"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Language"/>
+                            </f:facet>
+                            <h:outputText value="#{l.displayLanguage}"/>
+                        </p:column>
+                    </p:selectOneMenu>
+                    <h4>Input Style</h4>
+                    <p:selectOneRadio value="#{app.inputStyle}" onchange="App.updateInputStyle(event.target.value)">
+                        <f:selectItem itemLabel="Outlined" itemValue="outlined"/>
+                        <f:selectItem itemLabel="Filled" itemValue="filled"/>
+                        <p:ajax/>
+                    </p:selectOneRadio>
+
+                    <h4>Free Themes</h4>
+                    <p>Built-in component themes created by the <a
+                            href="https://www.primefaces.org/designer/primefaces">PrimeFaces Theme Designer</a>.</p>
+
+                    <h4>PrimeOne Design</h4>
+                    <div class="p-grid free-themes">
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('saga', false)}"
+                                           oncomplete="App.changeTheme('saga')" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/saga.png" library="showcase" alt="Saga"/>
+                            </p:commandLink>
+                            <span>Saga</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('vela', true)}"
+                                           oncomplete="App.changeTheme('vela', true)" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/vela.png" library="showcase" alt="Vela"/>
+                            </p:commandLink>
+                            <span>Vela</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('arya', true)}"
+                                           oncomplete="App.changeTheme('arya', true)" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/arya.png" library="showcase" alt="Arya"/>
+                            </p:commandLink>
+                            <span>Arya</span>
+                        </div>
+                        <div class="p-col-3"></div>
+                    </div>
+
+                    <h4>Premium Themes</h4>
+                    <p>Premium themes are only available exclusively for <a
+                            href="https://www.primefaces.org/designer/primefaces">PrimeFaces Theme Designer</a> subscribers and therefore not included in PrimeFaces core.
+                    </p>
+                    <p>Bootstrap <b>light blue</b> and <b>dark blue</b> themes are also included in PrimeFaces 10.x builds for <a href="https://www.primefaces.org/support/#elite">Elite</a> subscribers.</p>
+
+                    <div class="p-grid free-themes">
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-blue-light', false)}"
+                                           oncomplete="App.changeTheme('bootstrap4-blue-light')"
+                                           update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/bootstrap4-light-blue.svg" library="showcase"
+                                                alt="bootstrap4-blue-light"/>
+                            </p:commandLink>
+                            <span>Bootstrap Blue</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-purple-light', true)}"
+                                           oncomplete="App.changeTheme('bootstrap4-purple-light')"
+                                           update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/bootstrap4-light-purple.svg" library="showcase"
+                                                alt="bootstrap4-purple-light"/>
+                            </p:commandLink>
+                            <span>Bootstrap Purple</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-blue-dark', true)}"
+                                           oncomplete="App.changeTheme('bootstrap4-blue-dark', true)"
+                                           update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/bootstrap4-dark-blue.svg" library="showcase"
+                                                alt="bootstrap4-blue-dark"/>
+                            </p:commandLink>
+                            <span>Bootstrap Blue</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('bootstrap4-purple-dark', false)}"
+                                           oncomplete="App.changeTheme('bootstrap4-purple-dark', true)"
+                                           update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/bootstrap4-dark-purple.svg" library="showcase"
+                                                alt="bootstrap4-purple-dark"/>
+                            </p:commandLink>
+                            <span>Bootstrap Purple</span>
+                        </div>
+                    </div>
+
+                    <h4>Legacy Free Themes</h4>
+                    <div class="p-grid free-themes">
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('luna-blue', false)}"
+                                           oncomplete="App.changeTheme('luna-amber', true)" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/luna-blue.png" library="showcase" alt="Luna Amber"/>
+                            </p:commandLink>
+                            <span>Luna Amber</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('luna-blue', false)}"
+                                           oncomplete="App.changeTheme('luna-blue', true)" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/luna-blue.png" library="showcase" alt="Luna Blue"/>
+                            </p:commandLink>
+                            <span>Luna Blue</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('luna-green', false)}"
+                                           oncomplete="App.changeTheme('luna-green', true)" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/luna-green.png" library="showcase"
+                                                alt="Luna Green"/>
+                            </p:commandLink>
+                            <span>Luna Green</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('luna-pink', false)}"
+                                           oncomplete="App.changeTheme('luna-pink', true)" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/luna-pink.png" library="showcase" alt="Luna Pink"/>
+                            </p:commandLink>
+                            <span>Luna Pink</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('nova-light', false)}"
+                                           oncomplete="App.changeTheme('nova-light')" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/nova.png" library="showcase" alt="Nova"/>
+                            </p:commandLink>
+                            <span>Nova</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('nova-dark', false)}"
+                                           oncomplete="App.changeTheme('nova-dark')" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/nova-alt.png" library="showcase" alt="Nova"/>
+                            </p:commandLink>
+                            <span>Nova Alt</span>
+                        </div>
+                        <div class="p-col-3">
+                            <p:commandLink actionListener="#{app.changeTheme('nova-colored', false)}"
+                                           oncomplete="App.changeTheme('nova-colored')" update=":app-theme-logo">
+                                <p:graphicImage name="images/themes/nova-accent.png" library="showcase" alt="Nova"/>
+                            </p:commandLink>
+                            <span>Nova Accent</span>
+                        </div>
+                    </div>
+
+                    <h4>PREMIUM TEMPLATES</h4>
+                    <p>Create awesome applications in no time using the premium templates and impress your users.</p>
+
+                    <div class="p-grid premium-themes">
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/freya" target="_blank">
+                                <p:graphicImage name="images/layouts/freya.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/rain" target="_blank">
+                                <p:graphicImage name="images/layouts/rain.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/diamond" target="_blank">
+                                <p:graphicImage name="images/layouts/diamond.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/poseidon" target="_blank">
+                                <p:graphicImage name="images/layouts/poseidon.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/serenity" target="_blank">
+                                <p:graphicImage name="images/layouts/serenity.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/sapphire" target="_blank">
+                                <p:graphicImage name="images/layouts/sapphire.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/avalon" target="_blank">
+                                <p:graphicImage name="images/layouts/avalon.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/mirage" target="_blank">
+                                <p:graphicImage name="images/layouts/mirage.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/prestige" target="_blank">
+                                <p:graphicImage name="images/layouts/prestige.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/roma" target="_blank">
+                                <p:graphicImage name="images/layouts/roma.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/babylon" target="_blank">
+                                <p:graphicImage name="images/layouts/babylon.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/apollo" target="_blank">
+                                <p:graphicImage name="images/layouts/apollo.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/olympia" target="_blank">
+                                <p:graphicImage name="images/layouts/olympia.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/manhattan" target="_blank">
+                                <p:graphicImage name="images/layouts/manhattan.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/ecuador" target="_blank">
+                                <p:graphicImage name="images/layouts/ecuador.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/harmony" target="_blank">
+                                <p:graphicImage name="images/layouts/harmony.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/california" target="_blank">
+                                <p:graphicImage name="images/layouts/california.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/paradise" target="_blank">
+                                <p:graphicImage name="images/layouts/paradise.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/ultima" target="_blank">
+                                <p:graphicImage name="images/layouts/ultima.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/barcelona" target="_blank">
+                                <p:graphicImage name="images/layouts/barcelona.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/morpheus" target="_blank">
+                                <p:graphicImage name="images/layouts/morpheus.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/verona" target="_blank">
+                                <p:graphicImage name="images/layouts/verona.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/atlantis" target="_blank">
+                                <p:graphicImage name="images/layouts/atlantis.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/pandora" target="_blank">
+                                <p:graphicImage name="images/layouts/pandora.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/siberia" target="_blank">
+                                <p:graphicImage name="images/layouts/siberia.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/omega" target="_blank">
+                                <p:graphicImage name="images/layouts/omega.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                        <div class="p-col-12 p-md-6">
+                            <a href="https://www.primefaces.org/layouts/icarus" target="_blank">
+                                <p:graphicImage name="images/layouts/icarus.jpg" library="showcase"/>
+                            </a>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </div>
+</ui:composition>

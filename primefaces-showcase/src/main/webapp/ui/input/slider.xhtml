@@ -1,0 +1,105 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Slider
+    </ui:define>
+
+    <ui:define name="description">
+        Slider is used to provide input in various ways.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/slider"/>
+    <ui:param name="widgetLink" value="Slider-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl" showDetail="true"/>
+
+                <h5 class="p-mt-0">Basic</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputText id="txt" value="#{sliderView.number1}"/>
+                    <p:slider for="txt" range="false"/>
+                </h:panelGrid>
+
+                <h5 class="p-mt-0">Basic Min Range</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputText id="sliderTxtMin" value="#{sliderView.number1}"/>
+                    <p:slider for="sliderTxtMin"/>
+                </h:panelGrid>
+
+                <h5 class="p-mt-0">Basic Max Range</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputText id="sliderTxtMax" value="#{sliderView.number1}"/>
+                    <p:slider for="sliderTxtMax" range="max"/>
+                </h:panelGrid>
+
+                <h5>InputText Slider with Decimal Value </h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputText id="decimal" value="#{sliderView.number2}"/>
+                    <p:slider for="decimal" minValue="0.2" maxValue="7.1" step="0.1" range="max"/>
+                </h:panelGrid>
+
+                <h5>InputNumber Slider</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputNumber id="nmb1" value="#{sliderView.number3}" symbol=" €"
+                                   valueChangeListener="#{sliderView.onInputChanged}">
+                        <p:ajax process="@this" update="growl"/>
+                    </p:inputNumber>
+                    <p:slider for="nmb1"/>
+                </h:panelGrid>
+
+                <h5>Spinner Slider</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:spinner id="spinner1" value="#{sliderView.number3}" min="0" max="1000" stepFactor="50"
+                               suffix=" €" valueChangeListener="#{sliderView.onInputChanged}">
+                        <p:ajax process="@this" update="growl"/>
+                    </p:spinner>
+                    <p:slider for="spinner1" minValue="0" maxValue="1000" step="50"/>
+                </h:panelGrid>
+
+                <h5>Hidden Input Slider with Display Value</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <h:outputText id="output" value="Set ratio to %#{sliderView.number2}"/>
+                    <h:inputHidden id="txt2" value="#{sliderView.number4}"/>
+                    <p:slider for="txt2" display="output" style="width: 200px" displayTemplate="Set ratio to %{value}"/>
+                </h:panelGrid>
+
+                <h5>Slider with Step Factor</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputText id="txt3" value="#{sliderView.number5}"/>
+                    <p:slider for="txt3" step="10" maxValue="70"/>
+                </h:panelGrid>
+
+                <h5>Vertical Slider</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputText id="txt4" value="#{sliderView.number6}"/>
+                    <p:slider for="txt4" type="vertical"/>
+                </h:panelGrid>
+
+                <h5>Ajax Slider</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <p:inputText id="txt5" value="#{sliderView.number7}"/>
+                    <p:slider for="txt5">
+                        <p:ajax event="slideEnd" listener="#{sliderView.onSlideEnd}" update="growl"/>
+                    </p:slider>
+                </h:panelGrid>
+
+                <h5>Range Slider</h5>
+                <h:panelGrid columns="1" style="margin-bottom: 10px">
+                    <h:outputText id="displayRange" value="Between #{sliderView.number8} and #{sliderView.number9}"/>
+                    <p:slider for="txt6,txt7" display="displayRange" style="width: 400px" range="true"
+                              displayTemplate="Between {min} and {max}"/>
+                </h:panelGrid>
+                <h:inputHidden id="txt6" value="#{sliderView.number8}"/>
+                <h:inputHidden id="txt7" value="#{sliderView.number9}"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

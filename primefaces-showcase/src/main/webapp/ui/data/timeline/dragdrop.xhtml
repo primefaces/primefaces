@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-datalist-item .ui-draggable:hover {
+                background: var(--surface-c);
+            }
+            
+            .ui-datalist-data {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .ui-datalist-item {
+                margin-bottom: .5rem;
+                width: 100%;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">DragDrop</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Drag events from the list on the left side and drop them onto the timeline.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showSummary="true" showDetail="false">
+                    <p:autoUpdate />
+                </p:growl>
+
+                <div style="float: left; width: 130px;">
+                    <p:dataList id="eventsList" value="#{dndTimelineView.events}" var="event" itemType="circle">
+                        <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-p-2">
+                            #{event.name}
+                        </p:outputPanel>
+
+                        <p:draggable for="eventBox" revert="true" helper="clone" cursor="move"/>
+                    </p:dataList>
+                </div>
+
+                <p:timeline id="timeline" value="#{dndTimelineView.model}" var="event" editable="true" eventMargin="10"
+                    eventMarginAxis="0" minHeight="400" start="#{dndTimelineView.start}" end="#{dndTimelineView.end}"
+                    style="margin-left:135px;" dropActiveStyleClass="ui-state-highlight"
+                    dropHoverStyleClass="ui-state-hover">
+                    <p:ajax event="drop" listener="#{dndTimelineView.onDrop}" global="false" update="eventsList" />
+
+                    <h:panelGrid columns="1">
+                        <h:outputText value="#{event.name}" />
+                        <h:outputText value="#{event.start}">
+                            <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
+                        </h:outputText>
+                        <h:outputText value="#{event.end}">
+                            <f:convertDateTime type="localDateTime" pattern="hh:mm:ss a" />
+                        </h:outputText>
+                    </h:panelGrid>
+                </p:timeline>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

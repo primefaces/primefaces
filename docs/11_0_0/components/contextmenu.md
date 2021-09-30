@@ -2,7 +2,7 @@
 
 ContextMenu provides an overlay menu displayed on mouse right-click event.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.contextmenu-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ContextMenu-1.html)
 
 ## Info
 

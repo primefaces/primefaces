@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Video
+    </ui:define>
+
+    <ui:define name="description">
+        The <h:outputLink
+            value="https://www.w3schools.com/html/html5_video.asp">HTML Video</h:outputLink> element is used to play a video file on a web page.
+        There are three supported audio formats: MP4, WEBM, and OGG.
+        All of the <h:outputLink
+            value="https://www.w3schools.com/tags/ref_av_dom.asp">attributes and events</h:outputLink> for HTML5 Video are available to use.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/video"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>MP4</h5>
+            <p:video value="https://www.w3schools.com/html/mov_bbb.mp4"
+                     player="mp4"
+                     controls="true"
+                     width="420"
+                     height="250"
+                     onplay="console.log('MP4 Started Playing')"
+                     onpause="console.log('MP4 Stopped Playing')">
+                Your browser does not support the video element.
+                See: <h:outputLink value="https://www.w3schools.com/html/html5_video.asp">HTML5 Video</h:outputLink>
+            </p:video>
+        </div>
+        <div class="card">
+            <h5>WEBM</h5>
+            <p:video value="/resources/demo/media/sample-webm.webm"
+                     controls="true"
+                     width="420"
+                     height="250"
+                     onplay="console.log('WEBM Started Playing')"
+                     onpause="console.log('WEBM Stopped Playing')">
+                Your browser does not support the video element.
+                See: <h:outputLink value="https://www.w3schools.com/html/html5_video.asp">HTML5 Video</h:outputLink>
+            </p:video>
+        </div>
+    </ui:define>
+
+</ui:composition>

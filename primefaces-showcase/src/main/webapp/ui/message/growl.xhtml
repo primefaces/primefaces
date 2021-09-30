@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Growl
+    </ui:define>
+
+    <ui:define name="description">
+        Growl displays messages in an overlay.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/growl"/>
+    <ui:param name="widgetLink" value="Growl"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="growl" showDetail="true" />
+                <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+
+                <h5 class="p-mt-0">Severities</h5>
+                <p:commandButton actionListener="#{growlView.showInfo}" update="growl" value="Info" styleClass="p-mr-2" style="width: 10rem" />
+                <p:commandButton actionListener="#{growlView.showWarn}" update="growl" value="Warn" styleClass="p-mr-2 ui-button-warning" style="width: 10rem" />
+                <p:commandButton actionListener="#{growlView.showError}" update="growl" value="Error" styleClass="ui-button-danger" style="width: 10rem" />
+
+                <h5>Multiple</h5>
+                <p:commandButton actionListener="#{growlView.showMultiple}" update="growl" value="Multiple" style="width: 10rem" styleClass="ui-button-outlined" />
+
+                <h5>Sticky</h5>
+                <p:commandButton actionListener="#{growlView.showSticky}" update="growl-sticky" value="Info" style="width: 10rem" styleClass="ui-button-help" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        OrderList
+    </ui:define>
+
+    <ui:define name="description">
+        OrderList is used to sort a collection via Drag and Drop based reordering, transition effects, pojo support, country support and more.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/orderlist"/>
+    <ui:param name="widgetLink" value="OrderList"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+            <div class="card">
+                <h5>Basic</h5>
+                <p:orderList value="#{orderListView.cities}" var="city" controlsLocation="none" itemLabel="#{city}" itemValue="#{city}" />
+            </div>
+
+            <div class="card">
+                <h5>Advanced</h5>
+                <p:orderList value="#{orderListView.countries}" var="country" itemValue="#{country}"
+                             converter="#{countryConverter}" controlsLocation="left" responsive="true">
+                    <p:ajax event="select" listener="#{orderListView.onSelect}" update="msgs"/>
+                    <p:ajax event="unselect" listener="#{orderListView.onUnselect}" update="msgs"/>
+                    <p:ajax event="reorder" listener="#{orderListView.onReorder}" update="msgs"/>
+
+                    <f:facet name="caption">Available</f:facet>
+
+                    <p:column style="width:40px">
+                        <span class="flag flag-#{country.code}" style="width: 30px; height: 20px"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{country.name}"/>
+                    </p:column>
+                </p:orderList>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

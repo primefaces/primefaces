@@ -2,7 +2,7 @@
 
 SelectCheckboxMenu is a multi select component that displays options in an overlay.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.selectcheckboxmenu-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.SelectCheckboxMenu-1.html)
 
 ## Info
 
@@ -96,6 +96,15 @@ In addition to common DOM events like change, selectCheckboxMenu provides _toggl
 | --- | --- | --- |
 toggleSelect | org.primefaces.event.ToggleSelectEvent | When toggle all checkbox changes.
 itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed via the close-icon.
+
+## Client Side API
+Widget: _PrimeFaces.widget.SelectCheckBoxMenu_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the input field |
+| enable() | - | void | Enables the input field |
 
 ## Skinning
 SelectCheckboxMenu resides in a main container which _style_ and _styleClass_ attributes apply. As

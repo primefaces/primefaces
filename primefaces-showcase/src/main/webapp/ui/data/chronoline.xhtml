@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .custom-marker {
+                display: flex;
+                width: 2rem;
+                height: 2rem;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                border-radius: 50%;
+                z-index: 1;
+            }
+
+            .ui-chronoline-event-content,
+            .ui-chronoline-event-opposite {
+                line-height: 1;
+            }
+
+            @media screen and (max-width: 960px) {
+                .customized-chronoline .ui-chronoline-event:nth-child(even) {
+                    flex-direction: row !important;
+                }
+
+                .customized-chronoline .ui-chronoline-event:nth-child(even) .ui-chronoline-event-content {
+                    text-align: left !important;
+                }
+
+                .customized-chronoline .ui-chronoline-event-opposite {
+                    flex: 0;
+                }
+
+                .customized-chronoline .ui-card {
+                    margin-top: 1rem;
+                }
+            }
+        </style>
+
+    </ui:define>
+
+    <ui:define name="title">
+        Chronoline
+    </ui:define>
+
+    <ui:define name="description">
+        Chronoline visualizes a series of chained events.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chronoline"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Left Align</h5>
+            <p:chronoline value="#{chronolineView.events}" var="event">
+                #{event.status}
+            </p:chronoline>
+        </div>
+
+        <div class="card">
+            <h5>Right Align</h5>
+            <p:chronoline value="#{chronolineView.events}" var="event" align="right">
+                #{event.status}
+            </p:chronoline>
+        </div>
+
+        <div class="card">
+            <h5>Alternate Align</h5>
+            <p:chronoline value="#{chronolineView.events}" var="event" align="alternate">
+                #{event.status}
+            </p:chronoline>
+        </div>
+
+        <div class="card">
+            <h5>Opposite Content</h5>
+            <p:chronoline value="#{chronolineView.events}" var="event">
+                #{event.status}
+
+                <f:facet name="opposite">
+                    <small class="text-secondary">#{event.date}</small>
+                </f:facet>
+            </p:chronoline>
+        </div>
+
+        <div class="card">
+            <h:form>
+            <h5>Customized</h5>
+            <p:chronoline value="#{chronolineView.events}" var="event" align="alternate" styleClass="customized-chronoline">
+
+                <p:card>
+                    <f:facet name="title">
+                        #{event.status}
+                    </f:facet>
+                    <f:facet name="subtitle">
+                        #{event.date}
+                    </f:facet>
+
+                    <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="p-shadow-2"
+                                    value="../../resources/demo/images/product/#{event.image}" alt="#{event.image}"/>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
+                        quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
+                    <p:commandButton value="Read more" styleClass="ui-button-flat" />
+                </p:card>
+
+                <f:facet name="marker">
+                    <span class="custom-marker p-shadow-2" style="background-color: #{event.color}"><i class="#{event.icon}"/></span>
+                </f:facet>
+            </p:chronoline>
+
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal</h5>
+            <h6>Top Align</h6>
+            <p:chronoline value="#{chronolineView.events2}" var="event" layout="horizontal" align="top">
+                #{event}
+            </p:chronoline>
+
+            <h6>Bottom Align</h6>
+            <p:chronoline value="#{chronolineView.events2}" var="event" layout="horizontal" align="bottom">
+                #{event}
+            </p:chronoline>
+
+            <h6>Alternate Align</h6>
+            <p:chronoline value="#{chronolineView.events2}" var="event" layout="horizontal" align="alternate">
+                #{event}
+            </p:chronoline>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

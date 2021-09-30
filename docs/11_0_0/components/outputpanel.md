@@ -8,7 +8,7 @@ If you use the OutputPanel just as simple placeholder, it's better to use anothe
 <div jsf:id="..." jsf:rendered="#{...}">...</div>
 ```
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.outputpanel-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.OutputPanel-1.html)
 
 ## Info
 
@@ -33,6 +33,7 @@ styleClass | null | String | StyleClass of the HTML container element
 layout | block | String | Shortcut for the css display property, valid values are block(default) and inline.
 deferred | false | Boolean | Deferred mode loads the contents after page load to speed up page load.
 deferredMode | load | String | Defines deferred loading mode, valid values are "load" (after page load) and "visible" (once the panel is visible on scroll).
+loaded | false | Boolean | Indicates that deferred loading is not needed.
 
 OutputPanel has various uses cases such as placeholder, deferred loading and auto update.
 
@@ -73,6 +74,35 @@ possible to load contents not just after page load (default mode) but when it be
 page scroll as well. This feature is very useful to increase page load performance, assume you have
 one part of the page that has components dealing with backend and taking time, with deferred mode
 on, rest of the page is loaded instantly and time taking process is loaded afterwards with ajax.
+
+### Loading facet
+Deferred loading can be used with the `loading` facet to show UI while the data is being loaded. This
+is normally combined with the load ajax event with a listener which loads the data you want to show
+in your panel. For example:
+
+```xhtml
+<p:outputPanel deferred="true">
+    <p:ajax event="load" listener="#{bean.loadData}"/>
+    <f:facet name="loading">
+        <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+        <p:skeleton width="100%" height="63px"/>
+    </f:facet>
+    <h5>#{bean.data.title}</h5>
+    <p>#{bean.data.body}</p>
+</p:outputPanel>
+```
+
+### Ajax requests
+By default deferred loading does not work with Ajax requests. As a solution you can use the `loaded` boolean
+attribute to enforce loading (even in Ajax requests). Normally you would use an expression here checking if your data
+is empty. For example:
+
+```xhtml
+<p:outputPanel deferred="true" loaded="#{not empty bean.data}">
+    <p:ajax event="load" listener="#{bean.loadData}"/>
+    ...
+</p:outputPanel>
+```
 
 ## Layout
 OutputPanel has two layout modes;

@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataList <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataList displays data in a list layout.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datalist"/>
+    <ui:param name="widgetLink" value="DataList"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+
+            <div class="product card">
+                <h5>Basic</h5>
+                <p:dataList value="#{dataListView.products1}" var="product" type="ordered">
+                    <div class="product-list-item">
+                        <p:graphicImage name="demo/images/product/#{product.image}"/>
+                        <div class="product-list-detail">
+                            <div class="product-name">#{product.name}</div>
+                            <div class="product-description">#{product.description}</div>
+                            <p:rating readonly="true" value="#{product.rating}"/>
+                            <i class="pi pi-tag product-category-icon"/><span
+                                class="product-category">#{product.category}</span>
+                        </div>
+                        <div class="product-list-action">
+                            <h:outputText value="#{product.price}" styleClass="product-price">
+                                <f:convertNumber currencySymbol="$" type="currency"/>
+                            </h:outputText>
+                            <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()"
+                                             value="Add To Cart"
+                                             icon="pi pi-shopping-cart"
+                                             disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                <f:setPropertyActionListener value="#{product}"
+                                                             target="#{dataListView.selectedProduct}"/>
+                            </p:commandButton>
+                            <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                        </div>
+                    </div>
+                </p:dataList>
+            </div>
+
+            <div class="product card">
+                <h5>Definition</h5>
+                <p:dataList value="#{dataListView.products2}" var="product" type="definition">
+                    Product Code: #{product.code}
+                    <f:facet name="description">
+                        <div class="product-list-item">
+                            <p:graphicImage name="demo/images/product/#{product.image}"/>
+                            <div class="product-list-detail">
+                                <div class="product-name">#{product.name}</div>
+                                <div class="product-description">#{product.description}</div>
+                                <p:rating readonly="true" value="#{product.rating}"/>
+                                <i class="pi pi-tag product-category-icon"/><span
+                                    class="product-category">#{product.category}</span>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{product.price}" styleClass="product-price">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                                <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()"
+                                                 value="Add To Cart"
+                                                 icon="pi pi-shopping-cart"
+                                                 disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                    <f:setPropertyActionListener value="#{product}"
+                                                                 target="#{dataListView.selectedProduct}"/>
+                                </p:commandButton>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                            </div>
+                        </div>
+                    </f:facet>
+                </p:dataList>
+            </div>
+
+            <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="blind"
+                      hideEffect="explode" resizable="false">
+                <p:outputPanel id="productDetail" style="text-align:center;">
+                    <p:column rendered="#{not empty dataListView.selectedProduct}">
+                        <div class="product">
+                            <div class="product-grid-item card" style="margin-bottom: 0">
+                                <div class="product-grid-item-top">
+                                    <div>
+                                        <i class="pi pi-tag product-category-icon"/>
+                                        <span class="product-category">#{dataListView.selectedProduct.category}</span>
+                                    </div>
+                                    <span class="product-badge status-#{dataListView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dataListView.selectedProduct.inventoryStatus.text}</span>
+                                </div>
+                                <div class="product-grid-item-content">
+                                    <p:graphicImage name="demo/images/product/#{dataListView.selectedProduct.image}"/>
+                                    <div class="product-name">#{dataListView.selectedProduct.name}</div>
+                                    <div class="product-description">#{dataListView.selectedProduct.description}</div>
+                                    <p:rating readonly="true" value="#{dataListView.selectedProduct.rating}"/>
+                                </div>
+                                <div class="product-grid-item-bottom">
+                                    <h:outputText value="#{dataListView.selectedProduct.price}"
+                                                  styleClass="product-price">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                    <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                     disabled="#{dataListView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </p:column>
+                </p:outputPanel>
+            </p:dialog>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

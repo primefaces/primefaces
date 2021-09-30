@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Dynamic Columns</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Columns of datatable can be created dynamically using the p:columns component.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            Available columns are <b>name</b>, <b>country</b>, <b>date</b>, <b>status</b> and <b>activity</b>.
+
+            <h:form id="form">
+                <div class="p-mt-3 p-mb-5">
+                    <p:inputText id="template" value="#{dtColumnsView.columnTemplate}" size="50" styleClass="p-mr-2"/>
+                    <p:commandButton update="customers" action="#{dtColumnsView.updateColumns}" value="Update"
+                                     process="@parent" icon="pi pi-refresh"
+                                     oncomplete="PF('customersTable').clearFilters()"/>
+                </div>
+
+                <p:dataTable id="customers" var="customer" value="#{dtColumnsView.customers}" widgetVar="customersTable"
+                             filteredValue="#{dtColumnsView.filteredCustomers}">
+
+                    <p:columns value="#{dtColumnsView.columns}" var="column" headerText="#{column.header}" field="#{column.property}">
+                        <f:facet name="filter">
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" rendered="#{column.type eq 'date'}"/>
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" rendered="#{column.type eq 'enum'}">
+                                <f:selectItem itemValue="#{null}" itemLabel=""/>
+                                <f:selectItems value="#{column.klazz.enumConstants}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:columns>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

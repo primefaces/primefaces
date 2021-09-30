@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="layout-sidebar">
+        <div class="layout-sidebar-filter ui-fluid ui-input-filled">
+            <h:form>
+                <p:autoComplete placeholder="Search by name..." minQueryLength="1" effect="fade"
+                                panelStyleClass="layout-sidebar-filter-panel" completeMethod="#{appMenu.completeMenuItem}" groupBy="#{menuItem.parentLabel}"
+                                var="menuItem" scrollHeight="300" emptyMessage="No results found!" queryDelay="0">
+                    <p:column>
+                        <h:outputLink value="#{menuItem.url}" rendered="#{not empty menuItem.url and empty menuItem.badge and not menuItem.url.startsWith('/') and empty menuItem.menuItems}">
+                            #{menuItem.label}
+                        </h:outputLink>
+                        <h:link outcome="#{menuItem.url}" rendered="#{menuItem.url.startsWith('/') and empty menuItem.menuItems}" onclick="App.onSearchClick(event, 'sl_#{menuItem.parentLabel.toLowerCase()}')">
+                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="p-ml-2" rendered="#{not empty menuItem.badge}"/>
+                        </h:link>
+                    </p:column>
+                </p:autoComplete>
+            </h:form>
+        </div>
+
+        <div class="layout-menu">
+            <ui:repeat value="#{appMenu.menuCategories}" var="menuCategory">
+                <div class="menu-category">#{menuCategory.label}</div>
+                <div class="menu-items">
+                    <ui:repeat value="#{menuCategory.menuItems}" var="menuItem">
+                        <h:outputLink rendered="#{empty menuItem.url and not empty menuItem.badge and empty menuItem.menuItems}" styleClass="hidden">
+                            #{menuItem.label}<p:tag value="#{menuItem.badge}" severity="warning" styleClass="p-ml-2" rendered="#{not empty menuItem.badge}"/>
+                        </h:outputLink>
+                        <h:outputLink value="#{menuItem.url}" rendered="#{not empty menuItem.url and empty menuItem.badge and not menuItem.url.startsWith('/') and empty menuItem.menuItems}">
+                            #{menuItem.label}
+                        </h:outputLink>
+                        <h:link outcome="#{menuItem.url}" rendered="#{menuItem.url.startsWith('/') and empty menuItem.menuItems}">
+                            #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="p-ml-2" rendered="#{not empty menuItem.badge}"/>
+                        </h:link>
+                        <p:outputPanel rendered="#{not empty menuItem.menuItems}">
+                            <a id="sl_#{menuItem.label.toLowerCase()}" tabindex="0" class="submenu-link">
+                                #{menuItem.label}<p:tag value="#{menuItem.badge}" styleClass="p-ml-2" rendered="#{not empty menuItem.badge}"/>
+                            </a>
+                            <div class="submenu">
+                                <ul>
+                                    <ui:repeat value="#{menuItem.menuItems}" var="nestedMenuItem">
+                                        <li><h:link outcome="#{nestedMenuItem.url}">
+                                            #{nestedMenuItem.label}
+                                            <p:tag value="#{nestedMenuItem.badge}" styleClass="p-ml-2" rendered="#{not empty nestedMenuItem.badge}"/>
+                                        </h:link></li>
+                                    </ui:repeat>
+                                </ul>
+                            </div>
+                        </p:outputPanel>
+                    </ui:repeat>
+                </div>
+            </ui:repeat>
+
+        </div>
+    </div>
+
+</ui:composition>

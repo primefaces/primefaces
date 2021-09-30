@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:commandButton id="btnGlobal" value="Update global" actionListener="#{autoUpdate001.submitGlobal}"/>
+            <p:commandButton id="btnEvent1" value="Update event1" update="@obs(event1)" actionListener="#{autoUpdate001.submitEvent1}"/>
+            <p:commandButton id="btnEvent2" value="Update event2" update="@obs(event2)" actionListener="#{autoUpdate001.submitEvent2}"/>
+
+            <br/><br/>
+            Global:
+            <h:outputText id="displayGlobal" value="#{autoUpdate001.value1}">
+                <p:autoUpdate/>
+            </h:outputText>
+
+            <br/><br/>
+            Event1:
+            <h:outputText id="displayEvent1" value="#{autoUpdate001.value2}">
+                <p:autoUpdate on="event1"/>
+            </h:outputText>
+
+            <br/><br/>
+            Event2:
+            <h:outputText id="displayEvent2" value="#{autoUpdate001.value3}">
+                <p:autoUpdate on="event2"/>
+            </h:outputText>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

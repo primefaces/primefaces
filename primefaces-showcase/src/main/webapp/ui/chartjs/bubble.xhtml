@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Bubble</span>
+    </ui:define>
+
+    <ui:define name="description">
+        BubbleChart is created with a BubbleChartModel.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/charts?id=bubblechart"/>
+    <ui:param name="widgetLink" value="BubbleChart"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:bubbleChart model="#{chartJsView.bubbleModel}" style="width: 100%; height: 500px;"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

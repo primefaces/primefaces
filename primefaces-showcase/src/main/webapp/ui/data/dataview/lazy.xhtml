@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataView <span class="subitem">Lazy</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataView has built-in support to deal with huge datasets. In order to enable lazy loading, a LazyDataModel needs to be implemented
+        to query the datasource when pagination happens. This example uses an in-memory list to mimic a real datasource like a database. 
+        In a real application, loading should be executed with the query built using the information passed to the load method.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dataview"/>
+    <ui:param name="widgetLink" value="DataView-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:dataView var="customer" value="#{dtLazyView.lazyModel}" rows="12" paginator="true"
+                            rowsPerPageTemplate="6,12,16"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+
+                    <p:dataViewGridItem>
+                        <div class="card p-d-flex p-jc-center">
+                            <h:panelGrid columns="2" cellpadding="7">
+                                <h:outputText value="Name:" styleClass="text-secondary"/>
+                                <h:outputText value="#{customer.name}"/>
+
+                                <h:outputText value="Country:" styleClass="text-secondary"/>
+                                <p:column>
+                                    <span class="flag flag-#{customer.country.code}"
+                                            style="width: 30px; height: 20px"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                    value="#{customer.country.name}"/>
+                                </p:column>
+
+                                <h:outputText value="Company:" styleClass="text-secondary"/>
+                                <h:outputText value="#{customer.company}"/>
+
+                                <h:outputText value="Representative:" styleClass="text-secondary"/>
+                                <p:column>
+                                    <p:graphicImage name="images/avatar/#{customer.representative.image}"
+                                                    library="demo"
+                                                    width="32" style="vertical-align: middle"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                    value="#{customer.representative.name}"/>
+                                </p:column>
+                            </h:panelGrid>
+                        </div>
+                    </p:dataViewGridItem>
+
+                    <p:dataViewListItem>
+                        <h:panelGrid columns="2" style="width:100%" cellspacing="20">
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="7">
+                                    <h:outputText value="Name:" styleClass="text-secondary" />
+                                    <h:outputText value="#{customer.name}"/>
+
+                                    <h:outputText value="Country:" styleClass="text-secondary"/>
+                                    <p:column>
+                                        <span class="flag flag-#{customer.country.code}"
+                                              style="width: 30px; height: 20px"/>
+                                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                      value="#{customer.country.name}"/>
+                                    </p:column>
+
+                                    <h:outputText value="Company:" styleClass="text-secondary"/>
+                                    <h:outputText value="#{customer.company}"/>
+
+                                    <h:outputText value="Representative:" styleClass="text-secondary"/>
+                                    <p:column>
+                                        <p:graphicImage name="images/avatar/#{customer.representative.image}"
+                                                        library="demo"
+                                                        width="32" style="vertical-align: middle"/>
+                                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                      value="#{customer.representative.name}"/>
+                                    </p:column>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                        </h:panelGrid>
+                    </p:dataViewListItem>
+                </p:dataView>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

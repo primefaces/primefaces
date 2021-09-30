@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        IdleMonitor
+    </ui:define>
+
+    <ui:define name="description">
+        IdleMonitor tracks user actions and invokes corresponding events when user goes idle after a specified time and becomes active again.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/idlemonitor"/>
+    <ui:param name="widgetLink" value="IdleMonitor-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                Stay idle on this page for 5 seconds to view the demo.
+
+                <p:growl id="messages" showDetail="true" sticky="true"/>
+
+                <p:idleMonitor timeout="5000">
+                    <p:ajax event="idle" listener="#{idleMonitorView.onIdle}" update="messages"/>
+                    <p:ajax event="active" listener="#{idleMonitorView.onActive}" update="messages"/>
+                </p:idleMonitor>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

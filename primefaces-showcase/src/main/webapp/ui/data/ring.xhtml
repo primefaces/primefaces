@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .image-ring .ui-ring-item {
+                border: 0 none;
+            }
+
+            .image-ring .ui-ring-item img {
+                width: 100%;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Ring
+    </ui:define>
+
+    <ui:define name="description">
+        Ring is a data display component with a circular animation.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/ring"/>
+    <ui:param name="widgetLink" value="Ring"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+            <div class="card">
+                <p:ring id="custom" value="#{ringView.products}" var="product" styleClass="image-ring"
+                        easing="easeInOutBack">
+                    <p:graphicImage id="img" name="/demo/images/product/#{product.image}" styleClass="p-shadow-4" />
+                </p:ring>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

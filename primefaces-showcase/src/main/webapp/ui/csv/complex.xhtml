@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            PrimeFaces.validator['MyComplexValidator'] = {
+
+                validate: function (element) {
+                    var nameRequired = element.find('#form\\:nameRequired');
+                    var name = element.find('#form\\:name');
+
+                    if (nameRequired.find('.ui-chkbox-icon').hasClass('ui-icon-check') && name.val().length === 0) {
+                        PrimeFaces.validator.Highlighter.types['default'].highlight(name);
+
+                        throw {
+                            summary: 'Validation Error',
+                            detail: 'A name is required!'
+                        };
+                    } else {
+                        PrimeFaces.validator.Highlighter.types['default'].unhighlight(name);
+                    }
+                }
+            };
+            //]]>
+        </script>
+    </ui:define>
+
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Complex</span>
+    </ui:define>
+
+    <ui:define name="description">
+        This examples shows how you can implement complex validation on the clide side like conditional validation or "connected" validation over mulitple inputs.
+        <br/> If you select "Name required", you have to set content in the "Name" input.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csv"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:panel header="Validate" pt:data-p-val="MyComplexValidator">
+                    <p:messages showDetail="true">
+                        <p:autoUpdate/>
+                    </p:messages>
+
+                    <h:panelGrid id="grid" columns="3" cellpadding="5">
+                        <p:outputLabel for="@next" value="Name required"/>
+                        <p:selectBooleanCheckbox id="nameRequired" value="#{complexValidationView.nameRequired}"/>
+                        <p:message for="@previous"/>
+
+                        <p:outputLabel for="@next" value="Name"/>
+                        <p:inputText id="name" value="#{complexValidationView.name}" label="Name"/>
+                        <p:message for="@previous"/>
+
+                        <p:outputLabel for="@next" value="Accept Terms And Conditions"/>
+                        <p:selectBooleanCheckbox id="terms" value="#{complexValidationView.acceptTermnsAndCondition}"/>
+                        <p:message for="@previous"/>
+                    </h:panelGrid>
+
+                    <p:defaultCommand target="btnAjax"/>
+
+                    <p:commandButton value="Non-Ajax" ajax="false" icon="pi pi-check" validateClient="true"
+                                     style="margin-right:10px"/>
+                    <p:commandButton value="Ajax" id="btnAjax" update="grid" icon="pi pi-check" validateClient="true"
+                                     style="margin-right:10px"/>
+                    <p:commandButton value="Disabled" ajax="false" icon="pi pi-check" style="margin-right:10px"/>
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

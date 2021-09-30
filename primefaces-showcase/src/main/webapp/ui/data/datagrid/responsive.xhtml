@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .value {
+                font-weight: bold;
+            }
+
+            .ui-datagrid {
+                margin-bottom: 30px;
+            }
+        </style>
+	</ui:define>
+    
+    <ui:define name="title">
+        DataGrid <span class="subitem">Responsive</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Responsive mode is provided to optimize the display for different screen sizes.
+        You can improve this for e.g. large screen via rowStyleClass-attribute.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datagrid" />
+    <ui:param name="widgetLink" value="DataGrid" />
+
+    <ui:define name="implementation">
+        <div class="product card">
+            <h:form id="form">
+                <p:dataGrid var="product" value="#{dataGridView.products}" columns="3" layout="grid"
+                            rows="12" paginator="true" id="cars"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowStyleClass="ui-lg-3 ui-xl-2">
+
+                    <f:facet name="header">
+                        Products for Sale
+                    </f:facet>
+
+                    <div class="product-grid-item card" style="margin-bottom: 0">
+                        <div class="product-grid-item-top">
+                            <div>
+                                <i class="pi pi-tag product-category-icon"/>
+                                <span class="product-category">#{product.category}</span>
+                            </div>
+                            <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                        </div>
+                        <div class="product-grid-item-content">
+                            <p:graphicImage name="demo/images/product/#{product.image}"/>
+                            <div class="product-name">#{product.name}</div>
+                            <div class="product-description">#{product.description}</div>
+                            <p:rating readonly="true" value="#{product.rating}"/>
+                        </div>
+                        <div class="product-grid-item-bottom">
+                            <h:outputText value="#{product.price}" styleClass="product-price">
+                                <f:convertNumber currencySymbol="$" type="currency"/>
+                            </h:outputText>
+                            <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()"
+                                             value="Add To Cart"
+                                             icon="pi pi-shopping-cart"
+                                             disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                <f:setPropertyActionListener value="#{product}"
+                                                             target="#{dataGridView.selectedProduct}"/>
+                            </p:commandButton>
+                        </div>
+                    </div>
+
+                </p:dataGrid>
+
+                <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade"
+                          hideEffect="fade"
+                          resizable="false">
+                    <p:outputPanel id="productDetail" style="text-align:center;">
+                        <p:column rendered="#{not empty dataGridView.selectedProduct}">
+                            <div class="product">
+                                <div class="product-grid-item card" style="margin-bottom: 0">
+                                    <div class="product-grid-item-top">
+                                        <div>
+                                            <i class="pi pi-tag product-category-icon"/>
+                                            <span class="product-category">#{dataGridView.selectedProduct.category}</span>
+                                        </div>
+                                        <span class="product-badge status-#{dataGridView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dataGridView.selectedProduct.inventoryStatus.text}</span>
+                                    </div>
+                                    <div class="product-grid-item-content">
+                                        <p:graphicImage
+                                                name="demo/images/product/#{dataGridView.selectedProduct.image}"/>
+                                        <div class="product-name">#{dataGridView.selectedProduct.name}</div>
+                                        <div class="product-description">#{dataGridView.selectedProduct.description}</div>
+                                        <p:rating readonly="true" value="#{dataGridView.selectedProduct.rating}"/>
+                                    </div>
+                                    <div class="product-grid-item-bottom">
+                                        <h:outputText value="#{dataGridView.selectedProduct.price}"
+                                                      styleClass="product-price">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                        <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                         disabled="#{dataGridView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:column>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

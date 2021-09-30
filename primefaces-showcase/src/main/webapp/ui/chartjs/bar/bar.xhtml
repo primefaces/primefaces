@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Bar</span>
+    </ui:define>
+
+    <ui:define name="description">
+        BarChart is created with a BarChartModel.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/charts?id=barchart"/>
+    <ui:param name="widgetLink" value="BarChart"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Basic</h5>
+            <p:barChart model="#{chartJsView.barModel}" style="width: 100%; height: 500px;"/>
+        </div>
+
+        <div class="card">
+            <h5>Horizontal</h5>
+            <p:barChart model="#{chartJsView.hbarModel}" style="width: 100%; height: 500px;"/>
+        </div>
+
+        <div class="card">
+            <h5>Stacked</h5>
+            <p:barChart model="#{chartJsView.stackedBarModel}" style="width: 100%; height: 500px;"/>
+        </div>
+
+        <div class="card">
+            <h5>Stacked Group</h5>
+            <p:barChart model="#{chartJsView.stackedGroupBarModel}" style="width: 100%; height: 500px;"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

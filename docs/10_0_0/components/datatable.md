@@ -2,7 +2,7 @@
 
 DataTable displays data in tabular format.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.datatable-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.DataTable-1.html)
 
 ## Info
 
@@ -74,7 +74,7 @@ DataTable displays data in tabular format.
 | rowExpandMode             | new                | String           | Defines row expand mode, valid values are "single" and "multiple" (default).
 | rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
 | rowIndexVar               | null               | String           | Name of iterator to refer each row index.
-| rowKey                    | null               | String           | Unique identifier of a row.
+| rowKey                    | null               | String           | Unique identifier of a row. Must be defined when using selection together with non-lazy datasource (eg value-attribute bound to a instance of `java.util.List`).
 | rowSelectMode             | new                | String           | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
@@ -281,6 +281,7 @@ Or
 Ajax based filtering is enabled by setting _field_ or _filterBy_ at column level and providing a list to keep the
 filtered sublist. It is suggested to use a scope longer than request like viewscope to keep the
 filteredValue so that filtered list is still accessible after filtering.
+(Attention: Please be aware sessionscope is not supported for this. Instead set multiViewState="true" to keep table state including filter across views.)
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}">
@@ -524,8 +525,7 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected
-rows. You can either define this key by using the rowKey attribute or by binding a data model
-which implements _org.primefaces.model.SelectableDataModel_.
+rows. You must define this key by using the `rowKey` attribute.
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns

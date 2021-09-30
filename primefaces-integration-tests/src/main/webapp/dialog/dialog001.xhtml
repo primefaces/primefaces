@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:outputLabel for="text1" value="Text 1" />
+            <p:inputText id="text1" value="#{dialog001.text1}" />
+            <br/>
+
+            <p:outputLabel for="date" value="Date" />
+            <p:datePicker id="date" value="#{dialog001.date}" />
+            <br/>
+
+            <p:outputLabel for="text2Readonly" value="Text 2" />
+            <p:inputText id="text2Readonly" value="#{dialog001.text2}" readonly="true" />
+            <br/>
+
+            <p:commandButton id="buttonSubmit" value="Submit" action="#{dialog001.submit}" update="@form"/><br/>
+            <p:commandButton id="buttonShowDialog" value="Show Dialog" action="#{dialog001.showDialog}" onsuccess="PF('dlg').show();" />
+
+            <p:dialog header="Modal Dialog" id="dlg" widgetVar="dlg" modal="true" height="100">
+                <p:ajax event="close" listener="#{dialog001.handleClose}" />
+
+                <p:outputLabel for="text2Dialog" value="Text 2" />
+                <p:inputText id="text2Dialog" value="#{dialog001.dialogData.text}" />
+                <br/>
+
+                <p:commandButton id="buttonDlgOk" value="OK" update="@form" action="#{dialog001.dialogOk}" onsuccess="PF('dlg').hide();"/>
+                <p:commandButton id="buttonDlgCancel" value="Cancel" type="button" onclick="PF('dlg').hide();" />
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-stack {
+                z-index: 1000;
+            }
+        </style>
+    </ui:define>
+
+
+    <ui:define name="title">
+        Stack
+    </ui:define>
+
+    <ui:define name="description">
+        Stack displays menuitems in stacked format.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/stack"/>
+    <ui:param name="widgetLink" value="Stack"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            Stack is displayed at bottom right corner of the page. Clicking the basket icon toggles the items.
+        </div>
+
+        <h:form>
+            <p:stack icon="/resources/demo/images/dock/stack.png" expanded="true">
+                <p:menuitem value="Home" icon="/resources/demo/images/dock/home.png"/>
+                <p:menuitem value="Music" icon="/resources/demo/images/dock/music.png"/>
+                <p:menuitem value="Video" icon="/resources/demo/images/dock/video.png"/>
+                <p:menuitem value="Email" icon="/resources/demo/images/dock/email.png"/>
+                <p:menuitem value="Portfolio" icon="/resources/demo/images/dock/portfolio.png"/>
+            </p:stack>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

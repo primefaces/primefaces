@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-treetable {
+                margin-top: 40px
+            }
+
+            .ui-treetable table {
+                table-layout: fixed
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Filter</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Filtering updates the data based on the constraints.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card ui-fluid">
+            <h:form>
+                <p:treeTable widgetVar="treeTable" value="#{ttScrollableView.root1}" var="document"
+                             style="margin-top:0">
+                    <f:facet name="header">
+                        <div class="p-d-flex p-ai-center p-jc-between">
+                            <span>Vertical</span>
+                            <p:inputText id="globalFilter" onkeyup="PF('treeTable').filter()" style="width:10rem" placeholder="Enter keyword" />
+                        </div>
+                    </f:facet>
+                    <p:column headerText="Name" filterBy="#{document.name}" filterMatchMode="contains">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" filterBy="#{document.type}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('treeTable').filter()" styleClass="custom-filter">
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Folder" itemValue="Folder"/>
+                                <f:selectItem itemLabel="Application" itemValue="Application"/>
+                                <f:selectItem itemLabel="Zip" itemValue="Zip"/>
+                                <f:selectItem itemLabel="Text" itemValue="Text"/>
+                                <f:selectItem itemLabel="Document" itemValue="Document"/>
+                                <f:selectItem itemLabel="Resume" itemValue="Resume"/>
+                                <f:selectItem itemLabel="Excel" itemValue="Excel"/>
+                                <f:selectItem itemLabel="PDF" itemValue="PDF"/>
+                                <f:selectItem itemLabel="Link" itemValue="Link"/>
+                                <f:selectItem itemLabel="Picture" itemValue="Picture"/>
+                                <f:selectItem itemLabel="Video" itemValue="Video"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

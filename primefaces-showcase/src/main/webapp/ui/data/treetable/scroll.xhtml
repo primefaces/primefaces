@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Scroll</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Both vertical and horizontal scrolling of the data is supported.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <div class="card">
+                <h5>Vertical</h5>
+                <p:treeTable value="#{ttScrollableView.root1}" var="document" style="margin-top:0" scrollable="true"
+                             scrollHeight="350">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+            <div class="card">
+                <h5>Horizontal</h5>
+                <p:treeTable value="#{ttScrollableView.root2}" var="document" scrollable="true" scrollWidth="600">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+            <div class="card">
+                <h5>Vertical and Horizontal</h5>
+                <p:treeTable value="#{ttScrollableView.root3}" var="document" scrollable="true" scrollHeight="350"
+                             scrollWidth="600">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

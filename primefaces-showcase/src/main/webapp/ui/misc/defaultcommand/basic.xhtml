@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DefaultCommand <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DefaultCommand controls which command to initiate form submit with when enter key is pressed. Example
+        below demonstrates 3 types of buttons; non-ajax, ajax and standard.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/defaultcommand"/>
+    <ui:param name="widgetLink" value="DefaultCommand"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl>
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <h:panelGrid columns="2" cellpadding="7" styleClass="p-mb-3">
+                    <h:outputLabel for="btnSelect" value="Default Button:"/>
+                    <p:selectOneMenu id="btnSelect" value="#{defaultCommandView.btn}" onchange="$('#form').submit()">
+                        <f:selectItems value="#{defaultCommandView.buttons}"/>
+                    </p:selectOneMenu>
+
+                    <h:outputLabel for="name" value="Name:" />
+                    <p:inputText id="name" value="#{defaultCommandView.text}"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Button1" id="btn1" action="#{defaultCommandView.btn1Submit}" ajax="false" styleClass="p-mr-2" />
+                <p:commandButton value="Button2" id="btn2" action="#{defaultCommandView.btn2Submit}" styleClass="p-mr-2" />
+                <h:commandButton value="Button3" id="btn3" action="#{defaultCommandView.btn3Submit}"/>
+
+                <p:defaultCommand target="#{defaultCommandView.btn}"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

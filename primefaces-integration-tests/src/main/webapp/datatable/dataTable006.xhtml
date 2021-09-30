@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="datatable"
+                         value="#{dataTable006.lazy ? dataTable006.lazyDataModel: dataTable006.progLanguages}"
+                         lazy="#{dataTable006.lazy}"
+                         var="lang"
+                         selection="#{dataTable006.selectedProgLanguages}"
+                         filteredValue="#{dataTable006.filteredProgLanguages}"
+                         rowKey="#{lang.id}"
+                         paginator="true"
+                         rows="3"
+                         selectionPageOnly="#{dataTable006.selectionPageOnly}"
+            >
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                <p:column headerText="ID" field="id"/>
+
+                <p:column headerText="Name" field="name"/>
+
+
+                <p:column headerText="First appeared" field="firstAppeared"/>
+
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable006.submit}"/>
+            <p:commandButton id="toggleSelectPageOnly" value="Selection Page Only" update="@form" action="#{dataTable006.toggleSelectPageOnly}"/>
+            <p:commandButton id="toggleLazyMode" value="Lazy Mode" update="@form" action="#{dataTable006.toggleLazyMode}"/>
+
+            <p:commandButton id="buttonUnselect" value="Unselect" update="@form" action="#{dataTable006.unselectRows}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

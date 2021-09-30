@@ -2,7 +2,7 @@
 
 KeyFilter is used to filter keyboard input on specified input components.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.keyfilter.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.KeyFilter.html)
 
 ## Info
 

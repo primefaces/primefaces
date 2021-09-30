@@ -2,7 +2,7 @@
 
 TriStateCheckbox adds a new state to a checkbox value.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.tristatecheckbox-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.TriStateCheckbox-1.html)
 
 ## Info
 
@@ -33,6 +33,7 @@ converterMessage | null | String | Message to be displayed when conversion fails
 validatorMessage | null | String | Message to be displayed when validation fields.
 widgetVar | null | String | Name of the client side widget.
 disabled | false | Boolean | Disables the component.
+readonly | false | Boolean | Flag indicating that this component will prevent changes by the user.
 stateOneIcon | null | String | Icon of the state one.
 stateTwoIcon | null | String | Icon of the state two.
 stateThreeIcon | null | String | Icon of the state three.
@@ -66,6 +67,8 @@ Widget: _PrimeFaces.widget.TriStateCheckbox_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 toggle() | - | void | Switches to next state.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 
 ## Skinning
 TriStateCheckbox resides in a main container which _style_ and _styleClass_ attributes apply. As

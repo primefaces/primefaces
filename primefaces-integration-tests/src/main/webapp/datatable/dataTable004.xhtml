@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <style type="text/css">
+            body {
+                background-color: #f8f9fa;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:dataTable id="datatable" value="#{dataTable004.progLanguages}" var="lang" selectionMode="single" selection="#{dataTable004.selectedProgLanguage}" rowKey="#{lang.id}">
+                <p:ajax event="rowSelect" listener="#{dataTable004.onRowSelect}" />
+                <p:ajax event="rowUnselect" listener="#{dataTable004.onRowUnselect}" />
+
+                <p:column headerText="ID" sortBy="#{lang.id}">
+                    <h:outputText value="#{lang.id}" />
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{lang.name}">
+                    <h:outputText value="#{lang.name}" />
+                </p:column>
+
+                <p:column headerText="First appeared" sortBy="#{lang.firstAppeared}">
+                    <h:outputText value="#{lang.firstAppeared}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable004.submit}"/>
+            <p:commandButton id="buttonMsgOnly" value="Submit - update card only" process="form:datatable" update="form:card"/>
+            <p:commandButton id="buttonUnselect" value="Unselect" update="@form" action="#{dataTable004.unselectRow}"/>
+
+            <p:card id="card" style="width: 25rem; margin-top: 2em">
+                <f:facet name="title">
+                    selected programming language
+                </f:facet>
+                <p:outputPanel rendered="#{not empty dataTable004.selectedProgLanguage}">
+                    #{dataTable004.selectedProgLanguage.name}
+                </p:outputPanel>
+                <p:outputPanel rendered="#{empty dataTable004.selectedProgLanguage}">
+                    NO ProgrammingLanguage selected
+                </p:outputPanel>
+            </p:card>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

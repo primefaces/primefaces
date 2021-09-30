@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    </ui:define>
+
+    <ui:define name="title">
+        GMap <span class="subitem">Street View</span>
+    </ui:define>
+
+    <ui:define name="description">
+        StreetView control is enabled by simply setting streetView to true. Drop the pegman marker to display Street View.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gmap"/>
+    <ui:param name="widgetLink" value="GMap-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:gmap id="gmap" center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"
+                    streetView="true"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

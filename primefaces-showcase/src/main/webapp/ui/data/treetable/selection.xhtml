@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Selection</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Tree provides three selection modes, "single", "multiple" and "checkbox" in addition to the regular column based selection.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <p:growl id="msgs" showDetail="true" escape="false"/>
+
+            <div class="card">
+                <h5>Single Selection</h5>
+                <p:treeTable value="#{ttSelectionView.root1}" var="document" selectionMode="single"
+                             selection="#{ttSelectionView.selectedNode}" style="margin-top:0">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+
+                <p:commandButton value="Display" update="msgs" icon="pi pi-clone" action="#{ttSelectionView.displaySelectedSingle}" styleClass="p-mt-3" />
+            </div>
+
+            <div class="card">
+                <h5>Multiple Selection with metakey</h5>
+                <p:treeTable value="#{ttSelectionView.root2}" var="document" selectionMode="multiple"
+                             selection="#{ttSelectionView.selectedNodes1}">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+
+                <p:commandButton value="Display" update="msgs" icon="pi pi-clone" styleClass="p-mt-3"
+                                 action="#{ttSelectionView.displaySelectedMultiple(ttSelectionView.selectedNodes1)}"/>
+            </div>
+
+            <div class="card">
+                <h5>Checkbox Selection</h5>
+                <p:treeTable value="#{ttSelectionView.root3}" var="document" selectionMode="checkbox"
+                             selection="#{ttSelectionView.selectedNodes2}">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+
+                <p:commandButton value="Display" update="msgs" icon="pi pi-clone" styleClass="p-mt-3"
+                                 action="#{ttSelectionView.displaySelectedMultiple(ttSelectionView.selectedNodes2)}"/>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

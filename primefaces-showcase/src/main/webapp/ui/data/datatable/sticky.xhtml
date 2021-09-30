@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Sticky Header</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Header of the datatable can be fixed to keep it in viewport during scroll.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <p:dataTable var="product" value="#{dtStickyView.products}" stickyHeader="true" stickyTopAt=".layout-topbar">
+                <p:column headerText="Code">
+                    <h:outputText value="#{product.code}"/>
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{product.name}"/>
+                </p:column>
+                <p:column headerText="Category">
+                    <h:outputText value="#{product.category}"/>
+                </p:column>
+                <p:column headerText="Price">
+                    <h:outputText value="#{product.price}">
+                        <f:convertNumber type="currency" currencySymbol="$"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

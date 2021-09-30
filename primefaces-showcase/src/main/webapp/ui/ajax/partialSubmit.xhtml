@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-log {
+                left: auto;
+                right: 20px;
+                top: 300px;
+            }
+
+            .other-content input {
+                margin-right: .5rem;
+                margin-bottom: .5rem;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Partial Submit</span>
+    </ui:define>
+
+    <ui:define name="description">
+        PartialSubmit reduces network traffic by only adding the partially processed components to the ajax request post. For big pages with many input components,
+        partialSubmit is extremely useful as it leads to more lightweight requests. Compare the Post Data displayed by the logger for the difference.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/ajaxPartialsubmit?id=partial-submit"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:log />
+
+                <h5>Partial Submit Target</h5>
+                <h:panelGrid columns="4" cellpadding="7">
+                    <h:outputLabel for="name" value="Name"/>
+                    <p:inputText id="name" />
+                    <p:commandButton value="Full Submit" partialSubmit="false" process="name"/>
+                    <p:commandButton value="Partial Submit" partialSubmit="true" process="name" styleClass="ui-button-success" />
+                </h:panelGrid>
+
+                <h5>Other Form Content</h5>
+                <div class="p-d-flex p-flex-wrap other-content">
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                    <p:inputText/>
+                </div>
+                
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

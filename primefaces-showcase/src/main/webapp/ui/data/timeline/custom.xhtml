@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            /* Custom styles for the Timeline */
+            div.timeline-frame {
+                border-color: #5D99C3;
+                border-radius: 5px;
+            }
+
+            div.timeline-axis {
+                border-color: #5D99C3;
+                background-color: #5D99C3;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5D99C3', endColorstr='#3A6DA0') alpha(opacity=100);
+                background: -webkit-gradient(linear, left top, left bottom, from(#5D99C3), to(#3A6DA0));
+                background: -moz-linear-gradient(top, #5D99C3, #3A6DA0);
+                -khtml-opacity: 1;
+                -moz-opacity: 1;
+                opacity: 1;
+            }
+
+            div.timeline-groups-axis {
+                border-color: #5D99C3;
+            }
+
+            div.timeline-groups-axis-onleft {
+                border-style: none solid none none;
+            }
+
+            div.timeline-axis-text {
+                color: white;
+            }
+
+            div.timeline-event {
+                color: white !important;
+                border-radius: 5px !important;
+            }
+
+            div.timeline-event-content {
+                padding: 5px;
+                text-shadow: none;
+            }
+
+            div.unavailable {
+                background: #F03030 none !important; /* red */
+                border-color: #bd2828 !important; /* red */
+            }
+
+            div.available {
+                background: #1AA11A none !important; /* green */
+                border-color: #136e13 !important; /* green */
+            }
+
+            div.maybe {
+                background: #FFA500 none !important; /* orange */
+                border-color: #cc8100 !important; /* orange */
+            }
+
+            div.timeline-event-selected {
+                background: #BECEFE none !important;
+                border-color: #97B0F8 !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Custom</span>
+    </ui:define>
+
+    <ui:define name="description">
+        This example demonstrates timeline's customization (custom styles) along with i18n text.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+        <h:form id="form">
+            <div class="card">
+                <p:timeline id="timeline" value="#{customTimelineView.model}"
+                    editable="true" eventMargin="10" eventMarginAxis="0"
+                    start="#{customTimelineView.start}" end="#{customTimelineView.end}"
+                    stackEvents="false" widgetVar="timelineWdgt">
+                    <f:facet name="menu">
+                        <p:commandButton type="button" icon="pi pi-chevron-left" styleClass="p-ml-2" onclick="PF('timelineWdgt').move(-0.3);" />
+                        <p:commandButton type="button" icon="pi pi-chevron-right" styleClass="p-ml-2" onclick="PF('timelineWdgt').move(0.3);" />
+                        <p:commandButton type="button" icon="pi pi-search-minus" styleClass="p-ml-2" onclick="PF('timelineWdgt').zoom(-0.5);" />
+                        <p:commandButton type="button" icon="pi pi-search-plus" styleClass="p-ml-2" onclick="PF('timelineWdgt').zoom(0.5);" />
+                    </f:facet>
+
+                    <f:facet name="loading">
+                        <h1>Loading please wait...</h1>
+                    </f:facet>
+                </p:timeline>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

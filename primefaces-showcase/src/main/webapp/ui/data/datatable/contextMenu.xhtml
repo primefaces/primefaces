@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">ContextMenu</span>
+    </ui:define>
+
+    <ui:define name="description">
+        ContextMenu has special integration with DataTable.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:dataTable id="products" var="product" value="#{dtContextMenuView.products}" rowKey="#{product.id}"
+                             selection="#{dtContextMenuView.selectedProduct}" selectionMode="single">
+                    <f:facet name="header">
+                        RightClick to View Options
+                    </f:facet>
+
+                    <p:column headerText="Code">
+                        <h:outputText value="#{product.code}" />
+                    </p:column>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{product.name}" />
+                    </p:column>
+                    <p:column headerText="Category">
+                        <h:outputText value="#{product.category}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{product.quantity}" />
+                    </p:column>
+                </p:dataTable>
+
+                <p:contextMenu for="products">
+                    <p:menuitem value="View" update="productDetail" icon="pi pi-search"
+                                oncomplete="PF('productDialog').show()"/>
+                    <p:menuitem value="Delete" update="products" icon="pi pi-times"
+                                action="#{dtContextMenuView.deleteProduct}"/>
+                </p:contextMenu>
+
+                <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade"
+                          hideEffect="fade" resizable="false">
+                    <p:outputPanel id="productDetail" style="text-align:center;">
+                        <p:column rendered="#{not empty dtContextMenuView.selectedProduct}">
+                            <div class="product">
+                                <div class="product-grid-item border-0" style="margin-bottom: 0">
+                                    <div class="product-grid-item-top">
+                                        <div>
+                                            <i class="pi pi-tag product-category-icon"/>
+                                            <span class="product-category">#{dtContextMenuView.selectedProduct.category}</span>
+                                        </div>
+                                        <span class="product-badge status-#{dtContextMenuView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dtContextMenuView.selectedProduct.inventoryStatus.text}</span>
+                                    </div>
+                                    <div class="product-grid-item-content">
+                                        <p:graphicImage
+                                                name="demo/images/product/#{dtContextMenuView.selectedProduct.image}"/>
+                                        <div class="product-name">#{dtContextMenuView.selectedProduct.name}</div>
+                                        <div class="product-description">#{dtContextMenuView.selectedProduct.description}</div>
+                                        <p:rating readonly="true" value="#{dtContextMenuView.selectedProduct.rating}"/>
+                                    </div>
+                                    <div class="product-grid-item-bottom">
+                                        <h:outputText value="#{dtContextMenuView.selectedProduct.price}"
+                                                      styleClass="product-price">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                        <p:commandButton type="button" value="Add To Cart"
+                                                         icon="pi pi-shopping-cart"
+                                                         disabled="#{dtContextMenuView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:column>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

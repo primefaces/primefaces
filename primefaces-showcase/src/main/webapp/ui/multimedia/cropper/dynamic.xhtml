@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImageCropper
+    </ui:define>
+
+    <ui:define name="description">
+        ImageCropper can load the image dynamically using StreamedContent.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/imagecropper"/>
+    <ui:param name="widgetLink" value="ImageCropper"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msgs" showDetail="true"/>
+
+                <h:panelGrid columns="3">
+                    <h:panelGrid columns="1">
+
+                        <p:spinner id="iterationSpinner"
+                                   value="#{dynamicCropper.numberOfIterations}"
+                                   min="5" max="50" stepFactor="5"
+                                   styleClass="p-mb-3">
+                            <p:ajax process="@this" update="cropper"/>
+                        </p:spinner>
+
+                        <h:panelGrid columns="2" cellpadding="7">
+                            <p:outputPanel id="cropper">
+                                <p:imageCropper
+                                        value="#{dynamicCropper.croppedImage}"
+                                        id="streamed_cropper" cache="false"
+                                        image="#{dynamicCropper.image}"
+                                        initialCoords="50,50,150,100"
+                                        minSize="50,50" maxSize="350,350"/>
+                            </p:outputPanel>
+                            <p:outputPanel id="cropped">
+                                <p:graphicImage
+                                        rendered="#{not empty dynamicCropper.newImageName}"
+                                        name="demo/images/crop/#{dynamicCropper.newImageName}"/>
+                            </p:outputPanel>
+                        </h:panelGrid>
+
+                        <p:commandButton value="Crop"
+                                         action="#{dynamicCropper.crop}" styleClass="p-mt-3"
+                                         update="cropped msgs" />
+
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

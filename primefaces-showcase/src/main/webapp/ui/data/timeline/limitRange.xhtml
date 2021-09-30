@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Limit Range</span>
+    </ui:define>
+
+    <ui:define name="description">
+        The visible range of the timeline is limited in this demo.
+        <ul>
+            <li>Minimum visible date is limited to 2015-01-01 using attribute <strong>min</strong></li>
+            <li>Maximum visible date is limited to 2015-12-31 using attribute <strong>max</strong></li>
+            <li>Visible interval is limited to a minimum of 24 hours using attribute <strong>zoomMin</strong></li>
+            <li>Visible interval is limited to a maximum of about 3 months using attribute <strong>zoomMax</strong></li>
+        </ul>
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="widgetLink" value="Timeline-1"/>
+
+    <ui:define name="implementation">
+        <h:form id="form">
+            <p:timeline value="#{limitTimelineRangeView.model}" 
+                min="#{limitTimelineRangeView.min}"
+                max="#{limitTimelineRangeView.max}" 
+                zoomMin="#{limitTimelineRangeView.zoomMin}"
+                zoomMax="#{limitTimelineRangeView.zoomMax}" 
+                height="180px" />
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Spinner
+    </ui:define>
+
+    <ui:define name="description">
+        Spinner is used to provide an input with increment and decrement buttons on an input text.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/spinner"/>
+    <ui:param name="widgetLink" value="Spinner"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Basic Spinner"/>
+                        <p:spinner id="basic" value="#{spinnerView.number1}"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Step Factor"/>
+                        <p:spinner id="step" value="#{spinnerView.number2}" stepFactor="0.25"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Min/Max"/>
+                        <p:spinner id="minMax" value="#{spinnerView.number3}" min="0" max="100"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Rotate"/>
+                        <p:spinner id="rotate" value="#{spinnerView.number6}" min="0" max="10" rotate="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Rounded"/>
+                        <p:spinner id="rounded" value="#{spinnerView.number7}" min="0" max="55" stepFactor="5" round="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Prefix"/>
+                        <p:spinner id="prefix" value="#{spinnerView.number4}" prefix="$" min="0"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Horizontal"/>
+                        <p:spinner id="horizontal" value="#{spinnerView.number8}" buttons="horizontal" />
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="@next" value="Horizontal after"/>
+                        <p:spinner id="horizontalAfter" value="#{spinnerView.number9}" buttons="horizontal-after" 
+                                   upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"/>
+                    </div>
+                </div>
+
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-1">
+                        <p:outputLabel for="@next" value="Vertical"/>
+                        <p:spinner id="vertical" value="#{spinnerView.number10}" buttons="vertical"
+                                   upButtonStyleClass="ui-button-secondary" downButtonStyleClass="ui-button-secondary"/>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

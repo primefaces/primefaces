@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    </ui:define>
+
+    <ui:define name="title">
+        GMap <span class="subitem">Event</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Map can respond to various events such as click, zoom change and overlay select.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/gmap"/>
+    <ui:param name="widgetLink" value="GMap-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form prependId="false">
+                <p:growl id="messages" showDetail="true" life="2000"/>
+
+                <p:gmap id="gmap" center="41.381542, 2.122893" zoom="15" type="ROADMAP" style="width:100%;height:400px">
+                    <p:ajax event="stateChange" listener="#{eventView.onStateChange}" update="messages"/>
+                    <p:ajax event="pointSelect" listener="#{eventView.onPointSelect}" update="messages"/>
+                </p:gmap>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

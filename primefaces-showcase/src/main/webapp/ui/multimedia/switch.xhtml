@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImageSwitch
+    </ui:define>
+
+    <ui:define name="description">
+        ImageSwitch is an image gallery component with 25+ effects.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/imageswitch"/>
+    <ui:param name="widgetLink" value="ImageSwitch"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h5 style="margin-top:0">Manual</h5>
+            <p:commandButton type="button" onclick="PF('switcher').previous()"
+                             icon="pi pi-chevron-left" id="prev" styleClass="p-mr-2 p-mb-3" />
+            <p:commandButton type="button" onclick="PF('switcher').next()"
+                             icon="pi pi-chevron-right" id="next" styleClass="p-mr-2 p-mb-3" />
+
+            <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
+                           slideshowAuto="false">
+                <ui:repeat value="#{imagesView.images}" var="image" id="manuelSwitcherImages">
+                    <p:graphicImage name="/demo/images/nature/#{image}" id="image"/>
+                </ui:repeat>
+            </p:imageSwitch>
+        </div>
+
+        <div class="card">
+            <h5>Fade</h5>
+            <p:imageSwitch effect="fade" id="fadeEffect">
+                <ui:repeat value="#{imagesView.images}" var="image" id="fadeEffectImages">
+                    <p:graphicImage name="/demo/images/nature/#{image}" id="image2"/>
+                </ui:repeat>
+            </p:imageSwitch>
+        </div>
+
+        <div class="card">
+            <h5>Zoom</h5>
+            <p:imageSwitch effect="zoom">
+                <ui:repeat value="#{imagesView.images}" var="image">
+                    <p:graphicImage name="/demo/images/nature/#{image}"/>
+                </ui:repeat>
+            </p:imageSwitch>
+        </div>
+
+        <div class="card">
+            <h5>TurnDown</h5>
+            <p:imageSwitch effect="turnDown">
+                <ui:repeat value="#{imagesView.images}" var="image">
+                    <p:graphicImage name="/demo/images/nature/#{image}"/>
+                </ui:repeat>
+            </p:imageSwitch>
+        </div>
+
+        <div class="card">
+            <h5>Shuffle</h5>
+            <p:imageSwitch effect="shuffle">
+                <ui:repeat value="#{imagesView.images}" var="image">
+                    <p:graphicImage name="/demo/images/nature/#{image}"/>
+                </ui:repeat>
+            </p:imageSwitch>
+        </div>
+
+        <div class="card">
+            <h5>Dialog Integration</h5>
+            <p:commandButton type="button" value="Show" onclick="PF('dlg').show()" icon="pi pi-home"/>
+
+            <p:dialog header="Images" widgetVar="dlg" modal="true"
+                      draggable="false" resizable="false" showEffect="fade" hideEffect="fade">
+
+                <p:imageSwitch effect="fade">
+                    <ui:repeat value="#{imagesView.images}" var="image">
+                        <p:graphicImage name="/demo/images/nature/#{image}"/>
+                    </ui:repeat>
+                </p:imageSwitch>
+            </p:dialog>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

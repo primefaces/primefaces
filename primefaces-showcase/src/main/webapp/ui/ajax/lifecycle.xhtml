@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Ajax Framework <span class="subitem">Lifecycle</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Attach events to the Widget lifecycle so you can call client side Javascript during PostConstruct, PostRefresh, or PreDestroy of the widget.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/widgets?id=widget-lifecycle-events"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl widgetVar="msgs" />
+
+                <h:panelGrid columns="2" cellpadding="7" styleClass="p-mb-3">
+                    <h:outputLabel for="name" value="Name:" style="font-weight:bold"/>
+                    <p:inputText id="name" value="#{lifecycleView.text}" widgetVar="wgtName">
+                        <f:attribute name="widgetPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: 'Widget Created'})"/>
+                        <f:attribute name="widgetPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: 'Widget Refreshed'})"/>
+                        <f:attribute name="widgetPreDestroy" value="PF('msgs').renderMessage({severity: 'info', summary: 'Widget Destroyed'})"/>
+                    </p:inputText>
+                </h:panelGrid>
+
+                <p:commandButton value="Submit" update="@form" icon="pi pi-check" styleClass="p-mr-2" />
+                <p:commandButton value="Destroy" icon="pi pi-times" onclick="PF('wgtName').destroy(); return false" styleClass="ui-button-danger" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Separator
+    </ui:define>
+
+    <ui:define name="description">
+        Separator displays a horizantal line that can be styled with css.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/separator"/>
+    <ui:param name="widgetLink" value="Separator"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5 style="margin-top:0">Basic</h5>
+            <p:separator/>
+
+            <h5>Custom</h5>
+            <p:separator style="width:500px;height:20px"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

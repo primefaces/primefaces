@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        AutoComplete
+    </ui:define>
+
+    <ui:define name="description">
+        AutoComplete displays suggestions while the input is being type. AutoComplete
+        features various options, customizable content, multiple selection, effects and events.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/autocomplete"/>
+    <ui:param name="widgetLink" value="AutoComplete-1"/>
+
+    <ui:define name="implementation">
+        <div class="card ui-fluid ">
+            <h:form>
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <h5 class="p-mt-0">Single</h5>
+                <div class="p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Simple" for="@next"/>
+                        <p:autoComplete id="acSimple" value="#{autoCompleteView.txt1}"
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Min Length (3)" for="@next"/>
+                        <p:autoComplete id="acMinLength" minQueryLength="3" value="#{autoCompleteView.txt2}"
+                                        completeMethod="#{autoCompleteView.completeText}" effect="fade" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Delay(1000)" for="@next"/>
+                        <p:autoComplete id="acDelay" queryDelay="1000" value="#{autoCompleteView.txt3}"
+                                        completeMethod="#{autoCompleteView.completeText}" effect="blind" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Max Results(5)" for="@next"/>
+                        <p:autoComplete id="acMaxResults" maxResults="5" value="#{autoCompleteView.txt4}"
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Force Selection" for="@next"/>
+                        <p:autoComplete id="acForce" forceSelection="true" value="#{autoCompleteView.txt5}"
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="DropDown" for="@next"/>
+                        <p:autoComplete id="dd" dropdown="true" value="#{autoCompleteView.txt6}"
+                                    completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Cache" for="@next"/>
+                        <p:autoComplete id="cache" cache="true" cacheTimeout="30000" value="#{autoCompleteView.txt7}"
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Select Event" for="@next"/>
+                        <p:autoComplete id="event" value="#{autoCompleteView.txt8}"
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250">
+                            <p:ajax event="itemSelect" listener="#{autoCompleteView.onItemSelect}" update="msgs"/>
+                        </p:autoComplete>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Empty message" for="@next"/>
+                        <p:autoComplete id="emptyMessage" value="#{autoCompleteView.txt9}"
+                                        completeMethod="#{autoCompleteView.noResults}"
+                                        emptyMessage="No results" scrollHeight="250">
+                            <p:ajax event="emptyMessageSelect" listener="#{autoCompleteView.onEmptyMessageSelect}"
+                                    update="msgs"/>
+                        </p:autoComplete>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Pojo" for="@next"/>
+                        <p:autoComplete id="pojo" value="#{autoCompleteView.country1}"
+                                        completeMethod="#{autoCompleteView.completeCountry}"
+                                        var="country" itemLabel="#{country.name}" itemValue="#{country}"
+                                        converter="#{countryConverter}" forceSelection="true" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Pojo (via REST)" for="pojoRest"/>
+                        <p:autoComplete id="pojoRest" widgetVar="countryPojoRest" value="#{autoCompleteView.country5}"
+                                        var="country" itemLabel="#{country.displayName}" itemValue="#{country}"
+                                        converter="#{countryConverter}"
+                                        completeEndpoint="#{request.contextPath}/rest/country/autocomplete"
+                                        forceSelection="true" emptyMessage="sorry, no suggestions"
+                                        moreText="more items available" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Custom Content" for="@next"/>
+                        <p:autoComplete id="countryCustom" value="#{autoCompleteView.country2}"
+                                        completeMethod="#{autoCompleteView.completeCountry}"
+                                        var="country" itemLabel="#{country.name}" itemValue="#{country}"
+                                        converter="#{countryConverter}" forceSelection="true" scrollHeight="250">
+                            <p:column>
+                                <span class="flag flag-#{country.code}" style="width: 30px; height: 20px"/>
+                                <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{country.name}"/>
+                            </p:column>
+                        </p:autoComplete>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Itemtip" for="@next"/>
+                        <p:autoComplete id="itemTip" value="#{autoCompleteView.country3}"
+                                        completeMethod="#{autoCompleteView.completeCountry}"
+                                        var="country" itemLabel="#{country.name}" itemValue="#{country}"
+                                        converter="#{countryConverter}" scrollHeight="250">
+                            <f:facet name="itemtip">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <f:facet name="header">
+                                        <span class="flag flag-#{country.code}" style="width: 30px; height: 20px"/>
+                                    </f:facet>
+
+                                    <h:outputText value="Name"/>
+                                    <h:outputText value="#{country.name}"/>
+
+                                    <h:outputText value="Code"/>
+                                    <h:outputText value="#{country.code}"/>
+                                </h:panelGrid>
+                            </f:facet>
+                        </p:autoComplete>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Group" for="@next"/>
+                        <p:autoComplete id="group" value="#{autoCompleteView.country4}"
+                                        completeMethod="#{autoCompleteView.completeCountry}"
+                                        var="country" itemLabel="#{country.name}" itemValue="#{country}"
+                                        converter="#{countryConverter}" forceSelection="true"
+                                        groupBy="#{autoCompleteView.getCountryGroup(country)}" escape="false" scrollHeight="250"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="Footer" for="@next"/>
+                        <p:autoComplete id="acFooter" value="#{autoCompleteView.txt10}"
+                                        completeMethod="#{autoCompleteView.completeText}"
+                                        maxResults="10" emptyMessage="No results">
+                            <f:facet name="footer">
+                                <div class="ui-fluid" style="padding:0.5rem 1rem 1rem 1rem">
+                                    <p:button value="Add new" onclick="alert('This could open a dialog')"/>
+                                </div>
+                            </f:facet>
+                        </p:autoComplete>
+                    </div>
+                </div>
+
+                <h5>Multiple</h5>
+                <p:autoComplete id="countries" multiple="true" value="#{autoCompleteView.selectedCountries}"
+                                completeMethod="#{autoCompleteView.completeCountry}"
+                                var="country" itemLabel="#{country.name}" itemValue="#{country}"
+                                converter="#{countryConverter}" forceSelection="true" scrollHeight="250">
+                    <p:column>
+                        <span class="flag flag-#{country.code}" style="width: 30px; height: 20px" />
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{country.name}"/>
+                    </p:column>
+                </p:autoComplete>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="more-source-tabs">
+        <p:tab title="/org/primefaces/showcase/convert/CountryConverter.java"/>
+    </ui:define>
+</ui:composition>

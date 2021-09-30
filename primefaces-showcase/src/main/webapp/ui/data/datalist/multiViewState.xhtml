@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataList <span class="subitem">MultiViewState</span>
+    </ui:define>
+
+    <ui:define name="description">
+        MultiViewState (MVS) feature enables DataList to maintain its state across pages by setting multiViewState attribute to true. In this demo, manipulate use pagination, then visit another page and then come back to this page. DataList state should remain as you've left it.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datalist"/>
+    <ui:param name="widgetLink" value="DataList"/>
+
+    <ui:define name="implementation">
+        <div class="product card">
+            <h:form id="form">
+                <p:messages id="messages"/>
+
+                <p:commandButton value="Clear multiViewSate" action="#{dataListView.clearMultiViewState}"
+                                 update="@form"/>
+
+                <br/><br/>
+
+                <p:dataList value="#{dataListView.products3}" var="product" id="productList" type="unordered"
+                            itemType="none"
+                            multiViewState="true" paginator="true" rows="5" pageLinks="5"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                    <div class="product-list-item">
+                        <p:graphicImage name="demo/images/product/#{product.image}"/>
+                        <div class="product-list-detail">
+                            <div class="product-name">#{product.name}</div>
+                            <div class="product-description">#{product.description}</div>
+                            <p:rating readonly="true" value="#{product.rating}"/>
+                            <i class="pi pi-tag product-category-icon"/><span
+                                class="product-category">#{product.category}</span>
+                        </div>
+                        <div class="product-list-action">
+                            <h:outputText value="#{product.price}" styleClass="product-price">
+                                <f:convertNumber currencySymbol="$" type="currency"/>
+                            </h:outputText>
+                            <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()"
+                                             value="Add To Cart"
+                                             icon="pi pi-shopping-cart"
+                                             disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                <f:setPropertyActionListener value="#{product}"
+                                                             target="#{dataListView.selectedProduct}"/>
+                            </p:commandButton>
+                            <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                        </div>
+                    </div>
+                </p:dataList>
+
+                <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="blind"
+                          hideEffect="explode" resizable="false">
+                    <p:outputPanel id="productDetail" style="text-align:center;">
+                        <p:column rendered="#{not empty dataListView.selectedProduct}">
+                            <div class="product">
+                                <div class="product-grid-item card" style="margin-bottom: 0">
+                                    <div class="product-grid-item-top">
+                                        <div>
+                                            <i class="pi pi-tag product-category-icon"/>
+                                            <span class="product-category">#{dataListView.selectedProduct.category}</span>
+                                        </div>
+                                        <span class="product-badge status-#{dataListView.selectedProduct.inventoryStatus.name().toLowerCase()}">#{dataListView.selectedProduct.inventoryStatus.text}</span>
+                                    </div>
+                                    <div class="product-grid-item-content">
+                                        <p:graphicImage
+                                                name="demo/images/product/#{dataListView.selectedProduct.image}"/>
+                                        <div class="product-name">#{dataListView.selectedProduct.name}</div>
+                                        <div class="product-description">#{dataListView.selectedProduct.description}</div>
+                                        <p:rating readonly="true" value="#{dataListView.selectedProduct.rating}"/>
+                                    </div>
+                                    <div class="product-grid-item-bottom">
+                                        <h:outputText value="#{dataListView.selectedProduct.price}"
+                                                      styleClass="product-price">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                        <p:commandButton update=":form:productDetail"
+                                                         oncomplete="PF('productDialog').show()" value="Add To Cart"
+                                                         icon="pi pi-shopping-cart"
+                                                         disabled="#{dataListView.selectedProduct.inventoryStatus == 'OUTOFSTOCK'}">
+                                            <f:setPropertyActionListener value="#{dataListView.selectedProduct}"
+                                                                         target="#{dataListView.selectedProduct}"/>
+                                        </p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:column>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

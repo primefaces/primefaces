@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        PanelMenu
+    </ui:define>
+
+    <ui:define name="description">
+        PanelMenu is a hybrid of accordion-tree components.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/panelmenu"/>
+    <ui:param name="widgetLink" value="PanelMenu"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:panelMenu style="width:300px">
+                    <p:submenu label="Options">
+                        <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false"
+                                    icon="pi pi-save"/>
+                        <p:menuitem value="Update" action="#{menuView.update}" icon="pi pi-refresh"/>
+                        <p:menuitem value="Delete" action="#{menuView.delete}" icon="pi pi-times"/>
+                    </p:submenu>
+                    <p:submenu label="Navigations">
+                        <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                        <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

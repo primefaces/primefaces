@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-chart {
+                margin-bottom: 50px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Charts <span class="subitem">Line</span>
+    </ui:define>
+
+    <ui:define name="description">
+        LineChart is created with a LineChartModel.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/charts?id=linechart"/>
+    <ui:param name="widgetLink" value="LineChart"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:lineChart model="#{chartJsView.lineModel}" style="width: 100%; height: 500px;"/>
+        </div>
+
+        <div class="card">
+            <p:lineChart model="#{chartJsView.cartesianLinerModel}" style="width: 100%; height: 500px;"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

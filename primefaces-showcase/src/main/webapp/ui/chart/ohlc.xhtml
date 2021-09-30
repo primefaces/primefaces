@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">OHLC</span>
+    </ui:define>
+
+    <ui:define name="description">
+        OhlcChart is created with a OhlcChartModel.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="Chart-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:chart type="ohlc" model="#{chartView.ohlcModel}" style="width:400px;height:300px"/>
+        </div>
+        <br/><br/>
+        <div class="card">
+            <p:chart type="ohlc" model="#{chartView.ohlcModel2}" style="width:400px;height:300px"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

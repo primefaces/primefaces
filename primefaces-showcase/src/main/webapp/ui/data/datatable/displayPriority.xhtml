@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Display Priority</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Columns can be given a default display priority for ordering of the columns.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+
+                <p:dataTable var="product" value="#{dtReorderView.products1}">
+                    <p:column headerText="Code (dp1)" displayPriority="1">
+                        #{product.code}
+                    </p:column>
+
+                    <p:column headerText="Name (dp0)" draggable="false" displayPriority="0">
+                        #{product.name}
+                    </p:column>
+
+                    <p:column headerText="Category (dp8)" displayPriority="8">
+                        #{product.category}
+                    </p:column>
+
+                    <p:column headerText="Quantity (dp5)" displayPriority="5">
+                        #{product.quantity}
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

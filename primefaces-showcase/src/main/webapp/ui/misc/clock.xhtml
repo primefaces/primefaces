@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-analog-clock {
+                width: 200px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Clock
+    </ui:define>
+
+    <ui:define name="description">
+        Clock displays server or client datetime live. AutoSync feature in server mode can sync the
+        clock with server periodically.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/clock"/>
+    <ui:param name="widgetLink" value="Clock-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Client</h5>
+                <p:clock />
+
+                <h5>Server</h5>
+                <p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server"/>
+
+                <h5>Custom</h5>
+                <p:clock mode="server" value="#{clockView.dateTime}"/>
+
+                <h5>Analog</h5>
+                <p:clock displayMode="analog"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

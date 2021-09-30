@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Event</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Validations can be triggered instantly without needing a button/link click using p:clientValidator.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csv?id=events"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h:panelGrid columns="4" cellpadding="7">
+                    <h:outputLabel for="text" value="Text: (Change)"/>
+                    <p:inputText id="text" value="#{validationView.text}" required="true">
+                        <f:validateLength minimum="2" maximum="5"/>
+                        <p:clientValidator/>
+                    </p:inputText>
+                    <p:message for="text" display="icon"/>
+                    <h:outputText value="#{validationView.text}"/>
+
+                    <h:outputLabel for="integer" value="Integer: (Keyup)"/>
+                    <p:inputText id="integer" value="#{validationView.integer}">
+                        <p:clientValidator event="keyup"/>
+                    </p:inputText>
+                    <p:message for="integer" display="icon"/>
+                    <h:outputText value="#{validationView.integer}"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="p-mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

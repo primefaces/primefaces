@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:outputLabel value="Selection" for="@next" />
+            <p:selectOneRadio id="selection" value="#{tree004.selection}">
+                <f:selectItem itemLabel="single" itemValue="single"/>
+                <f:selectItem itemLabel="multiple" itemValue="multiple"/>
+                <f:selectItem itemLabel="checkbox" itemValue="checkbox"/>
+                <p:ajax update="form:tree" />
+            </p:selectOneRadio>
+
+            <p:tree id="tree" value="#{tree004.root}" var="document" widgetVar="tree"
+                    selectionMode="#{tree004.selection}" selection="#{tree004.selectedNodes}"
+                    filterBy="#{document}">
+                <p:ajax event="select" />
+                <p:ajax event="unselect" />
+                <p:ajax event="filter" listener="#{tree004.filter}" />
+
+                <p:treeNode>
+                    <h:outputText value="#{document}" />
+                </p:treeNode>
+            </p:tree>
+
+            <p:commandButton id="buttonShowSelectedNodes" value="Show selected nodes" action="#{tree004.showSelectedNodes}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

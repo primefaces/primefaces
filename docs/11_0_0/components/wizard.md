@@ -3,7 +3,7 @@
 Wizard provides an ajax enhanced UI to implement a workflow easily in a single page. Wizard
 consists of several child tab components where each tab represents a step in the process.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.wizard-1.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Wizard-1.html)
 
 ## Info
 
@@ -211,8 +211,12 @@ back() | - | void | Goes back in flow.
 getStepIndex() | - | Number | Returns the index of current step.
 showNextNav() | - | void | Shows next button.
 hideNextNav() | - | void | Hides next button.
+enableNextNav() | - | void | Enables next button.
+disableNextNav() | - | void | Disables next button.
 showBackNav() | - | void | Shows back button.
 hideBackNav() | - | void | Hides back button.
+enableBackNav() | - | void | Enables back button.
+disableBackNav() | - | void | Disables back button
 
 ## Skinning
 Wizard resides in a container element that _style_ and _styleClass_ attributes apply. Following is the list

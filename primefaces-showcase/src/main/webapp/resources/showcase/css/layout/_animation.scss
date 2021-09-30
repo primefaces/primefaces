@@ -1,0 +1,72 @@
+.p-connected-overlay {
+    opacity: 0;
+    transform: scaleY(0.8);
+    transition: transform .12s cubic-bezier(0, 0, 0.2, 1), opacity .12s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.p-connected-overlay-visible {
+    opacity: 1;
+    transform: scaleY(1);
+}
+
+.p-connected-overlay-hidden {
+    opacity: 0;
+    transform: scaleY(1);
+    transition: opacity .1s linear;
+}
+
+@-webkit-keyframes connected-overlay-in {
+    from {
+        opacity: 0;
+        -webkit-transform: scaleY(0.8);
+        transform: scaleY(0.8);
+    }
+  
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+  
+@keyframes connected-overlay-in {
+    from {
+        opacity: 0;
+        transform:  scaleY(0.8);
+    }
+  
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+  
+@-webkit-keyframes connected-overlay-out {
+    from {
+        opacity: 1;
+    }
+  
+    to {
+        opacity: 0;
+    }
+}
+  
+@keyframes fade-out-down {
+    from {
+        opacity: 1;
+    }
+    
+    to {
+        opacity: 0;
+    }
+}
+  
+.connected-overlay-in {
+    -webkit-animation-name: connected-overlay-in;
+    animation-name: connected-overlay-in;
+}
+
+.connected-overlay-out {
+    -webkit-animation-name: connected-overlay-out;
+    animation-name: connected-overlay-out;
+}

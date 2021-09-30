@@ -2,7 +2,7 @@
 
 InputSwitch is used to select a boolean value.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.inputswitch.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.InputSwitch.html)
 
 ## Info
 
@@ -71,6 +71,8 @@ Widget: _PrimeFaces.widget.InputSwitch_
 toggle() | - | void | Toggles the state.
 check() | - | void | Switches to on state.
 uncheck() | - | void | Switches to off state.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 
 ## Skinning
 InputSwitch resides in a main container element which _style_ and _styleClass_ options apply.

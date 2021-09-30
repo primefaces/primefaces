@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style type="text/css">
+            .grid-radio td {
+                padding: .5rem;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        SelectOneRadio
+    </ui:define>
+
+    <ui:define name="description">
+        SelectOneRadio is used to choose a single item from a collection.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectoneradio"/>
+    <ui:param name="widgetLink" value="SelectOneRadio"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="p-mt-0">Basic</h5>
+                <p:selectOneRadio id="console" value="#{radioView.console}" unselectable="true">
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
+                </p:selectOneRadio>
+
+                <h5>Grid</h5>
+                <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
+                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectOneRadio>
+
+                <h5>Responsive</h5>
+                <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3">
+                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectOneRadio>
+
+                <h5>Custom Layout</h5>
+                <p:outputPanel id="customPanel" style="margin-bottom:10px">
+                    <p:selectOneRadio id="customRadio" value="#{radioView.color}" layout="custom">
+                        <f:selectItem itemLabel="Red" itemValue="Red"/>
+                        <f:selectItem itemLabel="Green" itemValue="Green"/>
+                        <f:selectItem itemLabel="Blue" itemValue="Blue"/>
+                    </p:selectOneRadio>
+
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:radioButton id="opt1" for="customRadio" itemIndex="0"/>
+                        <h:outputLabel for="opt1" value="Red"/>
+                        <p:spinner/>
+
+                        <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>
+                        <h:outputLabel for="opt2" value="Green"/>
+                        <p:inputText/>
+
+                        <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>
+                        <h:outputLabel for="opt3" value="Blue"/>
+                        <p:calendar/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

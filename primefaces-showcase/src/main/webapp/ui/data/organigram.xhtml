@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+
+    </ui:define>
+
+    <ui:define name="title">
+        Organigram
+    </ui:define>
+
+    <ui:define name="description">
+
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/organigram"/>
+    <ui:param name="widgetLink" value="Organigram"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+
+                <style>
+                    .ui-organigram .ui-organigram-node.division {
+                        background: #93e7ff;
+                        background: -moz-linear-gradient(top, #93e7ff 0%, #007efc 100%);
+                        background: -webkit-linear-gradient(top, #93e7ff 0%, #007efc 100%);
+                        background: linear-gradient(to bottom, #93e7ff 0%, #007efc 100%);
+                    }
+
+                    .ui-organigram .ui-organigram-node.employee {
+                        background: #88c048;
+                        background: -moz-linear-gradient(top, #88c048 0%, #69a038 100%);
+                        background: -webkit-linear-gradient(top, #88c048 0%, #69a038 100%);
+                        background: linear-gradient(to bottom, #88c048 0%, #69a038 100%);
+                    }
+                </style>
+
+                <p:growl id="growl"/>
+
+                <p:organigram id="organigram"
+                              widgetVar="organigram"
+                              value="#{organigramView.rootNode}"
+                              var="node"
+                              leafNodeConnectorHeight="#{organigramView.leafNodeConnectorHeight}"
+                              autoScrollToSelection="#{organigramView.autoScrollToSelection}"
+                              zoom="#{organigramView.zoom}"
+                              selection="#{organigramView.selection}"
+                              style="#{organigramView.style}">
+
+                    <p:ajax event="dragdrop" process="@this" update="@form:growl"
+                            listener="#{organigramView.nodeDragDropListener}"/>
+                    <p:ajax event="select" process="@this" update="@form:growl"
+                            listener="#{organigramView.nodeSelectListener}"/>
+                    <p:ajax event="contextmenu" process="@this"/>
+                    <p:ajax event="collapse" process="@this" update="@form:growl"
+                            listener="#{organigramView.nodeCollapseListener}"/>
+                    <p:ajax event="expand" process="@this" update="@form:growl"
+                            listener="#{organigramView.nodeExpandListener}"/>
+
+                    <p:organigramNode>
+                        <h:outputText value="#{node.data}"/>
+                    </p:organigramNode>
+
+                    <p:organigramNode type="root"
+                                      style="border-radius: 10px;">
+                        <h:outputText value="#{node.data}"/>
+                    </p:organigramNode>
+
+                    <p:organigramNode type="division"
+                                      styleClass="division"
+                                      icon="pi pi-briefcase"
+                                      iconPos="left">
+                        <h:outputText value="#{node.data}"/>
+                    </p:organigramNode>
+
+                    <p:organigramNode type="employee"
+                                      styleClass="employee"
+                                      icon="pi pi-user">
+                        <h:outputText value="#{node.data}"/>
+                    </p:organigramNode>
+                </p:organigram>
+
+                <p:contextMenu for="organigram" nodeType="employee">
+                    <p:menuitem value="fire employee"
+                                update="organigram"
+                                icon="pi pi-times"
+                                action="#{organigramView.removeEmployee()}"/>
+                </p:contextMenu>
+
+                <p:contextMenu for="organigram" nodeType="division">
+                    <p:menuitem value="Add employee"
+                                ajax="false"
+                                icon="pi pi-plus"
+                                onclick="PF('addEmployeeDialog').show(); return false;"/>
+                    <p:menuitem value="Remove division"
+                                update="organigram @form:growl"
+                                icon="pi pi-times"
+                                action="#{organigramView.removeDivision()}"/>
+                </p:contextMenu>
+
+                <p:dialog id="addEmployeeDialog"
+                          widgetVar="addEmployeeDialog"
+                          header="Add employee">
+
+                    <p:inputText value="#{organigramView.employeeName}"/>
+
+                    <p:commandButton process="@parent"
+                                     update=":form:organigram"
+                                     value="Add"
+                                     action="#{organigramView.addEmployee()}"
+                                     oncomplete="PF('addEmployeeDialog').hide();"/>
+
+                </p:dialog>
+            </h:form>
+
+            <h:form>
+                <p:panel header="Options" styleClass="p-mt-5">
+                    <h:panelGrid columns="2" cellpadding="7">
+                        <p:outputLabel for="@next" value="zoom" styleClass="text-secondary" />
+                        <p:selectBooleanCheckbox value="#{organigramView.zoom}">
+                            <p:ajax process="@this" update=":form:organigram"/>
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel for="@next" value="autoScrollToSelection" styleClass="text-secondary" />
+                        <p:selectBooleanCheckbox value="#{organigramView.autoScrollToSelection}">
+                            <p:ajax process="@this" update=":form:organigram"/>
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel for="@next" value="leafNodeConnectorHeight" styleClass="text-secondary" />
+                        <p:inputText value="#{organigramView.leafNodeConnectorHeight}">
+                            <p:ajax process="@this" update=":form:organigram"/>
+                        </p:inputText>
+
+                        <p:outputLabel for="@next" value="style" styleClass="text-secondary" />
+                        <p:inputText value="#{organigramView.style}" size="100">
+                            <p:ajax process="@this" update=":form:organigram"/>
+                        </p:inputText>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Scroll To Selection" onclick="PF('organigram').scrollToSelection(); return false;" styleClass="p-mt-3 p-mr-2" />
+                        <p:commandButton value="Update Organigram" update=":form:organigram" styleClass="p-mt-3" />
+                </p:panel>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

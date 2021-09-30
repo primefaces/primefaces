@@ -14,7 +14,8 @@ Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/pr
 ### Default Messages.properties
 
 ```
-primefaces.autocomplete.aria.DROPDOWN_LABEL=Show Optionsprimefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
+primefaces.autocomplete.aria.DROPDOWN_LABEL=Show Options
+primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
 primefaces.calendar.INVALID = {0}: Validation Error: Value is not valid.
 primefaces.calendar.MAX_DATE = {0}: Validation Error: Value must be {2} or before.
 primefaces.calendar.MIN_DATE = {0}: Validation Error: Value must be {1} or later.
@@ -133,6 +134,7 @@ Side Validation, messages property is used as the bundle for the locale.
          'calendar.BUTTON': 'Show Calendar',
          'datatable.sort.ASC': 'activate to sort column ascending',
          'datatable.sort.DESC': 'activate to sort column descending',
+         'datatable.sort.NONE': 'activate to remove sorting on column',
          'columntoggler.CLOSE': 'Close',
          'overlaypanel.CLOSE': 'Close'
      },
@@ -208,7 +210,7 @@ Side Validation, messages property is used as the bundle for the locale.
 ### Usage
 
 To add another locale to the API, first create the locale object first with settings and assign it as a
-property of [PrimeFaces.locales](../jsdocs/modules/src_primefaces.primefaces.html#locales) JavaScript object such as;
+property of [PrimeFaces.locales](../jsdocs/modules/src_PrimeFaces.PrimeFaces.html#locales) JavaScript object such as;
 
 _PrimeFaces.locales['de'] = {//settings}_
 

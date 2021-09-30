@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+                
+    <ui:define name="title">
+        TreeTable <span class="subitem">Dynamic Columns</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Columns of TreeTable can be created dynamically using the p:columns component.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="widgetLink" value="TreeTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <h:panelGrid columns="3" cellpadding="7" styleClass="p-mb-3">
+                    <p:outputLabel for="template" value="Template:" style="font-weight:bold"/>
+                    <p:inputText id="template" value="#{ttColumnsView.columnTemplate}" size="50"/>
+                    <p:commandButton update="tt" action="#{ttColumnsView.createDynamicColumns}" value="Update"
+                                     process="@parent" icon="pi pi-refresh"/>
+                </h:panelGrid>
+
+                <p:treeTable id="tt" value="#{ttColumnsView.root}" var="document">
+                    <f:facet name="header">
+                        Document Viewer
+                    </f:facet>
+                    <p:columns value="#{ttColumnsView.columns}" var="column" headerText="#{column.header}" style="text-transform: capitalize">
+                        <h:outputText value="#{document[column.property]}"/>
+                    </p:columns>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

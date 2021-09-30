@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function start() {
+                PF('statusDialog').show();
+            }
+
+            function stop() {
+                PF('statusDialog').hide();
+            }
+            //]]>
+        </script>
+    </ui:define>
+
+    <ui:define name="title">
+        FileDownload
+    </ui:define>
+
+    <ui:define name="description">
+        FileDownload is used to stream binary contents like files stored in database to the client. FileDownload is used by attaching it to any JSF command component
+        like button or a link. Additionally presentation of download can be configured with the contentDisposition attribute that takes either "attachment" or "inline" as a value.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/filedownload"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false"
+                      resizable="false">
+                      <i class="pi pi-spinner pi-spin" style="font-size:3rem"></i>
+            </p:dialog>
+
+            <h:form>
+                <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"
+                                 icon="pi pi-arrow-down" styleClass="p-mr-2">
+                    <p:fileDownload value="#{fileDownloadView.file}"/>
+                </p:commandButton>
+
+                <p:commandButton value="Ajax Download" icon="pi pi-arrow-down" styleClass="ui-button-outlined">
+                    <p:fileDownload value="#{fileDownloadView.file}"/>
+                </p:commandButton>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DefaultCommand <span class="subitem">Multiple</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DefaultCommand controls which command to initiate form submit with when enter key is pressed. Multiple
+        defaultCommand in same form is supported with scope option. Within a Textarea the defaultCommand is not active.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/defaultcommand"/>
+    <ui:param name="widgetLink" value="DefaultCommand"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl>
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:panel header="Panel 1" id="panel1" styleClass="p-mb-5">
+                    <h:panelGrid columns="2" cellpadding="7">
+                        <h:outputLabel for="name" value="Name"/>
+                        <p:inputText id="name" value="#{defaultCommandView.text}"/>
+
+                        <h:outputLabel for="textarea" value="Textarea"/>
+                        <p:inputTextarea id="textarea" value="#{defaultCommandView.text2}"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:panel header="Panel 2" id="panel2" styleClass="p-mb-5">
+                    <h:panelGrid columns="2" cellpadding="7">
+                        <h:outputLabel for="otherInput" value="Other input"/>
+                        <p:inputText id="otherInput"/>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:commandButton value="Button1" id="btn1" action="#{defaultCommandView.btn1Submit}" styleClass="p-mr-2" />
+                <p:commandButton value="Button2" id="btn2" action="#{defaultCommandView.btn2Submit}"/>
+
+                <p:defaultCommand target="btn1" scope="panel1"/>
+                <p:defaultCommand target="btn2" scope="panel2"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

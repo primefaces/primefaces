@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Group</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataTable column headers and footers can be combined for grouped display.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="p-d-flex p-jc-between">
+                   <div>
+                   </div>
+                   <div>
+                      <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2" >
+                          <p:dataExporter type="xlsxstream" target="tblSales tblPlayers" fileName="grouped"/>
+                      </p:commandButton>
+
+                      <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2" >
+                          <p:dataExporter type="pdf" target="tblSales tblPlayers" fileName="grouped"/>
+                      </p:commandButton>
+                   </div>
+                </div>
+                <p:dataTable id="tblSales" var="sale" value="#{dtGroupView.sales}">
+                    <f:facet name="header">
+                        <h:outputText value="Product Sales"/>
+                    </f:facet>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="3" headerText="Product"/>
+                            <p:column colspan="4" headerText="Sale Rate"/>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" headerText="Sales"/>
+                            <p:column colspan="2" headerText="Profit"/>
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="Last Year"/>
+                            <p:column headerText="This Year"/>
+                            <p:column headerText="Last Year"/>
+                            <p:column headerText="This Year"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column>
+                        <h:outputText value="#{sale.manufacturer}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{sale.lastYearProfit}%"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{sale.thisYearProfit}%"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{sale.lastYearSale}">
+                            <f:convertNumber type="currency" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{sale.thisYearSale}">
+                            <f:convertNumber type="currency" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column colspan="3" style="text-align:right" footerText="Totals:"/>
+                            <p:column>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{dtGroupView.lastYearTotal}">
+                                        <f:convertNumber type="currency" currencySymbol="$"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{dtGroupView.thisYearTotal}">
+                                        <f:convertNumber type="currency" currencySymbol="$"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <f:facet name="footer">
+                        <h:outputText value="Data between 2013-2014"/>
+                    </f:facet>
+                </p:dataTable>
+
+                <p:dataTable id="tblPlayers" var="player" value="#{dtGroupView.players}" style="margin-top:40px">
+                    <f:facet name="header">
+                        <h:outputText value="Dynamic Columns"/>
+                    </f:facet>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="Player"/>
+                            <p:column colspan="#{dtGroupView.yearCount}" headerText="Goals"/>
+                        </p:row>
+                        <p:row>
+                            <ui:repeat value="#{dtGroupView.years}" var="year">
+                                <p:column headerText="#{year}"/>
+                            </ui:repeat>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column>
+                        <h:outputText value="#{player.name}"/>
+                    </p:column>
+
+                    <p:columns value="#{dtGroupView.years}" var="year">
+                        <h:outputText value="#{player.getGoals(year)}"/>
+                    </p:columns>
+
+                    <f:facet name="footer">
+                        <h:outputText value="Data between 2010-2014" styleClass="p-text-bold" />
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

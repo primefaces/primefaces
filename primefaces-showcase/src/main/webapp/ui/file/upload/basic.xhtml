@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        FileUpload <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Simple uploader uses native browser file upload. Simple uploader is disabled at online demo.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/fileupload"/>
+    <ui:param name="widgetLink" value="FileUpload-1"/>
+
+    <ui:define name="implementation">
+
+        <p:growl id="messages" showDetail="true"/>
+
+        <div class="card">
+            <h5>Single</h5>
+            <h:form enctype="multipart/form-data">
+                <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
+
+                <p:commandButton value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Multiple</h5>
+            <h:form enctype="multipart/form-data">
+                <p:fileUpload value="#{fileUploadView.files}" mode="simple" skinSimple="true" multiple="true"/>
+                <p:commandButton value="Submit" ajax="false" action="#{fileUploadView.uploadMultiple}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

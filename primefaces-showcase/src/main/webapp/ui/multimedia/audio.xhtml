@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Audio
+    </ui:define>
+
+    <ui:define name="description">
+        The <h:outputLink
+            value="https://www.w3schools.com/html/html5_audio.asp">HTML Audio</h:outputLink> element is used to play an audio file on a web page.
+        There are three supported audio formats: MP3, WAV, and OGG.
+        All of the <h:outputLink
+            value="https://www.w3schools.com/tags/ref_av_dom.asp">attributes and events</h:outputLink> for HTML5 Audio are available to use.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/audio"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>MP3</h5>
+            <p:audio value="http://download.lisztonian.com/music/download/Larghetto+in+F-62.mp3"
+                     player="mp3"
+                     controls="true"
+                     onplay="console.log('MP3 Started Playing')"
+                     onpause="console.log('MP3 Stopped Playing')">
+                Your browser does not support the audio element.
+                See: <h:outputLink value="https://www.w3schools.com/html/html5_audio.asp">HTML5 Audio</h:outputLink>
+            </p:audio>
+        </div>
+        <div class="card">
+            <h5>OGG</h5>
+            <p:audio value="/resources/demo/media/sample-ogg.ogg"
+                     controls="true"
+                     onplay="console.log('OGG Started Playing')"
+                     onpause="console.log('OGG Stopped Playing')">
+                Your browser does not support the audio element.
+                See: <h:outputLink value="https://www.w3schools.com/html/html5_audio.asp">HTML5 Audio</h:outputLink>
+            </p:audio>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -3,7 +3,7 @@
 Password component is an extended version of standard inputSecret component with theme
 integration and strength indicator.
 
-[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_primefaces.primefaces.widget.password.html)
+[See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.Password.html)
 
 ## Info
 
@@ -154,6 +154,8 @@ Widget: _PrimeFaces.widget.Password_
 show() | - | void | Shows password feedback panel.
 hide() | - | void | Hides password feedback panel.
 toggleMask() | - | void | Toggle masking and unmasking the password.
+disable() | - | void | Disables the input field
+enable() | - | void | Enables the input field
 
 ## Skinning
 Structural selectors for password are;

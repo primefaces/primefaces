@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Printer
+    </ui:define>
+
+    <ui:define name="description">
+        Printer is used to print a certain component instead of the whole page.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/printer"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:commandButton value="Print" type="button" icon="pi pi-print" styleClass="p-d-block p-shadow-2 p-mb-3">
+                <p:printer target="image"/>
+            </p:commandButton>
+
+            <p:graphicImage id="image" name="demo/images/nature/nature10.jpg"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

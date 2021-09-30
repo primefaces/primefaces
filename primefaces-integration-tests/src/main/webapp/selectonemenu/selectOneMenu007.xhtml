@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <!--GitHub #6922 and #6514 -->
+            <p:outputLabel for="@next" value="Grouping"/>
+            <p:selectOneMenu id="group" value="#{selectOneMenu007.countryGroup}">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItems value="#{selectOneMenu007.countriesGroup}"/>
+            </p:selectOneMenu>
+
+            <p:commandButton id="button" update="@form" value="Submit" actionListener="#{selectOneMenu007.submit}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

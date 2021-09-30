@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Charts <span class="subitem">Pie</span>
+    </ui:define>
+
+    <ui:define name="description">
+        PieChart is created with a PieChartModel.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/chart"/>
+    <ui:param name="widgetLink" value="Chart-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:chart type="pie" model="#{chartView.pieModel1}" style="width:400px;height:300px"/>
+        </div>
+        <br/>
+        <div class="card">
+            <p:chart type="pie" model="#{chartView.pieModel2}" style="width:400px;height:300px"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

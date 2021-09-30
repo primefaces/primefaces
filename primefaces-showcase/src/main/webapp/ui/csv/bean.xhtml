@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Bean</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Client Side Validation Framework is integrated with Bean Validation Specification.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csvBeanValidation"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages/>
+
+                <h:panelGrid columns="4" cellpadding="7" styleClass="p-mb-3">
+                    <p:outputLabel for="@next" value="Name: (@Size(min=2,max=5))"/>
+                    <p:inputText value="#{beanValidationView.name}" label="Name"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.name}"/>
+
+                    <p:outputLabel for="@next" value="Age: (@Min(10) @Max(20))"/>
+                    <p:inputText value="#{beanValidationView.age}" label="Age"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.age}"/>
+
+                    <p:outputLabel for="@next" value="Amount: (@DecimalMax('99.9'))"/>
+                    <p:inputText value="#{beanValidationView.amount}" label="Amount"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.amount}"/>
+
+                    <p:outputLabel for="@next" value="Amount: (@Digits(integer=3,fraction=2))"/>
+                    <p:inputText value="#{beanValidationView.amount2}" label="Amount 2"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.amount2}"/>
+
+                    <p:outputLabel for="@next" value="Pattern: (@Pattern(regexp='^[-+]?\\d+$'))"/>
+                    <p:inputText value="#{beanValidationView.pattern}" label="pattern"/>
+                    <p:message for="@previous"/>
+                    <h:outputText value="#{beanValidationView.pattern}"/>
+
+                    <p:outputLabel for="@next" value="Assert: (@AssertTrue)"/>
+                    <p:selectBooleanCheckbox value="#{beanValidationView.checked}"/>
+                    <p:message for="@previous"/>
+                    <h:outputText/>
+
+                    <p:outputLabel for="@next" value="Date (@Past)"/>
+                    <p:inputText value="#{beanValidationView.pastDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                    </p:inputText>
+                    <p:message for="@previous"/>
+                    <h:outputText/>
+
+                    <p:outputLabel for="@next" value="Date (@Future)"/>
+                    <p:inputText value="#{beanValidationView.futureDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                    </p:inputText>
+                    <p:message for="@previous"/>
+                    <h:outputText/>
+
+                    <p:outputLabel for="@next" value="Radio Input"/>
+                    <p:selectOneRadio value="#{beanValidationView.bool}">
+                        <f:selectItem itemValue="#{true}" itemLabel="True"/>
+                        <f:selectItem itemValue="#{false}" itemLabel="False"/>
+                    </p:selectOneRadio>
+                    <p:message for="@previous"/>
+                    <h:outputText/>
+
+                </h:panelGrid>
+
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="p-mr-3" />
+                <p:commandButton value="Save with disabled CSV" ajax="false" icon="pi pi-check" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

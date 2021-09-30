@@ -1,0 +1,210 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Edit</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Data displayed on datatable can be edited at row or cell level.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="widgetLink" value="DataTable-1"/>
+
+    <ui:define name="implementation">
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+
+            <div class="card">
+                <h5>Row Editing</h5>
+                <p:dataTable id="products1" var="product" value="#{dtEditView.products1}" editable="true"
+                             style="margin-bottom:20px">
+
+                    <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update=":form:msgs"/>
+                    <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update=":form:msgs"/>
+
+                    <p:column headerText="Code">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.code}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="modelInput" value="#{product.code}" style="width:100%"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.name}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{product.name}" style="width:100%" label="Name"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{product.inventoryStatus}"/></f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
+                                    <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
+                                                   itemLabel="#{status.text}" itemValue="#{status}"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Price">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.price}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputNumber value="#{product.price}" style="width:100%" label="Price" symbol="$"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column style="width:6rem">
+                        <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Cell Editing with Click and RightClick</h5>
+                <p:dataTable id="products2" var="product" value="#{dtEditView.products2}" editable="true"
+                             editMode="cell" widgetVar="cellProducts">
+
+                    <p:ajax event="cellEdit" listener="#{dtEditView.onCellEdit}" update=":form:msgs"/>
+
+                    <p:column headerText="Code">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.code}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="modelInput2" value="#{product.code}" style="width:100%"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.name}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{product.name}" style="width:100%" label="Name"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.inventoryStatus}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
+                                    <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
+                                                   itemLabel="#{status.text}" itemValue="#{status}"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Price">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.price}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputNumber value="#{product.price}" style="width:100%" label="Price" symbol="$"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <div class="card">
+                <h5>Cell Editing with Double Click Event (dblclick)</h5>
+                <p:dataTable id="products3" var="product" value="#{dtEditView.products3}" editable="true" editMode="cell"
+                             widgetVar="cellCars2" editInitEvent="dblclick" style="margin-bottom:20px">
+
+                    <p:ajax event="cellEdit" listener="#{dtEditView.onCellEdit}" update=":form:msgs"/>
+
+                    <p:column headerText="Code">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.code}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="modelInput3" value="#{product.code}" style="width:100%"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.name}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{product.name}" style="width:100%" label="Name"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.inventoryStatus}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
+                                    <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
+                                                   itemLabel="#{status.text}" itemValue="#{status}"/>
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Price">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{product.price}">
+                                    <f:convertNumber type="currency" currencySymbol="$"/>
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputNumber value="#{product.price}" style="width:100%" label="Price" symbol="$"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+            <p:contextMenu for="products2" widgetVar="cMenu">
+                <p:menuitem value="Edit Cell" icon="pi pi-search"
+                            onclick="PF('cellProducts').showCellEditor();return false;"/>
+                <p:menuitem value="Hide Menu" icon="pi pi-times" onclick="PF('cMenu').hide()"/>
+            </p:contextMenu>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

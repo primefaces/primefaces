@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Dialog
+    </ui:define>
+
+    <ui:define name="description">
+        Dialog is a container to display content in an overlay window.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dialog"/>
+    <ui:param name="widgetLink" value="Dialog-1"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Basic</h5>
+            <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg1').show()"/>
+
+            <h5>Modal</h5>
+            <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg2').show()"/>
+
+            <h5>Button Bar</h5>
+            <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg3').show()"/>
+
+            <h5>Minimize and Maximize</h5>
+            <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg4').show()"/>
+        </div>
+
+        <p:dialog header="Header" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
+            <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </p:dialog>
+
+        <p:dialog header="Header" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">
+            <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </p:dialog>
+
+        <p:dialog header="Header" widgetVar="dlg3" minHeight="40" width="350" showEffect="fade">
+            <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <f:facet name="footer">
+                <p:commandButton type="button" value="No" styleClass="ui-button-flat p-mr-2" style="width: 6rem" />
+                <p:commandButton type="button" value="Yes" style="width: 5rem" />
+            </f:facet>
+        </p:dialog>
+
+        <p:dialog header="Header" widgetVar="dlg4" minHeight="40" width="350" showEffect="fade" minimizable="true" maximizable="true">
+            <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>
