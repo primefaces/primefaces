@@ -55,7 +55,8 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
         onVisibleChange,
         onClick,
         onShow,
-        onHide
+        onHide,
+        keepOpen
     }
 
     public SpeedDialBase() {
@@ -250,6 +251,14 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
 
     public void setOnHide(String onHide) {
         getStateHelper().put(PropertyKeys.onHide, onHide);
+    }
+
+    public boolean isKeepOpen() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.keepOpen, false);
+    }
+
+    public void setKeepOpen(boolean keepOpen) {
+        getStateHelper().put(PropertyKeys.keepOpen, keepOpen);
     }
 
 }
