@@ -23,9 +23,9 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
-
 import java.time.LocalDate;
 import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -40,10 +40,6 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DatePicker;
 
 public class DatePicker012Test extends AbstractDatePickerTest {
-
-    private enum DatePickerBehaviour {
-        _none, dateSelect, viewChange, close;
-    };
 
     @Test
     @Order(1)
@@ -79,7 +75,6 @@ public class DatePicker012Test extends AbstractDatePickerTest {
         // Act - 4th show other panel
         page.datePicker2.click();
 
-
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.datePicker2.getPanel()));
         assertDisabledCalendarDate(page.datePicker2, "5");
@@ -106,13 +101,13 @@ public class DatePicker012Test extends AbstractDatePickerTest {
 
     private void assertNoDisablebCalendarDates(DatePicker datePicker) {
         List<WebElement> days = datePicker.getPanel().findElements(
-                By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
+                    By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
         Assertions.assertTrue(days.isEmpty(), days.toString());
     }
 
     private void assertDisabledCalendarDate(DatePicker datePicker, String day) {
         List<WebElement> days = datePicker.getPanel().findElements(
-                By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
+                    By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) .tst-disabled"));
         Assertions.assertEquals(1, days.size(), days.toString());
         Assertions.assertEquals(day, days.get(0).getText());
         Assertions.assertTrue(days.get(0).getAttribute("class").contains("ui-state-disabled"));
@@ -121,12 +116,11 @@ public class DatePicker012Test extends AbstractDatePickerTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("refreshLazyModel"));
         Assertions.assertFalse(cfg.getBoolean("inline"));
         Assertions.assertTrue(cfg.getJSONObject("behaviors").getString("dateSelect").contains("dateSelect"),
-                "missing behaviour dateSelect");
+                    "missing behaviour dateSelect");
         Assertions.assertTrue(cfg.getJSONObject("behaviors").getString("viewChange").contains("viewChange"),
-                "missing behaviour viewChange");
+                    "missing behaviour viewChange");
     }
 
     public static class Page extends AbstractPrimePage {

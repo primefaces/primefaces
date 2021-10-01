@@ -27,6 +27,7 @@ package org.primefaces.integrationtests.datepicker;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -389,7 +390,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         assertEmptyMessages(messages);
 
         // Act - 1st show panel
-        datePicker.click();
+        datePicker.showPanel();
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
@@ -431,7 +432,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
 
         // Act - 4th show panel
         PrimeSelenium.guardAjax(page.outsideClean).click();
-        datePicker.click();
+        datePicker.showPanel();
 
         // Assert
         assertEmptyMessages(messages);
