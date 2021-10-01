@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.datepicker;
 
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -34,7 +33,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -57,6 +55,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model without behaviour")
     public void testMetaDataNoBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker0, page, DatePickerBehaviour._none);
+        assertConfiguration(page.datePicker0.getWidgetConfiguration(), DatePickerBehaviour._none, 3);
     }
 
     @Test
@@ -64,6 +63,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with dateSelect behaviour")
     public void testMetaDataDateSelectBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker1, page, DatePickerBehaviour.dateSelect);
+        assertConfiguration(page.datePicker1.getWidgetConfiguration(), DatePickerBehaviour.dateSelect, 3);
     }
 
     @Test
@@ -71,6 +71,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with viewChange behaviour")
     public void testMetaDataViewChangeBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker2, page, DatePickerBehaviour.viewChange);
+        assertConfiguration(page.datePicker2.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 3);
     }
 
     @Test
@@ -78,6 +79,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: meta data model with close behaviour")
     public void testMetaDataCloseBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker3, page, DatePickerBehaviour.close);
+        assertConfiguration(page.datePicker3.getWidgetConfiguration(), DatePickerBehaviour.close, 3);
     }
 
     @Test
@@ -141,6 +143,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model without behaviour")
     public void testLazyMetaDataNoBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker4, page, DatePickerBehaviour._none);
+        assertConfiguration(page.datePicker4.getWidgetConfiguration(), DatePickerBehaviour._none, 0);
     }
 
     @Test
@@ -148,6 +151,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model with dateSelect behaviour")
     public void testLazyMetaDataDateSelectBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker5, page, DatePickerBehaviour.dateSelect);
+        assertConfiguration(page.datePicker5.getWidgetConfiguration(), DatePickerBehaviour.dateSelect, 0);
     }
 
     @Test
@@ -155,6 +159,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model with viewChange behaviour")
     public void testLazyMetaDataViewChangeBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker6, page, DatePickerBehaviour.viewChange);
+        assertConfiguration(page.datePicker6.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 0);
     }
 
     @Test
@@ -162,6 +167,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: lazy meta data model with close behaviour")
     public void testLazyMetaDataCloseBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker7, page, DatePickerBehaviour.close);
+        assertConfiguration(page.datePicker7.getWidgetConfiguration(), DatePickerBehaviour.close, 0);
     }
 
     @Test
@@ -226,11 +232,17 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         assertEmptyMessages(messages);
 
         // Act - 1st show panel
-        datePicker.click();
+        datePicker.showPanel();
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
-        assertEmptyMessages(messages);
+        switch (behaviour) {
+            case viewChange:
+                break;
+            default:
+                assertEmptyMessages(messages);
+                break;
+        }
         assertCalendarDate(datePicker, ".tst-disabled", "1");
         assertCalendarDate(datePicker, ".tst-begin", "2");
         assertCalendarDate(datePicker, ".tst-end", "3");
@@ -351,8 +363,6 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 assertEmptyMessages(messages);
                 break;
         }
-
-        assertConfiguration(datePicker.getWidgetConfiguration(), behaviour);
     }
 
     private void testDatePickerPart2(DatePicker datePicker, Page page, DatePickerBehaviour behaviour) {
@@ -365,7 +375,13 @@ public class DatePicker011Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
-        assertEmptyMessages(messages);
+        switch (behaviour) {
+            case viewChange:
+                break;
+            default:
+                assertEmptyMessages(messages);
+                break;
+        }
 
         // Act - 2nd today
         datePicker.getTodayButton().click();
@@ -394,7 +410,13 @@ public class DatePicker011Test extends AbstractDatePickerTest {
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
-        assertEmptyMessages(messages);
+        switch (behaviour) {
+            case viewChange:
+                break;
+            default:
+                assertEmptyMessages(messages);
+                break;
+        }
 
         // Act - 2nd clear
         datePicker.getClearButton().click();
@@ -419,35 +441,13 @@ public class DatePicker011Test extends AbstractDatePickerTest {
             PrimeSelenium.guardAjax(page.outsideClean).click();
         }
 
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker));
-        switch (behaviour) {
-            case close:
-                assertMessage(messages, behaviour);
-                break;
-            default:
-                assertEmptyMessages(messages);
-                break;
-        }
-
         // Act - 4th show panel
         PrimeSelenium.guardAjax(page.outsideClean).click();
         datePicker.showPanel();
 
         // Assert
-        assertEmptyMessages(messages);
-
-        // Act - 5th input date
-        String inputDate = LocalDate.now().withDayOfMonth(6).format(DateTimeFormatter.ISO_DATE);
-        datePicker.getInput().sendKeys(inputDate + Keys.TAB);
-
-        // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker));
         switch (behaviour) {
             case viewChange:
-            // case dateSelect: why does manual input not trigger dateSelect?
-            case close:
-                assertMessage(messages, behaviour);
                 break;
             default:
                 assertEmptyMessages(messages);
@@ -478,11 +478,11 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         }
     }
 
-    private void assertConfiguration(JSONObject cfg, DatePickerBehaviour behaviour) {
+    private void assertConfiguration(JSONObject cfg, DatePickerBehaviour behaviour, int disabledDateCount) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
         Assertions.assertEquals("yy-mm-dd", cfg.getString("dateFormat"));
-        Assertions.assertEquals(3, cfg.getJSONArray("disabledDates").length());
+        Assertions.assertEquals(disabledDateCount, cfg.getJSONArray("disabledDates").length());
         Assertions.assertFalse(cfg.getBoolean("inline"));
         if (behaviour != DatePickerBehaviour._none) {
             Assertions.assertTrue(cfg.getJSONObject("behaviors").getString(behaviour.name()).contains(behaviour.name()),
