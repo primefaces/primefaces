@@ -33655,5 +33655,13 @@
             <required>false</required>
             <type>org.primefaces.model.menu.MenuModel</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the menu should be kept open on clicking menu items. Default value is false.]]>
+            </description>
+            <name>keepOpen</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
 </facelet-taglib>

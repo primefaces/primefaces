@@ -44,10 +44,11 @@ onVisibleChange | null | String | Client side callback to execute when the visib
 onClick | null | String | Client side callback to execute when the button element clicked.
 onShow | null | String | Client side callback to execute when the actions are visible.
 onHide | null | String | Client side callback to execute when the actions are hidden.
+keepOpen | false | Boolean | Whether the menu should be kept open on clicking menu items.
 
 ## Getting Started with SpeedDial
-When pressed, a floating action button can display multiple primary actions that can be performed on a page. It has a 
-collection of additional options defined by the menuitem. SpeedDial's position is calculated according to the 
+When pressed, a floating action button can display multiple primary actions that can be performed on a page. It has a
+collection of additional options defined by the menuitem. SpeedDial's position is calculated according to the
 container element with the position type style.
 
 ```java
@@ -77,7 +78,7 @@ public class SpeedDialView {
 ```xhtml
 <h:form>
     <p:growl id="messages" showDetail="true"/>
-    
+
     <p:speedDial direction="down">
         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
@@ -88,7 +89,7 @@ public class SpeedDialView {
 </h:form>
 ```
 ## Dynamic Items
-SpeedDial items can be created dynamically as well. PrimeFaces provides the built-in 
+SpeedDial items can be created dynamically as well. PrimeFaces provides the built-in
 _org.primefaces.model.DefaultMenuModel_ implementation. Using this structure, dynamic item models can be created.
 
 ```java
@@ -162,7 +163,7 @@ public class SpeedDialView {
 ```xhtml
 <h:form>
     <p:growl id="messages" showDetail="true"/>
-    
+
     <p:speedDial direction="down" model="#{speedDialView.model}" />
 </h:form>
 ```
@@ -171,7 +172,7 @@ public class SpeedDialView {
 SpeedDial has 4 types; `linear`, `circle`, `semi-circle` and `quarter-circle`.
 
 ## Direction
-Specifies the opening direction of actions. For the **linear** and **semi-circle** types; `up`, `down`, `left` and `right`. 
+Specifies the opening direction of actions. For the **linear** and **semi-circle** types; `up`, `down`, `left` and `right`.
 For the **quarter-circle** type; `up-left`, `up-right`, `down-left` and `down-right`.
 
 ## Client Side API

@@ -258,6 +258,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .attr("hideIcon", speedDial.getHideIcon(), null)
                 .attr("hideOnClickOutside", speedDial.isHideOnClickOutside(), true)
                 .attr("rotateAnimation", speedDial.isRotateAnimation(), true)
+                .attr("keepOpen", speedDial.isKeepOpen(), false)
                 .callback("onVisibleChange", "function(visible)", speedDial.getOnVisibleChange())
                 .callback("onClick", "function(event)", speedDial.getOnClick())
                 .callback("onShow", "function()", speedDial.getOnShow())
