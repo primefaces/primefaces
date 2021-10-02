@@ -957,6 +957,8 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
                     <minimizeJar>true</minimizeJar>
+                    <createSourcesJar>true</createSourcesJar>
+                    <shadeSourcesContent>true</shadeSourcesContent>
                     <relocations>
                         <relocation>
                             <pattern>org.json</pattern>
@@ -1143,7 +1145,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.3.1</version>
+                        <version>6.3.2</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>

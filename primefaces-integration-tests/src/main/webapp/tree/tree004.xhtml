@@ -9,7 +9,7 @@
 
     <h:body>
         <h:form id="form">
-            <p:messages id="msgs" showDetail="true">
+            <p:messages id="msgs" showDetail="true" closable="true">
                 <p:autoUpdate />
             </p:messages>
 
@@ -26,6 +26,7 @@
                     filterBy="#{document}">
                 <p:ajax event="select" />
                 <p:ajax event="unselect" />
+                <p:ajax event="filter" listener="#{tree004.filter}" />
 
                 <p:treeNode>
                     <h:outputText value="#{document}" />

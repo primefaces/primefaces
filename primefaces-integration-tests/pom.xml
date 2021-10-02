@@ -33,10 +33,10 @@
         <lombok.version>1.18.20</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.52</tomcat.version>
+        <tomcat.version>9.0.53</tomcat.version>
         <resteasy.version>4.7.2.Final</resteasy.version>
         <owb.version>2.0.23</owb.version>
-        <jetty.version>9.4.43.v20210629</jetty.version>
+        <jetty.version>9.4.44.v20210927</jetty.version>
     </properties>
 
     <dependencies>
@@ -79,21 +79,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- CDI - Weld -->
-        <!--
-        <dependency>
-            <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet-core</artifactId>
-            <version>3.1.8.Final</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.spec.javax.el</groupId>
-                    <artifactId>jboss-el-api_3.0_spec</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        -->
-
         <!-- CDI - OWB -->
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
@@ -105,7 +90,6 @@
             <artifactId>geronimo-jcdi_2.0_spec</artifactId>
             <version>1.3</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.openwebbeans</groupId>
             <artifactId>openwebbeans-impl</artifactId>
@@ -122,20 +106,29 @@
             <version>${owb.version}</version>
         </dependency>
 
-        <!-- JAXB -->
-        <dependency>
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>2.3.3</version>
-        </dependency>
+        <!-- JAXB required for JDK9+ -->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.3</version>
-            <scope>runtime</scope>
+            <version>2.3.5</version>
         </dependency>
 
         <!-- JAX-RS - RestEasy -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-core</artifactId>
+            <version>${resteasy.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.spec.javax.xml.bind</groupId>
+                    <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.activation</groupId>
+                    <artifactId>jakarta.activation-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-servlet-initializer</artifactId>
@@ -164,6 +157,7 @@
             </exclusions>
         </dependency>
 
+        <!-- BV - Hibernate Validator -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -426,7 +420,7 @@
             </properties>
         </profile>
         <profile>
-            <id>myfaces-2.3.x</id>
+            <id>myfaces-2.3</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -446,7 +440,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>myfaces-next-2.3.x</id>
+            <id>myfaces-next-2.3</id>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
@@ -463,7 +457,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>mojarra-2.3.x</id>
+            <id>mojarra-2.3</id>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish</groupId>

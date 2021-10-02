@@ -30,6 +30,8 @@ import org.primefaces.showcase.domain.Country;
 
 import java.io.Serializable;
 import java.util.Locale;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 @Named
 @SessionScoped
@@ -110,5 +112,9 @@ public class App implements Serializable {
                 break;
         }
         return result;
+    }
+
+    public String getPrimeFacesVersion() {
+        return PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().getBuildVersion();
     }
 }

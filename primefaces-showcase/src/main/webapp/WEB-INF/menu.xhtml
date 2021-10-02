@@ -7,9 +7,9 @@
     <div class="layout-sidebar">
         <div class="layout-sidebar-filter ui-fluid ui-input-filled">
             <h:form>
-                    <p:autoComplete placeholder="Search by name..." minQueryLength="3" effect="fade" 
+                <p:autoComplete placeholder="Search by name..." minQueryLength="1" effect="fade"
                                 panelStyleClass="layout-sidebar-filter-panel" completeMethod="#{appMenu.completeMenuItem}" groupBy="#{menuItem.parentLabel}"
-                                var="menuItem" scrollHeight="300" emptyMessage="No results found!">
+                                var="menuItem" scrollHeight="300" emptyMessage="No results found!" queryDelay="0">
                     <p:column>
                         <h:outputLink value="#{menuItem.url}" rendered="#{not empty menuItem.url and empty menuItem.badge and not menuItem.url.startsWith('/') and empty menuItem.menuItems}">
                             #{menuItem.label}
