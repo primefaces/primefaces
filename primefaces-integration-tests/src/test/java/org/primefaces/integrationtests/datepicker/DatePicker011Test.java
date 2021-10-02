@@ -380,7 +380,27 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         }
 
         // Act - 2nd today
-        datePicker.getTodayButton().click();
+        WebElement button = datePicker.getTodayButton();
+        switch (behaviour) {
+            case viewChange:
+                if (datePicker.isViewChangeAjaxified()) {
+                    button = PrimeSelenium.guardAjax(button);
+                }
+                break;
+            case dateSelect:
+                if (datePicker.isDateSelectAjaxified()) {
+                    button = PrimeSelenium.guardAjax(button);
+                }
+                break;
+            case close:
+                if (datePicker.isCloseAjaxified()) {
+                    button = PrimeSelenium.guardAjax(button);
+                }
+                break;
+            default:
+                break;
+        }
+        button.click();
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker));
