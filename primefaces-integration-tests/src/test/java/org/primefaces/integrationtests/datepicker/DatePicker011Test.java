@@ -356,7 +356,6 @@ public class DatePicker011Test extends AbstractDatePickerTest {
                 }
                 break;
             default:
-                assertEmptyMessages(messages);
                 break;
         }
     }
