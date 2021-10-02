@@ -105,7 +105,7 @@ public class RatingRenderer extends InputRenderer {
             writer.writeAttribute("role", "slider", null);
             writer.writeAttribute("aria-valuemin", "1", null);
             writer.writeAttribute("aria-valuemax", rating.getStars(), null);
-            writer.writeAttribute("aria-valuenow", rating.getSubmittedValue(), null);
+            writer.writeAttribute("aria-valuenow", valueToRender, null);
         }
 
         if (rating.isCancel() && !disabled && !readonly) {

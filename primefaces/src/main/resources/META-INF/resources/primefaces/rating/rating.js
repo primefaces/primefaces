@@ -41,8 +41,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.disabled && !this.cfg.readonly) {
             this.bindEvents();
         }
-
-        if(this.cfg.disabled) {
+        else {
             this.jq.attr('tabindex', -1);
         }
 
@@ -56,9 +55,10 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
+        this.jq.attr('tabindex', this.tabindex);
         var $this = this;
 
-        this.jq.on("keyup.rating", function(e) {
+        this.jq.on("keydown.rating", function(e) {
             var value = $this.getValue() || 0;
             var keyCode = $.ui.keyCode,
             key = e.which;
@@ -94,7 +94,8 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     unbindEvents: function() {
-        this.jq.off('keyup.rating focus.rating blur.rating');
+        this.jq.attr('tabindex', -1);
+        this.jq.off('keydown.rating focus.rating blur.rating');
         this.stars.off('click.rating');
         this.cancel.off('mouseenter.rating mouseleave.rating click.rating');
     },
@@ -131,6 +132,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         //set hidden value
         this.input.val(newValue);
+        this.jq.attr('aria-valuenow', newValue);
 
         //update visuals
         this.stars.removeClass('ui-rating-star-on');
@@ -172,7 +174,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         this.cfg.disabled = false;
-        this.jq.attr('tabindex', this.tabindex);
+
         this.bindEvents();
 
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
@@ -186,7 +188,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         this.cfg.disabled = true;
-        this.jq.attr('tabindex', -1);
+
         this.unbindEvents();
 
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
@@ -197,6 +199,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     reset: function() {
         this.input.val('');
+        this.jq.attr('aria-valuenow', '');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 
