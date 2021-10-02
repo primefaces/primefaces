@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -147,27 +146,11 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     }
 
     @Test
-    @Order(14)
-    @DisplayName("DatePicker: lazy meta data model with dateSelect behaviour")
-    public void testLazyMetaDataDateSelectBehaviour1(Page page) {
-        testDatePickerPart1(page.datePicker5, page, DatePickerBehaviour.dateSelect);
-        assertConfiguration(page.datePicker5.getWidgetConfiguration(), DatePickerBehaviour.dateSelect, 0);
-    }
-
-    @Test
     @Order(15)
     @DisplayName("DatePicker: lazy meta data model with viewChange behaviour")
     public void testLazyMetaDataViewChangeBehaviour1(Page page) {
         testDatePickerPart1(page.datePicker6, page, DatePickerBehaviour.viewChange);
         assertConfiguration(page.datePicker6.getWidgetConfiguration(), DatePickerBehaviour.viewChange, 0);
-    }
-
-    @Test
-    @Order(16)
-    @DisplayName("DatePicker: lazy meta data model with close behaviour")
-    public void testLazyMetaDataCloseBehaviour1(Page page) {
-        testDatePickerPart1(page.datePicker7, page, DatePickerBehaviour.close);
-        assertConfiguration(page.datePicker7.getWidgetConfiguration(), DatePickerBehaviour.close, 0);
     }
 
     @Test
@@ -178,24 +161,10 @@ public class DatePicker011Test extends AbstractDatePickerTest {
     }
 
     @Test
-    @Order(18)
-    @DisplayName("DatePicker: lazy meta data model with dateSelect behaviour")
-    public void testLazyMetaDataDateSelectBehaviour2(Page page) {
-        testDatePickerPart2(page.datePicker5, page, DatePickerBehaviour.dateSelect);
-    }
-
-    @Test
     @Order(19)
     @DisplayName("DatePicker: lazy meta data model with viewChange behaviour")
     public void testLazyMetaDataViewChangeBehaviour2(Page page) {
         testDatePickerPart2(page.datePicker6, page, DatePickerBehaviour.viewChange);
-    }
-
-    @Test
-    @Order(20)
-    @DisplayName("DatePicker: lazy meta data model with close behaviour")
-    public void testLazyMetaDataCloseBehaviour2(Page page) {
-        testDatePickerPart2(page.datePicker7, page, DatePickerBehaviour.close);
     }
 
     @Test
@@ -349,15 +318,42 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         }
 
         // Act - 9th select 5th of current month
-        datePicker.getPanel().findElement(By.linkText("5")).click();
+        WebElement link = datePicker.getPanel().findElement(By.linkText("5"));
+        switch (behaviour) {
+            case viewChange:
+                if (datePicker.isViewChangeAjaxified()) {
+                    link = PrimeSelenium.guardAjax(link);
+                }
+                break;
+            case dateSelect:
+                if (datePicker.isDateSelectAjaxified()) {
+                    link = PrimeSelenium.guardAjax(link);
+                }
+                break;
+            case close:
+                if (datePicker.isCloseAjaxified()) {
+                    link = PrimeSelenium.guardAjax(link);
+                }
+                break;
+            default:
+                break;
+        }
+        link.click();
 
         // Assert
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker));
         switch (behaviour) {
-            case viewChange: // why is this?
+            case viewChange:
+                assertMessage(messages, behaviour);
+                break;
             case dateSelect:
             case close:
-                assertMessage(messages, behaviour);
+                if (datePicker.isLazy()) {
+                    assertEmptyMessages(messages);
+                }
+                else {
+                    assertMessage(messages, behaviour);
+                }
                 break;
             default:
                 assertEmptyMessages(messages);
@@ -460,7 +456,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         List<Msg> msgs = messages.getMessagesBySeverity(Severity.INFO);
         Assertions.assertEquals(1, msgs.size());
         Assertions.assertTrue(msgs.get(0).getSummary().contains(behaviour.name()),
-                behaviour.name() + " not in " + messages.getAllMessages().toString());
+                    behaviour.name() + " not in " + messages.getAllMessages().toString());
     }
 
     private void assertEmptyMessages(Messages messages) {
@@ -470,7 +466,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
 
     private void assertCalendarDate(DatePicker datePicker, String styleClass, String day) {
         List<WebElement> days = datePicker.getPanel().findElements(
-                By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) " + styleClass));
+                    By.cssSelector(".ui-datepicker-calendar td:not(.ui-datepicker-other-month) " + styleClass));
         Assertions.assertEquals(1, days.size(), days.toString());
         Assertions.assertEquals(day, days.get(0).getText());
         if (".tst-disabled".equals(styleClass)) {
@@ -486,7 +482,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         Assertions.assertFalse(cfg.getBoolean("inline"));
         if (behaviour != DatePickerBehaviour._none) {
             Assertions.assertTrue(cfg.getJSONObject("behaviors").getString(behaviour.name()).contains(behaviour.name()),
-                    "missing behaviour " + behaviour.name());
+                        "missing behaviour " + behaviour.name());
         }
     }
 

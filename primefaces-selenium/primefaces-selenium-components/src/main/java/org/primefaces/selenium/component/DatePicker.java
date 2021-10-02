@@ -222,6 +222,16 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
+     * Is this a lazy datepicker.
+     *
+     * @return true if lazy
+     */
+    public boolean isLazy() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript()
+                + ".cfg.lazyDataModel === undefined ? false : " + getWidgetByIdScript() + ".cfg.lazyDataModel");
+    }
+
+    /**
      * Widget API call to update the overlay popup to this epoch in millis.
      *
      * @param epoch epoch in milliseconds
