@@ -9,13 +9,6 @@
     </suppress>
     <suppress>
         <notes>
-            <![CDATA[file name: url-regex:5.0.0 PrimeFaces uses this from FullCalendar.io but it is a transitive build dependency.]]>
-        </notes>
-        <packageUrl regex="true">^pkg:npm/url\-regex@.*$</packageUrl>
-        <cve>CVE-2020-7661</cve>
-    </suppress>
-    <suppress>
-        <notes>
             <![CDATA[file name: guava.jar PrimeFaces does not use the temp directory functionality that is vulnerable]]>
         </notes>
         <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
