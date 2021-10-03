@@ -220,7 +220,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -235,7 +235,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -249,7 +249,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -264,7 +264,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -278,7 +278,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.selectMonthDropdown(LocalDate.now().getMonth().getValue() % 12);
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -292,7 +292,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.selectYearDropdown(LocalDate.now().getYear() + 1);
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -306,7 +306,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
@@ -341,7 +341,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         link.click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -402,7 +402,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         button.click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
@@ -437,7 +437,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(datePicker.getPanel()));
+        PrimeSelenium.wait(100);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
