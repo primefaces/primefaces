@@ -313,10 +313,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.cfg.onViewDateChange = function(event, date) {
             $this.viewDateOption = date;
-            // #7457 don't fire a change event when the picker is closed if lazy model is used
-            if ($this.cfg.lazyModel && !event) {
-                return;
-            }
             $this.fireViewChangeEvent(date);
         };
     },
