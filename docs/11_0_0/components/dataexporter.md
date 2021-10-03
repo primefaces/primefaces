@@ -40,7 +40,6 @@ point to a PrimeFaces Datatable. Assume the table to be exported is defined as:
 ```
 _Excel export (type="xls | xlsx | xlsxstream")_
 
-
 ```xhtml
 <p:commandButton value="Export as Excel">
     <p:dataExporter type="xls" target="tableId" fileName="cars"/>
@@ -75,7 +74,6 @@ _Custom export (optional type="text")_
 </p:commandLink>
 ```
 
-
 ## PageOnly
 By default dataExporter works on whole dataset, if you’d like export only the data displayed on
 current page, set pageOnly to true.
@@ -91,8 +89,12 @@ In case you need one or more columns to be ignored set _exportable_ option of co
     //...
 </p:column>
 ```
+
+## AJAX downloading
+Before PrimeFaces 11, you had to disable AJAX with DataExport. As of version 11 that's no longer needed.
+
 ## Monitor Status
-DataExport is a non-ajax process so ajaxStatus component cannot apply. See FileDownload
+When DataExport is used without AJAX, ajaxStatus cannot apply. See FileDownload
 Monitor Status section to find out how monitor export process. Same solution applies to data export
 as well.
 
@@ -102,7 +104,7 @@ exportFunction property of a column that resolves to a method expression. This m
 column instance and should return a string to be included exported document.
 
 ```xhtml
-<p:commandButton value="Export as Text" ajax="false" >
+<p:commandButton value="Export as Text">
     <p:dataExporter type="text" target="tableId" fileName="cars" exporter="#{dataExporterView.textExporter}"/>
 </p:commandLink>
 ```
