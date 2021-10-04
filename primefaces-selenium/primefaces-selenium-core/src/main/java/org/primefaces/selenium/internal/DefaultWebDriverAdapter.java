@@ -23,6 +23,7 @@
  */
 package org.primefaces.selenium.internal;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.logging.Level;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
@@ -37,6 +38,34 @@ import org.openqa.selenium.safari.SafariOptions;
 import org.primefaces.selenium.spi.WebDriverAdapter;
 
 public class DefaultWebDriverAdapter implements WebDriverAdapter {
+
+    @Override
+    public void initialize(ConfigProvider configProvider) {
+        WebDriverManager webDriverManager = null;
+        if ("firefox".equals(configProvider.getWebdriverBrowser())) {
+            if (!System.getProperties().contains("webdriver.gecko.driver")) {
+                webDriverManager = WebDriverManager.firefoxdriver();
+            }
+        }
+        else if ("chrome".equals(configProvider.getWebdriverBrowser())) {
+            if (!System.getProperties().contains("webdriver.gecko.driver")) {
+                webDriverManager = WebDriverManager.chromedriver();
+            }
+        }
+        else if ("safari".equals(configProvider.getWebdriverBrowser())) {
+            if (!System.getProperties().contains("webdriver.safari.driver")) {
+                webDriverManager = WebDriverManager.safaridriver();
+            }
+        }
+
+        if (webDriverManager != null) {
+            if (configProvider.getWebdriverVersion() != null) {
+                webDriverManager = webDriverManager.driverVersion(configProvider.getWebdriverVersion());
+            }
+
+            webDriverManager.setup();
+        }
+    }
 
     @Override
     public WebDriver createWebDriver() {
@@ -74,4 +103,5 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
         throw new RuntimeException("Current supported browsers are: safari, firefox, chrome");
     }
+
 }
