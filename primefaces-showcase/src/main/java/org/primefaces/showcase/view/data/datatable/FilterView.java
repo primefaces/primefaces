@@ -84,7 +84,7 @@ public class FilterView implements Serializable {
         filterBy.add(FilterMeta.builder()
                 .field("date")
                 .filterValue(Arrays.asList(LocalDate.now().minusDays(28), LocalDate.now().plusDays(28)))
-                .matchMode(MatchMode.RANGE)
+                .matchMode(MatchMode.BETWEEN)
                 .build());
 
     }

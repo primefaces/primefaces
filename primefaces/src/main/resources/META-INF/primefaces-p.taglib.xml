@@ -20641,7 +20641,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Interval in seconds to do periodic ajax requests. Default is 2.]]>
+                <![CDATA[Interval in seconds to do periodic AJAX requests. Default is 2.]]>
             </description>
             <name>interval</name>
             <required>false</required>
