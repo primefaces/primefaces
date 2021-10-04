@@ -48,7 +48,7 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
             }
         }
         else if ("chrome".equals(configProvider.getWebdriverBrowser())) {
-            if (!System.getProperties().contains("webdriver.gecko.driver")) {
+            if (!System.getProperties().contains("webdriver.chrome.driver")) {
                 webDriverManager = WebDriverManager.chromedriver();
             }
         }
