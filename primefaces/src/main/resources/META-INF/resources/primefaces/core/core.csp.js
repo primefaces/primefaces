@@ -69,11 +69,11 @@ if (!PrimeFaces.csp) {
                 };
 
                 $(element).off(jqEvent).on(jqEvent, jsWrapper);
-                
+
                 //Collect some basic information about registered AJAXified event listeners
                 if (!PrimeFaces.isProductionProjectStage()) {
                     if (!PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.has(id)) {
-                        PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.set(id, new Map())
+                        PrimeFaces.csp.REGISTERED_AJAXIFIED_EVENT_LISTENERS.set(id, new Map());
                     }
                     var script = js.toString();
                     var isAjaxified = (script.indexOf("PrimeFaces.ab(") >= 0) || 
