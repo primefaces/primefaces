@@ -20,6 +20,8 @@
                 <f:selectItem itemLabel="checkbox" itemValue="checkbox"/>
                 <p:ajax update="form:tree" />
             </p:selectOneRadio>
+            
+            <p:commandButton id="buttonShowSelectedNodes" value="Show selected nodes" action="#{tree004.showSelectedNodes}" />
 
             <p:tree id="tree" value="#{tree004.root}" var="document" widgetVar="tree"
                     selectionMode="#{tree004.selection}" selection="#{tree004.selectedNodes}"
@@ -32,8 +34,6 @@
                     <h:outputText value="#{document}" />
                 </p:treeNode>
             </p:tree>
-
-            <p:commandButton id="buttonShowSelectedNodes" value="Show selected nodes" action="#{tree004.showSelectedNodes}" />
         </h:form>
 
     </h:body>

@@ -154,30 +154,26 @@ public class Tree004Test extends AbstractTreeTest {
         PrimeSelenium.guardAjax(filter).sendKeys("Pro");
 
         // Assert
-        children = tree.getChildren();
-
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        Assertions.assertNotNull(tree.getChildren());
+        Assertions.assertEquals(3, tree.getChildren().size());
 
         // L1
-        Assertions.assertEquals(false, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(false, children.get(2).getWebElement().isDisplayed());
+        Assertions.assertEquals(false, tree.getChildren().get(0).getWebElement().isDisplayed());
+        Assertions.assertEquals(true, tree.getChildren().get(1).getWebElement().isDisplayed());
+        Assertions.assertEquals(false, tree.getChildren().get(2).getWebElement().isDisplayed());
         // L2
-        Assertions.assertEquals(false, children.get(1).getChildren().get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getChildren().get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(false, children.get(1).getChildren().get(2).getWebElement().isDisplayed());
+        Assertions.assertEquals(false, tree.getChildren().get(1).getChildren().get(0).getWebElement().isDisplayed());
+        Assertions.assertEquals(true, tree.getChildren().get(1).getChildren().get(1).getWebElement().isDisplayed());
+        Assertions.assertEquals(false, tree.getChildren().get(1).getChildren().get(2).getWebElement().isDisplayed());
 
         // Act
         filter.clear();
         PrimeSelenium.guardAjax(filter).sendKeys(Keys.BACK_SPACE); // null filter press backspace to trigger the re-filtering
 
         // Assert
-        children = tree.getChildren();
-
-        Assertions.assertEquals(true, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(2).getWebElement().isDisplayed());
+        Assertions.assertEquals(true, tree.getChildren().get(0).getWebElement().isDisplayed());
+        Assertions.assertEquals(true, tree.getChildren().get(1).getWebElement().isDisplayed());
+        Assertions.assertEquals(true, tree.getChildren().get(2).getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
@@ -202,8 +198,7 @@ public class Tree004Test extends AbstractTreeTest {
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
         PrimeSelenium.guardAjax(filter).sendKeys("Pro");
-        children = tree.getChildren();
-        children.get(1).getChildren().get(1).select();
+        tree.getChildren().get(1).getChildren().get(1).select();
 
         // Assert
         page.buttonShowSelectedNodes.click();
