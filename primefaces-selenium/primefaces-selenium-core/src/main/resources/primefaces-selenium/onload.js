@@ -1,21 +1,33 @@
 window.pfselenium = {
     navigating : false,
     submitting : false,
-    xhr : null
+    xhr: []
 };
 
 var originalSend = XMLHttpRequest.prototype.send;
 XMLHttpRequest.prototype.send = function() {
-    window.pfselenium.xhr = this;
+    var xhr = this;
+    window.pfselenium.xhr.push(xhr);
 
     this.addEventListener("load", function() {
-        window.pfselenium.xhr = null;
+        window.pfselenium.xhr = window.pfselenium.xhr.filter(function(item) {
+            return item !== xhr;
+        });
     });
     this.addEventListener("error", function() {
-        window.pfselenium.xhr = null;
+        window.pfselenium.xhr = window.pfselenium.xhr.filter(function(item) {
+            return item !== xhr;
+        });
     });
     this.addEventListener("abort", function() {
-        window.pfselenium.xhr = null;
+        window.pfselenium.xhr = window.pfselenium.xhr.filter(function(item) {
+            return item !== xhr;
+        });
+    });
+    this.addEventListener("timeout", function() {
+        window.pfselenium.xhr = window.pfselenium.xhr.filter(function(item) {
+            return item !== xhr;
+        });
     });
 
     originalSend.apply(this, arguments);

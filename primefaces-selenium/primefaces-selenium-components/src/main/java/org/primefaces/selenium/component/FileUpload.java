@@ -32,7 +32,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
@@ -81,7 +80,7 @@ public abstract class FileUpload extends AbstractInputComponent {
                     ConfigProvider.getInstance().getTimeoutFileUpload(),
                     PrimeExpectedConditions.documentLoaded(),
                     PrimeExpectedConditions.ajaxQueueEmpty(),
-                    ExpectedConditions.jsReturnsValue("if (" + getWidgetByIdScript() + ".files.length === 0) return true;"));
+                    PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
 
                 guarded.run();
 
@@ -122,7 +121,7 @@ public abstract class FileUpload extends AbstractInputComponent {
             ConfigProvider.getInstance().getTimeoutFileUpload(),
             PrimeExpectedConditions.documentLoaded(),
             PrimeExpectedConditions.ajaxQueueEmpty(),
-            ExpectedConditions.jsReturnsValue("if (" + getWidgetByIdScript() + ".files.length === 0) return true;"));
+            PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
 
         return guarded;
     }

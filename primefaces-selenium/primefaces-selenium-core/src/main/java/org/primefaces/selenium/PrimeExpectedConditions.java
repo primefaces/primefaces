@@ -35,6 +35,10 @@ public final class PrimeExpectedConditions {
         super();
     }
 
+    public static ExpectedCondition<Boolean> script(String script) {
+        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript(script);
+    }
+
     public static ExpectedCondition<Boolean> documentLoaded() {
         return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'");
     }
@@ -54,7 +58,7 @@ public final class PrimeExpectedConditions {
 
     public static ExpectedCondition<Boolean> ajaxQueueEmpty() {
         return driver -> (Boolean) ((JavascriptExecutor) driver)
-                    .executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());");
+                    .executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty()) && (!window.pfselenium || pfselenium.xhr.length === 0);");
     }
 
     public static ExpectedCondition<Boolean> elementToBeClickable(WebElement element) {

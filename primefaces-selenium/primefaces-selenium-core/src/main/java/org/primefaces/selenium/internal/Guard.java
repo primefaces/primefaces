@@ -97,7 +97,7 @@ public class Guard {
         try {
             WebDriver driver = WebDriverProvider.get();
             JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
+            executor.executeScript("pfselenium.xhr = [];");
             T result = (T) executor.executeScript(script, args);
             waitUntilAjaxCompletes(driver);
             return result;
@@ -118,7 +118,7 @@ public class Guard {
             WebDriver driver = WebDriverProvider.get();
             JavascriptExecutor executor = (JavascriptExecutor) driver;
             try {
-                executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
+                executor.executeScript("pfselenium.xhr = [];");
 
                 // System.out.println("Guard#ajax; ajaxDebugInfo before methode.invoke: " + getAjaxDebugInfo(executor));
                 Object result = method.invoke(target, args);
@@ -169,7 +169,7 @@ public class Guard {
                         .executeScript("return document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
                                     + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
-                                    + " && (!window.pfselenium || (pfselenium.xhr === null && pfselenium.navigating === false));");
+                                    + " && (!window.pfselenium || (pfselenium.xhr.length === 0 && pfselenium.navigating === false));");
         });
     }
 
