@@ -335,6 +335,7 @@
                         </executions>
                         <configuration>
                             <skip>false</skip>
+                            <trimStackTrace>false</trimStackTrace>
                             <includes>
                                 <include>**/*Test</include>
                             </includes>

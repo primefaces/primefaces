@@ -36,11 +36,33 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class Guard {
 
     private Guard() {
 
+    }
+
+    public static <T> T custom(T target, int timeout, ExpectedCondition... expectedConditions) {
+        OnloadScripts.execute();
+
+        return proxy(target, (Object p, Method method, Object[] args) -> {
+            try {
+                Object result = method.invoke(target, args);
+
+                WebDriver driver = WebDriverProvider.get();
+
+                WebDriverWait wait = new WebDriverWait(driver, timeout, 100);
+                wait.until(ExpectedConditions.and(expectedConditions));
+
+                return result;
+            }
+            catch (TimeoutException e) {
+                throw new TimeoutException("Timeout while waiting for custom guard!", e);
+            }
+        });
     }
 
     public static <T> T http(T target) {

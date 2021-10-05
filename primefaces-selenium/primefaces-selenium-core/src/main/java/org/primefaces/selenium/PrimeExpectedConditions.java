@@ -39,6 +39,14 @@ public final class PrimeExpectedConditions {
         return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'");
     }
 
+    public static ExpectedCondition<Boolean> notNavigating() {
+        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.pfselenium || pfselenium.navigating === false);");
+    }
+
+    public static ExpectedCondition<Boolean> notSubmitting() {
+        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.pfselenium || pfselenium.submitting === false);");
+    }
+
     public static ExpectedCondition<Boolean> animationNotActive() {
         return driver -> (Boolean) ((JavascriptExecutor) driver)
                     .executeScript("return ((!window.jQuery || jQuery.active == 0) && (!window.PrimeFaces || PrimeFaces.animationActive === false));");

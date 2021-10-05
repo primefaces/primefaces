@@ -112,7 +112,8 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("skinSimple", fileUpload.isSkinSimple(), false);
         }
 
-        wb.attr("auto", fileUpload.isAuto(), false)
+        wb.attr("mode", fileUpload.getMode())
+                .attr("auto", fileUpload.isAuto(), false)
                 .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update,
                             SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
                 .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,

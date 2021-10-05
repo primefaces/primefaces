@@ -48,7 +48,6 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         // Act
         File file = locateClientSideFile("file1.csv");
         fileUpload.setValue(file);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -67,7 +66,6 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         File file1 = locateClientSideFile("file1.csv");
         File file2 = locateClientSideFile("file2.csv");
         fileUpload.setValue(file1, file2);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -86,7 +84,6 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         File file1 = locateClientSideFile("file1.csv");
         File file2 = locateClientSideFile("file2.csv");
         fileUpload.setValue(file1, file2);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -96,7 +93,6 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         File file3 = locateClientSideFile("file2.csv");
         File file4 = locateClientSideFile("file1.csv");
         fileUpload.setValue(file3, file4);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -118,7 +114,6 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         File file1 = locateClientSideFile("file1.csv");
         File file2 = locateClientSideFile("file2.csv");
         fileUpload.setValue(file1, file2);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -128,7 +123,6 @@ public class FileUpload008Test extends AbstractFileUploadTest {
         File file3 = locateClientSideFile("file2.csv");
         File file4 = locateClientSideFile("file1.csv");
         fileUpload.setValue(file3, file4);
-        fileUpload.waitAdvancedUntilAllFilesAreUploaded(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
