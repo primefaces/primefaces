@@ -23,7 +23,7 @@ if (!PrimeFaces.csp) {
 
         /**
          * Map of currently registered CSP events on this page.
-         * @type {Map}
+         * @type {Map<string,Map>}
          */
         REGISTERED_AJAXIFIED_EVENT_LISTENERS : new Map(),
 
