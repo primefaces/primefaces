@@ -162,6 +162,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
 
     @Test
     @Order(19)
+    @Tag("SafariExclude") // need to investigate why safari doesn't work
     @DisplayName("DatePicker: lazy meta data model with viewChange behaviour")
     public void testLazyMetaDataViewChangeBehaviour2(Page page) {
         testDatePickerPart2(page.datePicker6, page, DatePickerBehaviour.viewChange);
