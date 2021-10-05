@@ -46,6 +46,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
                 + "        (script.indexOf('mojarra.ab(') >= 0) ||"
                 + "        (script.indexOf('jsf.ajax.request') >= 0) ||"
                 + "        (script.indexOf('var retVal = js.call(element, event);') >= 0);" // CommandButton special handling
+                + "        (script.indexOf('h.cancelable){h.preventDefault()') >= 0);" // CommandButton special handling
                 + "}); return isAjaxified;";
 
     /**
