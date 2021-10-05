@@ -23,19 +23,22 @@
  */
 package org.primefaces.integrationtests.selectmanymenu;
 
-import lombok.Data;
-import org.primefaces.integrationtests.general.model.Driver;
-import org.primefaces.integrationtests.general.service.RealDriverService;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.primefaces.integrationtests.general.model.Driver;
+import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -53,7 +56,7 @@ public class SelectManyMenu001 implements Serializable {
     @PostConstruct
     public void init() {
         drivers = driverService.getDrivers();
-        selectedDrivers = Arrays.asList(drivers.get(1), drivers.get(2));
+        selectedDrivers = new ArrayList<>(Arrays.asList(drivers.get(1), drivers.get(2)));
     }
 
     public void submit() {

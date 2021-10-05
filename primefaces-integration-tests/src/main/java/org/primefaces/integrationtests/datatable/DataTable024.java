@@ -24,16 +24,17 @@
 package org.primefaces.integrationtests.datatable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import lombok.AllArgsConstructor;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -44,7 +45,7 @@ public class DataTable024 implements Serializable {
     private List<Entry> filteredEntries;
 
     public List<Entry> getEntries() {
-        return Arrays.asList(new Entry(1, "1", "1"), new Entry(2, "2", "2"), new Entry(3, "3", "3"));
+        return new ArrayList<>(Arrays.asList(new Entry(1, "1", "1"), new Entry(2, "2", "2"), new Entry(3, "3", "3")));
     }
 
     public List<Entry> getFilteredEntries() {
@@ -64,6 +65,7 @@ public class DataTable024 implements Serializable {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Entry implements Serializable {
+        private static final long serialVersionUID = 1L;
         private int id;
         private String name1;
         private String name2;
