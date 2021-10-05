@@ -33,21 +33,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
     /**
      * CSP script using jQuery events to see if an event is AJAXified.
      */
-    private static final String CSP_SCRIPT = "if (!PrimeFaces.csp.NONCE_VALUE) return false;"
-                + "var isAjaxified = false;"
-                + "var jq = $(PrimeFaces.escapeClientId('%s'));"
-                + "var events = jq ? $._data(jq[0], 'events') : null;"
-                + "var hasEvents = events ? events.%s !== undefined : false;"
-                + "if (!hasEvents) return isAjaxified;"
-                + "$.each(events.%s, function(j, h) {"
-                + "    var script = h.handler.toString();"
-                + "    isAjaxified = isAjaxified || (script.indexOf('PrimeFaces.ab(') >= 0) ||"
-                + "        (script.indexOf('pf.ab(') >= 0) ||"
-                + "        (script.indexOf('mojarra.ab(') >= 0) ||"
-                + "        (script.indexOf('jsf.ajax.request') >= 0) ||"
-                + "        (script.indexOf('var retVal = js.call(element, event);') >= 0);" // CommandButton special handling
-                + "        (script.indexOf('h.cancelable){h.preventDefault()') >= 0);" // CommandButton special handling
-                + "}); return isAjaxified;";
+    private static final String CSP_SCRIPT = "return PrimeFaces.csp.hasRegisteredAjaxifiedEvent('%s', '%s');";
 
     /**
      * Gets the widget by component id JS function.
@@ -109,13 +95,8 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         }
 
         // now check for CSP events
-        if (event.startsWith("on")) {
-            event = event.substring(2, event.length());
-        }
         String id = element.getAttribute("id");
-        String cspScript = String.format(CSP_SCRIPT, id, event, event);
-        boolean isCspAjaxified = PrimeSelenium.executeScript(cspScript);
-        System.out.println("CSP id=" + id + " event=" + event + " ajaxified=" + isCspAjaxified);
-        return isCspAjaxified;
+        String cspScript = String.format(CSP_SCRIPT, id, event);
+        return PrimeSelenium.executeScript(cspScript);
     }
 }
