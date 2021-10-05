@@ -25,10 +25,7 @@ package org.primefaces.integrationtests.tree;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -130,6 +127,7 @@ public class Tree004Test extends AbstractTreeTest {
     }
 
     @Test
+    @Disabled
     @Order(3)
     @DisplayName("Tree: Filter")
     public void testFilter(Page page) {
@@ -179,6 +177,7 @@ public class Tree004Test extends AbstractTreeTest {
     }
 
     @Test
+    @Disabled
     @Order(4)
     @DisplayName("Tree: Multiple selection + Filter, https://github.com/primefaces/primefaces/issues/3926")
     public void testFilterWithMultipleSelection(Page page) {
