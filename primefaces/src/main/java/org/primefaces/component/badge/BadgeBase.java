@@ -33,6 +33,8 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BadgeRenderer";
 
+    public static final String ATTR_DELEGATION = "org.primefaces.component.Badge";
+
     public enum PropertyKeys {
         value,
         severity,

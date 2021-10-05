@@ -27,6 +27,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.speeddial.SpeedDial;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
 
@@ -35,9 +36,34 @@ public class BadgeRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Badge badge = (Badge) component;
+        boolean hasChildren = badge.getChildCount() > 0;
+        boolean isDelegated = hasChildren && isDelegated(badge);
+        if (isDelegated) {
+            renderChildren(context, badge);
+        }
+        else {
+            encode(context, badge, hasChildren);
+        }
+    }
+
+    protected boolean isDelegated(Badge badge) {
+        for (int i = 0; i < badge.getChildCount(); i++) {
+            UIComponent child = badge.getChildren().get(i);
+            if (canDelegate(child)) {
+                child.getAttributes().put(BadgeBase.ATTR_DELEGATION, badge);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean canDelegate(UIComponent child) {
+        return (child instanceof SpeedDial);
+    }
+
+    public void encode(FacesContext context, Badge badge, boolean renderChildren) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String value = badge.getValue();
-        boolean hasChild = badge.getChildCount() > 0;
         boolean valueEmpty = LangUtils.isEmpty(value);
         String severity = badge.getSeverity();
         String size = badge.getSize();
@@ -55,14 +81,14 @@ public class BadgeRenderer extends CoreRenderer {
                     .add("danger".equals(severity), Badge.SEVERITY_DANGER_CLASS)
                     .build();
 
-        if (hasChild) {
+        if (renderChildren) {
             writer.startElement("div", null);
             writer.writeAttribute("id", badge.getClientId(context), "id");
             writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
         }
 
         writer.startElement("span", null);
-        if (!hasChild) {
+        if (!renderChildren) {
             writer.writeAttribute("id", badge.getClientId(context), "id");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
@@ -75,7 +101,7 @@ public class BadgeRenderer extends CoreRenderer {
         }
         writer.endElement("span");
 
-        if (hasChild) {
+        if (renderChildren) {
             renderChildren(context, badge);
             writer.endElement("div");
         }

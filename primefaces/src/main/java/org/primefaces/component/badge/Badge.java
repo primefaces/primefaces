@@ -23,7 +23,10 @@
  */
 package org.primefaces.component.badge;
 
+import java.io.IOException;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBase {
@@ -39,4 +42,12 @@ public class Badge extends BadgeBase {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
+
+    public static void encodeDelegated(FacesContext context, UIComponent component) throws IOException {
+        Badge badge = (Badge) component.getAttributes().get(BadgeBase.ATTR_DELEGATION);
+        if (badge != null) {
+            new BadgeRenderer().encode(context, badge, false);
+        }
+    }
+
 }
