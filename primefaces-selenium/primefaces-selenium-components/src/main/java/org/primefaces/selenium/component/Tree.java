@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.primefaces.selenium.component.base.AbstractComponent;
+import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
 /**
@@ -48,6 +49,24 @@ public abstract class Tree extends AbstractComponent {
     public List<TreeNode> getChildren() {
         return findElements(By.cssSelector(CHILD_SELECTOR)).stream().map(e -> new TreeNode(e, CHILD_SELECTOR, this))
                     .collect(Collectors.toList());
+    }
+
+    /**
+     * Is this component AJAX enabled with "select"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isSelectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "select");
+    }
+
+    /**
+     * Is this component AJAX enabled with "select"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isUnselectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "unselect");
     }
 
 }

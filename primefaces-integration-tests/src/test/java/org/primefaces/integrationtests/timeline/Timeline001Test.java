@@ -129,7 +129,7 @@ public class Timeline001Test extends AbstractPrimePageTest {
     }
 
     private void assertRangeChanged(Page page, String detail, String summary) {
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(page.messages));
+        PrimeSelenium.wait(100);
         Msg message = page.messages.getMessage(0);
         Assertions.assertEquals(detail, message.getSummary());
         Assertions.assertTrue(message.getDetail().contains(summary));
