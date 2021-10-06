@@ -221,13 +221,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- TODO: switch via profile -->
-        <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces-selenium-runtime</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
 
         <!-- add dependencies which get shaded by PrimeFaces so IDE´s like IntelliJ can run und debug multimoduled integration-tests -->
         <dependency>
