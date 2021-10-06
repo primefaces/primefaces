@@ -50,7 +50,6 @@ public class BadgeRenderer extends CoreRenderer {
         for (int i = 0; i < badge.getChildCount(); i++) {
             UIComponent child = badge.getChildren().get(i);
             if (canDelegate(child)) {
-                child.getAttributes().put(BadgeBase.ATTR_DELEGATION, badge);
                 return true;
             }
         }

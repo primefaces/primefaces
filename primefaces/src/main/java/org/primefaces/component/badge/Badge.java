@@ -44,9 +44,9 @@ public class Badge extends BadgeBase {
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
 
     public static void encodeDelegated(FacesContext context, UIComponent component) throws IOException {
-        Badge badge = (Badge) component.getAttributes().get(BadgeBase.ATTR_DELEGATION);
-        if (badge != null) {
-            new BadgeRenderer().encode(context, badge, false);
+        UIComponent parent = component.getParent();
+        if (parent instanceof Badge) {
+            new BadgeRenderer().encode(context, (Badge) parent, false);
         }
     }
 
