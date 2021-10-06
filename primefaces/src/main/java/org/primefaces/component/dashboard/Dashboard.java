@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
@@ -88,7 +89,8 @@ public class Dashboard extends DashboardBase {
                     senderColumnIndex = Integer.valueOf(params.get(senderIndexParam));
                 }
 
-                String[] idTokens = widgetClientId.split(":");
+                String separator = Character.toString(UINamingContainer.getSeparatorChar(context));
+                String[] idTokens = widgetClientId.split(separator);
                 String widgetId = idTokens.length == 1 ? idTokens[0] : idTokens[idTokens.length - 1];
 
                 DashboardReorderEvent reorderEvent =
