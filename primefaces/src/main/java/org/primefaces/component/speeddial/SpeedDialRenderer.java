@@ -50,6 +50,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
 
         writer.startElement("div", speedDial);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", SpeedDial.WRAPPER_CLASS, null);
 
         encodeContainer(context, speedDial);
 
@@ -57,9 +58,9 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
             encodeMask(context, speedDial);
         }
 
-        writer.endElement("div");
-
         Badge.encodeDelegated(context, speedDial);
+
+        writer.endElement("div");
     }
 
     protected void encodeContainer(FacesContext context, SpeedDial speedDial) throws IOException {
