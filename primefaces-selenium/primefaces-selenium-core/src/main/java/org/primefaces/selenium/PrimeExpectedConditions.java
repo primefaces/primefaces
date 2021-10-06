@@ -55,12 +55,8 @@ public final class PrimeExpectedConditions {
         return script("return ((!window.jQuery || jQuery.active == 0) && (!window.PrimeFaces || PrimeFaces.animationActive === false));");
     }
 
-    public static ExpectedCondition<Boolean> ajaxRequestSent() {
-        return script("return (!window.pfselenium || pfselenium.anyXhrStarted === true);");
-    }
-
     public static ExpectedCondition<Boolean> ajaxQueueEmpty() {
-        return script("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty()) && (!window.pfselenium || pfselenium.xhr === 0);");
+        return script("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());");
     }
 
     public static ExpectedCondition<Boolean> elementToBeClickable(WebElement element) {

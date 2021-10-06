@@ -106,7 +106,7 @@ public class Guard {
         WebDriver driver = WebDriverProvider.get();
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         try {
-            executor.executeScript("pfselenium.xhr = 0; pfselenium.anyXhrStarted = false;");
+            executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
 
             T result = (T) executor.executeScript(script, args);
 
@@ -130,7 +130,7 @@ public class Guard {
             WebDriver driver = WebDriverProvider.get();
             JavascriptExecutor executor = (JavascriptExecutor) driver;
             try {
-                executor.executeScript("pfselenium.xhr = 0; pfselenium.anyXhrStarted = false;");
+                executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
 
                 // System.out.println("Guard#ajax; ajaxDebugInfo before methode.invoke: " + getAjaxDebugInfo(executor));
                 Object result = method.invoke(target, args);
@@ -177,12 +177,13 @@ public class Guard {
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutAjax(), 50);
-        wait.until(ExpectedConditions.and(
-                PrimeExpectedConditions.documentLoaded(),
-                PrimeExpectedConditions.animationNotActive(),
-                PrimeExpectedConditions.notNavigating(),
-                PrimeExpectedConditions.ajaxRequestSent(),
-                PrimeExpectedConditions.ajaxQueueEmpty()));
+        wait.until(d -> {
+            return (Boolean) ((JavascriptExecutor) driver)
+                        .executeScript("return document.readyState === 'complete'"
+                                    + " && (!window.jQuery || jQuery.active == 0)"
+                                    + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
+                                    + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false));");
+        });
     }
 
     private static <T> T proxy(T target, InvocationHandler handler) {

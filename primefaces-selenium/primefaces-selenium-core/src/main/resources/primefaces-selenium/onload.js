@@ -1,22 +1,22 @@
 window.pfselenium = {
     navigating : false,
     submitting : false,
-    xhr: 0,
-    anyXhrStarted : false
+    xhr : null
 };
 
 var originalSend = XMLHttpRequest.prototype.send;
 XMLHttpRequest.prototype.send = function() {
-    window.pfselenium.xhr = window.pfselenium.xhr + 1;
-    window.pfselenium.anyXhrStarted = true;
+    window.pfselenium.xhr = this;
 
-    var listener = function() {
-        window.pfselenium.xhr = window.pfselenium.xhr - 1;
-    };
-    this.addEventListener("load", listener);
-    this.addEventListener("error", listener);
-    this.addEventListener("abort", listener);
-    this.addEventListener("timeout", listener);
+    this.addEventListener("load", function() {
+        window.pfselenium.xhr = null;
+    });
+    this.addEventListener("error", function() {
+        window.pfselenium.xhr = null;
+    });
+    this.addEventListener("abort", function() {
+        window.pfselenium.xhr = null;
+    });
 
     originalSend.apply(this, arguments);
 };
