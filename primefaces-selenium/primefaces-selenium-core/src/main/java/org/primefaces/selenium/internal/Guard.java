@@ -115,7 +115,7 @@ public class Guard {
             return result;
         }
         catch (TimeoutException e) {
-            throw new TimeoutException("Timeout while waiting for AJAX complete! (" + getAjaxDebugInfo(executor) + ")", e);
+            throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
         }
     }
 
@@ -146,7 +146,7 @@ public class Guard {
                 return result;
             }
             catch (TimeoutException e) {
-                throw new TimeoutException("Timeout while waiting for AJAX complete! (" + getAjaxDebugInfo(executor) + ")", e);
+                throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
             }
             catch (InterruptedException e) {
                 throw new TimeoutException("AJAX Guard delay was interrupted!", e);
