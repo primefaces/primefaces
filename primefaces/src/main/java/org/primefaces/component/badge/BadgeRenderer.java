@@ -49,15 +49,11 @@ public class BadgeRenderer extends CoreRenderer {
     protected boolean isDelegated(Badge badge) {
         for (int i = 0; i < badge.getChildCount(); i++) {
             UIComponent child = badge.getChildren().get(i);
-            if (canDelegate(child)) {
+            if (child instanceof SpeedDial) {
                 return true;
             }
         }
         return false;
-    }
-
-    protected boolean canDelegate(UIComponent child) {
-        return (child instanceof SpeedDial);
     }
 
     public void encode(FacesContext context, Badge badge, boolean renderChildren) throws IOException {
