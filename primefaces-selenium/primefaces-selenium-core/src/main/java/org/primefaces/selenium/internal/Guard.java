@@ -46,11 +46,20 @@ public class Guard {
     }
 
     public static <T> T custom(T target, int timeout, ExpectedCondition... expectedConditions) {
+        return custom(target, 0, timeout, expectedConditions);
+    }
+
+    public static <T> T custom(T target, int delay, int timeout, ExpectedCondition... expectedConditions) {
         OnloadScripts.execute();
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
             try {
                 Object result = method.invoke(target, args);
+
+                // if JS uses setTimeout on the client we want to wait before trying to capture AJAX call
+                if (delay > 0) {
+                    Thread.sleep(delay);
+                }
 
                 WebDriver driver = WebDriverProvider.get();
 
@@ -94,16 +103,16 @@ public class Guard {
     public static <T> T ajax(String script, Object... args) {
         OnloadScripts.execute();
 
+        WebDriver driver = WebDriverProvider.get();
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
         try {
-            WebDriver driver = WebDriverProvider.get();
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
-            executor.executeScript("pfselenium.xhr = [];");
+            executor.executeScript("pfselenium.xhr = 0; pfselenium.anyXhrStarted = false;");
             T result = (T) executor.executeScript(script, args);
             waitUntilAjaxCompletes(driver);
             return result;
         }
         catch (TimeoutException e) {
-            throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
+            throw new TimeoutException("Timeout while waiting for AJAX complete! (" + getAjaxDebugInfo(executor) + ")", e);
         }
     }
 
@@ -111,21 +120,21 @@ public class Guard {
         return ajax(target, 0);
     }
 
-    public static <T> T ajax(T target, int delayInMilliseconds) {
+    public static <T> T ajax(T target, int delay) {
         OnloadScripts.execute();
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
             WebDriver driver = WebDriverProvider.get();
             JavascriptExecutor executor = (JavascriptExecutor) driver;
             try {
-                executor.executeScript("pfselenium.xhr = [];");
+                executor.executeScript("pfselenium.xhr = 0; pfselenium.anyXhrStarted = false;");
 
                 // System.out.println("Guard#ajax; ajaxDebugInfo before methode.invoke: " + getAjaxDebugInfo(executor));
                 Object result = method.invoke(target, args);
 
                 // if JS uses setTimeout on the client we want to wait before trying to capture AJAX call
-                if (delayInMilliseconds > 0) {
-                    Thread.sleep(delayInMilliseconds);
+                if (delay > 0) {
+                    Thread.sleep(delay);
                 }
 
                 waitUntilAjaxCompletes(driver);
@@ -159,6 +168,7 @@ public class Guard {
                     "PrimeFaces.animationActive=" + executor.executeScript("return PrimeFaces.animationActive;") + ", " +
                     "!window.pfselenium=" + executor.executeScript("return !window.pfselenium;") + ", " +
                     "pfselenium.xhr=" + executor.executeScript("return pfselenium.xhr;") + ", " +
+                    "pfselenium.anyXhrStarted=" + executor.executeScript("return pfselenium.anyXhrStarted;") + ", " +
                     "pfselenium.navigating=" + executor.executeScript("return pfselenium.navigating;");
     }
 
@@ -169,7 +179,8 @@ public class Guard {
                         .executeScript("return document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
                                     + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
-                                    + " && (!window.pfselenium || (pfselenium.xhr.length === 0 && pfselenium.navigating === false));");
+                                    + " && (!window.pfselenium || "
+                                    + " (pfselenium.anyXhrStarted === true && pfselenium.xhr === 0 && pfselenium.navigating === false));");
         });
     }
 

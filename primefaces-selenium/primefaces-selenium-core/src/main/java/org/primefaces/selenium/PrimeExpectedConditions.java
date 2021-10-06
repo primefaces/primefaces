@@ -40,25 +40,27 @@ public final class PrimeExpectedConditions {
     }
 
     public static ExpectedCondition<Boolean> documentLoaded() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'");
+        return script("return document.readyState === 'complete'");
     }
 
     public static ExpectedCondition<Boolean> notNavigating() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.pfselenium || pfselenium.navigating === false);");
+        return script("return (!window.pfselenium || pfselenium.navigating === false);");
     }
 
     public static ExpectedCondition<Boolean> notSubmitting() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.pfselenium || pfselenium.submitting === false);");
+        return script("return (!window.pfselenium || pfselenium.submitting === false);");
     }
 
     public static ExpectedCondition<Boolean> animationNotActive() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver)
-                    .executeScript("return ((!window.jQuery || jQuery.active == 0) && (!window.PrimeFaces || PrimeFaces.animationActive === false));");
+        return script("return ((!window.jQuery || jQuery.active == 0) && (!window.PrimeFaces || PrimeFaces.animationActive === false));");
+    }
+
+    public static ExpectedCondition<Boolean> ajaxRequestSent() {
+        return script("return (!window.pfselenium || pfselenium.anyXhrStarted === true);");
     }
 
     public static ExpectedCondition<Boolean> ajaxQueueEmpty() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver)
-                    .executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty()) && (!window.pfselenium || pfselenium.xhr.length === 0);");
+        return script("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty()) && (!window.pfselenium || pfselenium.xhr === 0);");
     }
 
     public static ExpectedCondition<Boolean> elementToBeClickable(WebElement element) {

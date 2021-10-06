@@ -71,20 +71,19 @@ public abstract class FileUpload extends AbstractInputComponent {
             }
             // ComponentUtils.sendKeys will break tests in Chrome
             getInput().sendKeys(value.toString());
+
+            PrimeSelenium.wait(200);
         };
 
         if (isAutoUpload()) {
             if (isAdvancedMode()) {
                 Runnable guarded = Guard.custom(
                     runnable,
+                    200,
                     ConfigProvider.getInstance().getTimeoutFileUpload(),
-                    PrimeExpectedConditions.documentLoaded(),
-                    PrimeExpectedConditions.ajaxQueueEmpty(),
                     PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
 
                 guarded.run();
-
-                PrimeSelenium.wait(200);
             }
             else {
                 PrimeSelenium.guardAjax(runnable).run();
@@ -118,9 +117,8 @@ public abstract class FileUpload extends AbstractInputComponent {
 
         WebElement guarded = Guard.custom(
             element,
+            200,
             ConfigProvider.getInstance().getTimeoutFileUpload(),
-            PrimeExpectedConditions.documentLoaded(),
-            PrimeExpectedConditions.ajaxQueueEmpty(),
             PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
 
         return guarded;
