@@ -48,7 +48,7 @@ public class Rating001Test extends AbstractPrimePageTest {
         Assertions.assertNull(rating.getValue());
 
         // Act - add value
-        PrimeSelenium.guardAjax(rating).setValue(4);
+        rating.setValue(4);
 
         // Assert - rate-event
         Assertions.assertEquals(4L, rating.getValue());

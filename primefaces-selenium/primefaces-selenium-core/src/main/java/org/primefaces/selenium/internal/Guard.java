@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.primefaces.selenium.PrimeExpectedConditions;
 
 public class Guard {
 
@@ -86,11 +87,10 @@ public class Guard {
                 WebDriver driver = WebDriverProvider.get();
 
                 WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutHttp(), 100);
-                wait.until(d -> {
-                    return (Boolean) ((JavascriptExecutor) driver)
-                                .executeScript("return document.readyState === 'complete'"
-                                            + " && (!window.pfselenium || pfselenium.submitting === false && pfselenium.navigating === false);");
-                });
+                wait.until(ExpectedConditions.and(
+                        PrimeExpectedConditions.documentLoaded(),
+                        PrimeExpectedConditions.notNavigating(),
+                        PrimeExpectedConditions.notSubmitting()));
 
                 return result;
             }
@@ -107,8 +107,11 @@ public class Guard {
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         try {
             executor.executeScript("pfselenium.xhr = 0; pfselenium.anyXhrStarted = false;");
+
             T result = (T) executor.executeScript(script, args);
+
             waitUntilAjaxCompletes(driver);
+
             return result;
         }
         catch (TimeoutException e) {
@@ -174,14 +177,12 @@ public class Guard {
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutAjax(), 50);
-        wait.until(d -> {
-            return (Boolean) ((JavascriptExecutor) driver)
-                        .executeScript("return document.readyState === 'complete'"
-                                    + " && (!window.jQuery || jQuery.active == 0)"
-                                    + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
-                                    + " && (!window.pfselenium || "
-                                    + " (pfselenium.anyXhrStarted === true && pfselenium.xhr === 0 && pfselenium.navigating === false));");
-        });
+        wait.until(ExpectedConditions.and(
+                PrimeExpectedConditions.documentLoaded(),
+                PrimeExpectedConditions.animationNotActive(),
+                PrimeExpectedConditions.notNavigating(),
+                PrimeExpectedConditions.ajaxRequestSent(),
+                PrimeExpectedConditions.ajaxQueueEmpty()));
     }
 
     private static <T> T proxy(T target, InvocationHandler handler) {
