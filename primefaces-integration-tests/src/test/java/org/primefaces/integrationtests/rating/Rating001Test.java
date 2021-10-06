@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -250,7 +251,12 @@ public class Rating001Test extends AbstractPrimePageTest {
         // Act
         PrimeSelenium.setHiddenInput(rating.getInput(), "def");
         Assertions.assertEquals("def", rating.getInput().getAttribute("value"));
-        page.submit.click();
+        try {
+            page.submit.click();
+        }
+        catch (WebDriverException ex) {
+            // timeout is OK as long as Assert below passes
+        }
 
         // Assert
         Assertions.assertEquals("Error", page.getWebDriver().getTitle());

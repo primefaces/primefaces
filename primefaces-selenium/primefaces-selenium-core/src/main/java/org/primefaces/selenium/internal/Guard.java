@@ -23,22 +23,23 @@
  */
 package org.primefaces.selenium.internal;
 
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.implementation.InvocationHandlerAdapter;
-import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.spi.WebDriverProvider;
-
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.spi.WebDriverProvider;
+
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 
 public class Guard {
 
@@ -115,7 +116,7 @@ public class Guard {
             return result;
         }
         catch (TimeoutException e) {
-            throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
+            throw new TimeoutException("Timeout while waiting for AJAX complete! (" + getAjaxDebugInfo(executor) + ")", e);
         }
     }
 
@@ -146,7 +147,7 @@ public class Guard {
                 return result;
             }
             catch (TimeoutException e) {
-                throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
+                throw new TimeoutException("Timeout while waiting for AJAX complete! (" + getAjaxDebugInfo(executor) + ")", e);
             }
             catch (InterruptedException e) {
                 throw new TimeoutException("AJAX Guard delay was interrupted!", e);
@@ -165,14 +166,14 @@ public class Guard {
     private static String getAjaxDebugInfo(JavascriptExecutor executor) {
         return "document.readyState=" + executor.executeScript("return document.readyState;") + ", " +
                     "!window.jQuery=" + executor.executeScript("return !window.jQuery;") + ", " +
-                    "jQuery.active=" + executor.executeScript("return jQuery.active;") + ", " +
+                    "jQuery.active=" + executor.executeScript("return (!window.jQuery || jQuery.active);") + ", " +
                     "!window.PrimeFaces=" + executor.executeScript("return !window.PrimeFaces;") + ", " +
-                    "PrimeFaces.ajax.Queue.isEmpty()=" + executor.executeScript("return PrimeFaces.ajax.Queue.isEmpty();") + ", " +
-                    "PrimeFaces.animationActive=" + executor.executeScript("return PrimeFaces.animationActive;") + ", " +
+                    "PrimeFaces.ajax.Queue.isEmpty()=" + executor.executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());") + ", " +
+                    "PrimeFaces.animationActive=" + executor.executeScript("return (!window.PrimeFaces || PrimeFaces.animationActive);") + ", " +
                     "!window.pfselenium=" + executor.executeScript("return !window.pfselenium;") + ", " +
-                    "pfselenium.xhr=" + executor.executeScript("return pfselenium.xhr;") + ", " +
-                    "pfselenium.anyXhrStarted=" + executor.executeScript("return pfselenium.anyXhrStarted;") + ", " +
-                    "pfselenium.navigating=" + executor.executeScript("return pfselenium.navigating;");
+                    "pfselenium.xhr=" + executor.executeScript("return (!window.pfselenium || pfselenium.xhr);") + ", " +
+                    "pfselenium.anyXhrStarted=" + executor.executeScript("return (!window.pfselenium || pfselenium.anyXhrStarted);") + ", " +
+                    "pfselenium.navigating=" + executor.executeScript("return (!window.pfselenium || pfselenium.navigating);");
     }
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
