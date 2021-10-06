@@ -157,7 +157,8 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(tree.getRowNode());
             }
             else {
-                Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
+                String separator = Character.toString(UINamingContainer.getSeparatorChar(context));
+                Tree otherTree = (Tree) tree.findComponent(separator + dragSource);
                 otherTree.setRowKey(otherTree.getValue(), rowKey);
                 dragNodeList.add(otherTree.getRowNode());
             }
