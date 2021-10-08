@@ -34,7 +34,6 @@ public class SpeedDial extends SpeedDialBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SpeedDial";
 
-    public static final String WRAPPER_CLASS = "ui-speeddial-wrapper";
     public static final String CONTAINER_CLASS = "ui-speeddial ui-widget";
     public static final String MASK_CLASS = "ui-speeddial-mask";
     public static final String BUTTON_CLASS = "ui-speeddial-button rounded-button";

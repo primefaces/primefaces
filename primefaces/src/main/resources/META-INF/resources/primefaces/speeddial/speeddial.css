@@ -1,10 +1,7 @@
-.ui-speeddial-wrapper {
-    position: absolute;
-    z-index: 1;
-}
-
 .ui-speeddial {
+    position: absolute;
     display: flex;
+    z-index: 1;
 }
 
 .ui-speeddial-list {
@@ -113,21 +110,4 @@
 
 .ui-speeddial-direction-right .ui-speeddial-list {
     flex-direction: row;
-}
-
-.ui-speeddial-wrapper .ui-badge {
-    position: absolute;
-    left: 3rem;
-    bottom: 3rem;
-}
-
-.ui-speeddial-wrapper .ui-badge.ui-badge-dot {
-    left: 3.5rem;
-    bottom: 3.5rem;
-}
-
-.ui-speeddial-wrapper .ui-badge.ui-badge-lg,
-.ui-speeddial-wrapper .ui-badge.ui-badge-xl {
-    left: 2.5rem;
-    bottom: 2.5rem;
 }

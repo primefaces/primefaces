@@ -50,15 +50,12 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
 
         writer.startElement("div", speedDial);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", SpeedDial.WRAPPER_CLASS, null);
 
         encodeContainer(context, speedDial);
 
         if (speedDial.isMask()) {
             encodeMask(context, speedDial);
         }
-
-        BadgeRenderer.encode(context, speedDial.getBadge());
 
         writer.endElement("div");
     }
@@ -186,6 +183,10 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
     }
 
     protected void encodeButton(FacesContext context, SpeedDial speedDial) throws IOException {
+        if (speedDial.getBadge() != null) {
+            BadgeRenderer.encodeOverlayBegin(context);
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String buttonStyle = speedDial.getButtonStyle();
         boolean isDisabled = speedDial.isDisabled();
@@ -220,6 +221,11 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         writer.endElement("span");
 
         writer.endElement("button");
+
+        if (speedDial.getBadge() != null) {
+            BadgeRenderer.encode(context, speedDial.getBadge());
+            BadgeRenderer.encodeOverlayEnd(context);
+        }
     }
 
     protected void encodeMask(FacesContext context, SpeedDial speedDial) throws IOException {

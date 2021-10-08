@@ -48,12 +48,34 @@ public class BadgeRenderer extends CoreRenderer {
         }
     }
 
+    protected void overlayBegin(FacesContext context, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", null);
+        if (clientId != null) {
+            writer.writeAttribute("id", clientId, "id");
+        }
+        writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
+    }
+
+    public static void encodeOverlayBegin(FacesContext context) throws IOException {
+        new BadgeRenderer().overlayBegin(context, null);
+    }
+
+    protected void overlayEnd(FacesContext context) throws IOException {
+        context.getResponseWriter().endElement("div");
+    }
+
+    public static void encodeOverlayEnd(FacesContext context) throws IOException {
+        new BadgeRenderer().overlayEnd(context);
+    }
+
     protected void encode(FacesContext context, Badge badge, BadgeModel badgeModel, boolean renderChildren) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BadgeModel model = badgeModel;
         if (model == null) {
             model = badge.toBadgeModel();
         }
+        String clientId = badge == null ? null : badge.getClientId(context);
         String value = model.getValue();
         boolean valueEmpty = LangUtils.isEmpty(value);
         String severity = model.getSeverity();
@@ -73,16 +95,12 @@ public class BadgeRenderer extends CoreRenderer {
                     .build();
 
         if (renderChildren) {
-            writer.startElement("div", null);
-            if (badge != null) {
-                writer.writeAttribute("id", badge.getClientId(context), "id");
-            }
-            writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
+            overlayBegin(context, clientId);
         }
 
         writer.startElement("span", null);
-        if (!renderChildren && badge != null) {
-            writer.writeAttribute("id", badge.getClientId(context), "id");
+        if (!renderChildren && clientId != null) {
+            writer.writeAttribute("id", clientId, "id");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (model.getStyle() != null) {
@@ -96,7 +114,7 @@ public class BadgeRenderer extends CoreRenderer {
 
         if (renderChildren) {
             renderChildren(context, badge);
-            writer.endElement("div");
+            overlayEnd(context);
         }
     }
 
