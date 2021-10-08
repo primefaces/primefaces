@@ -56,7 +56,8 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
         onClick,
         onShow,
         onHide,
-        keepOpen
+        keepOpen,
+        badge
     }
 
     public SpeedDialBase() {
@@ -261,4 +262,11 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.keepOpen, keepOpen);
     }
 
+    public Object getBadge() {
+        return (Object) getStateHelper().eval(PropertyKeys.badge, null);
+    }
+
+    public void setBadge(Object badge) {
+        getStateHelper().put(PropertyKeys.badge, badge);
+    }
 }

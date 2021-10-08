@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.badge;
 
-import java.io.IOException;
+import org.primefaces.model.badge.BadgeModel;
+import org.primefaces.model.badge.DefaultBadgeModel;
+
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBase {
@@ -43,11 +43,27 @@ public class Badge extends BadgeBase {
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
 
-    public static void encodeDelegated(FacesContext context, UIComponent component) throws IOException {
-        UIComponent parent = component.getParent();
-        if (parent instanceof Badge) {
-            new BadgeRenderer().encode(context, (Badge) parent, false);
+    public BadgeModel toBadgeModel() {
+        return DefaultBadgeModel.builder()
+                .value(getValue())
+                .severity(getSeverity())
+                .size(getSize())
+                .style(getStyle())
+                .styleClass(getStyleClass())
+                .visible(isVisible())
+                .build();
+    }
+
+    public static BadgeModel getBadgeModel(Object object) {
+        if (object instanceof BadgeModel) {
+            return (BadgeModel) object;
         }
+        if (object instanceof String) {
+            return DefaultBadgeModel.builder()
+                    .value((String) object)
+                    .build();
+        }
+        return null;
     }
 
 }

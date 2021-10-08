@@ -23,13 +23,14 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.model.badge.BadgeModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.speeddial.SpeedDial;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.LangUtils;
 
 public class BadgeRenderer extends CoreRenderer {
 
@@ -37,37 +38,32 @@ public class BadgeRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Badge badge = (Badge) component;
         boolean hasChildren = badge.getChildCount() > 0;
-        boolean isDelegated = hasChildren && isDelegated(badge);
-        if (isDelegated) {
-            renderChildren(context, badge);
-        }
-        else {
-            encode(context, badge, hasChildren);
+        encode(context, badge, null, hasChildren);
+    }
+
+    public static void encode(FacesContext context, Object badge) throws IOException {
+        BadgeModel badgeModel = Badge.getBadgeModel(badge);
+        if (badgeModel != null) {
+            new BadgeRenderer().encode(context, null, badgeModel, false);
         }
     }
 
-    protected boolean isDelegated(Badge badge) {
-        for (int i = 0; i < badge.getChildCount(); i++) {
-            UIComponent child = badge.getChildren().get(i);
-            if (child instanceof SpeedDial) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void encode(FacesContext context, Badge badge, boolean renderChildren) throws IOException {
+    protected void encode(FacesContext context, Badge badge, BadgeModel badgeModel, boolean renderChildren) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String value = badge.getValue();
+        BadgeModel model = badgeModel;
+        if (model == null) {
+            model = badge.toBadgeModel();
+        }
+        String value = model.getValue();
         boolean valueEmpty = LangUtils.isEmpty(value);
-        String severity = badge.getSeverity();
-        String size = badge.getSize();
+        String severity = model.getSeverity();
+        String size = model.getSize();
         String styleClass = getStyleClassBuilder(context)
                     .add(Badge.STYLE_CLASS)
-                    .add(badge.getStyleClass())
+                    .add(model.getStyleClass())
                     .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
                     .add(valueEmpty, Badge.DOT_CLASS)
-                    .add(!badge.isVisible(), "ui-state-hidden")
+                    .add(!model.isVisible(), "ui-state-hidden")
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
                     .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)
@@ -78,20 +74,22 @@ public class BadgeRenderer extends CoreRenderer {
 
         if (renderChildren) {
             writer.startElement("div", null);
-            writer.writeAttribute("id", badge.getClientId(context), "id");
+            if (badge != null) {
+                writer.writeAttribute("id", badge.getClientId(context), "id");
+            }
             writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
         }
 
         writer.startElement("span", null);
-        if (!renderChildren) {
+        if (!renderChildren && badge != null) {
             writer.writeAttribute("id", badge.getClientId(context), "id");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (badge.getStyle() != null) {
-            writer.writeAttribute("style", badge.getStyle(), "style");
+        if (model.getStyle() != null) {
+            writer.writeAttribute("style", model.getStyle(), "style");
         }
 
-        if (!valueEmpty && badge.isVisible()) {
+        if (!valueEmpty && model.isVisible()) {
             writer.write(value);
         }
         writer.endElement("span");

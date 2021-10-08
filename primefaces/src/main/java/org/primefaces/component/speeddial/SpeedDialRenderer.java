@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.speeddial;
 
-import org.primefaces.component.badge.Badge;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -39,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import org.primefaces.component.badge.BadgeRenderer;
 
 public class SpeedDialRenderer extends BaseMenuRenderer {
 
@@ -58,7 +58,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
             encodeMask(context, speedDial);
         }
 
-        Badge.encodeDelegated(context, speedDial);
+        BadgeRenderer.encode(context, speedDial.getBadge());
 
         writer.endElement("div");
     }

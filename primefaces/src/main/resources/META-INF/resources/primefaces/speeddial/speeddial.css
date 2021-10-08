@@ -120,3 +120,14 @@
     left: 3rem;
     bottom: 3rem;
 }
+
+.ui-speeddial-wrapper .ui-badge.ui-badge-dot {
+    left: 3.5rem;
+    bottom: 3.5rem;
+}
+
+.ui-speeddial-wrapper .ui-badge.ui-badge-lg,
+.ui-speeddial-wrapper .ui-badge.ui-badge-xl {
+    left: 2.5rem;
+    bottom: 2.5rem;
+}
