@@ -31,6 +31,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.functional.IOBiConsumer;
 
 public class BadgeRenderer extends CoreRenderer {
 
@@ -41,14 +42,22 @@ public class BadgeRenderer extends CoreRenderer {
         encode(context, badge, null, hasChildren);
     }
 
-    public static void encode(FacesContext context, Object badge) throws IOException {
+    public static <T extends UIComponent> void encode(FacesContext context, Object badge,
+            IOBiConsumer<FacesContext, T> contentRenderer, T component) throws IOException {
         BadgeModel badgeModel = Badge.getBadgeModel(badge);
         if (badgeModel != null) {
-            new BadgeRenderer().encode(context, null, badgeModel, false);
+            BadgeRenderer badgeRenderer = new BadgeRenderer();
+            badgeRenderer.encodeOverlayBegin(context, null);
+            contentRenderer.accept(context, component);
+            badgeRenderer.encode(context, null, badgeModel, false);
+            badgeRenderer.encodeOverlayEnd(context);
+        }
+        else {
+            contentRenderer.accept(context, component);
         }
     }
 
-    protected void overlayBegin(FacesContext context, String clientId) throws IOException {
+    protected void encodeOverlayBegin(FacesContext context, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", null);
         if (clientId != null) {
@@ -57,16 +66,8 @@ public class BadgeRenderer extends CoreRenderer {
         writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
     }
 
-    public static void encodeOverlayBegin(FacesContext context) throws IOException {
-        new BadgeRenderer().overlayBegin(context, null);
-    }
-
-    protected void overlayEnd(FacesContext context) throws IOException {
+    protected void encodeOverlayEnd(FacesContext context) throws IOException {
         context.getResponseWriter().endElement("div");
-    }
-
-    public static void encodeOverlayEnd(FacesContext context) throws IOException {
-        new BadgeRenderer().overlayEnd(context);
     }
 
     protected void encode(FacesContext context, Badge badge, BadgeModel badgeModel, boolean renderChildren) throws IOException {
@@ -95,7 +96,7 @@ public class BadgeRenderer extends CoreRenderer {
                     .build();
 
         if (renderChildren) {
-            overlayBegin(context, clientId);
+            encodeOverlayBegin(context, clientId);
         }
 
         writer.startElement("span", null);
@@ -114,7 +115,7 @@ public class BadgeRenderer extends CoreRenderer {
 
         if (renderChildren) {
             renderChildren(context, badge);
-            overlayEnd(context);
+            encodeOverlayEnd(context);
         }
     }
 
