@@ -44,20 +44,8 @@
             <name>Thomas Andraschko</name>
         </developer>
         <developer>
-            <id>jfarcand.oss</id>
-            <name>Jeanfrancois Arcand</name>
-        </developer>
-        <developer>
-            <id>rdebusscher</id>
-            <name>Rudy De Busscher</name>
-        </developer>
-        <developer>
             <id>sincan.mert</id>
             <name>Mert Sincan</name>
-        </developer>
-        <developer>
-            <id>sudheer.jonna</id>
-            <name>Sudheer Jonna</name>
         </developer>
         <developer>
             <id>Rapster</id>
@@ -66,6 +54,10 @@
         <developer>
             <id>melloware</id>
             <name>Emil Lefkof</name>
+        </developer>
+        <developer>
+            <id>christophs78</id>
+            <name>Christoph Straßer</name>
         </developer>
     </developers>
 
