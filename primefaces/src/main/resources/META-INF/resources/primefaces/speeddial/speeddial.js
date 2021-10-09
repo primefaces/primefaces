@@ -86,7 +86,8 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.mask = this.jq.children('.ui-speeddial-mask');
         this.container = this.jq.children('.ui-speeddial');
         this.badge = this.container.children('.ui-overlay-badge');
-        this.button = (this.badge || this.container).children('.ui-speeddial-button');
+        var buttonContainer = this.badge.length === 0 ? this.container : this.badge;
+        this.button = buttonContainer.children('.ui-speeddial-button');
         this.buttonIcon = this.button.children('.ui-icon');
         this.itemContainer = this.container.children('.ui-speeddial-list');
         this.items = this.itemContainer.children('.ui-speeddial-item');
