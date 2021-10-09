@@ -78,12 +78,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", containerStyle, "style");
         }
 
-        if (speedDial.getBadge() != null) {
-            BadgeRenderer.encode(context, speedDial.getBadge(), this::encodeButton, speedDial);
-        }
-        else {
-            encodeButton(context, speedDial);
-        }
+        BadgeRenderer.encode(context, speedDial.getBadge(), this::encodeButton, speedDial);
         encodeList(context, speedDial);
 
         writer.endElement("div");
