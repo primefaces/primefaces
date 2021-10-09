@@ -277,11 +277,11 @@ public class DataTable026Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
-        page.roleFilter.deselect(Employee.Role.MANAGER.toString());
-        page.roleFilter.deselect(Employee.Role.SALES.toString());
-        page.roleFilter.deselect(Employee.Role.FINANCE.toString());
-        page.roleFilter.deselect(Employee.Role.HR.toString());
-        page.roleFilter.deselect(Employee.Role.QS.toString());
+        page.roleFilter.deselect(Employee.Role.MANAGER.toString(), true);
+        page.roleFilter.deselect(Employee.Role.SALES.toString(), true);
+        page.roleFilter.deselect(Employee.Role.FINANCE.toString(), true);
+        page.roleFilter.deselect(Employee.Role.HR.toString(), true);
+        page.roleFilter.deselect(Employee.Role.QS.toString(), true);
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
@@ -290,7 +290,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertEmployeeRows(dataTable, employeesFiltered);
 
         // Act
-        page.roleFilter.select(Employee.Role.QS.toString(), true);
+        page.roleFilter.select(Employee.Role.QS.toString(), true, true);
 
         // Assert
         employeesFiltered = employees.stream()
