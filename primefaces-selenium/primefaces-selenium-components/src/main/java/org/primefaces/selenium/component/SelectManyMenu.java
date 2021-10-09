@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.PrimeSelenium;
@@ -52,37 +53,56 @@ public abstract class SelectManyMenu extends AbstractInputComponent {
     private WebElement filterInput;
 
     public void deselect(String label) {
+        deselect(label, false);
+    }
+
+    public void deselect(String label, boolean withGuardAjax) {
         if (!isSelected(label)) {
             return;
         }
 
-        toggleSelection(label, true);
+        toggleSelection(label, true, withGuardAjax);
     }
 
     public void select(String label, boolean withMetaKey) {
+        select(label, withMetaKey, false);
+    }
+
+    public void select(String label, boolean withMetaKey, boolean withGuardAjax) {
         if (isSelected(label)) {
             return;
         }
 
-        toggleSelection(label, withMetaKey);
+        toggleSelection(label, withMetaKey, withGuardAjax);
     }
 
     public void toggleSelection(String label, boolean withMetaKey) {
+        toggleSelection(label, withMetaKey, false);
+    }
+
+    public void toggleSelection(String label, boolean withMetaKey, boolean withGuardAjax) {
         if (!isEnabled()) {
             return;
         }
 
-        clickOnListItemWithMetaKey(label, withMetaKey);
+        clickOnListItemWithMetaKey(label, withMetaKey, withGuardAjax);
     }
 
-    private void clickOnListItemWithMetaKey(String label, boolean withMetaKey) {
+    private void clickOnListItemWithMetaKey(String label, boolean withMetaKey, boolean withGuardAjax) {
         for (WebElement element : getSelectlistbox().findElements(By.tagName("li"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 if (withMetaKey) {
                     Actions actions = new Actions(getWebDriver());
-                    actions.keyDown(Keys.META).click(element).keyUp(Keys.META).perform();
+                    Action action = actions.keyDown(Keys.META).click(element).keyUp(Keys.META).build();
+                    if (withGuardAjax) {
+                        action = PrimeSelenium.guardAjax(action);
+                    }
+                    action.perform();
                 }
                 else {
+                    if (withGuardAjax) {
+                        element = PrimeSelenium.guardAjax(element);
+                    }
                     element.click();
                 }
                 break;
