@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.functional.IOBiConsumer;
 import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.LangUtils;
@@ -31,7 +32,6 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.functional.IOBiConsumer;
 
 public class BadgeRenderer extends CoreRenderer {
 
