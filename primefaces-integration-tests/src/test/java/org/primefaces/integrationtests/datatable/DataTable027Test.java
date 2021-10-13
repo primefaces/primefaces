@@ -27,19 +27,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.OutputLabel;
 
-/**
- * Test for multiple filtered columns added via {@link javax.faces.view.facelets.FaceletContext#includeFacelet}
- */
-public class DataTable022Test extends AbstractDataTableTest {
+public class DataTable027Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: filter by name")
+    @DisplayName("DataTable: GitHub #7954 verify virtual scrolling works with count() method.")
     public void testFilterByName(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -47,8 +45,10 @@ public class DataTable022Test extends AbstractDataTableTest {
         // Act
 
         // Assert
-        Assertions.assertEquals(page.rowCount.getText(), Integer.toString(languages.size()));
-        assertRows(dataTable, languages);
+        Assertions.assertEquals(page.beforeCount.getText(), "0");
+        Assertions.assertEquals(page.aferCount.getText(), "75");
+        assertCss(dataTable, "ui-datatable", "ui-widget", "ui-datatable-scrollable");
+        Assertions.assertNotNull(dataTable.findElement(By.cssSelector(".ui-datatable-scrollable-body > .ui-datatable-virtualscroll-wrapper > .ui-datatable-virtualscroll-table")), "Datatable virtual scrolling CSS has changed!");
         assertNoJavascriptErrors();
     }
 
@@ -56,12 +56,15 @@ public class DataTable022Test extends AbstractDataTableTest {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 
-        @FindBy(id = "form:lblRowCount")
-        OutputLabel rowCount;
+        @FindBy(id = "form:lblBefore")
+        OutputLabel beforeCount;
+        
+        @FindBy(id = "form:lblAfter")
+        OutputLabel aferCount;
 
         @Override
         public String getLocation() {
-            return "datatable/dataTable022.xhtml";
+            return "datatable/dataTable027.xhtml";
         }
     }
 }
