@@ -48,8 +48,23 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         if(!this.cfg.disabled) {
 
             if(this.cfg.toggleable) {
+                // GitHub #7948 special handling for mobile
+                var touchtime = 0;
+                var isDoubleTap = this.cfg.event === "dblclick" && PrimeFaces.env.isTouchable(this.cfg);
+                if (isDoubleTap) {
+                    this.cfg.event = "click";
+                }
+
                 this.display.on(this.cfg.event, function(){
-                    $this.show();
+                    if (isDoubleTap) {
+                        if (((new Date().getTime()) - touchtime) < 500) {
+                           $this.show();
+                        }
+                        touchtime = new Date().getTime();
+                    }
+                    else {
+                         $this.show();
+                    }
                 }).on("mouseover", function(){
                     $(this).toggleClass("ui-state-highlight");
                 }).on("mouseout", function(){
