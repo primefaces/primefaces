@@ -25,12 +25,14 @@ package org.primefaces.component.datepicker;
 
 import java.time.*;
 import java.util.*;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
@@ -255,7 +257,7 @@ public class DatePicker extends DatePickerBase {
                         c.setTime((Date) disabledDate);
 
                         if (date.getYear() == c.get(Calendar.YEAR) &&
-                                date.getMonthValue() == c.get(Calendar.MONTH) &&
+                                date.getMonthValue() == (c.get(Calendar.MONTH) + 1) &&
                                 date.getDayOfMonth() == c.get(Calendar.DAY_OF_MONTH)) {
                             setValid(false);
                             return ValidationResult.INVALID_DISABLED_DATE;
