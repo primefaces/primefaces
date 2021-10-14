@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.chips;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class Chips002 implements Serializable {
 
     @PostConstruct
     public void init() {
-        values = Arrays.asList("Defect", "Feature");
+        values = new ArrayList<>(Arrays.asList("Defect", "Feature"));
     }
 
     public void submit() {

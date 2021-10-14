@@ -30,6 +30,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class CoreAjax001 implements Serializable {
 
     private static final long serialVersionUID = 8797995450720503195L;
 
-    private List<String> values = Arrays.asList("a", "b", "c");
+    private List<String> values = new ArrayList<>(Arrays.asList("a", "b", "c"));
     private String value;
     private String text;
 
