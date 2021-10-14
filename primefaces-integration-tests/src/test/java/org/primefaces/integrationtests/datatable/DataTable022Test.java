@@ -23,17 +23,18 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.OutputLabel;
 
 /**
- * Test for multiple filtered columns added via {@link javax.faces.view.facelets.FaceletContext#includeFacelet}
+ * Test for multiple filtered columns added via
+ * {@link javax.faces.view.facelets.FaceletContext#includeFacelet}
  */
 public class DataTable022Test extends AbstractDataTableTest {
 
@@ -45,19 +46,47 @@ public class DataTable022Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
+        dataTable.filter("Name", "C#");
 
         // Assert
-        Assertions.assertEquals(page.rowCount.getText(), Integer.toString(languages.size()));
+        List<ProgrammingLanguage> langsFiltered = filterByName("C#");
+        assertRows(dataTable, langsFiltered);
+
+        // Act
+        dataTable.removeFilter("Name");
+
+        // Assert
         assertRows(dataTable, languages);
+
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(0)
+    @DisplayName("DataTable: filter by id")
+    public void testFilterById(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        dataTable.filter("Id", "1");
+
+        // Assert
+        List<ProgrammingLanguage> langsFiltered = filterById(1);
+        assertRows(dataTable, langsFiltered);
+
+        // Act
+        dataTable.removeFilter("Id");
+
+        // Assert
+        assertRows(dataTable, languages);
+
         assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:datatable")
         DataTable dataTable;
-
-        @FindBy(id = "form:lblRowCount")
-        OutputLabel rowCount;
 
         @Override
         public String getLocation() {
