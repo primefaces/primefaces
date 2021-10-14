@@ -34,6 +34,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectBooleanButtonRenderer extends InputRenderer {
@@ -70,11 +71,12 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         String inputId = clientId + "_input";
         String label = checked ? button.getOnLabel() : button.getOffLabel();
         String icon = checked ? button.getOnIcon() : button.getOffIcon();
+        boolean hasIcon = icon != null;
         String title = button.getTitle();
         String style = button.getStyle();
         String styleClass = "ui-selectbooleanbutton " + button.resolveStyleClass(checked, disabled);
 
-        //button
+        // button
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
@@ -88,7 +90,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
-        //input
+        // input
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
@@ -109,19 +111,26 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         writer.endElement("div");
 
-        //icon
-        if (icon != null) {
+        // icon
+        if (hasIcon) {
             writer.startElement("span", null);
             writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
             writer.endElement("span");
         }
 
-        //label
+        // label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (isValueBlank(label)) {
-            writer.write("ui-button");
+            if (!hasIcon) {
+                // no icon or label use defaults
+                label = checked ? MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_ON) : MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_OFF);
+                writer.writeText(label, "value");
+            }
+            else {
+                writer.write("ui-button");
+            }
         }
         else {
             writer.writeText(label, "value");
@@ -139,10 +148,10 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectBooleanButton", button)
-                .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
-                .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
-                .attr("onIcon", button.getOnIcon(), null)
-                .attr("offIcon", button.getOffIcon(), null);
+                    .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
+                    .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
+                    .attr("onIcon", button.getOnIcon(), null)
+                    .attr("offIcon", button.getOffIcon(), null);
 
         wb.finish();
     }

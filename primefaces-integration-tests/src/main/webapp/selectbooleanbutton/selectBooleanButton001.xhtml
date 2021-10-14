@@ -15,6 +15,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
+            <h5>Full Button</h5>
             <p:selectBooleanButton id="selectBooleanButton" value="#{selectBooleanButton001.value}"
                                    onLabel="Yes"
                                    offLabel="No"
@@ -23,7 +24,11 @@
                                    style="width:60px">
                 <p:ajax listener="#{selectBooleanButton001.addMessage}" update="@form"/>
             </p:selectBooleanButton>
+            
+            <h5>Icon Only</h5>
+            <p:selectBooleanButton id="iconOnly" onIcon="pi pi-check" offIcon="pi pi-times" />
 
+            <br/>
             <p:commandButton id="submit" update="@form" value="Submit" actionListener="#{selectBooleanButton001.addMessage}"/>
         </h:form>
 
