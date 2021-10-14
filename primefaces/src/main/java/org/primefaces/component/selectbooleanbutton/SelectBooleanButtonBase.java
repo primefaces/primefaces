@@ -26,7 +26,6 @@ package org.primefaces.component.selectbooleanbutton;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.MessageFactory;
 
 public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget {
 
@@ -64,7 +63,7 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
     }
 
     public String getOnLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.onLabel, MessageFactory.getMessage(LABEL_ON));
+        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
     }
 
     public void setOnLabel(String onLabel) {
@@ -72,7 +71,7 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
     }
 
     public String getOffLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.offLabel, MessageFactory.getMessage(LABEL_OFF));
+        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
     }
 
     public void setOffLabel(String offLabel) {
