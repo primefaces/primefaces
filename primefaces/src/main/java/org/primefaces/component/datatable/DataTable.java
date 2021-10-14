@@ -23,6 +23,19 @@
  */
 package org.primefaces.component.datatable;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import javax.faces.model.DataModel;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -41,18 +54,6 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.DataModel;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -487,6 +488,9 @@ public class DataTable extends DataTableBase {
 
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
+
+            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
+            lazyModel.setRowCount(lazyModel.count(filterBy));
 
             List<?> data = lazyModel.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
 
