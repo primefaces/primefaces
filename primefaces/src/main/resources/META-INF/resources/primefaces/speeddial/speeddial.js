@@ -66,8 +66,6 @@
  * @prop {PrimeFaces.widget.SpeedDial.OnVisibleChangeCallback} cfg.onVisibleChange Callback invoked when the visibility
  * of the speed dial changed. This is called before the hide and show callbacks.
  * @prop {number} cfg.radius Radius for when {@link type} is set to one of the circle types.
- * @prop {boolean} cfg.rotateAnimation Whether to rotate the show icon.
- * @prop {string} cfg.showIcon The icon class of the show button element.
  * @prop {boolean} cfg.keepOpen Whether the menu should be kept open on clicking menu items.
  * @prop {number} cfg.transitionDelay Transition delay step in milliseconds for each action item.
  * @prop {PrimeFaces.widget.SpeedDial.OpeningType} cfg.type Specifies the opening animation type of actions.
@@ -97,8 +95,6 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.radius = this.cfg.radius || 0;
         this.cfg.mask = this.cfg.mask || false;
         this.cfg.hideOnClickOutside = this.cfg.hideOnClickOutside || true;
-        this.cfg.rotateAnimation = this.cfg.rotateAnimation || true;
-        this.cfg.showIcon = this.cfg.showIcon || 'pi pi-plus';
         this.cfg.keepOpen = this.cfg.keepOpen || false;
 
         this.visible = this.cfg.visible;
@@ -172,14 +168,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Shows item container of the speeddial and changes or rotates floating action button icon.
+     * Shows item container of the speeddial.
      */
     show: function() {
-        if (this.cfg.hideIcon) {
-            this.buttonIcon.removeClass(this.cfg.showIcon);
-            this.buttonIcon.addClass(this.cfg.hideIcon);
-        }
-
         if (this.mask) {
             this.mask.addClass('ui-speeddial-mask-visible');
         }
@@ -198,14 +189,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Hides item container of the speed dial and changes or rotates floating action button icon.
+     * Hides item container of the speed dial.
      */
     hide: function() {
-        if (this.cfg.hideIcon) {
-            this.buttonIcon.removeClass(this.cfg.hideIcon);
-            this.buttonIcon.addClass(this.cfg.showIcon);
-        }
-
         if (this.mask) {
             this.mask.removeClass('ui-speeddial-mask-visible');
         }

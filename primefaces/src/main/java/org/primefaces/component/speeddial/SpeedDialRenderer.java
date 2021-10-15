@@ -38,6 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import org.primefaces.util.LangUtils;
 
 public class SpeedDialRenderer extends BaseMenuRenderer {
 
@@ -188,7 +189,8 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         String buttonStyleClass = getStyleClassBuilder(context)
                 .add(HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
                 .add(SpeedDial.BUTTON_CLASS)
-                .add(speedDial.isRotateAnimation() && speedDial.getHideIcon() == null, "ui-speeddial-rotate")
+                .add(speedDial.isRotateAnimation(), "ui-speeddial-rotate")
+                .add(speedDial.getHideIcon() != null, "ui-speeddial-dual-icon")
                 .add(speedDial.getButtonStyleClass())
                 .build();
 
@@ -204,10 +206,17 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        //icon
+        //show icon
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + speedDial.getShowIcon(), null);
         writer.endElement("span");
+
+        //hide icon
+        if (LangUtils.isNotEmpty(speedDial.getHideIcon())) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + speedDial.getHideIcon(), null);
+            writer.endElement("span");
+        }
 
         //text
         writer.startElement("span", null);
@@ -254,10 +263,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .attr("type", speedDial.getType(), "linear")
                 .attr("radius", speedDial.getRadius(), 0)
                 .attr("mask", speedDial.isMask(), false)
-                .attr("showIcon", speedDial.getShowIcon(), "pi pi-plus")
-                .attr("hideIcon", speedDial.getHideIcon(), null)
                 .attr("hideOnClickOutside", speedDial.isHideOnClickOutside(), true)
-                .attr("rotateAnimation", speedDial.isRotateAnimation(), true)
                 .attr("keepOpen", speedDial.isKeepOpen(), false)
                 .callback("onVisibleChange", "function(visible)", speedDial.getOnVisibleChange())
                 .callback("onClick", "function(event)", speedDial.getOnClick())
