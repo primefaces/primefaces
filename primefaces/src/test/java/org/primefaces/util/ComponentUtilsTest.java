@@ -25,9 +25,9 @@ package org.primefaces.util;
 
 import java.util.Arrays;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Disabled;
 
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
@@ -64,22 +64,9 @@ public class ComponentUtilsTest {
     }
 
     @Test
-    @Disabled
-    public void shouldRenderFacet_facetWithoutChildren() {
+    public void shouldRenderFacet_facetSingleChild() {
         UIComponent component = mock(AccordionPanel.class);
         when(component.isRendered()).thenReturn(true);
-        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(component));
-    }
-
-    @Test
-    public void shouldRenderFacet_facetChildrenRenderedTrue() {
-        UIComponent children = mock(AccordionPanel.class);
-        when(children.isRendered()).thenReturn(true);
-
-        UIComponent component = mock(AccordionPanel.class);
-        when(component.isRendered()).thenReturn(true);
-        when(component.getChildCount()).thenReturn(1);
-        when(component.getChildren()).thenReturn(Arrays.asList(children));
         Assertions.assertTrue(ComponentUtils.shouldRenderFacet(component));
     }
 
@@ -88,10 +75,34 @@ public class ComponentUtilsTest {
         UIComponent children = mock(AccordionPanel.class);
         when(children.isRendered()).thenReturn(false);
 
-        UIComponent component = mock(AccordionPanel.class);
-        when(component.isRendered()).thenReturn(true);
-        when(component.getChildCount()).thenReturn(1);
-        when(component.getChildren()).thenReturn(Arrays.asList(children));
-        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(component));
+        UIComponent facet = new UIPanel();
+        facet.setRendered(true);
+        facet.getChildren().add(children);
+
+        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(facet));
+    }
+
+    @Test
+    public void shouldRenderFacet_facetChildrenRenderedTrue() {
+        UIComponent children = mock(AccordionPanel.class);
+        when(children.isRendered()).thenReturn(true);
+
+        UIComponent facet = new UIPanel();
+        facet.setRendered(true);
+        facet.getChildren().add(children);
+
+        Assertions.assertTrue(ComponentUtils.shouldRenderFacet(facet));
+    }
+
+    @Test
+    public void shouldRenderFacet_facetChildrenFacetRenderedFalse() {
+        UIComponent children = mock(AccordionPanel.class);
+        when(children.isRendered()).thenReturn(true);
+
+        UIComponent facet = new UIPanel();
+        facet.setRendered(false);
+        facet.getChildren().add(children);
+
+        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(facet));
     }
 }
