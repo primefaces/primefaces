@@ -28,4 +28,11 @@
         <packageUrl regex="true">^pkg:maven/org\.apache\.tomee/javaee\-api@.*$</packageUrl>
         <cve>CVE-2021-40690</cve>
     </suppress>
+    <suppress>
+        <notes>
+            <![CDATA[file name: javaee-api-8.0-5.jar Tomee 8.0.9 fixes this issue but marking as OK for now since this is a provided dependency. ]]>
+        </notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomee/javaee\-api@.*$</packageUrl>
+        <cve>CVE-2021-41568</cve>
+    </suppress>
 </suppressions>
