@@ -450,8 +450,9 @@ public class ComponentUtils {
             return false;
         }
 
+        // UICommand component itself should be rendered even though it has no children, see #7971
         // Facet has no child but is rendered
-        if (facet.getChildCount() == 0) {
+        if (facet instanceof UICommand || facet.getChildCount() == 0) {
             return true;
         }
 
