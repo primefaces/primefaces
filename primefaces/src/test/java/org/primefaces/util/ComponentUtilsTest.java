@@ -23,9 +23,16 @@
  */
 package org.primefaces.util;
 
+import java.util.Arrays;
+import javax.faces.component.UIComponent;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Disabled;
 
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.primefaces.component.accordionpanel.AccordionPanel;
 
 public class ComponentUtilsTest {
 
@@ -44,4 +51,47 @@ public class ComponentUtilsTest {
         assertEquals("attachment;filename=\"Test%20Spaces.txt\"; filename*=UTF-8''Test%20Spaces.txt", ComponentUtils.createContentDisposition("attachment", "Test Spaces.txt"));
     }
 
+    @Test
+    public void shouldRenderFacet_nullFacet() {
+        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(null));
+    }
+
+    @Test
+    public void shouldRenderFacet_facetRenderedFalse() {
+        UIComponent component = mock(AccordionPanel.class);
+        when(component.isRendered()).thenReturn(false);
+        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(component));
+    }
+
+    @Test
+    @Disabled
+    public void shouldRenderFacet_facetWithoutChildren() {
+        UIComponent component = mock(AccordionPanel.class);
+        when(component.isRendered()).thenReturn(true);
+        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(component));
+    }
+
+    @Test
+    public void shouldRenderFacet_facetChildrenRenderedTrue() {
+        UIComponent children = mock(AccordionPanel.class);
+        when(children.isRendered()).thenReturn(true);
+
+        UIComponent component = mock(AccordionPanel.class);
+        when(component.isRendered()).thenReturn(true);
+        when(component.getChildCount()).thenReturn(1);
+        when(component.getChildren()).thenReturn(Arrays.asList(children));
+        Assertions.assertTrue(ComponentUtils.shouldRenderFacet(component));
+    }
+
+    @Test
+    public void shouldRenderFacet_facetChildrenRenderedFalse() {
+        UIComponent children = mock(AccordionPanel.class);
+        when(children.isRendered()).thenReturn(false);
+
+        UIComponent component = mock(AccordionPanel.class);
+        when(component.isRendered()).thenReturn(true);
+        when(component.getChildCount()).thenReturn(1);
+        when(component.getChildren()).thenReturn(Arrays.asList(children));
+        Assertions.assertFalse(ComponentUtils.shouldRenderFacet(component));
+    }
 }
