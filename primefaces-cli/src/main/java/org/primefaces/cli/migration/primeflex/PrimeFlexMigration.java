@@ -24,6 +24,7 @@
 package org.primefaces.cli.migration.primeflex;
 
 import org.primefaces.cli.migration.AbstractPrimeMigration;
+
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "PrimeFlexMigration", mixinStandardHelpOptions = true, version = "early WIP",
@@ -161,6 +162,7 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-text-normal", "font-normal");
         replaceRegex.put("p-text-light", "font-light");
         replaceRegex.put("p-text-italic", "font-italic");
+        replaceRegex.put("p-text-truncate", "overflow-hidden white-space-nowrap text-overflow-ellipsis");
 
         // elevation
         replaceRegex.put("p-shadow-(1|2|3)", "shadow-1");
