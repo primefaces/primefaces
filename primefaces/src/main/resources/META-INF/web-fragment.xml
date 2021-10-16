@@ -3,6 +3,11 @@
               version="3.0"
               xmlns="http://java.sun.com/xml/ns/javaee"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd">
+
+    <name>primefaces</name>
+
+    <distributable />
+
     <listener>
         <listener-class>org.primefaces.webapp.UploadedFileCleanerListener</listener-class>
     </listener>
