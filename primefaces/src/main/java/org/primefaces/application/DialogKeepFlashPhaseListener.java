@@ -21,44 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.df;
+package org.primefaces.application;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.SelectEvent;
+import org.primefaces.util.Constants;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import javax.faces.context.Flash;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
 
-@Named("dfLevel1View")
-@RequestScoped
-public class DFLevel1View {
+/**
+ * Keeps objects within Flash during opening a Dialog Framework - dialog and so allows passing objects via Flash to a Dialog Framework - dialog.
+ */
+public class DialogKeepFlashPhaseListener implements PhaseListener {
 
-    private boolean flashChecked = false;
+    @Override
+    public void afterPhase(PhaseEvent event) {
+        return;
+    }
 
-    public void init() {
-        if (!flashChecked) {
-            LocalDateTime valueFromFlash = (LocalDateTime) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("param1");
-            if (valueFromFlash != null) {
-                FacesContext.getCurrentInstance().addMessage("", new FacesMessage("value from flash",
-                        valueFromFlash.toString()));
+    @Override
+    public void beforePhase(PhaseEvent event) {
+        if (isInDialogPreparation()) {
+            Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+            for (String flashName : flash.keySet()) {
+                flash.keep(flashName);
             }
-            flashChecked = true;
         }
     }
 
-    public void openLevel2() {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("modal", true);
-        PrimeFaces.current().dialog().openDynamic("level2", options, null);
+    @Override
+    public PhaseId getPhaseId() {
+        return PhaseId.RENDER_RESPONSE;
     }
 
-    public void onReturnFromLevel2(SelectEvent event) {
-        //pass back to root
-        PrimeFaces.current().dialog().closeDynamic(event.getObject());
+    private boolean isInDialogPreparation() {
+        String dialogOutcome = (String) FacesContext.getCurrentInstance().getAttributes().get(Constants.DialogFramework.OUTCOME);
+        return dialogOutcome != null && dialogOutcome.length() > 0;
     }
+
 }

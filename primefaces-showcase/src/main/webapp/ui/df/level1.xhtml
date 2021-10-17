@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:event type="preRenderView" listener="#{dfLevel1View.init}" />
+</f:metadata>
 
 <h:head>
     <title>Level 1</title>
@@ -15,6 +20,8 @@
 <h:body>
     <div style="padding: 1rem">
         <h:form id="level1form">
+            <p:messages showDetail="true" />
+
             <p class="ui-widget" style="margin-top: 0">You are at Level 1.</p>
 
             <p:commandButton id="level1btn" value="Go into level 2" icon="pi pi-home" action="#{dfLevel1View.openLevel2}">

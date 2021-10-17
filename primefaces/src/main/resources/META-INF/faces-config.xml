@@ -14,6 +14,7 @@
         <phase-listener>org.primefaces.application.resource.DynamicResourcesPhaseListener</phase-listener>
         <phase-listener>org.primefaces.component.autoupdate.AutoUpdatePhaseListener</phase-listener>
         <phase-listener>org.primefaces.csp.CspPhaseListener</phase-listener>
+        <phase-listener>org.primefaces.application.DialogKeepFlashPhaseListener</phase-listener>
     </lifecycle>
 
     <application>
