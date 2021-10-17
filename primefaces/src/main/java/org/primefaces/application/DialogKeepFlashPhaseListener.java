@@ -24,6 +24,7 @@
 package org.primefaces.application;
 
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
@@ -58,7 +59,7 @@ public class DialogKeepFlashPhaseListener implements PhaseListener {
 
     private boolean isInDialogPreparation() {
         String dialogOutcome = (String) FacesContext.getCurrentInstance().getAttributes().get(Constants.DialogFramework.OUTCOME);
-        return dialogOutcome != null && dialogOutcome.length() > 0;
+        return LangUtils.isNotEmpty(dialogOutcome);
     }
 
 }
