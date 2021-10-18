@@ -25,123 +25,62 @@ package org.primefaces.component.avatar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
+import java.util.stream.Stream;
 
 import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class AvatarRendererTest {
 
-    private AvatarRenderer renderer;
+    // system under test
+    private AvatarRenderer sut;
+
+    // mocks (Depended On Component)
     private Avatar avatar;
     private FacesContext context;
 
+    // parameterized data set
+    private static Stream<Arguments> data() {
+        return Stream.of(
+                    Arguments.of(null, null),
+                    Arguments.of("G", "G"),
+                    Arguments.of("BD", "BD"),
+                    Arguments.of("Wolfgang Amadeus Mozart", "WM"),
+                    Arguments.of("PrimeFaces Rocks", "PR"),
+                    Arguments.of("ŞPrimeFaces Rocks", "ŞR"),
+                    Arguments.of("PrimeFaces ŞRocks", "PŞ"),
+                    Arguments.of("ŞPrimeFaces ŞRocks", "ŞŞ"),
+                    Arguments.of("Àlbert Ñunes", "ÀÑ"));
+    }
+
     @BeforeEach
     public void setup() {
-        renderer = new AvatarRenderer();
+        // system under test
+        sut = new AvatarRenderer();
+
+        // mocks
         avatar = mock(Avatar.class);
         context = mock(FacesContext.class);
-        when(context.getAttributes()).thenReturn(new HashMap<>());
     }
 
-    @Test
-    void testCalculateLabelSingleLetter() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void testCalculateLabel(String input, String expected) {
         // Arrange
-        when(avatar.getLabel()).thenReturn("G");
+        when(avatar.getLabel()).thenReturn(input);
 
         // Act
-        String result = renderer.calculateLabel(context, avatar);
+        String result = sut.calculateLabel(context, avatar);
 
         // Assert
-        assertEquals("G", result);
+        assertEquals(expected, result);
+        verify(avatar).getLabel();
     }
-
-    @Test
-    void testCalculateLabelAlreadyInitials() {
-        // Arrange
-        when(avatar.getLabel()).thenReturn("BD");
-
-        // Act
-        String result = renderer.calculateLabel(context, avatar);
-
-        // Assert
-        assertEquals("BD", result);
-    }
-
-    @Test
-    void testCalculateLabelThreeWords() {
-        // Arrange
-        when(avatar.getLabel()).thenReturn("Wolfgang Amadeus Mozart");
-
-        // Act
-        String result = renderer.calculateLabel(context, avatar);
-
-        // Assert
-        assertEquals("WM", result);
-    }
-
-    @Test
-    void testCalculateLabelIssue7900X1() {
-        // Arrange
-        when(avatar.getLabel()).thenReturn("PrimeFaces Rocks");
-
-        // Act
-        String result = renderer.calculateLabel(context, avatar);
-
-        // Assert
-        assertEquals("PR", result);
-    }
-
-    @Test
-    void testCalculateLabelIssue7900X2() {
-        // Arrange
-        when(avatar.getLabel()).thenReturn("ŞPrimeFaces Rocks");
-
-        // Act
-        String result = renderer.calculateLabel(context, avatar);
-
-        // Assert
-        assertEquals("ŞR", result);
-    }
-
-    @Test
-    void testCalculateLabelIssue7900X3() {
-        // Arrange
-        when(avatar.getLabel()).thenReturn("PrimeFaces ŞRocks");
-
-        // Act
-        String result = renderer.calculateLabel(context, avatar);
-
-        // Assert
-        assertEquals("PŞ", result);
-    }
-
-    @Test
-    void testCalculateLabelIssue7900X4() {
-        // Arrange
-        when(avatar.getLabel()).thenReturn("ŞPrimeFaces ŞRocks");
-
-        // Act
-        String result = renderer.calculateLabel(context, avatar);
-
-        // Assert
-        assertEquals("ŞŞ", result);
-    }
-
-    @Test
-    void testCalculateLabelIssue7900Unicode() {
-        // Arrange
-        when(avatar.getLabel()).thenReturn("Àlbert Ñunes");
-
-        // Act
-        String result = renderer.calculateLabel(context, avatar);
-
-        // Assert
-        assertEquals("ÀÑ", result);
-    }
-
 }

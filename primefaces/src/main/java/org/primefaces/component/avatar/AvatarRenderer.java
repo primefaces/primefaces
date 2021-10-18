@@ -133,8 +133,7 @@ public class AvatarRenderer extends CoreRenderer {
             sb.append(m.group());
         }
         String initials = sb.toString();
-        initials = initials.length() == 1 ? initials : initials.charAt(0) + initials.substring(initials.length() - 1);
-        return initials;
+        return initials.charAt(0) + initials.substring(initials.length() - 1);
     }
 
     /**
