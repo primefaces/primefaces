@@ -150,10 +150,13 @@ public void editCar(Car car) {
 }
 ```
 
-Java-code within dialog framework - viewbean (eg part of init-method, cal)
+Java-code within dialog framework - viewbean (eg part of init-method, annotated with @PostConstruct)
 
 ```java
-Car car = (Car) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("car");
+@PostConstruct
+public void init(){
+    Car car = (Car) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("car");
+}
 ```
 
 Internally `org.primefaces.application.DialogKeepFlashPhaseListener` provided by PrimeFaces keeps the Flash during opening the dialog.
