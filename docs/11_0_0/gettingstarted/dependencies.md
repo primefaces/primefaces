@@ -13,7 +13,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.4 | Optional | FileUpload |
 | barcode4j-light | net.sf.barcode4j | barcode4j-light | 2.1 | Optional | Barcode |
 | qrcodegen | io.nayuki | qrcodegen | 1.6.0 | Optional | QR Code support for Barcode |
-| owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20211018.1 | Optional | TextEditor |
+| owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20211018.2 | Optional | TextEditor |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.
