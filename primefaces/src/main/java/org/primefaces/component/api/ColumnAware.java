@@ -68,7 +68,7 @@ public interface ColumnAware {
             Predicate<UIColumn> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
-            if (skipUnrendered && !child.isRendered()) {
+            if (!(child instanceof Columns) && skipUnrendered && !child.isRendered()) {
                 continue;
             }
 
@@ -77,6 +77,12 @@ public interface ColumnAware {
                 if (unwrapDynamicColumns) {
                     for (int j = 0; j < columns.getRowCount(); j++) {
                         DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
+                        dynaColumn.applyStatelessModel();
+
+                        if (skipUnrendered && !child.isRendered()) {
+                            continue;
+                        }
+
                         if (!callback.test(dynaColumn)) {
                             return false;
                         }
@@ -274,14 +280,15 @@ public interface ColumnAware {
             if (c1 instanceof DynamicColumn) {
                 ((DynamicColumn) c1).applyStatelessModel();
             }
-            if (c2 instanceof DynamicColumn) {
-                ((DynamicColumn) c2).applyStatelessModel();
-            }
 
             Integer dp1 = c1.getDisplayPriority();
             ColumnMeta cm1 = columnMeta.get(c1.getColumnKey());
             if (cm1 != null && cm1.getDisplayPriority() != null) {
                 dp1 = cm1.getDisplayPriority();
+            }
+
+            if (c2 instanceof DynamicColumn) {
+                ((DynamicColumn) c2).applyStatelessModel();
             }
 
             Integer dp2 = c2.getDisplayPriority();

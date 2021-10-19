@@ -40,7 +40,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ValueExpression;
-import org.primefaces.component.api.DynamicColumn;
 
 public class SortFeature implements DataTableFeature {
 
@@ -183,10 +182,6 @@ public class SortFeature implements DataTableFeature {
                     // and can't use sortMeta.getComponent()
                     // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
                     table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                        if (column instanceof DynamicColumn) {
-                            ((DynamicColumn) column).applyStatelessModel();
-                        }
-
                         int result = compare(context, var, sortMeta, o1, o2, collator, locale);
                         comparisonResult.set(result);
                     });
