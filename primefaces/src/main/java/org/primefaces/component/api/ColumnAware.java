@@ -23,6 +23,17 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ComponentUtils;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +42,6 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
@@ -64,15 +65,19 @@ public interface ColumnAware {
             Function<UIColumn, Boolean> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
-            if (skipUnrendered && !child.isRendered()) {
+            if (!(child instanceof Columns) && skipUnrendered && !child.isRendered()) {
                 continue;
             }
 
             if (child instanceof Columns) {
                 Columns columns = (Columns) child;
                 if (unwrapDynamicColumns) {
-                    for (int j = 0; j < columns.getRowCount(); j++) {
-                        DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
+                    for (int j = 0; j < columns.getDynamicColumns().size(); j++) {
+                        DynamicColumn dynaColumn = columns.getDynamicColumns().get(j);
+                        dynaColumn.applyStatelessModel();
+                        if (skipUnrendered && !child.isRendered()) {
+                            continue;
+                        }
                         if (!callback.apply(dynaColumn)) {
                             return false;
                         }
