@@ -12,7 +12,7 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
 - Build the project: `mvn clean package`
 - When running an integration test the profile `integration-tests` has to be activated and a JSF implementation has to be selected.
 - Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,mojarra-2.3`
-- Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3 -Dit.test=org.primefaces.integrationtests.datepicker.DatePicker001Test`
+- Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3 -Dit.test=DatePicker001Test`
 
 ## Profiles
 

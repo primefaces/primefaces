@@ -35,7 +35,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
@@ -170,10 +169,6 @@ public class SortFeature implements TreeTableFeature {
                     comparisonResult.set(0);
 
                     table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                        if (column instanceof DynamicColumn) {
-                            ((DynamicColumn) column).applyStatelessModel();
-                        }
-
                         int result = table.compare(context, var, sortMeta,
                                 ((TreeNode) o1).getData(),
                                 ((TreeNode) o2).getData(),
