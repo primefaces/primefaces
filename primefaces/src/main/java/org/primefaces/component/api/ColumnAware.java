@@ -79,7 +79,7 @@ public interface ColumnAware {
                         DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
                         dynaColumn.applyStatelessModel();
 
-                        if (skipUnrendered && !child.isRendered()) {
+                        if (skipUnrendered && !dynaColumn.isRendered()) {
                             continue;
                         }
 
