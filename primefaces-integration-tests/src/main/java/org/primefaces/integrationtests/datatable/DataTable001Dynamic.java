@@ -23,17 +23,20 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-import org.primefaces.component.datatable.DataTable;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.primefaces.component.datatable.DataTable;
+
+import lombok.Data;
+import lombok.Value;
 
 @Named
 @ViewScoped
@@ -59,10 +62,10 @@ public class DataTable001Dynamic implements Serializable {
     }
 
     public void populateColumns() {
-        columns.add(new ColumnModel("ID", "id", "startsWith"));
-        columns.add(new ColumnModel("Type", "type", "startsWith"));
-        columns.add(new ColumnModel("Name", "name", "contains"));
-        columns.add(new ColumnModel("First appeared", "firstAppeared", "gte"));
+        columns.add(new ColumnModel("ID", "id", "startsWith", true));
+        columns.add(new ColumnModel("Type", "type", "startsWith", true));
+        columns.add(new ColumnModel("Name", "name", "contains", true));
+        columns.add(new ColumnModel("First appeared", "firstAppeared", "gte", true));
     }
 
     public void resetTable() {
@@ -76,25 +79,13 @@ public class DataTable001Dynamic implements Serializable {
         setGlobalFilterOnly(!isGlobalFilterOnly());
     }
 
+    @Value
     public static class ColumnModel implements Serializable {
+        private static final long serialVersionUID = 1L;
         private String header;
         private String property;
         private String filterMatchMode;
-
-        public ColumnModel(String header, String property, String filterMatchMode) {
-            this.header = header;
-            this.property = property;
-            this.filterMatchMode = filterMatchMode;
-        }
-        public String getHeader() {
-            return header;
-        }
-        public String getProperty() {
-            return property;
-        }
-        public String getFilterMatchMode() {
-            return filterMatchMode;
-        }
+        private boolean rendered;
     }
 
     public Object justReturn(Object value) {

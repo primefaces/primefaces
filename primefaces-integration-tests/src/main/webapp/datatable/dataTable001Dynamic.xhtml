@@ -25,7 +25,7 @@
                     </div>
                 </f:facet>
 
-                <p:columns value="#{dataTable001Dynamic.columns}" var="column" headerText="#{column.header}" field="#{column.property}" filterMatchMode="#{column.filterMatchMode}" >
+                <p:columns value="#{dataTable001Dynamic.columns}" var="column" headerText="#{column.header}" field="#{column.property}" filterMatchMode="#{column.filterMatchMode}" rendered="#{column.rendered}">
                     <h:outputText value="#{lang[column.property]}" />
                 </p:columns>
             </p:dataTable>
