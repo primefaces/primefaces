@@ -146,7 +146,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
             var element = AutoNumeric.getAutoNumericElement(this);
             if (element && this.value && this.value.length > 0) {
-                var newValue = this.value;
+                var newValue = this.value.trim();
                 if($this.cfg.digitGroupSeparator) {
                     newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
