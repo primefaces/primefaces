@@ -178,7 +178,6 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-field", "field");
         replaceRegex.put("p-formgrid", "formgrid");
         replaceRegex.put("p-formgroup-inline", "formgroup-inline");
-        replaceRegex.put("p-sr-only", "sr-only"); // TODO - To remove : not a PrimeFlex Class
         replaceRegex.put("p-field-checkbox", "field-checkbox");
         replaceRegex.put("p-field-radiobutton", "field-radiobutton");
 

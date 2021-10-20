@@ -58,6 +58,13 @@ class PrimeFlexMigrationTest {
     }
 
     @Test
+    void noMigrationSrOnly() {
+        String source = "<div class=\"p-sr-only\"></div>";
+        String result = migration.migrateSource(source);
+        Assertions.assertEquals("<div class=\"p-sr-only\"></div>", result);
+    }
+
+    @Test
     void migrateV2ToV3SpacingCornerCase() {
         String source = "<div class=\"p-p-lg-3\"></div>";
         String result = migration.migrateSource(source);
