@@ -59,13 +59,11 @@ Content can easily be customized with the default slot instead of using the buil
 ```
 
 ## Ajax Behavior Events
-Rating provides _rate_ and _cancel_ as ajax behavior events. A defined listener for rate event will be
-executed by passing an _org.primefaces.event.RateEvent_ as a parameter and cancel event will be
-invoked with no parameter.
+Chip provides _select_ and _close_ as ajax behavior events. 
 
 ```xhtml
 <p:chip label="text" removable="true">
-    <p:ajax event="click" listener="#{chipBean.onclick}" update="msgs"/>
+    <p:ajax event="select" listener="#{chipBean.onselect}" update="msgs"/>
     <p:ajax event="close" listener="#{chipBean.onclose}" update="msgs"/>
 </p:chip>
 <p:messages id="msgs" />
@@ -73,7 +71,7 @@ invoked with no parameter.
 ```java
 public class ChipBean {
     
-    public void onclick() {
+    public void onselect() {
         //Add facesmessage
     }
 
