@@ -31,7 +31,6 @@ import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.model.ColumnMeta;
@@ -98,14 +97,12 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
         Map<String, ColumnMeta> columnMetadata = table.getColumnMeta();
 
         if (columnMetadata == null || columnMetadata.isEmpty()) {
-            for (UIColumn col : allColumns) {
-                if (col instanceof DynamicColumn) {
-                    ((DynamicColumn) col).applyStatelessModel();
-                }
+            table.forEachColumn(col -> {
                 if (col.isRendered() && col.isExportable()) {
                     exportcolumns.add(col);
                 }
-            }
+                return true;
+            });
         }
         else {
             // sort by display priority
@@ -114,12 +111,9 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
                         sorted(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast))
                         .collect(Collectors.toList());
 
-            for (ColumnMeta meta : columnMetas) {
-                String columnKey = meta.getColumnKey();
-                for (UIColumn col : allColumns) {
-                    if (col instanceof DynamicColumn) {
-                        ((DynamicColumn) col).applyStatelessModel();
-                    }
+            table.forEachColumn(col -> {
+                for (ColumnMeta meta : columnMetas) {
+                    String columnKey = meta.getColumnKey();
                     if (col.getColumnKey().equals(columnKey)) {
                         if (col.isRendered() && col.isExportable()) {
                             exportcolumns.add(col);
@@ -127,7 +121,9 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
                         break;
                     }
                 }
-            }
+
+                return true;
+            });
         }
 
         exportableColumns.put(table, exportcolumns);
