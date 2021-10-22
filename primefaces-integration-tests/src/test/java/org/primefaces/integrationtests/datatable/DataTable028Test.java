@@ -39,10 +39,19 @@ public class DataTable028Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: GitHub #7999 filter/sort - wrong manipulation of list elements")
+    @DisplayName("DataTable: filter/sort - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
     public void testFilterByName(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
+        page.commandButtonSave.click();
+
+        // Assert
+        Assertions.assertEquals("Result:\n" +
+                "509, EUR, BB, BB2, A\n" +
+                "512, EUR, BB, BB2, B\n" +
+                "515, EUR, BB, BB2, C\n" +
+                "516, USA, AA, AA, D\n" +
+                "517, USA, AA, AA, E", page.eltDebugActual.getText());
 
         // Act 1 - filter on name with value BB2
         dataTable.filter("Name", "bb2");
@@ -55,18 +64,33 @@ public class DataTable028Test extends AbstractDataTableTest {
         }
         page.commandButtonSave.click();
 
+        // Assert
+        assertAfterBb3Update(page);
+
         // Act 3 - remove filter BB2, press Save
         dataTable.filter("Name", "");
         page.commandButtonSave.click();
+
+        // Assert
+        assertAfterBb3Update(page);
 
         // Act 4 - sort on code, press Save
         dataTable.sort("Code");
         page.commandButtonSave.click();
 
         // Assert
-
+        assertAfterBb3Update(page);
 
         assertNoJavascriptErrors();
+    }
+
+    private void assertAfterBb3Update(Page page) {
+        Assertions.assertEquals("Result:\n" +
+                "509, EUR, BB, BB3, A\n" +
+                "512, EUR, BB, BB3, B\n" +
+                "515, EUR, BB, BB3, C\n" +
+                "516, USA, AA, AA, D\n" +
+                "517, USA, AA, AA, E", page.eltDebugActual.getText());
     }
 
     public static class Page extends AbstractPrimePage {
