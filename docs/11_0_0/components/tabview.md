@@ -171,6 +171,7 @@ selectTab(index) | index: Index of tab to display | void | (Deprecated, use sele
 disable(index) | index: Index of tab to disable | void | Disables tab with given index
 enable(index) | index: Index of tab to enable | void | Enables tab with given index
 remove(index) | index: Index of tab to remove | void | Removes tab with given index
+reload(index) | index: Index of tab to reload | void | Reloads a dynamic tab with given index even if it was already cached.
 getLength() | - | Number | Returns the number of tabs
 getActiveIndex() | - | Number | Returns index of current tab
 
