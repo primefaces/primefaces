@@ -23,18 +23,20 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
-import lombok.Data;
-import org.primefaces.integrationtests.general.model.Driver;
-import org.primefaces.integrationtests.general.service.RealDriverService;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.primefaces.integrationtests.general.model.Driver;
+import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -49,6 +51,8 @@ public class AutoComplete005 implements Serializable {
     private List<Driver> allDrivers;
 
     private List<Driver> selectedDrivers;
+
+    private boolean forceSelection = true;
 
     @PostConstruct
     public void init() {
@@ -65,6 +69,14 @@ public class AutoComplete005 implements Serializable {
             String selectedDriversMsg = selectedDrivers.stream().map(d -> d.getId() + " - " + d.getName()).collect(Collectors.joining(", "));
             TestUtils.addMessage("Selected Drivers", selectedDriversMsg);
         }
+    }
+
+    public void force() {
+        setForceSelection(true);
+    }
+
+    public void unforce() {
+        setForceSelection(false);
     }
 
 }
