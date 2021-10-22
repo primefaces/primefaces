@@ -692,12 +692,31 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Reloads a dynamic tab even if it has already been loaded once. Forces an AJAX refresh of the tab.
+     * @param {number} index 0-based index of the tab to reload.
+     */
+    reload: function(index) {
+        var reloadPanel = this.panelContainer.children().eq(index);
+        this.markAsUnloaded(reloadPanel);
+        this.select(index);
+    },
+
+    /**
      * Marks the content of the given tab as loaded.
      * @private
      * @param {JQuery} panel A panel with content that was loaded.
      */
     markAsLoaded: function(panel) {
         panel.data('loaded', true);
+    },
+
+    /**
+     * Marks the content of the given tab as unloaded.
+     * @private
+     * @param {JQuery} panel A panel with content that was unloaded.
+     */
+    markAsUnloaded: function(panel) {
+        panel.data('loaded', false);
     },
 
     /**
