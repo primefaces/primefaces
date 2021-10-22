@@ -32,35 +32,38 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 public class Dt028Reference implements Serializable {
-	private static final long serialVersionUID = 5270872031054180148L;
-	
-	private int id;
-	private String domain;
-	private String code;
-	private String name;
-	private String region;
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
+    private static final long serialVersionUID = 5270872031054180148L;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Dt028Reference other = (Dt028Reference) obj;
-		return id == other.id;
-	}
+    private int id;
+    private String domain;
+    private String code;
+    private String name;
+    private String region;
 
-	@Override
-	public String toString() {
-		return id + ", " + domain + ", " + code + ", " + name + ", " + region;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Dt028Reference other = (Dt028Reference) obj;
+        return id == other.id;
+    }
+
+    @Override
+    public String toString() {
+        return id + ", " + domain + ", " + code + ", " + name + ", " + region;
+    }
 
 
 }

@@ -31,11 +31,11 @@
 			<p:autoUpdate />
 		</p:messages>
 		<p:commandButton value="Reset" action="#{dataTable028.reset()}" process="@this" />
-		<p:commandButton value="Save" action="#{testView.doSaveAll()}"
+		<p:commandButton value="Save" action="#{dataTable028.doSaveAll()}" id="cmdSave"
 			process="@this referenceTable" update="result referenceTable" />
 		<div class="card">
-			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget"
-				var="reference" value="#{testView.references}" paginator="true"
+			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter"
+				var="reference" value="#{dataTable028.references}" paginator="true"
 				rows="10" paginatorPosition="bottom">
 				<p:column sortBy="#{reference.domain}" filterBy="#{reference.domain}" filterMatchMode="contains">
 					<f:facet name="header">
@@ -49,31 +49,19 @@
 						<f:selectItem itemLabel="USA" itemValue="USA" />
 					</p:selectOneMenu>
 				</p:column>
-				<p:column sortBy="#{reference.code}" filterBy="#{reference.code}" filterMatchMode="contains">
-					<f:facet name="header">
-						<h:outputText value="Code" />
-					</f:facet>
-					<f:facet name="filter">
-						<p:inputText styleClass="filter" onchange="PF('referenceTableWidget').filter()" />
-					</f:facet>
+				<p:column headerText="Code" sortBy="#{reference.code}" filterBy="#{reference.code}" filterMatchMode="contains">
 					<p:inputText value="#{reference.code}" />
 				</p:column>
-				<p:column sortBy="#{reference.name}" filterBy="#{reference.name}" filterMatchMode="contains">
-					<f:facet name="header">
-						<h:outputText value="Name" />
-					</f:facet>
-					<f:facet name="filter">
-						<p:inputText styleClass="filter" onchange="PF('referenceTableWidget').filter()" />
-					</f:facet>
+				<p:column headerText="Name" sortBy="#{reference.name}" filterBy="#{reference.name}" filterMatchMode="contains">
 					<p:inputText value="#{reference.name}" />
 				</p:column>
 			</p:dataTable>
 			<p:outputPanel class="flex-container" id="result">
-				<div class="flex-child">
-					<pre>#{testView.startData}</pre>
+				<div class="flex-child" id="debugInitial">
+					<pre>#{dataTable028.startData}</pre>
 				</div>
-				<div class="flex-child">
-					<pre>#{testView.resultData}</pre>
+				<div class="flex-child" id="debugActual">
+					<pre>#{dataTable028.resultData}</pre>
 				</div>
 			</p:outputPanel>
 		</div>

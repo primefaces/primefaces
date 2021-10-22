@@ -33,18 +33,18 @@ import java.util.List;
 @ApplicationScoped
 public class Dt028ReferenceService {
 
-	@PostConstruct
-	public void init() {
-	}
+    @PostConstruct
+    public void init() {
+    }
 
-	public List<Dt028Reference> getReferences() {
-		List<Dt028Reference> references= new ArrayList<>();
-		references.add(new Dt028Reference(509, "EUR", "BB", "BB2", "A"));
-		references.add(new Dt028Reference(512, "EUR", "BB", "BB2", "B"));
-		references.add(new Dt028Reference(515, "EUR", "BB", "BB2", "C"));
-		references.add(new Dt028Reference(516, "USA", "AA", "AA", "D"));
-		references.add(new Dt028Reference(517, "USA", "AA", "AA", "E"));
-		return references;
-	}
+    public List<Dt028Reference> getReferences() {
+        List<Dt028Reference> references = new ArrayList<>();
+        references.add(new Dt028Reference(509, "EUR", "BB", "BB2", "A"));
+        references.add(new Dt028Reference(512, "EUR", "BB", "BB2", "B"));
+        references.add(new Dt028Reference(515, "EUR", "BB", "BB2", "C"));
+        references.add(new Dt028Reference(516, "USA", "AA", "AA", "D"));
+        references.add(new Dt028Reference(517, "USA", "AA", "AA", "E"));
+        return references;
+    }
 
 }
