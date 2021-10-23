@@ -40,7 +40,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @Test
     @Order(1)
     @DisplayName("DataTable: filter/sort - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
-    public void testFilterByName(Page page) {
+    public void testFilterSortEdit(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         page.commandButtonSave.click();
