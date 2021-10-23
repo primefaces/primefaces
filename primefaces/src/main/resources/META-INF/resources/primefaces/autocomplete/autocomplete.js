@@ -132,6 +132,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.autoSelection = this.cfg.autoSelection === false ? false : true;
         this.cfg.escape = this.cfg.escape === false ? false : true;
         this.cfg.hasFooter = this.cfg.hasFooter === true ? true : false;
+        this.cfg.forceSelection = this.cfg.forceSelection === true ? true : false;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
@@ -551,6 +552,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         if($this.cfg.queryEvent !== 'enter') {
                             valid = $this.isValid(itemValue, true);
+                            if (!$this.cfg.forceSelection) {
+                                valid = true;
+                            }
                         }
 
                         if($this.cfg.multiple && itemValue && valid) {

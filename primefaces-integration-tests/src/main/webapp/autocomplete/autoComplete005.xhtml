@@ -15,11 +15,14 @@
             <p:messages id="msgs" showDetail="true">
                 <p:autoUpdate/>
             </p:messages>
+            
+            <p:commandButton id="btnForce" update="@form" value="Force" actionListener="#{autoComplete005.force}"/>
+            <p:commandButton id="btnUnforce" update="@form" value="Unforce" actionListener="#{autoComplete005.unforce}"/>
 
             <p:autoComplete id="autocomplete"
                             value="#{autoComplete005.selectedDrivers}" completeMethod="#{autoComplete005.completeDriver}"
                             var="driver" itemLabel="#{driver.name}" itemValue="#{driver}"
-                            multiple="true" forceSelection="true"
+                            multiple="true" forceSelection="#{autoComplete005.forceSelection}"
                             converter="realDriverConverter" />
 
             <p:commandButton id="button" update="@form" value="Submit" action="#{autoComplete005.submit}"/>

@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -41,16 +43,17 @@ import org.primefaces.selenium.component.AutoComplete;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-import java.util.List;
-
 public class AutoComplete005Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("AutoComplete: Multiple + forceSelection - https://github.com/primefaces/primefaces/issues/7211")
+    @DisplayName("AutoComplete: Multiple + forceSelection=true - https://github.com/primefaces/primefaces/issues/7211")
     public void testMultipleForce(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
+
+        // Act forceSelection=true
+        page.buttonForceSelection.click();
 
         // Act - Ma(x) - allowed
         autoComplete.setValueWithoutTab("Ma");
@@ -89,6 +92,47 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(2)
+    @DisplayName("AutoComplete: Multiple + forceSelection=false - https://github.com/primefaces/primefaces/issues/8006")
+    public void testMultipleWithoutForce(Page page) {
+        // Arrange
+        AutoComplete autoComplete = page.autoComplete;
+
+        // Act forceSelection=false
+        page.buttonUnforceSelection.click();
+
+        // Act - Ma(x) - allowed
+        autoComplete.setValueWithoutTab("Ma");
+        autoComplete.wait4Panel();
+        autoComplete.getInput().sendKeys(Keys.ENTER);
+
+        // Act - La(ndo) - allowed
+        autoComplete.setValueWithoutTab("La");
+        autoComplete.wait4Panel();
+        autoComplete.getInput().sendKeys(Keys.ENTER);
+
+        // Act - Chr(istoph) - allowed
+        autoComplete.setValueWithoutTab("Chr");
+        autoComplete.getInput().sendKeys(Keys.ENTER);
+
+        // Assert
+        RealDriverService realDriverService = new RealDriverService();
+        realDriverService.init();
+        List<Driver> drivers = realDriverService.getDrivers();
+        Driver driverMax = drivers.stream().filter(d -> "Max".equals(d.getName())).findFirst().get();
+        Driver driverLando = drivers.stream().filter(d -> "Lando".equals(d.getName())).findFirst().get();
+        
+        WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
+        List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
+        Assertions.assertEquals(3, options.size());
+        Assertions.assertEquals(Integer.toString(driverMax.getId()), options.get(0).getAttribute("value"));
+        Assertions.assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
+        Assertions.assertEquals("Chr", options.get(2).getAttribute("value"));
+        
+        assertConfiguration(autoComplete.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("AutoComplete Config = " + cfg);
@@ -104,6 +148,12 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:msgs")
         Messages messages;
+
+        @FindBy(id = "form:btnForce")
+        CommandButton buttonForceSelection;
+
+        @FindBy(id = "form:btnUnforce")
+        CommandButton buttonUnforceSelection;
 
         @Override
         public String getLocation() {
