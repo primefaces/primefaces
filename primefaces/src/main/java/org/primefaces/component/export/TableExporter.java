@@ -32,6 +32,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.UITable;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.Constants;
@@ -113,8 +114,9 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
 
             table.forEachColumn(col -> {
                 for (ColumnMeta meta : columnMetas) {
-                    String columnKey = meta.getColumnKey();
-                    if (col.getColumnKey().equals(columnKey)) {
+                    String metaColumnKey = meta.getColumnKey();
+                    String columnKey = col.getColumnKey((UIComponent) table, ((UIData) table).getRowIndex());
+                    if (Objects.equals(metaColumnKey, columnKey)) {
                         if (col.isRendered() && col.isExportable()) {
                             exportcolumns.add(col);
                         }
