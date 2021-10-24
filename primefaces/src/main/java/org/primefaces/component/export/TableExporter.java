@@ -112,20 +112,14 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
                         sorted(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast))
                         .collect(Collectors.toList());
 
-            table.forEachColumn(col -> {
-                for (ColumnMeta meta : columnMetas) {
-                    String metaColumnKey = meta.getColumnKey();
-                    String columnKey = col.getColumnKey((UIComponent) table, ((UIData) table).getRowIndex());
-                    if (Objects.equals(metaColumnKey, columnKey)) {
-                        if (col.isRendered() && col.isExportable()) {
-                            exportcolumns.add(col);
-                        }
-                        break;
+            for (ColumnMeta meta : columnMetas) {
+                String metaColumnKey = meta.getColumnKey();
+                table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), column -> {
+                    if (column.isRendered() && column.isExportable()) {
+                        exportcolumns.add(column);
                     }
-                }
-
-                return true;
-            });
+                });
+            }
         }
 
         exportableColumns.put(table, exportcolumns);
