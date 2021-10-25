@@ -65,6 +65,13 @@ class PrimeFlexMigrationTest {
     }
 
     @Test
+    void migrateV2ToV3AlternativeJustifyContentClasses() {
+        String source = "<div class=\"p-justify-start p-justify-end p-justify-center p-justify-between p-justify-around p-justify-even\"></div>";
+        String result = migration.migrateSource(source);
+        Assertions.assertEquals("<div class=\"justify-content-start justify-content-end justify-content-center justify-content-between justify-content-around justify-content-evenly\"></div>", result);
+    }
+
+    @Test
     void migrateV2ToV3SpacingCornerCase() {
         String source = "<div class=\"p-p-lg-3\"></div>";
         String result = migration.migrateSource(source);
