@@ -6,6 +6,8 @@ labels: defect
 
 ---
 
+**Before creating a issue, please try the newest version! Older versions are not supported by the community!**
+
 **Describe the defect**
 A clear and concise description of what the defect is.
 
