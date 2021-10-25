@@ -101,12 +101,13 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-flex-(xl|lg|md|sm)-wrap", "$1:flex-wrap");
         replaceRegex.put("p-flex-(xl|lg|md|sm)-wrap-reverse", "$1:flex-wrap-reverse");
 
-        replaceRegex.put("p-jc-start", "justify-content-start");
-        replaceRegex.put("p-jc-end", "justify-content-end");
-        replaceRegex.put("p-jc-center", "justify-content-center");
-        replaceRegex.put("p-jc-between", "justify-content-between");
-        replaceRegex.put("p-jc-around", "justify-content-around");
+        replaceRegex.put("p-(jc|justify)-start", "justify-content-start");
+        replaceRegex.put("p-(jc|justify)-end", "justify-content-end");
+        replaceRegex.put("p-(jc|justify)-center", "justify-content-center");
+        replaceRegex.put("p-(jc|justify)-between", "justify-content-between");
+        replaceRegex.put("p-(jc|justify)-around", "justify-content-around");
         replaceRegex.put("p-jc-evenly", "justify-content-evenly");
+        replaceRegex.put("p-justify-even", "justify-content-evenly"); // Note: even -> evenly
 
         replaceRegex.put("p-jc-(xl|lg|md|sm)-start", "$1:justify-content-start");
         replaceRegex.put("p-jc-(xl|lg|md|sm)-end", "$1:justify-content-end");
