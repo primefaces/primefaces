@@ -6,7 +6,7 @@
 [![Discord Chat](https://img.shields.io/discord/591914197219016707.svg?color=7289da&label=chat&logo=discord&style=flat-square)](https://discord.gg/gzKFYnpmCY)
 [![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces+jsf)
 
-[![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2020/03/primefaces-github-02032020.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
+[![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2021/10/PrimeFaces-GitHub-2021Q4.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
 
 # PrimeFaces
 
