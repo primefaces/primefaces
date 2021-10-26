@@ -18,14 +18,24 @@
             
             <p:commandButton id="btnForce" update="@form" value="Force" actionListener="#{autoComplete005.force}"/>
             <p:commandButton id="btnUnforce" update="@form" value="Unforce" actionListener="#{autoComplete005.unforce}"/>
+            <p:commandButton id="btnAutoSelect" update="@form" value="Auto-Select" actionListener="#{autoComplete005.autoSelect}"/>
+            <p:commandButton id="btnUnAutoSelect" update="@form" value="UnAuto-Select" actionListener="#{autoComplete005.unAutoSelect}"/>
 
-            <p:autoComplete id="autocomplete"
+            <p:autoComplete id="autocompleteMultiple"
                             value="#{autoComplete005.selectedDrivers}" completeMethod="#{autoComplete005.completeDriver}"
                             var="driver" itemLabel="#{driver.name}" itemValue="#{driver}"
                             multiple="true" forceSelection="#{autoComplete005.forceSelection}"
+                            autoSelection="true"
+                            converter="realDriverConverter" />
+                            
+            <p:autoComplete id="autocompleteSingle"
+                            value="#{autoComplete005.selectedDriver}" completeMethod="#{autoComplete005.completeDriver}"
+                            var="driver" itemLabel="#{driver.name}" itemValue="#{driver}"
+                            multiple="false" forceSelection="true"
+                            autoSelection="false"
                             converter="realDriverConverter" />
 
-            <p:commandButton id="button" update="@form" value="Submit" action="#{autoComplete005.submit}"/>
+            <p:commandButton id="buttonSubmit" update="@form" value="Submit" action="#{autoComplete005.submit}"/>
         </h:form>
 
     </h:body>
