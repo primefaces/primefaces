@@ -137,12 +137,12 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         else {
-            if (table.isDefaultSort()) {
+            if (table.isSortingCurrentlyActive()) {
                 SortFeature.getInstance().sort(context, table);
-                table.setRowIndex(-1);
+                table.setRowIndex(-1); // why?
             }
 
-            if (table.isDefaultFilter()) {
+            if (table.isFilteringCurrentlyActive()) {
                 FilterFeature.getInstance().filter(context, table);
             }
         }
