@@ -24,10 +24,8 @@
 package org.primefaces.integrationtests.datatable;
 
 import lombok.Data;
-import org.primefaces.component.datatable.DataTable;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -77,14 +75,7 @@ public class DataTable029 implements Serializable {
                     ThreadLocalRandom.current().nextInt(100)));
         }
 
-        boolean firstTime = (this.data == null);
-
         this.data = newData;
-
-        if (!firstTime) {
-            DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datatable");
-            dataTable.filterAndSort(); //work-around to keep sort-order
-        }
     }
 
 }
