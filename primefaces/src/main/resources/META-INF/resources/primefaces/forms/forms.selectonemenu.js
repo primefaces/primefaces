@@ -288,9 +288,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             e.preventDefault();
         });
 
-        this.focusInput.on('focus.ui-selectonemenu', function() {
+        this.focusInput.on('focus.ui-selectonemenu', function(e) {
             $this.jq.addClass('ui-state-focus');
             $this.menuIcon.addClass('ui-state-focus');
+            if(!$this.cfg.dynamic && !$this.items) {
+                $this.callHandleMethod($this.handleTabKey(), e);
+            }
         })
         .on('blur.ui-selectonemenu', function(){
             $this.jq.removeClass('ui-state-focus');
