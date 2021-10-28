@@ -44,6 +44,7 @@ public class DataTable028 implements Serializable {
     private static final long serialVersionUID = -2461536509834660314L;
 
     private List<Dt028Reference> references;
+    private List<Dt028Reference> referencesFiltered;
 
     private String startData;
     private String resultData;

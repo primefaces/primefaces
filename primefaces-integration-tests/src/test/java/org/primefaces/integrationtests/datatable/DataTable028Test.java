@@ -115,9 +115,6 @@ public class DataTable028Test extends AbstractDataTableTest {
         // Assert
         assertAfterBb3UpdateSorted(page);
 
-        // Assert
-        assertAfterBb3UpdateSorted(page);
-
         assertNoJavascriptErrors();
     }
 
