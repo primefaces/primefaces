@@ -320,7 +320,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
-                    <classpathDependencyScopeExclude>runtime</classpathDependencyScopeExclude>
+                    <!-- We may try to remove some deps from test-classpath to avoid tomcat embedded loading some deps twice. -->
+<!--                    <classpathDependencyScopeExclude>runtime</classpathDependencyScopeExclude>-->
                 </configuration>
             </plugin>
             <plugin>
