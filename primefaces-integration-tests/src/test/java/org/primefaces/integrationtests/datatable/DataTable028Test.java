@@ -41,6 +41,11 @@ public class DataTable028Test extends AbstractDataTableTest {
     @Order(1)
     @DisplayName("DataTable: filter + sort + edit with own inputs - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
     public void testFilterSortEdit(Page page) {
+        /*
+         * The essential thing to get it up and working on Mojarra is defining filteredValue for p:dataTable.
+         * Without this the test fails.
+         */
+
         // Arrange
         DataTable dataTable = page.dataTable;
         page.commandButtonSave.click();
