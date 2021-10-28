@@ -50,7 +50,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
     @DisplayName("AutoComplete: Multiple + forceSelection=true - https://github.com/primefaces/primefaces/issues/7211")
     public void testMultipleForce(Page page) {
         // Arrange
-        AutoComplete autoComplete = page.autoComplete;
+        AutoComplete autoComplete = page.autocompleteMultiple;
 
         // Act forceSelection=true
         page.buttonForceSelection.click();
@@ -83,7 +83,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         Assertions.assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
 
         // Act
-        page.button.click();
+        page.buttonSubmit.click();
 
         // Assert - Part 2
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max"));
@@ -97,7 +97,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
     @DisplayName("AutoComplete: Multiple + forceSelection=false - https://github.com/primefaces/primefaces/issues/8006")
     public void testMultipleWithoutForce(Page page) {
         // Arrange
-        AutoComplete autoComplete = page.autoComplete;
+        AutoComplete autoComplete = page.autocompleteMultiple;
 
         // Act forceSelection=false
         page.buttonUnforceSelection.click();
@@ -132,6 +132,32 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
+    
+    @Test
+    @Order(3)
+    @DisplayName("AutoComplete: invalid behaviour for forceSelection=true and autoSelection=false - https://github.com/primefaces/primefaces/issues/7832")
+    public void testGitHub7832(Page page) {
+        // Arrange
+        AutoComplete autoComplete = page.autocompleteSingle;
+
+        // Act forceSelection=true autoSelection=false
+        page.buttonForceSelection.click();
+        page.buttonUnAutoSelect.click();
+
+        // Act - Max - allowed
+        autoComplete.setValueWithoutTab("Max");
+        autoComplete.wait4Panel();
+        autoComplete.getInput().sendKeys(Keys.ENTER);
+
+        // Act - La - not allowed
+        autoComplete.setValueWithoutTab("La");
+        autoComplete.wait4Panel();
+        page.buttonSubmit.click();
+
+        // Assert        
+        Assertions.assertTrue(page.messages.getAllMessages().isEmpty());
+        assertConfiguration(autoComplete.getWidgetConfiguration());
+    }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
@@ -140,8 +166,11 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
-        @FindBy(id = "form:autocomplete")
-        AutoComplete autoComplete;
+        @FindBy(id = "form:autocompleteMultiple")
+        AutoComplete autocompleteMultiple;
+        
+        @FindBy(id = "form:autocompleteSingle")
+        AutoComplete autocompleteSingle;
 
         @FindBy(id = "form:button")
         CommandButton button;
@@ -154,6 +183,15 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:btnUnforce")
         CommandButton buttonUnforceSelection;
+        
+        @FindBy(id = "form:btnAutoSelect")
+        CommandButton buttonAutoSelect;
+
+        @FindBy(id = "form:btnUnAutoSelect")
+        CommandButton buttonUnAutoSelect;
+        
+        @FindBy(id = "form:buttonSubmit")
+        CommandButton buttonSubmit;
 
         @Override
         public String getLocation() {
