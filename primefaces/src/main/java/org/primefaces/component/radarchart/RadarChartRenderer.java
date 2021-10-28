@@ -70,13 +70,10 @@ public class RadarChartRenderer extends ChartRenderer {
 
         encodeScales(context, type, radarOptions.getScales(), false);
         encodeElements(context, radarOptions.getElements(), radarOptions.getScales() != null);
-        encodeTitle(context, radarOptions.getTitle(), (radarOptions.getScales() != null || radarOptions.getElements() != null));
-        encodeTooltip(context, radarOptions.getTooltip(), (radarOptions.getScales() != null
-                || radarOptions.getElements() != null || radarOptions.getTitle() != null));
-        encodeLegend(context, radarOptions.getLegend(), (radarOptions.getScales() != null
-                    || radarOptions.getElements() != null || radarOptions.getTitle() != null || radarOptions.getTooltip() != null));
         encodeAnimation(context, radarOptions.getAnimation(), radarOptions.getScales() != null
-                    || radarOptions.getElements() != null || radarOptions.getTitle() != null || radarOptions.getTooltip() != null);
+                    || radarOptions.getElements() != null);
+        encodePlugins(context, radarOptions, radarOptions.getScales() != null
+                    || radarOptions.getElements() != null || radarOptions.getAnimation() != null);
 
         writer.write("}");
     }

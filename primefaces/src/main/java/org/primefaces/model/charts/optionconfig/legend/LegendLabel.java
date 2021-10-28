@@ -26,6 +26,7 @@ package org.primefaces.model.charts.optionconfig.legend;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -38,6 +39,7 @@ public class LegendLabel implements Serializable {
 
     private Number boxWidth;
     private String fontColor;
+    private ChartFont font;
     private String fontFamily;
     private Number fontSize;
     private String fontStyle;
@@ -156,7 +158,6 @@ public class LegendLabel implements Serializable {
      * Label style will match corresponding point style (size is based on fontSize, boxWidth is not used in this case).
      *
      * @return the usePointStyle
-     *
      */
     public boolean isUsePointStyle() {
         return usePointStyle;
@@ -171,6 +172,20 @@ public class LegendLabel implements Serializable {
         this.usePointStyle = usePointStyle;
     }
 
+    public ChartFont getFont() {
+        if (font == null) {
+            font = new ChartFont();
+            font.setFamily(this.fontFamily);
+            font.setSize(this.fontSize);
+            font.setStyle(this.fontStyle);
+        }
+        return font;
+    }
+
+    public void setFont(ChartFont font) {
+        this.font = font;
+    }
+
     /**
      * Write the options of scale label
      *
@@ -182,12 +197,12 @@ public class LegendLabel implements Serializable {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "usePointStyle", this.usePointStyle, false);
-            ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
-            ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
-            ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
-            ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
+            ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
             ChartUtils.writeDataValue(fsw, "boxWidth", this.boxWidth, true);
+
+            ChartFont font = getFont();
+            font.write(fsw);
 
             fsw.write("}");
 

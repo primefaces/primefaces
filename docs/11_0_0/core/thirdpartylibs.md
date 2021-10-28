@@ -6,7 +6,7 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.6.0 | https://github.com/autoNumeric/autoNumeric |
-| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.5.0 | https://www.chartjs.org |
+| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.6.0 | https://www.chartjs.org |
 | [Color Picker](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#colorpicker) | (2012) | www.eyecon.ro |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [ContentFlow](../jsdocs/classes/src_PrimeFaces.ContentFlow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |

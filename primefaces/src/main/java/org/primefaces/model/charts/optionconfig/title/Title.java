@@ -26,6 +26,7 @@ package org.primefaces.model.charts.optionconfig.title;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -38,6 +39,7 @@ public class Title implements Serializable {
 
     private boolean display;
     private String position;
+    private ChartFont font;
     private Number fontSize;
     private String fontFamily;
     private String fontColor;
@@ -202,11 +204,25 @@ public class Title implements Serializable {
     /**
      * Sets the text
      *
-     * @param text Title text to display.
-     * If specified as an array, text is rendered on multiple lines.
+     * @param text Title text to display. If specified as an array, text is rendered on multiple lines.
      */
     public void setText(Object text) {
         this.text = text;
+    }
+
+    public ChartFont getFont() {
+        if (font == null) {
+            font = new ChartFont();
+            font.setFamily(this.fontFamily);
+            font.setSize(this.fontSize);
+            font.setStyle(this.fontStyle);
+            font.setLineHeight(this.lineHeight);
+        }
+        return font;
+    }
+
+    public void setFont(ChartFont font) {
+        this.font = font;
     }
 
     /**
@@ -219,13 +235,12 @@ public class Title implements Serializable {
         try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
             ChartUtils.writeDataValue(fsw, "position", this.position, true);
-            ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
-            ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
-            ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
-            ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
+            ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
-            ChartUtils.writeDataValue(fsw, "lineHeight", this.lineHeight, true);
             ChartUtils.writeDataValue(fsw, "text", this.text, true);
+
+            ChartFont font = getFont();
+            font.write(fsw);
 
             return fsw.toString();
         }

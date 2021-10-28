@@ -34,6 +34,7 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.ChartModel;
+import org.primefaces.model.charts.ChartOptions;
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.radial.RadialScales;
@@ -247,6 +248,20 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
 
+    protected void encodePlugins(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (hasComma) {
+            writer.write(",");
+        }
+
+        writer.write("\"plugins\":{");
+        encodeTitle(context, options.getTitle(), false);
+        encodeTooltip(context, options.getTooltip(), true);
+        encodeLegend(context, options.getLegend(), true);
+        writer.write("}");
+    }
+
     protected void encodeTitle(FacesContext context, Title title, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -255,10 +270,8 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
-            writer.write("\"plugins\":{");
             writer.write("\"title\":{");
             writer.write(title.encode());
-            writer.write("}");
             writer.write("}");
         }
     }
