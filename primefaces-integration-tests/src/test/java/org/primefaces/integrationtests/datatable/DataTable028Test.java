@@ -58,7 +58,7 @@ public class DataTable028Test extends AbstractDataTableTest {
 
         // Act 2 - change all BB2 row values to BB3, press Save
         for (int row=0; row<=2; row++) {
-            WebElement eltName = dataTable.getRow(row).getCell(2).getWebElement().findElement(By.tagName("input"));
+            WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
         }

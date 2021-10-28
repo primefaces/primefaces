@@ -36,7 +36,8 @@
 		<div class="card">
 			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter"
 				var="reference" value="#{dataTable028.references}" paginator="true"
-				rows="10" paginatorPosition="bottom">
+				rows="10" paginatorPosition="bottom"  size="small">
+				<p:column field="id" />
 				<p:column sortBy="#{reference.domain}" filterBy="#{reference.domain}" filterMatchMode="contains">
 					<f:facet name="header">
 						<h:outputText value="Domain" />
