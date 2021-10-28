@@ -39,19 +39,14 @@ public class DataTable028Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: filter/sort - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
+    @DisplayName("DataTable: filter + sort + edit with own inputs - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
     public void testFilterSortEdit(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         page.commandButtonSave.click();
 
         // Assert
-        Assertions.assertEquals("Result:\n" +
-                "509, EUR, BB, BB2, A\n" +
-                "512, EUR, BB, BB2, B\n" +
-                "515, EUR, BB, BB2, C\n" +
-                "516, USA, AA, AA, D\n" +
-                "517, USA, AA, AA, E", page.eltDebugActual.getText());
+        assertInitalState(page);
 
         // Act 1 - filter on name with value BB2
         dataTable.filter("Name", "bb2");
@@ -84,6 +79,118 @@ public class DataTable028Test extends AbstractDataTableTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(2)
+    @DisplayName("DataTable: filter + sort + edit with own inputs - V2")
+    public void testFilterSortEditV2(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.commandButtonSave.click();
+
+        // Assert
+        assertInitalState(page);
+
+        // Act 1 - sort on code, press Save
+        dataTable.sort("Code");
+        page.commandButtonSave.click();
+
+        // Act 2 - filter on name with value BB2
+        dataTable.filter("Name", "bb2");
+
+        // Act 3 - change all BB2 row values to BB3, press Save
+        for (int row=0; row<=2; row++) {
+            WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
+            eltName.clear();
+            eltName.sendKeys("BB3");
+        }
+        page.commandButtonSave.click();
+
+        // Assert
+        assertAfterBb3UpdateSorted(page);
+
+        // Act 4 - remove filter BB2, press Save
+        dataTable.filter("Name", "");
+        page.commandButtonSave.click();
+
+        // Assert
+        assertAfterBb3UpdateSorted(page);
+
+        // Assert
+        assertAfterBb3UpdateSorted(page);
+
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: sort + edit with own inputs")
+    public void testSortEdit(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.commandButtonSave.click();
+
+        // Assert
+        assertInitalState(page);
+
+        // Act 1 - change all BB2 row values to BB3, press Save
+        for (int row=0; row<=2; row++) {
+            WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
+            eltName.clear();
+            eltName.sendKeys("BB3");
+        }
+        page.commandButtonSave.click();
+
+        // Assert
+        assertAfterBb3Update(page);
+
+        // Act 2 - sort on code, press Save
+        dataTable.sort("Code");
+        page.commandButtonSave.click();
+
+        // Assert
+        assertAfterBb3UpdateSorted(page);
+
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("DataTable: sort + edit with own inputs - V2")
+    public void testSortEditV2(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.commandButtonSave.click();
+
+        // Assert
+        assertInitalState(page);
+
+        // Act 1 - sort on code, press Save
+        dataTable.sort("Code");
+        page.commandButtonSave.click();
+
+        // Act 2 - change all BB2 row values to BB3, press Save
+        for (int row=2; row<=4; row++) {
+            WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
+            eltName.clear();
+            eltName.sendKeys("BB3");
+        }
+        page.commandButtonSave.click();
+
+        // Assert
+        assertAfterBb3UpdateSorted(page);
+
+        assertNoJavascriptErrors();
+    }
+
+    private void assertInitalState(Page page) {
+        Assertions.assertEquals("Result:\n" +
+                "509, EUR, BB, BB2, A\n" +
+                "512, EUR, BB, BB2, B\n" +
+                "515, EUR, BB, BB2, C\n" +
+                "516, USA, AA, AA, D\n" +
+                "517, USA, AA, AA, E", page.eltDebugActual.getText());
+    }
+
     private void assertAfterBb3Update(Page page) {
         Assertions.assertEquals("Result:\n" +
                 "509, EUR, BB, BB3, A\n" +
@@ -91,6 +198,15 @@ public class DataTable028Test extends AbstractDataTableTest {
                 "515, EUR, BB, BB3, C\n" +
                 "516, USA, AA, AA, D\n" +
                 "517, USA, AA, AA, E", page.eltDebugActual.getText());
+    }
+
+    private void assertAfterBb3UpdateSorted(Page page) {
+        Assertions.assertEquals("Result:\n" +
+                "516, USA, AA, AA, D\n" +
+                "517, USA, AA, AA, E\n" +
+                "509, EUR, BB, BB3, A\n" +
+                "512, EUR, BB, BB3, B\n" +
+                "515, EUR, BB, BB3, C", page.eltDebugActual.getText());
     }
 
     public static class Page extends AbstractPrimePage {
