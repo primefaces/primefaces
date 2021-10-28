@@ -26,8 +26,10 @@ package org.primefaces.model.charts.axes.radial.linear;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.LangUtils;
 
 /**
  * Used to configure the point labels that are shown on the perimeter of the scale.
@@ -36,7 +38,8 @@ public class RadialLinearPointLabels implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Object fontColor;
+    private String fontColor;
+    private ChartFont font;
     private String fontFamily;
     private Number fontSize = 10;
     private String fontStyle;
@@ -46,7 +49,7 @@ public class RadialLinearPointLabels implements Serializable {
      *
      * @return fontColor
      */
-    public Object getFontColor() {
+    public String getFontColor() {
         return fontColor;
     }
 
@@ -55,7 +58,7 @@ public class RadialLinearPointLabels implements Serializable {
      *
      * @param fontColor Font color for point labels.
      */
-    public void setFontColor(Object fontColor) {
+    public void setFontColor(String fontColor) {
         this.fontColor = fontColor;
     }
 
@@ -113,6 +116,20 @@ public class RadialLinearPointLabels implements Serializable {
         this.fontStyle = fontStyle;
     }
 
+    public ChartFont getFont() {
+        if (font == null) {
+            font = new ChartFont();
+            font.setFamily(this.fontFamily);
+            font.setSize(this.fontSize);
+            font.setStyle(this.fontStyle);
+        }
+        return font;
+    }
+
+    public void setFont(ChartFont font) {
+        this.font = font;
+    }
+
     /**
      * Write the options of point labels on radial linear type
      *
@@ -123,10 +140,14 @@ public class RadialLinearPointLabels implements Serializable {
         try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write("{");
 
-            ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, false);
-            ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
-            ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
-            ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
+            boolean hasComma = false;
+            if (LangUtils.isNotBlank(this.fontColor)) {
+                ChartUtils.writeDataValue(fsw, "color", this.fontColor, hasComma);
+                hasComma = true;
+            }
+
+            ChartFont font = getFont();
+            font.write(fsw, "font", hasComma);
 
             fsw.write("}");
 

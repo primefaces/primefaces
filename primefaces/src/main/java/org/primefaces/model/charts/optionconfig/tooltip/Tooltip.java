@@ -26,6 +26,7 @@ package org.primefaces.model.charts.optionconfig.tooltip;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -41,17 +42,20 @@ public class Tooltip implements Serializable {
     private boolean intersect;
     private String position;
     private String backgroundColor;
+    private ChartFont titleFont;
     private String titleFontFamily;
     private Number titleFontSize;
     private String titleFontStyle;
     private String titleFontColor;
     private Number titleSpacing;
     private Number titleMarginBottom;
+    private ChartFont bodyFont;
     private String bodyFontFamily;
     private Number bodyFontSize;
     private String bodyFontStyle;
     private String bodyFontColor;
     private Number bodySpacing;
+    private ChartFont footerFont;
     private String footerFontFamily;
     private Number footerFontSize;
     private String footerFontStyle;
@@ -118,8 +122,8 @@ public class Tooltip implements Serializable {
     /**
      * Sets the intersect
      *
-     * @param intersect if true, the tooltip mode applies only when the mouse position intersects with an element.
-     * If false, the mode will be applied at all times.
+     * @param intersect if true, the tooltip mode applies only when the mouse position intersects with an element. If false, the mode will be applied at all
+     *            times.
      */
     public void setIntersect(boolean intersect) {
         this.intersect = intersect;
@@ -665,6 +669,48 @@ public class Tooltip implements Serializable {
         this.textDirection = textDirection;
     }
 
+    public ChartFont getTitleFont() {
+        if (titleFont == null) {
+            titleFont = new ChartFont();
+            titleFont.setFamily(this.titleFontFamily);
+            titleFont.setSize(this.titleFontSize);
+            titleFont.setStyle(this.titleFontStyle);
+        }
+        return titleFont;
+    }
+
+    public void setTitleFont(ChartFont titleFont) {
+        this.titleFont = titleFont;
+    }
+
+    public ChartFont getBodyFont() {
+        if (bodyFont == null) {
+            bodyFont = new ChartFont();
+            bodyFont.setFamily(this.bodyFontFamily);
+            bodyFont.setSize(this.bodyFontSize);
+            bodyFont.setStyle(this.bodyFontStyle);
+        }
+        return bodyFont;
+    }
+
+    public void setBodyFont(ChartFont bodyFont) {
+        this.bodyFont = bodyFont;
+    }
+
+    public ChartFont getFooterFont() {
+        if (footerFont == null) {
+            footerFont = new ChartFont();
+            footerFont.setFamily(this.footerFontFamily);
+            footerFont.setSize(this.footerFontSize);
+            footerFont.setStyle(this.footerFontStyle);
+        }
+        return footerFont;
+    }
+
+    public void setFooterFont(ChartFont footerFont) {
+        this.footerFont = footerFont;
+    }
+
     /**
      * Write the options of Tooltip
      *
@@ -678,21 +724,12 @@ public class Tooltip implements Serializable {
             ChartUtils.writeDataValue(fsw, "intersect", this.intersect, true);
             ChartUtils.writeDataValue(fsw, "position", this.position, true);
             ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
-            ChartUtils.writeDataValue(fsw, "titleFontFamily", this.titleFontFamily, true);
-            ChartUtils.writeDataValue(fsw, "titleFontSize", this.titleFontSize, true);
-            ChartUtils.writeDataValue(fsw, "titleFontStyle", this.titleFontStyle, true);
-            ChartUtils.writeDataValue(fsw, "titleFontColor", this.titleFontColor, true);
+            ChartUtils.writeDataValue(fsw, "titleColor", this.titleFontColor, true);
             ChartUtils.writeDataValue(fsw, "titleSpacing", this.titleSpacing, true);
             ChartUtils.writeDataValue(fsw, "titleMarginBottom", this.titleMarginBottom, true);
-            ChartUtils.writeDataValue(fsw, "bodyFontFamily", this.bodyFontFamily, true);
-            ChartUtils.writeDataValue(fsw, "bodyFontSize", this.bodyFontSize, true);
-            ChartUtils.writeDataValue(fsw, "bodyFontStyle", this.bodyFontStyle, true);
-            ChartUtils.writeDataValue(fsw, "bodyFontColor", this.bodyFontColor, true);
+            ChartUtils.writeDataValue(fsw, "bodyColor", this.bodyFontColor, true);
             ChartUtils.writeDataValue(fsw, "bodySpacing", this.bodySpacing, true);
-            ChartUtils.writeDataValue(fsw, "footerFontFamily", this.footerFontFamily, true);
-            ChartUtils.writeDataValue(fsw, "footerFontSize", this.footerFontSize, true);
-            ChartUtils.writeDataValue(fsw, "footerFontStyle", this.footerFontStyle, true);
-            ChartUtils.writeDataValue(fsw, "footerFontColor", this.footerFontColor, true);
+            ChartUtils.writeDataValue(fsw, "footerColor", this.footerFontColor, true);
             ChartUtils.writeDataValue(fsw, "footerSpacing", this.footerSpacing, true);
             ChartUtils.writeDataValue(fsw, "footerMarginTop", this.footerMarginTop, true);
             ChartUtils.writeDataValue(fsw, "xPadding", this.xpadding, true);
@@ -706,6 +743,13 @@ public class Tooltip implements Serializable {
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
             ChartUtils.writeDataValue(fsw, "rtl", this.rtl, true);
             ChartUtils.writeDataValue(fsw, "textDirection", this.textDirection, true);
+
+            ChartFont titleFont = getTitleFont();
+            titleFont.write(fsw, "titleFont", true);
+            ChartFont bodyFont = getBodyFont();
+            bodyFont.write(fsw, "bodyFont", true);
+            ChartFont footerFont = getFooterFont();
+            footerFont.write(fsw, "footerFont", true);
 
             return fsw.toString();
         }

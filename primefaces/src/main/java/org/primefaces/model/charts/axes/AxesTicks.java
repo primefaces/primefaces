@@ -26,6 +26,7 @@ package org.primefaces.model.charts.axes;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -37,6 +38,7 @@ public class AxesTicks implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private boolean display = true;
+    private ChartFont font;
     private String fontColor;
     private String fontFamily;
     private Number fontSize;
@@ -151,6 +153,20 @@ public class AxesTicks implements Serializable {
         this.reverse = reverse;
     }
 
+    public ChartFont getFont() {
+        if (font == null) {
+            font = new ChartFont();
+            font.setFamily(this.fontFamily);
+            font.setSize(this.fontSize);
+            font.setStyle(this.fontStyle);
+        }
+        return font;
+    }
+
+    public void setFont(ChartFont font) {
+        this.font = font;
+    }
+
     /**
      * Write the common ticks options of axes
      *
@@ -160,11 +176,11 @@ public class AxesTicks implements Serializable {
     public String encode() throws IOException {
         try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
-            ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
-            ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
-            ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
-            ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
+            ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "reverse", this.reverse, true);
+
+            ChartFont font = getFont();
+            font.write(fsw);
 
             return fsw.toString();
         }

@@ -26,12 +26,12 @@ package org.primefaces.model.charts.axes.cartesian;
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
 /**
- * The scale label configuration is nested under the scale configuration in the scaleLabel key.
- * It defines options for the scale title.
+ * The scale label configuration is nested under the scale configuration in the scaleLabel key. It defines options for the scale title.
  */
 public class CartesianScaleLabel implements Serializable {
 
@@ -41,6 +41,7 @@ public class CartesianScaleLabel implements Serializable {
     private String labelString;
     private Object lineHeight;
     private String fontColor;
+    private ChartFont font;
     private String fontFamily;
     private Number fontSize;
     private String fontStyle;
@@ -190,6 +191,21 @@ public class CartesianScaleLabel implements Serializable {
         this.padding = padding;
     }
 
+    public ChartFont getFont() {
+        if (font == null) {
+            font = new ChartFont();
+            font.setFamily(this.fontFamily);
+            font.setSize(this.fontSize);
+            font.setStyle(this.fontStyle);
+            font.setLineHeight(this.lineHeight);
+        }
+        return font;
+    }
+
+    public void setFont(ChartFont font) {
+        this.font = font;
+    }
+
     /**
      * Write the options of scale label
      *
@@ -203,11 +219,11 @@ public class CartesianScaleLabel implements Serializable {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
             ChartUtils.writeDataValue(fsw, "labelString", this.labelString, true);
             ChartUtils.writeDataValue(fsw, "lineHeight", this.lineHeight, true);
-            ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
-            ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
-            ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
-            ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
+            ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
+
+            ChartFont font = getFont();
+            font.write(fsw);
 
             fsw.write("}");
 
