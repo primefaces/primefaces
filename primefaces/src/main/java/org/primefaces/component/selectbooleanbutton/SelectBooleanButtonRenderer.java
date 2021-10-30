@@ -32,10 +32,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SelectBooleanButtonRenderer extends InputRenderer {
 
@@ -59,8 +56,25 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SelectBooleanButton button = (SelectBooleanButton) component;
 
+        calculateLabels(context, button);
         encodeMarkup(context, button);
         encodeScript(context, button);
+    }
+
+    /**
+     * Determine if not iconOnly and no labels provided set the default labels.
+     */
+    private void calculateLabels(FacesContext context, SelectBooleanButton button) {
+        boolean hasLabel = LangUtils.isNotBlank(button.getOnLabel()) || LangUtils.isNotBlank(button.getOffLabel());
+        if (hasLabel) {
+            return;
+        }
+        boolean hasIcon = LangUtils.isNotBlank(button.getOnIcon()) || LangUtils.isNotBlank(button.getOffIcon());
+        if (!hasIcon) {
+            // no icon or label use defaults
+            button.setOnLabel(MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_ON));
+            button.setOffLabel(MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_OFF));
+        }
     }
 
     protected void encodeMarkup(FacesContext context, SelectBooleanButton button) throws IOException {
@@ -123,14 +137,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (isValueBlank(label)) {
-            if (!hasIcon) {
-                // no icon or label use defaults
-                label = checked ? MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_ON) : MessageFactory.getMessage(SelectBooleanButtonBase.LABEL_OFF);
-                writer.writeText(label, "value");
-            }
-            else {
-                writer.write("ui-button");
-            }
+            writer.write("ui-button");
         }
         else {
             writer.writeText(label, "value");
