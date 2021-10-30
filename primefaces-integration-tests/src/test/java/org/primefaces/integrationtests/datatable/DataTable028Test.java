@@ -23,6 +23,7 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
@@ -33,7 +34,6 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.OutputLabel;
 
 public class DataTable028Test extends AbstractDataTableTest {
 
@@ -185,30 +185,33 @@ public class DataTable028Test extends AbstractDataTableTest {
     }
 
     private void assertInitalState(Page page) {
-        Assertions.assertEquals("Result:\n" +
+        String expected = StringUtils.deleteWhitespace("Result:\n" +
                 "509, EUR, BB, BB2, A\n" +
                 "512, EUR, BB, BB2, B\n" +
                 "515, EUR, BB, BB2, C\n" +
                 "516, USA, AA, AA, D\n" +
-                "517, USA, AA, AA, E", page.eltDebugActual.getText());
+                "517, USA, AA, AA, E");
+        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(page.eltDebugActual.getText()));
     }
 
     private void assertAfterBb3Update(Page page) {
-        Assertions.assertEquals("Result:\n" +
-                "509, EUR, BB, BB3, A\n" +
-                "512, EUR, BB, BB3, B\n" +
-                "515, EUR, BB, BB3, C\n" +
-                "516, USA, AA, AA, D\n" +
-                "517, USA, AA, AA, E", page.eltDebugActual.getText());
+        String expected = StringUtils.deleteWhitespace("Result:\n" +
+                    "509, EUR, BB, BB3, A\n" +
+                    "512, EUR, BB, BB3, B\n" +
+                    "515, EUR, BB, BB3, C\n" +
+                    "516, USA, AA, AA, D\n" +
+                    "517, USA, AA, AA, E");
+        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(page.eltDebugActual.getText()));
     }
 
     private void assertAfterBb3UpdateSorted(Page page) {
-        Assertions.assertEquals("Result:\n" +
-                "516, USA, AA, AA, D\n" +
-                "517, USA, AA, AA, E\n" +
-                "509, EUR, BB, BB3, A\n" +
-                "512, EUR, BB, BB3, B\n" +
-                "515, EUR, BB, BB3, C", page.eltDebugActual.getText());
+        String expected = StringUtils.deleteWhitespace("Result:\n" +
+                    "516, USA, AA, AA, D\n" +
+                    "517, USA, AA, AA, E\n" +
+                    "509, EUR, BB, BB3, A\n" +
+                    "512, EUR, BB, BB3, B\n" +
+                    "515, EUR, BB, BB3, C");
+        Assertions.assertEquals(expected, StringUtils.deleteWhitespace(page.eltDebugActual.getText()));
     }
 
     public static class Page extends AbstractPrimePage {
