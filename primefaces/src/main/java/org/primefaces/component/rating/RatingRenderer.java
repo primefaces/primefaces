@@ -100,13 +100,8 @@ public class RatingRenderer extends InputRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        if (rating.getTabindex() != null) {
-            writer.writeAttribute("tabindex", rating.getTabindex(), null);
-            writer.writeAttribute("role", "slider", null);
-            writer.writeAttribute("aria-valuemin", "1", null);
-            writer.writeAttribute("aria-valuemax", rating.getStars(), null);
-            writer.writeAttribute("aria-valuenow", valueToRender, null);
-        }
+
+        encodeInput(context, rating, clientId + "_input", valueToRender);
 
         if (rating.isCancel() && !disabled && !readonly) {
             encodeIcon(context, Rating.CANCEL_CLASS);
@@ -116,8 +111,6 @@ public class RatingRenderer extends InputRenderer {
             String starClass = (value != null && i < value) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
             encodeIcon(context, starClass);
         }
-
-        encodeInput(context, rating, clientId + "_input", valueToRender);
 
         writer.endElement("div");
     }
@@ -135,6 +128,27 @@ public class RatingRenderer extends InputRenderer {
     }
 
     protected void encodeInput(FacesContext context, Rating rating, String id, String value) throws IOException {
-        renderHiddenInput(context, id, value, rating.isDisabled());
+        ResponseWriter writer = context.getResponseWriter();
+
+        //input for accessibility
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+
+        //for keyboard accessibility and ScreenReader
+        writer.writeAttribute("tabindex", rating.getTabindex(), null);
+        writer.writeAttribute("role", "slider", null);
+        writer.writeAttribute("aria-valuemin", "1", null);
+        writer.writeAttribute("aria-valuemax", rating.getStars(), null);
+        writer.writeAttribute("aria-valuenow", value, null);
+
+        writer.endElement("input");
+
+        writer.endElement("div");
     }
 }

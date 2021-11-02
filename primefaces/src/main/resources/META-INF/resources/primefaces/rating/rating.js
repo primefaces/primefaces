@@ -48,6 +48,8 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.readonly) {
             this.jq.children().css('cursor', 'default');
         }
+        
+        this.input.val(this.input.attr('aria-valuenow'));
     },
 
     /**
@@ -58,26 +60,30 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         this.jq.attr('tabindex', this.tabindex);
         var $this = this;
 
-        this.jq.on("keydown.rating", function(e) {
+        this.input.on("keydown.rating", function(e) {
             var value = $this.getValue() || 0;
             var keyCode = $.ui.keyCode,
             key = e.which;
-            if (key === keyCode.LEFT && value > 0) {
+            
+            if ((key === keyCode.LEFT || key === keyCode.DOWN) && value > 0) {
                 $this.setValue(--value);
             }
-            else if (key === keyCode.RIGHT && $this.stars.length !== value) {
+            else if ((key === keyCode.RIGHT || key === keyCode.UP) && $this.stars.length !== value) {
                 $this.setValue(++value);
             }
+            
+            $this.focus($this.getFocusableElement());
         }).on("focus.rating", function(){
-            $(this).toggleClass("ui-state-focus");
+            $this.focus($this.getFocusableElement());
         }).on("blur.rating", function(){
-            $(this).toggleClass("ui-state-focus");
+            $this.jq.children('.ui-state-focus').removeClass("ui-state-focus");
         });
 
         this.stars.on("click.rating", function() {
             var value = $this.stars.index(this) + 1;   //index starts from zero
 
             $this.setValue(value);
+            $this.focus($(this), true);
         });
 
         this.cancel.on("mouseenter.rating", function() {
@@ -86,7 +92,35 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-rating-cancel-hover');
         }).on("click.rating", function() {
             $this.reset();
+            $this.focus($(this), true);
         });
+    },
+    
+    /**
+     * Set focus to element
+     * @param {JQuery} el focusable element
+     * @param {boolean} isInputFocus Whether to refocus to input element
+     * @private
+     */
+    focus: function(el, isInputFocus) {
+        if (!this.cfg.disabled && el) {
+            this.jq.children('.ui-state-focus').removeClass("ui-state-focus");
+            el.addClass('ui-state-focus');
+            
+            if (isInputFocus) {
+                this.input.focus();
+            }
+        }
+    },
+    
+    /**
+     * Get focusable element
+     * @return {JQuery} element
+     * @private
+     */
+    getFocusableElement: function() {
+        var value = this.getValue() || 0;
+        return value === 0 ? (this.cancel && this.cancel.length ? this.cancel : this.stars.eq(0)) : this.stars.eq(value - 1);    
     },
 
     /**
@@ -132,7 +166,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         //set hidden value
         this.input.val(newValue);
-        this.jq.attr('aria-valuenow', newValue);
+        this.input.attr('aria-valuenow', newValue);
 
         //update visuals
         this.stars.removeClass('ui-rating-star-on');
