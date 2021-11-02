@@ -146,8 +146,7 @@ public class RadialLinearPointLabels implements Serializable {
                 hasComma = true;
             }
 
-            ChartFont font = getFont();
-            font.write(fsw, "font", hasComma);
+            getFont().write(fsw, "font", hasComma);
 
             fsw.write("}");
 

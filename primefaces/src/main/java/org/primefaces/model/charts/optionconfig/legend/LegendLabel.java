@@ -201,8 +201,7 @@ public class LegendLabel implements Serializable {
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
             ChartUtils.writeDataValue(fsw, "boxWidth", this.boxWidth, true);
 
-            ChartFont font = getFont();
-            font.write(fsw);
+            getFont().write(fsw);
 
             fsw.write("}");
 

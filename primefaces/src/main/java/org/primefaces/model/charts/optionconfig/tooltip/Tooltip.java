@@ -744,12 +744,9 @@ public class Tooltip implements Serializable {
             ChartUtils.writeDataValue(fsw, "rtl", this.rtl, true);
             ChartUtils.writeDataValue(fsw, "textDirection", this.textDirection, true);
 
-            ChartFont titleFont = getTitleFont();
-            titleFont.write(fsw, "titleFont", true);
-            ChartFont bodyFont = getBodyFont();
-            bodyFont.write(fsw, "bodyFont", true);
-            ChartFont footerFont = getFooterFont();
-            footerFont.write(fsw, "footerFont", true);
+            getTitleFont().write(fsw, "titleFont", true);
+            getBodyFont().write(fsw, "bodyFont", true);
+            getFooterFont().write(fsw, "footerFont", true);
 
             return fsw.toString();
         }

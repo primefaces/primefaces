@@ -39,7 +39,7 @@ public class DialogKeepFlashPhaseListener implements PhaseListener {
 
     @Override
     public void afterPhase(PhaseEvent event) {
-        return;
+
     }
 
     @Override
@@ -57,7 +57,7 @@ public class DialogKeepFlashPhaseListener implements PhaseListener {
         return PhaseId.RENDER_RESPONSE;
     }
 
-    private boolean isInDialogPreparation() {
+    protected boolean isInDialogPreparation() {
         String dialogOutcome = (String) FacesContext.getCurrentInstance().getAttributes().get(Constants.DialogFramework.OUTCOME);
         return LangUtils.isNotEmpty(dialogOutcome);
     }

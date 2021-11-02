@@ -179,8 +179,7 @@ public class AxesTicks implements Serializable {
             ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "reverse", this.reverse, true);
 
-            ChartFont font = getFont();
-            font.write(fsw);
+            getFont().write(fsw);
 
             return fsw.toString();
         }

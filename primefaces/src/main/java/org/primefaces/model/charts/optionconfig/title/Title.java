@@ -239,8 +239,7 @@ public class Title implements Serializable {
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
             ChartUtils.writeDataValue(fsw, "text", this.text, true);
 
-            ChartFont font = getFont();
-            font.write(fsw);
+            getFont().write(fsw);
 
             return fsw.toString();
         }

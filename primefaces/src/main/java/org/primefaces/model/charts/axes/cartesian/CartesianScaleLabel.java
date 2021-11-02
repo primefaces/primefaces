@@ -222,8 +222,7 @@ public class CartesianScaleLabel implements Serializable {
             ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
 
-            ChartFont font = getFont();
-            font.write(fsw);
+            getFont().write(fsw);
 
             fsw.write("}");
 
