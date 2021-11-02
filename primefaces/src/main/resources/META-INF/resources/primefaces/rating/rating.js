@@ -233,7 +233,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     reset: function() {
         this.input.val('');
-        this.jq.attr('aria-valuenow', '');
+        this.input.attr('aria-valuenow', '');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 
