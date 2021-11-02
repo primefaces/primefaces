@@ -48,8 +48,6 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.readonly) {
             this.jq.children().css('cursor', 'default');
         }
-        
-        this.input.val(this.input.attr('aria-valuenow'));
     },
 
     /**
