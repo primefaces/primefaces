@@ -34,6 +34,7 @@
  * used to detect whether the user clicked outside the speed dial so that it can be closed.
  * @param {Event} PrimeFaces.widget.SpeedDial.OnDocumentClickCallback.event Click event that occurred.
  *
+ * @prop {JQuery} badge The DOM element for the badge of the floating action button of the speed dial.
  * @prop {JQuery} button The DOM element for the floating action button of the speed dial.
  * @prop {JQuery} buttonIcon The DOM element for the icon of the floating action button of the speed dial.
  * @prop {JQuery} container The DOM element for the container of the speed dial that contains item container and button.
@@ -82,7 +83,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);
         this.mask = this.jq.children('.ui-speeddial-mask');
         this.container = this.jq.children('.ui-speeddial');
-        this.button = this.container.children('.ui-speeddial-button');
+        this.badge = this.container.children('.ui-overlay-badge');
+        var buttonContainer = this.badge.length === 0 ? this.container : this.badge;
+        this.button = buttonContainer.children('.ui-speeddial-button');
         this.buttonIcon = this.button.children('.ui-icon');
         this.itemContainer = this.container.children('.ui-speeddial-list');
         this.items = this.itemContainer.children('.ui-speeddial-item');

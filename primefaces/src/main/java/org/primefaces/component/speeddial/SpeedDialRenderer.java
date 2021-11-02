@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.speeddial;
 
+import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -78,7 +79,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", containerStyle, "style");
         }
 
-        encodeButton(context, speedDial);
+        BadgeRenderer.encode(context, speedDial.getBadge(), this::encodeButton, speedDial);
         encodeList(context, speedDial);
 
         writer.endElement("div");
