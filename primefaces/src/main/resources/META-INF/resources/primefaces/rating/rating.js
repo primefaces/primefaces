@@ -1,23 +1,24 @@
 /**
  * __PrimeFaces Rating Widget__
- * 
+ *
  * Rating component features a star based rating system.
- * 
+ *
  * @prop {JQuery} cancel The DOM element for the cancel button.
  * @prop {JQuery} input The DOM element for the hidden input field storing the value of this widget.
  * @prop {JQuery} stars The DOM elements for the clickable stars.
- * @prop {number} value The current value, i.e. the number of selected stars
- * 
+ * @prop {number} value The current value, i.e. the number of selected stars.
+ * @prop {string} tabindex The tabindex initially set.
+ *
  * @typedef PrimeFaces.widget.Rating.OnRateCallback Callback that is invoked when the user gives a rating. See also
  * {@link RatingCfg.onRate}.
- * @this {PrimeFaces.widget.Rating} PrimeFaces.widget.Rating.OnRateCallback 
+ * @this {PrimeFaces.widget.Rating} PrimeFaces.widget.Rating.OnRateCallback
  * @param {number} PrimeFaces.widget.Rating.OnRateCallback.currentNumberOfStars The number of rated stars.
- * 
+ *
  * @interface {PrimeFaces.widget.RatingCfg} cfg The configuration for the {@link  Rating| Rating widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.disabled Whether this widget is initially disabled.
  * @prop {PrimeFaces.widget.Rating.OnRateCallback} cfg.onRate Callback that is invoked when the user gives a rating.
  * @prop {boolean} cfg.readonly Whether this widget is in read-only mode.
@@ -35,9 +36,13 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         this.value = this.getValue();
         this.stars = this.jq.children('.ui-rating-star');
         this.cancel = this.jq.children('.ui-rating-cancel');
+        this.tabindex = this.jq.attr('tabindex');
 
         if(!this.cfg.disabled && !this.cfg.readonly) {
             this.bindEvents();
+        }
+        else {
+            this.jq.attr('tabindex', -1);
         }
 
         if(this.cfg.readonly) {
@@ -50,19 +55,36 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
+        this.jq.attr('tabindex', this.tabindex);
         var $this = this;
 
-        this.stars.on("click", function() {
+        this.jq.on("keydown.rating", function(e) {
+            var value = $this.getValue() || 0;
+            var keyCode = $.ui.keyCode,
+            key = e.which;
+            if (key === keyCode.LEFT && value > 0) {
+                $this.setValue(--value);
+            }
+            else if (key === keyCode.RIGHT && $this.stars.length !== value) {
+                $this.setValue(++value);
+            }
+        }).on("focus.rating", function(){
+            $(this).toggleClass("ui-state-focus");
+        }).on("blur.rating", function(){
+            $(this).toggleClass("ui-state-focus");
+        });
+
+        this.stars.on("click.rating", function() {
             var value = $this.stars.index(this) + 1;   //index starts from zero
 
             $this.setValue(value);
         });
 
-        this.cancel.on("mouseenter", function() {
-             $(this).addClass('ui-rating-cancel-hover');
-        }).on("mouseleave", function() {
-             $(this).removeClass('ui-rating-cancel-hover');
-        }).on("click", function() {
+        this.cancel.on("mouseenter.rating", function() {
+            $(this).addClass('ui-rating-cancel-hover');
+        }).on("mouseleave.rating", function() {
+            $(this).removeClass('ui-rating-cancel-hover');
+        }).on("click.rating", function() {
             $this.reset();
         });
     },
@@ -72,9 +94,10 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     unbindEvents: function() {
-        this.stars.off('click');
-
-        this.cancel.off('hover click');
+        this.jq.attr('tabindex', -1);
+        this.jq.off('keydown.rating focus.rating blur.rating');
+        this.stars.off('click.rating');
+        this.cancel.off('mouseenter.rating mouseleave.rating click.rating');
     },
 
     /**
@@ -84,7 +107,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     getValue: function() {
         var inputVal = this.input.val();
 
-        return inputVal == '' ? null : parseInt(inputVal);
+        return inputVal === '' ? null : parseInt(inputVal);
     },
 
     /**
@@ -109,6 +132,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         //set hidden value
         this.input.val(newValue);
+        this.jq.attr('aria-valuenow', newValue);
 
         //update visuals
         this.stars.removeClass('ui-rating-star-on');
@@ -123,7 +147,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         this.callBehavior('rate');
     },
-    
+
     /**
      * Checks whether this widget is currently disabled. Whe disabled, the user cannot edit the value and it will not be
      * sent to the server when the form is submitted.
@@ -132,7 +156,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
     isDisabled: function() {
         return this.jq.hasClass('ui-state-disabled');
     },
-    
+
     /**
      * Checks whether this widget is currently read-only. When read-only, the user cannot edit the value, but the value
      * will be sent to the server when the form is submitted.
@@ -147,7 +171,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         if(!this.isDisabled() || this.isReadOnly()) {
-           return; 
+            return;
         }
         this.cfg.disabled = false;
 
@@ -161,7 +185,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     disable: function() {
         if(this.isDisabled()) {
-           return; 
+            return;
         }
         this.cfg.disabled = true;
 
@@ -175,6 +199,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     reset: function() {
         this.input.val('');
+        this.jq.attr('aria-valuenow', '');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 

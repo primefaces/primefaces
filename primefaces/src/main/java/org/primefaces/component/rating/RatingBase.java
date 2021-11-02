@@ -44,7 +44,8 @@ public abstract class RatingBase extends UIInput implements Widget, ClientBehavi
         onRate,
         style,
         styleClass,
-        cancel
+        cancel,
+        tabindex
     }
 
     public RatingBase() {
@@ -118,5 +119,13 @@ public abstract class RatingBase extends UIInput implements Widget, ClientBehavi
 
     public void setCancel(boolean cancel) {
         getStateHelper().put(PropertyKeys.cancel, cancel);
+    }
+
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 }

@@ -17,7 +17,7 @@ Rating component features a star based rating system.
 
 ## Attributes
 
-| Name | Default | Type | Description | 
+| Name | Default | Type | Description |
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
@@ -39,6 +39,7 @@ onRate | null | String | Client side callback to execute when rate happens.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 cancel | true | Boolean | When enabled, displays a cancel icon to reset.
+tabindex | "0" | String | Position of the output in the tabbing order.
 
 ## Getting Started with Rating
 Rating is an input component that takes an integer variable as its value.
@@ -100,8 +101,8 @@ _onRate_ is called when a star is selected with _value_ as the only parameter.
 ## Client Side API
 Widget: _PrimeFaces.widget.Rating_
 
-| Method | Params | Return Type | Description | 
-| --- | --- | --- | --- | 
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
 getValue() | - | Number | Returns the current value
 setValue(value) | value: Value to set | void | Updates rating value with provided one.
 disable() | - | void | Disables component.
@@ -114,8 +115,8 @@ isReadOnly() | - | boolean | Is the rating read only?
 Rating resides in a main container which _style_ and _styleClass_ attributes apply. Following is the list
 of structural style classes;
 
-| Class | Applies | 
-| --- | --- | 
+| Class | Applies |
+| --- | --- |
 .ui-rating | Main container element.
 .ui-rating-cancel | Cancel icon
 .ui-rating | Default star

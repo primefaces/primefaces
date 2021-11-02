@@ -100,13 +100,20 @@ public class RatingRenderer extends InputRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
+        if (rating.getTabindex() != null) {
+            writer.writeAttribute("tabindex", rating.getTabindex(), null);
+            writer.writeAttribute("role", "slider", null);
+            writer.writeAttribute("aria-valuemin", "1", null);
+            writer.writeAttribute("aria-valuemax", rating.getStars(), null);
+            writer.writeAttribute("aria-valuenow", valueToRender, null);
+        }
 
         if (rating.isCancel() && !disabled && !readonly) {
             encodeIcon(context, Rating.CANCEL_CLASS);
         }
 
         for (int i = 0; i < stars; i++) {
-            String starClass = (value != null && i < value.intValue()) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
+            String starClass = (value != null && i < value) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
             encodeIcon(context, starClass);
         }
 
