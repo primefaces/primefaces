@@ -3575,7 +3575,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -3932,7 +3932,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -7011,7 +7011,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -7311,7 +7311,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -7570,7 +7570,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -8441,7 +8441,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -8683,7 +8683,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -24532,7 +24532,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -25444,7 +25444,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -27538,7 +27538,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -29917,7 +29917,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -32075,7 +32075,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>

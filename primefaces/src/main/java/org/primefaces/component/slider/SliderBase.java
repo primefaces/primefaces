@@ -210,7 +210,7 @@ public abstract class SliderBase extends UIInput implements Widget, ClientBehavi
 
     @Override
     public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
     }
 
     @Override

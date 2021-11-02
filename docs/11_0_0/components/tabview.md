@@ -41,7 +41,7 @@ TabView is a container component to group content in tabs.
 | scrollable     | false   | Boolean    | When enabled, tab headers can be scrolled horizontally instead of wrapping.
 | prependId      | true    | Boolean    | TabView is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.
 | tabindex       | 0       | String     | Position of the element in the tabbing order.
-| touchable      | true    | Boolean    | Enable touch support if browser detection supports it.
+| touchable      | false   | Boolean    | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | multiViewState | false   | Boolean    | Whether to keep TabView state across views, defaults to false.
 
 ## Getting started with the TabView

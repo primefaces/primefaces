@@ -128,7 +128,7 @@ ajax selection and more.
 | timeZone | null | Time Zone | String a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the built-in converter.)
 | title | null | String | Advisory tooltip information.
 | touchUI | false | Boolean | Activates touch friendly mode
-| touchable | true | Boolean | Enable touch support if browser detection supports it.
+| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | triggerButtonIcon | null | String | Icon of the datepicker element that toggles the visibility in popup mode.
 | type | text | String | Type of the input field
 | validator | null | Method Expr | A method expression that refers to a method validating the input

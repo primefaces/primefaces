@@ -46,7 +46,7 @@ DataList presents a collection of data in list layout with several display types
 | emptyMessage | No records found. | String | Text to display when there is no data to display.
 | itemStyleClass | null | String | Style class of an item in list.
 | multiViewState | false | Boolean | Whether to keep list state across views, defaults to false.
-| touchable | true | Boolean | Enable touch support if browser detection supports it.
+| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 
 ## Getting started with the DataList
 Since DataList is a data iteration component, it renders it’s children for each data represented with

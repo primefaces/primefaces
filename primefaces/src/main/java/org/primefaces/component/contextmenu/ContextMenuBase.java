@@ -154,7 +154,7 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
 
     @Override
     public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
     }
 
     @Override
