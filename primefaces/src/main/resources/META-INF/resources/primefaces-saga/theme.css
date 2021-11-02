@@ -3679,6 +3679,11 @@ body .ui-rating .ui-rating-cancel {
   margin-right: 0.5rem;
   overflow: visible;
 }
+body .ui-rating .ui-rating-cancel.ui-state-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-rating .ui-rating-cancel a {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -3705,6 +3710,11 @@ body .ui-rating .ui-rating-star {
   display: inline-block;
   margin-right: 0.5rem;
   overflow: visible;
+}
+body .ui-rating .ui-rating-star.ui-state-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-rating .ui-rating-star a {
   font-family: "primeicons" !important;
