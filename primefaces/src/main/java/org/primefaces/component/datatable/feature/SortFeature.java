@@ -130,7 +130,7 @@ public class SortFeature implements DataTableFeature {
                     FilterFeature.getInstance().filter(context, table);
                 }
                 else {
-                    table.updateFilteredValue(context, resolveList(table.getValue()));
+                    table.setFilteredValue(resolveList(table.getValue()));
                 }
             }
         }
