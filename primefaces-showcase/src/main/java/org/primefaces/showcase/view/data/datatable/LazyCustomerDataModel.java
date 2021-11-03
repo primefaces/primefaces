@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
+import java.beans.IntrospectionException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -37,6 +38,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.showcase.domain.Customer;
+import org.primefaces.showcase.util.ShowcaseUtil;
 import org.primefaces.util.LocaleUtils;
 
 /**
@@ -104,10 +106,10 @@ public class LazyCustomerDataModel extends LazyDataModel<Customer> {
             Object filterValue = filter.getFilterValue();
 
             try {
-                Object columnValue = String.valueOf(o.getClass().getField(filter.getField()).get(o));
+                Object columnValue = String.valueOf(ShowcaseUtil.getPropertyValueViaReflection(o, filter.getField()));
                 matching = constraint.isMatching(context, columnValue, filterValue, LocaleUtils.getCurrentLocale());
             }
-            catch (ReflectiveOperationException e) {
+            catch (ReflectiveOperationException | IntrospectionException e) {
                 matching = false;
             }
 
