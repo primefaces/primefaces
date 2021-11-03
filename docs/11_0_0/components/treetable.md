@@ -74,7 +74,7 @@ style | null | String | Inline style of the container element.
 styleClass | null | String | Style class of the container element.
 tableStyle | null | String | Inline style of the table element.
 tableStyleClass | null | String | Style class of the table element.
-touchable | true | Boolean | Enable touch support if browser detection supports it.
+touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 value | null | Object | A TreeNode instance as the backing model.
 var | null | String | Name of the request-scoped variable used to refer each treenode.
 widgetVar | null | String | Name of the client side widget.

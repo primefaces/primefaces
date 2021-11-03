@@ -32,7 +32,7 @@ ContextMenu provides an overlay menu displayed on mouse right-click event.
 | beforeShow | null | String | Client side callback to execute before showing.
 | selectionMode | multiple | String | Defines the selection behavior, e.g "single" or "multiple".
 | targetFilter | null | String | Selector to filter the elements to attach the menu.
-| touchable | true | Boolean | Enable touch support if browser detection supports it. For long press and hold to bring up menu.
+| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default. For long press and hold to bring up menu.
 
 ## Getting started with ContextMenu
 ContextMenu is created with submenus and menuitems. Optional for attribute defines which

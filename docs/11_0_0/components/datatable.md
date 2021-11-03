@@ -109,7 +109,7 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
-| touchable                 | true               | Boolean          | Enable touch support if browser detection supports it.
+| touchable                 | false              | Boolean          | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
 
 ## Getting started with the DataTable
