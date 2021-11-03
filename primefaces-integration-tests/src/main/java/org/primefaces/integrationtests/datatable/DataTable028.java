@@ -71,9 +71,6 @@ public class DataTable028 implements Serializable {
     }
 
     public Object doSaveAll() {
-        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:referenceTable");
-        Object dtValue = dataTable.getValue();
-
         resultData = getDataAsString("Result:");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Saved!"));
         return null;

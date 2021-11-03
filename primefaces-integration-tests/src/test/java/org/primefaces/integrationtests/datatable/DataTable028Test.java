@@ -153,7 +153,7 @@ public class DataTable028Test extends AbstractDataTableTest {
         assertAfterBb3Update();
 
         // Act 2 - sort on code, press Save
-        dataTable.sort("Code");
+        getDataTable().sort("Code");
         getButtonSave().click();
 
         // Assert
