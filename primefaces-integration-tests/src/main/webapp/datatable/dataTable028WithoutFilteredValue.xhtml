@@ -34,7 +34,7 @@
 		<p:commandButton value="Save" action="#{dataTable028.doSaveAll()}" id="cmdSave"
 			process="@this referenceTable" update="result referenceTable" />
 		<div class="card">
-			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter" filteredValue="#{dataTable028.referencesFiltered}"
+			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter"
 				var="reference" value="#{dataTable028.references}"
 				paginator="true" rows="10" paginatorPosition="bottom" size="small">
 				<p:column field="id" />
