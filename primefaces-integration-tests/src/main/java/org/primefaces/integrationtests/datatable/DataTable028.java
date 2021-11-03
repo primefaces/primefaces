@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.datatable;
 
 import lombok.Data;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.integrationtests.datatable.dt028.Dt028Reference;
 import org.primefaces.integrationtests.datatable.dt028.Dt028ReferenceService;
 

@@ -34,9 +34,9 @@
 		<p:commandButton value="Save" action="#{dataTable028.doSaveAll()}" id="cmdSave"
 			process="@this referenceTable" update="result referenceTable" />
 		<div class="card">
-			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter"
+			<p:dataTable id="referenceTable" widgetVar="referenceTableWidget" filterEvent="enter" filteredValue="#{dataTable028.referencesFiltered}"
 				var="reference" value="#{dataTable028.references}"
-				paginator="true" rows="10" paginatorPosition="bottom" size="small"><!-- filteredValue="#{dataTable028.referencesFiltered}" -->
+				paginator="true" rows="10" paginatorPosition="bottom" size="small">
 				<p:column field="id" />
 				<p:column sortBy="#{reference.domain}" filterBy="#{reference.domain}" filterMatchMode="contains">
 					<f:facet name="header">
