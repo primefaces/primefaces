@@ -40,6 +40,10 @@ public class Dt028Reference implements Serializable {
     private String name;
     private String region;
 
+    public Dt028Reference() {
+
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);

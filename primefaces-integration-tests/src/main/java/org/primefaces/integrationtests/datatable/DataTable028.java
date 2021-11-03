@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.datatable;
 
 import lombok.Data;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.integrationtests.datatable.dt028.Dt028Reference;
 import org.primefaces.integrationtests.datatable.dt028.Dt028ReferenceService;
 
@@ -70,6 +71,9 @@ public class DataTable028 implements Serializable {
     }
 
     public Object doSaveAll() {
+        DataTable dataTable = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:referenceTable");
+        Object dtValue = dataTable.getValue();
+
         resultData = getDataAsString("Result:");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Saved!"));
         return null;
