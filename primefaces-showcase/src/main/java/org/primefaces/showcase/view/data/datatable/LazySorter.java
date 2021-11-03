@@ -24,8 +24,10 @@
 package org.primefaces.showcase.view.data.datatable;
 
 import java.util.Comparator;
+
 import org.primefaces.model.SortOrder;
 import org.primefaces.showcase.domain.Customer;
+import org.primefaces.showcase.util.ShowcaseUtil;
 
 public class LazySorter implements Comparator<Customer> {
 
@@ -40,8 +42,8 @@ public class LazySorter implements Comparator<Customer> {
     @Override
     public int compare(Customer customer1, Customer customer2) {
         try {
-            Object value1 = customer1.getClass().getField(sortField).get(customer1);
-            Object value2 = customer2.getClass().getField(sortField).get(customer2);
+            Object value1 = ShowcaseUtil.getPropertyValueViaReflection(customer1, sortField);
+            Object value2 = ShowcaseUtil.getPropertyValueViaReflection(customer2, sortField);
 
             int value = ((Comparable) value1).compareTo(value2);
 
