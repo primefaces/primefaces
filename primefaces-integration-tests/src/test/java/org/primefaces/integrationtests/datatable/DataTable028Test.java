@@ -82,8 +82,12 @@ public class DataTable028Test extends AbstractDataTableTest {
         getButtonSave().click();
 
         // Assert
-        // TODO - we need to assert different for with and without filteredValue
-        assertAfterBb3UpdateSorted();
+        if (xhtml.contains("Without")) {
+            assertAfterBb3UpdateSorted();
+        }
+        else {
+            assertAfterBb3Update();
+        }
 
         assertNoJavascriptErrors();
     }
