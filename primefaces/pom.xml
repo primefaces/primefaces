@@ -684,6 +684,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.megamenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.panelmenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tabmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/message/message.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
