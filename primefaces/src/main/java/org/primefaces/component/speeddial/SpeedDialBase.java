@@ -263,7 +263,7 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
     }
 
     public Object getBadge() {
-        return (Object) getStateHelper().eval(PropertyKeys.badge, null);
+        return getStateHelper().eval(PropertyKeys.badge, null);
     }
 
     public void setBadge(Object badge) {
