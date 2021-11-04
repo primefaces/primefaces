@@ -82,7 +82,7 @@ Widget: _PrimeFaces.widget.Messages_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-| appendMessage(message, type) | message: message text, type: info, warn, error, fatal  | void | appends a message |
+| appendMessage(facesMessage) | facesMessage: see JSDoc about PrimeFaces.FacesMessage  | void | appends the message |
 
 
 ## Skinning

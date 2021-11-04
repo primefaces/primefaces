@@ -19,18 +19,21 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
     },
 
-    appendMessage: function(message, type) {
+    /**
+     * Creates the HTML elements for the given faces message, and adds it to the DOM.
+     * @param {PrimeFaces.FacesMessage} msg A message to translate into an HTML element.
+     */
+    appendMessage: function(msg) {
         this.jq.append(
-             '<div class="ui-messages-' + type + ' ui-corner-all">' +
+             '<div class="ui-messages-' + msg.severity + ' ui-corner-all">' +
                 '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;">' +
                     '<span class="ui-icon ui-icon-close"></span>' +
                 '</a>' +
-                '<span class="ui-messages-' + type + '-icon"></span>' +
+                '<span class="ui-messages-' + msg.severity + '-icon"></span>' +
                 '<ul>' +
                     '<li>' +
-                        '<span class="ui-messages-' + type + '-summary">' +
-                        message +
-                        '</span>' +
+                        '<span class="ui-messages-' + msg.severity + '-summary">' + (msg.summary ? msg.summary : '') + '</span>' +
+                        '<span class="ui-messages-' + msg.severity + '-detail">' + (msg.detail ? msg.detail : '') + '</span>' +
                     '</li>' +
                 '</ul>' +
             '</div>');
