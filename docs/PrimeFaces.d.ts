@@ -25847,6 +25847,49 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * __PrimeFaces Messages Widget__
+     *
+     * Messages is a pre-skinned extended version of the standard JSF messages component.
+     * @typeparam TCfg Defaults to `MessagesCfg`. Type of the configuration object for this widget.
+     */
+    export class Messages<TCfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Messages| Messages widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface MessagesCfg extends PrimeFaces.widget.BaseWidgetCfg {
+
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
      * __PrimeFaces Mindmap Widget__
      *
      * Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks, animations and more.
