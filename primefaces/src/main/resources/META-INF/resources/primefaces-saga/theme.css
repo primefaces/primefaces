@@ -3731,7 +3731,7 @@ body .ui-rating .ui-rating-star a {
   overflow: visible;
 }
 body .ui-rating .ui-rating-star a:before {
-  content: "\e936";
+  content: "\e937";
 }
 body .ui-rating .ui-rating-star a:hover {
   color: #0d89ec;
@@ -3749,7 +3749,7 @@ body .ui-rating .ui-rating-star-on a {
   color: #2196F3;
 }
 body .ui-rating .ui-rating-star-on a:before {
-  content: "\e937";
+  content: "\e936";
 }
 body .ui-state-highlight .ui-rating-star a {
   color: #495057;
