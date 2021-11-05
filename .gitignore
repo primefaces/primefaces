@@ -5,6 +5,7 @@ nbactions.xml
 .DS_STORE
 .idea/
 *.iml
+**/pom.xml.versionsBackup
 *~
 .classpath
 .
