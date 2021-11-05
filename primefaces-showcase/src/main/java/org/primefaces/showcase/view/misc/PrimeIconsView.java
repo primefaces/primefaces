@@ -48,7 +48,7 @@ public class PrimeIconsView implements Serializable {
     public void init() {
         icons = new ArrayList<>();
 
-        String url = "https://raw.githubusercontent.com/primefaces/primeicons/4.1.0/selection.json";
+        String url = "https://raw.githubusercontent.com/primefaces/primeicons/5.0.0/selection.json";
         try {
             JSONObject json = readJsonFromUrl(url);
             JSONArray iconsArray = json.getJSONArray("icons");
