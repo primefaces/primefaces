@@ -28,7 +28,7 @@ visible | false | Boolean | Specifies the visibility of the overlay.
 direction | "up" | String | Specifies the opening direction of actions. Valid values are `up`, `down`, `left`, `right`, `up-left`, `up-right`, `down-left` and `down-right`.
 transitionDelay | 30 | Integer | Transition delay step for each action item.
 type | "linear" | String | Specifies the opening type of actions. Valid values are `linear`, `circle`, `semi-circle` and `quarter-circle`.
-radius | 0 | Integer | Radius for *circle types.
+radius | 0 | Integer | Radius for circle types.
 mask | false | Boolean | Whether to show a mask element behind the speed dial.
 hideOnClickOutside | true | Boolean | Whether the actions close when clicked outside.
 style | null | String | Inline style of the element.
@@ -39,12 +39,13 @@ maskStyle | null | String | Inline style of the mask element.
 maskStyleClass | null | String | Style class of the mask element.
 showIcon | "pi pi-plus" | String | Show icon of the button element.
 hideIcon | null | String | Hide icon of the button element.
-rotateAnimation | true | Boolean | Defined to rotate showIcon when hideIcon is not present.
+rotateAnimation | true | Boolean | Defined to rotate the showIcon (and hideIcon).
 onVisibleChange | null | String | Client side callback to execute when the visibility of element changed.
 onClick | null | String | Client side callback to execute when the button element clicked.
 onShow | null | String | Client side callback to execute when the actions are visible.
 onHide | null | String | Client side callback to execute when the actions are hidden.
 keepOpen | false | Boolean | Whether the menu should be kept open on clicking menu items.
+badge | null | Object | Badge to render. Either a `String` value or `org.primefaces.model.badge.BadgeModel` instance.
 
 ## Getting Started with SpeedDial
 When pressed, a floating action button can display multiple primary actions that can be performed on a page. It has a
