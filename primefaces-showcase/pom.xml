@@ -238,6 +238,7 @@
                 <configuration>
                     <webAppConfig>
                         <contextPath>/showcase</contextPath>
+                        <overrideDescriptor>src/main/webapp/WEB-INF/web-development.xml</overrideDescriptor>
                     </webAppConfig>
                     <scanIntervalSeconds>5</scanIntervalSeconds>
                     <webXml>${project.build.directory}/web.xml</webXml>
