@@ -33577,7 +33577,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defined to rotate showIcon when hideIcon is not present.]]>
+                <![CDATA[Defined to rotate the showIcon (and hideIcon).]]>
             </description>
             <name>rotateAnimation</name>
             <required>false</required>
