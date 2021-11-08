@@ -12,7 +12,6 @@ are many other third party libraries and plugins used to support features.
 | [ContentFlow](../jsdocs/classes/src_PrimeFaces.ContentFlow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
-| FontAwesome | 4.7.0 | https://fontawesome.com/ |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.9.0 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#idleTimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.Static.html) | 5.0.5 | https://github.com/RobinHerbots/Inputmask |
@@ -40,6 +39,6 @@ are many other third party libraries and plugins used to support features.
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
-| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.4.9 | https://github.com/visjs/vis-timeline |
+| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.5.0 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/src_PrimeFaces.Webcam.html) | 1.0.26 | http://github.com/jhuckaby |
