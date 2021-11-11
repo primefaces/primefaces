@@ -256,9 +256,13 @@ public class ChartRenderer extends CoreRenderer {
         }
 
         writer.write("\"plugins\":{");
-        encodeTitle(context, options.getTitle(), false);
-        encodeTooltip(context, options.getTooltip(), true);
-        encodeLegend(context, options.getLegend(), true);
+        Title title = options.getTitle();
+        Tooltip tooltip = options.getTooltip();
+        Legend legend = options.getLegend();
+
+        encodeTitle(context, title, false);
+        encodeTooltip(context, tooltip, title != null);
+        encodeLegend(context, legend, title != null || tooltip != null);
         writer.write("}");
     }
 
