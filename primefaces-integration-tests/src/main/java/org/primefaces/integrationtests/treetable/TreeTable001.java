@@ -79,4 +79,8 @@ public class TreeTable001 implements Serializable {
     public void unselectNode(NodeUnselectEvent event) {
         TestUtils.addMessage("unselect-event", ((Document) event.getTreeNode().getData()).getName());
     }
+
+    public void switch2OtherDocuments() {
+        root = service.createOtherDocuments();
+    }
 }

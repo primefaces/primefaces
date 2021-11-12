@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 public class AbstractTreeTableTest extends AbstractTableTest {
 
     protected TreeNode<Document> root = new DocumentService().createDocuments();
+    protected TreeNode<Document> rootOtherDocument = new DocumentService().createOtherDocuments();
 
     protected void assertRows(TreeTable treeTable, TreeNode root) {
         List<Row> rows = treeTable.getRows();

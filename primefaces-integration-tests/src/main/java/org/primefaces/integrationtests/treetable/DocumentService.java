@@ -99,6 +99,16 @@ public class DocumentService {
         return root;
     }
 
+    public TreeNode createOtherDocuments() {
+        TreeNode root = new DefaultTreeNode(new Document("Projects", "-", "Folder"), null);
+
+        TreeNode applications = new DefaultTreeNode(new Document("Project A", "100kb", "File"), root);
+        TreeNode cloud = new DefaultTreeNode(new Document("Project B", "20kb", "File"), root);
+        TreeNode desktop = new DefaultTreeNode(new Document("Project C", "150kb", "File"), root);
+
+        return root;
+    }
+
     public TreeNode createCheckboxDocuments() {
         TreeNode root = new CheckboxTreeNode(new Document("Files", "-", "Folder"), null);
 
