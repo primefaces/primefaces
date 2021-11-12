@@ -82,5 +82,9 @@ public class TreeTable001 implements Serializable {
 
     public void switch2OtherDocuments() {
         root = service.createOtherDocuments();
+
+        // ideally the following two lines should not be necessary
+        TreeTable treeTable = (TreeTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:treeTable");
+        treeTable.filterAndSort();
     }
 }
