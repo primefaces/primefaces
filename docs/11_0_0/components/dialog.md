@@ -156,7 +156,6 @@ public class DialogBean {
 }
 ```
 
-
 ## Client Side Callbacks
 Similar to close listener, onShow and onHide are handy callbacks for client side in case you need to
 execute custom javascript.
@@ -166,6 +165,14 @@ execute custom javascript.
     //Content
 </p:dialog>
 ```
+
+## Facets
+
+| Name | Description |
+| --- | --- |
+| header | content which will be rendered in the header; alternative to the `header` attribute |
+| footer | content which will be rendered in the footer; alternative to the `footer` attribute |
+
 ## Client Side API
 Widget: _PrimeFaces.widget.Dialog_
 
@@ -180,8 +187,6 @@ Widget: _PrimeFaces.widget.Dialog_
 Dialog resides in a main container element which _styleClass_ option apply. Following is the list of
 structural style classes;
 
-
-
 | Class | Applies |
 | --- | --- |
 | .ui-dialog | Container element of dialog
@@ -191,11 +196,6 @@ structural style classes;
 | .ui-dialog-content | Dialog body
 
 As skinning style classes are global, see the main theming section for more information.
-
-## Tips
-
-- A facet called “header" is available to provide custom content inside header instead of using
-    header attribute.
     
 ## Modal
 The dialog support for `modal='true'` works very well. However, there is a use case where the background area of the
