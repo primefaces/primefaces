@@ -49,6 +49,8 @@ public class TreeTable001 implements Serializable {
 
     private Document selectedDocument;
 
+    private boolean otherDocuments = false;
+
     @Inject
     private DocumentService service;
 
@@ -81,7 +83,13 @@ public class TreeTable001 implements Serializable {
     }
 
     public void switch2OtherDocuments() {
-        root = service.createOtherDocuments();
+        if (otherDocuments) {
+            root = service.createDocuments();
+        }
+        else {
+            root = service.createOtherDocuments();
+        }
+        otherDocuments = !otherDocuments;
 
         // ideally the following two lines should not be necessary
         TreeTable treeTable = (TreeTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:treeTable");
