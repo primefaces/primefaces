@@ -52,6 +52,7 @@ class AvatarRendererTest {
                     Arguments.of(null, null),
                     Arguments.of("G", "G"),
                     Arguments.of("BD", "BD"),
+                    Arguments.of("Sting", "S"),
                     Arguments.of("Wolfgang Amadeus Mozart", "WM"),
                     Arguments.of("PrimeFaces Rocks", "PR"),
                     Arguments.of("ŞPrimeFaces Rocks", "ŞR"),
