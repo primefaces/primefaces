@@ -32,7 +32,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable031 extends AbstractDataTableTest {
+public class DataTable031Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
@@ -58,6 +58,15 @@ public class DataTable031 extends AbstractDataTableTest {
         page.dataTable.removeFilter("data");
         Assertions.assertSame(page.dataTable.getRows().size(), 4);
         Assertions.assertEquals("Data 2 1", page.dataTable.getRows().get(0).getCell(0).getText());
+
+        // filter for "Data 1 *", so no rows because we still have Data 2
+        page.dataTable.filter("data", "Data 1");
+        Assertions.assertSame(page.dataTable.getRows().size(), 0);
+
+        // switch to "Data 1"
+        page.toogle.click();
+        Assertions.assertSame(page.dataTable.getRows().size(), 4);
+        Assertions.assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
     }
 
     public static class Page extends AbstractPrimePage {
