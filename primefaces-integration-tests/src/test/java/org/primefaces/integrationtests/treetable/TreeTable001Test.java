@@ -365,6 +365,18 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         Assertions.assertNotNull(rows);
         Assertions.assertEquals(rootOtherDocument.getChildCount(), rows.size());
 
+        // Act
+        page.buttonOtherDocuments.click();
+        treeTable.filter("Name", "B");
+
+        // Assert
+
+        // Act
+        page.buttonOtherDocuments.click();
+        rows = treeTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(rootOtherDocument.getChildren().stream().filter(n -> n.getData().getName().contains("B")).count(), rows.size());
+
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
