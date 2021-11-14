@@ -132,7 +132,6 @@ public class FilterFeature implements TreeTableFeature {
         createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
 
         tt.updateFilteredValue(context, filteredValue);
-//        tt.setFilteredValue(filteredValue);
         tt.setValue(filteredValue);
         tt.setRowKey(root, null);
 
@@ -233,11 +232,11 @@ public class FilterFeature implements TreeTableFeature {
 
         // equals check instead of instanceof to allow subclassing
         if (CheckboxTreeNode.class.equals(node.getClass())) {
-            clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
+            clone = new CheckboxTreeNode(node.getType(), node.getData(), parent, node);
         }
         // equals check instead of instanceof to allow subclassing
         else if (DefaultTreeNode.class.equals(node.getClass())) {
-            clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+            clone = new DefaultTreeNode(node.getType(), node.getData(), parent, node);
         }
 
         if (clone == null && tt.isCloneOnFilter()) {
@@ -271,26 +270,38 @@ public class FilterFeature implements TreeTableFeature {
 
                 if (clone == null) {
                     try {
-                        Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
-                        clone = ctor.newInstance(node.getType(), node.getData(), parent);
+                        Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class, TreeNode.class);
+                        clone = ctor.newInstance(node.getType(), node.getData(), parent, node);
                     }
                     catch (NoSuchMethodException e) {
-                        // ignore
+                        try {
+                            Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
+                            clone = ctor.newInstance(node.getType(), node.getData(), parent);
+                        }
+                        catch (NoSuchMethodException e2) {
+                            // ignore
+                        }
+                        catch (InvocationTargetException | IllegalAccessException | InstantiationException e2) {
+                            LOGGER.warning("Could not clone " + node.getClass().getName()
+                                    + " via public " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent) constructor!");
+                        }
                     }
                     catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
                         LOGGER.warning("Could not clone " + node.getClass().getName()
-                                + " via public " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent) constructor!");
+                                + " via public " + node.getClass().getSimpleName() +
+                                "(String type, Object data, TreeNode parent, TreeNode originalTreeNode) constructor!");
                     }
+
                 }
             }
         }
 
         if (clone == null) {
             if (node instanceof CheckboxTreeNode) {
-                clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
+                clone = new CheckboxTreeNode(node.getType(), node.getData(), parent, node);
             }
             else {
-                clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+                clone = new DefaultTreeNode(node.getType(), node.getData(), parent, node);
             }
         }
 

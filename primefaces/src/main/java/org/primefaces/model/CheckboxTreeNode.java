@@ -50,6 +50,8 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
 
     private String rowKey;
 
+    private TreeNode<T> originalTreeNode;
+
     public CheckboxTreeNode() {
         this.type = DEFAULT_TYPE;
         this.children = new CheckboxTreeNodeChildren(this);
@@ -77,6 +79,16 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
         if (parent != null) {
             parent.getChildren().add(this);
         }
+    }
+
+    public CheckboxTreeNode(String type, T data, TreeNode parent, TreeNode originalTreeNode) {
+        this.type = type;
+        this.data = data;
+        this.children = new CheckboxTreeNodeChildren(this);
+        if (parent != null) {
+            parent.getChildren().add(this);
+        }
+        this.originalTreeNode = originalTreeNode;
     }
 
     @Override
@@ -324,5 +336,15 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
     @Override
     public void setPartialSelected(boolean value) {
         this.partialSelected = value;
+    }
+
+    @Override
+    public TreeNode<T> getOriginalTreeNode() {
+        return originalTreeNode;
+    }
+
+    @Override
+    public void setOriginalTreeNode(TreeNode<T> originalTreeNode) {
+        this.originalTreeNode = originalTreeNode;
     }
 }

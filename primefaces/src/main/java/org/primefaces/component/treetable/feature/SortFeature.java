@@ -104,18 +104,6 @@ public class SortFeature implements TreeTableFeature {
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
         sort(context, table);
 
-        //update filtered value accordingly to take account sorting
-        if (table.isFilteringCurrentlyActive()) {
-            // TODO: do we need something similar to org.primefaces.component.datatable.feature.SortFeature#encode?
-
-//            if (table.isFullUpdateRequest(context)) {
-//                FilterFeature.getInstance().filter(context, table);
-//            }
-//            else {
-//                table.setFilteredValue(resolveList(table.getValue()));
-//            }
-        }
-
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
 
         renderer.encodeTbody(context, table, table.getValue(), true);

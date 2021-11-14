@@ -155,6 +155,16 @@ public class TreeTableRenderer extends DataRenderer {
             table.restoreMultiViewState();
         }
 
+        if (table.isFilteringCurrentlyActive()) {
+            table.setValue(null);
+            table.setFilteredValue(null);
+            FilterFeature.getInstance().filter(context, table, table.getValue());
+        }
+
+        if (table.isSortingCurrentlyActive()) {
+            SortFeature.getInstance().sort(context, table);
+        }
+
         table.resetDynamicColumns();
     }
 
