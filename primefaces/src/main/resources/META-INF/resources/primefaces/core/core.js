@@ -652,7 +652,7 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.widgetNotAvailable(widgetName);
+                PrimeFaces.error("Widget class '" + widgetName + "' not found!");
             }
         },
 
