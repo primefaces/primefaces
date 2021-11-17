@@ -64,16 +64,4 @@ public interface TreeNode<T> {
     String getRowKey();
 
     void clearParent();
-
-    /**
-     * Only for PrimeFaces - internal usage. Reference to the original TreeNode if cloned.
-     * @return
-     */
-    TreeNode<T> getOriginalTreeNode();
-
-    /**
-     * Only for PrimeFaces - internal usage. Reference to the original TreeNode if cloned.
-     * @return
-     */
-    void setOriginalTreeNode(TreeNode<T> treeNode);
 }

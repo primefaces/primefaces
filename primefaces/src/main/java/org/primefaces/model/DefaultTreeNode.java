@@ -49,8 +49,6 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
 
     private String rowKey;
 
-    private TreeNode<T> originalTreeNode;
-
     public DefaultTreeNode() {
         this.type = DEFAULT_TYPE;
         this.children = new TreeNodeChildren(this);
@@ -78,16 +76,6 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         if (parent != null) {
             parent.getChildren().add(this);
         }
-    }
-
-    public DefaultTreeNode(String type, T data, TreeNode parent, TreeNode originalTreeNode) {
-        this.type = type;
-        this.data = data;
-        this.children = new TreeNodeChildren(this);
-        if (parent != null) {
-            parent.getChildren().add(this);
-        }
-        this.originalTreeNode = originalTreeNode;
     }
 
     @Override
@@ -147,9 +135,6 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     @Override
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
-        if (getOriginalTreeNode() != null) {
-            getOriginalTreeNode().setExpanded(expanded);
-        }
     }
 
     @Override
@@ -160,9 +145,6 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     @Override
     public void setSelected(boolean value) {
         this.selected = value;
-        if (getOriginalTreeNode() != null) {
-            getOriginalTreeNode().setSelected(value);
-        }
     }
 
     @Override
@@ -260,15 +242,5 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     @Override
     public void setPartialSelected(boolean value) {
         //nothing
-    }
-
-    @Override
-    public TreeNode<T> getOriginalTreeNode() {
-        return originalTreeNode;
-    }
-
-    @Override
-    public void setOriginalTreeNode(TreeNode<T> originalTreeNode) {
-        this.originalTreeNode = originalTreeNode;
     }
 }
