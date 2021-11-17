@@ -157,6 +157,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         if (table.isFilteringCurrentlyActive()) {
             table.setValue(null);
+            table.setFilteredValue(null);
             FilterFeature.getInstance().filter(context, table, table.getValue());
         }
 
