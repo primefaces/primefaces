@@ -302,21 +302,10 @@ public class TreeTable extends TreeTableBase {
         if (event instanceof PostRestoreStateEvent
                 && isFilteringEnabled()
                 && this == event.getComponent()) {
-//            ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
-//            if (ve != null) {
             TreeNode<?> filteredValue = getFilteredValue();
             if (filteredValue != null) {
                 setValue(filteredValue);
             }
-//            }
-//            else {
-//                // trigger filter as previous requests were filtered
-//                // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
-//                // and caused bugs with editing and serialization like #7999
-//                if (isFilteringCurrentlyActive()) {
-//                    filterAndSort();
-//                }
-//            }
         }
     }
 
@@ -692,21 +681,6 @@ public class TreeTable extends TreeTableBase {
     public void setWidth(String width) {
         getStateHelper().put(InternalPropertyKeys.width, width);
     }
-
-//    public TreeNode<?> getFilteredValue() {
-//        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
-//        if (ve != null) {
-//            return (TreeNode<?>) ve.getValue(getFacesContext().getELContext());
-//        }
-//        return null;
-//    }
-//
-//    public void setFilteredValue(TreeNode<?> filteredValue) {
-//        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
-//        if (ve != null) {
-//            ve.setValue(getFacesContext().getELContext(), filteredValue);
-//        }
-//    }
 
     /**
      * Recalculates filteredValue after adding, updating or removing TreeNodes to/from a filtered TreeTable.

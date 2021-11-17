@@ -132,7 +132,6 @@ public class FilterFeature implements TreeTableFeature {
         createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
 
         tt.updateFilteredValue(context, filteredValue);
-//        tt.setFilteredValue(filteredValue);
         tt.setValue(filteredValue);
         tt.setRowKey(root, null);
 
