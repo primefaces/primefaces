@@ -160,7 +160,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 String filterValue = filter.getFilterValue().toString();
                 Field filterField = LangUtils.getFieldRecursive(entityClass, filter.getField());
                 Object convertedFilterValue = convertToType(filterValue, filterField.getType());
-                Expression fieldExpression = resolveFieldExpression(root, filter.getField());
+                Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
 
                 Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, (Comparable) convertedFilterValue);
                 predicates.add(predicate);
@@ -237,13 +237,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     continue;
                 }
 
-                Expression<?> fieldExpression = resolveFieldExpression(root, sort.getField());
+                Expression<?> fieldExpression = resolveFieldExpression(cb, cq, root, sort.getField());
                 cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(fieldExpression) : cb.desc(fieldExpression));
             }
         }
     }
 
-    protected Expression resolveFieldExpression(Root<T> root, String fieldName) {
+    protected Expression resolveFieldExpression(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, String fieldName) {
         Join<?, ?> join = null;
 
         // join if required; e.g. company.name -> join to company and get "name" field from the joined table
