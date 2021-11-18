@@ -42,6 +42,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.treetable.feature.FilterFeature;
+import org.primefaces.component.treetable.feature.SortFeature;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
@@ -679,5 +680,14 @@ public class TreeTable extends TreeTableBase {
     @Override
     public void setWidth(String width) {
         getStateHelper().put(InternalPropertyKeys.width, width);
+    }
+
+    /**
+     * Recalculates filteredValue after adding, updating or removing TreeNodes to/from a filtered TreeTable.
+     */
+    public void filterAndSort() {
+        setValue(null);
+        FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this, getValue());
+        SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
     }
 }
