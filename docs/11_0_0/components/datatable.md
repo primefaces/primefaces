@@ -816,7 +816,7 @@ public class CarBean {
 }
 ```
 
-To avoid  doing a separate count-statement against your datasource you may implement it like this:
+To avoid doing a separate count-statement against your datasource you may implement it like this:
 ```java
 public class CarBean {
     private LazyDataModel model;
