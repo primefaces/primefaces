@@ -815,6 +815,32 @@ public class CarBean {
     }
 }
 ```
+
+To avoid  doing a separate count-statement against your datasource you may implement it like this:
+```java
+public class CarBean {
+    private LazyDataModel model;
+
+    public CarBean() {
+        model = new LazyDataModel() {
+            @Override
+            public int count(Map<String, FilterMeta> filterBy) {
+                return 0;
+            }
+
+            @Override
+            public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+                //load physical data
+            }
+        };
+    }
+    public LazyDataModel getModel() {
+        return model;
+    }
+}
+```
+This may help to improve performance, but comes at the price of keeping an eye on https://github.com/primefaces/primefaces/issues/1921.
+
 DataTable calls your load implementation whenever a paging, sorting or filtering occurs with
 following parameters:
 
