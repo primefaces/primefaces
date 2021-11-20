@@ -839,7 +839,7 @@ public class CarBean {
     }
 }
 ```
-This may help to improve performance, but comes at the price of keeping an eye on https://github.com/primefaces/primefaces/issues/1921.
+This may help to improve performance but comes at the price of keeping an eye on https://github.com/primefaces/primefaces/issues/1921.
 
 DataTable calls your load implementation whenever a paging, sorting or filtering occurs with
 following parameters:
