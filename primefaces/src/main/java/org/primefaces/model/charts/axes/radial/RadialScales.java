@@ -36,28 +36,28 @@ public class RadialScales extends AxesScale {
 
     private static final long serialVersionUID = 1L;
 
-    private RadialLinearAngleLines angelLines;
+    private RadialLinearAngleLines angleLines;
     private AxesGridLines gridLines;
     private RadialLinearPointLabels pointLabels;
     private RadialLinearTicks ticks;
     private Number startAngle;
 
     /**
-     * Gets the angelLines
+     * Gets the angleLines
      *
-     * @return angelLines
+     * @return angleLines
      */
-    public RadialLinearAngleLines getAngelLines() {
-        return angelLines;
+    public RadialLinearAngleLines getAngleLines() {
+        return angleLines;
     }
 
     /**
-     * Sets the angelLines
+     * Sets the angleLines
      *
-     * @param angelLines the {@link RadialLinearAngleLines} object
+     * @param angleLines the {@link RadialLinearAngleLines} object
      */
-    public void setAngelLines(RadialLinearAngleLines angelLines) {
-        this.angelLines = angelLines;
+    public void setAngleLines(RadialLinearAngleLines angleLines) {
+        this.angleLines = angleLines;
     }
 
     /**

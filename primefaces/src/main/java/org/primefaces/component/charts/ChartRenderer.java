@@ -185,8 +185,8 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
                 StringBuilder scaleAttrs = new StringBuilder(50);
-                if (rScales.getAngelLines() != null) {
-                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngelLines().encode());
+                if (rScales.getAngleLines() != null) {
+                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngleLines().encode());
                 }
 
                 if (rScales.getGridLines() != null) {
