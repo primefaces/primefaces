@@ -167,9 +167,19 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
     }
 
-    default boolean isColumnFilterable(UIColumn column) {
+    default boolean isColumnFilterable(FacesContext context, UIColumn column) {
         Map<String, FilterMeta> filterBy = getFilterByAsMap();
-        return filterBy.containsKey(column.getColumnKey());
+        if (filterBy.containsKey(column.getColumnKey())) {
+            return true;
+        }
+
+        // lazy init - happens in cases where the column is initially not rendered
+        FilterMeta f = FilterMeta.of(context, getVar(), column);
+        if (f != null) {
+            filterBy.put(f.getColumnKey(), f);
+        }
+
+        return f != null;
     }
 
     default void updateFilterByValuesWithFilterRequest(FacesContext context, Map<String, FilterMeta> filterBy) {
@@ -368,15 +378,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             return true;
         }
 
+        // lazy init - happens in cases where the column is initially not rendered
         SortMeta s = SortMeta.of(context, getVar(), column);
-        if (s == null) {
-            return false;
+        if (s != null) {
+            sortBy.put(s.getColumnKey(), s);
         }
 
-        // unlikely to happen, in case columns change between two ajax requests
-        sortBy.put(s.getColumnKey(), s);
-
-        return true;
+        return s != null;
     }
 
     default String getSortMetaAsString() {

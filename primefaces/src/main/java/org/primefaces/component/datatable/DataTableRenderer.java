@@ -602,7 +602,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = column.getContainerClientId(context);
 
         boolean sortable = table.isColumnSortable(context, column);
-        boolean filterable = table.isColumnFilterable(column);
+        boolean filterable = table.isColumnFilterable(context, column);
         boolean isGroupedColumn = column.isGroupRow();
         String selectionMode = column.getSelectionMode();
         SortMeta sortMeta = null;
