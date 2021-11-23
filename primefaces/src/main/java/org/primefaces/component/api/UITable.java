@@ -216,11 +216,14 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 filterValue = params.get(valueHolderClientId);
             }
 
-            // returns null if empty string/array/object
-            if (filterValue != null
-                    && (filterValue instanceof String && LangUtils.isBlank((String) filterValue)
-                    || filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-                filterValue = null;
+            // returns null if empty string/collection/array/object
+            if (filterValue != null) {
+                if ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
+                    || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
+                    || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
+                    || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
+                    filterValue = null;
+                }
             }
 
             filterMeta.setFilterValue(filterValue);
