@@ -1118,7 +1118,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             itemStyleClass = '',
             itemLabel = '';
 
-        if($this.input.hasClass('ui-state-disabled')) {
+        if($this.input.hasClass('ui-state-disabled') || $this.input.attr("readonly")) {
             return;
         }
 
@@ -1199,7 +1199,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     removeItem: function(item) {
         var $this = this,
             itemValue = '';
-        if($this.input.hasClass('ui-state-disabled')) {
+        if($this.input.hasClass('ui-state-disabled') || $this.input.attr("readonly")) {
             return;
         }
 
