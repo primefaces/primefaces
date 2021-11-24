@@ -123,8 +123,9 @@ if (!PrimeFaces.utils) {
             var id = widget.id,
                 zIndex = overlay.css('z-index') - 1;
 
+            var role = widget instanceof PrimeFaces.widget.ConfirmDialog ? 'alertdialog' : 'dialog';
             overlay.attr({
-                'role': 'dialog'
+                'role': role
                 ,'aria-hidden': false
                 ,'aria-modal': true
                 ,'aria-live': 'polite'
