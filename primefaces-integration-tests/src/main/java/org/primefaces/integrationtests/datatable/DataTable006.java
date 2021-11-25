@@ -50,6 +50,7 @@ public class DataTable006 implements Serializable {
     private List<ProgrammingLanguage> selectedProgLanguages;
     private boolean selectionPageOnly = true;
     private boolean lazy = false;
+    private boolean paginator = true;
 
     @Inject
     private ProgrammingLanguageService service;
@@ -76,6 +77,10 @@ public class DataTable006 implements Serializable {
 
     public void toggleLazyMode() {
         setLazy(!isLazy());
+    }
+
+    public void togglePaginator() {
+        setPaginator(!isPaginator());
     }
 
     public void unselectRows() {
