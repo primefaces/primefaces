@@ -43,9 +43,9 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
                 input.val(original.val());
 
-                if(original.is(':checked')) {
-                    input.prop('checked', true).parent().next().addClass('ui-state-active').children('.ui-chkbox-icon')
-                            .addClass('ui-icon-check').removeClass('ui-icon-blank');
+                if (original.is(':checked')) {
+                    var checkbox = input.prop('checked', true).parent().next();
+                    this.check(input, checkbox);
                 }
             }
         }
@@ -67,6 +67,8 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     bindEvents: function() {
+        var $this = this;
+    
         this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter', function() {
             $(this).addClass('ui-state-hover');
         })
@@ -107,14 +109,38 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if(input.is(':checked')) {
-                checkbox.children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
-
-                checkbox.addClass('ui-state-active');
+                $this.check(input, checkbox);
             }
             else {
-                checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+                $this.uncheck(input, checkbox);
             }
         });
+    },
+
+    /**
+     * Checks the given checkbox and associated input.
+     * @private
+     * @param {JQuery} input the input.
+     * @param {JQuery} checkbox the checbkox.
+     */
+    check: function(input, checkbox) {
+        checkbox.addClass('ui-state-active');
+        checkbox.children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
+        input.attr('aria-checked', true);
+        input.prop('checked', true);
+    },
+
+    /**
+     * Unchecks the given checkbox and associated input.
+     * @private
+     * @param {JQuery} input the input.
+     * @param {JQuery} checkbox the checbkox.
+     */
+    uncheck: function(input, checkbox) {
+        checkbox.removeClass('ui-state-active');
+        checkbox.children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
+        input.attr('aria-checked', false);
+        input.prop('checked', false);
     },
 
     /**
@@ -131,6 +157,51 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
     disable: function() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.inputs);
         this.disabled = true;
-    }
+    },
 
+    /**
+     * Check all available options.
+     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     */
+    checkAll: function(silent) {
+        var $this = this;
+        this.outputs.filter(':not(.ui-state-disabled)').each(function() {
+            var checkbox = $(this),
+            input = checkbox.prev().children(':checkbox');
+
+            if (!input.is(':checked')) {
+                $this.check(input, checkbox);
+                if(!silent) {
+                    this.input.trigger('change');
+                }
+            }
+        });
+    },
+
+    /**
+     * Uncheck all available options.
+     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     */
+    uncheckAll: function(silent) {
+        var $this = this;
+        this.outputs.filter(':not(.ui-state-disabled)').each(function() {
+            var checkbox = $(this),
+            input = checkbox.prev().children(':checkbox');
+
+            if (input.is(':checked')) {
+                $this.uncheck(input, checkbox);
+                if(!silent) {
+                    this.input.trigger('change');
+                }
+            }
+        });
+    },
+
+    /**
+     * Resets the input.
+     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     */
+    resetValue: function(silent) {
+        this.uncheckAll(silent);
+    }
 });

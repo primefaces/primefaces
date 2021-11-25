@@ -135,12 +135,28 @@ public class CheckboxView {
     }
 
     public void onItemUnselect(UnselectEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         FacesMessage msg = new FacesMessage();
         msg.setSummary("Item unselected: " + event.getObject().toString());
         msg.setSeverity(FacesMessage.SEVERITY_INFO);
 
-        context.addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void selectedOptionsChanged() {
+        String message = "selectedOptions changed to: ";
+        if (selectedOptions != null) {
+            for (int i = 0; i < selectedOptions.length; i++) {
+                if (i > 0) {
+                    message += ", ";
+                }
+                message += selectedOptions[i];
+            }
+        }
+
+        FacesMessage msg = new FacesMessage();
+        msg.setSummary(message);
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
