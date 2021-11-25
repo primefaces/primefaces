@@ -3972,6 +3972,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if (widget && typeof widget.resetValue === 'function') {
                     widget.resetValue(true);
                 }
+                else {
+                    $(this).find(':input').val('');
+                }
             }
             else {
                 $(this).find(':input').val('');
