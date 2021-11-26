@@ -153,10 +153,22 @@ public class CheckboxView {
             }
         }
 
-        FacesMessage msg = new FacesMessage();
-        msg.setSummary(message);
-        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
+    }
 
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void selectedOptions2Changed() {
+        String message = "selectedOptions2 changed to: ";
+        if (selectedOptions2 != null) {
+            for (int i = 0; i < selectedOptions2.length; i++) {
+                if (i > 0) {
+                    message += ", ";
+                }
+                message += selectedOptions2[i];
+            }
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
     }
 }
