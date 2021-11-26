@@ -300,19 +300,10 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeStateParam(FacesContext context, Schedule schedule) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String id = schedule.getClientId(context) + "_view";
         String view = schedule.getView();
 
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", id, null);
-        writer.writeAttribute("autocomplete", "off", null);
-        if (view != null) {
-            writer.writeAttribute("value", view, null);
-        }
-        writer.endElement("input");
+        renderHiddenInput(context, id, view, false);
     }
 
     /**

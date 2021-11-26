@@ -167,15 +167,7 @@ public class TabViewRenderer extends CoreRenderer {
     }
 
     protected void encodeStateHolder(FacesContext facesContext, TabView tabView, String name, String value) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", name, null);
-        writer.writeAttribute("name", name, null);
-        writer.writeAttribute("value", value, null);
-        writer.writeAttribute("autocomplete", "off", null);
-        writer.endElement("input");
+        renderHiddenInput(facesContext, name, value, false);
     }
 
     protected void encodeHeaders(FacesContext context, TabView tabView) throws IOException {

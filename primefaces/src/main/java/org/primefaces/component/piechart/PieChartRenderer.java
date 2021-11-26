@@ -86,10 +86,8 @@ public class PieChartRenderer extends ChartRenderer {
         }
 
         encodeElements(context, pieOptions.getElements(), true);
-        encodeTitle(context, pieOptions.getTitle(), true);
-        encodeTooltip(context, pieOptions.getTooltip(), true);
-        encodeLegend(context, pieOptions.getLegend(), true);
         encodeAnimation(context, pieOptions.getAnimation(), true);
+        encodePlugins(context, pieOptions, true);
 
         writer.write("}");
     }

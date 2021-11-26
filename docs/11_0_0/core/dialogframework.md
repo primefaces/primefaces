@@ -133,6 +133,35 @@ Here is the full list of configuration options:
 
 
 ## Data Communication
+
+### Parent page to dialog
+Data may be passed via Flash to the dialog. (with Mojarra at least version 2.3.17 is required)
+
+Parent page
+
+```xhtml
+<p:commandButton value="edit car" action="#{carView.editCar(car)}"/>
+```
+
+```java
+public void editCar(Car car) {
+    FacesContext.getCurrentInstance().getExternalContext().getFlash().put("car", car);
+    PrimeFaces.current().dialog().openDynamic("editCarDlg");
+}
+```
+
+Java-code within dialog framework - viewbean (eg part of init-method, annotated with @PostConstruct)
+
+```java
+@PostConstruct
+public void init(){
+    Car car = (Car) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("car");
+}
+```
+
+Internally `org.primefaces.application.DialogKeepFlashPhaseListener` provided by PrimeFaces keeps the Flash during opening the dialog.
+
+### Dialog to parent page
 Page displayed in the dialog can pass data back to the parent page.
 The trigger component needs to have _dialogReturn_ ajax behavior event to hook-in when data is returned from dialog.
 

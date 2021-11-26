@@ -71,7 +71,13 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     /**
      * Counts the all available data for the given filters.
+     *
      * In case of SQL, this would execute a "SELECT COUNT ... WHERE ...".
+     *
+     * In case you dont use SQL and receive both <code>rowCount</code>
+     * and <code>data</code> within a single call, this method should just return <code>0</code>.
+     * You must call {@link #recalculateFirst(int, int, int)} and {@link #setRowCount(int)}
+     * in your {@link #load(int, int, java.util.Map, java.util.Map)} method.
      *
      * @param filterBy a map with all filter information (only relevant for DataTable, not for eg DataView)
      * @return the data count
@@ -99,6 +105,23 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         throw new UnsupportedOperationException(
                 getMessage("Provide a Converter via constructor or implement getRowData(String rowKey) in %s"
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    /**
+     * Recalculates <code>first</code>, see #1921.
+     * Also see: {@link org.primefaces.component.api.UIPageableData#calculateFirst()}
+     *
+     * @param first the <code>first</code> param from the {@link #load(int, int, java.util.Map, java.util.Map)} method.
+     * @param pageSize the <code>pageSize</code> param from the {@link #load(int, int, java.util.Map, java.util.Map)} method.
+     * @param rowCount the new <code>rowCount</code>.
+     * @return the recalculated <code>first</code>.
+     */
+    protected int recalculateFirst(int first, int pageSize, int rowCount) {
+        if (rowCount > 0 && first >= rowCount) {
+            int numberOfPages = (int) Math.ceil(rowCount * 1d / pageSize);
+            first = Math.max((numberOfPages - 1) * pageSize, 0);
+        }
+        return first;
     }
 
     @Override

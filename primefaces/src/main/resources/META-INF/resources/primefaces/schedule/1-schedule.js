@@ -285,7 +285,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 params: [
                     {name: $this.id + '_event', value: true},
                     {name: $this.id + '_start', value: PrimeFaces.toISOString(fetchInfo.start)},
-                    {name: $this.id + '_end', value: PrimeFaces.toISOString(fetchInfo.end)}
+                    {name: $this.id + '_end', value:  PrimeFaces.toISOString(fetchInfo.end)}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

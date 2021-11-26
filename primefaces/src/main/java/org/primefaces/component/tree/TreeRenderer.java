@@ -23,6 +23,18 @@
  */
 package org.primefaces.component.tree;
 
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
+import java.io.IOException;
+import java.util.*;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
 import org.primefaces.model.MatchMode;
@@ -32,17 +44,6 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.*;
-
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -156,7 +157,8 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(tree.getRowNode());
             }
             else {
-                Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
+                String separator = Character.toString(UINamingContainer.getSeparatorChar(context));
+                Tree otherTree = (Tree) tree.findComponent(separator + dragSource);
                 otherTree.setRowKey(otherTree.getValue(), rowKey);
                 dragNodeList.add(otherTree.getRowNode());
             }
@@ -864,15 +866,7 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     protected void encodeStateHolder(FacesContext context, Tree tree, String id, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", id, null);
-        writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("value", value, null);
-        writer.endElement("input");
+        renderHiddenInput(context, id, value, false);
     }
 
     @Override

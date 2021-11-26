@@ -34,6 +34,7 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.ChartModel;
+import org.primefaces.model.charts.ChartOptions;
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.radial.RadialScales;
@@ -184,8 +185,8 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
                 StringBuilder scaleAttrs = new StringBuilder(50);
-                if (rScales.getAngelLines() != null) {
-                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngelLines().encode());
+                if (rScales.getAngleLines() != null) {
+                    writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngleLines().encode());
                 }
 
                 if (rScales.getGridLines() != null) {
@@ -247,6 +248,24 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
 
+    protected void encodePlugins(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (hasComma) {
+            writer.write(",");
+        }
+
+        writer.write("\"plugins\":{");
+        Title title = options.getTitle();
+        Tooltip tooltip = options.getTooltip();
+        Legend legend = options.getLegend();
+
+        encodeTitle(context, title, false);
+        encodeTooltip(context, tooltip, title != null);
+        encodeLegend(context, legend, title != null || tooltip != null);
+        writer.write("}");
+    }
+
     protected void encodeTitle(FacesContext context, Title title, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -255,10 +274,8 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
-            writer.write("\"plugins\":{");
             writer.write("\"title\":{");
             writer.write(title.encode());
-            writer.write("}");
             writer.write("}");
         }
     }

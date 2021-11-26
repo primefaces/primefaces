@@ -1,31 +1,55 @@
 [![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-selenium/)
-[![Javadocs](http://javadoc.io/badge/org.primefaces/primefaces-selenium.svg)](http://javadoc.io/doc/org.primefaces/primefaces-selenium)
 
 # primefaces-selenium
 
-PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. 
+PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. Heavily inspired by Arquillian Graphene.  
 It also supports JUnit5 parallel test execution to speed up tests.
 
-PrimeFaces-Selenium provides a hook-in to either startup a local server, use a remote adress and to instantiate the WebDriver.
+PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`),
+or use a remote adress (`deployment.baseUrl`).
 
-This is the successor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
+It also manage and download the Selenium WebDriver. Currently supported: `firefox`, `chrome` and `safari`  
+You can also manage it by yourself via `webdriver.adapter`.
+
+## Dependencies
+
+```xml
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces-selenium-core</artifactId>
+    <version>11.0.0-RC1</version>
+</dependency>
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces-selenium-components</artifactId>
+    <version>11.0.0-RC1</version>
+</dependency>
+```
 
 ## Configuration
 
-PrimeFaces-Selenium requires a `/primefaces-selenium/config.properties` to set a `PrimeSeleniumAdapter`.
-A sample implementation, which starts a local TomEE, can be found here: [TomEE Adapter](https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEAdapter.java) and [FireFox TomEE Adapter](https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEFirefoxAdapterImpl.java)
+PrimeFaces-Selenium can be configuredy by providing a `/primefaces-selenium/config.properties`.
+A sample `DeploymentAdapter` for Tomcat can be found here: [Tomcat Adapter](https://github.com/primefaces/primefaces/blob/master/primefaces-integration-tests/src/test/java/org/primefaces/integrationtests/TomcatDeploymentAdapter.java)
 
 Properties:
 |       property name      |   type  | default |                 description                 |
 |:------------------------:|:-------:|---------|:-------------------------------------------:|
-|          adapter         | org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter    |         | Adapter/Hook-In implementation class |
-|        guiTimeout        |   int   | 2       |       GUI timeout for waits in seconds      |
-|        ajaxTimeout       |   int   | 10      |      AJAX timeout for guards in seconds     |
-|        httpTimeout       |   int   | 10      |      HTTP timeout for guards in seconds     |
-|    documentLoadTimeout   |   int   | 15      |       Document load timeout in seconds      |
+|   deployment.baseUrl     | String  |         | the base URL                                |
+|   deployment.adapter     | org.primefaces.extensions.selenium.spi.DeploymentAdapter |      | Adapter implementation to start/stop a container |
+|    webdriver.adapter     | org.primefaces.extensions.selenium.spi.WebDriverAdapter  |      | Adapter implementation to create a WebDriver  |
+|    webdriver.browser     | String  |         |       firefox / chrome / safari             |
+|   webdriver.headless     | boolean | false   |    if browser should be openend headless    |
+|   webdriver.version      | String  | newest  |  the webdriver version which should be used |
+|       timeout.gui        |   int   | 2       |       GUI timeout for waits in seconds      |
+|       timeout.ajax       |   int   | 10      |      AJAX timeout for guards in seconds     |
+|       timeout.http       |   int   | 10      |      HTTP timeout for guards in seconds     |
+|   timeout.documentLoad   |   int   | 15      |       Document load timeout in seconds      |
+|    timeout.fileUpload    |   int   | 20      |         FileUpload timeout in seconds       |
+|   onloadScripts.adapter  | org.primefaces.extensions.selenium.spi.OnloadScriptsAdapter | | Adapter implementation to provide custom onload scripts  |
 |    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
+|  scrollElementIntoView   | String  |         | Scroll the element to be clicked into view via the configured #scrollIntoView option. Valid options are a boolean or object |
 
-### Status
+## Status
 
 Currently, only the following components are implemented (partially):
 
@@ -49,7 +73,7 @@ Currently, only the following components are implemented (partially):
 - DataView
 - DatePicker
 - Dialog
-- FileUpload  
+- FileUpload
 - InputMask
 - InputNumber
 - ~~InputSwitch~~ (use ToggleSwitch)
@@ -65,7 +89,7 @@ Currently, only the following components are implemented (partially):
 - SelectBooleanCheckbox
 - SelectBooleanButton
 - SelectManyCheckbox
-- SelectManyMenu  
+- SelectManyMenu
 - SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
@@ -75,11 +99,11 @@ Currently, only the following components are implemented (partially):
 - TextEditor
 - Timeline
 - ToggleSwitch
-- Tree 
+- Tree
 - TreeTable
 - TriStateCheckbox
 
-### Usage
+## Usage
 
 Example view:
 
@@ -149,7 +173,7 @@ public class IndexPageTest extends AbstractPrimePageTest {
         Thread.sleep(2000);
 
         another.goTo();
-        
+
         ...
     }
 }
@@ -161,6 +185,6 @@ Creating component without annotations:
 InputText input = PrimeSelenium.createFragment(InputText.class, By.id("test"));
 ```
 
-### Build & Run
+## Build & Run
 
 - Build by source `mvn clean install`

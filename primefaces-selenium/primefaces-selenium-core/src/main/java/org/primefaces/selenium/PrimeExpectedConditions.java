@@ -35,18 +35,28 @@ public final class PrimeExpectedConditions {
         super();
     }
 
+    public static ExpectedCondition<Boolean> script(String script) {
+        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript(script);
+    }
+
     public static ExpectedCondition<Boolean> documentLoaded() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'");
+        return script("return document.readyState === 'complete'");
+    }
+
+    public static ExpectedCondition<Boolean> notNavigating() {
+        return script("return (!window.pfselenium || pfselenium.navigating === false);");
+    }
+
+    public static ExpectedCondition<Boolean> notSubmitting() {
+        return script("return (!window.pfselenium || pfselenium.submitting === false);");
     }
 
     public static ExpectedCondition<Boolean> animationNotActive() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver)
-                    .executeScript("return ((!window.jQuery || jQuery.active == 0) && (!window.PrimeFaces || PrimeFaces.animationActive === false));");
+        return script("return ((!window.jQuery || jQuery.active == 0) && (!window.PrimeFaces || PrimeFaces.animationActive === false));");
     }
 
     public static ExpectedCondition<Boolean> ajaxQueueEmpty() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver)
-                    .executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());");
+        return script("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());");
     }
 
     public static ExpectedCondition<Boolean> elementToBeClickable(WebElement element) {

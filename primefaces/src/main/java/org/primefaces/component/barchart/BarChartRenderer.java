@@ -97,10 +97,8 @@ public class BarChartRenderer extends ChartRenderer {
 
         encodeScales(context, type, barOptions.getScales(), true);
         encodeElements(context, barOptions.getElements(), true);
-        encodeTitle(context, barOptions.getTitle(), true);
-        encodeTooltip(context, barOptions.getTooltip(), true);
-        encodeLegend(context, barOptions.getLegend(), true);
         encodeAnimation(context, barOptions.getAnimation(), true);
+        encodePlugins(context, barOptions, true);
 
         writer.write("}");
     }

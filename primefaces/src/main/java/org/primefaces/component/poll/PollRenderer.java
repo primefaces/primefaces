@@ -67,19 +67,22 @@ public class PollRenderer extends CoreRenderer {
 
         Object interval = poll.getInterval();
 
-        int convertedInterval;
+        long convertedInterval;
         if (interval instanceof Integer) {
             convertedInterval = (Integer) interval;
         }
+        else if (interval instanceof Long) {
+            convertedInterval = (Long) interval;
+        }
         else if (interval instanceof Duration) {
-            convertedInterval = (int) ((Duration) interval).getSeconds();
+            convertedInterval = ((Duration) interval).getSeconds();
         }
         else if (interval instanceof String) {
             try {
-                convertedInterval = Integer.parseInt((String) interval);
+                convertedInterval = Long.parseLong((String) interval);
             }
             catch (NumberFormatException e) {
-                throw new FacesException(interval + " is not a valid integer for \"interval\" for p:poll", e);
+                throw new FacesException(interval + " is not a valid long for \"interval\" for p:poll", e);
             }
         }
         else {

@@ -123,8 +123,9 @@ if (!PrimeFaces.utils) {
             var id = widget.id,
                 zIndex = overlay.css('z-index') - 1;
 
+            var role = widget instanceof PrimeFaces.widget.ConfirmDialog ? 'alertdialog' : 'dialog';
             overlay.attr({
-                'role': 'dialog'
+                'role': role
                 ,'aria-hidden': false
                 ,'aria-modal': true
                 ,'aria-live': 'polite'
@@ -357,7 +358,7 @@ if (!PrimeFaces.utils) {
 
         /**
          * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
-         * attribute. Also makes sure the overlay widget is handled propertly during AJAX updates.
+         * attribute. Also makes sure the overlay widget is handled properly during AJAX updates.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget An overlay widget instance.
          * @param {JQuery} overlay The DOM element for the overlay.
          * @param {string} overlayId The ID of the overlay, usually the widget ID.
@@ -806,6 +807,39 @@ if (!PrimeFaces.utils) {
                 count += partCount === 1 ? 1 : partCount - 1;
             }
             return count;
+        },
+        /**
+         * This method concatenates the classes into a string according to the condition of the arguments and returns it.
+         * @private
+         * @return {string} class
+         */
+        styleClass: function() {
+            var args = Array.prototype.slice.call(arguments);
+
+            if (args) {
+                var classes = [];
+
+                for (var i = 0; i < args.length; i++) {
+                    var className = args[i];
+
+                    if (!className) continue;
+
+                    var type = typeof className;
+
+                    if (type === 'string' || type === 'number') {
+                        classes.push(className);
+                    }
+                    else if (type === 'object') {
+                        var _classes = Array.isArray(className) ? className : Object.keys(className).map(function(key) { return !!className[key] ? key : null });
+
+                        classes = _classes.length ? classes.concat(_classes.filter(function(c) { return !!c })) : classes;
+                    }
+                }
+
+                return classes.join(' ');
+            }
+
+            return undefined;
         }
     };
 

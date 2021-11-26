@@ -70,13 +70,10 @@ public class BubbleChartRenderer extends ChartRenderer {
 
         encodeScales(context, type, bubbleOptions.getScales(), false);
         encodeElements(context, bubbleOptions.getElements(), bubbleOptions.getScales() != null);
-        encodeTitle(context, bubbleOptions.getTitle(), (bubbleOptions.getScales() != null || bubbleOptions.getElements() != null));
-        encodeTooltip(context, bubbleOptions.getTooltip(), (bubbleOptions.getScales() != null
-                || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null));
-        encodeLegend(context, bubbleOptions.getLegend(), (bubbleOptions.getScales() != null
-                    || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null || bubbleOptions.getTooltip() != null));
         encodeAnimation(context, bubbleOptions.getAnimation(), (bubbleOptions.getScales() != null
-                    || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null || bubbleOptions.getTooltip() != null));
+                    || bubbleOptions.getElements() != null));
+        encodePlugins(context, bubbleOptions, (bubbleOptions.getScales() != null
+                    || bubbleOptions.getElements() != null || bubbleOptions.getAnimation() != null));
 
         writer.write("}");
     }

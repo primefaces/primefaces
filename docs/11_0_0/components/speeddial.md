@@ -28,7 +28,7 @@ visible | false | Boolean | Specifies the visibility of the overlay.
 direction | "up" | String | Specifies the opening direction of actions. Valid values are `up`, `down`, `left`, `right`, `up-left`, `up-right`, `down-left` and `down-right`.
 transitionDelay | 30 | Integer | Transition delay step for each action item.
 type | "linear" | String | Specifies the opening type of actions. Valid values are `linear`, `circle`, `semi-circle` and `quarter-circle`.
-radius | 0 | Integer | Radius for *circle types.
+radius | 0 | Integer | Radius for circle types.
 mask | false | Boolean | Whether to show a mask element behind the speed dial.
 hideOnClickOutside | true | Boolean | Whether the actions close when clicked outside.
 style | null | String | Inline style of the element.
@@ -39,15 +39,17 @@ maskStyle | null | String | Inline style of the mask element.
 maskStyleClass | null | String | Style class of the mask element.
 showIcon | "pi pi-plus" | String | Show icon of the button element.
 hideIcon | null | String | Hide icon of the button element.
-rotateAnimation | true | Boolean | Defined to rotate showIcon when hideIcon is not present.
+rotateAnimation | true | Boolean | Defined to rotate the showIcon (and hideIcon).
 onVisibleChange | null | String | Client side callback to execute when the visibility of element changed.
 onClick | null | String | Client side callback to execute when the button element clicked.
 onShow | null | String | Client side callback to execute when the actions are visible.
 onHide | null | String | Client side callback to execute when the actions are hidden.
+keepOpen | false | Boolean | Whether the menu should be kept open on clicking menu items.
+badge | null | Object | Badge to render. Either a `String` value or `org.primefaces.model.badge.BadgeModel` instance.
 
 ## Getting Started with SpeedDial
-When pressed, a floating action button can display multiple primary actions that can be performed on a page. It has a 
-collection of additional options defined by the menuitem. SpeedDial's position is calculated according to the 
+When pressed, a floating action button can display multiple primary actions that can be performed on a page. It has a
+collection of additional options defined by the menuitem. SpeedDial's position is calculated according to the
 container element with the position type style.
 
 ```java
@@ -77,7 +79,7 @@ public class SpeedDialView {
 ```xhtml
 <h:form>
     <p:growl id="messages" showDetail="true"/>
-    
+
     <p:speedDial direction="down">
         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
@@ -88,7 +90,7 @@ public class SpeedDialView {
 </h:form>
 ```
 ## Dynamic Items
-SpeedDial items can be created dynamically as well. PrimeFaces provides the built-in 
+SpeedDial items can be created dynamically as well. PrimeFaces provides the built-in
 _org.primefaces.model.DefaultMenuModel_ implementation. Using this structure, dynamic item models can be created.
 
 ```java
@@ -162,7 +164,7 @@ public class SpeedDialView {
 ```xhtml
 <h:form>
     <p:growl id="messages" showDetail="true"/>
-    
+
     <p:speedDial direction="down" model="#{speedDialView.model}" />
 </h:form>
 ```
@@ -171,7 +173,7 @@ public class SpeedDialView {
 SpeedDial has 4 types; `linear`, `circle`, `semi-circle` and `quarter-circle`.
 
 ## Direction
-Specifies the opening direction of actions. For the **linear** and **semi-circle** types; `up`, `down`, `left` and `right`. 
+Specifies the opening direction of actions. For the **linear** and **semi-circle** types; `up`, `down`, `left` and `right`.
 For the **quarter-circle** type; `up-left`, `up-right`, `down-left` and `down-right`.
 
 ## Client Side API

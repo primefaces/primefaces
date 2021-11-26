@@ -30,6 +30,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.OnloadScriptsEventListener;
+import org.primefaces.selenium.internal.ScrollElementIntoViewClickListener;
 
 public class WebDriverProvider {
 
@@ -52,7 +53,7 @@ public class WebDriverProvider {
     public static WebDriver get(boolean create) {
         WebDriver driver = WEB_DRIVER.get();
         if (driver == null && create) {
-            PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
+            WebDriverAdapter adapter = ConfigProvider.getInstance().getWebdriverAdapter();
             int fails = 0;
 
             do {
@@ -84,6 +85,11 @@ public class WebDriverProvider {
 
             EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
             eventDriver.register(new OnloadScriptsEventListener());
+
+            if (ConfigProvider.getInstance().getScrollElementIntoView() != null) {
+                eventDriver.register(
+                        new ScrollElementIntoViewClickListener(ConfigProvider.getInstance().getScrollElementIntoView()));
+            }
 
             set(eventDriver);
 

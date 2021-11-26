@@ -109,7 +109,7 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
-| touchable                 | true               | Boolean          | Enable touch support if browser detection supports it.
+| touchable                 | false              | Boolean          | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
 
 ## Getting started with the DataTable
@@ -789,7 +789,7 @@ If you have selection enabled, you either need to implement _getRowData_ and _ge
 
 
 ```xhtml
-<p:dataTable var="car" value="#{carBean.model}" paginator="true" rows="10" lazy="true">
+<p:dataTable var="car" value="#{carBean.model}" paginator="true" rows="10">
     //columns
 </p:dataTable>
 ```
@@ -801,12 +801,14 @@ public class CarBean {
         model = new LazyDataModel() {
             @Override
             public int count(Map<String, FilterMeta> filterBy) {
-                //logical row count based on a count query
+                // logical row count based on a count query taking filter into account
+                return totalElements;
             }
 
             @Override
             public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-                //load physical data
+                // load physical data
+                return requestedResultPage;
             }
         };
     }
@@ -815,6 +817,7 @@ public class CarBean {
     }
 }
 ```
+
 DataTable calls your load implementation whenever a paging, sorting or filtering occurs with
 following parameters:
 
@@ -829,6 +832,68 @@ according to the logical number of rows to display.
 It is suggested to use _field_ attribute of column component to define the field names passed as
 sortBy and filterBy, otherwise these fields would be tried to get extracted from the value
 expression which is not possible in cases like composite components.
+
+To avoid doing a separate count-statement against your datasource you may implement it like this:
+(This may help to improve performance but comes at the price of keeping an eye on https://github.com/primefaces/primefaces/issues/1921.)
+```java
+public class CarBean {
+    private LazyDataModel model;
+
+    public CarBean() {
+        model = new LazyDataModel() {
+            @Override
+            public int count(Map<String, FilterMeta> filterBy) {
+                return 0;
+            }
+
+            @Override
+            public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+                //load physical data - your datasource (eg Spring Data or Apache Solr) has one API-call which returns page including rowCount
+                org.springframework.data.domain.Page<Car> requestedResultPage = carRepository.find...;
+
+                // afterwards set rowCount
+                setRowCount(requestedResultPage.getTotalElements());
+
+                // return page data
+                return requestedResultPage.getContent();                
+            }
+        };
+    }
+    public LazyDataModel getModel() {
+        return model;
+    }
+}
+```
+
+A third variant may be doing something like this: 
+
+```java
+public class CarBean {
+    private LazyDataModel model;
+
+    public CarBean() {
+        model = new LazyDataModel() {
+            @Override
+            public int count(Map<String, FilterMeta> filterBy) {
+                return 0;
+            }
+
+            @Override
+            public List<Car> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+                // setRowCount and recalculateFirst is required if #count method isnt implemented correctly
+                setRowCount(x);
+                first = recalculateFirst(first, pageSize, getRowCount());                
+                
+                // load physical data
+                return requestedResultPage;
+            }
+        };
+    }
+    public LazyDataModel getModel() {
+        return model;
+    }
+}
+```
 
 ### JpaLazyDataModel
 

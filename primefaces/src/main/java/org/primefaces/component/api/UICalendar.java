@@ -32,8 +32,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import javax.el.PropertyNotFoundException;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -287,7 +285,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
 
     @Override
     public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
     }
 
     @Override
@@ -356,23 +354,8 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
         context.addMessage(getClientId(context), msg);
     }
 
-    /**
-     * Only for internal usage within PrimeFaces.
-     * @return Type of the value bound via value expression. May return null when no value is bound.
-     */
-    public Class<?> getTypeFromValueByValueExpression(FacesContext context) {
-        ValueExpression ve = getValueExpression("value");
-        if (ve == null) {
-            return null;
-        }
-
-        try {
-            return ve.getType(context.getELContext());
-        }
-        catch (PropertyNotFoundException ex) {
-            // #7615 return null to make it behave same as Calendar
-            return null;
-        }
+    public Class<?> getValueType() {
+        return ELUtils.getType(getFacesContext(), getValueExpression("value"), () -> getValue());
     }
 
     public void validateMinMax(FacesContext context) {

@@ -107,10 +107,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     $this.jqEl.prop("readonly", true);
                 }
 
-                //user callback
+                // user callback
                 var preShow = $this.cfg.preShow;
                 if(preShow) {
                     return $this.cfg.preShow.call($this, inst);
+                }
+
+                // #7457 trigger view change if lazy model is used
+                if ($this.cfg.lazyModel) {
+                    $this.fireViewChangeEvent($this.getViewDate());
                 }
             };
         }

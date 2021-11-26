@@ -63,6 +63,7 @@
 
             <p:commandButton id="button" value="Submit" update="@form"/>
             <p:commandButton id="buttonUpdate" value="Update" update="treeTable"/>
+            <p:commandButton id="buttonOtherDocuments" value="Switch 2 other documents" update="treeTable" action="#{treeTable001.switch2OtherDocuments}"/>
             <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{treeTable001.resetTable()}" />
             <p:commandButton id="buttonShowSelectedNode" value="show selected node" action="#{treeTable001.showSelectedNode}" />
         </h:form>

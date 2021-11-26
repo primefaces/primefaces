@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
@@ -66,7 +67,8 @@ public class Column extends ColumnBase {
 
     @Override
     public String getColumnKey(UIComponent parent, String rowIndex) {
-        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
+        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+        return getColumnKey().replace(parent.getId() + separator + rowIndex + separator, parent.getId() + separator);
     }
 
     @Override

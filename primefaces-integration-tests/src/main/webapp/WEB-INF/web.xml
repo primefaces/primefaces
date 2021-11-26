@@ -19,6 +19,10 @@
         <param-value>${javax.faces.STATE_SAVING_METHOD}</param-value>
     </context-param>
     <context-param>
+        <param-name>org.apache.myfaces.USE_LAMBDA_METAFACTORY</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>${primefaces.THEME}</param-value>
     </context-param>
@@ -72,6 +76,10 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+
+    <listener>
+        <listener-class>org.apache.webbeans.servlet.WebBeansConfigurationListener</listener-class>
+    </listener>
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>

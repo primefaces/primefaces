@@ -64,8 +64,12 @@ public class DataTable010 implements Serializable {
     }
 
     public void deleteRow() {
-        boolean removed = progLanguages.remove(progLanguages.stream().filter(lang -> lang.getName().equals("Java")).findFirst().get());
+        ProgrammingLanguage programmingLanguage2Remove = progLanguages.stream().filter(lang -> lang.getName().equals("Java")).findFirst().get();
+
+        boolean removed = progLanguages.remove(programmingLanguage2Remove);
         if (removed) {
+            selectedProgLanguages.remove(programmingLanguage2Remove);
+
             FacesMessage msg = new FacesMessage("ProgrammingLanguage 'Java' removed");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }

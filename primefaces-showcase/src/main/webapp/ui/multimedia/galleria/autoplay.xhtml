@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">AutoPlay</span>
+    </ui:define>
+
+    <ui:define name="description">
+        AutoPlay mode is used to implement slideshows.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="widgetLink" value="Galleria"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}" 
+                        circular="true" autoPlay="true" transitionInterval="2000" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+                <f:facet name="thumbnail">
+                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block;" />
+                </f:facet>
+            </p:galleria>
+        </div>
+    </ui:define>
+
+</ui:composition>

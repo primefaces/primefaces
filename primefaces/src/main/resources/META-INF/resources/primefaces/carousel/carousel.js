@@ -654,7 +654,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         var indicatorsHtml = '';
 
         for (var i = 0; i < this.totalIndicators; i++) {
-            indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i  ? 'ui-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+            indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i  ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
         }
 
         return indicatorsHtml;

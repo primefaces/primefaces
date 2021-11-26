@@ -29,18 +29,18 @@ Carousel is a content slider featuring various customization options.
 | numScroll | 1 | Integer | Number of items to scroll.
 | widgetVar | null | String | Name of the client side widget.
 | circular | false | Boolean | Defines if scrolling would be infinite.
-| autoplayInterval | null | Integer | Time in milliseconds to scroll items automatically.
-| responsiveOptions | null | List<CarouselResponsiveOption> | A list of options for responsive design.
-| orientation | 0 | Integer | Specifies the layout of the component, valid values are "horizontal" and "vertical".
-| verticalViewPortHeight | "300px" | String | Height of the viewport in vertical layout.
-| style | "horizontal" | String | Inline style of the component.
+| autoplayInterval | 0 | Integer | Time in milliseconds to scroll items automatically.
+| responsiveOptions | null | List<ResponsiveOption> | A list of options for responsive design.
+| orientation | horizontal | Integer | Specifies the layout of the component, valid values are "horizontal" and "vertical".
+| verticalViewPortHeight | 300px | String | Height of the viewport in vertical layout.
+| style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
 | contentStyleClass | null | String | Style class of main content.
 | containerStyleClass | null | String | Style class of the viewport container.
 | indicatorsContentStyleClass | null | String | Style class of the paginator items.
 | headerText | null | String | Label for header.
 | footerText | null | String | Label for footer.
-| touchable | true | Boolean | Enable touch support if browser detection supports it.
+| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 
 ## Getting Started
 Carousel requires a collection of items as its `value` along with a visual template to render each item.
@@ -90,7 +90,7 @@ the `numScroll` attribute.
 
 ## Responsive
 For responsive design, `numVisible` and `numScroll` can be defined using the `responsiveOptions` attribute that should be 
-a list of CarouselResponsiveOption objects whose breakpoint defines the max-width to apply the settings.
+a list of ResponsiveOption objects whose breakpoint defines the max-width to apply the settings.
 
 ```xhtml
 <p:carousel value="#{carouselView.products}" var="product" numVisible="3" numScroll="3"
@@ -127,7 +127,7 @@ public class CarouselView implements Serializable {
 
     private List<Product> products;
 
-    private List<CarouselResponsiveOption> responsiveOptions;
+    private List<ResponsiveOption> responsiveOptions;
 
     @Inject
     private ProductService service;
@@ -136,9 +136,9 @@ public class CarouselView implements Serializable {
     public void init() {
         products = service.getProducts(9);
         responsiveOptions = new ArrayList<>();
-        responsiveOptions.add(new CarouselResponsiveOption("1024px", 3, 3));
-        responsiveOptions.add(new CarouselResponsiveOption("768px", 2, 2));
-        responsiveOptions.add(new CarouselResponsiveOption("560px", 1, 1));
+        responsiveOptions.add(new ResponsiveOption("1024px", 3, 3));
+        responsiveOptions.add(new ResponsiveOption("768px", 2, 2));
+        responsiveOptions.add(new ResponsiveOption("560px", 1, 1));
     }
 
     //getter setter

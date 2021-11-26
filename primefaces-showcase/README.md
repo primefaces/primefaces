@@ -1,70 +1,72 @@
-# PrimeFaces Showcase
+[![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase/)
+[![Javadocs](http://javadoc.io/badge/org.primefaces/primefaces-selenium.svg)](http://javadoc.io/doc/org.primefaces/primefaces-showcase)
 
-## Getting Started
+# primefaces-showcase
 
 Deployable version of **PrimeFaces Showcase** WAR file can be downloaded manually or build it from sources.
 
-#### Prebuilt WAR
+## Prebuilt WAR
 
-For a full list of the available downloads, please visit the [download page](http://www.primefaces.org/downloads). Scroll down to showcase for WAR file link.
+The showcase can be downloaded from [Maven](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-showcase) or
+via the [PrimeFaces download page](http://www.primefaces.org/downloads) (scroll down to showcase for WAR file link)
 
-#### Build from sources (for a EE Application Server)
+## Build from sources
 
 ```
 git clone https://github.com/primefaces/primefaces.git
-cd primefaces/primefaces
+cd primefaces
 mvn clean install            -- first build PrimeFaces
-cd ../primefaces-showcase
-mvn clean                    -- clean temp files from target folder
-mvn package -Pee             -- create war file (under target directory)
+cd primefaces-showcase
 ```
 
-#### Build from sources (for a Servlet Container like Tomcat / Jetty)
+#### for a EE Application Server
 
-###### Mojarra 2.3.x
+```
+mvn clean package                             -- create war file (under target directory)
+```
+
+#### for a Servlet Container with Mojarra 2.3
+
+```
+mvn clean package -Pnon-ee,mojarra-2.3        -- create war file (under target directory)
+```
+
+#### for a Servlet Container with MyFaces 2.3
+
+```
+mvn clean package -Pnon-ee,myfaces-2.3        -- create war file (under target directory)
+```
+
+#### for a Servlet Container with MyFaces 2.3-next
+
+```
+mvn clean package -Pnon-ee,myfaces-next-2.3   -- create war file (under target directory)
+```
+
+## Run from sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
 
 ```
 git clone https://github.com/primefaces/primefaces.git
-cd primefaces/primefaces
-mvn clean install                                                 -- first build PrimeFaces
-cd ../primefaces-showcase
-mvn clean                                                         -- clean temp files from target folder
-mvn package -Pjsf-mojarra,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war file (under target directory)
+cd primefaces
+mvn clean install            -- first build PrimeFaces
+cd primefaces-showcase
 ```
 
-###### MyFaces 2.3.x
+##### Mojarra 2.3
 
 ```
-git clone https://github.com/primefaces/primefaces.git
-cd primefaces/primefaces
-mvn clean install                                                 -- first build PrimeFaces
-cd ../primefaces-showcase
-mvn clean                                                         -- clean temp files from target folder
-mvn package -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy     -- create war file (under target directory)
+mvn clean jetty:run -Pnon-ee,mojarra-2.3
 ```
 
-#### Run from local sources on [http://localhost:8080/showcase/](http://localhost:8080/showcase)
-
-###### Mojarra 2.3.x
+##### MyFaces 2.3
 
 ```
-mvn clean jetty:run -Pjsf-mojarra,cdi-owb,bv-hibernate,jaxrs-resteasy
+mvn clean jetty:run -Pnon-ee,myfaces-2.3
 ```
 
-###### MyFaces 2.3.x
+##### MyFaces 2.3-next
 
 ```
-mvn clean jetty:run -Pjsf-myfaces,cdi-owb,bv-hibernate,jaxrs-resteasy
+mvn clean jetty:run -Pnon-ee,myfaces-next-2.3
 ```
 
-### Documentation
-
-User Guide is available at [documentation](http://www.primefaces.org/documentation) page along with other additional resoures.
-
-### Contribution
-
-Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for the detailed information.
-
-### License
-
-Licensed under the MIT License.

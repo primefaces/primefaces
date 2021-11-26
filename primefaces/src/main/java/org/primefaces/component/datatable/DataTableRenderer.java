@@ -137,13 +137,13 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         else {
-            if (table.isDefaultSort()) {
-                SortFeature.getInstance().sort(context, table);
-                table.setRowIndex(-1);
+            if (table.isFilteringCurrentlyActive()) {
+                FilterFeature.getInstance().filter(context, table);
             }
 
-            if (table.isDefaultFilter()) {
-                FilterFeature.getInstance().filter(context, table);
+            if (table.isSortingCurrentlyActive()) {
+                SortFeature.getInstance().sort(context, table);
+                table.setRowIndex(-1); // why?
             }
         }
 
@@ -602,7 +602,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = column.getContainerClientId(context);
 
         boolean sortable = table.isColumnSortable(context, column);
-        boolean filterable = table.isColumnFilterable(column);
+        boolean filterable = table.isColumnFilterable(context, column);
         boolean isGroupedColumn = column.isGroupRow();
         String selectionMode = column.getSelectionMode();
         SortMeta sortMeta = null;
@@ -1482,17 +1482,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", id, null);
-        writer.writeAttribute("name", id, null);
-        writer.writeAttribute("autocomplete", "off", null);
-        if (value != null) {
-            writer.writeAttribute("value", value, null);
-        }
-        writer.endElement("input");
+        renderHiddenInput(context, id, value, false);
     }
 
     @Override

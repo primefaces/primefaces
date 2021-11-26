@@ -26,7 +26,7 @@ package org.primefaces.selenium.internal.junit;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.primefaces.selenium.internal.ConfigProvider;
-import org.primefaces.selenium.spi.PrimeSeleniumAdapter;
+import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
 
@@ -38,8 +38,10 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
     public void beforeAll(ExtensionContext context) throws Exception {
         synchronized (SYNCHRONIZER) {
             if (!started) {
-                PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
-                adapter.startup();
+                ConfigProvider configProvider = ConfigProvider.getInstance();
+
+                DeploymentAdapter deploymentAdapter = configProvider.getDeploymentAdapter();
+                deploymentAdapter.startup();
 
                 // The following line registers a callback hook when the root test context is shut down
                 context.getRoot().getStore(ExtensionContext.Namespace.GLOBAL).put(BootstrapExtension.class.getName(), this);
@@ -51,8 +53,8 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
 
     @Override
     public void close() throws Exception {
-        PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
-        adapter.shutdown();
+        DeploymentAdapter deploymentAdapter = ConfigProvider.getInstance().getDeploymentAdapter();
+        deploymentAdapter.shutdown();
     }
 
 }

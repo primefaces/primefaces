@@ -297,7 +297,6 @@ public class LangUtils {
     }
 
     public static ClassLoader getContextClassLoader() {
-        // TODO we probably need to check the SecurityManager and do this via AccessController
         return Thread.currentThread().getContextClassLoader();
     }
 

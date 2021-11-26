@@ -5,11 +5,14 @@ nbactions.xml
 .DS_STORE
 .idea/
 *.iml
+**/pom.xml.versionsBackup
 *~
 .classpath
+.
 .project
 .vscode/
 .checkstyle
+.factorypath
 nb-configuration.xml
 faces-config.NavData
 dependency-reduced-pom.xml
@@ -46,6 +49,8 @@ node_modules/
 # Optional npm cache directory
 .npm
 
-/src/main/resources/META-INF/resources/primefaces-bootstrap4-*/
+/primefaces-showcase/src/main/resources/META-INF/resources/primefaces-bootstrap4-*/
 
 # End of https://www.gitignore.io/api/node
+/primefaces-showcase/target/
+/primefaces-cli/target/

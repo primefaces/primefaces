@@ -23,12 +23,14 @@
  */
 package org.primefaces.showcase.util;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.inject.spi.CDI;
 
+import javax.enterprise.inject.spi.CDI;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -62,6 +64,11 @@ public class ShowcaseUtil {
             }
         }
         return files;
+    }
+
+    public static final Object getPropertyValueViaReflection(Object o, String field)
+                throws ReflectiveOperationException, IllegalArgumentException, IntrospectionException {
+        return new PropertyDescriptor(field, o.getClass()).getReadMethod().invoke(o);
     }
 
     // EXCLUDE-SOURCE-START

@@ -331,23 +331,41 @@ public class MessageFactory {
                 }
 
                 try {
-                    InputStream stream = AccessController.doPrivileged((PrivilegedExceptionAction<InputStream>) () -> {
-                        InputStream is = null;
+                    InputStream stream = null;
+                    if (System.getSecurityManager() != null) {
+                        stream = AccessController.doPrivileged((PrivilegedExceptionAction<InputStream>) () -> {
+                            InputStream is = null;
+                            if (reload) {
+                                URL url = loader.getResource(resourceName);
+                                if (url != null) {
+                                    URLConnection connection = url.openConnection();
+                                    if (connection != null) {
+                                        connection.setUseCaches(false);
+                                        is = connection.getInputStream();
+                                    }
+                                }
+                            }
+                            else {
+                                is = loader.getResourceAsStream(resourceName);
+                            }
+                            return is;
+                        });
+                    }
+                    else {
                         if (reload) {
                             URL url = loader.getResource(resourceName);
                             if (url != null) {
                                 URLConnection connection = url.openConnection();
                                 if (connection != null) {
                                     connection.setUseCaches(false);
-                                    is = connection.getInputStream();
+                                    stream = connection.getInputStream();
                                 }
                             }
                         }
                         else {
-                            is = loader.getResourceAsStream(resourceName);
+                            stream = loader.getResourceAsStream(resourceName);
                         }
-                        return is;
-                    });
+                    }
 
                     if (stream != null) {
                         try {

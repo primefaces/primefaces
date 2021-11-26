@@ -46,7 +46,7 @@ layout | list | String | Layout strategy to use, valid values are "list" and "gr
 gridIcon | null | String | Icon of the grid layout button.
 listIcon | null | String | Icon of the list layout button.
 multiViewState | false | Boolean | Whether to keep DataView state across views, defaults to false.
-touchable | true | Boolean | Enable touch support if browser detection supports it.
+touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 
 ## Getting started with the DataView

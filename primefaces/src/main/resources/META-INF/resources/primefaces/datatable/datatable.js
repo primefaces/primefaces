@@ -3946,7 +3946,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearFilters: function() {
         this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
-        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter :input').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter').each(function() {
+            var widgetElement = $(this).find('.ui-widget');
+            if (widgetElement.length > 0) {
+                var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
+                if (widget && typeof widget.resetValue === 'function') {
+                    widget.resetValue(true);
+                }
+                else {
+                    $(this).find(':input').val('');
+                }
+            }
+            else {
+                $(this).find(':input').val('');
+            }
+        });
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();
@@ -4783,7 +4797,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function(e) {
-            var _delay = e.data.delay;
+            var _delay = e.data.delay || 0;
 
             if (_delay !== null && typeof _delay === 'number' && _delay > -1) {
                 if ($this.resizeTimeout) {

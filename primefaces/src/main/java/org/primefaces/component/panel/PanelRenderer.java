@@ -270,14 +270,7 @@ public class PanelRenderer extends CoreRenderer {
     }
 
     protected void encodeStateHolder(FacesContext context, Panel panel, String name, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", name, null);
-        writer.writeAttribute("name", name, null);
-        writer.writeAttribute("value", value, null);
-        writer.endElement("input");
+        renderHiddenInput(context, name, value, false);
     }
 
     @Override

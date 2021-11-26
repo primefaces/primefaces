@@ -11,6 +11,11 @@
         <property name="ignorePattern" value="@version|@see|\w*_CLASS"/>
     </module>
 
+    <module name="SuppressWithPlainTextCommentFilter">
+        <property name="offCommentFormat" value="CHECKSTYLE:OFF"/>
+        <property name="onCommentFormat" value="CHECKSTYLE:ON"/>
+    </module>
+
     <module name="TreeWalker">
         <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
         <module name="SuppressionCommentFilter"/>
@@ -63,7 +68,7 @@
         </module>
 
         <module name="ModifierOrderCheck" />
-		
+
 		<module name="HideUtilityClassConstructor"/>
 
         <module name="MethodLength">

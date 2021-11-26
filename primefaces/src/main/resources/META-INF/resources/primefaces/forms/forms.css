@@ -111,6 +111,7 @@
 .ui-chkbox {
     display: inline-block;
     vertical-align: middle;
+    position: relative;
 }
 
 .ui-chkbox .ui-chkbox-box {
@@ -191,6 +192,7 @@
     line-height: 16px;
     display: inline-block;
     vertical-align: middle;
+    position: relative;
 }
 
 .ui-radiobutton .ui-radiobutton-box {

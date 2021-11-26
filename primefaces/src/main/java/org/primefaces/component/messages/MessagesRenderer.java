@@ -38,12 +38,19 @@ import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.util.WidgetBuilder;
 
 public class MessagesRenderer extends UINotificationRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Messages uiMessages = (Messages) component;
+
+        encodeMarkup(context, uiMessages);
+        encodeScript(context, uiMessages);
+    }
+
+    protected void encodeMarkup(FacesContext context, Messages uiMessages) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = uiMessages.getClientId(context);
         boolean globalOnly = uiMessages.isGlobalOnly();
@@ -101,6 +108,12 @@ public class MessagesRenderer extends UINotificationRenderer {
         }
 
         writer.endElement("div");
+    }
+
+    protected void encodeScript(FacesContext context, Messages uiMessages) throws IOException {
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("Messages", uiMessages)
+                .finish();
     }
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {

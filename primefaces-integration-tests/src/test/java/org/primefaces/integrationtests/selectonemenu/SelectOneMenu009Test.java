@@ -58,6 +58,8 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
 
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
+        Assertions.assertNotNull(selectOneMenu.getLabels()); // getLabels() must also work before calling show() the first time
+        Assertions.assertEquals(5, selectOneMenu.getLabels().size());
         Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
         selectOneMenu.show();
         Assertions.assertEquals("some-filter-placeholder", selectOneMenu.getFilterInput().getAttribute("placeholder"));

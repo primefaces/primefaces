@@ -262,6 +262,34 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
+    /**
+     * Renders a hidden input field commonly use for holding state for a component. Properly handles all attributes
+     * and renders as autocomplete="off" so browsers don't hold onto state between page refreshes.
+     *
+     * @param context the FacesContext
+     * @param id the id of the hidden field
+     * @param value the value of the hidden field, can be NULL
+     * @param disabled whether the hidden field is disabled or not
+     * @throws IOException if any error occurs
+     */
+    protected void renderHiddenInput(FacesContext context, String id, String value, boolean disabled) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("input", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
+        }
+        if (value != null) {
+            writer.writeAttribute("value", value, null);
+        }
+        writer.endElement("input");
+    }
+
     protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent,
             String behaviorEventAlias, String command) {
 

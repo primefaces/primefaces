@@ -6777,6 +6777,10 @@ declare namespace PrimeFaces.clientwindow {
  */
 declare namespace PrimeFaces.csp {
     /**
+     * Map of currently registered CSP events on this page.
+     */
+    export let EVENT_REGISTRY: Map<string, Map<string, boolean>>;
+    /**
      * Name of the POST parameter for transmitting the nonce.
      */
     export const NONCE_INPUT: string;
@@ -6812,6 +6816,13 @@ declare namespace PrimeFaces.csp {
      * @param e The event from the caller to pass through.
      */
     export function executeEvent(id: HTMLElement, js: string, e: JQuery.TriggeredEvent): void;
+    /**
+     * Does this component have a registered AJAX event.
+     * @param id ID of an element
+     * @param event Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
+     * @return true if component has this AJAX event
+     */
+    export function hasRegisteredAjaxifiedEvent(id: string, event?: string): boolean;
     /**
      * Sets the given nonce to all forms on the current page.
      * @param nonce Nonce to set. This value is usually supplied by the server.
@@ -7458,6 +7469,11 @@ declare namespace PrimeFaces {
      */
     export function isNumber(value: unknown): boolean;
     /**
+     * Checks whether the current application is running in a production environment.
+     * @return `true` if this is a production environment, `false` otherwise.
+     */
+    export function isProductionProjectStage(): boolean;
+    /**
      * As a `<p:fileDownload>` process is implemented as a norma, non-AJAX request, `<p:ajaxStatus>` will not work.
      * Still, PrimeFaces provides a feature to monitor file downloads via this client-side function. This is done
      * by sending a cookie with the HTTP response of the file download request. On the client-side, polling is used
@@ -7891,7 +7907,7 @@ declare namespace PrimeFaces.utils {
     export function registerConnectedOverlayScrollHandler(widget: PrimeFaces.widget.BaseWidget, scrollNamespace: string, element: JQuery | undefined, scrollCallback: (event: JQuery.TriggeredEvent) => void): PrimeFaces.UnbindCallback;
     /**
      * Sets up an overlay widget. Appends the overlay widget to the element as specified by the `appendTo`
-     * attribute. Also makes sure the overlay widget is handled propertly during AJAX updates.
+     * attribute. Also makes sure the overlay widget is handled properly during AJAX updates.
      * @param widget An overlay widget instance.
      * @param overlay The DOM element for the overlay.
      * @param overlayId The ID of the overlay, usually the widget ID.
@@ -7963,6 +7979,11 @@ declare namespace PrimeFaces.utils {
      * @return The container DOM element to which the overlay is to be appended.
      */
     export function resolveDynamicOverlayContainer(widget: PrimeFaces.widget.DynamicOverlayWidget): JQuery;
+    /**
+     * This method concatenates the classes into a string according to the condition of the arguments and returns it.
+     * @return class
+     */
+    export function styleClass(): string;
     /**
      * Removes a scroll handler as registered by `PrimeFaces.utils.registerScrollHandler`.
      * @param widget A widget instance for which a scroll handler was registered.
@@ -9495,10 +9516,6 @@ declare namespace PrimeFaces.widget {
          */
         contextMenuCell?: JQuery;
         /**
-         * Whether the context menu was clicked.
-         */
-        contextMenuClick: boolean;
-        /**
          * Widget with the context menu for the DataTable.
          */
         contextMenuWidget: PrimeFaces.widget.ContextMenu;
@@ -9575,10 +9592,6 @@ declare namespace PrimeFaces.widget {
          * Whether to ignore row hover event.
          */
         ignoreRowHoverEvent: boolean;
-        /**
-         * Whether a click occurred inside a table cell.
-         */
-        incellClick: boolean;
         /**
          * Whether the writing direction is set to right-to-left.
          */
@@ -15544,6 +15557,18 @@ declare namespace PrimeFaces.widget {
          */
         content: JQuery;
         /**
+         * Custom drop zone to use for drag and drop.
+         */
+        customDropZone: string;
+        /**
+         * Amount of dragover on drop zone and its children.
+         */
+        dragoverCount: number;
+        /**
+         * Drop zone to use for drag and drop.
+         */
+        dropZone: string;
+        /**
          * Current index where to add files.
          */
         fileAddIndex: number;
@@ -15738,6 +15763,10 @@ declare namespace PrimeFaces.widget {
          * Whether drag and drop is enabled.
          */
         dnd: boolean;
+        /**
+         * Custom drop zone to use for drag and drop.
+         */
+        dropZone: string;
         /**
          * Maximum number of files allowed to upload.
          */
@@ -19081,42 +19110,14 @@ declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Galleria Widget__
      *
-     * Galleria is used to display a set of images, optionally with a slideshow.
+     * Galleria is a content gallery component.
      * @typeparam TCfg Defaults to `GalleriaCfg`. Type of the configuration object for this widget.
      */
     export class Galleria<TCfg extends GalleriaCfg = GalleriaCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
         /**
          * The DOM element for the caption below the image.
          */
-        caption: JQuery;
-        /**
-         * The DOM elements for the frames in the image strip with the image preview.
-         */
-        frames: JQuery;
-        /**
-         * ID of the set-interval ID for the slideshow.
-         */
-        interval: number;
-        /**
-         * The DOM element for the wrapper with the panel with the images.
-         */
-        panelWrapper: JQuery;
-        /**
-         * The DOM element for the panels with the images.
-         */
-        panels: JQuery;
-        /**
-         * Whether the slideshow is currently running.
-         */
-        slideshowActive: boolean;
-        /**
-         * The DOM element for the strip at the bottom with the preview images.
-         */
-        strip: JQuery;
-        /**
-         * The DOM element for the wrapper with strip at the bottom with the preview images.
-         */
-        stripWrapper: JQuery;
+        primeGalleriaWidget: JQuery;
         /**
          * This render method is called by this deferred widget once the widget container has become visible. You may
          * now proceed with widget initialization.
@@ -19126,13 +19127,11 @@ declare namespace PrimeFaces.widget {
          */
         protected override _render(): void;
         /**
-         * Sets up all event listeners required by this widget.
+         * Cleans up deferred render tasks. When you extend this class and override this method, make sure to call
+         * `super`.
+         * @override
          */
-        private bindEvents(): void;
-        /**
-         * Hides the caption text below the image.
-         */
-        hideCaption(): void;
+        override destroy(): void;
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
@@ -19157,46 +19156,36 @@ declare namespace PrimeFaces.widget {
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
-         * Checks whether an animation is currently in progress.
-         * @return `true` if an animation is currently active, or `false` otherwise.
-         */
-        isAnimating(): boolean;
-        /**
-         * Checks whether the slideshow is currently active.
-         * @return `true` if the slideshow is currently active, or `false` otherwise.
-         */
-        isSlideshowActive(): boolean;
-        /**
-         * Moves to the next image that comes after the currently shown image.
+         * Moves to the next content that comes after the currently shown content.
          */
         next(): void;
         /**
-         * Moves to the previous image that comes before the currently shown image.
+         * Moves to the previous content that comes before the currently shown content.
          */
         prev(): void;
         /**
-         * Creates the HTML elements for the strip with the available images.
+         * Used in ajax updates, reloads the widget configuration.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+         * method is called with the new widget configuration from the server. This makes it possible to persist
+         * client-side state during an update, such as the currently selected tab.
+         *
+         * Please note that instead of overriding this method, you should consider adding a refresh listener instead
+         * via {@link addRefreshListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
+         * method.
+         * @override
+         * @param cfg The new widget configuration from the server.
+         * @return The value as returned by the `init` method, which is often `undefined`.
          */
-        private renderStrip(): void;
+        override refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
-         * Moves the slideshow to the image at the given index.
-         * @param index 0-based index of the image to display.
-         * @param reposition `true` (or not given) to reposition the image strip with an animation.
+         * Shows content on fullscreen mode.
          */
-        select(index: number, reposition?: boolean): void;
-        /**
-         * Shows the caption text below the image. Pass the `activePanel` property of this panel as the parameter.
-         * @param panel The panel that contains the caption text.
-         */
-        showCaption(panel: JQuery): void;
-        /**
-         * Starts the slideshow, if it is not started already.
-         */
-        startSlideshow(): void;
-        /**
-         * Starts the slideshow, if it is not stopped already.
-         */
-        stopSlideshow(): void;
+        show(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -19207,53 +19196,84 @@ declare namespace PrimeFaces.widget {
      */
     export interface GalleriaCfg extends PrimeFaces.widget.DeferredWidgetCfg {
         /**
-         * Index of the image that is currently displayed.
+         * Index of the first item.
          */
         activeIndex: number;
         /**
-         * Images are displayed in a slideshow in autoPlay.
+         * Items are displayed with a slideshow in autoPlay mode.
          */
         autoPlay: boolean;
         /**
-         * Name of animation to use.
+         * When enabled, item is changed on indicator item's hover.
          */
-        effect: string;
+        changeItemOnIndicatorHover: boolean;
         /**
-         * Options for the transition between two images.
+         * Defines if scrolling would be infinite.
          */
-        effectOptions: JQuery.EffectsOptions<HTMLElement>;
+        circular: boolean;
         /**
-         * Duration of the animation in milliseconds.
+         * Close icon on fullscreen mode.
          */
-        effectSpeed: number;
+        closeIcon: string;
         /**
-         * Height of the frames.
+         * Whether to display the component on fullscreen.
          */
-        frameHeight: number;
+        fullScreen: boolean;
         /**
-         * Width of the frames.
+         * Position of indicators. Valid values are "bottom", "top", "left" and "right".
          */
-        frameWidth: number;
+        indicatorsPosition: string;
         /**
-         * Height of the viewport.
+         * Number of items per page.
          */
-        panelHeight: number;
+        numVisible: number;
         /**
-         * Width of the viewport.
+         * A model of options for responsive design.
          */
-        panelWidth: number;
+        responsiveOptions: {
+            breakpoint: string;
+            numVisible: number;
+        }[];
         /**
-         * Whether the caption below the image is shown.
+         * Whether to display caption container.
          */
         showCaption: boolean;
         /**
-         * Whether the strip with all available images is shown.
+         * Whether to display indicator container.
          */
-        showFilmstrip: boolean;
+        showIndicators: boolean;
         /**
-         * Defines interval of slideshow, in milliseconds.
+         * When enabled, indicator container is displayed on item container.
+         */
+        showIndicatorsOnItem: boolean;
+        /**
+         * Whether to display navigation buttons in item container.
+         */
+        showItemNavigators: boolean;
+        /**
+         * Whether to display navigation buttons on item container's hover.
+         */
+        showItemNavigatorsOnHover: boolean;
+        /**
+         * Whether to display navigation buttons in thumbnail container.
+         */
+        showThumbnailNavigators: boolean;
+        /**
+         * Whether to display thumbnail container.
+         */
+        showThumbnails: boolean;
+        /**
+         * Position of thumbnails. Valid values are "bottom", "top", "left" and "right".
+         */
+        thumbnailsPosition: string;
+        /**
+         * Time in milliseconds to scroll items.
          */
         transitionInterval: number;
+        /**
+         * Height of the viewport in vertical layout.
+         */
+        verticalViewPortHeight: string;
     }
 }
 declare namespace PrimeFaces.widget.GMap {
@@ -25843,6 +25863,53 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * __PrimeFaces Messages Widget__
+     *
+     * Messages is a pre-skinned extended version of the standard JSF messages component.
+     * @typeparam TCfg Defaults to `MessagesCfg`. Type of the configuration object for this widget.
+     */
+    export class Messages<TCfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Creates the HTML elements for the given faces message, and adds it to the DOM.
+         * @param msg A message to translate into an HTML element.
+         */
+        appendMessage(msg: PrimeFaces.FacesMessage): void;
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Messages| Messages widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface MessagesCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
      * __PrimeFaces Mindmap Widget__
      *
      * Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks, animations and more.
@@ -28457,7 +28524,11 @@ declare namespace PrimeFaces.widget {
          */
         stars: JQuery;
         /**
-         * The current value, i.e. the number of selected stars
+         * The tabindex initially set.
+         */
+        tabindex: string;
+        /**
+         * The current value, i.e. the number of selected stars.
          */
         value: number;
         /**
@@ -28472,6 +28543,17 @@ declare namespace PrimeFaces.widget {
          * Enables this rating widget so the user can give a rating.
          */
         enable(): void;
+        /**
+         * Set focus to element
+         * @param el focusable element
+         * @param isInputFocus Whether to refocus to input element
+         */
+        private focus(el: JQuery, isInputFocus: boolean): void;
+        /**
+         * Get focusable element
+         * @return element
+         */
+        private getFocusableElement(): JQuery;
         /**
          * Finds the current rating, i.e. the number of stars selected.
          * @return The current rating value.
@@ -30830,6 +30912,279 @@ declare namespace PrimeFaces.widget {
         onSlideStart: PrimeFaces.widget.Slider.SliderCallback;
     }
 }
+declare namespace PrimeFaces.widget.SpeedDial {
+    /**
+     * Callback invoked when the speed dial was clicked.
+     */
+    export type OnClickCallback =
+    /**
+     * @param event The click event that occurred.
+     */
+    (this: PrimeFaces.widget.SpeedDial, event: JQuery.TriggeredEvent) => void;
+}
+declare namespace PrimeFaces.widget.SpeedDial {
+    /**
+     * Callback invoked when the document was clicked. This is
+     * used to detect whether the user clicked outside the speed dial so that it can be closed.
+     */
+    export type OnDocumentClickCallback =
+    /**
+     * @param event Click event that occurred.
+     */
+    (event: Event) => void;
+}
+declare namespace PrimeFaces.widget.SpeedDial {
+    /**
+     * Callback invoked when the speed dial was closed. This is called
+     * after the visible change callback.
+     */
+    export type OnHideCallback = (this: PrimeFaces.widget.SpeedDial) => void;
+}
+declare namespace PrimeFaces.widget.SpeedDial {
+    /**
+     * Callback invoked when the speed dial was opened. This is called
+     * after the visible change callback.
+     */
+    export type OnShowCallback = (this: PrimeFaces.widget.SpeedDial) => void;
+}
+declare namespace PrimeFaces.widget.SpeedDial {
+    /**
+     * Callback invoked when the visibility of the speed dial
+     * changed. This is called before the hide and show callbacks.
+     */
+    export type OnVisibleChangeCallback =
+    /**
+     * @param visible Whether the speed
+     * dial is now visible or hidden.
+     */
+    (this: PrimeFaces.widget.SpeedDial, visible: PrimeFaces.widget.SpeedDial) => void;
+}
+declare namespace PrimeFaces.widget.SpeedDial {
+    /**
+     * The opening animation direction for speed dial actions. `up`, `down`, `left` and `right` is applicable when
+     * {@link PrimeFaces.widget.SpeedDialCfg.type} is set to `semi-circle`, the others are applicable when type
+     * is set to `quarter-circle`.
+     */
+    export type OpeningDirection = "up" | "down" | "left" | "right" | "up-left" | "up-right" | "down-left" | "down-right";
+}
+declare namespace PrimeFaces.widget.SpeedDial {
+    /**
+     * The
+     * opening animation type for speed dial actions.
+     */
+    export type OpeningType = "linear" | "circle" | "semi-circle" | "quarter-circle";
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces SpeedDial Widget__
+     *
+     * SpeedDial is a component that consists of many actions and a floating action button.
+     * When pressed, a floating action button can display multiple primary actions that can be performed on a page.
+     * @typeparam TCfg Defaults to `SpeedDialCfg`. Type of the configuration object for this widget.
+     */
+    export class SpeedDial<TCfg extends SpeedDialCfg = SpeedDialCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
+        /**
+         * The DOM element for the badge of the floating action button of the speed dial.
+         */
+        badge: JQuery;
+        /**
+         * The DOM element for the floating action button of the speed dial.
+         */
+        button: JQuery;
+        /**
+         * The DOM element for the icon of the floating action button of the speed dial.
+         */
+        buttonIcon: JQuery;
+        /**
+         * The DOM element for the container of the speed dial that contains item container and button.
+         */
+        container: JQuery;
+        /**
+         * Callback invoked when the
+         * document was clicked. This is used to detect whether the user clicked outside the speed dial so that it can be
+         * closed.
+         */
+        documentClickListener?: PrimeFaces.widget.SpeedDial.OnDocumentClickCallback;
+        /**
+         * Whether the speed dial was recently clicked. Used to determine whether the user
+         * clicked outside the speed dial after clicking inside of it. `undefined` when no clicks where performed yet.
+         */
+        isItemClicked?: boolean;
+        /**
+         * The DOM element for the item container of the speed dial.
+         */
+        itemContainer: JQuery;
+        /**
+         * The DOM elements for the speed dial items.
+         */
+        items: JQuery;
+        /**
+         * The number of action items.
+         */
+        itemsCount: number;
+        /**
+         * The DOM element for the mask of the speed dial.
+         */
+        mask: JQuery;
+        /**
+         * Whether overlay is visible or not.
+         */
+        visible: boolean;
+        /**
+         * This render method is called by this deferred widget once the widget container has become visible. You may
+         * now proceed with widget initialization.
+         *
+         * __Must be overridden__, or an error will be thrown.
+         * @override
+         */
+        protected override _render(): void;
+        /**
+         * Adds the outside click event listener to the document.
+         */
+        private bindDocumentClickListener(): void;
+        /**
+         * Sets up all event listeners required by this widget.
+         */
+        private bindEvents(): void;
+        /**
+         * Calculates point styles of the action items according to items' index.
+         * @param index Index of the action item element
+         * @return Point styles of the action item.
+         */
+        private calculatePointStyle(index: number): JQuery.PlainObject<string | number>;
+        /**
+         * Calculates transition delay of the action items according to items' index.
+         * @param index Index of the action item element.
+         * @return Delay in milliseconds for the transition.
+         */
+        private calculateTransitionDelay(index: number): number;
+        /**
+         * Creates responsive style of the item container.
+         */
+        private createItemContainerStyle(): void;
+        /**
+         * Retrieves styles of the item according to items' index.
+         * @param index Index of the action item element.
+         * @return Styles of the action item
+         */
+        private getItemStyle(index: number): JQuery.PlainObject<string | number>;
+        /**
+         * Hides item container of the speed dial.
+         */
+        hide(): void;
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Returns whether outside is clicked or not.
+         * @param event Event that occurred.
+         * @return Whether the outside was clicked.
+         */
+        private isOutsideClicked(event: JQuery.TriggeredEvent): boolean;
+        /**
+         * Changes visibility of the item container.
+         * @param event Event that occurred.
+         */
+        private onClick(event: JQuery.TriggeredEvent): void;
+        /**
+         * Hides item container of the speed dial.
+         */
+        private onItemClick(): void;
+        /**
+         * Shows item container of the speeddial.
+         */
+        show(): void;
+        /**
+         * Updates styles of the action items.
+         */
+        private updateItemStyles(): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  SpeedDial|SpeedDial widget}. You
+     * can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface SpeedDialCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Specifies the opening animation direction of
+         * actions.
+         */
+        direction: PrimeFaces.widget.SpeedDial.OpeningDirection;
+        /**
+         * The icon class of the hide button element.
+         */
+        hideIcon: string;
+        /**
+         * Whether the actions close when clicked outside.
+         */
+        hideOnClickOutside: boolean;
+        /**
+         * Whether the menu should be kept open on clicking menu items.
+         */
+        keepOpen: boolean;
+        /**
+         * Whether to show a mask element behind the speed dial.
+         */
+        mask: boolean;
+        /**
+         * The click event that occurred.
+         */
+        onClick: PrimeFaces.widget.SpeedDial.OnClickCallback;
+        /**
+         * Callback invoked when the speed dial was closed. This
+         * is called after the visible change callback.
+         */
+        onHide: PrimeFaces.widget.SpeedDial.OnHideCallback;
+        /**
+         * Callback invoked when the speed dial was opened. This
+         * is called after the visible change callback.
+         */
+        onShow: PrimeFaces.widget.SpeedDial.OnShowCallback;
+        /**
+         * Callback invoked when the visibility
+         * of the speed dial changed. This is called before the hide and show callbacks.
+         */
+        onVisibleChange: PrimeFaces.widget.SpeedDial.OnVisibleChangeCallback;
+        /**
+         * Radius for when {@link type} is set to one of the circle types.
+         */
+        radius: number;
+        /**
+         * Transition delay step in milliseconds for each action item.
+         */
+        transitionDelay: number;
+        /**
+         * Specifies the opening animation type of actions.
+         */
+        type: PrimeFaces.widget.SpeedDial.OpeningType;
+        /**
+         * Specifies the visibility of the overlay.
+         */
+        visible: boolean;
+    }
+}
 declare namespace PrimeFaces.widget {
     /**
      * __PrimeFaces Spinner Widget__
@@ -31673,10 +32028,20 @@ declare namespace PrimeFaces.widget {
          */
         private markAsLoaded(panel: JQuery): void;
         /**
+         * Marks the content of the given tab as unloaded.
+         * @param panel A panel with content that was unloaded.
+         */
+        private markAsUnloaded(panel: JQuery): void;
+        /**
          * Callback that is invoked after a tab was shown.
          * @param newPanel The panel with the content of the tab.
          */
         private postTabShow(newPanel: JQuery): void;
+        /**
+         * Reloads a dynamic tab even if it has already been loaded once. Forces an AJAX refresh of the tab.
+         * @param index 0-based index of the tab to reload.
+         */
+        reload(index: number): void;
         /**
          * Closes the tab at the given index.
          * @param index 0-based index of the tab to close.
@@ -34362,10 +34727,6 @@ declare namespace PrimeFaces.widget {
          */
         contextMenuCell?: JQuery;
         /**
-         * Whether a click was performed on the context menu.
-         */
-        contextMenuClick: boolean;
-        /**
          * The DOM element for the currently selected cell, when using inline editing.
          */
         currentCell: JQuery;
@@ -34398,10 +34759,6 @@ declare namespace PrimeFaces.widget {
          * The DOM element for the TABLE element of the header.
          */
         headerTable: JQuery;
-        /**
-         * Whether a click was performed inside a cell.
-         */
-        incellClick: boolean;
         /**
          * The DOM element for the hidden input storing the selected rows.
          */
@@ -34438,6 +34795,10 @@ declare namespace PrimeFaces.widget {
          * INPUT element storing the current widths for each resizable column.
          */
         resizableStateHolder?: JQuery;
+        /**
+         * The set-timeout timer ID of the timer used for resizing.
+         */
+        resizeTimeout: number;
         /**
          * The DOM element for the draggable handle for resizing columns.
          */

@@ -46,7 +46,7 @@ lazy | false | Boolean | Defines if lazy loading is enabled for the data compone
 emptyMessage | No records found. | String | Text to display when there is no data to display.
 layout | tabular | String | Layout approach to use, valid values are "tabular" and "grid" for responsive grid.
 multiViewState | false | Boolean | Whether to keep DataGrid state across views, defaults to false.
-touchable | true | Boolean | Enable touch support if browser detection supports it.
+touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 
 ## Getting started with the DataGrid

@@ -27,11 +27,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
@@ -145,7 +143,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
-            if (ComponentUtils.shouldRenderFacet(loader)) {
+            if (rowCount > chunkSize && ComponentUtils.shouldRenderFacet(loader)) {
                 loader.encodeAll(context);
             }
             writer.endElement("div");

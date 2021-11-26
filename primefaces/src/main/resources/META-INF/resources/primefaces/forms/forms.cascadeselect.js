@@ -394,7 +394,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
         subpanel.css({left:'0px', top:'0px'}).position({
                 my: 'left top'
                 ,at: 'right top'
-                ,of: parentPanel
+                ,of: parentPanel.children('.ui-cascadeselect-item-active:first') 
                 ,collision: 'flipfit'
             });
 

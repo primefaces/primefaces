@@ -116,6 +116,42 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         // Assert
         assertChecked(page, true);
     }
+    
+    @Test
+    @Order(5)
+    @DisplayName("SelectBooleanButton: GitHub #7963 icon only should have no default labels")
+    public void testIconOnly(Page page) {
+        // Arrange
+        SelectBooleanButton selectBooleanButton = page.iconOnly;
+        selectBooleanButton.setValue(false);
+        Assertions.assertFalse(selectBooleanButton.isSelected());
+        Assertions.assertEquals("ui-button", selectBooleanButton.getLabel());
+
+        // Act
+        selectBooleanButton.check();
+
+        // Assert
+        Assertions.assertEquals("ui-button", selectBooleanButton.getLabel());
+        Assertions.assertTrue(selectBooleanButton.isSelected());
+    }
+    
+    @Test
+    @Order(5)
+    @DisplayName("SelectBooleanButton: GitHub #722 should have default labels")
+    public void testDefaultLabels(Page page) {
+        // Arrange
+        SelectBooleanButton selectBooleanButton = page.defaultLabels;
+        selectBooleanButton.setValue(false);
+        Assertions.assertFalse(selectBooleanButton.isSelected());
+        Assertions.assertEquals("Off", selectBooleanButton.getLabel());
+
+        // Act
+        selectBooleanButton.check();
+
+        // Assert
+        Assertions.assertEquals("On", selectBooleanButton.getLabel());
+        Assertions.assertTrue(selectBooleanButton.isSelected());
+    }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
@@ -138,6 +174,12 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:selectBooleanButton")
         SelectBooleanButton selectBooleanButton;
+        
+        @FindBy(id = "form:iconOnly")
+        SelectBooleanButton iconOnly;
+        
+        @FindBy(id = "form:defaultLabels")
+        SelectBooleanButton defaultLabels;
 
         @FindBy(id = "form:msgs")
         Messages messages;

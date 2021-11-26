@@ -51,6 +51,7 @@ import org.primefaces.model.IterableDataModel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -80,7 +81,23 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     public boolean isLazy() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> getValue() instanceof LazyDataModel);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> {
+            // if not set by xhtml, we need to check the type of the value binding
+            Class<?> type = ELUtils.getType(getFacesContext(),
+                    getValueExpression("value"),
+                    () -> getValue());
+            if (type == null) {
+                throw new FacesException("Unable to automatically determine the `lazy` attribute. "
+                        + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
+                        + "clientId: " + this.getClientId());
+            }
+            boolean lazy = LazyDataModel.class.isAssignableFrom(type);
+
+            // remember in ViewState, to not do the same check again
+            setLazy(lazy);
+
+            return lazy;
+        });
     }
 
     public void setLazy(boolean lazy) {
@@ -169,7 +186,8 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        for (UIComponent child : getChildren()) {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child.getFacetCount() > 0)) {
                 for (UIComponent facet : child.getFacets().values()) {
                     process(context, facet, phaseId);
@@ -788,11 +806,9 @@ public class UIData extends javax.faces.component.UIData {
                     for (int j = 0; j < row.getChildCount(); j++) {
                         UIComponent col = row.getChildren().get(j);
                         if (col instanceof Column) {
-                            if (col.getFacetCount() > 0) {
-                                boolean value = visitColumnFacets(context, callback, col);
-                                if (value) {
-                                    return true;
-                                }
+                            boolean value = visitColumnFacets(context, callback, col);
+                            if (value) {
+                                return true;
                             }
                         }
                         else if (col instanceof Columns) {
@@ -820,9 +836,11 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected boolean visitColumnFacets(VisitContext context, VisitCallback callback, UIComponent component) {
-        for (UIComponent columnFacet : component.getFacets().values()) {
-            if (columnFacet.visitTree(context, callback)) {
-                return true;
+        if (component.getFacetCount() > 0) {
+            for (UIComponent columnFacet : component.getFacets().values()) {
+                if (columnFacet.visitTree(context, callback)) {
+                    return true;
+                }
             }
         }
 

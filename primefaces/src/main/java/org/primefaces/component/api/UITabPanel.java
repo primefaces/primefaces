@@ -80,9 +80,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private int _end = -1;
     private int _count;
     private int _index = -1;
-    private transient Object _origValue;
-    private transient Object _origVarStatus;
-    private transient FacesContext _facesContext;
+    private Object _origValue;
+    private Object _origVarStatus;
 
     public enum PropertyKeys {
         value,
@@ -817,11 +816,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             // searching for this component?
             boolean returnValue = baseClientId.equals(clientId);
 
-            boolean isCachedFacesContext = isTemporalFacesContext();
-            if (!isCachedFacesContext) {
-                setTemporalFacesContext(context);
-            }
-
             pushComponentToEL(context, this);
             try {
                 if (returnValue) {
@@ -902,31 +896,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             finally {
                 //all components must call popComponentFromEl after visiting is finished
                 popComponentFromEL(context);
-                if (!isCachedFacesContext) {
-                    setTemporalFacesContext(null);
-                }
             }
 
             return returnValue;
         }
-    }
-
-    @Override
-    protected FacesContext getFacesContext() {
-        if (_facesContext == null) {
-            return super.getFacesContext();
-        }
-        else {
-            return _facesContext;
-        }
-    }
-
-    private boolean isTemporalFacesContext() {
-        return _facesContext != null;
-    }
-
-    private void setTemporalFacesContext(FacesContext facesContext) {
-        _facesContext = facesContext;
     }
 
     @Override
@@ -938,7 +911,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             // override the behavior from UIComponent to visit
             // all children once per "row"
 
-            if (ComponentUtils.isSkipIteration(context, getFacesContext())) {
+            if (ComponentUtils.isSkipIteration(context, context.getFacesContext())) {
                 return super.visitTree(context, callback);
             }
 
@@ -1237,6 +1210,9 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             _isValidChilds = true;
             _rowStates.clear();
         }
+
+        _origValue = null;
+        _origVarStatus = null;
 
         return super.saveState(context);
     }

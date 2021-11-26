@@ -19,6 +19,9 @@ Extensions:
 jquery.autosize.js:
 - Added fix to autosize from https://github.com/jackmoore/autosize/issues/225
 
+jquery.colorpicker.js
+ - Fixed RGB, Hex, HSB conversion functions see: https://github.com/thorst/jQuery-ColorPicker/pull/2
+
 jquery.ui.timepicker.js:
 - Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
 - Fix timeOnlyTitle XSS (https://github.com/primefaces/primefaces/issues/4385)

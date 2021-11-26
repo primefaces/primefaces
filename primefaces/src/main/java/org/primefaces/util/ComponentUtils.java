@@ -429,13 +429,14 @@ public class ComponentUtils {
 
     /**
      * Checks if the facet and one of the first level children is rendered.
+     *
      * @param facet The Facet component to check
      * @param alwaysRender flag to ignore children and only check the facet itself
      * @return true if the facet should be rendered, false if not
      */
     public static boolean shouldRenderFacet(UIComponent facet, boolean alwaysRender) {
+        // no facet declared at all or facet without any content
         if (facet == null) {
-            // no facet declared at all
             return false;
         }
 
@@ -444,18 +445,21 @@ public class ComponentUtils {
             return true;
         }
 
-        if (!facet.isRendered()) {
-            // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
-            // or there is only 1 child.
-            return false;
+        // the facet contains multiple childs, so its wrapped inside a UIPanel
+        // NOTE: we need a equals check as instanceof would also catch e.g. p:dialog
+        if (facet.getClass().equals(UIPanel.class)) {
+            // For any future version of JSF where the f:facet gets a rendered attribute
+            if (!facet.isRendered()) {
+                return false;
+            }
+
+            // check all childs - if all of them are rendered=false, we skip rendering the whole facet
+            return shouldRenderChildren(facet);
         }
 
-        // Facet has no child but is rendered
-        if (facet.getChildCount() == 0) {
-            return true;
-        }
-
-        return shouldRenderChildren(facet);
+        // the facet contains only one child now, which means that the facet is the child component
+        // we dont want to check children, just if the component is rendered=true
+        return facet.isRendered();
     }
 
     /**

@@ -23,12 +23,14 @@
  */
 package org.primefaces.component.galleria;
 
-import javax.faces.component.UIOutput;
+import java.util.List;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.UITabPanel;
 
-import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.ResponsiveOption;
 
-public abstract class GalleriaBase extends UIOutput implements Widget, TouchAware {
+public abstract class GalleriaBase extends UITabPanel implements Widget, ClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,21 +40,28 @@ public abstract class GalleriaBase extends UIOutput implements Widget, TouchAwar
 
         widgetVar,
         value,
-        var,
         style,
         styleClass,
-        tabindex,
-        effect,
-        effectSpeed,
-        frameWidth,
-        frameHeight,
-        showFilmstrip,
+        activeIndex,
+        fullScreen,
+        closeIcon,
+        numVisible,
+        responsiveOptions,
+        showThumbnails,
+        showIndicators,
+        showIndicatorsOnItem,
+        showCaption,
+        showItemNavigators,
+        showThumbnailNavigators,
+        showItemNavigatorsOnHover,
+        changeItemOnIndicatorHover,
+        circular,
         autoPlay,
         transitionInterval,
-        panelWidth,
-        panelHeight,
-        showCaption,
-        touchable
+        thumbnailsPosition,
+        verticalViewPortHeight,
+        indicatorsPosition,
+        tabindex
     }
 
     public GalleriaBase() {
@@ -82,14 +91,6 @@ public abstract class GalleriaBase extends UIOutput implements Widget, TouchAwar
         getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
     public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
@@ -106,48 +107,120 @@ public abstract class GalleriaBase extends UIOutput implements Widget, TouchAwar
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
+    public int getActiveIndex() {
+        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
     }
 
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
+    public void setActiveIndex(int activeIndex) {
+        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
     }
 
-    public int getEffectSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 500);
+    public boolean isFullScreen() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
     }
 
-    public void setEffectSpeed(int effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
+    public void setFullScreen(boolean fullScreen) {
+        getStateHelper().put(PropertyKeys.fullScreen, fullScreen);
     }
 
-    public int getFrameWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.frameWidth, 60);
+    public String getCloseIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.closeIcon, null);
     }
 
-    public void setFrameWidth(int frameWidth) {
-        getStateHelper().put(PropertyKeys.frameWidth, frameWidth);
+    public void setCloseIcon(String closeIcon) {
+        getStateHelper().put(PropertyKeys.closeIcon, closeIcon);
     }
 
-    public int getFrameHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.frameHeight, 40);
+    public int getNumVisible() {
+        return (Integer) getStateHelper().eval(PropertyKeys.numVisible, 3);
     }
 
-    public void setFrameHeight(int frameHeight) {
-        getStateHelper().put(PropertyKeys.frameHeight, frameHeight);
+    public void setNumVisible(int numVisible) {
+        getStateHelper().put(PropertyKeys.numVisible, numVisible);
     }
 
-    public boolean isShowFilmstrip() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showFilmstrip, true);
+    public List<ResponsiveOption> getResponsiveOptions() {
+        return (List<ResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
     }
 
-    public void setShowFilmstrip(boolean showFilmstrip) {
-        getStateHelper().put(PropertyKeys.showFilmstrip, showFilmstrip);
+    public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
+        getStateHelper().put(PropertyKeys.responsiveOptions, responsiveOptions);
+    }
+
+    public boolean isShowThumbnails() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showThumbnails, true);
+    }
+
+    public void setShowThumbnails(boolean showThumbnails) {
+        getStateHelper().put(PropertyKeys.showThumbnails, showThumbnails);
+    }
+
+    public boolean isShowIndicators() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showIndicators, false);
+    }
+
+    public void setShowIndicators(boolean showIndicators) {
+        getStateHelper().put(PropertyKeys.showIndicators, showIndicators);
+    }
+
+    public boolean isShowIndicatorsOnItem() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showIndicatorsOnItem, false);
+    }
+
+    public void setShowIndicatorsOnItem(boolean showIndicatorsOnItem) {
+        getStateHelper().put(PropertyKeys.showIndicatorsOnItem, showIndicatorsOnItem);
+    }
+
+    public boolean isShowCaption() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
+    }
+
+    public void setShowCaption(boolean showCaption) {
+        getStateHelper().put(PropertyKeys.showCaption, showCaption);
+    }
+
+    public boolean isShowItemNavigators() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showItemNavigators, false);
+    }
+
+    public void setShowItemNavigators(boolean showItemNavigators) {
+        getStateHelper().put(PropertyKeys.showItemNavigators, showItemNavigators);
+    }
+
+    public boolean isShowThumbnailNavigators() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showThumbnailNavigators, true);
+    }
+
+    public void setShowThumbnailNavigators(boolean showThumbnailNavigators) {
+        getStateHelper().put(PropertyKeys.showThumbnailNavigators, showThumbnailNavigators);
+    }
+
+    public boolean isShowItemNavigatorsOnHover() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showItemNavigatorsOnHover, false);
+    }
+
+    public void setShowItemNavigatorsOnHover(boolean showItemNavigatorsOnHover) {
+        getStateHelper().put(PropertyKeys.showItemNavigatorsOnHover, showItemNavigatorsOnHover);
+    }
+
+    public boolean isChangeItemOnIndicatorHover() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.changeItemOnIndicatorHover, false);
+    }
+
+    public void setChangeItemOnIndicatorHover(boolean changeItemOnIndicatorHover) {
+        getStateHelper().put(PropertyKeys.changeItemOnIndicatorHover, changeItemOnIndicatorHover);
+    }
+
+    public boolean isCircular() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.circular, false);
+    }
+
+    public void setCircular(boolean circular) {
+        getStateHelper().put(PropertyKeys.circular, circular);
     }
 
     public boolean isAutoPlay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoPlay, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoPlay, false);
     }
 
     public void setAutoPlay(boolean autoPlay) {
@@ -162,28 +235,28 @@ public abstract class GalleriaBase extends UIOutput implements Widget, TouchAwar
         getStateHelper().put(PropertyKeys.transitionInterval, transitionInterval);
     }
 
-    public int getPanelWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.panelWidth, Integer.MIN_VALUE);
+    public String getThumbnailsPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.thumbnailsPosition, "bottom");
     }
 
-    public void setPanelWidth(int panelWidth) {
-        getStateHelper().put(PropertyKeys.panelWidth, panelWidth);
+    public void setThumbnailsPosition(String thumbnailsPosition) {
+        getStateHelper().put(PropertyKeys.thumbnailsPosition, thumbnailsPosition);
     }
 
-    public int getPanelHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.panelHeight, Integer.MIN_VALUE);
+    public String getVerticalViewPortHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.verticalViewPortHeight, "450px");
     }
 
-    public void setPanelHeight(int panelHeight) {
-        getStateHelper().put(PropertyKeys.panelHeight, panelHeight);
+    public void setVerticalViewPortHeight(String verticalViewPortHeight) {
+        getStateHelper().put(PropertyKeys.verticalViewPortHeight, verticalViewPortHeight);
     }
 
-    public boolean isShowCaption() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
+    public String getIndicatorsPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.indicatorsPosition, "bottom");
     }
 
-    public void setShowCaption(boolean showCaption) {
-        getStateHelper().put(PropertyKeys.showCaption, showCaption);
+    public void setIndicatorsPosition(String indicatorsPosition) {
+        getStateHelper().put(PropertyKeys.indicatorsPosition, indicatorsPosition);
     }
 
     public String getTabindex() {
@@ -192,15 +265,5 @@ public abstract class GalleriaBase extends UIOutput implements Widget, TouchAwar
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
-    }
-
-    @Override
-    public void setTouchable(boolean touchable) {
-        getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 }

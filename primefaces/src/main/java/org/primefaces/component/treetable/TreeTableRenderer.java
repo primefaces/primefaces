@@ -23,20 +23,11 @@
  */
 package org.primefaces.component.treetable;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITree;
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.columns.Columns;
-import org.primefaces.component.row.Row;
-import org.primefaces.component.tree.Tree;
-import org.primefaces.model.*;
-import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.*;
-import org.primefaces.visit.ResetInputVisitCallback;
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
@@ -46,14 +37,31 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.*;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UITree;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
+import org.primefaces.component.row.Row;
+import org.primefaces.component.tree.Tree;
 import org.primefaces.component.treetable.feature.FilterFeature;
 import org.primefaces.component.treetable.feature.ResizableColumnsFeature;
 import org.primefaces.component.treetable.feature.SelectionFeature;
 import org.primefaces.component.treetable.feature.SortFeature;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
+import org.primefaces.model.TreeNode;
+import org.primefaces.renderkit.DataRenderer;
+import org.primefaces.renderkit.RendererUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
+import org.primefaces.visit.ResetInputVisitCallback;
 
 public class TreeTableRenderer extends DataRenderer {
 
@@ -667,7 +675,7 @@ public class TreeTableRenderer extends DataRenderer {
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
         boolean sortable = tt.isColumnSortable(context, column);
-        boolean filterable = tt.isColumnFilterable(column);
+        boolean filterable = tt.isColumnFilterable(context, column);
         SortMeta sortMeta = null;
         String style = column.getStyle();
         String width = column.getWidth();
@@ -993,14 +1001,7 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     private void encodeStateHolder(FacesContext context, TreeTable tt, String name, String value) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement("input", null);
-        writer.writeAttribute("id", name, null);
-        writer.writeAttribute("name", name, null);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("value", value, null);
-        writer.endElement("input");
+        renderHiddenInput(context, name, value, false);
     }
 
     protected String resolveSortIcon(SortMeta sortMeta) {

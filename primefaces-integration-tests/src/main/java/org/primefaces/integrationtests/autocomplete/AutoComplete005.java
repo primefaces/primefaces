@@ -23,18 +23,20 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
-import lombok.Data;
-import org.primefaces.integrationtests.general.model.Driver;
-import org.primefaces.integrationtests.general.service.RealDriverService;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.primefaces.integrationtests.general.model.Driver;
+import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -50,6 +52,12 @@ public class AutoComplete005 implements Serializable {
 
     private List<Driver> selectedDrivers;
 
+    private Driver selectedDriver;
+
+    private boolean forceSelection = true;
+
+    private boolean autoSelection = true;
+
     @PostConstruct
     public void init() {
         allDrivers = service.getDrivers();
@@ -61,10 +69,30 @@ public class AutoComplete005 implements Serializable {
     }
 
     public void submit() {
-        if (selectedDrivers != null) {
+        if (selectedDrivers != null && !selectedDrivers.isEmpty()) {
             String selectedDriversMsg = selectedDrivers.stream().map(d -> d.getId() + " - " + d.getName()).collect(Collectors.joining(", "));
             TestUtils.addMessage("Selected Drivers", selectedDriversMsg);
         }
+
+        if (selectedDriver != null) {
+            TestUtils.addMessage("Selected Driver", selectedDriver.toString());
+        }
+    }
+
+    public void force() {
+        setForceSelection(true);
+    }
+
+    public void unforce() {
+        setForceSelection(false);
+    }
+
+    public void autoSelect() {
+        setAutoSelection(true);
+    }
+
+    public void unAutoSelect() {
+        setAutoSelection(false);
     }
 
 }

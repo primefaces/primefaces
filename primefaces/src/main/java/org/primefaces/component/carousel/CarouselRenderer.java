@@ -30,7 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.model.carousel.CarouselResponsiveOption;
+import org.primefaces.model.ResponsiveOption;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -53,7 +53,7 @@ public class CarouselRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         WidgetBuilder wb = getWidgetBuilder(context);
-        List<CarouselResponsiveOption> responsiveOptions = carousel.getResponsiveOptions();
+        List<ResponsiveOption> responsiveOptions = carousel.getResponsiveOptions();
 
         wb.init("Carousel", carousel);
 
@@ -63,7 +63,7 @@ public class CarouselRenderer extends CoreRenderer {
                 .attr("numVisible", carousel.getNumVisible(), 1)
                 .attr("numScroll", carousel.getNumScroll(), 1)
                 .attr("orientation", carousel.getOrientation(), "horizontal")
-                .attr("touchable", ComponentUtils.isTouchable(context, carousel),  true)
+                .attr("touchable", ComponentUtils.isTouchable(context, carousel), true)
                 .callback("onPageChange", "function(pageValue)", carousel.getOnPageChange());
 
         if (responsiveOptions != null) {
@@ -186,7 +186,7 @@ public class CarouselRenderer extends CoreRenderer {
 
     protected void encodePrevButton(FacesContext context, Carousel carousel, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String prevButtonIconStyleClass =  getStyleClassBuilder(context)
+        String prevButtonIconStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.PREV_BUTTON_ICON_CLASS)
                 .add(!isVertical, "pi-chevron-left")
                 .add(isVertical, "pi-chevron-up")
@@ -205,7 +205,7 @@ public class CarouselRenderer extends CoreRenderer {
 
     protected void encodeNextButton(FacesContext context, Carousel carousel, boolean isVertical) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String nextButtonIconStyleClass =  getStyleClassBuilder(context)
+        String nextButtonIconStyleClass = getStyleClassBuilder(context)
                 .add(Carousel.NEXT_BUTTON_ICON_CLASS)
                 .add(!isVertical, "pi-chevron-right")
                 .add(isVertical, "pi-chevron-down")

@@ -152,6 +152,7 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         getStateHelper().put(PropertyKeys.onTabClose, onTabClose);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -178,7 +179,7 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
 
     @Override
     public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
     }
 
     @Override

@@ -114,7 +114,7 @@ public class FilterFeature implements TreeTableFeature {
         renderer.encodeTbody(context, table, table.getValue(), true);
     }
 
-    public void filter(FacesContext context, TreeTable tt, TreeNode root) throws IOException {
+    public void filter(FacesContext context, TreeTable tt, TreeNode root) {
         Map<String, FilterMeta> filterBy = tt.getFilterByAsMap();
         if (filterBy.isEmpty()) {
             return;
@@ -146,7 +146,7 @@ public class FilterFeature implements TreeTableFeature {
 
 
     protected void collectFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode<?> root, TreeNode<?> node,  Map<String, FilterMeta> filterBy,
-            Locale filterLocale, List<String> filteredRowKeys) throws IOException {
+            Locale filterLocale, List<String> filteredRowKeys) {
 
         ELContext elContext = context.getELContext();
 

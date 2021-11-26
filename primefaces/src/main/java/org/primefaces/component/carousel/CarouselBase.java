@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.carousel;
 
+import java.util.List;
+
+import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
-import org.primefaces.model.carousel.CarouselResponsiveOption;
-
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import java.util.List;
+import org.primefaces.model.ResponsiveOption;
 
 public abstract class CarouselBase extends UITabPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
 
@@ -116,11 +117,11 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
         getStateHelper().put(PropertyKeys.numScroll, numScroll);
     }
 
-    public List<CarouselResponsiveOption> getResponsiveOptions() {
-        return (List<CarouselResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
+    public List<ResponsiveOption> getResponsiveOptions() {
+        return (List<ResponsiveOption>) getStateHelper().eval(PropertyKeys.responsiveOptions, null);
     }
 
-    public void setResponsiveOptions(List<CarouselResponsiveOption> responsiveOptions) {
+    public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
         getStateHelper().put(PropertyKeys.responsiveOptions, responsiveOptions);
     }
 
@@ -198,7 +199,7 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
 
     @Override
     public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
     }
 
     @Override

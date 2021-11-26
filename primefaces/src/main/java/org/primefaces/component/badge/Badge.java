@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.model.badge.BadgeModel;
+import org.primefaces.model.badge.DefaultBadgeModel;
+
 import javax.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -39,4 +42,28 @@ public class Badge extends BadgeBase {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
+
+    public BadgeModel toBadgeModel() {
+        return DefaultBadgeModel.builder()
+                .value(getValue())
+                .severity(getSeverity())
+                .size(getSize())
+                .style(getStyle())
+                .styleClass(getStyleClass())
+                .visible(isVisible())
+                .build();
+    }
+
+    public static BadgeModel getBadgeModel(Object object) {
+        if (object instanceof BadgeModel) {
+            return (BadgeModel) object;
+        }
+        if (object instanceof String) {
+            return DefaultBadgeModel.builder()
+                    .value((String) object)
+                    .build();
+        }
+        return null;
+    }
+
 }

@@ -127,7 +127,7 @@ ajax selection and more.
 | timeOnly | false | Boolean | Shows only timepicker without date.
 | timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the built-in converter.)
 | title | null | String | Advisory tooltip information.
-| touchable | true | Boolean | Enable touch support if browser detection supports it.
+| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | type | text | String | Input field type. Default is text.
 | validator | null | Method Expr | A method expression that refers to a method validating the input
 | validatorMessage | null | String | Message to be displayed when validation fails.
