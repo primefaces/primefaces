@@ -12,6 +12,7 @@
  * @prop {JQuery} originalInputs The DOM elements for the hidden input fields of type checkbox storing the value of
  * this widget. It's only used in layout 'custom'.
  * @prop {JQuery} outputs The DOM elements for the checkbox icons shown on the UI.
+ * @prop {JQuery} labels The DOM elements for the label texts of each radio button.
  * 
  * @interface {PrimeFaces.widget.SelectManyCheckboxCfg} cfg The configuration for the {@link  SelectManyCheckbox| SelectManyCheckbox widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
