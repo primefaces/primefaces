@@ -792,6 +792,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", filterId, null);
         writer.writeAttribute("name", filterId, null);
+        writer.writeAttribute("type", "search", null);
         writer.writeAttribute("class", filterStyleClass, null);
         writer.writeAttribute("value", filterValue, null);
         writer.writeAttribute("autocomplete", "off", null);

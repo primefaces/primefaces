@@ -668,7 +668,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         filterColumns.children('.ui-column-filter').each(function() {
             var filter = $(this);
 
-            if(filter.is('input:text')) {
+            if(filter.is("input[type='search']")) {
                 PrimeFaces.skinInput(filter);
                 $this.bindTextFilter(filter);
             }
@@ -701,6 +701,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindEnterKeyFilter(filter);
         else
             this.bindFilterEvent(filter);
+
+        // #8113 clear 'x' event handler
+        this.bindClearFilterEvent(filter);
 
         // #7562 draggable columns cannot be filtered with touch
         if (PrimeFaces.env.isTouchable(this.cfg)) {
@@ -739,6 +742,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.filter();
 
                 e.preventDefault();
+            }
+        });
+    },
+
+    /**
+     * Sets up the 'search' event which for HTML5 text search fields handles the clear 'x' button.
+     * @private
+     * @param {JQuery} filter INPUT element of the text filter.
+     */
+    bindClearFilterEvent: function(filter) {
+        var $this = this;
+
+        filter.off('search').on('search', function(e) {
+            // only care when 'X'' is clicked
+            if ($(this).val() == "") {
+                $this.filter();
             }
         });
     },
