@@ -24,8 +24,11 @@
 package org.primefaces.util;
 
 import java.util.Arrays;
+import javax.faces.component.TransientStateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -74,6 +77,7 @@ public class ComponentUtilsTest {
     public void shouldRenderFacet_facetChildrenRenderedFalse() {
         UIComponent children = mock(AccordionPanel.class);
         when(children.isRendered()).thenReturn(false);
+        when(children.getTransientStateHelper()).thenReturn(new TransientStateHelperMock());
 
         UIComponent facet = new UIPanel();
         facet.setRendered(true);
@@ -86,6 +90,7 @@ public class ComponentUtilsTest {
     public void shouldRenderFacet_facetChildrenRenderedTrue() {
         UIComponent children = mock(AccordionPanel.class);
         when(children.isRendered()).thenReturn(true);
+        when(children.getTransientStateHelper()).thenReturn(new TransientStateHelperMock());
 
         UIComponent facet = new UIPanel();
         facet.setRendered(true);
@@ -98,11 +103,40 @@ public class ComponentUtilsTest {
     public void shouldRenderFacet_facetChildrenFacetRenderedFalse() {
         UIComponent children = mock(AccordionPanel.class);
         when(children.isRendered()).thenReturn(true);
+        when(children.getTransientStateHelper()).thenReturn(new TransientStateHelperMock());
 
         UIComponent facet = new UIPanel();
         facet.setRendered(false);
         facet.getChildren().add(children);
 
         Assertions.assertFalse(ComponentUtils.shouldRenderFacet(facet));
+    }
+
+    class TransientStateHelperMock implements TransientStateHelper {
+
+        @Override
+        public Object getTransient(Object o) {
+            return null;
+        }
+
+        @Override
+        public Object getTransient(Object o, Object o1) {
+            return null;
+        }
+
+        @Override
+        public Object putTransient(Object o, Object o1) {
+            return null;
+        }
+
+        @Override
+        public Object saveTransientState(FacesContext facesContext) {
+            return null;
+        }
+
+        @Override
+        public void restoreTransientState(FacesContext facesContext, Object o) {
+
+        }
     }
 }
