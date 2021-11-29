@@ -25,7 +25,8 @@
 
                 <h5 class="p-mt-0">Basic</h5>
                 <p:selectCheckboxMenu id="menu" value="#{checkboxView.selectedCities}" label="Cities" style="width: 15rem"
-                                        filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
+                                        filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250"
+                                        dynamic="true">
                     <f:selectItems value="#{checkboxView.cities}"/>
                 </p:selectCheckboxMenu>
 
