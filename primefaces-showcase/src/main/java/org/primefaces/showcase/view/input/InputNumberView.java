@@ -23,11 +23,11 @@
  */
 package org.primefaces.showcase.view.input;
 
-import javax.faces.view.ViewScoped;
-
-import javax.inject.Named;
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 @Named
 @ViewScoped
@@ -41,6 +41,7 @@ public class InputNumberView implements Serializable {
     private Double input6 = Double.valueOf(0);
     private Double input7 = null;
     private BigDecimal input8 = BigDecimal.valueOf(0);
+    private Double input9 = null;
 
     public InputNumberView() {
         input1 = 0d;
@@ -50,6 +51,7 @@ public class InputNumberView implements Serializable {
         input5 = 251.31;
         input6 = 60d;
         input8 = new BigDecimal("1234.000000001");
+        input9 = 0d;
     }
 
     public Double getInput1() {
@@ -114,5 +116,13 @@ public class InputNumberView implements Serializable {
 
     public void setInput8(BigDecimal input8) {
         this.input8 = input8;
+    }
+
+    public Double getInput9() {
+        return input9;
+    }
+
+    public void setInput9(Double input9) {
+        this.input9 = input9;
     }
 }
