@@ -77,18 +77,24 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
-        //PRIMEFLEX CATEGORY START
-        List<MenuItem> primeFlexMenuItems = new ArrayList<>();
-        primeFlexMenuItems.add(new MenuItem("Setup", "/primeflex/setup"));
-        primeFlexMenuItems.add(new MenuItem("Display", "/primeflex/display"));
-        primeFlexMenuItems.add(new MenuItem("Elevation", "/primeflex/elevation"));
-        primeFlexMenuItems.add(new MenuItem("FlexBox", "/primeflex/flexbox"));
-        primeFlexMenuItems.add(new MenuItem("Form Layout", "/primeflex/formlayout"));
-        primeFlexMenuItems.add(new MenuItem("Grid System", "/primeflex/grid"));
-        primeFlexMenuItems.add(new MenuItem("Spacing", "/primeflex/spacing"));
-        primeFlexMenuItems.add(new MenuItem("Text", "/primeflex/text"));
-        menuCategories.add(new MenuCategory("PrimeFlex 2.0.0", primeFlexMenuItems));
-        //PRIMEFLEX CATEGORY END
+        //PRIMEFLEX 3 CATEGORY START
+        List<MenuItem> primeFlex3MenuItems = new ArrayList<>();
+        primeFlex3MenuItems.add(new MenuItem("Showcase & Docu", "https://www.primefaces.org/primeflex/"));
+        menuCategories.add(new MenuCategory("PrimeFlex 3.1.0", primeFlex3MenuItems));
+        //PRIMEFLEX 3 CATEGORY END
+
+        //PRIMEFLEX 2 CATEGORY START
+        List<MenuItem> primeFlex2MenuItems = new ArrayList<>();
+        primeFlex2MenuItems.add(new MenuItem("Setup", "/primeflex/setup"));
+        primeFlex2MenuItems.add(new MenuItem("Display", "/primeflex/display"));
+        primeFlex2MenuItems.add(new MenuItem("Elevation", "/primeflex/elevation"));
+        primeFlex2MenuItems.add(new MenuItem("FlexBox", "/primeflex/flexbox"));
+        primeFlex2MenuItems.add(new MenuItem("Form Layout", "/primeflex/formlayout"));
+        primeFlex2MenuItems.add(new MenuItem("Grid System", "/primeflex/grid"));
+        primeFlex2MenuItems.add(new MenuItem("Spacing", "/primeflex/spacing"));
+        primeFlex2MenuItems.add(new MenuItem("Text", "/primeflex/text"));
+        menuCategories.add(new MenuCategory("PrimeFlex 2.0.0", primeFlex2MenuItems));
+        //PRIMEFLEX 2 CATEGORY END
 
         //PRIMEICONS CATEGORY START
         List<MenuItem> primeIconsMenuItems = new ArrayList<>();
