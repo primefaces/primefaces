@@ -627,7 +627,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @private
      */
     initDraggable: function() {
-        this.makeDraggable(this.jq.find('span.ui-treenode-content'));
+        this.makeDraggable(this.jq.find('.ui-treenode-content'));
     },
 
     /**
@@ -692,7 +692,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         elements.droppable({
             hoverClass: 'ui-state-hover',
-            accept: 'span.ui-treenode-content',
+            accept: '.ui-treenode-content',
             tolerance: 'pointer',
             scope: dragdropScope,
             drop: function(event, ui) {
@@ -1080,7 +1080,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.makeDropPoints(subtreeDropPoints);
 
         //descendant drop node contents
-        var subtreeDropNodeContents = node.find('span.ui-treenode-content');
+        var subtreeDropNodeContents = node.find('.ui-treenode-content');
         if(subtreeDropNodeContents.hasClass('ui-droppable') && !this.shiftKey && !this.cfg.dropCopyNode) {
             subtreeDropNodeContents.droppable('destroy');
         }
@@ -1241,7 +1241,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     makeParent: function(node) {
         node.removeClass('ui-treenode-leaf').addClass('ui-treenode-parent');
-        node.find('> span.ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
+        node.find('> ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
         node.children('.ui-treenode-children').append('<li class="ui-tree-droppoint ui-droppable"></li>');
 
         this.makeDropPoints(node.find('> ul.ui-treenode-children > li.ui-tree-droppoint'));
@@ -1400,7 +1400,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} The element with the label for the given node.
      */
     getNodeLabel: function(node) {
-        return node.find('> div.ui-treenode-content > span.ui-treenode-label');
+        return node.find('> .ui-treenode-content > span.ui-treenode-label');
     },
 
     /**
