@@ -759,8 +759,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     applyARIA: function() {
+        var role = this instanceof PrimeFaces.widget.ConfirmDialog ? 'alertdialog' : 'dialog';
         this.jq.attr({
-            'role': 'dialog'
+            'role': role
             ,'aria-describedby': this.id + '_content'
             ,'aria-hidden': !this.cfg.visible
             ,'aria-modal': this.cfg.modal

@@ -5,6 +5,7 @@ nbactions.xml
 .DS_STORE
 .idea/
 *.iml
+**/pom.xml.versionsBackup
 *~
 .classpath
 .
@@ -52,3 +53,4 @@ node_modules/
 
 # End of https://www.gitignore.io/api/node
 /primefaces-showcase/target/
+/primefaces-cli/target/

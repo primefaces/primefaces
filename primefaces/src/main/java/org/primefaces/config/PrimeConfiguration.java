@@ -145,9 +145,9 @@ public class PrimeConfiguration {
         cookiesSameSite = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
 
         cookiesSecure = true;
-        if (externalContext.getContext() instanceof ServletContext) {
+        if (environment.isAtLeastServlet30() && externalContext.getContext() instanceof ServletContext) {
             ServletContext se = (ServletContext) externalContext.getContext();
-            if (environment.isAtLeastServlet30()) {
+            if (se.getSessionCookieConfig() != null) {
                 cookiesSecure = se.getSessionCookieConfig().isSecure();
             }
         }

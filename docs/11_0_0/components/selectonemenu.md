@@ -59,7 +59,7 @@ autoWidth | true | Boolean | Calculates a fixed width based on the width of the 
 dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 dir | ltr | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
-touchable | true | Boolean | Enable touch support if browser detection supports it.
+touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.

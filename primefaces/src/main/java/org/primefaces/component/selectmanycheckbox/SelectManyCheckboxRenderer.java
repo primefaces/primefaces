@@ -451,7 +451,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 return;
             }
 
-            encodeOptionInput(context, checkbox, id, name, selected, true, itemValueAsString);
+            boolean disabled = selectItem.isDisabled() || checkbox.isDisabled();
+
+            encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);
             idx++;
         }
     }

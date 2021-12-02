@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -79,7 +80,8 @@ public class Columns extends ColumnsBase {
 
     @Override
     public String getColumnKey(UIComponent parent, String rowIndex) {
-        return getColumnKey().replace(parent.getId() + ":" + rowIndex + ":", parent.getId() + ":");
+        char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+        return getColumnKey().replace(parent.getId() + separator + rowIndex + separator, parent.getId() + separator);
     }
 
     @Override

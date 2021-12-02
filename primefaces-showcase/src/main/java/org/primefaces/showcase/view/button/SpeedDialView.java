@@ -32,12 +32,16 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.model.badge.BadgeModel;
+import org.primefaces.model.badge.DefaultBadgeModel;
 
 @Named
 @RequestScoped
 public class SpeedDialView {
 
     private MenuModel model;
+
+    private BadgeModel badgeModel;
 
     @PostConstruct
     public void init() {
@@ -75,10 +79,19 @@ public class SpeedDialView {
                 .url("https://www.primefaces.org")
                 .build();
         model.getElements().add(item);
+
+        badgeModel = DefaultBadgeModel.builder()
+                .value("1")
+                .severity("danger")
+                .build();
     }
 
     public MenuModel getModel() {
         return model;
+    }
+
+    public BadgeModel getBadgeModel() {
+        return badgeModel;
     }
 
     public void add() {

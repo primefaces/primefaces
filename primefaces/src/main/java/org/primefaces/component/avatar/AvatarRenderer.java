@@ -23,15 +23,6 @@
  */
 package org.primefaces.component.avatar;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.SharedStringBuilder;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -39,9 +30,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.SharedStringBuilder;
+
 public class AvatarRenderer extends CoreRenderer {
 
-    private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[a-zA-Z]");
+    private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]");
     private static final String GRAVATAR_URL = "https://www.gravatar.com/avatar/";
     private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 
@@ -133,8 +133,7 @@ public class AvatarRenderer extends CoreRenderer {
             sb.append(m.group());
         }
         String initials = sb.toString();
-        initials = initials.length() == 1 ? initials : initials.charAt(0) + initials.substring(initials.length() - 1);
-        return initials;
+        return initials.length() == 1 ? initials : initials.charAt(0) + initials.substring(initials.length() - 1);
     }
 
     /**

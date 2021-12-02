@@ -41,7 +41,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         String folder = AbstractFileUploadTest.class.getPackage().getName().replace(".", "/");
         URL url = AbstractFileUploadTest.class.getResource("/" + folder + "/" + fileName);
         Assertions.assertNotNull(url, "client side file " + fileName + " does not exist in /" + folder);
-        return new File(url.getPath());
+        return new File(url.getPath().replace("%20", " "));
     }
 
     /**

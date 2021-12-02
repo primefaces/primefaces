@@ -260,7 +260,22 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearFilters: function() {
         this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
-        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter :input').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter').each(function() {
+            var widgetElement = $(this).find('.ui-widget');
+            if (widgetElement.length > 0) {
+                var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
+                if (widget && typeof widget.resetValue === 'function') {
+                    widget.resetValue(true);
+                }
+                else {
+                    $(this).find(':input').val('');
+                }
+            }
+            else {
+                $(this).find(':input').val('');
+            }
+        });
+
         $(this.jqId + '\\:globalFilter').val('');
         this.filter();
     },
@@ -1911,10 +1926,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.showRowEditors(row);
 
         if(this.hasBehavior('rowEditInit')) {
-            var rowIndex = row.data('rk');
+            var rowKey = row.data('rk');
 
             var ext = {
-                params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
+                params: [{name: this.id + '_rowEditIndex', value: rowKey}]
             };
 
             this.callBehavior('rowEditInit', ext);
@@ -1959,7 +1974,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     doRowEditRequest: function(rowEditor, action) {
         var row = rowEditor.closest('tr'),
-        rowIndex = row.data('rk'),
+        rowKey = row.data('rk'),
         expanded = row.hasClass('ui-expanded-row'),
         $this = this,
         options = {
@@ -1967,7 +1982,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             formId: this.getParentFormId(),
-            params: [{name: this.id + '_rowEditIndex', value: rowIndex},
+            params: [{name: this.id + '_rowEditIndex', value: rowKey},
                      {name: this.id + '_rowEditAction', value: action}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -1985,7 +2000,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args, data) {
                 if(args && args.validationFailed) {
-                    $this.invalidateRow(rowIndex);
+                    $this.invalidateRow(rowKey);
                 }
             }
         };
@@ -2021,10 +2036,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when validation did not succeed. Switches all editors of the given row to the error state.
      * @private
-     * @param {number} index 0-based index of the row with cell editors.
+     * @param {string} rowKey the rowKey.
      */
-    invalidateRow: function(index) {
-        this.tbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
+    invalidateRow: function(rowKey) {
+        this.tbody.children('tr').filter('[data-rk="'+ rowKey +'"]').addClass('ui-widget-content ui-row-editing ui-state-error');
     },
 
     /**

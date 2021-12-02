@@ -6777,6 +6777,10 @@ declare namespace PrimeFaces.clientwindow {
  */
 declare namespace PrimeFaces.csp {
     /**
+     * Map of currently registered CSP events on this page.
+     */
+    export let EVENT_REGISTRY: Map<string, Map<string, boolean>>;
+    /**
      * Name of the POST parameter for transmitting the nonce.
      */
     export const NONCE_INPUT: string;
@@ -6812,6 +6816,13 @@ declare namespace PrimeFaces.csp {
      * @param e The event from the caller to pass through.
      */
     export function executeEvent(id: HTMLElement, js: string, e: JQuery.TriggeredEvent): void;
+    /**
+     * Does this component have a registered AJAX event.
+     * @param id ID of an element
+     * @param event Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
+     * @return true if component has this AJAX event
+     */
+    export function hasRegisteredAjaxifiedEvent(id: string, event?: string): boolean;
     /**
      * Sets the given nonce to all forms on the current page.
      * @param nonce Nonce to set. This value is usually supplied by the server.
@@ -7457,6 +7468,11 @@ declare namespace PrimeFaces {
      * `false` otherwise.
      */
     export function isNumber(value: unknown): boolean;
+    /**
+     * Checks whether the current application is running in a production environment.
+     * @return `true` if this is a production environment, `false` otherwise.
+     */
+    export function isProductionProjectStage(): boolean;
     /**
      * As a `<p:fileDownload>` process is implemented as a norma, non-AJAX request, `<p:ajaxStatus>` will not work.
      * Still, PrimeFaces provides a feature to monitor file downloads via this client-side function. This is done
@@ -25847,6 +25863,53 @@ declare namespace PrimeFaces.widget {
 }
 declare namespace PrimeFaces.widget {
     /**
+     * __PrimeFaces Messages Widget__
+     *
+     * Messages is a pre-skinned extended version of the standard JSF messages component.
+     * @typeparam TCfg Defaults to `MessagesCfg`. Type of the configuration object for this widget.
+     */
+    export class Messages<TCfg extends MessagesCfg = MessagesCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Creates the HTML elements for the given faces message, and adds it to the DOM.
+         * @param msg A message to translate into an HTML element.
+         */
+        appendMessage(msg: PrimeFaces.FacesMessage): void;
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  Messages| Messages widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface MessagesCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
      * __PrimeFaces Mindmap Widget__
      *
      * Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks, animations and more.
@@ -28461,7 +28524,11 @@ declare namespace PrimeFaces.widget {
          */
         stars: JQuery;
         /**
-         * The current value, i.e. the number of selected stars
+         * The tabindex initially set.
+         */
+        tabindex: string;
+        /**
+         * The current value, i.e. the number of selected stars.
          */
         value: number;
         /**
@@ -28476,6 +28543,17 @@ declare namespace PrimeFaces.widget {
          * Enables this rating widget so the user can give a rating.
          */
         enable(): void;
+        /**
+         * Set focus to element
+         * @param el focusable element
+         * @param isInputFocus Whether to refocus to input element
+         */
+        private focus(el: JQuery, isInputFocus: boolean): void;
+        /**
+         * Get focusable element
+         * @return element
+         */
+        private getFocusableElement(): JQuery;
         /**
          * Finds the current rating, i.e. the number of stars selected.
          * @return The current rating value.
@@ -30906,6 +30984,10 @@ declare namespace PrimeFaces.widget {
      */
     export class SpeedDial<TCfg extends SpeedDialCfg = SpeedDialCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
         /**
+         * The DOM element for the badge of the floating action button of the speed dial.
+         */
+        badge: JQuery;
+        /**
          * The DOM element for the floating action button of the speed dial.
          */
         button: JQuery;
@@ -30987,7 +31069,7 @@ declare namespace PrimeFaces.widget {
          */
         private getItemStyle(index: number): JQuery.PlainObject<string | number>;
         /**
-         * Hides item container of the speed dial and changes or rotates floating action button icon.
+         * Hides item container of the speed dial.
          */
         hide(): void;
         /**
@@ -31029,7 +31111,7 @@ declare namespace PrimeFaces.widget {
          */
         private onItemClick(): void;
         /**
-         * Shows item container of the speeddial and changes or rotates floating action button icon.
+         * Shows item container of the speeddial.
          */
         show(): void;
         /**
@@ -31059,6 +31141,10 @@ declare namespace PrimeFaces.widget {
          */
         hideOnClickOutside: boolean;
         /**
+         * Whether the menu should be kept open on clicking menu items.
+         */
+        keepOpen: boolean;
+        /**
          * Whether to show a mask element behind the speed dial.
          */
         mask: boolean;
@@ -31085,14 +31171,6 @@ declare namespace PrimeFaces.widget {
          * Radius for when {@link type} is set to one of the circle types.
          */
         radius: number;
-        /**
-         * Whether to rotate the show icon.
-         */
-        rotateAnimation: boolean;
-        /**
-         * The icon class of the show button element.
-         */
-        showIcon: string;
         /**
          * Transition delay step in milliseconds for each action item.
          */
@@ -31950,10 +32028,20 @@ declare namespace PrimeFaces.widget {
          */
         private markAsLoaded(panel: JQuery): void;
         /**
+         * Marks the content of the given tab as unloaded.
+         * @param panel A panel with content that was unloaded.
+         */
+        private markAsUnloaded(panel: JQuery): void;
+        /**
          * Callback that is invoked after a tab was shown.
          * @param newPanel The panel with the content of the tab.
          */
         private postTabShow(newPanel: JQuery): void;
+        /**
+         * Reloads a dynamic tab even if it has already been loaded once. Forces an AJAX refresh of the tab.
+         * @param index 0-based index of the tab to reload.
+         */
+        reload(index: number): void;
         /**
          * Closes the tab at the given index.
          * @param index 0-based index of the tab to close.

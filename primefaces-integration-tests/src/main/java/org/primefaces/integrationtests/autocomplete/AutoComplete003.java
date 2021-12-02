@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.autocomplete;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class AutoComplete003 implements Serializable {
 
     @PostConstruct
     public void init() {
-        values = Arrays.asList("Ringo", "Ringo");
+        values = new ArrayList<>(Arrays.asList("Ringo", "Ringo"));
     }
 
     public void submit() {

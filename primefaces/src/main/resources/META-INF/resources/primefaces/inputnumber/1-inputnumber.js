@@ -146,7 +146,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input.off('blur.inputnumber').on('blur.inputnumber', function(e) {
             var element = AutoNumeric.getAutoNumericElement(this);
             if (element && this.value && this.value.length > 0) {
-                var newValue = this.value;
+                var newValue = this.value.trim();
                 if($this.cfg.digitGroupSeparator) {
                     newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
@@ -229,6 +229,12 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             while (decimalPlacesToPad-- > 0) {
                 val += '0';
             }
+        }
+
+        // GitHub #7911 Autonumeric bug workaround. 
+        // Remove when issue fixed: https://github.com/autoNumeric/autoNumeric/issues/670
+        if (val && val.endsWith(this.cfg.decimalCharacter)) {
+            val = val.substring(0, val.length - 1);
         }
         return val;
     }

@@ -26,6 +26,9 @@
                 <p:commandButton id="btn" value="View" icon="pi pi-home" action="#{dfRootView.openLevel1}">
                     <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="growl"/>
                 </p:commandButton>
+                <p:commandButton id="btnPlusFlash" value="View and pass object via flash" icon="pi pi-home" action="#{dfRootView.openLevel1WithFlash}" styleClass="p-ml-2">
+                    <p:ajax event="dialogReturn" listener="#{dfRootView.onReturnFromLevel1}" update="growl"/>
+                </p:commandButton>
             </div>
 
             <div class="card">

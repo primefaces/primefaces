@@ -28,7 +28,6 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
 
@@ -48,7 +47,7 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file1.csv");
-        PrimeSelenium.guardAjax(fileUpload).setValue(file);
+        fileUpload.setValue(file);
 
         // Assert
         assertNoJavascriptErrors();
@@ -65,7 +64,7 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
-        PrimeSelenium.guardAjax(fileUpload).setValue(file1);
+        fileUpload.setValue(file1);
 
         // Assert
         assertNoJavascriptErrors();
@@ -73,7 +72,7 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file2 = locateClientSideFile("file2.csv");
-        PrimeSelenium.guardAjax(fileUpload).setValue(file2);
+        fileUpload.setValue(file2);
 
         // Assert
         assertNoJavascriptErrors();
@@ -93,7 +92,7 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file3.csv");
-        PrimeSelenium.guardAjax(fileUpload).setValue(file);
+        fileUpload.setValue(file);
         // for a very short time the widget value shows a message, assume the message disapeared already
         Assertions.assertEquals("", fileUpload.getWidgetValue());
 
@@ -116,7 +115,7 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file1.png");
-        PrimeSelenium.guardAjax(fileUpload).setValue(file);
+        fileUpload.setValue(file);
         // for a very short time the widget value shows a message, assume the message disapeared already
         Assertions.assertEquals("", fileUpload.getWidgetValue());
 

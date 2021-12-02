@@ -324,6 +324,62 @@ public class TreeTable001Test extends AbstractTreeTableTest {
         assertConfiguration(treeTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(9)
+    @DisplayName("TreeTable: switch data (without filter-feature)")
+    public void testSwitchDataWithoutFilter(Page page) {
+        // Arrange
+        TreeTable treeTable = page.treeTable;
+        Assertions.assertNotNull(treeTable);
+
+        // Act
+        treeTable.getRow(0).toggle();
+        page.buttonUpdate.click();
+        page.buttonOtherDocuments.click();
+
+        // Assert
+        List<Row> rows = treeTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(rootOtherDocument.getChildCount(), rows.size());
+
+        assertConfiguration(treeTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("TreeTable: switch data (with filter-feature) - https://github.com/primefaces/primefaces/issues/8073")
+    public void testSwitchDataWithFilter(Page page) {
+        // Arrange
+        TreeTable treeTable = page.treeTable;
+        Assertions.assertNotNull(treeTable);
+
+        // Act
+        treeTable.getRow(0).toggle();
+        treeTable.filter("Name", "P");
+        treeTable.filter("Name", "");
+        page.buttonUpdate.click();
+        page.buttonOtherDocuments.click();
+
+        // Assert
+        List<Row> rows = treeTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(rootOtherDocument.getChildCount(), rows.size());
+
+        // Act
+        page.buttonOtherDocuments.click();
+        treeTable.filter("Name", "B");
+
+        // Assert
+
+        // Act
+        page.buttonOtherDocuments.click();
+        rows = treeTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(rootOtherDocument.getChildren().stream().filter(n -> n.getData().getName().contains("B")).count(), rows.size());
+
+        assertConfiguration(treeTable.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
@@ -342,6 +398,9 @@ public class TreeTable001Test extends AbstractTreeTableTest {
 
         @FindBy(id = "form:buttonUpdate")
         CommandButton buttonUpdate;
+
+        @FindBy(id = "form:buttonOtherDocuments")
+        CommandButton buttonOtherDocuments;
 
         @FindBy(id = "form:buttonResetTable")
         CommandButton buttonResetTable;

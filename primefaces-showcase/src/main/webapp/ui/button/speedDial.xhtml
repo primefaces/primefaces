@@ -229,17 +229,19 @@
             </div>
 
             <div class="card">
-                <h5>Tooltip</h5>
+                <h5>Tooltip and Keep Open</h5>
                 <div class="speeddial-tooltip-demo" style="position: relative; height: 350px">
-                    <p:speedDial direction="up" styleClass="speeddial-right" buttonStyleClass="ui-button-danger">
-                        <p:menuitem title="Add" icon="pi pi-pencil" action="#{speedDialView.add}" update="messages" />
-                        <p:menuitem title="Update" icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
-                        <p:menuitem title="Delete" icon="pi pi-trash" action="#{speedDialView.delete}" update="messages" />
-                        <p:menuitem title="Upload" icon="pi pi-upload" outcome="/ui/file/upload/basic" />
-                        <p:menuitem title="PrimeFaces" icon="pi pi-external-link"  url="https://www.primefaces.org"/>
+                    <p:speedDial direction="up" styleClass="speeddial-right" buttonStyleClass="ui-button-danger"
+                                 keepOpen="true">
+                        <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages" title="Add"/>
+                        <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages" title="Update"/>
+                        <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages" title="Delete"/>
+                        <p:menuitem icon="pi pi-upload" outcome="/ui/file/upload/basic" title="Upload"/>
+                        <p:menuitem icon="pi pi-external-link" title="PrimeFaces" url="https://www.primefaces.org"/>
                     </p:speedDial>
 
-                    <p:speedDial direction="up" styleClass="speeddial-left" buttonStyleClass="ui-button-help">
+                    <p:speedDial direction="up" styleClass="speeddial-left" buttonStyleClass="ui-button-help"
+                                 keepOpen="true">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages" title="Add"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages" title="Update"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages" title="Delete"/>
@@ -250,7 +252,7 @@
             </div>
 
             <div class="card">
-                <h5>Transition Duration, Icon and No Rotate Animation</h5>
+                <h5>Transition Duration and Icon</h5>
                 <div class="speeddial-delay-demo" style="position: relative; height: 350px">
                     <p:speedDial direction="up" transitionDelay="80" showIcon="pi pi-bars" hideIcon="pi pi-times"
                                  buttonStyleClass="ui-button-outlined">
@@ -264,9 +266,10 @@
             </div>
 
             <div class="card">
-                <h5>Mask</h5>
+                <h5>Mask and No Rotate Animation</h5>
                 <div class="speeddial-mask-demo" style="position: relative; height: 350px">
-                    <p:speedDial direction="up" mask="true">
+                    <p:speedDial direction="up" mask="true" showIcon="pi pi-bars" hideIcon="pi pi-times"
+                                 rotateAnimation="false">
                         <p:menuitem icon="pi pi-pencil" action="#{speedDialView.add}" update="messages"/>
                         <p:menuitem icon="pi pi-refresh" action="#{speedDialView.update}" update="messages"/>
                         <p:menuitem icon="pi pi-trash" action="#{speedDialView.delete}" update="messages"/>
@@ -277,9 +280,9 @@
             </div>
 
             <div class="card">
-                <h5>Dynamic Items</h5>
+                <h5>Dynamic Items and Badge</h5>
                 <div class="speeddial-dynamicitem-demo" style="position: relative; height: 350px">
-                    <p:speedDial direction="down" model="#{speedDialView.model}" />
+                    <p:speedDial badge="#{speedDialView.badgeModel}" direction="down" model="#{speedDialView.model}" />
                 </div>
             </div>
         </h:form>

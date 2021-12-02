@@ -30,16 +30,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.internal.ConfigProvider;
-import org.primefaces.selenium.spi.WebDriverProvider;
+import org.primefaces.selenium.internal.Guard;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:fileUpload}.
@@ -67,12 +64,34 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @param value the file name to set
      */
     public void setValue(Serializable value) {
-        if (getInput() != this && !PrimeSelenium.isChrome()) {
-            // input file cannot be cleared if skinSimple=false or in Chrome
-            getInput().clear();
+        Runnable runnable = () -> {
+            if (getInput() != this && !PrimeSelenium.isChrome()) {
+                // input file cannot be cleared if skinSimple=false or in Chrome
+                getInput().clear();
+            }
+            // ComponentUtils.sendKeys will break tests in Chrome
+            getInput().sendKeys(value.toString());
+
+            PrimeSelenium.wait(200);
+        };
+
+        if (isAutoUpload()) {
+            if (isAdvancedMode()) {
+                Runnable guarded = Guard.custom(
+                    runnable,
+                    200,
+                    ConfigProvider.getInstance().getTimeoutFileUpload(),
+                    PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
+
+                guarded.run();
+            }
+            else {
+                PrimeSelenium.guardAjax(runnable).run();
+            }
         }
-        // ComponentUtils.sendKeys will break tests in Chrome
-        getInput().sendKeys(value.toString());
+        else {
+            runnable.run();
+        }
     }
 
     /**
@@ -94,7 +113,15 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @return the widget's upload button
      */
     public WebElement getAdvancedUploadButton() {
-        return findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-upload"));
+        WebElement element = findElement(By.cssSelector(".ui-fileupload-buttonbar button.ui-fileupload-upload"));
+
+        WebElement guarded = Guard.custom(
+            element,
+            200,
+            ConfigProvider.getInstance().getTimeoutFileUpload(),
+            PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
+
+        return guarded;
     }
 
     /**
@@ -120,25 +147,6 @@ public abstract class FileUpload extends AbstractInputComponent {
             }
         }
         throw new NoSuchElementException("cancel button for " + fileName + " not found");
-    }
-
-    /**
-     * Waits until all selected files are uploaded.
-     * This only works in advanced mode.
-     * @param additionalElementToWaitFor element to wait for stable GUI
-     */
-    public void waitAdvancedUntilAllFilesAreUploaded(WebElement additionalElementToWaitFor) {
-        ConfigProvider config = ConfigProvider.getInstance();
-        WebDriver driver = WebDriverProvider.get();
-
-        // todo: Should there be a separate configuration entry for file upload?
-        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutAjax(), 100);
-        // all files are uploaded if widgets file array is empty
-        String jsScript = "if (" + getWidgetByIdScript() + ".files.length === 0) return true;";
-        wait.until(ExpectedConditions.jsReturnsValue(jsScript));
-        PrimeSelenium.guardAjax(this);
-        PrimeSelenium.wait(200);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(additionalElementToWaitFor));
     }
 
     /**
@@ -168,5 +176,13 @@ public abstract class FileUpload extends AbstractInputComponent {
     public List<String> getWidgetErrorMessages() {
         return findElements(By.className("ui-messages-error-summary")).stream()
                 .map(e -> e.getText()).collect(Collectors.toList());
+    }
+
+    public boolean isAdvancedMode() {
+        return "advanced".equals(getWidgetConfiguration().getString("mode"));
+    }
+
+    public boolean isAutoUpload() {
+        return getWidgetConfiguration().has("auto") ? getWidgetConfiguration().getBoolean("auto") : false;
     }
 }

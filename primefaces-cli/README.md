@@ -1,7 +1,7 @@
 [![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/)
 [![Javadocs](http://javadoc.io/badge/org.primefaces/primefaces-selenium.svg)](http://javadoc.io/doc/org.primefaces/primefaces-cli)
 
-# primefaces-cli
+# PrimeFaces Command Line Interface
 
 PrimeFaces CLI currently comes with some handy tools to vastly automate some migration-tasks.
 
@@ -14,17 +14,35 @@ It´s suggested to have no uncommited changes before running this CLI-tool. So y
 
 There always may be corner-cases which need some additional manual work. So it´s suggest to do a visual check of your application afterwards.
 
+## Download
+
+**Windows PowerShell:**
+
+```powershell
+Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0-RC1/primefaces-cli-11.0.0-RC1.jar -OutFile C:\cli\pfcli.jar
+```
+
+**Linux WGET:**
+
+```bash
+wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0-RC1/primefaces-cli-11.0.0-RC1.jar
+```
+
 ## PrimeFlex 2 --> PrimeFlex 3 migration
 
 This tool replaces PrimeFlex 2 - CSS - classes in your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.
 
 #### Start CLI and show help
 
-```java -cp "primefaces-cli-11.0.0-SNAPSHOT.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration --help```
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration --help
+```
 
 #### Migrate all XHTML and HTML - files in one directory (including subdirectories)
 
-```java -cp "primefaces-cli-11.0.0-SNAPSHOT.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration c:\projects\myapp -e=html,xhtml```
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration c:\projects\myapp -e=html,xhtml
+```
 
 Look at https://www.primefaces.org/primeflex/ for additional information.
 
@@ -36,8 +54,12 @@ This tool replaces legacy Grid CSS classes (e.g. ui-g, see https://www.primeface
 
 #### Start CLI and show help
 
-```java -cp "primefaces-cli-11.0.0-SNAPSHOT.jar" org.primefaces.cli.migration.primeflex.GridCssMigration --help```
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.GridCssMigration --help
+```
 
 #### Migrate all XHTML and HTML - files in one directory (including subdirectories)
 
-```java -cp "primefaces-cli-11.0.0-SNAPSHOT.jar" org.primefaces.cli.migration.primeflex.GridCssMigration c:\projects\myapp -e=html,xhtml```
+```shell
+java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.GridCssMigration c:\projects\myapp -e=html,xhtml
+```

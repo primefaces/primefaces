@@ -23,7 +23,6 @@
  */
 package org.primefaces.selenium.internal.junit;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.primefaces.selenium.internal.ConfigProvider;
@@ -40,31 +39,6 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
         synchronized (SYNCHRONIZER) {
             if (!started) {
                 ConfigProvider configProvider = ConfigProvider.getInstance();
-
-                WebDriverManager webDriverManager = null;
-                if ("firefox".equals(configProvider.getWebdriverBrowser())) {
-                    if (!System.getProperties().contains("webdriver.gecko.driver")) {
-                        webDriverManager = WebDriverManager.firefoxdriver();
-                    }
-                }
-                else if ("chrome".equals(configProvider.getWebdriverBrowser())) {
-                    if (!System.getProperties().contains("webdriver.gecko.driver")) {
-                        webDriverManager = WebDriverManager.chromedriver();
-                    }
-                }
-                else if ("safari".equals(configProvider.getWebdriverBrowser())) {
-                    if (!System.getProperties().contains("webdriver.safari.driver")) {
-                        webDriverManager = WebDriverManager.safaridriver();
-                    }
-                }
-
-                if (webDriverManager != null) {
-                    if (configProvider.getWebdriverVersion() != null) {
-                        webDriverManager = webDriverManager.driverVersion(configProvider.getWebdriverVersion());
-                    }
-
-                    webDriverManager.setup();
-                }
 
                 DeploymentAdapter deploymentAdapter = configProvider.getDeploymentAdapter();
                 deploymentAdapter.startup();

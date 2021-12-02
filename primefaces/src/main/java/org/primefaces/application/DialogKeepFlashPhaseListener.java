@@ -21,39 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.internal;
+package org.primefaces.application;
 
-import org.primefaces.selenium.internal.component.PrimeFacesSeleniumSystemEventListener;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.faces.event.PreRenderViewEvent;
 
-public class PrimefacesSeleniumPhaseListener implements PhaseListener {
-
-    private static final long serialVersionUID = -5173838784550587093L;
+/**
+ * Keeps objects within Flash during opening a Dialog Framework - dialog and so allows passing objects via Flash to a Dialog Framework - dialog.
+ */
+public class DialogKeepFlashPhaseListener implements PhaseListener {
 
     @Override
-    public void beforePhase(PhaseEvent phaseEvent) {
-        if (!FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest()) {
-            /*
-             * PrimefacesSeleniumPhaseListener adds PrimeFacesSeleniumSystemEventListener as PreRenderViewEvent. PrimeFacesSeleniumSystemEventListener adds
-             * PrimeFacesSeleniumDummyComponent to the component-tree. And finally PrimeFacesSeleniumDummyComponent adds pfselenium.core.csp.js after core.js
-             * was added by PrimeFaces itself. This works independent of JSF-stage, MOVE_TO_BOTTOM , ...
-             */
-            FacesContext.getCurrentInstance().getViewRoot().subscribeToViewEvent(PreRenderViewEvent.class, new PrimeFacesSeleniumSystemEventListener());
-        }
+    public void afterPhase(PhaseEvent event) {
+
     }
 
     @Override
-    public void afterPhase(PhaseEvent phaseEvent) {
-
+    public void beforePhase(PhaseEvent event) {
+        if (isInDialogPreparation()) {
+            Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+            for (String flashName : flash.keySet()) {
+                flash.keep(flashName);
+            }
+        }
     }
 
     @Override
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }
+
+    protected boolean isInDialogPreparation() {
+        String dialogOutcome = (String) FacesContext.getCurrentInstance().getAttributes().get(Constants.DialogFramework.OUTCOME);
+        return LangUtils.isNotEmpty(dialogOutcome);
+    }
+
 }

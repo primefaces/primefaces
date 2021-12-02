@@ -21,29 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.internal.component;
+package org.primefaces.functional;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlBody;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import java.io.IOException;
+import java.util.Objects;
 
-public class PrimeFacesSeleniumSystemEventListener implements SystemEventListener {
-    @Override
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
-        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-        for (UIComponent component : viewRoot.getChildren()) {
-            if (component instanceof HtmlBody) {
-                component.getChildren().add(new PrimeFacesSeleniumDummyComponent());
-            }
-        }
+@FunctionalInterface
+public interface IOBiConsumer<T, U> {
+
+    void accept(T t, U u) throws IOException;
+
+    default IOBiConsumer<T, U> andThen(IOBiConsumer<? super T, ? super U> after) throws IOException {
+        Objects.requireNonNull(after);
+
+        return (l, r) -> {
+            accept(l, r);
+            after.accept(l, r);
+        };
     }
 
-    @Override
-    public boolean isListenerForSource(Object source) {
-        return (source instanceof UIViewRoot);
-    }
 }

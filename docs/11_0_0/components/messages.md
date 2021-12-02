@@ -20,6 +20,7 @@ Messages is a pre-skinned extended version of the standard JSF messages componen
 id | null | String | Unique identifier of the component.
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
+widgetVar | null | String | Name of the client side widget.
 showSummary | true | Boolean | Specifies if the summary of the FacesMessages should be displayed.
 showDetail | false | Boolean | Specifies if the detail of the FacesMessages should be displayed.
 globalOnly | false | String | When true, only facesmessages with no clientIds are displayed.
@@ -75,6 +76,15 @@ Messages escapes HTML content in messages, disable escape option to display cont
 ```xhtml
 <p:messages escape="false" />
 ```
+
+## Client Side API
+Widget: _PrimeFaces.widget.Messages_
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| appendMessage(facesMessage) | facesMessage: see JSDoc about PrimeFaces.FacesMessage  | void | appends the message |
+
+
 ## Skinning
 Full list of CSS selectors of message is as follows;
 

@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.carousel;
 
+import java.util.List;
+
+import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.TouchAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.ResponsiveOption;
-
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import java.util.List;
 
 public abstract class CarouselBase extends UITabPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, TouchAware {
 
@@ -198,7 +199,7 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
 
     @Override
     public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
     }
 
     @Override

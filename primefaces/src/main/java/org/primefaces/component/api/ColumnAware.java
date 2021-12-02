@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -44,27 +44,31 @@ import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
-    default void forEachColumn(Function<UIColumn, Boolean> callback) {
-        forEachColumn(true, true, callback);
+    default void forEachColumn(Predicate<UIColumn> callback) {
+        forEachColumn(true, true, false, callback);
     }
 
-    default void forEachColumn(boolean unwrapDynamicColumns, Function<UIColumn, Boolean> callback) {
-        forEachColumn(unwrapDynamicColumns, true, callback);
+    default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, boolean skipColumnGroups, Predicate<UIColumn> callback) {
+        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, skipColumnGroups, callback);
     }
 
-    default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, Function<UIColumn, Boolean> callback) {
-        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, true, callback);
-    }
-
-    default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, boolean visitColumnGroups, Function<UIColumn, Boolean> callback) {
-        forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, visitColumnGroups, callback);
-    }
-
-    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, boolean skipUnrendered, boolean visitColumnGroups,
-            Function<UIColumn, Boolean> callback) {
+    /**
+     * NOTE: this is for internal usage only!
+     *
+     * @param context the {@link FacesContext}
+     * @param root the {@link UIComponent} where the search starts from
+     * @param unwrapDynamicColumns if the callback should be called for each item of p:columns with {@link DynamicColumn},
+     *                              or just once with {@link Columns}
+     * @param skipUnrendered If unrendered components should be skipped
+     * @param skipColumnGroups If {@link ColumnGroup} components should be skipped
+     * @param callback The callback, which will be invoked for each column. If it returns false, the algorithm will be cancelled
+     * @return false when the algorithm was cancelled
+     */
+    default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, boolean skipUnrendered, boolean skipColumnGroups,
+            Predicate<UIColumn> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
-            if (skipUnrendered && !child.isRendered()) {
+            if (!(child instanceof Columns) && skipUnrendered && !child.isRendered()) {
                 continue;
             }
 
@@ -73,24 +77,30 @@ public interface ColumnAware {
                 if (unwrapDynamicColumns) {
                     for (int j = 0; j < columns.getRowCount(); j++) {
                         DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
-                        if (!callback.apply(dynaColumn)) {
+                        dynaColumn.applyStatelessModel();
+
+                        if (skipUnrendered && !dynaColumn.isRendered()) {
+                            continue;
+                        }
+
+                        if (!callback.test(dynaColumn)) {
                             return false;
                         }
                     }
                 }
                 else {
-                    if (!callback.apply(columns)) {
+                    if (!callback.test(columns)) {
                         return false;
                     }
                 }
             }
             else if (child instanceof Column) {
                 Column column = (Column) child;
-                if (!callback.apply(column)) {
+                if (!callback.test(column)) {
                     return false;
                 }
             }
-            else if (child instanceof ColumnGroup && visitColumnGroups) {
+            else if (child instanceof ColumnGroup && !skipColumnGroups) {
                 // columnGroup must contain p:row(s) as child
                 for (int j = 0; j < child.getChildCount(); j++) {
                     UIComponent row = child.getChildren().get(j);
@@ -98,7 +108,7 @@ public interface ColumnAware {
                         continue;
                     }
 
-                    if (!forEachColumn(context, row, unwrapDynamicColumns, skipUnrendered, visitColumnGroups, callback)) {
+                    if (!forEachColumn(context, row, unwrapDynamicColumns, skipUnrendered, skipColumnGroups, callback)) {
                         return false;
                     }
                 }
@@ -111,7 +121,7 @@ public interface ColumnAware {
                         continue;
                     }
 
-                    if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, skipUnrendered, visitColumnGroups, callback)) {
+                    if (!forEachColumn(context, columnAwareChild, unwrapDynamicColumns, skipUnrendered, skipColumnGroups, callback)) {
                         return false;
                     }
                 }
@@ -127,7 +137,7 @@ public interface ColumnAware {
                     // for now just support basic p:column in ui:repeat
                     if (target instanceof Column) {
                         Column column = (Column) target;
-                        if (!callback.apply(column)) {
+                        if (!callback.test(column)) {
                             return VisitResult.COMPLETE;
                         }
                     }
@@ -270,14 +280,15 @@ public interface ColumnAware {
             if (c1 instanceof DynamicColumn) {
                 ((DynamicColumn) c1).applyStatelessModel();
             }
-            if (c2 instanceof DynamicColumn) {
-                ((DynamicColumn) c2).applyStatelessModel();
-            }
 
             Integer dp1 = c1.getDisplayPriority();
             ColumnMeta cm1 = columnMeta.get(c1.getColumnKey());
             if (cm1 != null && cm1.getDisplayPriority() != null) {
                 dp1 = cm1.getDisplayPriority();
+            }
+
+            if (c2 instanceof DynamicColumn) {
+                ((DynamicColumn) c2).applyStatelessModel();
             }
 
             Integer dp2 = c2.getDisplayPriority();
@@ -299,7 +310,7 @@ public interface ColumnAware {
     default int getColumnsCount(boolean visibleOnly) {
         final LongAdder columnsCount = new LongAdder();
 
-        forEachColumn(true, true, false, column -> {
+        forEachColumn(true, true, true, column -> {
             if (!visibleOnly || column.isVisible()) {
                 columnsCount.increment();
             }
@@ -316,7 +327,7 @@ public interface ColumnAware {
     default int getColumnsCountWithSpan(boolean visibleOnly) {
         final LongAdder columnsCountWithSpan = new LongAdder();
 
-        forEachColumn(true, true, false, column -> {
+        forEachColumn(true, true, true, column -> {
             if (!visibleOnly || column.isVisible()) {
                 columnsCountWithSpan.add(column.getColspan());
             }
@@ -327,7 +338,7 @@ public interface ColumnAware {
     }
 
     default void resetDynamicColumns() {
-        forEachColumn(false, false, column ->  {
+        forEachColumn(false, false, false, column ->  {
             if (column instanceof Columns) {
                 ((Columns) column).setRowIndex(-1);
                 setColumns(null);

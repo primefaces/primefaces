@@ -23,6 +23,19 @@
  */
 package org.primefaces.component.datatable;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
+import javax.faces.model.DataModel;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -41,18 +54,6 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.*;
 import org.primefaces.util.*;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.event.*;
-import javax.faces.model.DataModel;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -284,14 +285,27 @@ public class DataTable extends DataTableBase {
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
 
-        // restore "value" from "filteredValue"
+        // restore "value" from "filteredValue" - we must work on filtered data when filtering is active
+        // in future we might remember filtered rowKeys and skip them while rendering instead of doing it this way
         if (event instanceof PostRestoreStateEvent
                 && this == event.getComponent()
                 && isFilteringEnabled()
                 && !isLazy()) {
-            Object filteredValue = getFilteredValue();
-            if (filteredValue != null) {
-                setValue(filteredValue);
+
+            ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
+            if (ve != null) {
+                Object filteredValue = getFilteredValue();
+                if (filteredValue != null) {
+                    setValue(filteredValue);
+                }
+            }
+            else {
+                // trigger filter as previous requests were filtered
+                // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
+                // and caused bugs with editing and serialization like #7999
+                if (isFilteringCurrentlyActive()) {
+                    filterAndSort();
+                }
             }
         }
     }
@@ -487,6 +501,9 @@ public class DataTable extends DataTableBase {
 
         if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
+
+            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
+            lazyModel.setRowCount(lazyModel.count(filterBy));
 
             List<?> data = lazyModel.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
 
@@ -925,14 +942,18 @@ public class DataTable extends DataTableBase {
         return iterableChildren;
     }
 
-    public void updateFilteredValue(FacesContext context, List<?> value) {
-        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.toString());
-
+    public java.util.List<?> getFilteredValue() {
+        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
         if (ve != null) {
-            ve.setValue(context.getELContext(), value);
+            return (java.util.List<?>) ve.getValue(getFacesContext().getELContext());
         }
-        else {
-            setFilteredValue(value);
+        return null;
+    }
+
+    public void setFilteredValue(java.util.List<?> filteredValue) {
+        ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
+        if (ve != null) {
+            ve.setValue(getFacesContext().getELContext(), filteredValue);
         }
     }
 

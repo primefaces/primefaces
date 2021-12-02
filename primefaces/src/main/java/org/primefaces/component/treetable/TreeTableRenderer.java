@@ -675,7 +675,7 @@ public class TreeTableRenderer extends DataRenderer {
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
         boolean sortable = tt.isColumnSortable(context, column);
-        boolean filterable = tt.isColumnFilterable(column);
+        boolean filterable = tt.isColumnFilterable(context, column);
         SortMeta sortMeta = null;
         String style = column.getStyle();
         String width = column.getWidth();

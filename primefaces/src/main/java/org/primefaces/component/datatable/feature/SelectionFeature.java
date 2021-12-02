@@ -33,6 +33,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class SelectionFeature implements DataTableFeature {
@@ -227,15 +228,26 @@ public class SelectionFeature implements DataTableFeature {
             throw new FacesException("Multiple selection reference must be an Array or a List for DataTable " + table.getClientId());
         }
 
-        Object selection = null;
+        Object selection;
         if (selected.isEmpty()) {
             if (multiple) {
-                selection = isArray ? LangUtils.EMPTY_OBJECT_ARRAY : Collections.emptyList();
+                selection = isArray
+                        ? Array.newInstance(clazz.getComponentType(), 0)
+                        : Collections.emptyList();
+            }
+            else {
+                selection = null;
             }
         }
         else {
             if (multiple) {
-                selection = isArray ? selected.toArray() : selected;
+                if (isArray) {
+                    Object arr = Array.newInstance(clazz.getComponentType(), selected.size());
+                    selection = selected.toArray((Object[]) arr);
+                }
+                else {
+                    selection = selected;
+                }
             }
             else {
                 selection = selected.get(0);

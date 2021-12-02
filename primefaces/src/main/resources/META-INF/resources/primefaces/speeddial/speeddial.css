@@ -37,9 +37,10 @@
     position: absolute;
 }
 
-.ui-speeddial-button.ui-speeddial-rotate {
-    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    will-change: transform;
+.ui-speeddial-button.ui-speeddial-rotate .ui-button-icon-left {
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: opacity,transform;
 }
 
 .ui-speeddial-mask {
@@ -71,8 +72,32 @@
     opacity: 1;
 }
 
-.ui-speeddial-opened .ui-speeddial-rotate {
+.ui-speeddial-opened .ui-speeddial-rotate .ui-button-icon-left {
     transform: rotate(45deg);
+}
+
+.ui-speeddial .ui-speeddial-rotate .ui-button-icon-left + .ui-button-icon-left {
+    transform: rotate(-90deg);
+}
+
+.ui-speeddial .ui-button-icon-left + .ui-button-icon-left {
+    opacity: 0;
+}
+
+.ui-speeddial-opened .ui-speeddial-dual-icon .ui-button-icon-left {
+    opacity: 0;
+}
+
+.ui-speeddial-opened .ui-button-icon-left + .ui-button-icon-left {
+    opacity: 1;
+}
+
+.ui-speeddial-opened .ui-speeddial-rotate.ui-speeddial-dual-icon .ui-button-icon-left {
+    transform: rotate(90deg);
+}
+
+.ui-speeddial-opened .ui-speeddial-rotate .ui-button-icon-left + .ui-button-icon-left {
+    transform: rotate(0deg);
 }
 
 /* Direction */

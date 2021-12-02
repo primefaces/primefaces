@@ -24,12 +24,16 @@
 package org.primefaces.selenium.component.base;
 
 import org.json.JSONObject;
-import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.AbstractPrimePageFragment;
 import org.primefaces.selenium.PrimeSelenium;
 
 public abstract class AbstractComponent extends AbstractPrimePageFragment {
+
+    /**
+     * CSP script using jQuery events to see if an event is AJAXified.
+     */
+    private static final String CSP_SCRIPT = "return PrimeFaces.csp.hasRegisteredAjaxifiedEvent('%s', '%s');";
 
     /**
      * Gets the widget by component id JS function.
@@ -63,7 +67,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
     }
 
     /**
-     * Is the event for the root-element ajaxified?
+     * Is the event for the root-element AJAXified?
      *
      * @param event Event with the `on` prefix, such as `onclick` or `onblur`.
      * @return true if using AJAX false if not
@@ -73,7 +77,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
     }
 
     /**
-     * Is the event ajaxified?
+     * Is the event AJAXified?
      *
      * @param element Element for which to do the check. (May be a child element of a complex component.) If no element is passed it defaults to getRoot().
      * @param event Event with the `on` prefix, such as `onclick` or `onblur`.
@@ -83,19 +87,16 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         if (element == null) {
             element = getRoot();
         }
-        Boolean hasCspRegisteredEvent = false;
-        try {
-            hasCspRegisteredEvent = PrimeSelenium.executeScript("return PrimeFaces.csp.hasRegisteredAjaxifiedEvent('" +
-                        element.getAttribute("id") + "', '" + event + "')");
+
+        // first check normal path if component is AJAXified
+        boolean isAjaxScript = ComponentUtils.isAjaxScript(element.getAttribute(event));
+        if (isAjaxScript) {
+            return true;
         }
-        catch (JavascriptException ex) {
-            if (ex.getMessage().contains("PrimeFaces.csp.hasRegisteredAjaxifiedEvent is not a function")) {
-                System.err.println("WARNING: 'pfselenium.core.csp.js' missing - not added to the page");
-            }
-            else {
-                throw ex;
-            }
-        }
-        return (ComponentUtils.isAjaxScript(element.getAttribute(event)) || hasCspRegisteredEvent);
+
+        // now check for CSP events
+        String id = element.getAttribute("id");
+        String cspScript = String.format(CSP_SCRIPT, id, event);
+        return PrimeSelenium.executeScript(cspScript);
     }
 }

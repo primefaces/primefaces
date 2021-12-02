@@ -27,8 +27,20 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
+                
                 <h5 style="margin-top:0px">Basic Layout</h5>
                 <p:selectManyCheckbox id="basic" value="#{checkboxView.selectedOptions}">
+                    <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
+                    <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
+                    <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
+                </p:selectManyCheckbox>
+                
+                <h5>Basic Layout - AJAX</h5>
+                <p:selectManyCheckbox id="basicAjax" value="#{checkboxView.selectedOptions}" widgetVar="blub">
+                    <p:ajax listener="#{checkboxView.selectedOptionsChanged}" />
                     <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
                     <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
                     <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
@@ -48,6 +60,7 @@
                 <h5>Custom Layout</h5>
                 <p:outputPanel id="customPanel">
                     <p:selectManyCheckbox id="custom" value="#{checkboxView.selectedOptions2}" layout="custom">
+                        <p:ajax listener="#{checkboxView.selectedOptions2Changed}" />
                         <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
                         <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
                         <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>

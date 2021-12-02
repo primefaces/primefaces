@@ -44,20 +44,8 @@
             <name>Thomas Andraschko</name>
         </developer>
         <developer>
-            <id>jfarcand.oss</id>
-            <name>Jeanfrancois Arcand</name>
-        </developer>
-        <developer>
-            <id>rdebusscher</id>
-            <name>Rudy De Busscher</name>
-        </developer>
-        <developer>
             <id>sincan.mert</id>
             <name>Mert Sincan</name>
-        </developer>
-        <developer>
-            <id>sudheer.jonna</id>
-            <name>Sudheer Jonna</name>
         </developer>
         <developer>
             <id>Rapster</id>
@@ -67,13 +55,18 @@
             <id>melloware</id>
             <name>Emil Lefkof</name>
         </developer>
+        <developer>
+            <id>christophs78</id>
+            <name>Christoph Straßer</name>
+        </developer>
     </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <junit.version>5.8.1</junit.version>
+        <junit.version>5.8.2</junit.version>
 
         <npm.token/>
         <npm.username/>
@@ -91,21 +84,6 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>primefaces-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>https://repository.primefaces.org</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache-snapshots-repo</id>
-            <url>https://repository.apache.org/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <modules>
         <module>primefaces</module>
@@ -187,6 +165,7 @@
                 <version>3.2.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
                 </configuration>
             </plugin>
 
@@ -271,7 +250,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>9.0</version>
+                        <version>9.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -321,7 +300,7 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.faces</artifactId>
-                <version>2.3.16</version>
+                <version>2.3.17</version>
             </dependency>
 
             <dependency>
@@ -344,19 +323,19 @@
             <dependency>
                 <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
                 <artifactId>owasp-java-html-sanitizer</artifactId>
-                <version>20200713.1</version>
+                <version>20211018.2</version>
             </dependency>
 
             <!-- Data Exporter -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
-                <version>5.0.0</version>
+                <version>5.1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
-                <version>5.0.0</version>
+                <version>5.1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.github.librepdf</groupId>

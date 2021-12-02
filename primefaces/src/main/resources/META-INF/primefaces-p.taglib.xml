@@ -3575,7 +3575,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -3932,7 +3932,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -7011,7 +7011,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -7311,7 +7311,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -7570,7 +7570,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -8441,7 +8441,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -8683,7 +8683,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -17672,6 +17672,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Specifies if the summary of the FacesMessage should be displayed. Default is true.]]>
             </description>
             <name>showSummary</name>
@@ -20641,7 +20649,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Interval in seconds to do periodic ajax requests. Default is 2.]]>
+                <![CDATA[Interval in seconds to do periodic AJAX requests. Default is 2.]]>
             </description>
             <name>interval</name>
             <required>false</required>
@@ -21222,6 +21230,14 @@
             <name>cancel</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the output in the tabbing order. Default: "0".]]>
+            </description>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -24532,7 +24548,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -25444,7 +25460,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -27538,7 +27554,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -29917,7 +29933,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -32075,7 +32091,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enable touch support if browser detection supports it. Default is true.]]>
+                <![CDATA[Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.]]>
             </description>
             <name>touchable</name>
             <required>false</required>
@@ -33561,7 +33577,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defined to rotate showIcon when hideIcon is not present.]]>
+                <![CDATA[Defined to rotate the showIcon (and hideIcon).]]>
             </description>
             <name>rotateAnimation</name>
             <required>false</required>
@@ -33654,6 +33670,22 @@
             <name>model</name>
             <required>false</required>
             <type>org.primefaces.model.menu.MenuModel</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether the menu should be kept open on clicking menu items. Default value is false.]]>
+            </description>
+            <name>keepOpen</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Badge value (String) or BadgeModel instance of the badge to render for this SpeedDial. Default value is null.]]>
+            </description>
+            <name>badge</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
 </facelet-taglib>

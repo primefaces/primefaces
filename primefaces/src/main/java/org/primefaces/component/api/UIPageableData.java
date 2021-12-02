@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.api;
 
-import org.primefaces.component.inputtext.InputText;
-import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.util.MessageFactory;
+import java.util.Map;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
-import java.util.Map;
+
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.util.MessageFactory;
 
 /**
  * UIData for pageable components
@@ -95,7 +96,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     @Override
     public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
     }
 
     @Override

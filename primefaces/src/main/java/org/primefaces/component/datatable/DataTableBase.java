@@ -281,14 +281,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.editable, editable);
     }
 
-    public java.util.List<?> getFilteredValue() {
-        return (java.util.List<?>) getStateHelper().eval(PropertyKeys.filteredValue, null);
-    }
-
-    public void setFilteredValue(java.util.List<?> filteredValue) {
-        getStateHelper().put(PropertyKeys.filteredValue, filteredValue);
-    }
-
     public String getSortMode() {
         return (String) getStateHelper().eval(PropertyKeys.sortMode, "multiple");
     }

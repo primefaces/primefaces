@@ -1,8 +1,6 @@
-@charset "UTF-8";
-
 @font-face {
     font-family: 'primeicons';
-    font-display: auto;
+    font-display: block;
     src: url("#{resource['primefaces:primeicons/primeicons.eot']}");
     src: url("#{resource['primefaces:primeicons/primeicons.eot']}#iefix") format("embedded-opentype"), url("#{resource['primefaces:primeicons/primeicons.ttf']}") format("truetype"), url("#{resource['primefaces:primeicons/primeicons.woff']}") format("woff"), url("#{resource['primefaces:primeicons/primeicons.svg']}?#primeicons") format("svg");
     font-weight: normal;
@@ -57,6 +55,150 @@
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
     }
+}
+
+.pi-sort-alt-slash:before {
+    content: "\e9ee";
+}
+
+.pi-arrows-h:before {
+    content: "\e9ec";
+}
+
+.pi-arrows-v:before {
+    content: "\e9ed";
+}
+
+.pi-pound:before {
+    content: "\e9eb";
+}
+
+.pi-prime:before {
+    content: "\e9ea";
+}
+
+.pi-chart-pie:before {
+    content: "\e9e9";
+}
+
+.pi-reddit:before {
+    content: "\e9e8";
+}
+
+.pi-code:before {
+    content: "\e9e7";
+}
+
+.pi-sync:before {
+    content: "\e9e6";
+}
+
+.pi-shopping-bag:before {
+    content: "\e9e5";
+}
+
+.pi-server:before {
+    content: "\e9e4";
+}
+
+.pi-database:before {
+    content: "\e9e3";
+}
+
+.pi-hashtag:before {
+    content: "\e9e2";
+}
+
+.pi-bookmark-fill:before {
+    content: "\e9df";
+}
+
+.pi-filter-fill:before {
+    content: "\e9e0";
+}
+
+.pi-heart-fill:before {
+    content: "\e9e1";
+}
+
+.pi-flag-fill:before {
+    content: "\e9de";
+}
+
+.pi-circle:before {
+    content: "\e9dc";
+}
+
+.pi-circle-fill:before {
+    content: "\e9dd";
+}
+
+.pi-bolt:before {
+    content: "\e9db";
+}
+
+.pi-history:before {
+    content: "\e9da";
+}
+
+.pi-box:before {
+    content: "\e9d9";
+}
+
+.pi-at:before {
+    content: "\e9d8";
+}
+
+.pi-arrow-up-right:before {
+    content: "\e9d4";
+}
+
+.pi-arrow-up-left:before {
+    content: "\e9d5";
+}
+
+.pi-arrow-down-left:before {
+    content: "\e9d6";
+}
+
+.pi-arrow-down-right:before {
+    content: "\e9d7";
+}
+
+.pi-telegram:before {
+    content: "\e9d3";
+}
+
+.pi-stop-circle:before {
+    content: "\e9d2";
+}
+
+.pi-stop:before {
+    content: "\e9d1";
+}
+
+.pi-whatsapp:before {
+    content: "\e9d0";
+}
+
+.pi-building:before {
+    content: "\e9cf";
+}
+
+.pi-qrcode:before {
+    content: "\e9ce";
+}
+
+.pi-car:before {
+    content: "\e9cd";
+}
+
+.pi-instagram:before {
+    content: "\e9cc";
+}
+
+.pi-linkedin:before {
+    content: "\e9cb";
 }
 
 .pi-send:before {
@@ -711,7 +853,7 @@
     content: "\e935";
 }
 
-.pi-star-o:before {
+.pi-star-fill:before {
     content: "\e936";
 }
 

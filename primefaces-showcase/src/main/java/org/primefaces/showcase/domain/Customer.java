@@ -29,6 +29,8 @@ import java.util.Objects;
 
 public class Customer implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String name;
     private String company;
@@ -42,7 +44,7 @@ public class Customer implements Serializable {
     }
 
     public Customer(int id, String name, String company, Country country, LocalDate date, CustomerStatus status, int activity,
-            Representative representative) {
+                Representative representative) {
         this.id = id;
         this.name = name;
         this.company = company;
@@ -127,13 +129,13 @@ public class Customer implements Serializable {
         }
         Customer customer = (Customer) o;
         return id == customer.id
-                && activity == customer.activity
-                && Objects.equals(name, customer.name)
-                && Objects.equals(company, customer.company)
-                && Objects.equals(country, customer.country)
-                && Objects.equals(date, customer.date)
-                && status == customer.status
-                && Objects.equals(representative, customer.representative);
+                    && activity == customer.activity
+                    && Objects.equals(name, customer.name)
+                    && Objects.equals(company, customer.company)
+                    && Objects.equals(country, customer.country)
+                    && Objects.equals(date, customer.date)
+                    && status == customer.status
+                    && Objects.equals(representative, customer.representative);
     }
 
     @Override

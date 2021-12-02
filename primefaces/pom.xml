@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.12.4</version>
+            <version>4.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -171,7 +171,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.53</version>
+            <version>9.0.55</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -209,7 +209,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.9.6</version>
+            <version>3.9.7</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -684,6 +684,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.megamenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.panelmenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tabmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/message/message.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
@@ -957,6 +958,8 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
                     <minimizeJar>true</minimizeJar>
+                    <createSourcesJar>true</createSourcesJar>
+                    <shadeSourcesContent>true</shadeSourcesContent>
                     <relocations>
                         <relocation>
                             <pattern>org.json</pattern>
@@ -1035,7 +1038,19 @@
                                             <resource>META-INF/primefaces-p.taglib.xml</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/core.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.ajax.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.csp.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/validation/validation.js</resource>
@@ -1045,6 +1060,9 @@
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/fileupload/fileupload.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/lifecycle/lifecycle.js</resource>
                                         </transformer>
                                     </delegates>
                                 </transformer>
@@ -1115,6 +1133,14 @@
                                     <pattern>javax.xml.soap</pattern>
                                     <shadedPattern>jakarta.xml.soap</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>window.jsf</pattern>
+                                    <shadedPattern>window.faces</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>jsf.ajax</pattern>
+                                    <shadedPattern>faces.ajax</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -1143,7 +1169,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.3.2</version>
+                        <version>6.5.0</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>

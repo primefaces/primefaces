@@ -1,9 +1,8 @@
 .ui-chips {
     box-shadow: none;
     cursor: pointer;
-    display: inline-block;
+    display: inline-flex;
     position: relative;
-    width: auto;
 }
 
 .ui-chips-container {
@@ -14,16 +13,17 @@
     margin: 0;
     min-height: 1px;
     overflow: hidden;
-    width: 400px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .ui-chips-token {
     cursor: default;
-    display: inline-block;
-    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
     overflow: hidden;
     padding: 1px 3px;
-    white-space: nowrap;
     position: relative;
     margin: 2px;
 }
@@ -42,22 +42,26 @@
 }
 
 .ui-chips-input-token {
-    display: inline-block;
-    vertical-align: middle;
-    list-style-type: none;
-    margin: 1px;
-    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    flex: 1 1 auto;
 }
 
 .ui-chips-input-token input {
     background-color: transparent;
     border: 0 none;
-    margin: 2px;
-    outline: medium none;
-    width: 140px;
+    outline: 0 none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
 }
 
-.ui-fluid .ui-chips, 
+.ui-fluid .ui-chips {
+    display: flex;
+}
+
 .ui-fluid .ui-chips .ui-chips-container {
     width: 100%;
 }

@@ -23,15 +23,17 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -51,6 +53,6 @@ public class DataTable022 implements Serializable {
     }
 
     public List<String> getColumns() {
-        return Arrays.asList("id", "name");
+        return new ArrayList<>(Arrays.asList("id", "name"));
     }
 }

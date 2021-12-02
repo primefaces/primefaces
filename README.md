@@ -3,10 +3,10 @@
 [![Actions Status Integration Tests](https://github.com/primefaces/primefaces/workflows/IT/badge.svg)](https://github.com/primefaces/primefaces/actions/workflows/nightly.yml)
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.primefaces%3Aprimefaces&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.primefaces%3Aprimefaces)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Discord Chat](https://img.shields.io/discord/591914197219016707.svg?color=7289da&label=chat&logo=discord&style=flat-square)](https://discord.gg/gzKFYnpmCY)
+[![Discord Chat](https://img.shields.io/badge/chat-discord-7289da)](https://discord.gg/gzKFYnpmCY)
 [![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces+jsf)
 
-[![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2020/03/primefaces-github-02032020.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
+[![PrimeFaces Hero](https://www.primefaces.org/wp-content/uploads/2021/10/PrimeFaces-GitHub-2021Q4.jpg "PrimeFaces Hero")](https://www.primefaces.org/showcase)
 
 # PrimeFaces
 
@@ -28,7 +28,7 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
-11.0.0-RC1| [primefaces-11.0.0-RC1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0-RC1/primefaces-11.0.0-RC1.jar)  | [primefaces-11.0.0-RC1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0-RC1/primefaces-11.0.0-RC1-sources.jar) | 2.0 - 3.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
+11.0.0-RC2| [primefaces-11.0.0-RC2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0-RC2/primefaces-11.0.0-RC2.jar)  | [primefaces-11.0.0-RC2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0-RC2/primefaces-11.0.0-RC2-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
 10.0.0| [primefaces-10.0.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | 2.0 - 3.0 | 1.8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
 8.0| [primefaces-8.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
 7.0| [primefaces-7.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0.jar)  | [primefaces-7.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/7.0/primefaces-7.0-sources.jar) | 2.0 - 2.3 | 1.7 - ? | [7.0 Documentation](https://primefaces.github.io/primefaces/7_0/#/)
@@ -50,17 +50,17 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>11.0.0-RC1</version>
+      <version>11.0.0-RC2</version>
   </dependency>
   ```
 
-- Official release (jakarta; JSF 3.0)
+- Official release (jakarta; Faces 3.0 - Faces 4.0)
 
   ```xml
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>11.0.0-RC1</version>
+      <version>11.0.0-RC2</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -82,7 +82,7 @@ For a full list of the available downloads, please visit the [download page](htt
   </repositories>
   ```
 
-- Snapshot (jakarta; JSF 3.0; should NOT be used in production environments!)
+- Snapshot (jakarta; Faces 3.0 - Faces 4.0; should NOT be used in production environments!)
 
   ```xml
   <dependency>

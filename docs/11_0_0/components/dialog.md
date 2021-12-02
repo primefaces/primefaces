@@ -56,6 +56,15 @@ Dialog is a panel component that can overlay other elements on page.
 | blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
 | my | center | String | Position of the dialog relative to the target.
 
+## Common Mistakes
+- Use `appendTo` with care as the page definition and HTML DOM will be different!
+    if `p:dialog` is inside an `h:form` component and `appendTo` is enabled, on the browser the `p:dialog` would be
+    outside of the form and may cause unexpected results. In this case, nest a `h:form` inside the `p:dialog`.
+- Do not place `p:dialog` inside tables, containers likes divs with relative positioning or with non-
+    visible overflow defined, in cases like these functionality might be broken. This is not a limitation
+    but a result of DOM model. For example `p:dialog` inside a `p:tabView`, `p:accordion` are a
+    couple of examples. Same applies to `p:confirmDialog` as well.
+
 ## Getting started with the Dialog
 Dialog is a panel component containing other components, note that by default dialog is not visible.
 
@@ -147,7 +156,6 @@ public class DialogBean {
 }
 ```
 
-
 ## Client Side Callbacks
 Similar to close listener, onShow and onHide are handy callbacks for client side in case you need to
 execute custom javascript.
@@ -157,6 +165,14 @@ execute custom javascript.
     //Content
 </p:dialog>
 ```
+
+## Facets
+
+| Name | Description |
+| --- | --- |
+| header | content which will be rendered in the header; alternative to the `header` attribute |
+| footer | content which will be rendered in the footer; alternative to the `footer` attribute |
+
 ## Client Side API
 Widget: _PrimeFaces.widget.Dialog_
 
@@ -171,8 +187,6 @@ Widget: _PrimeFaces.widget.Dialog_
 Dialog resides in a main container element which _styleClass_ option apply. Following is the list of
 structural style classes;
 
-
-
 | Class | Applies |
 | --- | --- |
 | .ui-dialog | Container element of dialog
@@ -182,18 +196,6 @@ structural style classes;
 | .ui-dialog-content | Dialog body
 
 As skinning style classes are global, see the main theming section for more information.
-
-## Tips
-
-- Use appendTo with care as the page definition and HTML DOM would be different, for example if
-    dialog is inside an h:form component and appendTo is enabled, on the browser dialog would be
-    outside of form and may cause unexpected results. In this case, nest a form inside a dialog.
-- Do not place dialog inside tables, containers likes divs with relative positioning or with non-
-    visible overflow defined, in cases like these functionality might be broken. This is not a limitation
-    but a result of DOM model. For example dialog inside a layout unit, tabview, accordion are a
-    couple of examples. Same applies to confirmDialog as well.
-- A facet called “header" is available to provide custom content inside header instead of using
-    header attribute.
     
 ## Modal
 The dialog support for `modal='true'` works very well. However, there is a use case where the background area of the

@@ -41,7 +41,7 @@ TabView is a container component to group content in tabs.
 | scrollable     | false   | Boolean    | When enabled, tab headers can be scrolled horizontally instead of wrapping.
 | prependId      | true    | Boolean    | TabView is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.
 | tabindex       | 0       | String     | Position of the element in the tabbing order.
-| touchable      | true    | Boolean    | Enable touch support if browser detection supports it.
+| touchable      | false   | Boolean    | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | multiViewState | false   | Boolean    | Whether to keep TabView state across views, defaults to false.
 
 ## Getting started with the TabView
@@ -171,6 +171,7 @@ selectTab(index) | index: Index of tab to display | void | (Deprecated, use sele
 disable(index) | index: Index of tab to disable | void | Disables tab with given index
 enable(index) | index: Index of tab to enable | void | Enables tab with given index
 remove(index) | index: Index of tab to remove | void | Removes tab with given index
+reload(index) | index: Index of tab to reload | void | Reloads a dynamic tab with given index even if it was already cached.
 getLength() | - | Number | Returns the number of tabs
 getActiveIndex() | - | Number | Returns index of current tab
 

@@ -37,6 +37,10 @@ public class ResponsiveOption implements Serializable {
     private int numVisible;
     private int numScroll;
 
+    public ResponsiveOption() {
+
+    }
+
     public ResponsiveOption(String breakpoint, int numVisible) {
         this.breakpoint = breakpoint;
         this.numVisible = numVisible;

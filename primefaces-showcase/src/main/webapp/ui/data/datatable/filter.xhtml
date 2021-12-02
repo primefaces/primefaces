@@ -42,7 +42,7 @@
                             <p:commandButton value="Global Filter Only" update="@form" action="#{dtFilterView.toggleGlobalFilter()}"/>
                             </div>
                         </div>
-                        
+
                     </f:facet>
 
                     <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
@@ -68,7 +68,7 @@
                         <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
                     </p:column>
 
-                    <p:column field="date" headerText="Join Date" filterMatchMode="range">
+                    <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
                             <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
                         </f:facet>
@@ -126,7 +126,7 @@
                         <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.representative.name}" />
                     </p:column>
 
-                    <p:column field="date" headerText="Join Date" filterMatchMode="range">
+                    <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
                             <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" />
                         </f:facet>

@@ -36,11 +36,43 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.primefaces.selenium.PrimeExpectedConditions;
 
 public class Guard {
 
     private Guard() {
 
+    }
+
+    public static <T> T custom(T target, int timeout, ExpectedCondition... expectedConditions) {
+        return custom(target, 0, timeout, expectedConditions);
+    }
+
+    public static <T> T custom(T target, int delay, int timeout, ExpectedCondition... expectedConditions) {
+        OnloadScripts.execute();
+
+        return proxy(target, (Object p, Method method, Object[] args) -> {
+            try {
+                Object result = method.invoke(target, args);
+
+                // if JS uses setTimeout on the client we want to wait before trying to capture AJAX call
+                if (delay > 0) {
+                    Thread.sleep(delay);
+                }
+
+                WebDriver driver = WebDriverProvider.get();
+
+                WebDriverWait wait = new WebDriverWait(driver, timeout, 100);
+                wait.until(ExpectedConditions.and(expectedConditions));
+
+                return result;
+            }
+            catch (TimeoutException e) {
+                throw new TimeoutException("Timeout while waiting for custom guard!", e);
+            }
+        });
     }
 
     public static <T> T http(T target) {
@@ -55,11 +87,10 @@ public class Guard {
                 WebDriver driver = WebDriverProvider.get();
 
                 WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutHttp(), 100);
-                wait.until(d -> {
-                    return (Boolean) ((JavascriptExecutor) driver)
-                                .executeScript("return document.readyState === 'complete'"
-                                            + " && (!window.pfselenium || pfselenium.submitting === false && pfselenium.navigating === false);");
-                });
+                wait.until(ExpectedConditions.and(
+                        PrimeExpectedConditions.documentLoaded(),
+                        PrimeExpectedConditions.notNavigating(),
+                        PrimeExpectedConditions.notSubmitting()));
 
                 return result;
             }
@@ -72,12 +103,15 @@ public class Guard {
     public static <T> T ajax(String script, Object... args) {
         OnloadScripts.execute();
 
+        WebDriver driver = WebDriverProvider.get();
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
         try {
-            WebDriver driver = WebDriverProvider.get();
-            JavascriptExecutor executor = (JavascriptExecutor) driver;
             executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
+
             T result = (T) executor.executeScript(script, args);
+
             waitUntilAjaxCompletes(driver);
+
             return result;
         }
         catch (TimeoutException e) {
@@ -89,7 +123,7 @@ public class Guard {
         return ajax(target, 0);
     }
 
-    public static <T> T ajax(T target, int delayInMilliseconds) {
+    public static <T> T ajax(T target, int delay) {
         OnloadScripts.execute();
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
@@ -102,8 +136,8 @@ public class Guard {
                 Object result = method.invoke(target, args);
 
                 // if JS uses setTimeout on the client we want to wait before trying to capture AJAX call
-                if (delayInMilliseconds > 0) {
-                    Thread.sleep(delayInMilliseconds);
+                if (delay > 0) {
+                    Thread.sleep(delay);
                 }
 
                 waitUntilAjaxCompletes(driver);
@@ -112,7 +146,7 @@ public class Guard {
                 return result;
             }
             catch (TimeoutException e) {
-                throw new TimeoutException("Timeout while waiting for AJAX complete! (" + getAjaxDebugInfo(executor) + ")", e);
+                throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
             }
             catch (InterruptedException e) {
                 throw new TimeoutException("AJAX Guard delay was interrupted!", e);
@@ -137,6 +171,7 @@ public class Guard {
                     "PrimeFaces.animationActive=" + executor.executeScript("return PrimeFaces.animationActive;") + ", " +
                     "!window.pfselenium=" + executor.executeScript("return !window.pfselenium;") + ", " +
                     "pfselenium.xhr=" + executor.executeScript("return pfselenium.xhr;") + ", " +
+                    "pfselenium.anyXhrStarted=" + executor.executeScript("return pfselenium.anyXhrStarted;") + ", " +
                     "pfselenium.navigating=" + executor.executeScript("return pfselenium.navigating;");
     }
 
@@ -147,7 +182,7 @@ public class Guard {
                         .executeScript("return document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
                                     + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
-                                    + " && (!window.pfselenium || (pfselenium.xhr === null && pfselenium.navigating === false));");
+                                    + " && (!window.pfselenium || (pfselenium.xhr == null && pfselenium.navigating === false));");
         });
     }
 

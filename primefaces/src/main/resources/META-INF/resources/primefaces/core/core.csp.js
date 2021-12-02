@@ -22,6 +22,12 @@ if (!PrimeFaces.csp) {
         NONCE_VALUE : "",
 
         /**
+         * Map of currently registered CSP events on this page.
+         * @type {Map<string,Map<string,boolean>>}
+         */
+        EVENT_REGISTRY : new Map(),
+
+        /**
          * Sets the given nonce to all forms on the current page.
          * @param {string} nonce Nonce to set. This value is usually supplied by the server.
          */
@@ -63,7 +69,39 @@ if (!PrimeFaces.csp) {
                 };
 
                 $(element).off(jqEvent).on(jqEvent, jsWrapper);
+
+                //Collect some basic information about registered AJAXified event listeners
+                if (!PrimeFaces.isProductionProjectStage()) {
+                    if (!PrimeFaces.csp.EVENT_REGISTRY.has(id)) {
+                        PrimeFaces.csp.EVENT_REGISTRY.set(id, new Map());
+                    }
+                    var script = js.toString();
+                    var isAjaxified = (script.indexOf("PrimeFaces.ab(") >= 0) || 
+                                      (script.indexOf("pf.ab(") >= 0) || 
+                                      (script.indexOf("mojarra.ab(") >= 0) || 
+                                      (script.indexOf("jsf.ajax.request") >= 0);
+                    PrimeFaces.csp.EVENT_REGISTRY.get(id).set(jqEvent, isAjaxified);
+                }
             }
+        },
+
+        /**
+         * Does this component have a registered AJAX event.
+         * @param {string} id ID of an element
+         * @param {string} [event] Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
+         * @return {boolean} true if component has this AJAX event
+         */
+        hasRegisteredAjaxifiedEvent: function(id, event) {
+            if (PrimeFaces.isProductionProjectStage()) {
+                console.error("PrimeFaces CSP registry may not be used in JSF Production mode.");
+                return false;
+            }
+            if (PrimeFaces.csp.EVENT_REGISTRY.has(id)) {
+                var shortenedEvent = event.substring(2, event.length),
+                    jqEvent = shortenedEvent + '.' + id;
+                return PrimeFaces.csp.EVENT_REGISTRY.get(id).get(jqEvent);
+            }
+            return false;
         },
 
         /**

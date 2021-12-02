@@ -447,6 +447,14 @@
         },
 
         /**
+         * Checks whether the current application is running in a production environment.
+         * @return {boolean} `true` if this is a production environment, `false` otherwise.
+         */
+        isProductionProjectStage: function() {
+            return PrimeFaces.settings.projectStage === 'Production';
+        },
+
+        /**
          * Handles the error case when a widget was requested that is not available. Currently just logs an error
          * message.
          * @param {string} widgetVar Widget variables of a widget
@@ -644,7 +652,7 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.widgetNotAvailable(widgetName);
+                PrimeFaces.error("Widget class '" + widgetName + "' not found!");
             }
         },
 

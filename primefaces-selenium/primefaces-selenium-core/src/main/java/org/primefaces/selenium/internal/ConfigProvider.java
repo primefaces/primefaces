@@ -44,6 +44,7 @@ public class ConfigProvider {
     private int timeoutAjax = 10;
     private int timeoutHttp = 10;
     private int timeoutDocumentLoad = 15;
+    private int timeoutFileUpload = 20;
 
     private String scrollElementIntoView;
 
@@ -86,6 +87,11 @@ public class ConfigProvider {
                 String timeoutDocumentLoad = properties.getProperty("timeout.documentLoad");
                 if (timeoutDocumentLoad != null && !timeoutDocumentLoad.trim().isEmpty()) {
                     this.timeoutDocumentLoad = Integer.parseInt(timeoutDocumentLoad);
+                }
+
+                String timeoutFileUpload = properties.getProperty("timeout.fileUpload");
+                if (timeoutFileUpload != null && !timeoutFileUpload.trim().isEmpty()) {
+                    this.timeoutFileUpload = Integer.parseInt(timeoutFileUpload);
                 }
 
                 String disableAnimations = properties.getProperty("disableAnimations");
@@ -144,6 +150,8 @@ public class ConfigProvider {
             }
 
             buildOnloadScripts();
+
+            webdriverAdapter.initialize(this);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -184,6 +192,10 @@ public class ConfigProvider {
 
     public int getTimeoutDocumentLoad() {
         return timeoutDocumentLoad;
+    }
+
+    public int getTimeoutFileUpload() {
+        return timeoutFileUpload;
     }
 
     public String getScrollElementIntoView() {

@@ -276,7 +276,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             tabs = this.headerContainer;
 
         /* For Screen Reader and Keyboard accessibility */
-        tabs.attr('tabindex', this.tabindex);
+        tabs.not('.ui-state-disabled').attr('tabindex', this.tabindex);
 
         tabs.on('focus.tabview', function(e) {
             var focusedTab = $(this);
@@ -692,12 +692,31 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Reloads a dynamic tab even if it has already been loaded once. Forces an AJAX refresh of the tab.
+     * @param {number} index 0-based index of the tab to reload.
+     */
+    reload: function(index) {
+        var reloadPanel = this.panelContainer.children().eq(index);
+        this.markAsUnloaded(reloadPanel);
+        this.select(index);
+    },
+
+    /**
      * Marks the content of the given tab as loaded.
      * @private
      * @param {JQuery} panel A panel with content that was loaded.
      */
     markAsLoaded: function(panel) {
         panel.data('loaded', true);
+    },
+
+    /**
+     * Marks the content of the given tab as unloaded.
+     * @private
+     * @param {JQuery} panel A panel with content that was unloaded.
+     */
+    markAsUnloaded: function(panel) {
+        panel.data('loaded', false);
     },
 
     /**
@@ -715,7 +734,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to disable.
      */
     disable: function(index) {
-        this.headerContainer.eq(index).addClass('ui-state-disabled');
+        this.headerContainer.eq(index).addClass('ui-state-disabled').attr('tabindex', '-1');
     },
 
     /**
@@ -723,7 +742,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to enable.
      */
     enable: function(index) {
-        this.headerContainer.eq(index).removeClass('ui-state-disabled');
+        this.headerContainer.eq(index).removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
     },
 
     /**

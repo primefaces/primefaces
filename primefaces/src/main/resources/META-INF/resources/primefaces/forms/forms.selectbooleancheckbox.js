@@ -91,11 +91,15 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Checks this checkbox, if it is not checked already .
+     * Checks this checkbox, if it is not checked already.
+     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    check: function() {
+    check: function(silent) {
         if(!this.isChecked()) {
-            this.input.prop('checked', true).trigger('change');
+            this.input.prop('checked', true);
+            if(!silent) {
+                this.input.trigger('change');
+            }
             this.input.attr('aria-checked', true);
             this.box.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
         }
@@ -103,10 +107,14 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Unchecks this checkbox, if it is not unchecked already .
+     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    uncheck: function() {
+    uncheck: function(silent) {
         if(this.isChecked()) {
-            this.input.prop('checked', false).trigger('change');
+            this.input.prop('checked', false);
+            if(!silent) {
+                this.input.trigger('change');
+            }
             this.input.attr('aria-checked', false);
             this.box.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
         }
@@ -126,6 +134,13 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
     disable: function() {
         PrimeFaces.utils.disableInputWidget(this.jq, this.input);
         this.disabled = true;
-    }
+    },
 
+    /**
+     * Resets the input.
+     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     */
+    resetValue: function(silent) {
+        this.uncheck(silent);
+    }
 });

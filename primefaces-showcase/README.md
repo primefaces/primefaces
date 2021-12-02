@@ -14,15 +14,15 @@ via the [PrimeFaces download page](http://www.primefaces.org/downloads) (scroll 
 
 ```
 git clone https://github.com/primefaces/primefaces.git
-cd primefaces/primefaces
+cd primefaces
 mvn clean install            -- first build PrimeFaces
-cd ../primefaces-showcase
+cd primefaces-showcase
 ```
 
 #### for a EE Application Server
 
 ```
-mvn clean package                               -- create war file (under target directory)
+mvn clean package                             -- create war file (under target directory)
 ```
 
 #### for a Servlet Container with Mojarra 2.3
@@ -47,9 +47,9 @@ mvn clean package -Pnon-ee,myfaces-next-2.3   -- create war file (under target d
 
 ```
 git clone https://github.com/primefaces/primefaces.git
-cd primefaces/primefaces
+cd primefaces
 mvn clean install            -- first build PrimeFaces
-cd ../primefaces-showcase
+cd primefaces-showcase
 ```
 
 ##### Mojarra 2.3

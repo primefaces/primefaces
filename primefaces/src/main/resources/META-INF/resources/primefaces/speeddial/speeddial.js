@@ -8,10 +8,10 @@
  * The opening animation direction for speed dial actions. `up`, `down`, `left` and `right` is applicable when
  * {@link PrimeFaces.widget.SpeedDialCfg.type} is set to `semi-circle`, the others are applicable when type
  * is set to `quarter-circle`.
- * 
+ *
  * @typedef {"linear" | "circle" | "semi-circle" | "quarter-circle"} PrimeFaces.widget.SpeedDial.OpeningType The
  * opening animation type for speed dial actions.
- * 
+ *
  * @typedef PrimeFaces.widget.SpeedDial.OnClickCallback Callback invoked when the speed dial was clicked.
  * @this {PrimeFaces.widget.SpeedDial} PrimeFaces.widget.SpeedDial.OnClickCallback
  * @param {JQuery.TriggeredEvent} PrimeFaces.widget.SpeedDial.OnClickCallback.event The click event that occurred.
@@ -33,7 +33,8 @@
  * @typedef PrimeFaces.widget.SpeedDial.OnDocumentClickCallback Callback invoked when the document was clicked. This is
  * used to detect whether the user clicked outside the speed dial so that it can be closed.
  * @param {Event} PrimeFaces.widget.SpeedDial.OnDocumentClickCallback.event Click event that occurred.
- * 
+ *
+ * @prop {JQuery} badge The DOM element for the badge of the floating action button of the speed dial.
  * @prop {JQuery} button The DOM element for the floating action button of the speed dial.
  * @prop {JQuery} buttonIcon The DOM element for the icon of the floating action button of the speed dial.
  * @prop {JQuery} container The DOM element for the container of the speed dial that contains item container and button.
@@ -66,8 +67,7 @@
  * @prop {PrimeFaces.widget.SpeedDial.OnVisibleChangeCallback} cfg.onVisibleChange Callback invoked when the visibility
  * of the speed dial changed. This is called before the hide and show callbacks.
  * @prop {number} cfg.radius Radius for when {@link type} is set to one of the circle types.
- * @prop {boolean} cfg.rotateAnimation Whether to rotate the show icon.
- * @prop {string} cfg.showIcon The icon class of the show button element.
+ * @prop {boolean} cfg.keepOpen Whether the menu should be kept open on clicking menu items.
  * @prop {number} cfg.transitionDelay Transition delay step in milliseconds for each action item.
  * @prop {PrimeFaces.widget.SpeedDial.OpeningType} cfg.type Specifies the opening animation type of actions.
  * @prop {boolean} cfg.visible Specifies the visibility of the overlay.
@@ -83,7 +83,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);
         this.mask = this.jq.children('.ui-speeddial-mask');
         this.container = this.jq.children('.ui-speeddial');
-        this.button = this.container.children('.ui-speeddial-button');
+        this.badge = this.container.children('.ui-overlay-badge');
+        var buttonContainer = this.badge.length === 0 ? this.container : this.badge;
+        this.button = buttonContainer.children('.ui-speeddial-button');
         this.buttonIcon = this.button.children('.ui-icon');
         this.itemContainer = this.container.children('.ui-speeddial-list');
         this.items = this.itemContainer.children('.ui-speeddial-item');
@@ -96,8 +98,7 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.radius = this.cfg.radius || 0;
         this.cfg.mask = this.cfg.mask || false;
         this.cfg.hideOnClickOutside = this.cfg.hideOnClickOutside || true;
-        this.cfg.rotateAnimation = this.cfg.rotateAnimation || true;
-        this.cfg.showIcon = this.cfg.showIcon || 'pi pi-plus';
+        this.cfg.keepOpen = this.cfg.keepOpen || false;
 
         this.visible = this.cfg.visible;
 
@@ -170,14 +171,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Shows item container of the speeddial and changes or rotates floating action button icon.
+     * Shows item container of the speeddial.
      */
     show: function() {
-        if (this.cfg.hideIcon) {
-            this.buttonIcon.removeClass(this.cfg.showIcon);
-            this.buttonIcon.addClass(this.cfg.hideIcon);
-        }
-
         if (this.mask) {
             this.mask.addClass('ui-speeddial-mask-visible');
         }
@@ -196,14 +192,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Hides item container of the speed dial and changes or rotates floating action button icon.
+     * Hides item container of the speed dial.
      */
     hide: function() {
-        if (this.cfg.hideIcon) {
-            this.buttonIcon.removeClass(this.cfg.hideIcon);
-            this.buttonIcon.addClass(this.cfg.showIcon);
-        }
-
         if (this.mask) {
             this.mask.removeClass('ui-speeddial-mask-visible');
         }
@@ -241,7 +232,9 @@ PrimeFaces.widget.SpeedDial = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     onItemClick: function() {
-        this.hide();
+        if (!this.cfg.keepOpen) {
+            this.hide();
+        }
 
         this.isItemClicked = true;
     },

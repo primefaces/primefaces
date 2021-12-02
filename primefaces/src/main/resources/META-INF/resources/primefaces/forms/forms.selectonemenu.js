@@ -288,9 +288,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             e.preventDefault();
         });
 
-        this.focusInput.on('focus.ui-selectonemenu', function() {
+        this.focusInput.on('focus.ui-selectonemenu', function(e) {
             $this.jq.addClass('ui-state-focus');
             $this.menuIcon.addClass('ui-state-focus');
+            if(!$this.cfg.dynamic && !$this.items) {
+                $this.callHandleMethod($this.handleTabKey(), e);
+            }
         })
         .on('blur.ui-selectonemenu', function(){
             $this.jq.removeClass('ui-state-focus');
@@ -489,9 +492,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(shouldChange) {
             this.highlightItem(item);
-            this.input.val(selectedOption.val())
+            this.input.val(selectedOption.val());
 
-            this.triggerChange();
+            if(!silent) {
+                this.triggerChange();
+            }
 
             if(this.cfg.editable) {
                 this.customInput = false;
@@ -1125,7 +1130,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Selects the option with the given value.
      * @param {string} value Value of the option to select.
      */
-    selectValue : function(value) {
+    selectValue: function(value) {
         if(!this.items || this.items.length === 0) {
            this.callHandleMethod(null, null);
         }
@@ -1133,6 +1138,23 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var option = this.options.filter('[value="' + $.escapeSelector(value) + '"]');
 
         this.selectItem(this.items.eq(option.index()), true);
+    },
+
+    /**
+     * Resets the input.
+     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     */
+    resetValue: function(silent) {
+        if(!this.items || this.items.length === 0) {
+           this.callHandleMethod(null, null);
+        }
+
+        var option = this.options.filter('[value=""]');
+        if (option.length === 0) {
+            // if no empty value option found, fallback to first in list like JSF default
+            option = this.options.eq(0);
+        }
+        this.selectItem(this.items.eq(option.index()), silent);
     },
 
     /**
@@ -1225,8 +1247,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            $.each(hide, function(i, o) { o.hide() });
-            $.each(show, function(i, o) { o.show() });
+            $.each(hide, function(i, o) { o.hide(); });
+            $.each(show, function(i, o) { o.show(); });
             hide = [];
             show = [];
 
@@ -1249,8 +1271,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
 
-            $.each(hide, function(i, o) { o.hide() });
-            $.each(show, function(i, o) { o.show() });
+            $.each(hide, function(i, o) { o.hide(); });
+            $.each(show, function(i, o) { o.show(); });
         }
 
         var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');

@@ -3965,7 +3965,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     clearFilters: function() {
         this.thead.find('> tr > th.ui-filter-column > .ui-column-filter').val('');
-        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter :input').val('');
+        this.thead.find('> tr > th.ui-filter-column > .ui-column-customfilter').each(function() {
+            var widgetElement = $(this).find('.ui-widget');
+            if (widgetElement.length > 0) {
+                var widget = PrimeFaces.getWidgetById(widgetElement.attr('id'));
+                if (widget && typeof widget.resetValue === 'function') {
+                    widget.resetValue(true);
+                }
+                else {
+                    $(this).find(':input').val('');
+                }
+            }
+            else {
+                $(this).find(':input').val('');
+            }
+        });
         $(this.jqId + '\\:globalFilter').val('');
 
         this.filter();

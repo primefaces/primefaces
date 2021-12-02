@@ -23,22 +23,22 @@
                 <p:panel header="Select a Location" style="margin-bottom:10px;">
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel for="country" value="Country: "/>
-                        <p:selectOneMenu id="country" value="#{dropdownView.country}" style="width:150px">
-                            <p:ajax listener="#{dropdownView.onCountryChange}" update="city"/>
+                        <p:selectOneMenu id="country" value="#{basicView.country}" style="width:150px">
+                            <p:ajax listener="#{basicView.onCountryChange}" update="city"/>
                             <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true"/>
-                            <f:selectItems value="#{dropdownView.countries}"/>
+                            <f:selectItems value="#{basicView.countries}"/>
                         </p:selectOneMenu>
 
                         <p:outputLabel for="city" value="City: "/>
-                        <p:selectOneMenu id="city" value="#{dropdownView.city}" style="width:150px">
+                        <p:selectOneMenu id="city" value="#{basicView.city}" style="width:150px">
                             <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true"/>
-                            <f:selectItems value="#{dropdownView.cities}"/>
+                            <f:selectItems value="#{basicView.cities}"/>
                         </p:selectOneMenu>
                     </h:panelGrid>
 
                     <p:divider />
 
-                    <p:commandButton value="Submit" update="msgs" action="#{dropdownView.displayLocation}"
+                    <p:commandButton value="Submit" update="msgs" action="#{basicView.displayLocation}"
                                      icon="pi pi-check"/>
                 </p:panel>
             </h:form>

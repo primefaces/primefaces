@@ -1,16 +1,14 @@
 /**
- * __PrimeFaces Message Widget__
+ * __PrimeFaces Messages Widget__
  * 
- * Message is a pre-skinned extended version of the standard JSF message component.
+ * Messages is a pre-skinned extended version of the standard JSF messages component.
  * 
- * @interface {PrimeFaces.widget.MessageCfg} cfg The configuration for the {@link  Message| Message widget}.
+ * @interface {PrimeFaces.widget.MessagesCfg} cfg The configuration for the {@link  Messages| Messages widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
- * @prop {string} cfg.target Client ID of the target for which to show this message.
  */
-PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * @override
@@ -19,17 +17,25 @@ PrimeFaces.widget.Message = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+    },
 
-        var text = this.jq.find('.ui-message-error-detail').text();
-
-        if(text) {
-           var target = $(PrimeFaces.escapeClientId(this.cfg.target));
-
-           if (this.cfg.tooltip) {
-              target.data('tooltip', text);
-           }
-
-           target.attr('aria-describedby', this.id + '_error-detail');
-        }
-   }
+    /**
+     * Creates the HTML elements for the given faces message, and adds it to the DOM.
+     * @param {PrimeFaces.FacesMessage} msg A message to translate into an HTML element.
+     */
+    appendMessage: function(msg) {
+        this.jq.append(
+             '<div class="ui-messages-' + msg.severity + ' ui-corner-all">' +
+                '<a href="#" class="ui-messages-close" onclick="$(this).parent().slideUp();return false;">' +
+                    '<span class="ui-icon ui-icon-close"></span>' +
+                '</a>' +
+                '<span class="ui-messages-' + msg.severity + '-icon"></span>' +
+                '<ul>' +
+                    '<li>' +
+                        '<span class="ui-messages-' + msg.severity + '-summary">' + (msg.summary ? msg.summary : '') + '</span>' +
+                        '<span class="ui-messages-' + msg.severity + '-detail">' + (msg.detail ? msg.detail : '') + '</span>' +
+                    '</li>' +
+                '</ul>' +
+            '</div>');
+    }
 });

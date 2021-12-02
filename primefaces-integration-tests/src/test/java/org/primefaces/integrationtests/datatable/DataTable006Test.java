@@ -32,9 +32,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectBooleanCheckbox;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.datatable.Row;
 
@@ -107,6 +109,44 @@ public class DataTable006Test extends AbstractDataTableTest {
 
     @Test
     @Order(3)
+    @DisplayName("DataTable: selection - lazy multiple with checkboxes and selection on multiple pages - https://github.com/primefaces/primefaces/issues/8110")
+    public void testLazySelectionMultipleCheckboxesWithPagination(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.toggleLazyMode.click();
+
+        // Act
+        dataTable.getCell(0, 0).getWebElement().click();
+        dataTable.getCell(2, 0).getWebElement().click();
+        dataTable.selectPage(2);
+        dataTable.getCell(1, 0).getWebElement().click();
+        dataTable.selectPage(1);
+
+        // Assert - row 0 and 2 on page 1 still selected
+        Assertions.assertEquals(dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+        Assertions.assertEquals(dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
+        Assertions.assertEquals(dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+
+        // Act
+        page.submit.click();
+
+        // Assert
+        assertSelectAllCheckbox(dataTable, false);
+        assertSelections(page.messages, "1,3,5");
+        assertConfiguration(dataTable.getWidgetConfiguration(), true);
+
+        // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
+        Assertions.assertEquals(dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+        Assertions.assertEquals(dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
+        Assertions.assertEquals(dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+        dataTable.selectPage(2);
+        Assertions.assertEquals(dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
+        Assertions.assertEquals(dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+        Assertions.assertEquals(dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
+    }
+
+    @Test
+    @Order(4)
     @DisplayName("DataTable: selection - select all for page with selectionPageOnly='true'")
     public void testSelectAllPageOnly(Page page) {
         // Arrange
@@ -131,7 +171,7 @@ public class DataTable006Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @DisplayName("DataTable: selection - Lazy select all for page with selectionPageOnly='true'")
     public void testLazySelectAllPageOnly(Page page) {
         // Arrange
@@ -157,7 +197,7 @@ public class DataTable006Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(3)
+    @Order(6)
     @DisplayName("DataTable: selection - unselect all for page with selectionPageOnly='true'")
     public void testUnselectAllPageOnly(Page page) {
         // Arrange
@@ -182,7 +222,7 @@ public class DataTable006Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     @DisplayName("DataTable: GitHub #6730 selection - select all rows with selectionPageOnly='false'")
     public void testSelectAllRows(Page page) {
         // Arrange
@@ -217,7 +257,7 @@ public class DataTable006Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     @DisplayName("DataTable: GitHub #6730 selection - Lazy select all rows with selectionPageOnly='false'")
     public void testLazySelectAllRows(Page page) {
         // Arrange
@@ -254,7 +294,7 @@ public class DataTable006Test extends AbstractDataTableTest {
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     @DisplayName("DataTable: GitHub #7368, #7737 selection - with filtering")
     public void testLazySelectionWithFiltering(Page page) {
         // Arrange

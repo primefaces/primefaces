@@ -23,30 +23,70 @@
  */
 package org.primefaces.component.badge;
 
+import org.primefaces.functional.IOBiConsumer;
+import org.primefaces.model.badge.BadgeModel;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
+
 import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.LangUtils;
 
 public class BadgeRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Badge badge = (Badge) component;
+        boolean hasChildren = badge.getChildCount() > 0;
+        encode(context, badge, null, hasChildren);
+    }
+
+    public static <T extends UIComponent> void encode(FacesContext context, Object badge,
+            IOBiConsumer<FacesContext, T> contentRenderer, T component) throws IOException {
+        BadgeModel badgeModel = Badge.getBadgeModel(badge);
+        if (badgeModel != null) {
+            BadgeRenderer badgeRenderer = new BadgeRenderer();
+            badgeRenderer.encodeOverlayBegin(context, null);
+            contentRenderer.accept(context, component);
+            badgeRenderer.encode(context, null, badgeModel, false);
+            badgeRenderer.encodeOverlayEnd(context);
+        }
+        else {
+            contentRenderer.accept(context, component);
+        }
+    }
+
+    protected void encodeOverlayBegin(FacesContext context, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String value = badge.getValue();
-        boolean hasChild = badge.getChildCount() > 0;
+        writer.startElement("div", null);
+        if (clientId != null) {
+            writer.writeAttribute("id", clientId, "id");
+        }
+        writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
+    }
+
+    protected void encodeOverlayEnd(FacesContext context) throws IOException {
+        context.getResponseWriter().endElement("div");
+    }
+
+    protected void encode(FacesContext context, Badge badge, BadgeModel badgeModel, boolean renderChildren) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        BadgeModel model = badgeModel;
+        if (model == null) {
+            model = badge.toBadgeModel();
+        }
+        String clientId = badge == null ? null : badge.getClientId(context);
+        String value = model.getValue();
         boolean valueEmpty = LangUtils.isEmpty(value);
-        String severity = badge.getSeverity();
-        String size = badge.getSize();
+        String severity = model.getSeverity();
+        String size = model.getSize();
         String styleClass = getStyleClassBuilder(context)
                     .add(Badge.STYLE_CLASS)
-                    .add(badge.getStyleClass())
+                    .add(model.getStyleClass())
                     .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
                     .add(valueEmpty, Badge.DOT_CLASS)
-                    .add(!badge.isVisible(), "ui-state-hidden")
+                    .add(!model.isVisible(), "ui-state-hidden")
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
                     .add("info".equals(severity), Badge.SEVERITY_INFO_CLASS)
@@ -55,29 +95,27 @@ public class BadgeRenderer extends CoreRenderer {
                     .add("danger".equals(severity), Badge.SEVERITY_DANGER_CLASS)
                     .build();
 
-        if (hasChild) {
-            writer.startElement("div", null);
-            writer.writeAttribute("id", badge.getClientId(context), "id");
-            writer.writeAttribute("class", Badge.OVERLAY_CLASS, "styleClass");
+        if (renderChildren) {
+            encodeOverlayBegin(context, clientId);
         }
 
         writer.startElement("span", null);
-        if (!hasChild) {
-            writer.writeAttribute("id", badge.getClientId(context), "id");
+        if (!renderChildren && clientId != null) {
+            writer.writeAttribute("id", clientId, "id");
         }
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (badge.getStyle() != null) {
-            writer.writeAttribute("style", badge.getStyle(), "style");
+        if (model.getStyle() != null) {
+            writer.writeAttribute("style", model.getStyle(), "style");
         }
 
-        if (!valueEmpty && badge.isVisible()) {
+        if (!valueEmpty && model.isVisible()) {
             writer.write(value);
         }
         writer.endElement("span");
 
-        if (hasChild) {
+        if (renderChildren) {
             renderChildren(context, badge);
-            writer.endElement("div");
+            encodeOverlayEnd(context);
         }
     }
 

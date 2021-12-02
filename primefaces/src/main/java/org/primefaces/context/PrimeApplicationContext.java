@@ -179,9 +179,22 @@ public class PrimeApplicationContext {
     }
 
     private void resolveFileUploadResumeUrl(FacesContext facesContext) {
+        if (!getEnvironment().isAtLeastServlet30()) {
+            return;
+        }
+
         Object request = facesContext.getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
-            fileUploadResumeUrl = ((HttpServletRequest) request).getServletContext().getServletRegistrations().values().stream()
+            ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
+            if (servletContext == null) {
+                return;
+            }
+            Map<String, ? extends ServletRegistration> servletRegistrations = servletContext.getServletRegistrations();
+            if (servletRegistrations == null || servletRegistrations.isEmpty()) {
+                return;
+            }
+
+            fileUploadResumeUrl = servletRegistrations.values().stream()
                     .filter(s -> FileUploadChunksServlet.class.getName().equals(s.getClassName()))
                     .findFirst()
                     .map(ServletRegistration::getMappings)

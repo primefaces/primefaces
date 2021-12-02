@@ -132,18 +132,15 @@ public class DataTable010Test extends AbstractDataTableTest {
         page.buttonDelete.click();
 
         // Assert
-        /*
-            https://code.google.com/archive/p/primefaces/issues/7132 still seems to be there as of 09/2020
-         */
-        Assertions.assertEquals("Java", page.dataTable.getCell(0, 1).getText());
-        Assertions.assertEquals("JavaScript", page.dataTable.getCell(1, 1).getText());
+        Assertions.assertEquals(1, page.dataTable.getRows().stream().count());
+        Assertions.assertEquals("JavaScript", page.dataTable.getCell(0, 1).getText());
 
         // Act
         page.buttonSubmit.click();
 
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Selected ProgrammingLanguage(s)"));
-        Assertions.assertEquals("3,5", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("3,5", page.messages.getMessage(0).getDetail()); // TODO: this is still kind of weird because we deleted Java (ID 3) before
         assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 

@@ -21,27 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.common;
+package org.primefaces.integrationtests.datatable.dt028;
 
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.List;
 
-@WebListener
-public class SetActiveViewMapsSizeSessionListener implements HttpSessionListener {
+@Named
+@ApplicationScoped
+public class Dt028ReferenceService {
 
-    @Override
-    public void sessionCreated(HttpSessionEvent event) {
-        try {
-            // avoid issues with Mojarra + OWB (see class com.sun.faces.application.view.ViewScopeManager)
-            // TODO: may be removed after Mojarra 2.3.17-release (see https://github.com/eclipse-ee4j/mojarra/issues/4642)
-            event.getSession().setAttribute( "com.sun.faces.application.view.activeViewMapsSize", 100);
-        }
-        catch (Exception ex) {
-        }
+    @PostConstruct
+    public void init() {
     }
 
-    @Override
-    public void sessionDestroyed(HttpSessionEvent event) {
-        /* Session is destroyed. */
+    public List<Dt028Reference> getReferences() {
+        List<Dt028Reference> references = new ArrayList<>();
+        references.add(new Dt028Reference(509, "EUR", "BB", "BB2", "A"));
+        references.add(new Dt028Reference(512, "EUR", "BB", "BB2", "B"));
+        references.add(new Dt028Reference(515, "EUR", "BB", "BB2", "C"));
+        references.add(new Dt028Reference(516, "USA", "AA", "AA", "D"));
+        references.add(new Dt028Reference(517, "USA", "AA", "AA", "E"));
+        return references;
     }
+
 }

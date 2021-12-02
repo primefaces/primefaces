@@ -3685,6 +3685,11 @@ body .ui-rating .ui-rating-cancel {
   margin-right: 0.5rem;
   overflow: visible;
 }
+body .ui-rating .ui-rating-cancel.ui-state-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.1rem white;
+}
 body .ui-rating .ui-rating-cancel a {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -3712,6 +3717,11 @@ body .ui-rating .ui-rating-star {
   margin-right: 0.5rem;
   overflow: visible;
 }
+body .ui-rating .ui-rating-star.ui-state-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.1rem white;
+}
 body .ui-rating .ui-rating-star a {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -3727,7 +3737,7 @@ body .ui-rating .ui-rating-star a {
   overflow: visible;
 }
 body .ui-rating .ui-rating-star a:before {
-  content: "\e936";
+  content: "\e937";
 }
 body .ui-rating .ui-rating-star a:hover {
   color: #81D4FA;
@@ -3745,7 +3755,7 @@ body .ui-rating .ui-rating-star-on a {
   color: #81D4FA;
 }
 body .ui-rating .ui-rating-star-on a:before {
-  content: "\e937";
+  content: "\e936";
 }
 body .ui-state-highlight .ui-rating-star a {
   color: #212529;

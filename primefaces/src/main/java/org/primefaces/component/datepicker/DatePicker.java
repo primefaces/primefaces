@@ -25,17 +25,18 @@ package org.primefaces.component.datepicker;
 
 import java.time.*;
 import java.util.*;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
-import org.primefaces.model.datepicker.LazyDateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -256,7 +257,7 @@ public class DatePicker extends DatePickerBase {
                         c.setTime((Date) disabledDate);
 
                         if (date.getYear() == c.get(Calendar.YEAR) &&
-                                date.getMonthValue() == c.get(Calendar.MONTH) &&
+                                date.getMonthValue() == (c.get(Calendar.MONTH) + 1) &&
                                 date.getDayOfMonth() == c.get(Calendar.DAY_OF_MONTH)) {
                             setValid(false);
                             return ValidationResult.INVALID_DISABLED_DATE;
@@ -335,23 +336,4 @@ public class DatePicker extends DatePickerBase {
         return disabledDates;
     }
 
-    protected void loadInitialLazyMetadata(FacesContext context) {
-        DateMetadataModel model = getModel();
-        if (model instanceof LazyDateMetadataModel) {
-            LocalDate startDate = getInitalStartDate(context);
-            LocalDate endDate = startDate.plusMonths(getNumberOfMonths()).minusDays(1);
-
-            LazyDateMetadataModel lazyModel = ((LazyDateMetadataModel) model);
-            lazyModel.clear();
-            lazyModel.loadDateMetadata(startDate, endDate);
-        }
-    }
-
-    protected LocalDate getInitalStartDate(FacesContext context) {
-        LocalDate date = CalendarUtils.getObjectAsLocalDate(context, this, getValue());
-        if (date == null) {
-            date = LocalDate.from(CalendarUtils.now(this));
-        }
-        return date.withDayOfMonth(1);
-    }
 }

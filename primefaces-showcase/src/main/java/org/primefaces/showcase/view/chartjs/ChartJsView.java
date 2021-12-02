@@ -23,6 +23,17 @@
  */
 package org.primefaces.showcase.view.chartjs;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
@@ -46,11 +57,11 @@ import org.primefaces.model.charts.hbar.HorizontalBarChartModel;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
+import org.primefaces.model.charts.optionconfig.animation.Animation;
 import org.primefaces.model.charts.optionconfig.elements.Elements;
 import org.primefaces.model.charts.optionconfig.elements.ElementsLine;
 import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
-import org.primefaces.model.charts.optionconfig.animation.Animation;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.model.charts.pie.PieChartDataSet;
@@ -61,16 +72,6 @@ import org.primefaces.model.charts.radar.RadarChartDataSet;
 import org.primefaces.model.charts.radar.RadarChartModel;
 import org.primefaces.model.charts.radar.RadarChartOptions;
 import org.primefaces.model.charts.scatter.ScatterChartModel;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Named
 @RequestScoped
@@ -841,11 +842,11 @@ public class ChartJsView implements Serializable {
         RadarChartOptions options = new RadarChartOptions();
         RadialScales rScales = new RadialScales();
 
-        RadialLinearAngleLines angelLines = new RadialLinearAngleLines();
-        angelLines.setDisplay(true);
-        angelLines.setLineWidth(0.5);
-        angelLines.setColor("rgba(128, 128, 128, 0.2)");
-        rScales.setAngelLines(angelLines);
+        RadialLinearAngleLines angleLines = new RadialLinearAngleLines();
+        angleLines.setDisplay(true);
+        angleLines.setLineWidth(0.5);
+        angleLines.setColor("rgba(128, 128, 128, 0.2)");
+        rScales.setAngleLines(angleLines);
 
         RadialLinearPointLabels pointLabels = new RadialLinearPointLabels();
         pointLabels.setFontSize(14);
