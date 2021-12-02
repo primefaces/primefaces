@@ -1038,7 +1038,19 @@
                                             <resource>META-INF/primefaces-p.taglib.xml</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/core.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.ajax.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.csp.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/validation/validation.js</resource>
@@ -1048,6 +1060,9 @@
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/fileupload/fileupload.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/lifecycle/lifecycle.js</resource>
                                         </transformer>
                                     </delegates>
                                 </transformer>
@@ -1117,6 +1132,14 @@
                                 <relocation>
                                     <pattern>javax.xml.soap</pattern>
                                     <shadedPattern>jakarta.xml.soap</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>window.jsf</pattern>
+                                    <shadedPattern>window.faces</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>jsf.ajax</pattern>
+                                    <shadedPattern>faces.ajax</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
