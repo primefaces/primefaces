@@ -54,7 +54,7 @@ For a full list of the available downloads, please visit the [download page](htt
   </dependency>
   ```
 
-- Official release (jakarta; JSF 3.0)
+- Official release (jakarta; Faces 3.0 - Faces 4.0)
 
   ```xml
   <dependency>
@@ -82,7 +82,7 @@ For a full list of the available downloads, please visit the [download page](htt
   </repositories>
   ```
 
-- Snapshot (jakarta; JSF 3.0; should NOT be used in production environments!)
+- Snapshot (jakarta; Faces 3.0 - Faces 4.0; should NOT be used in production environments!)
 
   ```xml
   <dependency>
