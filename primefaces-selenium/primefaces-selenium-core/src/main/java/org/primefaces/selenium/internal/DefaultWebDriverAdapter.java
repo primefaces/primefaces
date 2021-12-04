@@ -87,7 +87,6 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 LoggingPreferences logPrefs = new LoggingPreferences();
                 logPrefs.enable(LogType.BROWSER, Level.ALL);
                 chromeOptions.setCapability("goog:loggingPrefs", logPrefs);
-                chromeOptions.setExperimentalOption("w3c", false);
                 return new ChromeDriver(chromeOptions);
             case "safari":
                 SafariOptions safariOptions = new SafariOptions();
