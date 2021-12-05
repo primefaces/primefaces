@@ -20,7 +20,8 @@ Tag component is used to categorize content.
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | String | Value to display inside the tag.
+| value | null | Object | Value to display inside the tag.
+| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | severity | null | String | Severity type of the tag.
 | size | null | String | Size of the tag, valid options are "large" and "xlarge".
 | style | null | String | Style of the tag.
