@@ -107,6 +107,45 @@ decimal and thousand separator.
 ```xhtml
 <p:inputNumber value="#{bean.propertyName}" />
 ```
+
+## Converter usage
+
+`p:inputNumber` does NOT support common converters like `<f:convertNumber type="percent" minFractionDigits="2"/>`
+as `p:inputNumber` only works with number types on server side (and not strings like `100 %`).
+
+### Custom converter example to handle percent multiplication / division
+
+```
+@FacesConverter("percentConverter")
+public class PercentConverter implements Converter<Number> {
+
+    @Override
+    public Number getAsObject(FacesContext context, UIComponent component, String value) {
+        if (context == null || value == null || value.trim().isBlank()) {
+            return null;
+        }
+
+        try {
+            return Double.valueOf(value) / 100;
+        }
+        catch (Exception e) {
+            throw new ConverterException(String.format("Cannot convert %s to Number", value), e);
+        }
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Number value) {
+        if (context == null || value == null) {
+            return null;
+        }
+
+        return String.valueOf(value * 100);
+    }
+
+}
+
+```
+
 ## Examples
 Here are some examples demonstrating various cases;
 
