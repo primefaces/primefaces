@@ -113,7 +113,7 @@ decimal and thousand separator.
 `p:inputNumber` does NOT support common converters like `<f:convertNumber type="percent" minFractionDigits="2"/>`
 as `p:inputNumber` only works with number types on server side (and not strings like `100 %`).
 
-### Custom converter example to handle percent multiplication / division
+#### Custom converter example to handle percent multiplication / division
 
 ```
 @FacesConverter("percentConverter")
