@@ -17044,9 +17044,10 @@ declare namespace PrimeFaces.widget {
          */
         itemLabel: JQuery;
         /**
-         * Checks this checkbox, if it is not checked already .
+         * Checks this checkbox, if it is not checked already.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        check(): void;
+        check(silent: boolean): void;
         /**
          * Disables this input so that the user cannot enter a value anymore.
          */
@@ -17084,13 +17085,19 @@ declare namespace PrimeFaces.widget {
          */
         isChecked(): boolean;
         /**
+         * Resets the input.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
+         */
+        resetValue(silent: boolean): void;
+        /**
          * Checks this checkbox if it is currently unchecked, or unchecks it otherwise.
          */
         toggle(): void;
         /**
          * Unchecks this checkbox, if it is not unchecked already .
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        uncheck(): void;
+        uncheck(silent: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -17349,9 +17356,10 @@ declare namespace PrimeFaces.widget {
          */
         private check(checkbox: JQuery, updateInput: boolean): void;
         /**
-         * Selects all available options. Note that this required the overlay panel to be visible, use `show` for that.
+         * Selects all available options.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        checkAll(): void;
+        checkAll(silent: boolean): void;
         /**
          * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
          * contains the given search text.
@@ -17426,6 +17434,11 @@ declare namespace PrimeFaces.widget {
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
+         * Has the panel been loaded with checkbox data yet?
+         * @return `true` when the panel has been loaded with checkbox items
+         */
+        isLoaded(): boolean;
+        /**
          * Callback that is invoked after the overlay panel with the checkbox options was hidden.
          */
         private postHide(): void;
@@ -17471,6 +17484,11 @@ declare namespace PrimeFaces.widget {
          */
         private renderPanel(): void;
         /**
+         * Resets the input.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
+         */
+        resetValue(silent: boolean): void;
+        /**
          * Checks the checkbox option with the given value.
          * @param value Value of the option to check.
          */
@@ -17507,9 +17525,10 @@ declare namespace PrimeFaces.widget {
          */
         private uncheck(checkbox: JQuery, updateInput: boolean): void;
         /**
-         * Unselects all available options. Note that this required the overlay panel to be visible, use `show` for that.
+         * Unselects all available options.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        uncheckAll(): void;
+        uncheckAll(silent: boolean): void;
         /**
          * When multi mode is disabled: Upates the label that indicates the currently selected item.
          */
@@ -17894,13 +17913,17 @@ declare namespace PrimeFaces.widget {
          */
         enabledInputs: JQuery;
         /**
-         * The (cloned) DOM elements for the hidden input fields of type checkbox storing the value of
-         * this widget.
+         * The (DOM elements for the hidden input fields of type checkbox storing the value of
+         * this widget. In case of layout 'custom', this is are the visible inputs.
          */
         inputs: JQuery;
         /**
+         * The DOM elements for the label texts of each radio button.
+         */
+        labels: JQuery;
+        /**
          * The DOM elements for the hidden input fields of type checkbox storing the value of
-         * this widget.
+         * this widget. It's only used in layout 'custom'.
          */
         originalInputs: JQuery;
         /**
@@ -17912,6 +17935,17 @@ declare namespace PrimeFaces.widget {
          */
         private bindEvents(): void;
         /**
+         * Checks the given checkbox and associated input.
+         * @param input the input.
+         * @param checkbox the checbkox.
+         */
+        private check(input: JQuery, checkbox: JQuery): void;
+        /**
+         * Check all available options.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
+         */
+        checkAll(silent: boolean): void;
+        /**
          * Disables this input so that the user cannot enter a value anymore.
          */
         disable(): void;
@@ -17919,6 +17953,12 @@ declare namespace PrimeFaces.widget {
          * Enables this input so that the user can enter a value.
          */
         enable(): void;
+        /**
+         * Calls the behavior for when a checkbox was clicked.
+         * @param input Checkbox input that was clicked.
+         * @param event (Click) event that was triggered.
+         */
+        private fireClickEvent(input: JQuery, event: JQuery.TriggeredEvent): void;
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
@@ -17942,6 +17982,22 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Resets the input.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
+         */
+        resetValue(silent: boolean): void;
+        /**
+         * Unchecks the given checkbox and associated input.
+         * @param input the input.
+         * @param checkbox the checbkox.
+         */
+        private uncheck(input: JQuery, checkbox: JQuery): void;
+        /**
+         * Uncheck all available options.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
+         */
+        uncheckAll(silent: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -18598,6 +18654,11 @@ declare namespace PrimeFaces.widget {
          * @return The rendered HTML string.
          */
         private renderSelectItems(parentItem: JQuery, isGrouped?: boolean): string;
+        /**
+         * Resets the input.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
+         */
+        resetValue(silent: boolean): void;
         /**
          * Finds the index of the given selectable option.
          * @param item One of the available selectable options.
@@ -35130,9 +35191,9 @@ declare namespace PrimeFaces.widget {
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
          * Callback for when validation did not succeed. Switches all editors of the given row to the error state.
-         * @param index 0-based index of the row with cell editors.
+         * @param rowKey the rowKey.
          */
-        private invalidateRow(index: number): void;
+        private invalidateRow(rowKey: string): void;
         /**
          * Checks whether rows of this tree table are selected via checkboxes.
          * @return `true` if the {@link TreeTableCfg.selectionMode} is set to `checkbox`, or `false` otherwise.
