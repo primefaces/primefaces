@@ -24,6 +24,7 @@
 package org.primefaces.component.tag;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -79,10 +80,11 @@ public class TagRenderer extends CoreRenderer {
             writer.endElement("span");
         }
 
-        if (tag.getValue() != null) {
+        String value = ComponentUtils.getValueToRender(context, tag);
+        if (value != null) {
             writer.startElement("span", tag);
             writer.writeAttribute("class", Tag.VALUE_CLASS, null);
-            writer.write(tag.getValue());
+            writer.write(value);
             writer.endElement("span");
         }
     }
