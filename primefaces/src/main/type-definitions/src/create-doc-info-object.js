@@ -65,7 +65,7 @@ function createObjectDocInfo(objectCode, severitySettings) {
                         } : undefined,
                         range: node.range,
                     })),
-                    sourceFile: node.loc?.source ?? "",
+                    sourceFile: node.loc?.source?.replaceAll("\\", "/") ?? "",
                 })),
             })
         )),
