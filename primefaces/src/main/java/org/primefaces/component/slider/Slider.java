@@ -25,6 +25,7 @@ package org.primefaces.component.slider;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
@@ -109,13 +110,12 @@ public class Slider extends SliderBase {
             String[] inputIds = getFor().split(",");
             UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0]);
             UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1]);
-            Object submittedValueFrom = getSubmittedValue(inputFrom);
-            Object submittedValueTo = getSubmittedValue(inputTo);
-            if (submittedValueFrom == null || submittedValueTo == null) {
+            String valueFromStr = getValueAsStringOfAttachedInput(context, inputFrom);
+            String valueToStr = getValueAsStringOfAttachedInput(context, inputTo);
+            if (LangUtils.isBlank(valueFromStr) || LangUtils.isBlank(valueToStr)) {
                 return;
             }
-            String valueFromStr = submittedValueFrom.toString();
-            String valueToStr = submittedValueTo.toString();
+
             double valueFrom = Double.parseDouble(valueFromStr);
             double valueTo = Double.parseDouble(valueToStr);
             if (valueTo < valueFrom) {
@@ -136,24 +136,12 @@ public class Slider extends SliderBase {
         }
         else {
             UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, getFor());
-            Object submittedValue = getSubmittedValue(input);
-            if (submittedValue == null) {
+            String value = getValueAsStringOfAttachedInput(context, input);
+            if (LangUtils.isBlank(value)) {
                 return;
             }
 
-            String submittedValueString;
-            Converter converter = input.getConverter();
-            if (converter != null) {
-                submittedValueString = converter.getAsString(context, this, submittedValue);
-            }
-            else {
-                submittedValueString = submittedValue.toString();
-            }
-            if (LangUtils.isBlank(submittedValueString)) {
-                return;
-            }
-
-            double submittedValueDouble = Double.parseDouble(submittedValueString);
+            double submittedValueDouble = Double.parseDouble(value);
             if (submittedValueDouble < getMinValue() || submittedValueDouble > getMaxValue()) {
                 setValid(false);
                 input.setValid(false);
@@ -174,7 +162,37 @@ public class Slider extends SliderBase {
         }
     }
 
-    private Object getSubmittedValue(UIInput input) {
-        return input.getSubmittedValue() == null && input.isLocalValueSet() ? input.getValue() : input.getSubmittedValue();
+    protected String getValueAsStringOfAttachedInput(FacesContext context, UIInput input) {
+        // first try the submitted value
+        Object submittedValue = input.getSubmittedValue();
+        if (submittedValue != null) {
+            if (submittedValue instanceof String) {
+                return (String) submittedValue;
+            }
+
+            // actually it should be string
+            Converter converter = ComponentUtils.getConverter(context, input);
+            if (converter != null) {
+                return converter.getAsString(context, this, submittedValue);
+            }
+
+            throw new FacesException("No converter available for: " + submittedValue.getClass());
+        }
+
+        // fallback to value and convert it back to string
+        if (input.isLocalValueSet()) {
+            Object value = input.getValue();
+
+            if (value != null) {
+                Converter converter = ComponentUtils.getConverter(context, input);
+                if (converter != null) {
+                    return converter.getAsString(context, this, value);
+                }
+
+                throw new FacesException("No converter available for: " + value.getClass());
+            }
+        }
+
+        return null;
     }
 }
