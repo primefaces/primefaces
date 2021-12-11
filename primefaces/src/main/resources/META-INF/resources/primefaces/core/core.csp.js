@@ -89,7 +89,7 @@ if (!PrimeFaces.csp) {
          * Does this component have a registered AJAX event.
          * @param {string} id ID of an element
          * @param {string} [event] Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
-         * @return {boolean} true if component has this AJAX event
+         * @return {boolean|undefined} true if component has this AJAX event
          */
         hasRegisteredAjaxifiedEvent: function(id, event) {
             if (PrimeFaces.isProductionProjectStage()) {

@@ -49,6 +49,8 @@ declare module "npm-registry-client" {
             body?: {};
         }
         interface GetParams {
+            registry: string;
+            packageName: string;
             timeout?: number;
             follow?: boolean;
             staleOk?: boolean;
@@ -56,10 +58,26 @@ declare module "npm-registry-client" {
             fullMetadata?: boolean;
         }
         interface PublishParams {
-            metadata: {};
-            access: Access;
+            metadata: Record<string, unknown>;
             body: NodeJS.ReadableStream;
             auth: Credentials;
+            registry: string;
+        }
+        interface PackageInfo {
+            homepage?: string;
+            repository?: {type: string, url: string},
+            keywords?: string[];
+            time?: Record<string, string>;
+            license?: string;
+            users?: Record<string, boolean>;
+            maintainers?: Person[];
+            versions?: Record<string, Json>;
+            author?: Person;
+            name?: string;
+            bugs?: {url: string};
+            readme?: string;
+            description?: string;
+            readmeFilename?: string;
         }
         interface AddTagParams {
             package: string;
@@ -76,15 +94,19 @@ declare module "npm-registry-client" {
             message: string;
             auth: Credentials;
         }
-        interface TokenCredentials {
-            token: string;
+        interface BaseCredentials {
             alwaysAuth?: boolean;
+            otp?: string;
         }
-        interface UsernameCredentials {
+        interface TokenCredentials extends BaseCredentials {
+            type: "token",
+            token: string;
+        }
+        interface UsernameCredentials extends BaseCredentials {
+            type: "username",
             username: string;
             password: string;
             email: string;
-            alwaysAuth?: boolean;
         }
         interface Person {
             name: string;

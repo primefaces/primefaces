@@ -320,7 +320,7 @@
                             </goals>
                             <phase>deploy</phase>
                             <configuration>
-                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles ../LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles ../LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token} --otp=${npm.otp}</arguments>
                             </configuration>
                         </execution>
                     </executions>

@@ -141,8 +141,11 @@ mvn deploy -P release \
 * Other settings such as the package name etc. are taken form the file
   `src/main/type-definitions/package.json`.
 * The `LICENSE` and `src/main/type-definitions/NPM.md` are included as well.
+* You can also specify an OTP token for 2 factor authentication via the flag
+  `-Dnpm.otp=...`.
 
-To manually publish the current type declarations to npm, run (this uses the major and minor version form the `pom.xml`)
+To manually publish the current type declarations to npm, run (this uses the
+major and minor version form the `pom.xml`)
 
 ```bash
 # Update JSDocs in docs/ directory
@@ -187,7 +190,7 @@ npm run npm-publish -- \
 npm run npm-publish -- \
   --major 9 \
   --minor 0 \
-  --extrafiles LICENSE \
+  --extrafiles ../LICENSE \
   --readme src/main/type-definitions/NPM.md
 ```
 
