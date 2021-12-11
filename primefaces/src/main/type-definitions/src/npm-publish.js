@@ -362,23 +362,32 @@ async function parseCliArgs() {
  * @returns {Partial<import("npm-registry-fetch").Options>}
  */
 function createAuth(auth) {
-    /** @type {import("npm-registry-fetch").AuthOptions} */
+    /** @type {import("npm-registry-fetch").Options} */
     const opts = {};
-    if (auth.otp !== undefined) {
-        opts.otp = auth.otp;
-    }
-    if (opts.alwaysAuth !== undefined) {
-        opts.alwaysAuth = auth.alwaysAuth;
+    /** @type {import("npm-registry-fetch").AuthOptions} */
+    const forceAuth = {};
+    if (forceAuth.alwaysAuth !== undefined) {
+        forceAuth.alwaysAuth = auth.alwaysAuth;
     }
     if (auth.type === "token") {
-        opts.token = auth.token;
+        forceAuth.token = auth.token;
     }
     if (auth.type === "username") {
-        opts.username = auth.username;
-        opts.password = auth.password;
-        opts.email = auth.email;
+        forceAuth.username = auth.username;
+        forceAuth.password = auth.password;
+        forceAuth.email = auth.email;
     }
-    return Object.keys(opts).length > 0 ? { forceAuth: opts } : {};
+    if (Object.keys(forceAuth).length > 0) {
+        opts.forceAuth = forceAuth;
+    }
+    if (auth.otp !== undefined) {
+        // Currently only works when set at the opts,
+        // not inside the forceAuth, but set it on
+        // both anyways for the future
+        forceAuth.otp = auth.otp;
+        opts.otp = auth.otp;
+    }
+    return opts;
 }
 
 /**
