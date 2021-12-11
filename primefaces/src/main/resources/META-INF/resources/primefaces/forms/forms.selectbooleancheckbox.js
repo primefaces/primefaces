@@ -92,7 +92,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Checks this checkbox, if it is not checked already.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     check: function(silent) {
         if(!this.isChecked()) {
@@ -107,7 +107,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Unchecks this checkbox, if it is not unchecked already .
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     uncheck: function(silent) {
         if(this.isChecked()) {
@@ -138,7 +138,7 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Resets the input.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     resetValue: function(silent) {
         this.uncheck(silent);

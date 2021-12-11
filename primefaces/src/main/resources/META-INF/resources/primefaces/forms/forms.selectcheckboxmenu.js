@@ -828,7 +828,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Selects all available options.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     checkAll: function(silent) {
         if (!this.isLoaded()) {
@@ -875,7 +875,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Unselects all available options.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     uncheckAll: function(silent) {
         if (!this.isLoaded()) {
@@ -1291,7 +1291,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Resets the input.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     resetValue: function(silent) {
         if (this.isLoaded()) {
