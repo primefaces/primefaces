@@ -20,7 +20,7 @@
             <h:form>
                 <p:messages/>
 
-                <h:panelGrid columns="4" cellpadding="7" styleClass="p-mb-3">
+                <h:panelGrid columns="4" cellpadding="7" styleClass="mb-3">
                     <p:outputLabel for="@next" value="Name: (@Size(min=2,max=5))"/>
                     <p:inputText value="#{beanValidationView.name}" label="Name"/>
                     <p:message for="@previous"/>
@@ -75,7 +75,7 @@
 
                 </h:panelGrid>
 
-                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="p-mr-3" />
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mr-3" />
                 <p:commandButton value="Save with disabled CSV" ajax="false" icon="pi pi-check" />
             </h:form>
         </div>

@@ -168,6 +168,13 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.3.5</version>
         </dependency>
+
+        <!-- PrimeFlex 3 -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>primeflex</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

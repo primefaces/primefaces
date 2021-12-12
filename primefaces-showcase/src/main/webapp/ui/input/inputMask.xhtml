@@ -18,33 +18,33 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <div class="ui-fluid p-formgrid p-grid">
-                <div class="p-field p-col-12 p-md-4">
+            <div class="ui-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
                     <p:outputLabel for="date" value="Date"/>
                     <p:inputMask id="date" value="#{maskView.date}" mask="99/99/9999"/>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4">
+                <div class="field col-12 md:col-4">
                     <p:outputLabel for="phone" value="Phone"/>
                     <p:inputMask id="phone" value="#{maskView.phone}" mask="(999) 999-9999" validateMask="true"/>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4">
+                <div class="field col-12 md:col-4">
                     <p:outputLabel for="phoneWithExt" value="Phone with Ext:"/>
                     <p:inputMask id="phoneWithExt" value="#{maskView.phoneExt}" mask="(999) 999-9999[ x99999]"/>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4">
+                <div class="field col-12 md:col-4">
                     <p:outputLabel for="taxId" value="Tax Id"/>
                     <p:inputMask id="taxId" value="#{maskView.taxId}" mask="99-9999999" validateMask="true"/>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4">
+                <div class="field col-12 md:col-4">
                     <p:outputLabel for="ssn" value="SSN"/>
                     <p:inputMask id="ssn" value="#{maskView.ssn}" mask="999-99-9999" validateMask="true"/>
                 </div>
 
-                <div class="p-field p-col-12 p-md-4">
+                <div class="field col-12 md:col-4">
                     <p:outputLabel for="key" value="Product Key"/>
                     <p:inputMask id="key" value="#{maskView.productKey}" mask="a*-999-a999" validateMask="true"/>
                 </div>

@@ -19,9 +19,9 @@
     <ui:define name="implementation">
         <h:form>
             <div class="card">
-                <div class="p-py-2">
+                <div class="py-2">
                     <p:commandButton icon="pi pi-minus" onclick="PF('galleriaWidget').prev()" class="ui-button-secondary" />
-                    <p:commandButton icon="pi pi-plus" onclick="PF('galleriaWidget').next()" class="ui-button-secondary p-ml-2" />
+                    <p:commandButton icon="pi pi-plus" onclick="PF('galleriaWidget').next()" class="ui-button-secondary ml-2" />
                 </div>
 
                 <p:galleria widgetVar="galleriaWidget" value="#{galleriaView.photos}" var="photo" activeIndex="2" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}" style="max-width: 640px">

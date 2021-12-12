@@ -50,8 +50,8 @@
                     <p:ajax event="reorder" listener="#{pickListView.onReorder}" update="msg"/>
 
                     <p:column style="width:94%">
-                        <div class="p-d-flex p-ai-center">
-                            <span class="flag flag-#{country.code} p-mr-2" style="width: 30px; height: 20px" />
+                        <div class="flex align-items-center">
+                            <span class="flag flag-#{country.code} mr-2" style="width: 30px; height: 20px" />
                             <h:outputText value="#{country.name}"/>
                         </div>
                     </p:column>

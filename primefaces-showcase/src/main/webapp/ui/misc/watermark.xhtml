@@ -30,7 +30,7 @@
                 </h:panelGrid>
 
                 <p:commandButton id="regular" action="#{watermarkView.search}" value="Regular" ajax="false"/>
-                <p:commandButton id="ajax" action="#{watermarkView.search}" value="Ajax" styleClass="p-ml-2"
+                <p:commandButton id="ajax" action="#{watermarkView.search}" value="Ajax" styleClass="ml-2"
                                  onclick="PrimeFaces.cleanWatermarks();" oncomplete="PrimeFaces.showWatermarks();"
                                  update="messages"/>
             </h:form>

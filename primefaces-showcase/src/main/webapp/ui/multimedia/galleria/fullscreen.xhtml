@@ -50,9 +50,9 @@
                     <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
                 </p:galleria>
 
-                <div class="p-grid" style="max-width: 400px">
+                <div class="grid" style="max-width: 400px">
                     <ui:repeat value="#{galleriaView.photos}" var="photo" varStatus="status">
-                        <div class="p-col-3">
+                        <div class="col-3">
                             <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="cursor: pointer" onclick="rc([{'name': 'index', 'value': #{status.index} }])" />
                         </div>
                     </ui:repeat>

@@ -18,7 +18,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:panel id="panel" header="Search Form" styleClass="p-mb-3">
+                <p:panel id="panel" header="Search Form" styleClass="mb-3">
                     <p:growl id="messages"/>
 
                     <h:panelGrid columns="4" cellpadding="7">
@@ -41,7 +41,7 @@
                     </h:panelGrid>
                 </p:panel>
 
-                <p:commandButton process="@parent:@parent" update="@form" value="Process: @parent:parent (Form)" styleClass="p-mr-2" />
+                <p:commandButton process="@parent:@parent" update="@form" value="Process: @parent:parent (Form)" styleClass="mr-2" />
                     <p:commandButton process="@form:@child(1):txt1" update="@form"
                                      value="Process: @form:@child(1):txt1 (Text 1)"/>
             </h:form>

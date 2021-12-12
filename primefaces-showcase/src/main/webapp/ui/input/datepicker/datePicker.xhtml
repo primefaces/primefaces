@@ -99,120 +99,120 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
-                <h5 class="p-mt-0">Popup</h5>
-                <div class="ui-fluid p-grid p-formgrid">
-                    <div class="p-field p-col-12 p-md-4">
+                <h5 class="mt-0">Popup</h5>
+                <div class="ui-fluid grid formgrid">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="basic" value="Basic"/>
                         <p:datePicker id="basic" value="#{calendarView.date}" />
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="multiselect" value="Multiple Selection"/>
                         <p:datePicker id="multiselect" selectionMode="multiple" value="#{calendarView.multi}" readonlyInput="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="range" value="Range Selection"/>
                         <p:datePicker id="range" selectionMode="range" value="#{calendarView.range}" readonlyInput="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="navigator" value="Navigator"/>
                         <p:datePicker id="navigator" value="#{calendarView.date2}" monthNavigator="true" yearNavigator="true" showWeek="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="month" value="Month Picker"/>
                         <p:datePicker id="month" view="month" value="#{calendarView.date3}" pattern="MM/yyyy" yearNavigator="true" yearRange="2000:2030"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="touch" value="Touch UI"/>
                         <p:datePicker id="touch" value="#{calendarView.date4}" touchUI="true" showOtherMonths="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="dateTemplate" value="Date Template"/>
                         <p:datePicker id="dateTemplate" value="#{calendarView.date5}" dateTemplate="dateTemplateFunc"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="disabledDD" value="Disabled Date/Day"/>
                         <p:datePicker id="disabledDD" value="#{calendarView.date6}"
                                       disabledDays="#{calendarView.invalidDays}"
                                       disabledDates="#{calendarView.invalidDates}" readonlyInput="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="button" value="Button"/>
                         <p:datePicker id="button" value="#{calendarView.date7}" showIcon="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="event" value="Select Event"/>
                         <p:datePicker id="event" value="#{calendarView.date8}">
                             <p:ajax event="dateSelect" listener="#{calendarView.onDateSelect}" update="msgs"/>
                         </p:datePicker>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="spanish" value="Spanish"/>
                         <p:datePicker id="spanish" value="#{calendarView.date9}" locale="es" monthNavigator="true"
                                   pattern="yyyy-MMM-dd"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="german" value="German"/>
                         <p:datePicker id="german" value="#{calendarView.dateDe}" locale="de" monthNavigator="true"
                                   pattern="dd.MM.yyyy"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="buttonbar" value="Button Bar"/>
                         <p:datePicker id="buttonbar" value="#{calendarView.date10}" showButtonBar="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="minmax" value="Min-Max"/>
                         <p:datePicker id="minmax" value="#{calendarView.date11}" mindate="#{calendarView.minDate}"
                                       maxdate="#{calendarView.maxDate}" readonlyInput="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="multi" value="Multiple Months"/>
                         <p:datePicker id="multi" value="#{calendarView.date12}" numberOfMonths="3" monthNavigator="true" yearNavigator="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="time" value="Time"/>
                         <p:datePicker id="time" value="#{calendarView.date13}" showTime="true"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="timeMinMax" value="Time (Min-Max)"/>
                         <p:datePicker id="timeMinMax" value="#{calendarView.date16}" showTime="true"
                                   mindate="#{calendarView.minDateTime}" maxdate="#{calendarView.maxDateTime}"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="timeDe" value="Time (German)"/>
                         <p:datePicker id="timeDe" value="#{calendarView.dateTimeDe}" showTime="true" locale="de"
                                   pattern="dd.MM.yyyy"/>
 
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="timeonly" value="Time Only"/>
                         <p:datePicker id="timeonly" value="#{calendarView.date14}" timeOnly="true" pattern="HH:mm"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="timeonlyMinMax" value="Time Only (Min-Max)"/>
                         <p:datePicker id="timeonlyMinMax" value="#{calendarView.date15}" timeOnly="true" pattern="HH:mm"
                                   mindate="#{calendarView.minTime}" maxdate="#{calendarView.maxTime}"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="timeonlyMillis" value="Time Only with seconds and milliseconds"/>
                         <p:datePicker id="timeonlyMillis" value="#{calendarView.date15}" timeOnly="true"
                                       pattern="HH:mm:ss.SSS" showSeconds="true" showMilliseconds="true"/>

@@ -18,7 +18,7 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <h5 class="p-mt-0">Catalog</h5>
+            <h5 class="mt-0">Catalog</h5>
             <p:panelGrid columns="4" cellpadding="7" layout="flex">
                 <p:panel id="blind" header="Blind">
                     <h:outputText value="click"/>
@@ -112,7 +112,7 @@
                     <p:inputText id="text" value="#{effectView.text}" required="true"/>
                 </h:panelGrid>
 
-                <p:commandButton id="submit" value="Echo" action="#{effectView.echo}" update="messages" styleClass="p-mt-3" />
+                <p:commandButton id="submit" value="Echo" action="#{effectView.echo}" update="messages" styleClass="mt-3" />
             </h:form>
         </div>
     </ui:define>

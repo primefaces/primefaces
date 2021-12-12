@@ -29,11 +29,11 @@
 
                 <div style="margin:20px 0">
                     <p:commandButton value="Submit" icon="pi pi-check" update="output"/>
-                    <p:commandButton value="Clear" icon="pi pi-times" type="button" onclick="PF('sig').clear()" styleClass="ui-button-flat p-ml-2"/>
+                    <p:commandButton value="Clear" icon="pi pi-times" type="button" onclick="PF('sig').clear()" styleClass="ui-button-flat ml-2"/>
                 </div>
 
                 <p:outputPanel id="output">
-                    <h:outputText rendered="#{not empty signatureView.value}" style="font-size:1.5rem" styleClass="p-d-block p-mb-2"
+                    <h:outputText rendered="#{not empty signatureView.value}" style="font-size:1.5rem" styleClass="block mb-2"
                                   value="Your Signature" />
                     <p:signature style="width:400px;height:200px;" value="#{signatureView.value}" readonly="true"
                                  rendered="#{not empty signatureView.value}" backgroundColor="#eaeaea" color="#03a9f4"/>
