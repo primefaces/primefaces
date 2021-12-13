@@ -1,12 +1,12 @@
 # Dependencies
 
-PrimeFaces only requires a Java 8+ runtime and a JSF 2.x implementation as mandatory
+PrimeFaces only requires a Java 8+ runtime and a JSF / Faces implementation as mandatory
 dependencies. There’re some optional libraries for certain features. Licenses of all dependencies and
 any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
 | Dependency | GroupId | ArtifactId | Version | Type | Description |
 | --- | --- | --- | --- | --- | --- |
-| JSF runtime | | |  2.0, 2.1, 2.2, 2.3, 3.0 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
+| JSF runtime | | |  2.0, 2.1, 2.2, 2.3, 3.0, 4.0 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
 | Libre OpenPDF | com.github.librepdf | openpdf | 1.3.26 | Optional | DataExporter (PDF) |
 | Apache POI | org.apache.poi | poi | 5.1.0 | Optional | DataExporter (Excel or XML) |
 | Rome | com.rometools | rome | 1.15.0 | Optional | FeedReader |
@@ -19,7 +19,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 dependencies may also work but not tested.
 
 ## JSF Runtime ##
-PrimeFaces supports JSF 2.0, 2.1, 2.2, 2.3 and 3.0 runtimes at the same time using feature detection and
+PrimeFaces supports JSF 2.0, 2.1, 2.2, 2.3, 3.0 and 4.0 runtimes at the same time using feature detection and
 by not having compile time dependency to a specific version. As a result some features are only
 available depending on the runtime.
 
