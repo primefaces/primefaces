@@ -937,6 +937,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/texteditor.css</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/0-texteditor.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/1-texteditor-theme.css</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/filedownload.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/0-download.js</include>
