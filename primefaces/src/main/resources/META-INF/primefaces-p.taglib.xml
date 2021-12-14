@@ -20653,7 +20653,7 @@
             </description>
             <name>interval</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.Object</type>
         </attribute>
         <attribute>
             <description>
