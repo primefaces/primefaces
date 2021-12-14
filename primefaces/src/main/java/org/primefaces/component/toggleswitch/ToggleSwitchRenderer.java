@@ -24,6 +24,7 @@
 package org.primefaces.component.toggleswitch;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -82,16 +83,17 @@ public class ToggleSwitchRenderer extends InputRenderer {
         }
 
         encodeInput(context, toggleSwitch, clientId, checked);
-        encodeSlider(context);
+        encodeSlider(context, toggleSwitch, checked);
 
         writer.endElement("div");
     }
 
-    protected void encodeSlider(FacesContext context) throws IOException {
+    protected void encodeSlider(FacesContext context, ToggleSwitch toggleSwitch, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String icon = checked ? toggleSwitch.getOnIcon() : toggleSwitch.getOffIcon();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS, null);
+        writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS + " " + Objects.toString(icon, ""), null);
         writer.endElement("div");
     }
 
@@ -128,7 +130,10 @@ public class ToggleSwitchRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, ToggleSwitch toggleSwitch) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ToggleSwitch", toggleSwitch).finish();
+        wb.init("ToggleSwitch", toggleSwitch)
+          .attr("onIcon", toggleSwitch.getOnIcon(), null)
+          .attr("offIcon", toggleSwitch.getOffIcon(), null)
+            .finish();
     }
 
     protected boolean isChecked(String value) {

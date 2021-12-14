@@ -34,6 +34,7 @@ public class SelectBooleanView {
 
     private boolean value1;
     private boolean value2;
+    private boolean value3;
 
     public boolean isValue1() {
         return value1;
@@ -49,6 +50,14 @@ public class SelectBooleanView {
 
     public void setValue2(boolean value2) {
         this.value2 = value2;
+    }
+
+    public boolean isValue3() {
+        return value3;
+    }
+
+    public void setValue3(boolean value3) {
+        this.value3 = value3;
     }
 
     public void addMessage() {
