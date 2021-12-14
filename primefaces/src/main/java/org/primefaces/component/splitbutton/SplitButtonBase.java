@@ -311,7 +311,7 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     @Override
     public boolean isIgnoreComponentNotFound() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
     }
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {

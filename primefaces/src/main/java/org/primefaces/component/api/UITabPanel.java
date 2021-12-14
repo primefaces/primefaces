@@ -135,7 +135,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public boolean isDynamic() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
     public void setDynamic(boolean _dynamic) {
@@ -143,7 +143,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public boolean isPrependId() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
     }
 
     public void setPrependId(boolean _prependId) {
