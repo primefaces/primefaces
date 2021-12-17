@@ -33,6 +33,7 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
      */
     applyMask: function() {
         if(this.cfg.mask && !this.jq.is('[readonly]') && !this.jq.is(':disabled')) {
+            this.cfg.clearIncomplete = (this.cfg.autoClear === undefined) ? true : this.cfg.autoClear;
             this.jq.inputmask('remove').inputmask(this.cfg);
         }
     },
