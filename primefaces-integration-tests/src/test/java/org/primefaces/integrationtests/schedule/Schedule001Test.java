@@ -27,12 +27,16 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Schedule001Test extends AbstractPrimePageTest {
@@ -72,6 +76,27 @@ public class Schedule001Test extends AbstractPrimePageTest {
         // Assert
         assertMessage(page, "Date selected");
         assertConfiguration(schedule.getWidgetConfiguration(), "en");
+
+        // Act
+        schedule.findElement(By.className("fc-timeGridWeek-button")).click();
+        List<WebElement> slotLaneElements = schedule.findElements(By.cssSelector(".fc-timegrid-slots table tr .fc-timegrid-slot-lane"));
+        for (WebElement slotLaneElt: slotLaneElements) {
+            if (slotLaneElt.getAttribute("data-time").equals("10:00:00")) {
+                Actions actions = new Actions(page.getWebDriver());
+                actions.moveToElement(slotLaneElt, 1, 1); //click on first day of this week (week starts with sunday)
+                PrimeSelenium.guardAjax(actions.click().build()).perform();
+            }
+        }
+
+        // Assert
+        Msg msg = page.messages.getMessage(0);
+        LocalDate startOfWeek = LocalDate.now();
+        while (startOfWeek.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            startOfWeek = startOfWeek.minusDays(1);
+        }
+        Assertions.assertTrue(msg.getDetail().endsWith(startOfWeek.toString() + "T10:00"));
+
+        // TODO: check with different clientTimeZone and (server)timeZone - settings
     }
 
     @Test
