@@ -25,12 +25,15 @@ package org.primefaces.integrationtests.schedule;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
+
+import java.util.List;
 
 public class Schedule001Test extends AbstractPrimePageTest {
 
@@ -86,6 +89,9 @@ public class Schedule001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
         Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
         Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
+
+        // TODO: check with different clientTimeZone and (server)timeZone - settings
+
         assertConfiguration(schedule.getWidgetConfiguration(), "en");
     }
 
@@ -114,6 +120,29 @@ public class Schedule001Test extends AbstractPrimePageTest {
         assertButton(schedule.getWeekButton(), "Semaine");
         assertButton(schedule.getDayButton(), "Jour");
         assertConfiguration(schedule.getWidgetConfiguration(), "fr");
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Schedule: clientTimeZone vs (server)timeZone")
+    public void testClientTimeZone(Page page) {
+        // Arrange
+        Schedule schedule = page.schedule;
+
+        // Act
+        page.buttonGerman.click();
+
+        // Assert
+        List<WebElement> todaysEvents = schedule.findElements(By.cssSelector(".fc-day-today .fc-daygrid-event"));
+        Assertions.assertEquals(1, todaysEvents.size());
+        String eventTime = todaysEvents.get(0).findElement(By.className("fc-event-time")).getText();
+        String eventTitle = todaysEvents.get(0).findElement(By.className("fc-event-title")).getText();
+
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(1).getTitle(), eventTitle);
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(1).getStartDate().getHour() + " Uhr", eventTime);
+
+        // TODO: check with different clientTimeZone and (server)timeZone - settings
+
     }
 
     private void assertButton(WebElement button, String text) {
@@ -145,6 +174,9 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:btnFrench")
         CommandButton buttonFrench;
+
+        @FindBy(id = "form:btnGerman")
+        CommandButton buttonGerman;
 
         @FindBy(id = "form:selectedEventTitle")
         InputText selectedEventTitle;

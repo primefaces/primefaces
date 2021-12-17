@@ -186,6 +186,10 @@ public class Schedule001 implements Serializable {
         setLocale("fr");
     }
 
+    public void german() {
+        setLocale("de");
+    }
+
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
