@@ -168,6 +168,8 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // TODO: check with different clientTimeZone and (server)timeZone - settings
 
+        page.timeZone.select("GMT-5");
+        page.clientTimeZone.select("Europe/Moscow");
     }
 
     private void assertButton(WebElement button, String text) {
@@ -202,6 +204,12 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:btnGerman")
         CommandButton buttonGerman;
+
+        @FindBy(id = "form:timeZone")
+        SelectOneMenu timeZone;
+
+        @FindBy(id = "form:clientTimeZone")
+        SelectOneMenu clientTimeZone;
 
         @FindBy(id = "form:selectedEventTitle")
         InputText selectedEventTitle;
