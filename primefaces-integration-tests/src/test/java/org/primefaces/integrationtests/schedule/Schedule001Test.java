@@ -24,20 +24,23 @@
 package org.primefaces.integrationtests.schedule;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.Schedule;
+import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
 
 public class Schedule001Test extends AbstractPrimePageTest {
+
+    private Schedule001 schedule001;
+
+    @BeforeEach
+    public void init() {
+        schedule001 = new Schedule001();
+        schedule001.init();
+    }
 
     @Test
     @Order(1)
@@ -80,6 +83,9 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Event selected");
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
         assertConfiguration(schedule.getWidgetConfiguration(), "en");
     }
 
@@ -139,6 +145,15 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:btnFrench")
         CommandButton buttonFrench;
+
+        @FindBy(id = "form:selectedEventTitle")
+        InputText selectedEventTitle;
+
+        @FindBy(id = "form:selectedEventStartDate")
+        DatePicker selectedEventStartDate;
+
+        @FindBy(id = "form:selectedEventEndDate")
+        DatePicker selectedEventEndDate;
 
         @Override
         public String getLocation() {
