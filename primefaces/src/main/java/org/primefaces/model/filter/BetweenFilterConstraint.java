@@ -27,7 +27,7 @@ import javax.faces.context.FacesContext;
 import java.util.List;
 import java.util.Locale;
 
-public class RangeFilterConstraint implements FilterConstraint {
+public class BetweenFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
@@ -36,13 +36,13 @@ public class RangeFilterConstraint implements FilterConstraint {
         }
 
         if (value instanceof Comparable) {
-            return isInRange((Comparable) value, (List) filter);
+            return isBetween((Comparable) value, (List) filter);
         }
 
         throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
     }
 
-    protected boolean isInRange(Comparable value, List filter) {
+    protected boolean isBetween(Comparable value, List filter) {
         Comparable start = (Comparable) filter.get(0);
         Comparable end = (Comparable) filter.get(1);
         return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;

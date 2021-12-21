@@ -213,8 +213,6 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 throw new UnsupportedOperationException("MatchMode.IN currently not supported!");
             case NOT_IN:
                 throw new UnsupportedOperationException("MatchMode.NOT_IN currently not supported!");
-            case RANGE:
-                throw new UnsupportedOperationException("MatchMode.RANGE currently not supported!");
             case BETWEEN:
                 throw new UnsupportedOperationException("MatchMode.BETWEEN currently not supported!");
             case NOT_BETWEEN:
