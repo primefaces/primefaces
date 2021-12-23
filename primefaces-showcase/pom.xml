@@ -273,7 +273,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.4.3</version>
+                <version>3.5.0</version>
             </extension>
         </extensions>
     </build>
