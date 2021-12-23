@@ -10,6 +10,13 @@
             .grid-radio td {
                 padding: .5rem;
             }
+            .legend {
+                display: inline-block;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: .25rem;
+                vertical-align: sub;
+            }
         </style>
     </ui:define>
 
@@ -46,25 +53,32 @@
 
                 <h5>Custom Layout</h5>
                 <p:outputPanel id="customPanel" style="margin-bottom:10px">
-                    <p:selectOneRadio id="customRadio" value="#{radioView.color}" layout="custom">
+                    <p:selectOneRadio id="customRadio" value="#{radioView.color}" label="Color">
                         <f:selectItem itemLabel="Red" itemValue="Red"/>
                         <f:selectItem itemLabel="Green" itemValue="Green"/>
                         <f:selectItem itemLabel="Blue" itemValue="Blue"/>
+
+                        <f:facet name="custom">
+                            <div class="p-field-radiobutton" role="radio" aria-checked="false">
+                                <p:radioButton id="opt1" for="customRadio" itemIndex="0"/>
+                                <p:outputLabel for="opt1">
+                                    <span class="legend" style="background:red"/> Red
+                                </p:outputLabel>
+                            </div>
+                            <div class="p-field-radiobutton" role="radio" aria-checked="false">
+                                <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>
+                                <p:outputLabel for="opt2">
+                                    <span class="legend" style="background:green"/> Green
+                                </p:outputLabel>
+                            </div>
+                            <div class="p-field-radiobutton" role="radio" aria-checked="false">
+                                <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>
+                                <p:outputLabel for="opt3">
+                                    <span class="legend" style="background:blue"/> Blue
+                                </p:outputLabel>
+                            </div>
+                        </f:facet>
                     </p:selectOneRadio>
-
-                    <h:panelGrid columns="3" cellpadding="5">
-                        <p:radioButton id="opt1" for="customRadio" itemIndex="0"/>
-                        <h:outputLabel for="opt1" value="Red"/>
-                        <p:spinner/>
-
-                        <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>
-                        <h:outputLabel for="opt2" value="Green"/>
-                        <p:inputText/>
-
-                        <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>
-                        <h:outputLabel for="opt3" value="Blue"/>
-                        <p:calendar/>
-                    </h:panelGrid>
                 </p:outputPanel>
             </h:form>
         </div>
