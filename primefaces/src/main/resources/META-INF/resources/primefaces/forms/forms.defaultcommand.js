@@ -45,11 +45,9 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
             if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id)
                     || (!$this.scope && !data.scopeEnter && (e.which === keyCode.ENTER))) {
                 // Do not proceed if target is a textarea, button or link
-                if ($(e.target).is('textarea,button,input[type="submit"],a')) {
-                    return true;
-                }
                 // #8190 Do not proceed if target is part of TextEditor content
-                if ($(e.target).closest('.ql-editor').length) {
+                if ($(e.target).is('textarea,button,input[type="submit"],a')
+                        || $(e.target).closest('.ql-editor').length) {
                     return true;
                 }
 
