@@ -25,8 +25,6 @@ package org.primefaces.component.selectoneradio;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -47,8 +45,6 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneRadioRenderer extends SelectOneRenderer {
-
-    private static final Logger LOGGER = Logger.getLogger(SelectOneRadioRenderer.class.getName());
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
@@ -103,7 +99,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 customFacet.encodeAll(context);
             }
             else {
-                LOGGER.log(Level.WARNING, "Custom layout should be put in a facet named 'custom'");
+                throw new FacesException("Custom layout should be put in a facet named 'custom'");
             }
 
             writer.endElement("span");
