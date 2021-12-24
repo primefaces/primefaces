@@ -55,6 +55,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                     input.prop('checked', true).parent().next().addClass('ui-state-active').children('.ui-radiobutton-icon')
                             .addClass('ui-icon-bullet').removeClass('ui-icon-blank');
                 }
+                this.setAriaChecked(input, original.is(':checked'));
 
                 if(original.is(':disabled')) {
                     this.disable(i);
@@ -81,6 +82,16 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Sets aria-checked attribute.
+     * @param {JQuery} input of which to set aria-checked attribute.
+     * @param {boolean} checked state to set.
+     * @private
+     */
+    setAriaChecked: function(input, checked) {
+        input.closest('[role=radio]').attr('aria-checked', checked);
+    },
+
+    /**
      * @override
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
@@ -93,6 +104,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 this.enable(i);
                 input.prop('checked', false).parent().next().removeClass('ui-state-active').children('.ui-radiobutton-icon')
                             .removeClass('ui-icon-bullet').addClass('ui-icon-blank');
+                this.setAriaChecked(input, false);
             }
         }
 
@@ -116,9 +128,11 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             var radio = $(this),
             input = radio.prev().children(':radio');
 
+            $this.jq.find('[role=radio]').attr('aria-checked', false);
             if(!radio.hasClass('ui-state-active')) {
                 $this.unselect($this.checkedRadio);
                 $this.select(radio);
+                $this.setAriaChecked(radio, true);
                 $this.fireClickEvent(input, e);
                 input.trigger('change');
             }

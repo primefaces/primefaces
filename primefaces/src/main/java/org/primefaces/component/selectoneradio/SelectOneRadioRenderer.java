@@ -64,7 +64,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String layout = radio.getLayout();
         UIComponent customFacet = radio.getFacet("custom");
         boolean shouldRenderCustomFacet = ComponentUtils.shouldRenderFacet(customFacet);
@@ -74,35 +73,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = "custom".equals(layout);
 
         if (custom) {
-            String style = radio.getStyle();
-            String styleClass = radio.getStyleClass();
-            String labelledBy = radio.getLabel();
-            writer.startElement("span", radio);
-            writer.writeAttribute("id", radio.getClientId(context), "id");
-            writer.writeAttribute("role", "radiogroup", null);
-            if (labelledBy != null) {
-                writer.writeAttribute("aria-labelledby", labelledBy, "label");
-            }
-            if (style != null) {
-                writer.writeAttribute("style", style, "style");
-            }
-            if (styleClass != null) {
-                writer.writeAttribute("class", styleClass, "styleClass");
-            }
-
-            writer.startElement("span", radio);
-            writer.writeAttribute("class", "ui-helper-hidden", "styleClass");
-            encodeCustomLayout(context, radio);
-            writer.endElement("span");
-
             if (shouldRenderCustomFacet) {
-                customFacet.encodeAll(context);
+                encodeCustomLayout(context, radio);
             }
             else {
-                throw new FacesException("Custom layout should be put in a facet named 'custom'");
+                throw new FacesException("Custom layout requires a facet named 'custom'");
             }
-
-            writer.endElement("span");
         }
         else if ("responsive".equals(layout)) {
             encodeResponsiveLayout(context, radio);
@@ -239,6 +215,34 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String style = radio.getStyle();
+        String styleClass = radio.getStyleClass();
+        String labelledBy = radio.getLabel();
+        writer.startElement("span", radio);
+        writer.writeAttribute("id", radio.getClientId(context), "id");
+        writer.writeAttribute("role", "radiogroup", null);
+        if (labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, "label");
+        }
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, "styleClass");
+        }
+
+        encodeCustomLayoutHelper(context, radio);
+        radio.getFacet("custom").encodeAll(context);
+
+        writer.endElement("span");
+    }
+
+    protected void encodeCustomLayoutHelper(FacesContext context, SelectOneRadio radio) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", radio);
+        writer.writeAttribute("class", "ui-helper-hidden", "styleClass");
+
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
@@ -252,6 +256,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
             encodeOptionInput(context, radio, id, name, selected, disabled, itemValueAsString);
         }
+
+        writer.endElement("span");
     }
 
     protected void encodeLineLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
