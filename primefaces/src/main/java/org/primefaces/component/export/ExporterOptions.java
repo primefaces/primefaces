@@ -41,4 +41,8 @@ public interface ExporterOptions {
 
     String getFontName();
 
+    boolean isExportHeader();
+
+    boolean isExportFooter();
+
 }

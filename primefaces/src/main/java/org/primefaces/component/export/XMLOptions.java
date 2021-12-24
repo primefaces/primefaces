@@ -23,64 +23,16 @@
  */
 package org.primefaces.component.export;
 
-public class CSVOptions implements ExporterOptions {
+public class XMLOptions implements ExporterOptions {
 
-    public static final CSVOptions STANDARD = new CSVOptions('"', ',', "\r\n");
+    private static final String STYLING_NOT_SUPPORTED = "XML does not support styling.";
 
-    public static final CSVOptions EXCEL = new CSVOptions('"', ',', "\n");
+    private boolean exportHeader = false;
 
-    public static final CSVOptions EXCEL_NORTHERN_EUROPE = new CSVOptions('"', ';', "\n");
+    private boolean exportFooter = false;
 
-    public static final CSVOptions TABS = new CSVOptions('"', '\t', "\n");
-
-    private static final String STYLING_NOT_SUPPORTED = "CSV does not support styling.";
-
-    private final char quoteChar;
-
-    private final char delimiterChar;
-
-    private final String endOfLineSymbols;
-
-    private final String quoteString;
-
-    private final String doubleQuoteString;
-
-    private boolean exportHeader = true;
-
-    private boolean exportFooter = true;
-
-    public CSVOptions(char quoteChar, char delimiterChar, String endOfLineSymbols, boolean exportHeader, boolean exportFooter) {
-        this.quoteChar = quoteChar;
-        this.delimiterChar = delimiterChar;
-        this.endOfLineSymbols = endOfLineSymbols;
-        this.exportHeader = exportHeader;
-        this.exportFooter = exportFooter;
-        quoteString = Character.toString(quoteChar);
-        doubleQuoteString = quoteString + quoteString;
-    }
-
-    public CSVOptions(char quoteChar, char delimiterChar, String endOfLineSymbols) {
-        this(quoteChar, delimiterChar, endOfLineSymbols, true, true);
-    }
-
-    public char getQuoteChar() {
-        return quoteChar;
-    }
-
-    public char getDelimiterChar() {
-        return delimiterChar;
-    }
-
-    public String getEndOfLineSymbols() {
-        return endOfLineSymbols;
-    }
-
-    public String getQuoteString() {
-        return quoteString;
-    }
-
-    public String getDoubleQuoteString() {
-        return doubleQuoteString;
+    public XMLOptions() {
+        super();
     }
 
     @Override
@@ -131,6 +83,14 @@ public class CSVOptions implements ExporterOptions {
     @Override
     public boolean isExportFooter() {
         return exportFooter;
+    }
+
+    public void setExportHeader(boolean exportHeader) {
+        this.exportHeader = exportHeader;
+    }
+
+    public void setExportFooter(boolean exportFooter) {
+        this.exportFooter = exportFooter;
     }
 
 }

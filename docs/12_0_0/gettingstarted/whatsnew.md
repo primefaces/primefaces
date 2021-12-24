@@ -6,3 +6,5 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
+
+  * Exporter: added `exporterHeader` and `exporterFooter` options to allow control over whether you want them exported or not

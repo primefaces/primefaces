@@ -45,6 +45,10 @@ public class ExcelOptions implements ExporterOptions {
 
     private boolean stronglyTypedCells = true;
 
+    private boolean exportHeader = true;
+
+    private boolean exportFooter = true;
+
     public ExcelOptions() {
     }
 
@@ -156,5 +160,23 @@ public class ExcelOptions implements ExporterOptions {
 
     public void setStronglyTypedCells(boolean stronglyTypedCells) {
         this.stronglyTypedCells = stronglyTypedCells;
+    }
+
+    @Override
+    public boolean isExportHeader() {
+        return exportHeader;
+    }
+
+    public void setExportHeader(boolean exportHeader) {
+        this.exportHeader = exportHeader;
+    }
+
+    @Override
+    public boolean isExportFooter() {
+        return exportFooter;
+    }
+
+    public void setExportFooter(boolean exportFooter) {
+        this.exportFooter = exportFooter;
     }
 }

@@ -43,6 +43,10 @@ public class PDFOptions implements ExporterOptions {
 
     private PDFOrientationType orientation;
 
+    private boolean exportHeader = true;
+
+    private boolean exportFooter = true;
+
     public PDFOptions() {
         orientation = PDFOrientationType.PORTRAIT;
     }
@@ -156,6 +160,24 @@ public class PDFOptions implements ExporterOptions {
      */
     public void setOrientation(PDFOrientationType orientation) {
         this.orientation = orientation;
+    }
+
+    @Override
+    public boolean isExportHeader() {
+        return exportHeader;
+    }
+
+    public void setExportHeader(boolean exportHeader) {
+        this.exportHeader = exportHeader;
+    }
+
+    @Override
+    public boolean isExportFooter() {
+        return exportFooter;
+    }
+
+    public void setExportFooter(boolean exportFooter) {
+        this.exportFooter = exportFooter;
     }
 
 }
