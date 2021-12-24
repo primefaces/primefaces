@@ -147,6 +147,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                writer.writeAttribute("role", "radio", null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("div");
 
@@ -274,6 +275,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("td", null);
+            writer.writeAttribute("role", "radio", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
         }
@@ -293,6 +295,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("tr", null);
+            writer.writeAttribute("role", "radio", null);
             writer.startElement("td", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
@@ -324,6 +327,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 }
 
                 writer.startElement("td", null);
+                writer.writeAttribute("role", "radio", null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("td");
                 idx++;
@@ -337,10 +341,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         else {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
-    }
-
-    protected void encodeResponsiveItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
-
     }
 
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name,

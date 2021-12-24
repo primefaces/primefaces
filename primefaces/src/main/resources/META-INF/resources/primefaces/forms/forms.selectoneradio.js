@@ -30,6 +30,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+        var $this = this;
 
         //custom layout
         if(this.cfg.custom) {
@@ -70,6 +71,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             this.outputs = this.jq.find('.ui-radiobutton-box');
             this.inputs = this.jq.find(':radio');
             this.labels = this.jq.find('label');
+
+            this.inputs.each(function(){
+                $this.setAriaChecked($(this), this.checked);
+            });
 
             //pfs metadata
             this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -129,10 +134,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             input = radio.prev().children(':radio');
 
             $this.jq.find('[role=radio]').attr('aria-checked', false);
+            $this.setAriaChecked(radio, true);
             if(!radio.hasClass('ui-state-active')) {
                 $this.unselect($this.checkedRadio);
                 $this.select(radio);
-                $this.setAriaChecked(radio, true);
                 $this.fireClickEvent(input, e);
                 input.trigger('change');
             }
