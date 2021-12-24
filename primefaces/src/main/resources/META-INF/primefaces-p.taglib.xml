@@ -168,6 +168,24 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description>When enabled, only visible data would be exported.</description>
+            <name>visibleOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>When enabled, the header will be exported. Default is true</description>
+            <name>exportHeader</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>When enabled, the footer will be exported. Default is true.</description>
+            <name>exportFooter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description>Exports the header and cell content according to the option.</description>
             <name>options</name>
             <required>false</required>

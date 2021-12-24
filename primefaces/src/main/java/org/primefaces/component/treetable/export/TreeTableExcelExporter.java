@@ -392,10 +392,13 @@ public class TreeTableExcelExporter extends TreeTableExporter {
 
     public void exportTable(FacesContext context, UIComponent component, Sheet sheet, ExportConfiguration exportConfiguration) {
         TreeTable table = (TreeTable) component;
-        addTableFacets(context, table, sheet, TreeTableExporter.ColumnType.HEADER);
-        boolean headerGroup = addColumnGroup(table, sheet, TreeTableExporter.ColumnType.HEADER);
-        if (!headerGroup) {
-            addColumnFacets(table, sheet, TreeTableExporter.ColumnType.HEADER);
+
+        if (exportConfiguration.isExportHeader()) {
+            addTableFacets(context, table, sheet, TreeTableExporter.ColumnType.HEADER);
+            boolean headerGroup = addColumnGroup(table, sheet, TreeTableExporter.ColumnType.HEADER);
+            if (!headerGroup) {
+                addColumnFacets(table, sheet, TreeTableExporter.ColumnType.HEADER);
+            }
         }
 
         if (exportConfiguration.isPageOnly()) {
@@ -408,11 +411,13 @@ public class TreeTableExcelExporter extends TreeTableExporter {
             exportAll(context, table, sheet);
         }
 
-        addColumnGroup(table, sheet, TreeTableExporter.ColumnType.FOOTER);
-        if (table.hasFooterColumn()) {
-            addColumnFacets(table, sheet, TreeTableExporter.ColumnType.FOOTER);
+        if (exportConfiguration.isExportFooter()) {
+            addColumnGroup(table, sheet, TreeTableExporter.ColumnType.FOOTER);
+            if (table.hasFooterColumn()) {
+                addColumnFacets(table, sheet, TreeTableExporter.ColumnType.FOOTER);
+            }
+            addTableFacets(context, table, sheet, TreeTableExporter.ColumnType.FOOTER);
         }
-        addTableFacets(context, table, sheet, TreeTableExporter.ColumnType.FOOTER);
     }
 
     protected void applyOptions(Workbook wb, TreeTable table, Sheet sheet, ExporterOptions options) {

@@ -82,7 +82,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
     }
 
     /**
-     * Gets and caches the list of UIColumns that are exportable="true" and rendered="true".
+     * Gets and caches the list of UIColumns that are exportable="true", visible="true", and rendered="true".
      * Orders them by displayPriority so they match the UI display of the columns.
      *
      * @param table the Table with columns to export
@@ -96,10 +96,12 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
         List<UIColumn> allColumns = table.getColumns();
         List<UIColumn> exportcolumns = new ArrayList<>(allColumns.size());
         Map<String, ColumnMeta> columnMetadata = table.getColumnMeta();
+        boolean visibleColumnsOnly = getExportConfiguration().isVisibleOnly();
 
         if (columnMetadata == null || columnMetadata.isEmpty()) {
             table.forEachColumn(col -> {
-                if (col.isRendered() && col.isExportable()) {
+                if (col.isRendered() && col.isExportable() &&
+                            (!visibleColumnsOnly || (visibleColumnsOnly && col.isVisible()))) {
                     exportcolumns.add(col);
                 }
                 return true;
@@ -115,7 +117,8 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
             for (ColumnMeta meta : columnMetas) {
                 String metaColumnKey = meta.getColumnKey();
                 table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), column -> {
-                    if (column.isRendered() && column.isExportable()) {
+                    if (column.isRendered() && column.isExportable() &&
+                                (!visibleColumnsOnly || (visibleColumnsOnly && column.isVisible()))) {
                         exportcolumns.add(column);
                     }
                 });

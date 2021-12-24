@@ -43,14 +43,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
+import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -154,10 +147,12 @@ public class TreeTablePDFExporter extends TreeTableExporter {
             config.getOnTableRender().invoke(context.getELContext(), new Object[]{pdfTable, table});
         }
 
-        addTableFacets(context, table, pdfTable, ColumnType.HEADER);
-        boolean headerGroup = addColumnGroup(table, pdfTable, ColumnType.HEADER);
-        if (!headerGroup) {
-            addColumnFacets(table, pdfTable, ColumnType.HEADER);
+        if (config.isExportHeader()) {
+            addTableFacets(context, table, pdfTable, ColumnType.HEADER);
+            boolean headerGroup = addColumnGroup(table, pdfTable, ColumnType.HEADER);
+            if (!headerGroup) {
+                addColumnFacets(table, pdfTable, ColumnType.HEADER);
+            }
         }
 
         if (config.isPageOnly()) {
@@ -170,11 +165,13 @@ public class TreeTablePDFExporter extends TreeTableExporter {
             exportAll(context, table, pdfTable);
         }
 
-        addColumnGroup(table, pdfTable, ColumnType.FOOTER);
-        if (table.hasFooterColumn()) {
-            addColumnFacets(table, pdfTable, ColumnType.FOOTER);
+        if (config.isExportFooter()) {
+            addColumnGroup(table, pdfTable, ColumnType.FOOTER);
+            if (table.hasFooterColumn()) {
+                addColumnFacets(table, pdfTable, ColumnType.FOOTER);
+            }
+            addTableFacets(context, table, pdfTable, ColumnType.FOOTER);
         }
-        addTableFacets(context, table, pdfTable, ColumnType.FOOTER);
 
         return pdfTable;
     }
