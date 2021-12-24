@@ -61,6 +61,10 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>jcl-over-slf4j</artifactId>
                 </exclusion>
+                <exclusion>
+                	<groupId>org.apache.logging.log4j</groupId>
+                	<artifactId>log4j-api</artifactId>
+                </exclusion>
             </exclusions>
             <scope>provided</scope>
         </dependency>
@@ -95,6 +99,10 @@
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                	<groupId>org.apache.logging.log4j</groupId>
+                	<artifactId>log4j-api</artifactId>
                 </exclusion>
             </exclusions>
             <scope>provided</scope>
@@ -159,7 +167,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.1.0</version>
+            <version>4.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -191,7 +199,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.2.2</version>
+            <version>4.2.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -209,7 +217,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.9.7</version>
+            <version>3.9.9</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -350,7 +358,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.4.3</version>
+                <version>3.5.0</version>
             </extension>
         </extensions>
 
@@ -397,7 +405,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>5.1.2</version>
+                <version>5.1.3</version>
                 <extensions>true</extensions>
                 <configuration>
                     <supportedProjectTypes>
@@ -929,6 +937,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/texteditor.css</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/0-texteditor.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/1-texteditor-theme.css</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/filedownload.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/0-download.js</include>
@@ -1169,7 +1186,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.5.0</version>
+                        <version>6.5.1</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>

@@ -710,6 +710,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the exported request scoped variable for the status of the iteration.]]>
+            </description>
+            <name>varStatus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[List to iterate to display dynamic number of tabs.]]>
             </description>
             <name>value</name>
@@ -3799,6 +3807,14 @@
                 <![CDATA[Name of the iterator variable used to refer each data.]]>
             </description>
             <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the exported request scoped variable for the status of the iteration.]]>
+            </description>
+            <name>varStatus</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -20653,7 +20669,7 @@
             </description>
             <name>interval</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.Object</type>
         </attribute>
         <attribute>
             <description>
@@ -27493,6 +27509,14 @@
                 <![CDATA[Name of collection iterator to use in dynamic number of tabs.]]>
             </description>
             <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the exported request scoped variable for the status of the iteration.]]>
+            </description>
+            <name>varStatus</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

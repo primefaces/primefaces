@@ -186,7 +186,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isRequired() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.required, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.required, false);
     }
 
     public void setRequired(boolean _required) {
@@ -202,7 +202,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isSkipChildren() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
     }
 
     public void setSkipChildren(boolean _skipChildren) {
@@ -210,7 +210,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isShowUnselectableCheckbox() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
     }
 
     public void setShowUnselectableCheckbox(boolean _showUnselectableCheckbox) {

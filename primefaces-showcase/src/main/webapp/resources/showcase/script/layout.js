@@ -12,10 +12,14 @@ App = {
         this.configuratorButton = $('#layout-config-button');
         this.configuratorCloseButton = $('#layout-config-close-button');
         this.filterPanel = $('.layout-sidebar-filter-panel');
+        this.news = this.wrapper.children('.layout-news');
         this.activeSubmenus = [];
         
         this._bindEvents();
+        this._bindNews();
+        
         this.restoreMenu();
+        Storage.restoreSettings();
     },
 
     _bindEvents: function() {
@@ -177,6 +181,67 @@ App = {
             $('#' + id).next().show();
             sessionStorage.setItem('active_submenus', this.activeSubmenus.join(','));
         }
+    },
+    
+    _bindNews: function() {
+        if (this.news && this.news.length > 0) {
+            var $this = this;
+            var closeButton = this.news.find('.layout-news-close');
+            closeButton.off('click.news').on('click.news', function() {
+                $this.wrapper.removeClass('layout-news-active');
+                $this.news.hide();
+                
+                Storage.saveSettings(false);
+            });
+        }
+    },
+    
+    changeNews: function(active) {
+        if (this.news && this.news.length > 0) {
+            if (active)
+                this.wrapper.addClass('layout-news-active');
+            else 
+                this.wrapper.removeClass('layout-news-active');
+        }
+    }
+}
+
+var Storage = {
+    storageKey: 'primefaces',
+    saveSettings: function(newsActive) {
+        var now = new Date();
+        var item = {
+            settings: {
+                newsActive: newsActive
+            },
+            expiry: now.getTime() + 604800000
+        }
+        localStorage.setItem(this.storageKey, JSON.stringify(item));
+    },
+    restoreSettings: function() {
+        var itemString = localStorage.getItem(this.storageKey);
+        if (itemString) {
+            var item = JSON.parse(itemString);
+            if (!this.isStorageExpired()) {
+                // News
+                App.changeNews(item.settings.newsActive);
+            }
+        }
+    },
+    isStorageExpired: function() {
+        var itemString = localStorage.getItem(this.storageKey);
+        if (!itemString) {
+            return true;
+        }
+        var item = JSON.parse(itemString);
+        var now = new Date();
+
+        if (now.getTime() > item.expiry) {
+            localStorage.removeItem(key);
+            return true;
+        }
+
+        return false;
     }
 }
 

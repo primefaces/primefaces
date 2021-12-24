@@ -60,9 +60,8 @@ public class FilterFeature implements DataTableFeature {
             .put(MatchMode.IN, new InFilterConstraint())
             .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.RANGE, new RangeFilterConstraint())
-            .put(MatchMode.BETWEEN, new RangeFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new RangeFilterConstraint()))
+            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
+            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
             .build();
 
     private static final FilterFeature INSTANCE = new FilterFeature();

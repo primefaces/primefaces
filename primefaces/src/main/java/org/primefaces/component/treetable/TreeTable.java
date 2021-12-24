@@ -121,9 +121,8 @@ public class TreeTable extends TreeTableBase {
             .put(MatchMode.IN, new InFilterConstraint())
             .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.RANGE, new RangeFilterConstraint())
-            .put(MatchMode.BETWEEN, new RangeFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new RangeFilterConstraint()))
+            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
+            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

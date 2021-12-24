@@ -39,13 +39,14 @@
 
     <h:body>
         <f:view locale="#{app.locale.locale}">
-        <div class="layout-wrapper #{app.inputStyleClass}">
-            <ui:fragment rendered="false">
+        <div class="layout-wrapper layout-news-active #{app.inputStyleClass}">
+            <ui:fragment rendered="true">
                 <div class="layout-news">
                     <div class="layout-news-container">
-                        <h:graphicImage name="showcase/images/news/topbar-pandora-device.png" alt="Pandora" styleClass="layouts-news-mockup-image" />
+                        <h:graphicImage name="showcase/images/news/topbar-newyear-logo.svg" alt="News" styleClass="layout-news-logo p-ml-2" />
+                        <h3 class="layout-news-header p-px-2"><span>UP TO 50% DISCOUNT AT PRIMESTORE</span></h3>
                         <a href="https://www.primefaces.org/store" target="_blank" class="layout-news-button">
-                            LEARN MORE<i class="pi pi-angle-right"></i>
+                            VISIT STORE
                         </a>
                         <a tabindex="0" class="layout-news-close">
                             <i class="pi pi-times"></i>
