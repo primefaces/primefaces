@@ -313,6 +313,23 @@ Sample-useage within AutoComplete. Note `completeEndpoint`-attribute.
 <p:autoComplete id="themePojoRest" value="#{autoCompleteView.theme}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" converter="#{themeConverter}" completeEndpoint="#{request.contextPath}/rest/theme/autocomplete" forceSelection="true" />
 ```
 
+## LazyDataModel and LazySearchable
+You might have many `LazyDataModels` in your project which are almost suitable to serve as an `AutoComplete` suggestions
+provider. When you implement the `LazySearchable` interface in your lazy model, they can be used with `AutoComplete` by
+ using the `lazyModel` attribute. This interface requires you to implement a `getSearchFilter` method. For example:
+
+```java
+@Override
+public Map<String, FilterMeta> getSearchFilter(String query) {
+    FilterMeta filterMeta = FilterMeta.builder()
+            .field("name")
+            .filterValue(query)
+            .matchMode(MatchMode.CONTAINS)
+            .build();
+    return Map.of(filterMeta.getField(), filterMeta);
+}
+```
+
 ## Ajax Behavior Events
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.
 
