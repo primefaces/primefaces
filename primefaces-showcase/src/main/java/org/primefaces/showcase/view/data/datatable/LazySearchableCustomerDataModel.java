@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.primefaces.model.FilterMeta;
@@ -45,7 +46,9 @@ public class LazySearchableCustomerDataModel extends LazyCustomerDataModel imple
                 .filterValue(query)
                 .matchMode(MatchMode.CONTAINS)
                 .build();
-        return Map.of(filterMeta.getField(), filterMeta);
+        Map<String, FilterMeta> searchFilter = new HashMap<>();
+        searchFilter.put(filterMeta.getField(), filterMeta);
+        return searchFilter;
     }
 
 }

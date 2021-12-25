@@ -326,7 +326,9 @@ public Map<String, FilterMeta> getSearchFilter(String query) {
             .filterValue(query)
             .matchMode(MatchMode.CONTAINS)
             .build();
-    return Map.of(filterMeta.getField(), filterMeta);
+    Map<String, FilterMeta> searchFilter = new HashMap<>();
+    searchFilter.put(filterMeta.getField(), filterMeta);
+    return searchFilter;
 }
 ```
 
