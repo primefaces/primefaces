@@ -1872,11 +1872,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
+                <![CDATA[REST-endpoint for fetching autocomplete-suggestions (instead of completeMethod).]]>
             </description>
             <name>completeEndpoint</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[LazyDataModel which implements LazySearchable for fetching autocomplete-suggestions (instead of completeMethod).]]>
+            </description>
+            <name>lazyModel</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
     <tag>

@@ -28,7 +28,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | autoHighlight | true | Boolean | Highlights the first suggested item automatically.
 | autoSelection | true | Boolean | Defines if auto selection of items that are equal to the typed input is enabled. If true, an item that is equal to the typed input is selected.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| completeEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod) Can´t be combined with dynamic=true, queryMode!=server, cache=true.
+| completeEndpoint | null | String | REST-endpoint for fetching autocomplete-suggestions (instead of completeMethod). Can´t be combined with dynamic=true, queryMode!=server, cache=true.
 | completeMethod | null | Method Expr | Method providing suggestions.
 | converter | null | Object | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | converterMessage | null | String | Message to be displayed when conversion fails.
@@ -49,6 +49,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | itemValue | null | String | Value of the item.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
+| lazyModel | null | LazyDataModel | Model which implements LazySearchable for fetching autocomplete-suggestions (instead of completeMethod).
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 | maxResults | unlimited | Integer | Maximum number of results to be displayed.
 | minQueryLength | 1 | Integer | Number of characters to be typed before starting to query.
