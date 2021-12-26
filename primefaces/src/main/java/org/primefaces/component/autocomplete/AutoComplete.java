@@ -37,7 +37,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.LazySearchable;
+import org.primefaces.model.MatchMode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -148,10 +148,17 @@ public class AutoComplete extends AutoCompleteBase {
         String query = ((org.primefaces.event.AutoCompleteEvent) event).getQuery();
         LazyDataModel lazyModel = getLazyModel();
         if (lazyModel != null) {
-            if (!(lazyModel instanceof LazySearchable)) {
-                throw new FacesException("lazyModel should implement LazySearchable");
+            String field = getLazyModelField();
+            if (LangUtils.isEmpty(field)) {
+                throw new FacesException("lazyModelField is required");
             }
-            Map<String, FilterMeta> searchFilter = ((LazySearchable) lazyModel).getSearchFilter(query);
+            Map<String, FilterMeta> searchFilter = new HashMap<>();
+            searchFilter.put(field,
+                    FilterMeta.builder()
+                            .field(field)
+                            .filterValue(query)
+                            .matchMode(MatchMode.CONTAINS)
+                            .build());
             suggestions = lazyModel.load(0, getMaxResults(), Collections.emptyMap(), searchFilter);
             suggestionsCount = lazyModel.count(searchFilter);
         }

@@ -39,7 +39,7 @@ import org.primefaces.showcase.domain.Country;
 import org.primefaces.showcase.domain.Customer;
 import org.primefaces.showcase.service.CountryService;
 import org.primefaces.showcase.service.CustomerService;
-import org.primefaces.showcase.view.data.datatable.LazySearchableCustomerDataModel;
+import org.primefaces.showcase.view.data.datatable.LazyCustomerDataModel;
 
 @Named
 @RequestScoped
@@ -74,7 +74,7 @@ public class AutoCompleteView {
 
     @PostConstruct
     public void init() {
-        lazyModel = new LazySearchableCustomerDataModel(service.getCustomers(200));
+        lazyModel = new LazyCustomerDataModel(service.getCustomers(200));
     }
 
     public List<String> completeText(String query) {
