@@ -123,7 +123,8 @@
 
                     <!-- The actual schedule component -->
                     <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}"
-                                widgetVar="schedule" extender="window.ExtenderShowcase"/>
+                                widgetVar="schedule" extender="window.ExtenderShowcase"
+                                timeZone="#{scheduleJava8View.serverTimeZone}" clientTimeZone="#{scheduleJava8View.serverTimeZone}"/>
                 </p:outputPanel>
             </h:form>
         </div>
