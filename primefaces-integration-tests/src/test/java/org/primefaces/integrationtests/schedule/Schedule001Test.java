@@ -37,7 +37,6 @@ import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
 
 import java.time.*;
-import java.time.temporal.ChronoField;
 import java.util.List;
 
 public class Schedule001Test extends AbstractPrimePageTest {
@@ -101,7 +100,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         msg = page.messages.getMessage(0);
-        int hour = 10 - calcOffsetInHoursBetweenServerAndClientTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
+        int hour = 10 - calcOffsetInHoursBetweenClientAndServerAndTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
         // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
         Assertions.assertTrue(msg.getDetail().endsWith(startOfWeek.toString() + "T" + String.format("%02d", hour) + ":00"));
     }
@@ -209,7 +208,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
             }
         }
 
-        Assertions.assertEquals((referenceEvent.getStartDate().getHour() + calcOffsetInHoursBetweenServerAndClientTimezone(ZonedDateTime.now()))  + " Uhr", eventTime);
+        Assertions.assertEquals((referenceEvent.getStartDate().getHour() + calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime.now()))  + " Uhr", eventTime);
         assertNoJavascriptErrors();
     }
 
@@ -218,10 +217,11 @@ public class Schedule001Test extends AbstractPrimePageTest {
         page.clientTimeZone.select(ALTERNATIV_CLIENT_TIMEZONE);
     }
 
-    private int calcOffsetInHoursBetweenServerAndClientTimezone(ZonedDateTime zonedDateTime) {
+    private int calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime zonedDateTime) {
         ZonedDateTime zonedDateTimeClient = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_CLIENT_TIMEZONE));
         ZonedDateTime zonedDateTimeServer = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE));
-        return (int)zonedDateTimeClient.get(ChronoField.HOUR_OF_DAY) - zonedDateTimeServer.get(ChronoField.HOUR_OF_DAY);
+        Duration offsetBetweenClientAndServer = Duration.between(zonedDateTimeServer.toLocalDateTime(), zonedDateTimeClient.toLocalDateTime());
+        return (int)offsetBetweenClientAndServer.toHours();
     }
 
     private void assertButton(WebElement button, String text) {
