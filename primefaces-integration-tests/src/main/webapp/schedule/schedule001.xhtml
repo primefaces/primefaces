@@ -36,6 +36,7 @@
             <p:selectOneMenu id="timeZone" value="#{schedule001.timeZone}">
                 <f:selectItem itemLabel="ZoneId.systemDefault()"/>
                 <f:selectItem itemLabel="UTC" itemValue="UTC"/>
+                <f:selectItem itemLabel="GMT-1" itemValue="GMT-1"/>
                 <f:selectItem itemLabel="GMT-5" itemValue="GMT-5"/>
                 <f:selectItem itemLabel="GMT+13" itemValue="GMT+13"/>
 
@@ -50,6 +51,7 @@
                 <f:selectItem itemLabel="UTC" itemValue="UTC"/>
                 <f:selectItem itemLabel="America/New_York" itemValue="America/New_York"/>
                 <f:selectItem itemLabel="Europe/Moscow" itemValue="Europe/Moscow"/>
+                <f:selectItem itemLabel="Europe/Vienna" itemValue="Europe/Vienna"/>
 
                 <p:ajax update="schedule"/>
             </p:selectOneMenu>
