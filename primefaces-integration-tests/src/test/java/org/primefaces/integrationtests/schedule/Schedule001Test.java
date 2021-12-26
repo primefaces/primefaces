@@ -219,11 +219,9 @@ public class Schedule001Test extends AbstractPrimePageTest {
     }
 
     private int calcOffsetInHoursBetweenServerAndClientTimezone(ZonedDateTime zonedDateTime) {
-        ZonedDateTime nowClient = ZonedDateTime.now(ZoneId.of(ALTERNATIV_CLIENT_TIMEZONE));
-        ZonedDateTime nowServer = ZonedDateTime.now(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE));
-
-        long offsetHours = nowClient.get(ChronoField.HOUR_OF_DAY) - nowServer.get(ChronoField.HOUR_OF_DAY);
-        return (int)offsetHours;
+        ZonedDateTime zonedDateTimeClient = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_CLIENT_TIMEZONE));
+        ZonedDateTime zonedDateTimeServer = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE));
+        return (int)zonedDateTimeClient.get(ChronoField.HOUR_OF_DAY) - zonedDateTimeServer.get(ChronoField.HOUR_OF_DAY);
     }
 
     private void assertButton(WebElement button, String text) {
