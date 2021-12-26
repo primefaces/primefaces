@@ -36,15 +36,14 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.temporal.ChronoField;
 import java.util.List;
 
 public class Schedule001Test extends AbstractPrimePageTest {
 
-    public static final String ALTERNATIV_SERVER_TIMEZONE = "GMT-1";
+    public static final String ALTERNATIV_SERVER_TIMEZONE = "Europe/Vienna";
+    public static final String ALTERNATIV_CLIENT_TIMEZONE = "Europe/Moscow";
 
     private Schedule001 schedule001;
 
@@ -103,7 +102,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         // Assert
         msg = page.messages.getMessage(0);
         int hour = 10 - calcOffsetInHoursBetweenServerAndClientTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
-        // Message is created by server, so we see date selected transfered into server-timezone, may be confusing from a user perspective
+        // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
         Assertions.assertTrue(msg.getDetail().endsWith(startOfWeek.toString() + "T" + String.format("%02d", hour) + ":00"));
     }
 
@@ -136,8 +135,19 @@ public class Schedule001Test extends AbstractPrimePageTest {
         Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
         Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
 
-        // TODO: check with different clientTimeZone and (server)timeZone - settings
+        // check with different clientTimeZone and (server)timeZone - settings ------------------------
+        // Arrange
         setDifferingServerAndClientTimezone(page);
+
+        // Act
+        schedule.select("fc-daygrid-event");
+
+        // Assert
+        assertMessage(page, "Event selected");
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
+        // DatePicker does not recognize clientTimeZone, so we see startDate and endDate transfered into server-timezone, what may be confusing from a user perspective
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
 
         assertConfiguration(schedule.getWidgetConfiguration(), "en");
     }
@@ -205,18 +215,15 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
     private void setDifferingServerAndClientTimezone(Page page) {
         page.timeZone.select(ALTERNATIV_SERVER_TIMEZONE);
-        page.clientTimeZone.select("Europe/Vienna"); // without daylight-saving GMT+1, with daylight-saving GMT+2
+        page.clientTimeZone.select(ALTERNATIV_CLIENT_TIMEZONE);
     }
 
     private int calcOffsetInHoursBetweenServerAndClientTimezone(ZonedDateTime zonedDateTime) {
-        int offsetHours = 2; // relativ to #setDifferingServerAndClientTimezone
+        ZonedDateTime nowClient = ZonedDateTime.now(ZoneId.of(ALTERNATIV_CLIENT_TIMEZONE));
+        ZonedDateTime nowServer = ZonedDateTime.now(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE));
 
-        boolean isDaylightSaving = zonedDateTime.getZone().getRules().isDaylightSavings(zonedDateTime.toInstant());
-        if (isDaylightSaving) {
-            offsetHours++;
-        }
-
-        return offsetHours;
+        long offsetHours = nowClient.get(ChronoField.HOUR_OF_DAY) - nowServer.get(ChronoField.HOUR_OF_DAY);
+        return (int)offsetHours;
     }
 
     private void assertButton(WebElement button, String text) {
