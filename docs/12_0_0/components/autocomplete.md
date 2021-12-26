@@ -49,7 +49,8 @@ AutoComplete provides live suggestions while an input is being typed.
 | itemValue | null | String | Value of the item.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
-| lazyModel | null | LazyDataModel | Model which implements LazySearchable for fetching autocomplete-suggestions (instead of completeMethod).
+| lazyModel | null | LazyDataModel | Model for fetching autocomplete-suggestions (instead of completeMethod).
+| lazyModelField | null | String | Field of lazyModel to apply query to using `MatchMode.CONTAINS`.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 | maxResults | unlimited | Integer | Maximum number of results to be displayed.
 | minQueryLength | 1 | Integer | Number of characters to be typed before starting to query.
