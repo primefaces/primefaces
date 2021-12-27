@@ -50,7 +50,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | lazyModel | null | LazyDataModel | Model for fetching autocomplete-suggestions (instead of completeMethod).
-| lazyModelField | null | String | Field of lazyModel to apply query to using `MatchMode.CONTAINS`.
+| lazyFilterBy | null | ValueExpr | ValueExpression to be used for filtering using lazyModel. Query is applied using 'MatchMode.CONTAINS'.
 | maxlength | null | Integer | Maximum number of characters that may be entered in this field.
 | maxResults | unlimited | Integer | Maximum number of results to be displayed.
 | minQueryLength | 1 | Integer | Number of characters to be typed before starting to query.
@@ -315,9 +315,9 @@ Sample-useage within AutoComplete. Note `completeEndpoint`-attribute.
 ```
 
 ## LazyDataModel
-You might have many `LazyDataModels` in your project which are almost suitable to serve as an `AutoComplete` suggestions
-provider. They can be used with `AutoComplete` by using the `lazyModel` in combination with the `lazyModelField` attribute.
-The query string will be applied on the provided `lazyModelField` using `MatchMode.CONTAINS`.
+You might have a `LazyDataModels` in your project which is almost suitable to serve as an `AutoComplete` suggestions
+provider. It can be used with `AutoComplete` by using the `lazyModel` in combination with the `lazyFilterBy` attribute.
+The query string will be applied on the provided `lazyFilterBy` property using `MatchMode.CONTAINS`.
 
 ## Ajax Behavior Events
 The following AJAX behavior events are available for this component. If no event is specified the default event is called.

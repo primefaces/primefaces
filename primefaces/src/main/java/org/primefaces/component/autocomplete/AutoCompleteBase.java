@@ -85,7 +85,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         dropdownAriaLabel,
         completeEndpoint,
         lazyModel,
-        lazyModelField
+        lazyFilterBy
     }
 
     public AutoCompleteBase() {
@@ -457,12 +457,12 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.lazyModel, lazyModel);
     }
 
-    public String getLazyModelField() {
-        return (String) getStateHelper().eval(PropertyKeys.lazyModelField, null);
+    public String getLazyFilterBy() {
+        return (String) getStateHelper().eval(PropertyKeys.lazyFilterBy, null);
     }
 
-    public void setLazyModelField(String lazyModelField) {
-        getStateHelper().put(PropertyKeys.lazyModelField, lazyModelField);
+    public void setLazyFilterBy(String lazyFilterBy) {
+        getStateHelper().put(PropertyKeys.lazyFilterBy, lazyFilterBy);
     }
 
 }
