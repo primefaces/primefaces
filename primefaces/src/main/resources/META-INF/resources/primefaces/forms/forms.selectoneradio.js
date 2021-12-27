@@ -40,8 +40,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             this.labels = $();
 
             //labels
-            for(var i=0; i < this.outputs.length; i++) {
-                this.labels = this.labels.add('label[for="' + this.outputs.eq(i).parent().attr('id') + '"]');
+            for(var i=0; i < this.inputs.length; i++) {
+                this.labels = this.labels.add('label[for="' + this.inputs.eq(i).attr('id') + '"]');
             }
 
             //update radio state
