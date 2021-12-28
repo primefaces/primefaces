@@ -106,7 +106,7 @@
                         <p:outputLabel value="LazyModel" for="lazyModel"/>
                         <p:autoComplete id="lazyModel" widgetVar="lazyModel" value="#{autoCompleteView.txt11}"
                                         var="customer" itemLabel="#{customer.name}" itemValue="#{customer.name}"
-                                        lazyModel="#{autoCompleteView.lazyModel}" lazyFilterBy="#{customer.name}"
+                                        lazyModel="#{autoCompleteView.lazyModel}" lazyField="name"
                                         forceSelection="true" emptyMessage="sorry, no suggestions"
                                         moreText="more items available" maxResults="10"/>
                     </div>

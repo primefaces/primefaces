@@ -23,14 +23,15 @@
  */
 package org.primefaces.showcase.view.input;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.event.SelectEvent;
@@ -42,8 +43,8 @@ import org.primefaces.showcase.service.CustomerService;
 import org.primefaces.showcase.view.data.datatable.LazyCustomerDataModel;
 
 @Named
-@RequestScoped
-public class AutoCompleteView {
+@ViewScoped
+public class AutoCompleteView implements Serializable {
 
     private String txt1;
     private String txt2;

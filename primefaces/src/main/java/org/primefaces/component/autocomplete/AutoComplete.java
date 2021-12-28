@@ -25,7 +25,6 @@ package org.primefaces.component.autocomplete;
 
 import java.util.*;
 import javax.el.MethodExpression;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -151,11 +150,10 @@ public class AutoComplete extends AutoCompleteBase {
         String query = ((org.primefaces.event.AutoCompleteEvent) event).getQuery();
         LazyDataModel lazyModel = getLazyModel();
         if (lazyModel != null) {
-            ValueExpression filterBy = getValueExpression(PropertyKeys.lazyFilterBy.name());
-            if (filterBy == null) {
-                throw new FacesException("lazyFilterBy is required with lazyModel and should be a ValueExpression");
+            String field = getLazyField();
+            if (LangUtils.isEmpty(field)) {
+                throw new FacesException("lazyField is required with lazyModel");
             }
-            String field = resolveField(filterBy);
             Map<String, FilterMeta> searchFilter = new HashMap<>();
             searchFilter.put(field,
                     FilterMeta.builder()
@@ -186,11 +184,6 @@ public class AutoComplete extends AutoCompleteBase {
                 facesContext.renderResponse();
             }
         }
-    }
-
-    protected String resolveField(ValueExpression expression) {
-        String exprStr = expression.getExpressionString();
-        return exprStr.substring(exprStr.lastIndexOf('.') + 1, exprStr.length() - 1);
     }
 
     protected boolean hasMoreSuggestions() {

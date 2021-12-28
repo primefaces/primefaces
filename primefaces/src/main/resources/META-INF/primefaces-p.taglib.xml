@@ -1888,11 +1888,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[ValueExpression to be used for filtering using lazyModel. Query is applied using MatchMode.CONTAINS.]]>
+                <![CDATA[Field of lazyModel to apply query to using `MatchMode.CONTAINS`]]>
             </description>
-            <name>lazyFilterBy</name>
+            <name>lazyField</name>
             <required>false</required>
-            <type>java.lang.Object</type>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
