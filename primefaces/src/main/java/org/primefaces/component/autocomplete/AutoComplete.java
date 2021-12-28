@@ -39,6 +39,8 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.MatchMode;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -161,7 +163,13 @@ public class AutoComplete extends AutoCompleteBase {
                             .filterValue(query)
                             .matchMode(MatchMode.CONTAINS)
                             .build());
-            suggestions = lazyModel.load(0, getMaxResults(), Collections.emptyMap(), searchFilter);
+            Map<String, SortMeta> sortBy = new HashMap<>();
+            sortBy.put(field,
+                    SortMeta.builder()
+                            .field(field)
+                            .order(SortOrder.ASCENDING)
+                            .build());
+            suggestions = lazyModel.load(0, getMaxResults(), sortBy, searchFilter);
             suggestionsCount = lazyModel.count(searchFilter);
         }
         else {
