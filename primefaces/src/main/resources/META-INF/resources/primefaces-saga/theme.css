@@ -1338,7 +1338,7 @@ body .fc th {
   background: #f8f9fa;
   border: 1px solid #dee2e6;
   color: #495057;
-  padding: 1rem;
+  /*padding: 1rem;*/
 }
 body .fc td {
   border: 1px solid #dee2e6;
