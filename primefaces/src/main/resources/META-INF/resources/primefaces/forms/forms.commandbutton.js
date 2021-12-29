@@ -19,6 +19,57 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         PrimeFaces.skinButton(this.jq);
+
+        if (this.cfg.disableOnAjax === true) {
+            this.bindTriggers();
+        }
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+
+        this._super(cfg);
+    },
+
+    /**
+     * Sets up the global event listeners on the button.
+     * @private
+     */
+    bindTriggers: function() {
+        var $this = this;
+
+        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            $this.disabled = $this.jq.prop('disabled');
+            if (!settings || !settings.source || $this.disabled) {
+                return;
+            }
+            if ($this.getSourceId(settings) === $this.id) {
+                $this.disable();
+            }
+        });
+
+        $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            if (!settings || !settings.source || $this.disabled) {
+                return;
+            }
+            if ($this.getSourceId(settings) === $this.id) {
+                $this.enable();
+            }
+        });
+    },
+
+    /**
+     * Get source ID from settings.
+     * @param {Object} settings containing source ID.
+     * @private
+     */
+    getSourceId: function(settings) {
+        return typeof settings.source === 'string' ? settings.source : settings.source.name;
     },
 
     /**
