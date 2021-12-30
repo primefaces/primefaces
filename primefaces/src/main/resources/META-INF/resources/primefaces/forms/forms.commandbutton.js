@@ -44,8 +44,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            $this.disabled = $this.jq.prop('disabled');
-            if (!settings || !settings.source || $this.disabled) {
+            if (!settings || !settings.source) {
                 return;
             }
             if ($this.getSourceId(settings) === $this.id) {
@@ -54,7 +53,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         });
 
         $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if (!settings || !settings.source || $this.disabled) {
+            if (!settings || !settings.source) {
                 return;
             }
             if ($this.getSourceId(settings) === $this.id) {
@@ -66,6 +65,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Get source ID from settings.
      * @param {JQuery.AjaxSettings} settings containing source ID.
+     * @return {string} The source ID from settings.
      * @private
      */
     getSourceId: function(settings) {
