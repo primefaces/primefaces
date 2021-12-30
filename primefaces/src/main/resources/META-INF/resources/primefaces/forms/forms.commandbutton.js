@@ -65,7 +65,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Get source ID from settings.
-     * @param {Object} settings containing source ID.
+     * @param {JQuery.AjaxSettings} settings containing source ID.
      * @private
      */
     getSourceId: function(settings) {
