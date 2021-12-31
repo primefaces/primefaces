@@ -27,7 +27,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) {
-        $(document).off('click.' + this.id);
+        this.jq.off('click.commandlink');
 
         this._super(cfg);
     },
@@ -39,7 +39,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
     bindTriggers: function() {
         var $this = this;
 
-        $(document).on('click.' + this.id, function(e, xhr, settings) {
+        this.jq.on('click.commandlink', function(e, xhr, settings) {
             if ($this.jq.hasClass('ui-state-disabled')) {
                 e.preventDefault();
             }
