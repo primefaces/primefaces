@@ -27,7 +27,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) {
-        $(document).off('click.' + this.id );
+        $(document).off('click.' + this.id);
 
         this._super(cfg);
     },
