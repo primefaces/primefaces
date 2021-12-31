@@ -44,18 +44,10 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if (!settings || !settings.source) {
-                return;
-            }
             if ($this.getSourceId(settings) === $this.id) {
                 $this.disable();
             }
-        });
-
-        $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if (!settings || !settings.source) {
-                return;
-            }
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if ($this.getSourceId(settings) === $this.id) {
                 $this.enable();
             }
@@ -69,7 +61,10 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     getSourceId: function(settings) {
-        return typeof settings.source === 'string' ? settings.source : settings.source.name;
+        if (settings && settings.source) {
+            return typeof settings.source === 'string' ? settings.source : settings.source.name;
+        }
+        return null;
     },
 
     /**
