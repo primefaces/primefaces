@@ -1872,9 +1872,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
+                <![CDATA[REST-endpoint for fetching autocomplete-suggestions (instead of completeMethod).]]>
             </description>
             <name>completeEndpoint</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[LazyDataModel for fetching autocomplete-suggestions (instead of completeMethod).]]>
+            </description>
+            <name>lazyModel</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Field of lazyModel to apply query to using `MatchMode.CONTAINS`]]>
+            </description>
+            <name>lazyField</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -6304,6 +6320,14 @@
             <name>immediate</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

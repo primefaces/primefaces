@@ -565,7 +565,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, null);
                 }
 
-                if (((List) ac.getSuggestions()).size() > ac.getMaxResults()) {
+                if (ac.hasMoreSuggestions()) {
                     encodeMoreText(context, ac);
                 }
             }
@@ -600,7 +600,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, null);
                 }
 
-                if (((List) ac.getSuggestions()).size() > ac.getMaxResults()) {
+                if (ac.hasMoreSuggestions()) {
                     encodeMoreText(context, ac);
                 }
             }

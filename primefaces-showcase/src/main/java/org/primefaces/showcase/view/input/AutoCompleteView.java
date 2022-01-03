@@ -23,22 +23,28 @@
  */
 package org.primefaces.showcase.view.input;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.domain.Customer;
 import org.primefaces.showcase.service.CountryService;
+import org.primefaces.showcase.service.CustomerService;
+import org.primefaces.showcase.view.data.datatable.LazyCustomerDataModel;
 
 @Named
-@RequestScoped
-public class AutoCompleteView {
+@ViewScoped
+public class AutoCompleteView implements Serializable {
 
     private String txt1;
     private String txt2;
@@ -50,6 +56,8 @@ public class AutoCompleteView {
     private String txt8;
     private String txt9;
     private String txt10;
+    private String txt11;
+
     private Country country1;
     private Country country2;
     private Country country3;
@@ -57,8 +65,18 @@ public class AutoCompleteView {
     private Country country5;
     private List<Country> selectedCountries;
 
+    private LazyDataModel<Customer> lazyModel;
+
     @Inject
     private CountryService countryService;
+
+    @Inject
+    private CustomerService service;
+
+    @PostConstruct
+    public void init() {
+        lazyModel = new LazyCustomerDataModel(service.getCustomers(200));
+    }
 
     public List<String> completeText(String query) {
         String queryLowerCase = query.toLowerCase();
@@ -72,7 +90,7 @@ public class AutoCompleteView {
     }
 
     public List<String> noResults(String query) {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     public List<Country> completeCountry(String query) {
@@ -169,6 +187,14 @@ public class AutoCompleteView {
         this.txt10 = txt10;
     }
 
+    public String getTxt11() {
+        return txt11;
+    }
+
+    public void setTxt11(String txt11) {
+        this.txt11 = txt11;
+    }
+
     public Country getCountry1() {
         return country1;
     }
@@ -224,4 +250,9 @@ public class AutoCompleteView {
     public char getCountryGroup(Country country) {
         return country.getName().charAt(0);
     }
+
+    public LazyDataModel<Customer> getLazyModel() {
+        return lazyModel;
+    }
+
 }
