@@ -46,9 +46,9 @@ public class DataTable029 implements Serializable {
         private int num;
 
         public Data() {
-            
+
         }
-        
+
         public Data(String text, int num) {
             this.text = text;
             this.num = num;
