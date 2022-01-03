@@ -14,6 +14,7 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/commandlink"/>
+    <ui:param name="widgetLink" value="CommandLink"/>
 
     <ui:define name="implementation">
         <div class="card">
@@ -26,6 +27,10 @@
 
                 <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" style="margin-right:20px;" ajax="false">
                     <h:outputText value="Regular Post"/>
+                </p:commandLink>
+
+                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" style="margin-right:20px;" disabled="true">
+                    <h:outputText value="Disabled"/>
                 </p:commandLink>
             </h:form>
         </div>
