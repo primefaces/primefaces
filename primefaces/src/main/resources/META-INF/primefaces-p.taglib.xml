@@ -6698,6 +6698,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the link will be disabled during Ajax requests triggered by the link. Default is 'false'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

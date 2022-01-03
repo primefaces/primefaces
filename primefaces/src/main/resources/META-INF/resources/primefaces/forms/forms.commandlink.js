@@ -28,6 +28,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     refresh: function(cfg) {
         this.jq.off('click.commandlink');
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
 
         this._super(cfg);
     },
@@ -44,6 +45,18 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
         });
+
+        if (this.cfg.disableOnAjax === true) {
+            $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+                if (PrimeFaces.ajax.Utils.isXhrSource($this.cfg, settings)) {
+                    $this.disable();
+                }
+            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+                if (PrimeFaces.ajax.Utils.isXhrSource($this.cfg, settings)) {
+                    $this.enable();
+                }
+            });
+        }
     },
 
     /**

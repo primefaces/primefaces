@@ -44,27 +44,14 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if ($this.getSourceId(settings) === $this.id) {
+            if (PrimeFaces.ajax.Utils.isXhrSource($this.cfg, settings)) {
                 $this.disable();
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if ($this.getSourceId(settings) === $this.id) {
+            if (PrimeFaces.ajax.Utils.isXhrSource($this.cfg, settings)) {
                 $this.enable();
             }
         });
-    },
-
-    /**
-     * Get source ID from settings.
-     * @param {JQuery.AjaxSettings} settings containing source ID.
-     * @return {string} The source ID from settings.
-     * @private
-     */
-    getSourceId: function(settings) {
-        if (settings && settings.source) {
-            return typeof settings.source === 'string' ? settings.source : settings.source.name;
-        }
-        return null;
     },
 
     /**
