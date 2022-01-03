@@ -165,7 +165,7 @@ if (!PrimeFaces.ajax) {
              * Checks whether the component ID from the provided configuration equals the source ID from the provided
              * settings.
              *
-             * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg of the component to check for being the source.
+             * @param {PrimeFaces.widget.BaseWidgetCfg} cfg of the component to check for being the source.
              * @param {JQuery.AjaxSettings} settings containing source ID.
              * @returns {boolean} `true` if the component ID from the provided configuration equals the source ID from
              * the provided settings.
