@@ -1187,7 +1187,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.5.1</version>
+                        <version>6.5.2</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
