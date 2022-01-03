@@ -4,6 +4,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ## 12.0.0
 
+* AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
 * CommandLink: now has a widget and can be enabled and disabled by its widget.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
