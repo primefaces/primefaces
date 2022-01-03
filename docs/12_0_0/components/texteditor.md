@@ -48,9 +48,9 @@ allowImages | true | Boolean | Whether to allow images to be included.
 formats | null | List | Define a list of formats to allow in the editor. By default all formats are allowed.
 
 ## Getting started with the Editor
-!> TextEditor requires the **owasp-java-html-sanitizer** dependency added to your pom.xml to prevent XSS. 
+!> TextEditor requires the [`owasp-java-html-sanitizer`](https://search.maven.org/artifact/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer) dependency added to your pom.xml to prevent XSS.
 
-Rich Text entered using the Editor is passed to the server using _value_ expression.
+Rich Text entered using the Editor is passed to the server using `value` expression.
 
 ```java
 public class Bean {
@@ -58,30 +58,63 @@ public class Bean {
     //getter and setter
 }
 ```
+
 ```xhtml
 <p:textEditor value="#{bean.text}" />
 ```
-## Custom Toolbar
-Toolbar of editor is easy to customize using _toolbar facet_ ;
 
+## Custom Toolbar
+Toolbar of editor is easy to customize using the `toolbar` facet:
 
 ```xhtml
-<p:textEditor widgetVar="editor2" value="#{editorView.text2}" height="300">
+<p:textEditor ...>
     <f:facet name="toolbar">
         <span class="ql-formats">
-            <button class="ql-bold"></button>
-            <button class="ql-italic"></button>
-            <button class="ql-underline"></button>
-            <button class="ql-strike"></button>
+            <select class="ql-font" />
+            <select class="ql-size" />
         </span>
         <span class="ql-formats">
-            <select class="ql-font"></select>
-            <select class="ql-size"></select>
+            <button class="ql-bold" />
+            <button class="ql-italic" />
+            <button class="ql-underline" />
+            <button class="ql-strike" />
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color" />
+            <select class="ql-background" />
+        </span>
+        <span class="ql-formats">
+            <button class="ql-script" value="sub" />
+            <button class="ql-script" value="super" />
+        </span>
+        <span class="ql-formats">
+            <button class="ql-header" value="1" />
+            <button class="ql-header" value="2" />
+            <button class="ql-blockquote" />
+            <button class="ql-code-block" />
+        </span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered" />
+            <button class="ql-list" value="bullet" />
+            <button class="ql-indent" value="-1" />
+            <button class="ql-indent" value="+1" />
+        </span>
+        <span class="ql-formats">
+            <button class="ql-direction" value="rtl" />
+            <select class="ql-align" />
+        </span>
+        <span class="ql-formats">
+            <button class="ql-link" />
+            <button class="ql-image" />
+            <button class="ql-video" />
+            <button class="ql-formula" />
+        </span>
+        <span class="ql-formats">
+            <button class="ql-clean" />
         </span>
     </f:facet>
 </p:textEditor>
 ```
-Refer to QuillJS documentation for avialable list of formats.
 
 ## Client Side API
 Widget: _PrimeFaces.widget.Editor_
@@ -94,7 +127,4 @@ getEditorValue() | - | void | Initializes a lazy editor, subsequent calls do not
 clear() | - | void | Clears the text in editor.
 
 ## Skinning
-Refer to QuillJS documentation for styling;
-
-https://quilljs.com/guides/how-to-customize-quill/
-
+Refer to [QuillJS documentation](https://quilljs.com/guides/how-to-customize-quill/) for styling.

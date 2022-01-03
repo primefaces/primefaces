@@ -1120,6 +1120,7 @@ public class DataTable extends DataTableBase {
      * Recalculates filteredValue after adding, updating or removing rows to/from a filtered DataTable.
      * NOTE: this is only supported for non-lazy DataTables, eg bound to a java.util.List.
      */
+    @Override
     public void filterAndSort() {
         if (isLazy()) {
             return;

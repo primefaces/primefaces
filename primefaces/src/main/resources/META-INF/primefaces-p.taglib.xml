@@ -6315,6 +6315,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Specifies the submit mode, when set to true (default), submit would be made with Ajax.]]>
             </description>
             <name>ajax</name>

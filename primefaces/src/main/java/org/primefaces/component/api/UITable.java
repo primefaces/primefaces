@@ -611,4 +611,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             throw new FacesException(e);
         }
     }
+
+    /**
+     * Recalculates filteredValue after adding, updating or removing object to/from a filtered UITable.
+     */
+    void filterAndSort();
 }

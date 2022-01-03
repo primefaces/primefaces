@@ -250,7 +250,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>9.2</version>
+                        <version>9.2.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -354,7 +354,7 @@
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome</artifactId>
-                <version>1.16.0</version>
+                <version>1.18.0</version>
             </dependency>
 
             <!-- File Upload -->
