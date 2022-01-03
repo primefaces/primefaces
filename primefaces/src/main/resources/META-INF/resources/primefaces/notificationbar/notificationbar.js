@@ -37,7 +37,9 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         //relocate
-        this.jq.css(this.cfg.position, '0px').appendTo($('body'));
+        this.jq.css(this.cfg.position, '0px');
+        this.cfg.appendTo = '@(body)';
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
 
         //display initially
         if (this.cfg.autoDisplay) {
