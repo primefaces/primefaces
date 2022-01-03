@@ -48,11 +48,11 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
 
         if (this.cfg.disableOnAjax === true) {
             $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-                if (PrimeFaces.ajax.Utils.isXhrSource($this.cfg, settings)) {
+                if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-                if (PrimeFaces.ajax.Utils.isXhrSource($this.cfg, settings)) {
+                if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.enable();
                 }
             });

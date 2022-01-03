@@ -162,16 +162,16 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
-             * Checks whether the component ID from the provided configuration equals the source ID from the provided
+             * Checks whether the component ID from the provided widget equals the source ID from the provided
              * settings.
              *
-             * @param {PrimeFaces.widget.BaseWidgetCfg} cfg of the component to check for being the source.
+             * @param {PrimeFaces.widget.BaseWidget} widget of the component to check for being the source.
              * @param {JQuery.AjaxSettings} settings containing source ID.
-             * @returns {boolean} `true` if the component ID from the provided configuration equals the source ID from
-             * the provided settings.
+             * @returns {boolean} `true` if the component ID from the provided widget equals the source ID from the
+             * provided settings.
              */
-            isXhrSource: function(cfg, settings) {
-                return cfg.id === PrimeFaces.ajax.Utils.getSourceId(settings);
+            isXhrSource: function(widget, settings) {
+                return widget.id === PrimeFaces.ajax.Utils.getSourceId(settings);
             },
 
             /**
