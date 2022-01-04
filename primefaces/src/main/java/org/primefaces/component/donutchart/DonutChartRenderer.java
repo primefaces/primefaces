@@ -73,8 +73,8 @@ public class DonutChartRenderer extends ChartRenderer {
         writer.write(",animateScale:" + donutOptions.isAnimateScale());
         writer.write("}");
 
-        if (donutOptions.getCutoutPercentage() != null) {
-            writer.write(",cutoutPercentage:" + donutOptions.getCutoutPercentage());
+        if (donutOptions.getCutout() != null) {
+            writer.write(",cutout:" + donutOptions.getCutout());
         }
 
         if (donutOptions.getRotation() != null) {
