@@ -11,3 +11,6 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
+
+## Exporter
+  * Added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output

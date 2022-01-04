@@ -70,7 +70,9 @@ public class DataTableCSVExporter extends DataTableExporter {
                 exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
             }
 
-            addColumnFacets(writer, table, ColumnType.HEADER);
+            if (exportConfiguration.isExportHeader()) {
+                addColumnFacets(writer, table, ColumnType.HEADER);
+            }
 
             if (exportConfiguration.isPageOnly()) {
                 exportPageOnly(context, table, writer);
@@ -82,7 +84,7 @@ public class DataTableCSVExporter extends DataTableExporter {
                 exportAll(context, table, writer);
             }
 
-            if (table.hasFooterColumn()) {
+            if (exportConfiguration.isExportFooter() && table.hasFooterColumn()) {
                 addColumnFacets(writer, table, ColumnType.FOOTER);
             }
 
