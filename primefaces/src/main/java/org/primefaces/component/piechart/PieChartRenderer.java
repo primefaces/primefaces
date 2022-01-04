@@ -73,8 +73,8 @@ public class PieChartRenderer extends ChartRenderer {
         writer.write(",\"animateScale\":" + pieOptions.isAnimateScale());
         writer.write("}");
 
-        if (pieOptions.getCutoutPercentage() != null) {
-            writer.write(",\"cutoutPercentage\":" + pieOptions.getCutoutPercentage());
+        if (pieOptions.getCutout() != null) {
+            writer.write(",\"cutout\":" + pieOptions.getCutout());
         }
 
         if (pieOptions.getRotation() != null) {
