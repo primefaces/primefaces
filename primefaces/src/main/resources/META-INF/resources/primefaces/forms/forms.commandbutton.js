@@ -19,6 +19,39 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         PrimeFaces.skinButton(this.jq);
+
+        if (this.cfg.disableOnAjax === true) {
+            this.bindTriggers();
+        }
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+
+        this._super(cfg);
+    },
+
+    /**
+     * Sets up the global event listeners on the button.
+     * @private
+     */
+    bindTriggers: function() {
+        var $this = this;
+
+        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                $this.disable();
+            }
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                $this.enable();
+            }
+        });
     },
 
     /**
