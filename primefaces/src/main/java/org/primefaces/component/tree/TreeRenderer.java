@@ -594,6 +594,10 @@ public class TreeRenderer extends CoreRenderer {
     protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree tree, TreeNode root, TreeNode node, String clientId, String rowKey,
                                                     boolean dynamic, boolean checkbox) throws IOException {
 
+        if (node.getChildCount() == 0) {
+            return;
+        }
+
         int childIndex = 0;
         for (Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext(); ) {
             String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
