@@ -88,5 +88,14 @@ public class BookBean {
     <h:outputText value="Save" />
 </p:commandLink>
 ```
+
+## Client Side API
+Widget: `PrimeFaces.widget.CommandLink`
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| disable() | - | void | Disables the link.
+| enable() | - | void | Enables the link.
+
 ## Skinning
-CommandLink renders an HTML anchor element that _style_ and _styleClass_ attributes apply.
+CommandLink renders an HTML anchor element that `style` and `styleClass` attributes apply.

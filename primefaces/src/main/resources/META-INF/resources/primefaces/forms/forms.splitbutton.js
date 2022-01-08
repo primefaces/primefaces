@@ -79,6 +79,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuButton.off('click.splitbutton');
         this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
         this.menuButton.on('keydown.splitbutton keyup.splitbutton');
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+
         this._super(cfg);
     },
 
@@ -169,6 +171,18 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
+        if (this.cfg.disableOnAjax === true) {
+            $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+                if ($this.containsXhrSource(settings)) {
+                    $this.disable();
+                }
+            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+                if ($this.containsXhrSource(settings)) {
+                    $this.enable();
+                }
+            });
+        }
+
         if(this.cfg.filter) {
             this.setupFilterMatcher();
             this.filterInput = this.menu.find('> div.ui-splitbuttonmenu-filter-container > input.ui-splitbuttonmenu-filter');
@@ -176,6 +190,25 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.bindFilterEvents();
         }
+    },
+
+    /**
+     * Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
+     *
+     * @param {JQuery.AjaxSettings} settings containing source ID.
+     * @returns {boolean} `true` if the ID of the button, or one if its menu items equals the source ID from the
+     * provided settings.
+     * @private
+     */
+    containsXhrSource: function(settings) {
+        var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
+        if (sourceId === null) {
+            return false;
+        }
+        if (this.id === sourceId) {
+            return true;
+        }
+        return this.menuitems.find('[id="' + sourceId + '"]').length;
     },
 
     /**
