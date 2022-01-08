@@ -173,11 +173,11 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
         if (this.cfg.disableOnAjax === true) {
             $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-                if ($this.containsXhrSource(settings)) {
+                if ($this.isXhrSource(settings)) {
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-                if ($this.containsXhrSource(settings)) {
+                if ($this.isXhrSource(settings)) {
                     $this.enable();
                 }
             });
@@ -200,7 +200,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * provided settings.
      * @private
      */
-    containsXhrSource: function(settings) {
+    isXhrSource: function(settings) {
         var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
         if (sourceId === null) {
             return false;
