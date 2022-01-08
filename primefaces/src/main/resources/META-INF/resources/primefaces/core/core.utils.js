@@ -659,7 +659,8 @@ if (!PrimeFaces.utils) {
          */
         enableButton: function(jq) {
             if (jq) {
-                jq.removeClass('ui-state-disabled').removeAttr('disabled');
+                jq.removeClass('ui-state-disabled')
+                  .removeAttr('disabled aria-disabled');
             }
         },
 
@@ -672,7 +673,8 @@ if (!PrimeFaces.utils) {
             if (jq) {
                 jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
                   .addClass('ui-state-disabled')
-                  .attr('disabled', 'disabled');
+                  .attr('disabled', 'disabled')
+                  .attr('aria-disabled', 'true');
             }
         },
 
