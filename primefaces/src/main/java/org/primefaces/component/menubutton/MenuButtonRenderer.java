@@ -64,9 +64,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
             writer.writeAttribute("title", button.getTitle(), "title");
         }
         encodeButton(context, button, clientId + "_button", disabled);
-        if (!disabled) {
-            encodeMenu(context, button, clientId + "_menu");
-        }
+        encodeMenu(context, button, clientId + "_menu");
 
         writer.endElement("span");
     }
@@ -170,6 +168,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         wb.attr("autoDisplay", button.isAutoDisplay());
         wb.attr("toggleEvent", button.getToggleEvent(), null);
         wb.attr("delay", button.getDelay());
+        wb.attr("disableOnAjax", button.isDisableOnAjax(), false);
         wb.finish();
     }
 }

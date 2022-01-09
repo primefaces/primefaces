@@ -35,6 +35,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Named
 @RequestScoped
@@ -119,6 +120,21 @@ public class MenuView {
     public void delete() {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Delete", "Data deleted");
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void sleepAndSave() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+        save();
+    }
+
+    public void sleepAndUpdate() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+        update();
+    }
+
+    public void sleepAndDelete() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+        delete();
     }
 
     public void addMessage(String summary, String detail) {
