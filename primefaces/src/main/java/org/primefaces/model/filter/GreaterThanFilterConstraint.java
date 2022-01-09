@@ -23,12 +23,18 @@
  */
 package org.primefaces.model.filter;
 
+import java.math.BigDecimal;
 import java.util.function.BiPredicate;
 
 public class GreaterThanFilterConstraint extends ComparableFilterConstraint {
 
     @Override
-    protected BiPredicate<String, String> getPredicate() {
+    protected BiPredicate<String, String> getPredicateString() {
+        return (o1, o2) -> o1.compareTo(o2) > 0;
+    }
+
+    @Override
+    protected BiPredicate<BigDecimal, BigDecimal> getPredicateBigDecimal() {
         return (o1, o2) -> o1.compareTo(o2) > 0;
     }
 }

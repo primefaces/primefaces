@@ -85,7 +85,7 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column headerText="Activity" sortBy="#{customer.activity}">
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 
@@ -143,7 +143,7 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column headerText="Activity" sortBy="#{customer.activity}">
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
                 </p:dataTable>

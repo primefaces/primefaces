@@ -23,17 +23,60 @@
  */
 package org.primefaces.model.filter;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import javax.faces.context.FacesContext;
 import java.util.Locale;
+import java.util.function.BiPredicate;
 
-public abstract class ComparableFilterConstraint extends StringFilterConstraint {
+public abstract class ComparableFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
+        if (value == null) {
+            return false;
+        }
         if (!(value instanceof Comparable) || !(filter instanceof Comparable)) {
             throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
         }
 
-        return super.isMatching(ctxt, value, filter, locale);
+        if (value instanceof Number) {
+            return getPredicateBigDecimal()
+                    .test(new BigDecimal(value.toString()),
+                            toBigDecimal(filter, locale));
+        }
+        else {
+            return getPredicateString()
+                    .test(toString(value, locale),
+                            toString(filter, locale));
+        }
     }
+
+    protected BigDecimal toBigDecimal(Object object, Locale locale) {
+        if (object == null) {
+            return null;
+        }
+        try {
+            DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(locale);
+            decimalFormat.setParseBigDecimal(true);
+            return (BigDecimal) decimalFormat.parseObject(object.toString());
+        }
+        catch (ParseException e) {
+            return null;
+        }
+    }
+
+    protected String toString(Object object, Locale locale) {
+        if (object == null) {
+            return null;
+        }
+        return object.toString().trim().toLowerCase(locale);
+    }
+
+    protected abstract BiPredicate<BigDecimal, BigDecimal> getPredicateBigDecimal();
+
+    protected abstract BiPredicate<String, String> getPredicateString();
+
 }

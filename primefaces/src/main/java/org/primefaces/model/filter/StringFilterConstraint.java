@@ -32,12 +32,14 @@ public abstract class StringFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        BiPredicate<String, String> predicate = getPredicate();
-        Objects.requireNonNull(predicate);
+        if (value == null) {
+            return false;
+        }
+        BiPredicate<String, String> predicate = Objects.requireNonNull(getPredicate());
 
         String str = filter == null ? null : filter.toString().trim().toLowerCase(locale);
-        String val = value == null ? null : value.toString().toLowerCase(locale);
-        return val != null && predicate.test(val, str);
+        String val = value.toString().toLowerCase(locale);
+        return predicate.test(val, str);
     }
 
     protected abstract BiPredicate<String, String> getPredicate();
