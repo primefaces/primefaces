@@ -15,6 +15,7 @@
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .ui-chips-token {
@@ -25,7 +26,8 @@
     overflow: hidden;
     padding: 1px 3px;
     position: relative;
-    margin: 2px;
+    margin: .25rem .5rem .25rem 0;
+    height: 1.75rem;
 }
 
 .ui-chips-token .ui-chips-token-label {
