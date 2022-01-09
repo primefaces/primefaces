@@ -231,8 +231,8 @@
                 <version>3.1.2</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>/conf/checkstyle.xml</configLocation>
                     <includeResources>false</includeResources>
+                    <failOnViolation>true</failOnViolation>
                 </configuration>
                 <executions>
                     <execution>
@@ -242,7 +242,18 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <failOnViolation>true</failOnViolation>
+                            <configLocation>/conf/checkstyle.xml</configLocation>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>checkstyle-tests</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                            <configLocation>/conf/checkstyle-test.xml</configLocation>
                         </configuration>
                     </execution>
                 </executions>
