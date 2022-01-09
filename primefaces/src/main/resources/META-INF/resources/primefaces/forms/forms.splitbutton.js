@@ -521,6 +521,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     show: function() {
+        if(this.cfg.disabled) {
+           return;
+        }
         var $this = this;
 
         if (this.transition) {
