@@ -72,6 +72,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     public void testDateSelect(Page page) {
         // Arrange
         Schedule schedule = page.schedule;
+        page.buttonDeleteAllEvents.click();
 
         // Act
         schedule.select("fc-daygrid-day-top");
@@ -268,6 +269,9 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:btnGerman")
         CommandButton buttonGerman;
+
+        @FindBy(id = "form:btnDeleteAllEvents")
+        CommandButton buttonDeleteAllEvents;
 
         @FindBy(id = "form:timeZone")
         SelectOneMenu timeZone;
