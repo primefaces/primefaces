@@ -42,9 +42,9 @@ public class TreeTable005Test extends AbstractTreeTableTest {
         TreeTable treeTable = page.treeTable;
 
         Assertions.assertTrue(treeTable.isEmpty());
-        
+
         page.populate.click();
-        
+
         Assertions.assertFalse(treeTable.isEmpty());
     }
 

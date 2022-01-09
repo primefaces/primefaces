@@ -48,8 +48,7 @@ public class AbstractTableTest extends AbstractPrimePageTest {
         WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
         if (sortPriority > 0) {
             Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
-        }
-        else {
+        } else {
             Assertions.assertEquals("", badge.getText());
         }
     }

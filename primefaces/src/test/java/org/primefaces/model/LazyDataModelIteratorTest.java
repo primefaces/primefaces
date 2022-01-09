@@ -120,7 +120,7 @@ public class LazyDataModelIteratorTest {
     @Test
     public void testIteratorWhileNoSuchElementException() {
         System.out.println("\ntestIteratorWhileNoSuchElementException");
-        
+
         // Act
         NoSuchElementException thrown = Assertions.assertThrows(NoSuchElementException.class, () -> {
             LazyDataModelImpl dataModel = new LazyDataModelImpl();
@@ -128,7 +128,7 @@ public class LazyDataModelIteratorTest {
             dataModel.totalItems = 2;
             dataModel.iterator().next();
         });
-        
+
 
         // Assert (expected exception)
         assertNull(thrown.getMessage());
@@ -137,7 +137,7 @@ public class LazyDataModelIteratorTest {
     @Test
     public void testIteratorWhileRemoveUnsupportedOperationException() {
         System.out.println("\ntestIteratorWhileRemoveUnsupportedOperationException");
-        
+
         UnsupportedOperationException thrown = Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             LazyDataModelImpl dataModel = new LazyDataModelImpl();
             dataModel.setPageSize(2);
@@ -147,7 +147,7 @@ public class LazyDataModelIteratorTest {
                 it.remove();
             }
         });
-       
+
         // Assert (expected exception)
         assertNull(thrown.getMessage());
     }
@@ -199,7 +199,7 @@ public class LazyDataModelIteratorTest {
             System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
             loadCounter++;
             List<Integer> page = new ArrayList<>();
-            for(int i = first; i < first + pageSize && i < totalItems; i++) {
+            for (int i = first; i < first + pageSize && i < totalItems; i++) {
                 page.add(i);
             }
             return page;

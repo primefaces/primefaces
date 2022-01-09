@@ -183,12 +183,12 @@ public class NativeUploadedFileTest {
     public void testNoEquals() {
         // Arrange
         final String input = "form-data; name=\"XXX:XXX\"; filename\"hello.png\"";
-        
+
         // Act
         FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
             file.getContentDispositionFileName(input);
         });
-        
+
 
         // Assert (expected exception)
         assertEquals("Content-Disposition filename property did not have '='.", thrown.getMessage());

@@ -108,7 +108,7 @@ public class DataView002Test extends AbstractDataTableTest {
         dataView.selectPage(dataView.getPaginator().getPages().size());
 
         // Act & Assert
-        for (int row=3; row>1; row--) {
+        for (int row = 3; row > 1; row--) {
             Assertions.assertEquals(row, dataView.getRowsWebElement().size());
             PrimeSelenium.guardAjax(dataView.getRowWebElement(0).findElement(By.className("ui-button"))).click();
             Assertions.assertEquals(9, dataView.getPaginator().getActivePage().getNumber());
@@ -122,7 +122,7 @@ public class DataView002Test extends AbstractDataTableTest {
         Assertions.assertEquals(9, dataView.getRowsWebElement().size());
 
         assertConfiguration(dataView.getWidgetConfiguration());
-    }    
+    }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();

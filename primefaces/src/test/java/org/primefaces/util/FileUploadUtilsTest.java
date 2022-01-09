@@ -77,8 +77,7 @@ public class FileUploadUtilsTest {
         when(file.getContentType()).thenReturn(contentType);
         try {
             when(file.getInputStream()).thenReturn(stream);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
         }
         return file;
     }
@@ -91,7 +90,7 @@ public class FileUploadUtilsTest {
         when(fileUpload.getAllowTypes()).thenReturn("/\\.(gif|png|jpe?g)$/i");
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/jpeg", inputStream)));
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,createFile("test.bmp", "image/bitmap", inputStream)));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
     }
 
     @Test
@@ -99,8 +98,8 @@ public class FileUploadUtilsTest {
         when(fileUpload.getAllowTypes()).thenReturn("/image/g");
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,createFile("test.bmp", "image/bitmap", inputStream)));
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload,createFile("adobe.pdf", "application/pdf", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
+        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("adobe.pdf", "application/pdf", inputStream)));
     }
 
     @Test
@@ -109,18 +108,18 @@ public class FileUploadUtilsTest {
         // all of these should be true when the regex is not valid
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.PNG", "image/png", inputStream)));
         Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.jpeg", "image/png", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,createFile("test.bmp", "image/bitmap", inputStream)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload,createFile("adobe.pdf", "application/pdf", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.bmp", "image/bitmap", inputStream)));
+        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("adobe.pdf", "application/pdf", inputStream)));
     }
 
     @Test
     public void isValidTypeContentTypeCheck() throws IOException {
-        InputStream tif = new ByteArrayInputStream(new byte[] { 0x49, 0x49, 0x2A, 0x00 });
-        InputStream mp4 = new ByteArrayInputStream(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D });
+        InputStream tif = new ByteArrayInputStream(new byte[]{0x49, 0x49, 0x2A, 0x00});
+        InputStream mp4 = new ByteArrayInputStream(new byte[]{0x00, 0x00, 0x00, 0x00, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D});
         InputStream png = new ByteArrayInputStream(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream("test.png")));
-        InputStream bmp = new ByteArrayInputStream(new byte[] { 0x42, 0x4D });
-        InputStream gif = new ByteArrayInputStream(new byte[] { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61 });
-        InputStream exe = new ByteArrayInputStream(new byte[] { 0x4D, 0x5A });
+        InputStream bmp = new ByteArrayInputStream(new byte[]{0x42, 0x4D});
+        InputStream gif = new ByteArrayInputStream(new byte[]{0x47, 0x49, 0x46, 0x38, 0x39, 0x61});
+        InputStream exe = new ByteArrayInputStream(new byte[]{0x4D, 0x5A});
 
         when(fileUpload.isValidateContentType()).thenReturn(false);
 
@@ -164,8 +163,7 @@ public class FileUploadUtilsTest {
             try {
                 FileUploadUtils.checkPathTraversal(relativePath);
                 fail("File was absolute path and should have failed");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Assert
                 assertEquals("Path traversal attempt - absolute path not allowed.", e.getMessage());
             }
@@ -184,8 +182,7 @@ public class FileUploadUtilsTest {
         try {
             FileUploadUtils.checkPathTraversal(relativePath);
             fail("File was absolute path and should have failed");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // Assert
             assertEquals("Path traversal attempt for path ../../test.png", e.getMessage());
         }

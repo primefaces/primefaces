@@ -32,6 +32,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
@@ -49,9 +50,9 @@ public class FileUpload011Test extends AbstractFileUploadTest {
 
     // must be equal to p:fileUpload components sizeLimit
     private static final int SIZE_LIMIT = 2097152;
-    private static Path bigFilesFolder;
     // holds 3 files to upload (last one exeeds sizeLimit)
     private static final Path[] BIG_FILES = new Path[3];
+    private static Path bigFilesFolder;
 
     @BeforeAll
     public static void setupFiles() {
@@ -68,14 +69,14 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         Random rnd = new Random();
         byte[] buf = new byte[64 * 1024];
         for (int i = 0; i < BIG_FILES.length; ++i) {
-            BIG_FILES[i] = bigFilesFolder.resolve(UUID.randomUUID().toString() + ".xar");
+            BIG_FILES[i] = bigFilesFolder.resolve(UUID.randomUUID() + ".xar");
             int size = i == BIG_FILES.length - 1 ? SIZE_LIMIT + 1024 : SIZE_LIMIT / 2 + rnd.nextInt(SIZE_LIMIT / 2);
             try {
                 for (int l = 0; l < size; l += buf.length) {
                     rnd.nextBytes(buf);
                     Files.write(BIG_FILES[i], buf, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                 }
-            } catch(IOException ioe) {
+            } catch (IOException ioe) {
                 throw new UncheckedIOException(ioe);
             }
         }
@@ -91,9 +92,9 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     private static void deleteFolder(Path path) {
         try {
             Files.walk(path)
-              .sorted(Comparator.reverseOrder())
-              .map(Path::toFile)
-              .forEach(File::delete);
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
         } catch (IOException ignore) {
         }
     }

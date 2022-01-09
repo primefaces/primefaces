@@ -34,6 +34,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.UUID;
+
 import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.primefaces.selenium.spi.DeploymentAdapter;
@@ -45,6 +46,11 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
     private Path tempDir;
 
+    private static int createRandomPort() {
+        Random random = new Random();
+        return random.nextInt((9000 - 8000) + 1) + 8000;
+    }
+
     @Override
     public void startup() throws Exception {
         tempDir = Files.createTempDirectory(UUID.randomUUID().toString());
@@ -52,7 +58,7 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         tomcat = new Tomcat();
         tomcat.setBaseDir(tempDir.toString());
         tomcat.setPort(createRandomPort());
-        
+
         tomcat.getHost().setAppBase(".");
 
         Context context = tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
@@ -89,15 +95,9 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    private static int createRandomPort() {
-        Random random = new Random();
-        return random.nextInt((9000 - 8000) + 1) + 8000;
     }
 
     public Tomcat getTomcat() {

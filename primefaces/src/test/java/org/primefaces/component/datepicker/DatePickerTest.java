@@ -65,49 +65,12 @@ This tests covers DatePicker and partially (due to shared code) Calendar.
  */
 public class DatePickerTest {
 
-    class MyDatePicker extends DatePicker {
-        private boolean valid;
-
-        @Override
-        public boolean isValid() {
-            return valid;
-        }
-
-        @Override
-        public void setValid(boolean valid) {
-            this.valid = valid;
-        }
-    }
-
-    class MyDatePickerRenderer extends DatePickerRenderer {
-        @Override
-        public Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
-            return super.resolveDateType(context, calendar);
-        }
-
-        @Override
-        public Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
-            return super.convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
-        }
-
-        @Override
-        public Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
-            return super.convertToLegacyDateAPI(context, calendar, submittedValue);
-        }
-
-        @Override
-        public ConverterException createConverterException(FacesContext context, UICalendar calendar, String submittedValue, Object param1) {
-            return super.createConverterException(context, calendar, submittedValue, param1);
-        }
-    }
-
     private MyDatePickerRenderer renderer;
     private MyDatePicker datePicker;
     private FacesContext context;
     private ExternalContext externalContext;
     private ELContext elContext;
     private ValueExpression valueExpression;
-
 
     @BeforeEach
     public void setup() {
@@ -231,7 +194,7 @@ public class DatePickerTest {
     @Test
     public void resolveDateType_LocalDateTime() {
         setupValues(LocalDateTime.class, Locale.ENGLISH);
-         Class<?> type = renderer.resolveDateType(context, datePicker);
+        Class<?> type = renderer.resolveDateType(context, datePicker);
         assertEquals(LocalDateTime.class, type);
     }
 
@@ -294,7 +257,7 @@ public class DatePickerTest {
         when(datePicker.isShowMilliseconds()).thenReturn(Boolean.TRUE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "21:31:47.003");
         assertEquals(type, temporal.getClass());
-        assertEquals(LocalTime.of(21, 31, 47, 3*1000*1000), temporal);
+        assertEquals(LocalTime.of(21, 31, 47, 3 * 1000 * 1000), temporal);
     }
 
     @Test
@@ -310,7 +273,7 @@ public class DatePickerTest {
 
     @Test
     public void convertToJava8DateTimeAPI_LocalTimeWithSecondsAndAmPm() {
-         Class<?> type = LocalTime.class;
+        Class<?> type = LocalTime.class;
         setupValues(type, Locale.ENGLISH);
         when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
@@ -322,7 +285,7 @@ public class DatePickerTest {
 
     @Test
     public void convertToJava8DateTimeAPI_LocalTimeWithMillisecondsAndAmPm() {
-         Class<?> type = LocalTime.class;
+        Class<?> type = LocalTime.class;
         setupValues(type, Locale.ENGLISH);
         when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
@@ -330,34 +293,34 @@ public class DatePickerTest {
         when(datePicker.getHourFormat()).thenReturn("12");
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "09:31:47.003 PM");
         assertEquals(type, temporal.getClass());
-        assertEquals(LocalTime.of(21, 31, 47, 3*1000*1000), temporal);
+        assertEquals(LocalTime.of(21, 31, 47, 3 * 1000 * 1000), temporal);
     }
 
     @Test
     public void convertToJava8DateTimeAPI_LocalDateTime() {
-         Class<?> type = LocalDateTime.class;
+        Class<?> type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
         when(datePicker.hasTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/2019 21:31");
         assertEquals(type, temporal.getClass());
-        assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31), temporal);
+        assertEquals(LocalDateTime.of(2019, 7, 23, 21, 31), temporal);
     }
 
     @Test
     public void convertToJava8DateTimeAPI_LocalDateTime_NoTime() {
-         Class<?> type = LocalDateTime.class;
+        Class<?> type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
         when(datePicker.hasTime()).thenReturn(Boolean.FALSE);
         when(datePicker.isShowTime()).thenReturn(Boolean.FALSE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "07/23/2019");
         assertEquals(type, temporal.getClass());
-        assertEquals(LocalDateTime.of(2019, 7, 23,  0, 0), temporal);
+        assertEquals(LocalDateTime.of(2019, 7, 23, 0, 0), temporal);
     }
 
     @Test
     public void convertToJava8DateTimeAPI_LocalDateTimeSecondsAmPm() {
-         Class<?> type = LocalDateTime.class;
+        Class<?> type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
         when(datePicker.hasTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
@@ -365,12 +328,12 @@ public class DatePickerTest {
         when(datePicker.isShowSeconds()).thenReturn(Boolean.TRUE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/2019 09:31:48 PM");
         assertEquals(type, temporal.getClass());
-        assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31, 48), temporal);
+        assertEquals(LocalDateTime.of(2019, 7, 23, 21, 31, 48), temporal);
     }
 
     @Test
     public void convertToJava8DateTimeAPI_LocalDateTimeMillisecondsAmPm() {
-         Class<?> type = LocalDateTime.class;
+        Class<?> type = LocalDateTime.class;
         setupValues(type, Locale.ENGLISH);
         when(datePicker.hasTime()).thenReturn(Boolean.TRUE);
         when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
@@ -379,16 +342,16 @@ public class DatePickerTest {
         when(datePicker.isShowMilliseconds()).thenReturn(Boolean.TRUE);
         Temporal temporal = renderer.convertToJava8DateTimeAPI(context, datePicker, type, "7/23/2019 09:31:48.011 PM");
         assertEquals(type, temporal.getClass());
-        assertEquals(LocalDateTime.of(2019, 7, 23,  21, 31, 48, 11*1000*1000), temporal);
+        assertEquals(LocalDateTime.of(2019, 7, 23, 21, 31, 48, 11 * 1000 * 1000), temporal);
     }
 
     @Test
     public void convertToJava8DateTimeAPI_LocalDate_WrongFormat() {
         // Arrange
-         Class<?> type = LocalDate.class;
+        Class<?> type = LocalDate.class;
         setupValues(type, Locale.ENGLISH);
 
-        FacesMessage message=new FacesMessage("dummy");
+        FacesMessage message = new FacesMessage("dummy");
         when(renderer.createConverterException(eq(context), eq(datePicker), any(), any())).thenReturn(new ConverterException(message));
 
         // Act
@@ -403,7 +366,7 @@ public class DatePickerTest {
 
     @Test
     public void convertToJava8DateTimeAPI_LocalDate_WrongPattern() {
-         Class<?> type = LocalDate.class;
+        Class<?> type = LocalDate.class;
         setupValues(type, Locale.GERMAN);
         when(datePicker.getPattern()).thenReturn("ddaMMbyyyy");
 
@@ -537,14 +500,14 @@ public class DatePickerTest {
 
     @Test
     public void getConvertedValue_Date() {
-         Class<?> type = Date.class;
+        Class<?> type = Date.class;
         setupValues(type, Locale.ENGLISH);
 
         when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
 
         Object object = renderer.getConvertedValue(context, datePicker, "7/23/2019");
         assertEquals(type, object.getClass());
-        Date date = (Date)object;
+        Date date = (Date) object;
         java.util.Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         assertEquals(2019, calendar.get(java.util.Calendar.YEAR));
@@ -554,14 +517,14 @@ public class DatePickerTest {
 
     @Test
     public void getConvertedValue_LocalDate() {
-         Class<?> type = LocalDate.class;
+        Class<?> type = LocalDate.class;
         setupValues(type, Locale.ENGLISH);
 
         when(renderer.getConvertedValue(eq(context), eq(datePicker), any())).thenCallRealMethod();
 
         Object object = renderer.getConvertedValue(context, datePicker, "7/23/2019");
         assertEquals(type, object.getClass());
-        LocalDate localDate = (LocalDate)object;
+        LocalDate localDate = (LocalDate) object;
         assertEquals(LocalDate.of(2019, 07, 23), localDate);
     }
 
@@ -708,7 +671,7 @@ public class DatePickerTest {
     @Test
     public void validateValueInternal_LocalDate_range() {
         when(datePicker.getSelectionMode()).thenReturn("range");
-        List<LocalDate> range=Arrays.asList(LocalDate.of(2019, 7, 23), LocalDate.of(2019, 7, 30));
+        List<LocalDate> range = Arrays.asList(LocalDate.of(2019, 7, 23), LocalDate.of(2019, 7, 30));
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertTrue(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.OK, validationResult);
@@ -717,7 +680,7 @@ public class DatePickerTest {
     @Test
     public void validateValueInternal_LocalDate_range_wrong() {
         when(datePicker.getSelectionMode()).thenReturn("range");
-        List<LocalDate> range=Arrays.asList(LocalDate.of(2019, 7, 30), LocalDate.of(2019, 7, 23));
+        List<LocalDate> range = Arrays.asList(LocalDate.of(2019, 7, 30), LocalDate.of(2019, 7, 23));
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL, validationResult);
@@ -732,7 +695,7 @@ public class DatePickerTest {
         calTo.set(2019, 6, 30);
 
         when(datePicker.getSelectionMode()).thenReturn("range");
-        List<Date> range=Arrays.asList(calFrom.getTime(), calTo.getTime());
+        List<Date> range = Arrays.asList(calFrom.getTime(), calTo.getTime());
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertTrue(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.OK, validationResult);
@@ -747,7 +710,7 @@ public class DatePickerTest {
         calTo.set(2019, 6, 23);
 
         when(datePicker.getSelectionMode()).thenReturn("range");
-        List<Date> range=Arrays.asList(calFrom.getTime(), calTo.getTime());
+        List<Date> range = Arrays.asList(calFrom.getTime(), calTo.getTime());
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, range);
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL, validationResult);
@@ -1087,7 +1050,6 @@ public class DatePickerTest {
         when(datePicker.getHourFormat()).thenReturn("12");
         assertEquals("M/d/yyyy hh:mm a", datePicker.calculatePattern());
     }
-
 
     @Test
     public void calculatePatternWithTimeRemove() {
@@ -1784,5 +1746,41 @@ public class DatePickerTest {
         assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
         verify(datePicker, atLeastOnce()).getMindate();
         verify(datePicker, atLeastOnce()).getMaxdate();
+    }
+
+    class MyDatePicker extends DatePicker {
+        private boolean valid;
+
+        @Override
+        public boolean isValid() {
+            return valid;
+        }
+
+        @Override
+        public void setValid(boolean valid) {
+            this.valid = valid;
+        }
+    }
+
+    class MyDatePickerRenderer extends DatePickerRenderer {
+        @Override
+        public Class<?> resolveDateType(FacesContext context, UICalendar calendar) {
+            return super.resolveDateType(context, calendar);
+        }
+
+        @Override
+        public Temporal convertToJava8DateTimeAPI(FacesContext context, UICalendar calendar, Class<?> type, String submittedValue) {
+            return super.convertToJava8DateTimeAPI(context, calendar, type, submittedValue);
+        }
+
+        @Override
+        public Date convertToLegacyDateAPI(FacesContext context, UICalendar calendar, String submittedValue) {
+            return super.convertToLegacyDateAPI(context, calendar, submittedValue);
+        }
+
+        @Override
+        public ConverterException createConverterException(FacesContext context, UICalendar calendar, String submittedValue, Object param1) {
+            return super.createConverterException(context, calendar, submittedValue, param1);
+        }
     }
 }

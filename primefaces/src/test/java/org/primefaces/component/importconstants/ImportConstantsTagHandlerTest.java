@@ -24,6 +24,7 @@
 package org.primefaces.component.importconstants;
 
 import java.util.Map;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -39,21 +40,21 @@ public class ImportConstantsTagHandlerTest {
         Assertions.assertEquals("i", constants.get("I"));
         Assertions.assertEquals("h2override", constants.get("H2"));
     }
-    
+
+    interface MyInterface {
+        String I = "i";
+    }
+
     class MyConstants extends MyConstants2 {
         public static final String H1 = "h1";
         public static final String H2 = "h2override";
     }
-    
+
     class MyConstants2 extends MyConstants3 {
         public static final String H2 = "h2";
     }
-    
+
     class MyConstants3 implements MyInterface {
         public static final String H3 = "h3";
-    }
-    
-    interface MyInterface {
-        public static final String I = "i";
     }
 }

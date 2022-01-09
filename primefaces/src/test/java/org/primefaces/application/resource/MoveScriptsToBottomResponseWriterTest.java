@@ -32,6 +32,7 @@ import org.mockito.Mockito;
 
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+
 import org.mockito.ArgumentMatchers;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -215,7 +216,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("script");
 
         writer.startElement("div", null);
-        writer.writeText("text",null);
+        writer.writeText("text", null);
         writer.endElement("div");
 
         writer.endElement("body");

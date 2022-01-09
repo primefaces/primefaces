@@ -57,7 +57,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         dataTable.filter("ID lt", "5");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()<5).collect(Collectors.toList());
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() < 5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
@@ -74,7 +74,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         dataTable.filter("ID lte", "5");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()<=5).collect(Collectors.toList());
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() <= 5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
@@ -91,7 +91,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         dataTable.filter("ID gt", "5");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()>5).collect(Collectors.toList());
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() > 5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
@@ -108,7 +108,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         dataTable.filter("ID gte", "5");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()>=5).collect(Collectors.toList());
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() >= 5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
@@ -125,7 +125,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         dataTable.filter("ID equals", "5");
 
         // Assert
-        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId()==5).collect(Collectors.toList());
+        List<Employee> employeesFiltered = employees.stream().filter(e -> e.getId() == 5).collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
@@ -240,7 +240,7 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 31)) && e.getBirthDate().isBefore(LocalDate.of(1970,1, 6)))
+                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 31)) && e.getBirthDate().isBefore(LocalDate.of(1970, 1, 6)))
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -261,7 +261,7 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         // Assert
         List<Employee> employeesFiltered = employeesFiltered = employees.stream()
-                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 24)) && e.getBirthDate().isBefore(LocalDate.of(1970,1, 4)))
+                .filter(e -> e.getBirthDate().isAfter(LocalDate.of(1969, 12, 24)) && e.getBirthDate().isBefore(LocalDate.of(1970, 1, 4)))
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -285,7 +285,7 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getRole()==Employee.Role.DEVELOPER)
+                .filter(e -> e.getRole() == Employee.Role.DEVELOPER)
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -294,7 +294,7 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         // Assert
         employeesFiltered = employees.stream()
-                .filter(e -> e.getRole()==Employee.Role.DEVELOPER || e.getRole()==Employee.Role.QS)
+                .filter(e -> e.getRole() == Employee.Role.DEVELOPER || e.getRole() == Employee.Role.QS)
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -306,6 +306,24 @@ public class DataTable026Test extends AbstractDataTableTest {
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertEquals("wgtTable", cfg.getString("widgetVar"));
         Assertions.assertEquals(0, cfg.getInt("tabindex"));
+    }
+
+    private void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
+        List<Row> rows = dataTable.getRows();
+        assertEmployeeRows(rows, employees);
+    }
+
+    private void assertEmployeeRows(List<Row> rows, List<Employee> employees) {
+        int expectedSize = employees.size();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(expectedSize, rows.size());
+
+        int row = 0;
+        for (Employee employee : employees) {
+            String rowText = rows.get(row).getCell(0).getText();
+            Assertions.assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
+            row++;
+        }
     }
 
     public static class Page extends AbstractPrimePage {
@@ -327,24 +345,6 @@ public class DataTable026Test extends AbstractDataTableTest {
         @Override
         public String getLocation() {
             return "datatable/dataTable026.xhtml";
-        }
-    }
-
-    private void assertEmployeeRows(DataTable dataTable, List<Employee> employees) {
-        List<Row> rows = dataTable.getRows();
-        assertEmployeeRows(rows, employees);
-    }
-
-    private void assertEmployeeRows(List<Row> rows, List<Employee> employees) {
-        int expectedSize = employees.size();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(expectedSize, rows.size());
-
-        int row = 0;
-        for (Employee employee : employees) {
-            String rowText = rows.get(row).getCell(0).getText();
-            Assertions.assertEquals(employee.getId(), Integer.parseInt(rowText.trim()));
-            row++;
         }
     }
 }

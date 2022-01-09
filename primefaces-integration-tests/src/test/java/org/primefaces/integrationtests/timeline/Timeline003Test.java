@@ -94,7 +94,7 @@ public class Timeline003Test extends AbstractPrimePageTest {
         for (WebElement monthElement : monthElements) {
             Assertions.assertNotNull(monthElement);
             String monthText = monthElement.getText();
-            
+
             // sometimes the month CSS contains a year which might be a bug in vis-timeline
             if (NumberUtils.isDigits(monthText)) {
                 continue;

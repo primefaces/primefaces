@@ -43,10 +43,9 @@ public class GenerateAjaxBehaviorDoc {
         try {
             for (String className : args) {
                 Class<?> clazz = Class.forName(className);
-                generateMarkdown((UIComponentBase)clazz.newInstance());
+                generateMarkdown((UIComponentBase) clazz.newInstance());
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -56,7 +55,7 @@ public class GenerateAjaxBehaviorDoc {
         List<String> events = new ArrayList<>(comp.getEventNames());
         Collections.sort(events);
         String eventString = events.toString();
-        eventString =  eventString.substring(eventString.indexOf("[")+1, eventString.indexOf("]"));
+        eventString = eventString.substring(eventString.indexOf("[") + 1, eventString.indexOf("]"));
         System.out.println("## Ajax Behavior Events");
         System.out.println();
         System.out.println("The following AJAX behavior events are available for this component. If no event is specified the default event is called.  ");
@@ -65,7 +64,7 @@ public class GenerateAjaxBehaviorDoc {
         System.out.println("**Available Events:** `" + eventString + "`  ");
         System.out.println();
         System.out.println("```xhtml");
-        System.out.println(String.format("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />", defaultEvent,defaultEvent));
+        System.out.println(String.format("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />", defaultEvent, defaultEvent));
         System.out.println("```");
     }
 }

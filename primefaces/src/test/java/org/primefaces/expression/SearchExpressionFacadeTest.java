@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
 
@@ -84,7 +85,7 @@ public class SearchExpressionFacadeTest {
 
         return SearchExpressionFacade.resolveClientId(context, source, expression);
     }
-    
+
     private String resolveClientId(UIComponent source, String expression, Set<SearchExpressionHint> hints) {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -643,16 +644,14 @@ public class SearchExpressionFacadeTest {
         try {
             resolveComponent(source, " @widgetVar(myForm:myDiv):asd");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
 
         try {
             resolveComponent(source, " @none:@all:asd");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -666,8 +665,7 @@ public class SearchExpressionFacadeTest {
         try {
             resolveClientId(source, " @none:@all:asd");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -958,8 +956,7 @@ public class SearchExpressionFacadeTest {
         try {
             resolveComponent(source, " :@form:asd");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -973,8 +970,7 @@ public class SearchExpressionFacadeTest {
         try {
             resolveClientId(source, " :@form:asd");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -1213,8 +1209,7 @@ public class SearchExpressionFacadeTest {
         try {
             resolveClientIds(source, " :@form:asd @none @all ");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -1284,8 +1279,7 @@ public class SearchExpressionFacadeTest {
         try {
             resolveComponent(command3, " @next");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(ComponentNotFoundException.class, e.getClass());
         }
     }
@@ -1313,16 +1307,14 @@ public class SearchExpressionFacadeTest {
         try {
             resolveComponent(command2, " @next:@next");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
 
         try {
             resolveComponent(command3, " @next:@next");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -1351,8 +1343,7 @@ public class SearchExpressionFacadeTest {
         try {
             resolveComponent(command1, " @previous");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(ComponentNotFoundException.class, e.getClass());
         }
     }
@@ -1380,16 +1371,14 @@ public class SearchExpressionFacadeTest {
         try {
             resolveComponent(command2, " @previous:@previous");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
 
         try {
             resolveComponent(command1, " @previous:@previous");
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -1431,8 +1420,7 @@ public class SearchExpressionFacadeTest {
         try {
             assertSame(root, resolveComponent(command1, " command1:@parent:command3 "));
             Assertions.fail("This should actually raise an exception");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             assertEquals(FacesException.class, e.getClass());
         }
     }
@@ -1978,11 +1966,7 @@ public class SearchExpressionFacadeTest {
         assertTrue(result.contains(innerContainer3));
     }
 
-    
-    
-    
-    
-    
+
     @Test
     public void resolveClientIdClientSide() {
 
@@ -1997,7 +1981,7 @@ public class SearchExpressionFacadeTest {
         String clientId = resolveClientId(root, " @widgetVar(myDlg) ", EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
         assertEquals("@widgetVar(myDlg)", clientId);
     }
-    
+
     @Test
     public void resolveClientId() {
 

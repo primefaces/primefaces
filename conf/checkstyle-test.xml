@@ -3,6 +3,32 @@
     "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
     "https://checkstyle.org/dtds/configuration_1_2.dtd">
 <module name="Checker">
+
     <module name="FileTabCharacter"/>
+
+    <module name="SuppressWithPlainTextCommentFilter">
+        <property name="offCommentFormat" value="CHECKSTYLE:OFF"/>
+        <property name="onCommentFormat" value="CHECKSTYLE:ON"/>
+    </module>
+
+    <module name="TreeWalker">
+        <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
+        <module name="SuppressionCommentFilter"/>
+
+        <module name="WhitespaceAfter" />
+        <module name="NoWhitespaceAfter" />
+
+        <module name="Regexp">
+            <property name="format" value="[ \t]+$"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Trailing whitespace"/>
+        </module>
+
+        <module name="WhitespaceAround">
+            <property name="tokens" value=""/>
+        </module>
+
+    </module>
+
 </module>
 

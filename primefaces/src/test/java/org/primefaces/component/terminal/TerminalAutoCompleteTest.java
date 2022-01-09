@@ -90,14 +90,14 @@ public class TerminalAutoCompleteTest {
 
         // then
         assertBaseCommand(TerminalAutoCompleteMatches, "git");
-        assertMatches(TerminalAutoCompleteMatches, "pull", "push","checkout", "commit", "rebase", "squash", "status");
+        assertMatches(TerminalAutoCompleteMatches, "pull", "push", "checkout", "commit", "rebase", "squash", "status");
     }
 
     @Test
     public void givenGitCThenReturnsCommitAndCheckout() {
         // given
         final String input = "git";
-        final String[] args = { "c" };
+        final String[] args = {"c"};
 
         // when
         TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
@@ -111,7 +111,7 @@ public class TerminalAutoCompleteTest {
     public void givenGitCThenReturnsCommit() {
         // given
         final String input = "git";
-        final String[] args = { "co" };
+        final String[] args = {"co"};
 
         // when
         TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
@@ -125,7 +125,7 @@ public class TerminalAutoCompleteTest {
     public void givenGitPThenReturnsPullAndPush() {
         // given
         final String input = "git";
-        final String[] args = { "p" };
+        final String[] args = {"p"};
 
         // when
         TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
@@ -139,7 +139,7 @@ public class TerminalAutoCompleteTest {
     public void givenGitRThenReturnsRebase() {
         // given
         final String input = "git";
-        final String[] args = { "r" };
+        final String[] args = {"r"};
 
         // when
         TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
@@ -153,7 +153,7 @@ public class TerminalAutoCompleteTest {
     public void givenGitPushOThenReturnsGitPushOrigin() {
         // given
         final String input = "git";
-        final String[] args = { "push", "o" };
+        final String[] args = {"push", "o"};
 
         // when
         TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
@@ -167,7 +167,7 @@ public class TerminalAutoCompleteTest {
     public void givenGitPushOriginThenReturnsGitPushOriginMaster() {
         // given
         final String input = "git";
-        final String[] args = { "push", "origin" };
+        final String[] args = {"push", "origin"};
 
         // when
         TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);

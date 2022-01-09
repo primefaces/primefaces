@@ -30,6 +30,7 @@ import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -45,7 +46,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 public class ImageCropperRendererTest {
-    
+
     private FacesContext context;
     private ExternalContext externalContext;
 
@@ -56,7 +57,7 @@ public class ImageCropperRendererTest {
         when(context.getExternalContext()).thenReturn(externalContext);
         when(externalContext.getRealPath(anyString())).thenReturn("src/test/resources");
     }
-    
+
     @Test
     public void checkStreamIsNullButImageIsGiven() {
         ImageCropper cropper = new ImageCropper();
@@ -65,7 +66,7 @@ public class ImageCropperRendererTest {
         Object value = renderer.getConvertedValue(context, cropper, "1_100_1_100");
         Assertions.assertNotNull(value);
     }
-    
+
     @Test
     public void checkImageIsNullButStreamIsGiven() {
         ImageCropper cropper = new ImageCropper();
@@ -87,7 +88,7 @@ public class ImageCropperRendererTest {
         Object value = renderer.getConvertedValue(context, cropper, "1_100_1_100");
         Assertions.assertNotNull(value);
     }
-    
+
     @Test
     public void checkImageAndStreamAreNull() {
         ImageCropper cropper = new ImageCropper();
@@ -97,12 +98,12 @@ public class ImageCropperRendererTest {
             Assertions.fail("should thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             String message = e.getMessage();
-            if(!"'image' must be either an String relative path or a StreamedObject.".equals(message)) {
+            if (!"'image' must be either an String relative path or a StreamedObject.".equals(message)) {
                 Assertions.fail("should thrown IllegalArgumentException with message: " + message);
             }
         } catch (Exception e) {
             Assertions.fail("should thrown IllegalArgumentException");
         }
     }
-    
+
 }

@@ -157,16 +157,16 @@ public class InputNumberTest {
     @Test
     public void testDecodeInvalidNumber() {
         setupValues("crash", false, null, null, false);
-        
+
         // Act
         FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
             renderer.decode(context, inputNumber);
         });
-        
+
 
         // Assert (expected exception)
         assertEquals("Invalid number", thrown.getMessage());
-        
+
     }
 
     @Test

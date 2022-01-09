@@ -46,11 +46,11 @@ import javax.faces.render.RenderKit;
 
 public class FacesContextMock extends FacesContext {
 
-    private ELContext ELcontext = new SimpleContext();
-    private ExternalContext externalContext = new ExternalContextMock();
-    private Application application = new ApplicationMock();
-    private PartialViewContext partialViewContext = new PartialViewContextMock();
-    private Map<String, List<FacesMessage>> messages = new HashMap<>();
+    private final ELContext ELcontext = new SimpleContext();
+    private final ExternalContext externalContext = new ExternalContextMock();
+    private final Application application = new ApplicationMock();
+    private final PartialViewContext partialViewContext = new PartialViewContextMock();
+    private final Map<String, List<FacesMessage>> messages = new HashMap<>();
 
     private Map<Object, Object> attributes;
     private ResponseWriter writer;
@@ -95,7 +95,7 @@ public class FacesContextMock extends FacesContext {
         if (!messages.containsKey(clientId)) {
             messages.put(clientId, new ArrayList<>());
         }
-        
+
         messages.get(clientId).add(message);
     }
 
@@ -130,7 +130,7 @@ public class FacesContextMock extends FacesContext {
         for (List<FacesMessage> msgs : messages.values()) {
             all.addAll(msgs);
         }
-        
+
         return all.iterator();
     }
 
@@ -160,13 +160,28 @@ public class FacesContextMock extends FacesContext {
     }
 
     @Override
+    public void setResponseStream(ResponseStream arg0) {
+
+    }
+
+    @Override
     public ResponseWriter getResponseWriter() {
         return writer;
     }
 
     @Override
+    public void setResponseWriter(ResponseWriter arg0) {
+
+    }
+
+    @Override
     public UIViewRoot getViewRoot() {
         return viewRoot;
+    }
+
+    @Override
+    public void setViewRoot(UIViewRoot viewRoot) {
+        this.viewRoot = viewRoot;
     }
 
     @Override
@@ -182,21 +197,6 @@ public class FacesContextMock extends FacesContext {
     @Override
     public void responseComplete() {
 
-    }
-
-    @Override
-    public void setResponseStream(ResponseStream arg0) {
-
-    }
-
-    @Override
-    public void setResponseWriter(ResponseWriter arg0) {
-
-    }
-
-    @Override
-    public void setViewRoot(UIViewRoot viewRoot) {
-        this.viewRoot = viewRoot;
     }
 
     @Override

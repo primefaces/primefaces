@@ -25,6 +25,7 @@ package org.primefaces.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +65,7 @@ public class TreeNodeTest {
         level2.add(new DefaultTreeNode("Level 2"));
 
         level1.setChildren(level2);
-        
+
         Assertions.assertNotNull(level1.getRowKey());
         Assertions.assertSame(1, level1.getChildCount());
         Assertions.assertSame(1, level1.getChildren().size());

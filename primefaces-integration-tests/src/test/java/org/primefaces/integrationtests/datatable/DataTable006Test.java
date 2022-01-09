@@ -60,13 +60,12 @@ public class DataTable006Test extends AbstractDataTableTest {
         int cnt = 0;
         for (Row row : dataTable.getRows()) {
             WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("ui-chkbox-icon"));
-            if (cnt == 0 || cnt ==2) {
+            if (cnt == 0 || cnt == 2) {
                 assertCss(checkboxIcon, "ui-icon-check");
-            }
-            else {
+            } else {
                 assertCss(checkboxIcon, "ui-icon-blank");
             }
-            cnt ++;
+            cnt++;
         }
 
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
@@ -272,7 +271,7 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages,
-                    "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
+                "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
 
         // Act - unselect one row
         dataTable.getCell(1, 0).getWebElement().click();

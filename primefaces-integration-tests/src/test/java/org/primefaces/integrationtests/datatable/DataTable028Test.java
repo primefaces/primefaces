@@ -43,6 +43,12 @@ import java.util.stream.Stream;
 
 public class DataTable028Test extends AbstractDataTableTest {
 
+    private static Stream<Arguments> provideXhtmls() {
+        return Stream.of(
+                Arguments.of("datatable/dataTable028.xhtml"),
+                Arguments.of("datatable/dataTable028WithoutFilteredValue.xhtml"));
+    }
+
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
@@ -60,7 +66,7 @@ public class DataTable028Test extends AbstractDataTableTest {
 
         // Act 2 - change all BB2 row values to BB3, press Save
         DataTable dataTable = getDataTable();
-        for (int row=0; row<=2; row++) {
+        for (int row = 0; row <= 2; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
@@ -84,8 +90,7 @@ public class DataTable028Test extends AbstractDataTableTest {
         // Assert
         if (xhtml.contains("Without")) {
             assertAfterBb3UpdateSorted();
-        }
-        else {
+        } else {
             assertAfterBb3Update();
         }
 
@@ -113,7 +118,7 @@ public class DataTable028Test extends AbstractDataTableTest {
 
         // Act 3 - change all BB2 row values to BB3, press Save
         DataTable dataTable = getDataTable();
-        for (int row=0; row<=2; row++) {
+        for (int row = 0; row <= 2; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
@@ -147,7 +152,7 @@ public class DataTable028Test extends AbstractDataTableTest {
 
         // Act 1 - change all BB2 row values to BB3, press Save
         DataTable dataTable = getDataTable();
-        for (int row=0; row<=2; row++) {
+        for (int row = 0; row <= 2; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
@@ -185,7 +190,7 @@ public class DataTable028Test extends AbstractDataTableTest {
 
         // Act 2 - change all BB2 row values to BB3, press Save
         DataTable dataTable = getDataTable();
-        for (int row=2; row<=4; row++) {
+        for (int row = 2; row <= 4; row++) {
             WebElement eltName = dataTable.getRow(row).getCell(3).getWebElement().findElement(By.tagName("input"));
             eltName.clear();
             eltName.sendKeys("BB3");
@@ -210,28 +215,22 @@ public class DataTable028Test extends AbstractDataTableTest {
 
     private void assertAfterBb3Update() {
         String expected = StringUtils.deleteWhitespace("Result:\n" +
-                    "509, EUR, BB, BB3, A\n" +
-                    "512, EUR, BB, BB3, B\n" +
-                    "515, EUR, BB, BB3, C\n" +
-                    "516, USA, AA, AA, D\n" +
-                    "517, USA, AA, AA, E");
+                "509, EUR, BB, BB3, A\n" +
+                "512, EUR, BB, BB3, B\n" +
+                "515, EUR, BB, BB3, C\n" +
+                "516, USA, AA, AA, D\n" +
+                "517, USA, AA, AA, E");
         Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
     }
 
     private void assertAfterBb3UpdateSorted() {
         String expected = StringUtils.deleteWhitespace("Result:\n" +
-                    "516, USA, AA, AA, D\n" +
-                    "517, USA, AA, AA, E\n" +
-                    "509, EUR, BB, BB3, A\n" +
-                    "512, EUR, BB, BB3, B\n" +
-                    "515, EUR, BB, BB3, C");
+                "516, USA, AA, AA, D\n" +
+                "517, USA, AA, AA, E\n" +
+                "509, EUR, BB, BB3, A\n" +
+                "512, EUR, BB, BB3, B\n" +
+                "515, EUR, BB, BB3, C");
         Assertions.assertEquals(expected, StringUtils.deleteWhitespace(getEltDebugActual().getText()));
-    }
-
-    private static Stream<Arguments> provideXhtmls() {
-        return Stream.of(
-                Arguments.of("datatable/dataTable028.xhtml"),
-                Arguments.of("datatable/dataTable028WithoutFilteredValue.xhtml"));
     }
 
     private DataTable getDataTable() {

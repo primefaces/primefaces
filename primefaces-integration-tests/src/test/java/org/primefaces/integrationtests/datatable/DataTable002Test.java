@@ -44,6 +44,12 @@ import java.util.stream.Stream;
 
 public class DataTable002Test extends AbstractDataTableTest {
 
+    private static Stream<Arguments> provideXhtmls() {
+        return Stream.of(
+                Arguments.of("datatable/dataTable002.xhtml"),
+                Arguments.of("datatable/dataTable002RowCountOtherImpl.xhtml"));
+    }
+
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(1)
@@ -104,7 +110,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertNotNull(dataTable);
         List<ProgrammingLanguage> langsAsc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName)).collect(Collectors.toList());
         List<ProgrammingLanguage> langsDesc = model.getLangs().stream().sorted(Comparator.comparing(ProgrammingLanguage::getName).reversed())
-                    .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         // Act - ascending
         dataTable.selectPage(1);
@@ -144,9 +150,9 @@ public class DataTable002Test extends AbstractDataTableTest {
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
-                    .filter(l -> l.getFirstAppeared() >= 1998)
-                    .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
-                    .collect(Collectors.toList());
+                .filter(l -> l.getFirstAppeared() >= 1998)
+                .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
+                .collect(Collectors.toList());
 
         // Act
         dataTable.selectPage(1);
@@ -247,7 +253,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         dataTable.selectPage(dataTable.getPaginator().getPages().size());
 
         // Act & Assert
-        for (int row=5; row>1; row--) {
+        for (int row = 5; row > 1; row--) {
             Assertions.assertEquals(row, getDataTable().getRows().size());
             PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
             Assertions.assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
@@ -280,12 +286,6 @@ public class DataTable002Test extends AbstractDataTableTest {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
         Assertions.assertTrue(cfg.has("paginator"));
-    }
-
-    private static Stream<Arguments> provideXhtmls() {
-        return Stream.of(
-                Arguments.of("datatable/dataTable002.xhtml"),
-                Arguments.of("datatable/dataTable002RowCountOtherImpl.xhtml"));
     }
 
     private DataTable getDataTable() {

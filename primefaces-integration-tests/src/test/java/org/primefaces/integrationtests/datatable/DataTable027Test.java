@@ -58,7 +58,7 @@ public class DataTable027Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:lblBefore")
         OutputLabel beforeCount;
-        
+
         @FindBy(id = "form:lblAfter")
         OutputLabel aferCount;
 

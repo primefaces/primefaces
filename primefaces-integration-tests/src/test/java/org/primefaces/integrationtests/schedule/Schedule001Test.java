@@ -94,7 +94,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         String expectedMessage = "T10:00";
         if (PrimeSelenium.isChrome()) {
             //moveToElement used by selectSlot currently only works on Chrome
-            expectedMessage = startOfWeek.toString() + expectedMessage;
+            expectedMessage = startOfWeek + expectedMessage;
         }
         Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
 
@@ -113,7 +113,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         expectedMessage = "T" + String.format("%02d", hour) + ":00";
         if (PrimeSelenium.isChrome()) {
             //moveToElement used by selectSlot currently only works on Chrome
-            expectedMessage = startOfWeek.toString() + expectedMessage;
+            expectedMessage = startOfWeek + expectedMessage;
         }
         Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
     }
@@ -122,7 +122,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         Schedule schedule = page.schedule;
         schedule.findElement(By.className("fc-timeGridWeek-button")).click();
         List<WebElement> slotLaneElements = schedule.findElements(By.cssSelector(".fc-timegrid-slots table tr .fc-timegrid-slot-lane"));
-        for (WebElement slotLaneElt: slotLaneElements) {
+        for (WebElement slotLaneElt : slotLaneElements) {
             if (slotLaneElt.getAttribute("data-time").equals(time)) {
                 Actions actions = new Actions(page.getWebDriver());
                 actions.moveToElement(slotLaneElt, 1, 1); //click on first day of this week (week starts with sunday)
@@ -215,13 +215,13 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         todaysEvents = schedule.findElements(By.cssSelector(".fc-day-today .fc-daygrid-event"));
-        for (WebElement eventElt: todaysEvents) {
+        for (WebElement eventElt : todaysEvents) {
             if (eventElt.findElement(By.className("fc-event-title")).getText().equals(referenceEvent.getTitle())) {
                 eventTime = eventElt.findElement(By.className("fc-event-time")).getText();
             }
         }
 
-        Assertions.assertEquals((referenceEvent.getStartDate().getHour() + calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime.now()))  + " Uhr", eventTime);
+        Assertions.assertEquals((referenceEvent.getStartDate().getHour() + calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime.now())) + " Uhr", eventTime);
         assertNoJavascriptErrors();
     }
 
@@ -234,7 +234,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         ZonedDateTime zonedDateTimeClient = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_CLIENT_TIMEZONE));
         ZonedDateTime zonedDateTimeServer = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE));
         Duration offsetBetweenClientAndServer = Duration.between(zonedDateTimeServer.toLocalDateTime(), zonedDateTimeClient.toLocalDateTime());
-        return (int)offsetBetweenClientAndServer.toHours();
+        return (int) offsetBetweenClientAndServer.toHours();
     }
 
     private void assertButton(WebElement button, String text) {
