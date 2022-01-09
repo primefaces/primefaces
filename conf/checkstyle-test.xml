@@ -3,5 +3,6 @@
     "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
     "https://checkstyle.org/dtds/configuration_1_2.dtd">
 <module name="Checker">
+    <module name="FileTabCharacter"/>
 </module>
 

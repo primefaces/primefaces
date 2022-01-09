@@ -53,7 +53,7 @@ public class WidgetBuilderTest {
         when(panel.resolveWidgetVar(context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
 
-        WidgetBuilder builder= getWidgetBuilder(context);
+        WidgetBuilder builder = getWidgetBuilder(context);
         builder.init("AccordionPanel", panel);
         builder.finish();
 
@@ -101,7 +101,7 @@ public class WidgetBuilderTest {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder= getWidgetBuilder(context);
+        WidgetBuilder builder = getWidgetBuilder(context);
         builder.initWithComponentLoad("AccordionPanel", "acco", "accoId", "test");
         builder.finish();
 
@@ -170,7 +170,7 @@ public class WidgetBuilderTest {
         String defaultValue = "'My custom default value'";
         builder.attr("someAttribute", null, defaultValue);
         builder.finish();
-        
+
         String output = writer.toString();
         assertFalse(output.contains(defaultValue));
 
@@ -180,7 +180,7 @@ public class WidgetBuilderTest {
 
     @Test
     public void attrJavascriptEscapeJavascript() throws IOException {
-    	CollectingResponseWriter writer = new CollectingResponseWriter();
+        CollectingResponseWriter writer = new CollectingResponseWriter();
 
         FacesContext context = new FacesContextMock(writer);
         PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
@@ -194,7 +194,7 @@ public class WidgetBuilderTest {
         builder.init("MyComponent", panel);
         builder.attr("someAttribute", "<script>alert('Hello World!')</script>", null);
         builder.finish();
-        
+
         String output = writer.toString();
 
         String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces.cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\",someAttribute:\"<script>alert(\\x27Hello World!\\x27)<\\/script>\"});</script>";
