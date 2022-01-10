@@ -746,6 +746,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         try {
             // has children
             if (getChildCount() > 0) {
+                boolean dynamic = isDynamic();
                 int i = getOffset();
                 int end = getSize();
                 int step = getStep();
@@ -769,6 +770,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                     else {
                         for (int j = 0, childCount = getChildCount(); j < childCount; j++) {
                             UIComponent child = getChildren().get(j);
+
+                            if (dynamic && child instanceof Tab && !((Tab) child).isLoaded(i)) {
+                                continue;
+                            }
+
                             if (PhaseId.APPLY_REQUEST_VALUES.equals(phase)) {
                                 child.processDecodes(faces);
                             }
@@ -1267,11 +1273,30 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public boolean isRepeating() {
-        return (getVar() != null);
+        return getVar() != null;
     }
 
     public void resetLoadedTabsState() {
-        if (!isRepeating() && isDynamic()) {
+        if (isRepeating()) {
+            validateAttributes();
+
+            int i = getOffset();
+            int end = getSize();
+            int step = getStep();
+            end = (end >= 0) ? i + end : Integer.MAX_VALUE - 1;
+
+            Tab tab = ((Tab) getChildren().get(0));
+
+            setIndex(i);
+            while (i <= end && isIndexAvailable()) {
+                tab.setLoaded(i, false);
+                i += step;
+                setIndex(i);
+            }
+
+            setIndex(-1);
+        }
+        else {
             for (int i = 0; i < getChildCount(); i++) {
                 UIComponent child = getChildren().get(i);
                 if (child instanceof Tab) {

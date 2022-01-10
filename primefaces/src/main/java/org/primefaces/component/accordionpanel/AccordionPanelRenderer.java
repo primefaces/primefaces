@@ -67,20 +67,26 @@ public class AccordionPanelRenderer extends CoreRenderer {
         AccordionPanel acco = (AccordionPanel) component;
 
         if (acco.isContentLoadRequest(context)) {
-            String var = acco.getVar();
             String clientId = acco.getClientId(context);
 
-            if (var == null) {
+            if (acco.isRepeating()) {
+                int index = Integer.parseInt(params.get(clientId + "_tabindex"));
+                acco.setIndex(index);
+
+                Tab tabToLoad = (Tab) acco.getChildren().get(0);
+                tabToLoad.encodeAll(context);
+
+                if (acco.isDynamic()) {
+                    tabToLoad.setLoaded(index, true);
+                }
+
+                acco.setIndex(-1);
+            }
+            else {
                 String tabClientId = params.get(clientId + "_newTab");
                 Tab tabToLoad = acco.findTab(tabClientId);
                 tabToLoad.encodeAll(context);
                 tabToLoad.setLoaded(true);
-            }
-            else {
-                int index = Integer.parseInt(params.get(clientId + "_tabindex"));
-                acco.setIndex(index);
-                acco.getChildren().get(0).encodeAll(context);
-                acco.setIndex(-1);
             }
         }
         else {
@@ -153,7 +159,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
     protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
         boolean dynamic = acco.isDynamic();
-        String var = acco.getVar();
+        boolean repeating = acco.isRepeating();
         boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
 
         String activeIndex = acco.getActiveIndex();
@@ -161,7 +167,19 @@ public class AccordionPanelRenderer extends CoreRenderer {
                                      ? Collections.<String>emptyList()
                                      : Arrays.asList(activeIndex.split(","));
 
-        if (var == null) {
+        if (repeating) {
+            int dataCount = acco.getRowCount();
+            Tab tab = (Tab) acco.getChildren().get(0);
+
+            for (int i = 0; i < dataCount; i++) {
+                acco.setIndex(i);
+                boolean active = isActive(tab, activeIndexes, i);
+                encodeTab(context, acco, tab, i, active, dynamic, repeating, rtl);
+            }
+
+            acco.setIndex(-1);
+        }
+        else {
             int j = 0;
 
             for (int i = 0; i < acco.getChildCount(); i++) {
@@ -169,22 +187,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 if (child.isRendered() && child instanceof Tab) {
                     Tab tab = (Tab) child;
                     boolean active = isActive(tab, activeIndexes, j);
-                    encodeTab(context, acco, tab, active, dynamic, rtl);
+                    encodeTab(context, acco, tab, j, active, dynamic, repeating, rtl);
                     j++;
                 }
             }
-        }
-        else {
-            int dataCount = acco.getRowCount();
-            Tab tab = (Tab) acco.getChildren().get(0);
-
-            for (int i = 0; i < dataCount; i++) {
-                acco.setIndex(i);
-                boolean active = isActive(tab, activeIndexes, i);
-                encodeTab(context, acco, tab, active, dynamic, rtl);
-            }
-
-            acco.setIndex(-1);
         }
     }
 
@@ -193,8 +199,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         return active && !tab.isDisabled();
     }
 
-    protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic,
-                             boolean rtl) throws IOException {
+    protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, int index, boolean active, boolean dynamic,
+            boolean repeating, boolean rtl) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
 
@@ -254,7 +260,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
         if (dynamic) {
             if (active) {
                 tab.encodeAll(context);
-                tab.setLoaded(true);
+                if (repeating) {
+                    tab.setLoaded(index, true);
+                }
+                else {
+                    tab.setLoaded(true);
+                }
             }
         }
         else {
