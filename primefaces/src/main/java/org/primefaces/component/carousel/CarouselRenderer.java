@@ -156,7 +156,7 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         int rowCount = carousel.getRowCount();
 
-        if (carousel.getVar() != null) {
+        if (carousel.isRepeating()) {
             for (int i = 0; i < rowCount; i++) {
                 carousel.setIndex(i);
 

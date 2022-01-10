@@ -177,20 +177,9 @@ public class TabView extends TabViewBase {
     }
 
     public void forEachTab(ConsumerThree<Tab, Integer, Boolean> callback) {
-        String var = getVar();
         int activeIndex = getActiveIndex();
 
-        if (var == null) {
-            int j = 0;
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent child = getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab) {
-                    callback.accept((Tab) child, j, (j == activeIndex));
-                    j++;
-                }
-            }
-        }
-        else {
+        if (isRepeating()) {
             int dataCount = getRowCount();
 
             //boundary check
@@ -220,6 +209,16 @@ public class TabView extends TabViewBase {
             }
 
             setIndex(-1);
+        }
+        else {
+            int j = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab) {
+                    callback.accept((Tab) child, j, (j == activeIndex));
+                    j++;
+                }
+            }
         }
     }
 
