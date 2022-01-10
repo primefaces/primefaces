@@ -119,7 +119,7 @@ public class TabView extends TabViewBase {
                     int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(tabindex);
                     changeEvent.setData(getIndexData());
-                    changeEvent.setTab((Tab) getChildren().get(0));
+                    changeEvent.setTab(getDynamicTab());
                 }
 
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -138,7 +138,7 @@ public class TabView extends TabViewBase {
                     int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(tabindex);
                     closeEvent.setData(getIndexData());
-                    closeEvent.setTab((Tab) getChildren().get(0));
+                    closeEvent.setTab(getDynamicTab());
                 }
 
                 closeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -177,27 +177,16 @@ public class TabView extends TabViewBase {
     }
 
     public void forEachTab(ConsumerThree<Tab, Integer, Boolean> callback) {
-        String var = getVar();
         int activeIndex = getActiveIndex();
 
-        if (var == null) {
-            int j = 0;
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent child = getChildren().get(i);
-                if (child.isRendered() && child instanceof Tab) {
-                    callback.accept((Tab) child, j, (j == activeIndex));
-                    j++;
-                }
-            }
-        }
-        else {
+        if (isRepeating()) {
             int dataCount = getRowCount();
 
             //boundary check
             activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
             boolean activeTabRendered = false;
 
-            Tab tab = (Tab) getChildren().get(0);
+            Tab tab = getDynamicTab();
 
             for (int i = 0; i < dataCount; i++) {
                 setIndex(i);
@@ -220,6 +209,16 @@ public class TabView extends TabViewBase {
             }
 
             setIndex(-1);
+        }
+        else {
+            int j = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab) {
+                    callback.accept((Tab) child, j, (j == activeIndex));
+                    j++;
+                }
+            }
         }
     }
 

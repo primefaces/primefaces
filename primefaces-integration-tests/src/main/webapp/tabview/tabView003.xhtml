@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:tabView id="tabview" value="#{tabView003.data}" var="dataVar"
+                       orientation="left" dynamic="true" cache="false">
+
+                <p:tab title="#{dataVar.title}">            
+                    <p:inputText id="input" value="#{dataVar.text}"/>           
+                    <p:selectOneButton id="onebutton" value="#{dataVar.sob}">               
+                        <f:selectItem itemLabel="No Value" itemValue="#{null}"/>               
+                        <f:selectItem itemLabel="True" itemValue="#{true}"/>               
+                        <f:selectItem itemLabel="False" itemValue="#{false}"/>           
+                    </p:selectOneButton>
+                </p:tab>
+
+            </p:tabView>
+
+            <p:inputText id="setterCalled" value="#{tabView003.setterCalled}" disabled="true" />
+
+            <p:commandButton id="button" value="Submit" update="setterCalled" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

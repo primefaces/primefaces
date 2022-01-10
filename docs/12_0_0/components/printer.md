@@ -20,6 +20,7 @@ rendered | true | Boolean | Boolean value to specify the rendering of the compon
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 target | null | String | Target component to print.
 title | document.title | String | Title of the print window defaults to page title.
+configuration | null | String | Optional JSON configuration values to completely control PrintJS.
 
 ## Getting started with the Printer
 Printer is attached to any command component like a button or a link. Examples below

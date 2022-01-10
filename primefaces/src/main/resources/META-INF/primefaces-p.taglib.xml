@@ -398,6 +398,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>Optional JSON configuration values to completely control PrintJS.</description>
+            <name>configuration</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -13127,7 +13133,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum number of characters that may be entered in this field.]]>
+                <![CDATA[DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.]]>
             </description>
             <name>maxlength</name>
             <required>false</required>
