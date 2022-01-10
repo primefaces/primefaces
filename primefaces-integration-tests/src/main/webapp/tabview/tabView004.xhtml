@@ -19,14 +19,14 @@
             </p:messages>
 
             <p:tabView id="tabview" dynamic="true">
-                <p:tab title="First Tab">
+                <p:tab id="tab0" title="First Tab">
                     <p:selectOneMenu id="selectonemenu" required="true" value="#{tabView004.value}">
                         <f:selectItems value="#{tabView004.values}" />
                     </p:selectOneMenu>
                 </p:tab>
 
-                <p:tab title="Secound Tab">
-                    <h:outputText value="secound" />
+                <p:tab id="tab1" title="Secound Tab">
+                    <h:outputText id="secound" value="secound" />
                 </p:tab>
             </p:tabView>
         </h:form>

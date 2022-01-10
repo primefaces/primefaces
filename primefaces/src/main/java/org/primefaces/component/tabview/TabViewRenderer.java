@@ -92,7 +92,7 @@ public class TabViewRenderer extends CoreRenderer {
                 tabView.restoreMultiViewState();
             }
 
-            //tabView.resetLoadedTabsState();
+            tabView.resetLoadedTabsState();
 
             encodeMarkup(context, tabView);
             encodeScript(context, tabView);
