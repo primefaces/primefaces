@@ -1,4 +1,4 @@
-# Whats new?
+# What is new?
 
 This page contains a list of big features. Please check the GitHub issues for all changes.
 
@@ -9,6 +9,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
+* Printer: added `configuration` attribute for passing custom JSON options to PrintJS.
 * SplitButton
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
@@ -17,3 +18,4 @@ Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../
 
 ## Exporter
   * Added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output
+  

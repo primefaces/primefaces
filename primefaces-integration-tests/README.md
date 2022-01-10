@@ -14,6 +14,10 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
 - Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,mojarra-2.3`
 - Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3 -Dit.test=DatePicker001Test`
 
+## Run as web application
+- `mvn clean jetty:run -Pmojarra-2.3`
+- Now you can open it on 'http://localhost:8080/integrationtests/'
+
 ## Profiles
 
 #### Browsers

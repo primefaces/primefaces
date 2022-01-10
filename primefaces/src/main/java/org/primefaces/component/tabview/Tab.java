@@ -31,11 +31,44 @@ public class Tab extends TabBase {
 
     public boolean isLoaded() {
         Object value = getStateHelper().get("loaded");
-        return value != null && (Boolean) value;
+        return Boolean.TRUE.equals(value);
     }
 
     public void setLoaded(boolean value) {
-        getStateHelper().put("loaded", value);
+        if (value == false) {
+            getStateHelper().remove("loaded");
+        }
+        else {
+            getStateHelper().put("loaded", value);
+        }
+    }
+
+    /**
+     * In case of a repeating parent (var=...), we need to store the state on row basis.
+     * This is actually a workaround because neither UITabPanel, not UIRepeat has a rowStatePreserved attribute.
+     *
+     * @param index The tab index.
+     * @return if loaded or not.
+     */
+    public boolean isLoaded(int index) {
+        Object value = getStateHelper().get("loaded_" + index);
+        return Boolean.TRUE.equals(value);
+    }
+
+    /**
+     * In case of a repeating parent (var=...), we need to store the state on row basis.
+     * This is actually a workaround because neither UITabPanel, not UIRepeat has a rowStatePreserved attribute.
+     *
+     * @param index The tab index.
+     * @param value The loaded state.
+     */
+    public void setLoaded(int index, boolean value) {
+        if (value == false) {
+            getStateHelper().remove("loaded_" + index);
+        }
+        else {
+            getStateHelper().put("loaded_" + index, value);
+        }
     }
 
     @Override
