@@ -66,11 +66,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if($this.isXhrSourceATrigger(settings)) {
+            if(!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
                 $this.show();
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if($this.isXhrSourceATrigger(settings)) {
+            if(!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
                 $this.hide();
             }
         });
@@ -80,14 +80,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * Checks whether one of component's triggers equals the source ID from the provided settings.
      *
      * @param {JQuery.AjaxSettings} settings containing source ID.
-     * @returns {boolean} `true` if the widget is not configured to be blocked ans if one of component's triggers equals
-     * the source ID from the provided settings.
+     * @returns {boolean} `true` if if one of component's triggers equals the source ID from the provided settings.
      */
     isXhrSourceATrigger: function (settings) {
-        if (this.cfg.blocked) {
-            return false;
-        }
-
         var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
         if (!sourceId) {
             return false;
