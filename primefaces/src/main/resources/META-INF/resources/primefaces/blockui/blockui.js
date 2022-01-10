@@ -80,9 +80,14 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * Checks whether one of component's triggers equals the source ID from the provided settings.
      *
      * @param {JQuery.AjaxSettings} settings containing source ID.
-     * @returns {boolean} `true` one of component's triggers equals the source ID from the provided settings.
+     * @returns {boolean} `true` if the widget is not configured to be blocked ans if one of component's triggers equals
+     * the source ID from the provided settings.
      */
     isXhrSourceATrigger: function (settings) {
+        if (this.cfg.blocked) {
+            return false;
+        }
+
         var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
         if (!sourceId) {
             return false;
@@ -90,7 +95,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         // we must evaluate it each time as the DOM might has been changed
         var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.triggers);
 
-        return $.inArray(sourceId, triggers) !== -1 && !this.cfg.blocked;
+        return $.inArray(sourceId, triggers) !== -1;
     },
 
     /**
