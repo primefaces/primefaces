@@ -119,7 +119,7 @@ public class TabView extends TabViewBase {
                     int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(tabindex);
                     changeEvent.setData(getIndexData());
-                    changeEvent.setTab((Tab) getChildren().get(0));
+                    changeEvent.setTab(getDynamicTab());
                 }
 
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -138,7 +138,7 @@ public class TabView extends TabViewBase {
                     int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(tabindex);
                     closeEvent.setData(getIndexData());
-                    closeEvent.setTab((Tab) getChildren().get(0));
+                    closeEvent.setTab(getDynamicTab());
                 }
 
                 closeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -186,7 +186,7 @@ public class TabView extends TabViewBase {
             activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
             boolean activeTabRendered = false;
 
-            Tab tab = (Tab) getChildren().get(0);
+            Tab tab = getDynamicTab();
 
             for (int i = 0; i < dataCount; i++) {
                 setIndex(i);

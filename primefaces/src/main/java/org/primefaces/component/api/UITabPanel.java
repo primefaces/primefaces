@@ -47,6 +47,7 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
+import org.primefaces.util.ConsumerTwo;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
@@ -1277,34 +1278,15 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public void resetLoadedTabsState() {
-        if (isRepeating()) {
-            validateAttributes();
-
-            int i = getOffset();
-            int end = getSize();
-            int step = getStep();
-            end = (end >= 0) ? i + end : Integer.MAX_VALUE - 1;
-
-            Tab tab = ((Tab) getChildren().get(0));
-
-            setIndex(i);
-            while (i <= end && isIndexAvailable()) {
-                tab.setLoaded(i, false);
-                i += step;
-                setIndex(i);
+        boolean repeating = isRepeating();
+        forEachTab((tab, index) -> {
+            if (repeating) {
+                tab.setLoaded(index, false);
             }
-
-            setIndex(-1);
-        }
-        else {
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent child = getChildren().get(i);
-                if (child instanceof Tab) {
-                    Tab tab = (Tab) child;
-                    tab.setLoaded(false);
-                }
+            else {
+                tab.setLoaded(false);
             }
-        }
+        }, false);
     }
 
     protected boolean shouldSkipChildren(FacesContext context) {
@@ -1320,6 +1302,57 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
 
         return Boolean.parseBoolean(paramValue);
+    }
+
+    public void forEachTab(ConsumerTwo<Tab, Integer> callback) {
+        forEachTab(callback, true);
+    }
+
+    public void forEachTab(ConsumerTwo<Tab, Integer> callback, boolean skipUnrendered) {
+        if (isRepeating()) {
+            Tab tab = getDynamicTab();
+
+            int dataCount = getRowCount();
+            for (int i = 0; i < dataCount; i++) {
+                setIndex(i);
+
+                if (skipUnrendered && !tab.isRendered()) {
+                    continue;
+                }
+
+                callback.accept(tab, i);
+            }
+
+            setIndex(-1);
+        }
+        else {
+            int j = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
+                if (child instanceof Tab) {
+                    Tab tab = (Tab) child;
+
+                    if (skipUnrendered && !tab.isRendered()) {
+                        j++;
+                        continue;
+                    }
+
+                    callback.accept((Tab) child, j);
+                    j++;
+                }
+            }
+        }
+    }
+
+    public Tab getDynamicTab() {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child instanceof Tab) {
+                return (Tab) child;
+            }
+        }
+
+        throw new FacesException("p:tab is required as children in component with clientId: " + this.getClientId());
     }
 
     private final class IndexedEvent extends FacesEvent {

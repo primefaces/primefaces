@@ -73,7 +73,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                 acco.setIndex(index);
 
-                Tab tabToLoad = (Tab) acco.getChildren().get(0);
+                Tab tabToLoad = acco.getDynamicTab();
                 tabToLoad.encodeAll(context);
 
                 if (acco.isDynamic()) {
@@ -169,7 +169,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         if (repeating) {
             int dataCount = acco.getRowCount();
-            Tab tab = (Tab) acco.getChildren().get(0);
+            Tab tab = acco.getDynamicTab();
 
             for (int i = 0; i < dataCount; i++) {
                 acco.setIndex(i);

@@ -68,7 +68,7 @@ public class TabViewRenderer extends CoreRenderer {
                 int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                 tabView.setIndex(index);
 
-                Tab tabToLoad = (Tab) tabView.getChildren().get(0);
+                Tab tabToLoad = tabView.getDynamicTab();
                 tabToLoad.encodeAll(context);
 
                 if (tabView.isDynamic()) {
