@@ -9,6 +9,9 @@ This page contains a list of big features. Please check the GitHub issues for al
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
+* MenuButton
+  * Now can be enabled and disabled by its widget.
+  * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by its menu items.
 * Printer: added `configuration` attribute for passing custom JSON options to PrintJS.
 * SplitButton
   * Now can be enabled and disabled by its widget.

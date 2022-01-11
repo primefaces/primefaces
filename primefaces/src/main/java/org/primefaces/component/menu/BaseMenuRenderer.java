@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -118,7 +119,8 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
     protected boolean shouldRenderId(MenuElement element) {
         if (element instanceof UIComponent) {
-            return shouldWriteId((UIComponent) element);
+            UIComponent component = (UIComponent) element;
+            return component.getParent() instanceof MenuButton || shouldWriteId(component);
         }
         else {
             return false;
