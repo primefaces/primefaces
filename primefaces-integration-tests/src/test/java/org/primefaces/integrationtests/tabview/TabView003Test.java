@@ -40,16 +40,16 @@ public class TabView003Test extends AbstractPrimePageTest {
     @DisplayName("TabView: Test dynamic & repeating tabs should only be processed when loaded")
     public void testDynamic(Page page) {
         Assertions.assertEquals("0", page.setterCalled.getValue());
-        
+
         // Only tab 0 loaded, setter should be called once
         page.button.click();
         Assertions.assertEquals("1", page.setterCalled.getValue());
-        
+
         // tab 1 will be loaded now, setter should be called for tab 0+1
         page.tabView.toggleTab(1);
         page.button.click();
         Assertions.assertEquals("3", page.setterCalled.getValue());
-        
+
         // tab 2 will be loaded now, setter should be called for tab 0+1+2
         page.tabView.toggleTab(2);
         page.button.click();
@@ -57,6 +57,7 @@ public class TabView003Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:tabview")
         TabView tabView;
 
@@ -71,7 +72,7 @@ public class TabView003Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:tabview:1:sob")
         SelectOneButton sob2;
-        
+
         @FindBy(id = "form:setterCalled")
         InputText setterCalled;
 

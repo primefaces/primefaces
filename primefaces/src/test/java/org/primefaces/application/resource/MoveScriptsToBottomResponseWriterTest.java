@@ -215,7 +215,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("script");
 
         writer.startElement("div", null);
-        writer.writeText("text",null);
+        writer.writeText("text", null);
         writer.endElement("div");
 
         writer.endElement("body");

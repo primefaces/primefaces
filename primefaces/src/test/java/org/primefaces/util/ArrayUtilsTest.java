@@ -29,22 +29,22 @@ import org.junit.jupiter.api.Test;
 
 public class ArrayUtilsTest {
 
-	@Test
-	public void shouldConcatTwoArrays() {
-		String[] arr1 = new String[]{"a","b","c"};
-		String[] arr2 = new String[]{"d","e","f"};
+    @Test
+    public void shouldConcatTwoArrays() {
+        String[] arr1 = new String[]{"a", "b", "c"};
+        String[] arr2 = new String[]{"d", "e", "f"};
 
-		String[] result = LangUtils.concat(arr1, arr2);
+        String[] result = LangUtils.concat(arr1, arr2);
 
-		assertEquals(3, arr1.length);
-		assertEquals(3, arr2.length);
-		assertEquals(6, result.length);
+        assertEquals(3, arr1.length);
+        assertEquals(3, arr2.length);
+        assertEquals(6, result.length);
 
-		assertEquals("a", result[0]);
-		assertEquals("b", result[1]);
-		assertEquals("c", result[2]);
-		assertEquals("d", result[3]);
-		assertEquals("e", result[4]);
-		assertEquals("f", result[5]);
-	}
+        assertEquals("a", result[0]);
+        assertEquals("b", result[1]);
+        assertEquals("c", result[2]);
+        assertEquals("d", result[3]);
+        assertEquals("e", result[4]);
+        assertEquals("f", result[5]);
+    }
 }

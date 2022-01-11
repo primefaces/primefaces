@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright (c) 2009-2019 PrimeTek
@@ -36,28 +36,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
-
 public class JSONObjectTest {
 
-	@Test
-	public void testBooleanToJSON() {
-		try {
-			String json = new JSONObject().put("valid", true).toString();
-			assertEquals("{\"valid\":true}", json);
-		} catch (JSONException e) {
-			fail();
-		}
-	}
+    @Test
+    public void testBooleanToJSON() {
+        try {
+            String json = new JSONObject().put("valid", true).toString();
+            assertEquals("{\"valid\":true}", json);
+        }
+        catch (JSONException e) {
+            fail();
+        }
+    }
 
-	@Test
-	public void testPojoToJSON() throws JSONException {
-		JSONObject json = new JSONObject(new Person("Cagatay", "Civici"));
+    @Test
+    public void testPojoToJSON() throws JSONException {
+        JSONObject json = new JSONObject(new Person("Cagatay", "Civici"));
         assertNotNull(json.get("firstname"));
         assertEquals("Cagatay", json.get("firstname"));
         assertNotNull(json.get("lastname"));
-		assertEquals("Civici", json.get("lastname"));
+        assertEquals("Civici", json.get("lastname"));
         assertEquals(2, json.length());
-	}
+    }
 
     @Test
     public void testListToJSONArray() throws JSONException {
@@ -79,28 +79,33 @@ public class JSONObjectTest {
         assertEquals(5, new JSONObject(myMap).length());
     }
 
-	static public class Person {
+    public static class Person {
 
-		private String firstname;
-		private String lastname;
+        private String firstname;
+        private String lastname;
 
-		public Person() {}
+        public Person() {
+        }
 
-		public Person(String firstname, String lastname) {
-			this.firstname = firstname;
-			this.lastname = lastname;
-		}
-		public String getFirstname() {
-			return firstname;
-		}
-		public void setFirstname(String firstname) {
-			this.firstname = firstname;
-		}
-		public String getLastname() {
-			return lastname;
-		}
-		public void setLastname(String lastname) {
-			this.lastname = lastname;
-		}
-	}
+        public Person(String firstname, String lastname) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+        }
+
+        public String getFirstname() {
+            return firstname;
+        }
+
+        public void setFirstname(String firstname) {
+            this.firstname = firstname;
+        }
+
+        public String getLastname() {
+            return lastname;
+        }
+
+        public void setLastname(String lastname) {
+            this.lastname = lastname;
+        }
+    }
 }

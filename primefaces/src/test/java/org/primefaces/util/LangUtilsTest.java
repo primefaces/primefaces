@@ -34,7 +34,6 @@ import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
 
-
 public class LangUtilsTest {
 
     private static final String FOO = "foo";
@@ -129,18 +128,17 @@ public class LangUtilsTest {
     @Test
     public void getField() {
         Field field = null;
-        
-        
-        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.string");        
+
+        field = LangUtils.getFieldRecursive(AbstractClass.class, "container.string");
         Assertions.assertNotNull(field);
         Assertions.assertEquals(Container.class, field.getDeclaringClass());
         Assertions.assertEquals("string", field.getName());
-        
+
         field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container.string");
         Assertions.assertNotNull(field);
         Assertions.assertEquals(Container.class, field.getDeclaringClass());
-        Assertions.assertEquals( "string", field.getName());
-        
+        Assertions.assertEquals("string", field.getName());
+
         field = LangUtils.getFieldRecursive(AbstractClass.class, "container.container");
         Assertions.assertNotNull(field);
         Assertions.assertEquals(Container.class, field.getDeclaringClass());
@@ -150,7 +148,7 @@ public class LangUtilsTest {
         Assertions.assertNotNull(field);
         Assertions.assertEquals(SimpleClass.class, field.getDeclaringClass());
         Assertions.assertEquals("strings", field.getName());
-        
+
         Assertions.assertNotNull(LangUtils.getField(AbstractClass.class, "ints"));
         Assertions.assertNotNull(LangUtils.getField(ConcreteClass.class, "ints"));
         Assertions.assertNotNull(LangUtils.getField(AbstractGenericClass.class, "values"));
@@ -159,10 +157,11 @@ public class LangUtilsTest {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getField(DetailedConcreteGenericClass.class, "rasdasd"));
         Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container2.stringss"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container.stringss"));        
+        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getFieldRecursive(AbstractClass.class, "container.stringss"));
     }
 
     class SimpleClass {
+
         private List<String> strings;
 
         public List<String> getStrings() {
@@ -175,6 +174,7 @@ public class LangUtilsTest {
     }
 
     abstract class AbstractClass {
+
         private List<Integer> ints;
         private Container container;
 
@@ -200,6 +200,7 @@ public class LangUtilsTest {
     }
 
     abstract class AbstractGenericClass<T> {
+
         private List<T> values;
 
         public List<T> getValues() {
@@ -218,8 +219,9 @@ public class LangUtilsTest {
     class DetailedConcreteGenericClass extends ConcreteGenericClass {
 
     }
-    
+
     class Container {
+
         private Container container;
         private String string;
 

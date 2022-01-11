@@ -41,7 +41,7 @@ public class TabView004Test extends AbstractPrimePageTest {
     @DisplayName("TabView: Tab#loaded should be resetted when rendering TabView again, otherwise select components are resettet")
     public void testDynamic(Page page) {
         page.tabView.toggleTab(1);
-        
+
         page.button.click();
         page.button.click();
         page.button.click();
@@ -50,18 +50,19 @@ public class TabView004Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:msgs")
         Messages msgs;
-        
+
         @FindBy(id = "form:tabview")
         TabView tabView;
 
         @FindBy(id = "form:tabview:selectonemenu")
         SelectOneMenu selectonemenu;
-        
+
         @FindBy(id = "form:tabview:secound")
         WebElement secound;
-        
+
         @FindBy(id = "form:button")
         CommandButton button;
 

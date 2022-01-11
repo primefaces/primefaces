@@ -31,79 +31,75 @@ import org.mockito.Mockito;
 import org.primefaces.mock.FacesContextMock;
 
 public class MessagesRendererTest {
-    
+
     @Test
-    public void collectFacesMessagesWithEmptyIgnores()
-    {
+    public void collectFacesMessagesWithEmptyIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
         context.addMessage("test3", new FacesMessage());
-        
+
         Messages messages = Mockito.mock(Messages.class);
         Mockito.when(messages.getFor()).thenReturn("");
         Mockito.when(messages.isGlobalOnly()).thenReturn(false);
         Mockito.when(messages.getForIgnores()).thenReturn("");
-        
+
         MessagesRenderer renderer = new MessagesRenderer();
-        
-        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
+
+        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());
     }
-    
+
     @Test
-    public void collectFacesMessagesWithNullIgnores()
-    {
+    public void collectFacesMessagesWithNullIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
         context.addMessage("test3", new FacesMessage());
-        
+
         Messages messages = Mockito.mock(Messages.class);
         Mockito.when(messages.getFor()).thenReturn("");
         Mockito.when(messages.isGlobalOnly()).thenReturn(false);
         Mockito.when(messages.getForIgnores()).thenReturn("");
-        
+
         MessagesRenderer renderer = new MessagesRenderer();
-        
-        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
+
+        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());
     }
-    
+
     @Test
-    public void collectFacesMessagesWithIgnores()
-    {
+    public void collectFacesMessagesWithIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
         context.addMessage("test3", new FacesMessage());
         context.addMessage("test3", new FacesMessage());
-        
+
         Messages messages = Mockito.mock(Messages.class);
         Mockito.when(messages.getFor()).thenReturn("");
         Mockito.when(messages.isGlobalOnly()).thenReturn(false);
         Mockito.when(messages.getForIgnores()).thenReturn("test2");
-        
+
         MessagesRenderer renderer = new MessagesRenderer();
-        
-        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());        
+
+        Assertions.assertEquals(3, renderer.collectFacesMessages(messages, context).size());
     }
-    
+
     @Test
-    public void collectFacesMessagesWithMultipleIgnores()
-    {
+    public void collectFacesMessagesWithMultipleIgnores() {
         FacesContext context = new FacesContextMock();
         context.addMessage("test1", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
         context.addMessage("test2", new FacesMessage());
         context.addMessage("test3", new FacesMessage());
         context.addMessage("test3", new FacesMessage());
-        
+
         Messages messages = Mockito.mock(Messages.class);
         Mockito.when(messages.getFor()).thenReturn("");
         Mockito.when(messages.isGlobalOnly()).thenReturn(false);
         Mockito.when(messages.getForIgnores()).thenReturn("test3, test2");
-        
+
         MessagesRenderer renderer = new MessagesRenderer();
-        
-        Assertions.assertEquals(1, renderer.collectFacesMessages(messages, context).size());        
+
+        Assertions.assertEquals(1, renderer.collectFacesMessages(messages, context).size());
     }
 }

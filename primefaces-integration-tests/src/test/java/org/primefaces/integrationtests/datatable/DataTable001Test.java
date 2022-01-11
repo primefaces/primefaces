@@ -62,7 +62,6 @@ public class DataTable001Test extends AbstractDataTableTest {
 
         // Act
         //page.button.click();
-
         // Assert
         Assertions.assertNotNull(dataTable.getPaginatorWebElement());
         Assertions.assertNotNull(dataTable.getHeaderWebElement());
@@ -148,7 +147,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     public void testFilter(String xhtml) {
         // Arrange
         getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();;
+        DataTable dataTable = getDataTable();
         dataTable.selectPage(1);
         dataTable.sort("Name");
 
@@ -207,7 +206,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     public void testGlobalFilter(String xhtml) {
         // Arrange
         getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();;
+        DataTable dataTable = getDataTable();
         InputText globalFilter = getGlobalFilter();
         Assertions.assertNotNull(globalFilter);
         dataTable.selectPage(1);
@@ -248,11 +247,12 @@ public class DataTable001Test extends AbstractDataTableTest {
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(7)
-    @DisplayName("DataTable: rows per page & reset; includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
+    @DisplayName("DataTable: rows per page & reset; "
+            + "includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
     public void testRowsPerPageAndReset_5465_5481(String xhtml) {
         // Arrange
         getWebDriver().get(PrimeSelenium.getUrl(xhtml));
-        DataTable dataTable = getDataTable();;
+        DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
         // Assert

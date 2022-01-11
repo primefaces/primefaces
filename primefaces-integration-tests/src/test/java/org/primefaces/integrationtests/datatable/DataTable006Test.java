@@ -32,11 +32,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.SelectBooleanCheckbox;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.datatable.Row;
 
@@ -60,13 +58,13 @@ public class DataTable006Test extends AbstractDataTableTest {
         int cnt = 0;
         for (Row row : dataTable.getRows()) {
             WebElement checkboxIcon = row.getCell(0).getWebElement().findElement(By.className("ui-chkbox-icon"));
-            if (cnt == 0 || cnt ==2) {
+            if (cnt == 0 || cnt == 2) {
                 assertCss(checkboxIcon, "ui-icon-check");
             }
             else {
                 assertCss(checkboxIcon, "ui-icon-blank");
             }
-            cnt ++;
+            cnt++;
         }
 
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
@@ -136,13 +134,20 @@ public class DataTable006Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration(), true);
 
         // Assert - row 0 and 2 on page 1 and row 1 on page 2 still selected
-        Assertions.assertEquals(dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
-        Assertions.assertEquals(dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
-        Assertions.assertEquals(dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+        Assertions.assertEquals(
+                dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+        Assertions.assertEquals(
+                dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
+        Assertions.assertEquals(
+                dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
         dataTable.selectPage(2);
-        Assertions.assertEquals(dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
-        Assertions.assertEquals(dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
-        Assertions.assertEquals(dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
+
+        Assertions.assertEquals(
+                dataTable.getCell(0, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
+        Assertions.assertEquals(
+                dataTable.getCell(1, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "true");
+        Assertions.assertEquals(
+                dataTable.getCell(2, 0).getWebElement().findElement(By.className("ui-chkbox-box")).getAttribute("aria-checked"), "false");
     }
 
     @Test
@@ -272,7 +277,8 @@ public class DataTable006Test extends AbstractDataTableTest {
         // Assert
         assertSelectAllCheckbox(dataTable, false);
         assertSelections(page.messages,
-                    "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
+                "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,"
+                        + "2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
 
         // Act - unselect one row
         dataTable.getCell(1, 0).getWebElement().click();
@@ -350,6 +356,7 @@ public class DataTable006Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:msgs")
         Messages messages;
 

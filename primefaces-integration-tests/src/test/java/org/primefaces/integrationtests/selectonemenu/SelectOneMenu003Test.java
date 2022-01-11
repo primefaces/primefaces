@@ -51,7 +51,7 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
         selectOneMenu.toggleDropdown();
 
         // Assert
-        List<WebElement> options= selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals(null, options.get(2).getAttribute("disabled"));
         Assertions.assertEquals("true", options.get(3).getAttribute("disabled"));
 
