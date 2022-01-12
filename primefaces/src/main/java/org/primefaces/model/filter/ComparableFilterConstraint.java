@@ -35,28 +35,31 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value == null) {
+        if (value == null || filter == null) {
             return false;
         }
         if (!(value instanceof Comparable) || !(filter instanceof Comparable)) {
-            throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
+            throw new IllegalArgumentException(
+                    "Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
         }
-
         if (value instanceof Number) {
-            return getPredicateBigDecimal()
-                    .test(new BigDecimal(value.toString()),
+            return getPredicate()
+                    .test(toBigDecimal(value, locale),
                             toBigDecimal(filter, locale));
         }
         else {
-            return getPredicateString()
+            return getPredicate()
                     .test(toString(value, locale),
                             toString(filter, locale));
         }
     }
 
     protected BigDecimal toBigDecimal(Object object, Locale locale) {
-        if (object == null) {
-            return null;
+        if (object == null || object instanceof BigDecimal) {
+            return (BigDecimal) object;
+        }
+        if (object instanceof Number) {
+            return new BigDecimal(object.toString());
         }
         try {
             DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(locale);
@@ -75,8 +78,6 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         return object.toString().trim().toLowerCase(locale);
     }
 
-    protected abstract BiPredicate<BigDecimal, BigDecimal> getPredicateBigDecimal();
-
-    protected abstract BiPredicate<String, String> getPredicateString();
+    protected abstract BiPredicate<Comparable, Comparable> getPredicate();
 
 }
