@@ -694,7 +694,7 @@ useful to deal with huge data, in this case data is fetched on-demand. Set _virt
 option and provide LazyDataModel;
 
 ```xhtml
-<p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollHeight="150" virtual="true">
+<p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollHeight="150" virtualScroll="true">
     <p:column />
     //columns
 </p:dataTable>
