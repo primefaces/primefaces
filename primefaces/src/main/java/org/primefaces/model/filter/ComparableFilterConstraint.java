@@ -39,9 +39,8 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
             return false;
         }
         if (value instanceof Number) {
-            return getPredicate()
-                    .test(toBigDecimal(value, locale),
-                            toBigDecimal(filter, locale));
+            BigDecimal filterBigDecimal = toBigDecimal(filter, locale);
+            return filterBigDecimal != null && getPredicate().test(toBigDecimal(value, locale), filterBigDecimal);
         }
         else {
             return getPredicate()
