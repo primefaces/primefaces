@@ -38,10 +38,6 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         if (value == null || filter == null) {
             return false;
         }
-        if (!(value instanceof Comparable) || !(filter instanceof Comparable)) {
-            throw new IllegalArgumentException(
-                    "Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
-        }
         if (value instanceof Number) {
             return getPredicate()
                     .test(toBigDecimal(value, locale),
@@ -55,7 +51,7 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
     }
 
     protected BigDecimal toBigDecimal(Object object, Locale locale) {
-        if (object == null || object instanceof BigDecimal) {
+        if (object instanceof BigDecimal) {
             return (BigDecimal) object;
         }
         if (object instanceof Number) {
@@ -72,9 +68,6 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
     }
 
     protected String toString(Object object, Locale locale) {
-        if (object == null) {
-            return null;
-        }
         return object.toString().trim().toLowerCase(locale);
     }
 
