@@ -57,14 +57,17 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         if (object instanceof Number) {
             return new BigDecimal(object.toString());
         }
-        try {
-            DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(locale);
-            decimalFormat.setParseBigDecimal(true);
-            return (BigDecimal) decimalFormat.parseObject(object.toString());
+        if (object instanceof String) {
+            try {
+                DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(locale);
+                decimalFormat.setParseBigDecimal(true);
+                return (BigDecimal) decimalFormat.parseObject((String) object);
+            }
+            catch (ParseException e) {
+                return null;
+            }
         }
-        catch (ParseException e) {
-            return null;
-        }
+        throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
     }
 
     protected abstract BiPredicate<Comparable, Comparable> getPredicate();
