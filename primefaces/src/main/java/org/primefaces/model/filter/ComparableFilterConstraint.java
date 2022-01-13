@@ -45,12 +45,12 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         }
         else {
             return getPredicate()
-                    .test(toString(value, locale),
-                            toString(filter, locale));
+                    .test(StringFilterConstraint.toString(value, locale),
+                            StringFilterConstraint.toString(filter, locale));
         }
     }
 
-    protected BigDecimal toBigDecimal(Object object, Locale locale) {
+    static BigDecimal toBigDecimal(Object object, Locale locale) {
         if (object instanceof BigDecimal) {
             return (BigDecimal) object;
         }
@@ -65,10 +65,6 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         catch (ParseException e) {
             return null;
         }
-    }
-
-    protected String toString(Object object, Locale locale) {
-        return object.toString().trim().toLowerCase(locale);
     }
 
     protected abstract BiPredicate<Comparable, Comparable> getPredicate();

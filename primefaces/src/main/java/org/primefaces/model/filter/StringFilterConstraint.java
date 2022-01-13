@@ -25,21 +25,23 @@ package org.primefaces.model.filter;
 
 import javax.faces.context.FacesContext;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.function.BiPredicate;
 
 public abstract class StringFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value == null) {
+        if (value == null || filter == null) {
             return false;
         }
-        BiPredicate<String, String> predicate = Objects.requireNonNull(getPredicate());
 
-        String str = filter == null ? null : filter.toString().trim().toLowerCase(locale);
-        String val = value.toString().toLowerCase(locale);
-        return predicate.test(val, str);
+        return getPredicate()
+                .test(toString(value, locale),
+                        toString(filter, locale));
+    }
+
+    static String toString(Object object, Locale locale) {
+        return object.toString().trim().toLowerCase(locale);
     }
 
     protected abstract BiPredicate<String, String> getPredicate();

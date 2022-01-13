@@ -45,7 +45,7 @@
 
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains">
                         <h:outputText value="#{customer.name}" />
                     </p:column>
 
