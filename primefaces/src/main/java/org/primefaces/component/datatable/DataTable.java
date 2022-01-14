@@ -253,9 +253,8 @@ public class DataTable extends DataTableBase {
     public String getColumnSelectionMode() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof Column)) {
+            if (child instanceof Column) {
                 String selectionMode = ((Column) child).getSelectionMode();
-
                 if (selectionMode != null) {
                     return selectionMode;
                 }
