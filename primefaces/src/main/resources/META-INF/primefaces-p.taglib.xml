@@ -6895,7 +6895,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[In responsive mode, dialog adjusts itself based on screen width.]]>
+                <![CDATA[In responsive mode the dialog adjusts itself based on screen width, browser resizing, and scrolling of the document.]]>
             </description>
             <name>responsive</name>
             <required>false</required>
