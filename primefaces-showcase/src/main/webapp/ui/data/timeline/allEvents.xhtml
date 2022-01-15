@@ -91,9 +91,7 @@
                     editable="true" eventMargin="10" eventMarginAxis="0"
                     start="#{allEventsTimelineView.start}"
                     end="#{allEventsTimelineView.end}" 
-                    stackEvents="false"
-                    timeZone="#{allEventsTimelineView.serverTimeZone}"
-                    clientTimeZone="#{allEventsTimelineView.serverTimeZone}">
+                    stackEvents="false">
                     <p:ajax event="add" listener="#{allEventsTimelineView.onAdd}" />
                     <p:ajax event="changed" listener="#{allEventsTimelineView.onChanged}" />
                     <p:ajax event="edit" listener="#{allEventsTimelineView.onEdit}" />

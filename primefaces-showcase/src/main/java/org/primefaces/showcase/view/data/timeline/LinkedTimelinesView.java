@@ -36,7 +36,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 @Named("linkedTimelinesView")
@@ -46,7 +45,6 @@ public class LinkedTimelinesView implements Serializable {
     private TimelineModel<Task, ?> modelFirst;  // model of the first timeline
     private TimelineModel<String, ?> modelSecond; // model of the second timeline
     private boolean aSelected;         // flag if the project A is selected (for test of select() call on the 2. model)
-    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     private LocalDateTime start = LocalDate.of(2015, 8, 22).atStartOfDay();
     private LocalDateTime end = LocalDate.of(2015, 9, 4).atStartOfDay();
@@ -140,12 +138,20 @@ public class LinkedTimelinesView implements Serializable {
         return modelSecond;
     }
 
-    public String getServerTimeZone() {
-        return serverTimeZone;
+    public LocalDateTime getStart() {
+        return start;
     }
 
-    public void setServerTimeZone(String serverTimeZone) {
-        this.serverTimeZone = serverTimeZone;
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 
     public class Task implements Serializable {
@@ -173,20 +179,4 @@ public class LinkedTimelinesView implements Serializable {
         }
     }
 
-
-    public LocalDateTime getStart() {
-        return start;
-    }
-
-    public void setStart(LocalDateTime start) {
-        this.start = start;
-    }
-
-    public LocalDateTime getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
-    }
 }

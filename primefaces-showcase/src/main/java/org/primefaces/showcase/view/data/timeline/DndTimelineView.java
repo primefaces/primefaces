@@ -37,7 +37,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +50,6 @@ public class DndTimelineView implements Serializable {
     private LocalDateTime end;
 
     private final List<Event> events = new ArrayList<>();
-
-    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     public void init() {
@@ -112,13 +109,5 @@ public class DndTimelineView implements Serializable {
 
     public LocalDateTime getEnd() {
         return end;
-    }
-
-    public String getServerTimeZone() {
-        return serverTimeZone;
-    }
-
-    public void setServerTimeZone(String serverTimeZone) {
-        this.serverTimeZone = serverTimeZone;
     }
 }

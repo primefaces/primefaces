@@ -55,9 +55,7 @@
                             start="#{editServerTimelineView.start}"
                             end="#{editServerTimelineView.end}"
                             editable="true" editableTime="#{editServerTimelineView.editableTime}"
-                            editableOverrideItems="true" minHeight="200" widgetVar="timelineWdgt"
-                            timeZone="#{editServerTimelineView.serverTimeZone}"
-                            clientTimeZone="#{editServerTimelineView.serverTimeZone}">
+                            editableOverrideItems="true" minHeight="200" widgetVar="timelineWdgt">
                     <p:ajax event="changed" update="@none" listener="#{editServerTimelineView.onChange}"/>
                     <p:ajax event="edit" update="detailsBookingInner"
                             listener="#{editServerTimelineView.onEdit}"

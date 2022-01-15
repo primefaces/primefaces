@@ -32,7 +32,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Named("limitTimelineRangeView")
 @ViewScoped
@@ -44,8 +43,6 @@ public class LimitTimelineRangeView implements Serializable {
     private LocalDateTime max;
     private long zoomMin;
     private long zoomMax;
-
-    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     public void init() {
@@ -85,13 +82,5 @@ public class LimitTimelineRangeView implements Serializable {
 
     public long getZoomMax() {
         return zoomMax;
-    }
-
-    public String getServerTimeZone() {
-        return serverTimeZone;
-    }
-
-    public void setServerTimeZone(String serverTimeZone) {
-        this.serverTimeZone = serverTimeZone;
     }
 }

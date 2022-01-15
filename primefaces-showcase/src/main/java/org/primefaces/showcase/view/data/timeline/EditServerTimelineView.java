@@ -36,7 +36,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneId;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.showcase.domain.Booking;
@@ -52,7 +51,6 @@ public class EditServerTimelineView implements Serializable {
     private LocalDateTime start;
     private LocalDateTime end;
     private boolean editableTime = true;
-    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     protected void initialize() {
@@ -233,13 +231,5 @@ public class EditServerTimelineView implements Serializable {
         else {
             return "(room " + room + ")";
         }
-    }
-
-    public String getServerTimeZone() {
-        return serverTimeZone;
-    }
-
-    public void setServerTimeZone(String serverTimeZone) {
-        this.serverTimeZone = serverTimeZone;
     }
 }

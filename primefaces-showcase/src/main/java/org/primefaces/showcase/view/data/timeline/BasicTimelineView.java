@@ -34,7 +34,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 @Named("basicTimelineView")
 @ViewScoped
@@ -49,7 +48,6 @@ public class BasicTimelineView implements Serializable {
     private String eventStyle = "box";
     private boolean showCurrentTime = true;
     private boolean showNavigation = false;
-    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     protected void initialize() {
@@ -137,13 +135,5 @@ public class BasicTimelineView implements Serializable {
 
     public void setShowNavigation(boolean showNavigation) {
         this.showNavigation = showNavigation;
-    }
-
-    public String getServerTimeZone() {
-        return serverTimeZone;
-    }
-
-    public void setServerTimeZone(String serverTimeZone) {
-        this.serverTimeZone = serverTimeZone;
     }
 }

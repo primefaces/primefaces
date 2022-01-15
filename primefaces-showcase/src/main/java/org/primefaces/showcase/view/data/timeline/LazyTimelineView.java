@@ -25,7 +25,6 @@ package org.primefaces.showcase.view.data.timeline;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.PrimitiveIterator;
 import java.util.Random;
 
@@ -46,8 +45,6 @@ public class LazyTimelineView implements Serializable {
 
     private float preloadFactor = 0;
     private long zoomMax;
-
-    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     protected void initialize() {
@@ -129,13 +126,5 @@ public class LazyTimelineView implements Serializable {
 
     public long getZoomMax() {
         return zoomMax;
-    }
-
-    public String getServerTimeZone() {
-        return serverTimeZone;
-    }
-
-    public void setServerTimeZone(String serverTimeZone) {
-        this.serverTimeZone = serverTimeZone;
     }
 }

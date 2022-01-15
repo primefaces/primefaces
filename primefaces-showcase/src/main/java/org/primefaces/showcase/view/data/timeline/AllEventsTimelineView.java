@@ -25,7 +25,6 @@ package org.primefaces.showcase.view.data.timeline;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import javax.annotation.PostConstruct;
@@ -48,7 +47,6 @@ public class AllEventsTimelineView implements Serializable {
     private TimelineModel<String, ?> model;
     private LocalDateTime start;
     private LocalDateTime end;
-    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     public void init() {
@@ -170,13 +168,5 @@ public class AllEventsTimelineView implements Serializable {
 
     public LocalDateTime getEnd() {
         return end;
-    }
-
-    public String getServerTimeZone() {
-        return serverTimeZone;
-    }
-
-    public void setServerTimeZone(String serverTimeZone) {
-        this.serverTimeZone = serverTimeZone;
     }
 }
