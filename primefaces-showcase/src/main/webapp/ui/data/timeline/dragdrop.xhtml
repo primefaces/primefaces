@@ -56,7 +56,9 @@
                 <p:timeline id="timeline" value="#{dndTimelineView.model}" var="event" editable="true" eventMargin="10"
                     eventMarginAxis="0" minHeight="400" start="#{dndTimelineView.start}" end="#{dndTimelineView.end}"
                     style="margin-left:135px;" dropActiveStyleClass="ui-state-highlight"
-                    dropHoverStyleClass="ui-state-hover">
+                    dropHoverStyleClass="ui-state-hover"
+                    timeZone="#{dndTimelineView.serverTimeZone}"
+                    clientTimeZone="#{dndTimelineView.serverTimeZone}">
                     <p:ajax event="drop" listener="#{dndTimelineView.onDrop}" global="false" update="eventsList" />
 
                     <h:panelGrid columns="1">

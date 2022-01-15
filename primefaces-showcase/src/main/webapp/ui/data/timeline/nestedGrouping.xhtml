@@ -50,7 +50,9 @@
 
                 <p:timeline id="timeline" value="#{nestedGroupingTimelineView.model}" var="order" varGroup="truck"
                             editable="true" eventMargin="0" eventMarginAxis="0" stackEvents="false"
-                            orientationAxis="top" widgetVar="timelineWdgt">
+                            orientationAxis="top" widgetVar="timelineWdgt"
+                            timeZone="#{nestedGroupingTimelineView.serverTimeZone}"
+                            clientTimeZone="#{nestedGroupingTimelineView.serverTimeZone}">
                     <p:ajax event="changed" update="@none" listener="#{nestedGroupingTimelineView.onChange}"/>
                     <p:ajax event="delete" update="@none" listener="#{nestedGroupingTimelineView.onDelete}"/>
                     <p:ajax event="add" update="@none" onstart="PF('timelineWdgt').cancelAdd()"/>

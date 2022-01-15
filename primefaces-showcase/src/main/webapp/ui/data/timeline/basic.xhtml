@@ -29,7 +29,9 @@
                     moveable="#{basicTimelineView.moveable}"
                     stackEvents="#{basicTimelineView.stackEvents}"
                     eventStyle="#{basicTimelineView.eventStyle}"
-                    showCurrentTime="#{basicTimelineView.showCurrentTime}">
+                    showCurrentTime="#{basicTimelineView.showCurrentTime}"
+                    timeZone="#{basicTimelineView.serverTimeZone}"
+                    clientTimeZone="#{basicTimelineView.serverTimeZone}">
 
                     <p:ajax event="select" listener="#{basicTimelineView.onSelect}" />
 

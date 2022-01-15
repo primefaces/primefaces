@@ -29,7 +29,9 @@
                 max="#{limitTimelineRangeView.max}" 
                 zoomMin="#{limitTimelineRangeView.zoomMin}"
                 zoomMax="#{limitTimelineRangeView.zoomMax}" 
-                height="180px" />
+                height="180px"
+                timeZone="#{limitTimelineRangeView.serverTimeZone}"
+                clientTimeZone="#{limitTimelineRangeView.serverTimeZone}"/>
         </h:form>
     </ui:define>
 

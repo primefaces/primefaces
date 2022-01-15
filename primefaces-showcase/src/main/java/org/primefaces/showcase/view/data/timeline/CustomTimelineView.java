@@ -32,6 +32,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Named("customTimelineView")
 @ViewScoped
@@ -40,6 +41,7 @@ public class CustomTimelineView implements Serializable {
     private TimelineModel<String, ?> model;
     private LocalDateTime start;
     private LocalDateTime end;
+    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     public void init() {
@@ -88,5 +90,13 @@ public class CustomTimelineView implements Serializable {
 
     public LocalDateTime getEnd() {
         return end;
+    }
+
+    public String getServerTimeZone() {
+        return serverTimeZone;
+    }
+
+    public void setServerTimeZone(String serverTimeZone) {
+        this.serverTimeZone = serverTimeZone;
     }
 }

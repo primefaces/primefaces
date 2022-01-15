@@ -36,6 +36,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Named("linkedTimelinesView")
 @ViewScoped
@@ -44,6 +45,7 @@ public class LinkedTimelinesView implements Serializable {
     private TimelineModel<Task, ?> modelFirst;  // model of the first timeline
     private TimelineModel<String, ?> modelSecond; // model of the second timeline
     private boolean aSelected;         // flag if the project A is selected (for test of select() call on the 2. model)
+    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     public void init() {
@@ -123,6 +125,14 @@ public class LinkedTimelinesView implements Serializable {
 
     public TimelineModel<String, ?> getModelSecond() {
         return modelSecond;
+    }
+
+    public String getServerTimeZone() {
+        return serverTimeZone;
+    }
+
+    public void setServerTimeZone(String serverTimeZone) {
+        this.serverTimeZone = serverTimeZone;
     }
 
     public class Task implements Serializable {

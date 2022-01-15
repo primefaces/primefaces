@@ -37,6 +37,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.*;
 
 import org.primefaces.PrimeFaces;
@@ -50,6 +51,7 @@ public class NestedGroupingTimelineView implements Serializable {
     private TimelineEvent<Order> event; // current changed event
     private List<TimelineEvent<Order>> overlappedOrders; // all overlapped orders (events) to the changed order (event)
     private List<TimelineEvent<Order>> ordersToMerge; // selected orders (events) in the dialog which should be merged
+    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     protected void initialize() {
@@ -187,4 +189,11 @@ public class NestedGroupingTimelineView implements Serializable {
         this.ordersToMerge = ordersToMerge;
     }
 
+    public String getServerTimeZone() {
+        return serverTimeZone;
+    }
+
+    public void setServerTimeZone(String serverTimeZone) {
+        this.serverTimeZone = serverTimeZone;
+    }
 }

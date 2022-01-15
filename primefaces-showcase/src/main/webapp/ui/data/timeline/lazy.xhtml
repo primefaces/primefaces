@@ -43,7 +43,9 @@
 
                 <p:timeline id="timeline" value="#{lazyTimelineView.model}"
                             preloadFactor="#{lazyTimelineView.preloadFactor}"
-                            zoomMax="#{lazyTimelineView.zoomMax}" minHeight="170">
+                            zoomMax="#{lazyTimelineView.zoomMax}" minHeight="170"
+                            timeZone="#{lazyTimelineView.serverTimeZone}"
+                            clientTimeZone="#{lazyTimelineView.serverTimeZone}">
                     <p:ajax event="lazyload" update="@none" listener="#{lazyTimelineView.onLazyLoad}"
                             onstart="$('#loadingText').css('visibility', 'visible')"
                             oncomplete="$('#loadingText').css('visibility', 'hidden')"/>

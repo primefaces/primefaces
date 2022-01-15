@@ -36,6 +36,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +53,7 @@ public class GroupingTimelineView implements Serializable {
     private TimelineEvent<Order> event; // current changed event
     private List<TimelineEvent<Order>> overlappedOrders; // all overlapped orders (events) to the changed order (event)
     private List<TimelineEvent<Order>> ordersToMerge; // selected orders (events) in the dialog which should be merged
+    private String serverTimeZone = ZoneId.systemDefault().toString();
 
     @PostConstruct
     protected void initialize() {
@@ -166,6 +168,14 @@ public class GroupingTimelineView implements Serializable {
 
     public void setOrdersToMerge(List<TimelineEvent<Order>> ordersToMerge) {
         this.ordersToMerge = ordersToMerge;
+    }
+
+    public String getServerTimeZone() {
+        return serverTimeZone;
+    }
+
+    public void setServerTimeZone(String serverTimeZone) {
+        this.serverTimeZone = serverTimeZone;
     }
 
     public static class Truck implements java.io.Serializable {
