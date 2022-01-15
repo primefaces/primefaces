@@ -83,4 +83,5 @@ public class LimitTimelineRangeView implements Serializable {
     public long getZoomMax() {
         return zoomMax;
     }
+
 }

@@ -186,4 +186,5 @@ public class NestedGroupingTimelineView implements Serializable {
     public void setOrdersToMerge(List<TimelineEvent<Order>> ordersToMerge) {
         this.ordersToMerge = ordersToMerge;
     }
+
 }
