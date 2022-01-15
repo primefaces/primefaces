@@ -13,6 +13,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by its menu items.
 * Printer: added `configuration` attribute for passing custom JSON options to PrintJS.
+* SelectOneRadio: improved accessibility on custom layout via `custom` facet.
 * SplitButton
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
