@@ -119,6 +119,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
+        renderDynamicPassThruAttributes(context, acco);
+
         encodeTabs(context, acco);
 
         encodeStateHolder(context, acco);
