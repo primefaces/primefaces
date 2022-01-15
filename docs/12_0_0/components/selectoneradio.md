@@ -78,7 +78,8 @@ that in custom mode, selectOneRadio itself does not render any output.
 ```
 
 RadioButton’s for attribute should refer to a selectOneRadio component and itemIndex points to the
-index of the selectItem.
+index of the selectItem. When using custom layout option, selectOneRadio component should be
+placed above any radioButton that points to the selectOneRadio.
 
 ### Facet
 
@@ -107,8 +108,7 @@ This is implemented by setting adding custom components to a facet named `custom
 ```
 
 RadioButton’s for attribute should refer to a selectOneRadio component and itemIndex points to the
-index of the selectItem. When using custom layout option, selectOneRadio component should be
-placed above any radioButton that points to the selectOneRadio.
+index of the selectItem.
 
 For the better accessibility support, you might want to wrap each custom radio button in an element
 with a `role="radio"` attribute.
