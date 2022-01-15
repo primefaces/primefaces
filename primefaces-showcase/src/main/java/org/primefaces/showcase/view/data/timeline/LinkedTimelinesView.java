@@ -37,6 +37,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 
 @Named("linkedTimelinesView")
 @ViewScoped
@@ -46,6 +47,9 @@ public class LinkedTimelinesView implements Serializable {
     private TimelineModel<String, ?> modelSecond; // model of the second timeline
     private boolean aSelected;         // flag if the project A is selected (for test of select() call on the 2. model)
     private String serverTimeZone = ZoneId.systemDefault().toString();
+
+    private LocalDateTime start = LocalDate.of(2015, 8, 22).atStartOfDay();
+    private LocalDateTime end = LocalDate.of(2015, 9, 4).atStartOfDay();
 
     @PostConstruct
     public void init() {
@@ -82,6 +86,15 @@ public class LinkedTimelinesView implements Serializable {
                 .startDate(LocalDate.of(2015, 8, 31))
                 .endDate(LocalDate.of(2015, 9, 3))
                 .build());
+
+        // duplicate events with 6 month-shift to check for potential daylight-saving-issues
+        new ArrayList<TimelineEvent<Task>>(modelFirst.getEvents()).forEach(e -> {
+            modelFirst.add(TimelineEvent.<Task>builder()
+                    .data(e.getData())
+                    .startDate(e.getStartDate().minusMonths(6))
+                    .endDate(e.getEndDate() == null ? null : e.getEndDate().minusMonths(6))
+                    .build());
+        });
     }
 
     private void createSecondTimeline() {
@@ -158,5 +171,22 @@ public class LinkedTimelinesView implements Serializable {
         public boolean isPeriod() {
             return period;
         }
+    }
+
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 }

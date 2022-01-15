@@ -60,7 +60,8 @@
                 <p:timeline id="timelineFirst" value="#{linkedTimelinesView.modelFirst}" var="task"
                             height="250px" widgetVar="timelineFirstWdgt"
                             timeZone="#{linkedTimelinesView.serverTimeZone}"
-                            clientTimeZone="#{linkedTimelinesView.serverTimeZone}">
+                            clientTimeZone="#{linkedTimelinesView.serverTimeZone}"
+                            start="#{linkedTimelinesView.start}" end="#{linkedTimelinesView.end}">
                     <p:ajax event="rangechange" process="@none" onstart="onrangechange1(); return false;"/>
                     <p:ajax event="select" listener="#{linkedTimelinesView.onSelect}"/>
 
