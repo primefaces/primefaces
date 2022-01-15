@@ -65,20 +65,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
         String layout = radio.getLayout();
-        UIComponent customFacet = radio.getFacet("custom");
-        boolean shouldRenderCustomFacet = ComponentUtils.shouldRenderFacet(customFacet);
         if (LangUtils.isEmpty(layout)) {
-            layout = shouldRenderCustomFacet ? "custom" : "lineDirection";
+            layout = ComponentUtils.shouldRenderFacet(radio.getFacet("custom")) ? "custom" : "lineDirection";
         }
         boolean custom = "custom".equals(layout);
 
         if (custom) {
-            if (shouldRenderCustomFacet) {
-                encodeCustomLayout(context, radio);
-            }
-            else {
-                throw new FacesException("Custom layout requires a facet named 'custom'");
-            }
+            encodeCustomLayout(context, radio);
         }
         else if ("responsive".equals(layout)) {
             encodeResponsiveLayout(context, radio);
@@ -216,32 +209,44 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String style = radio.getStyle();
-        String styleClass = radio.getStyleClass();
-        String labelledBy = radio.getLabel();
-        writer.startElement("span", radio);
-        writer.writeAttribute("id", radio.getClientId(context), "id");
-        writer.writeAttribute("role", "radiogroup", null);
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, "label");
-        }
-        if (style != null) {
-            writer.writeAttribute("style", style, "style");
-        }
-        if (styleClass != null) {
-            writer.writeAttribute("class", styleClass, "styleClass");
-        }
+        UIComponent customFacet = radio.getFacet("custom");
+        if (ComponentUtils.shouldRenderFacet(customFacet)) {
+            ResponseWriter writer = context.getResponseWriter();
+            String style = radio.getStyle();
+            String styleClass = getStyleClassBuilder(context)
+                    .add(radio.getStyleClass())
+                    .add(SelectOneRadio.STYLE_CLASS)
+                    .build();
+            String labelledBy = radio.getLabel();
+            writer.startElement("span", radio);
+            writer.writeAttribute("id", radio.getClientId(context), "id");
+            writer.writeAttribute("role", "radiogroup", null);
+            if (labelledBy != null) {
+                writer.writeAttribute("aria-labelledby", labelledBy, "label");
+            }
+            if (style != null) {
+                writer.writeAttribute("style", style, "style");
+            }
+            if (styleClass != null) {
+                writer.writeAttribute("class", styleClass, "styleClass");
+            }
 
-        encodeCustomLayoutHelper(context, radio);
-        radio.getFacet("custom").encodeAll(context);
+            encodeCustomLayoutHelper(context, radio, false);
+            customFacet.encodeAll(context);
 
-        writer.endElement("span");
+            writer.endElement("span");
+        }
+        else {
+            encodeCustomLayoutHelper(context, radio, true);
+        }
     }
 
-    protected void encodeCustomLayoutHelper(FacesContext context, SelectOneRadio radio) throws IOException {
+    protected void encodeCustomLayoutHelper(FacesContext context, SelectOneRadio radio, boolean addId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", radio);
+        if (addId) {
+            writer.writeAttribute("id", radio.getClientId(context), "id");
+        }
         writer.writeAttribute("class", "ui-helper-hidden", "styleClass");
 
         Converter converter = radio.getConverter();

@@ -51,14 +51,43 @@ SelectOneRadio usage is same as the standard one.
 ## Custom Layout
 Standard selectOneRadio component only supports horizontal and vertical rendering of the radio
 buttons with a strict table markup. PrimeFaces SelectOneRadio on the other hand provides a
-flexible layout option so that radio buttons can be located anywhere on the page. This is
-implemented by setting adding custom components to a facet named `custom`.
+flexible layout option so that radio buttons can be located anywhere on the page.
+
+There are two ways of using a custom layout. Referenced and via a facet named `custom`.
+Note that the facet variant offers better accessibility.
+
+### Referenced
+This is implemented by setting layout option to custom and with standalone radioButton components. Note
+that in custom mode, selectOneRadio itself does not render any output.
+
+```xhtml
+<p:selectOneRadio id="customRadio" value="#{formBean.option}" layout="custom">
+    <f:selectItem itemLabel="Option 1" itemValue="1" />
+    <f:selectItem itemLabel="Option 2" itemValue="2" />
+</p:selectOneRadio>
+```
+```xhtml
+<h:panelGrid columns="3">
+    <p:radioButton id="opt1" for="customRadio" itemIndex="0"/>
+    <h:outputLabel for="opt1" value="Option 1" />
+    <p:spinner />
+    <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>
+    <h:outputLabel for="opt2" value="Option 2" />
+    <p:inputText />
+</h:panelGrid>
+```
+
+RadioButton’s for attribute should refer to a selectOneRadio component and itemIndex points to the
+index of the selectItem.
+
+### Facet
+
+This is implemented by setting adding custom components to a facet named `custom`.
 
 ```xhtml
 <p:selectOneRadio id="customRadio" value="#{radioView.color}" label="Color">
     <f:selectItem itemLabel="Red" itemValue="Red"/>
     <f:selectItem itemLabel="Green" itemValue="Green"/>
-    <f:selectItem itemLabel="Blue" itemValue="Blue"/>
 
     <f:facet name="custom">
         <div class="p-field-radiobutton" role="radio">
@@ -73,15 +102,10 @@ implemented by setting adding custom components to a facet named `custom`.
                 <span class="legend" style="background:green"/> Green
             </p:outputLabel>
         </div>
-        <div class="p-field-radiobutton" role="radio">
-            <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>
-            <p:outputLabel for="opt3">
-                <span class="legend" style="background:blue"/> Blue
-            </p:outputLabel>
-        </div>
     </f:facet>
 </p:selectOneRadio>
 ```
+
 RadioButton’s for attribute should refer to a selectOneRadio component and itemIndex points to the
 index of the selectItem. When using custom layout option, selectOneRadio component should be
 placed above any radioButton that points to the selectOneRadio.

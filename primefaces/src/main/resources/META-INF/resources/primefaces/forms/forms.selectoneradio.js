@@ -3,6 +3,7 @@
  * 
  * SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
  * 
+ * @prop {boolean} facet Whether custom is used with a facet.
  * @prop {JQuery} originalInputs The DOM elements for the hidden radio input fields of type checkbox storing the value
  * of this widget.
  * @prop {JQuery} enabledInputs The (cloned) DOM elements for the non-disabled hidden input fields of type radio storing
@@ -34,14 +35,17 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
         //custom layout
         if(this.cfg.custom) {
-            this.originalInputs = this.jq.find(':radio');
+            this.facet = this.jq.attr('role') === 'radiogroup';
+            this.originalInputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio');
             this.inputs = $('input:radio[name="' + this.id + '"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();
 
             //labels
-            for(var i=0; i < this.inputs.length; i++) {
-                this.labels = this.labels.add('label[for="' + this.inputs.eq(i).attr('id') + '"]');
+            var base = this.facet ? this.inputs : this.outputs;
+            for(var i=0; i < base.length; i++) {
+                this.labels = this.labels.add('label[for="' +
+                        (this.facet ? base.eq(i).attr('id') : base.eq(i).parent().attr('id')) + '"]');
             }
 
             //update radio state
