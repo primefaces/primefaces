@@ -372,8 +372,10 @@ public class Tree extends TreeBase {
         newNode.setSelectable(node.isSelectable());
         newNode.setExpanded(node.isExpanded());
 
-        for (TreeNode childNode : node.getChildren()) {
-            newNode.getChildren().add(createCopyOfTreeNode(childNode));
+        if (node.getChildCount() > 0) {
+            for (TreeNode childNode : node.getChildren()) {
+                newNode.getChildren().add(createCopyOfTreeNode(childNode));
+            }
         }
 
         return newNode;

@@ -43,22 +43,25 @@ public class DataTable027Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
-
         // Assert
         Assertions.assertEquals(page.beforeCount.getText(), "0");
         Assertions.assertEquals(page.aferCount.getText(), "75");
         assertCss(dataTable, "ui-datatable", "ui-widget", "ui-datatable-scrollable");
-        Assertions.assertNotNull(dataTable.findElement(By.cssSelector(".ui-datatable-scrollable-body > .ui-datatable-virtualscroll-wrapper > .ui-datatable-virtualscroll-table")), "Datatable virtual scrolling CSS has changed!");
+        Assertions.assertNotNull(
+                dataTable.findElement(
+                    By.cssSelector(".ui-datatable-scrollable-body > .ui-datatable-virtualscroll-wrapper > .ui-datatable-virtualscroll-table")),
+                "Datatable virtual scrolling CSS has changed!");
         assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 
         @FindBy(id = "form:lblBefore")
         OutputLabel beforeCount;
-        
+
         @FindBy(id = "form:lblAfter")
         OutputLabel aferCount;
 

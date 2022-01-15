@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.33</version>
         </dependency>
 
         <!-- GraphicImage -->
@@ -273,7 +273,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.1</version>
             </extension>
         </extensions>
     </build>

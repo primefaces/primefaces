@@ -62,24 +62,29 @@ public class TabViewRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         TabView tabView = (TabView) component;
         String clientId = tabView.getClientId(context);
-        String var = tabView.getVar();
 
         if (tabView.isContentLoadRequest(context)) {
-            Tab tabToLoad = null;
+            if (tabView.isRepeating()) {
+                int index = Integer.parseInt(params.get(clientId + "_tabindex"));
+                tabView.setIndex(index);
 
-            if (var == null) {
-                String tabClientId = params.get(clientId + "_newTab");
-                tabToLoad = tabView.findTab(tabClientId);
-
+                Tab tabToLoad = tabView.getDynamicTab();
                 tabToLoad.encodeAll(context);
-                tabToLoad.setLoaded(true);
+
+                if (tabView.isDynamic()) {
+                    tabToLoad.setLoaded(index, true);
+                }
+
+                tabView.setIndex(-1);
             }
             else {
-                int tabindex = Integer.parseInt(params.get(clientId + "_tabindex"));
-                tabView.setIndex(tabindex);
-                tabToLoad = (Tab) tabView.getChildren().get(0);
+                String tabClientId = params.get(clientId + "_newTab");
+                Tab tabToLoad = tabView.findTab(tabClientId);
                 tabToLoad.encodeAll(context);
-                tabView.setIndex(-1);
+
+                if (tabView.isDynamic()) {
+                    tabToLoad.setLoaded(true);
+                }
             }
         }
         else {
@@ -270,13 +275,14 @@ public class TabViewRenderer extends CoreRenderer {
     protected void encodeContents(FacesContext context, TabView tabView) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean dynamic = tabView.isDynamic();
+        boolean repeating = tabView.isRepeating();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
         tabView.forEachTab((tab, i, active) -> {
             try {
-                encodeTabContent(context, tab, i, active, dynamic);
+                encodeTabContent(context, tab, i, active, dynamic, repeating);
             }
             catch (IOException ex) {
                 throw new FacesException(ex);
@@ -286,7 +292,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic)
+    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic, boolean repeating)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
@@ -301,7 +307,13 @@ public class TabViewRenderer extends CoreRenderer {
         if (dynamic) {
             if (active) {
                 tab.encodeAll(context);
-                tab.setLoaded(true);
+
+                if (repeating) {
+                    tab.setLoaded(index, true);
+                }
+                else {
+                    tab.setLoaded(true);
+                }
             }
         }
         else {

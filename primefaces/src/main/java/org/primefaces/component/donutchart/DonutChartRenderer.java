@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.charts.ChartRenderer;
 import org.primefaces.model.charts.donut.DonutChartOptions;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DonutChartRenderer extends ChartRenderer {
@@ -73,8 +74,8 @@ public class DonutChartRenderer extends ChartRenderer {
         writer.write(",animateScale:" + donutOptions.isAnimateScale());
         writer.write("}");
 
-        if (donutOptions.getCutoutPercentage() != null) {
-            writer.write(",cutoutPercentage:" + donutOptions.getCutoutPercentage());
+        if (donutOptions.getCutout() != null) {
+            ChartUtils.writeDataValue(writer, "cutout", donutOptions.getCutout(), true);
         }
 
         if (donutOptions.getRotation() != null) {

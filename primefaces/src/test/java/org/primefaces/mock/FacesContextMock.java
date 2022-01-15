@@ -46,7 +46,7 @@ import javax.faces.render.RenderKit;
 
 public class FacesContextMock extends FacesContext {
 
-    private ELContext ELcontext = new SimpleContext();
+    private ELContext elContext = new SimpleContext();
     private ExternalContext externalContext = new ExternalContextMock();
     private Application application = new ApplicationMock();
     private PartialViewContext partialViewContext = new PartialViewContextMock();
@@ -95,7 +95,7 @@ public class FacesContextMock extends FacesContext {
         if (!messages.containsKey(clientId)) {
             messages.put(clientId, new ArrayList<>());
         }
-        
+
         messages.get(clientId).add(message);
     }
 
@@ -130,7 +130,7 @@ public class FacesContextMock extends FacesContext {
         for (List<FacesMessage> msgs : messages.values()) {
             all.addAll(msgs);
         }
-        
+
         return all.iterator();
     }
 
@@ -211,6 +211,6 @@ public class FacesContextMock extends FacesContext {
 
     @Override
     public ELContext getELContext() {
-        return ELcontext;
+        return elContext;
     }
 }

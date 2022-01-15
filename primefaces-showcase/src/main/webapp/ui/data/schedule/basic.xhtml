@@ -21,7 +21,8 @@
             <h:form>
                 <p:growl id="messages" showDetail="true"/>
 
-                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule">
+                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule"
+                            timeZone="#{scheduleJava8View.serverTimeZone}" clientTimeZone="#{scheduleJava8View.serverTimeZone}">
                     <p:ajax event="dateSelect" listener="#{scheduleJava8View.onDateSelect}" update="eventDetails"
                             oncomplete="PF('eventDialog').show();"/>
                     <p:ajax event="eventSelect" listener="#{scheduleJava8View.onEventSelect}" update="eventDetails"

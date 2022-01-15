@@ -48,7 +48,9 @@ import org.mockito.invocation.InvocationOnMock;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 public class SelectRendererTest {
+
     private static class ErrorString {
+
         private String value;
 
         public ErrorString(String value) {
@@ -90,6 +92,7 @@ public class SelectRendererTest {
     }
 
     private static class KvPair {
+
         private String key;
         private String value;
 
@@ -141,6 +144,7 @@ public class SelectRendererTest {
     }
 
     private static class KvPairConverter implements Converter<KvPair> {
+
         @Override
         public KvPair getAsObject(FacesContext ctx, UIComponent comp, String value) {
             if (value == null || value.length() == 0) {
@@ -197,13 +201,13 @@ public class SelectRendererTest {
         KvPair kv4 = new KvPair("foo", "bar");
         KvPair kv5 = new KvPair("baz", "bom");
 
-        assertFalse(renderer.isSelected(context, component, kv2, new KvPair[] {}, converter));
-        assertFalse(renderer.isSelected(context, component, kv3, new KvPair[] { kv1 }, converter));
-        assertFalse(renderer.isSelected(context, component, kv4, new KvPair[] { kv1 }, converter));
-        assertTrue(renderer.isSelected(context, component, kv1, new KvPair[] { kv1 }, converter));
-        assertTrue(renderer.isSelected(context, component, kv1, new KvPair[] { kv1, kv2 }, converter));
-        assertTrue(renderer.isSelected(context, component, kv2, new KvPair[] { kv1, kv2 }, converter));
-        assertTrue(renderer.isSelected(context, component, kv5, new KvPair[] { kv1, kv2, kv3, kv4, kv5 }, converter));
+        assertFalse(renderer.isSelected(context, component, kv2, new KvPair[]{}, converter));
+        assertFalse(renderer.isSelected(context, component, kv3, new KvPair[]{kv1}, converter));
+        assertFalse(renderer.isSelected(context, component, kv4, new KvPair[]{kv1}, converter));
+        assertTrue(renderer.isSelected(context, component, kv1, new KvPair[]{kv1}, converter));
+        assertTrue(renderer.isSelected(context, component, kv1, new KvPair[]{kv1, kv2}, converter));
+        assertTrue(renderer.isSelected(context, component, kv2, new KvPair[]{kv1, kv2}, converter));
+        assertTrue(renderer.isSelected(context, component, kv5, new KvPair[]{kv1, kv2, kv3, kv4, kv5}, converter));
     }
 
     @Test
@@ -220,55 +224,55 @@ public class SelectRendererTest {
         KvPair kv1 = new KvPair("foo", "bar");
         KvPair kv2 = new KvPair("baz", "bom");
 
-        assertTrue(renderer.isSelected(context, component, kv1.toString(), new KvPair[] { kv1 }, converter));
-        assertFalse(renderer.isSelected(context, component, kv1.toString(), new KvPair[] { kv2 }, converter));
+        assertTrue(renderer.isSelected(context, component, kv1.toString(), new KvPair[]{kv1}, converter));
+        assertFalse(renderer.isSelected(context, component, kv1.toString(), new KvPair[]{kv2}, converter));
     }
 
     @Test
     public void isSelected_converter_stringValue_stringArray() {
-        assertFalse(renderer.isSelected(context, component, "foo", new String[] {}, converter));
-        assertFalse(renderer.isSelected(context, component, "foo", new String[] { "" }, converter));
-        assertFalse(renderer.isSelected(context, component, "foo", new String[] { "bar" }, converter));
-        assertTrue(renderer.isSelected(context, component, "", new String[] { "" }, converter));
-        assertTrue(renderer.isSelected(context, component, "foo", new String[] { "foo" }, converter));
-        assertTrue(renderer.isSelected(context, component, "foo", new String[] { "bar", "foo" }, converter));
+        assertFalse(renderer.isSelected(context, component, "foo", new String[]{}, converter));
+        assertFalse(renderer.isSelected(context, component, "foo", new String[]{""}, converter));
+        assertFalse(renderer.isSelected(context, component, "foo", new String[]{"bar"}, converter));
+        assertTrue(renderer.isSelected(context, component, "", new String[]{""}, converter));
+        assertTrue(renderer.isSelected(context, component, "foo", new String[]{"foo"}, converter));
+        assertTrue(renderer.isSelected(context, component, "foo", new String[]{"bar", "foo"}, converter));
     }
 
     @Test
     public void isSelected_noConverter() {
-        assertFalse(renderer.isSelected(context, component, "foo", new String[] {}, null));
-        assertFalse(renderer.isSelected(context, component, "foo", new String[] { "" }, null));
-        assertFalse(renderer.isSelected(context, component, "foo", new String[] { "bar" }, null));
-        assertTrue(renderer.isSelected(context, component, "", new String[] { "" }, null));
-        assertTrue(renderer.isSelected(context, component, "foo", new String[] { "foo" }, null));
-        assertTrue(renderer.isSelected(context, component, "foo", new String[] { "bar", "foo" }, null));
+        assertFalse(renderer.isSelected(context, component, "foo", new String[]{}, null));
+        assertFalse(renderer.isSelected(context, component, "foo", new String[]{""}, null));
+        assertFalse(renderer.isSelected(context, component, "foo", new String[]{"bar"}, null));
+        assertTrue(renderer.isSelected(context, component, "", new String[]{""}, null));
+        assertTrue(renderer.isSelected(context, component, "foo", new String[]{"foo"}, null));
+        assertTrue(renderer.isSelected(context, component, "foo", new String[]{"bar", "foo"}, null));
     }
 
     @Test
     public void isSelected_noConverter_exceptionDuringCoerce() {
         assertTrue(renderer.isSelected(context, component, new ErrorString("foo"),
-                new ErrorString[] { new ErrorString("foofoo") }, null));
+                new ErrorString[]{new ErrorString("foofoo")}, null));
         assertTrue(renderer.isSelected(context, component, new ErrorString("err"),
-                new ErrorString[] { new ErrorString("err") }, null));
+                new ErrorString[]{new ErrorString("err")}, null));
         assertFalse(renderer.isSelected(context, component, new ErrorString("er"),
-                new ErrorString[] { new ErrorString("er") }, null));
+                new ErrorString[]{new ErrorString("er")}, null));
     }
 
     @Test
     public void isSelected_nullArguments() {
         assertTrue(renderer.isSelected(context, component, null, null, null));
-        assertFalse(renderer.isSelected(context, component, null, new String[] { "" }, null));
+        assertFalse(renderer.isSelected(context, component, null, new String[]{""}, null));
         assertFalse(renderer.isSelected(context, component, "", null, null));
-        assertFalse(renderer.isSelected(context, component, "", new String[] { null }, null));
-        assertTrue(renderer.isSelected(context, component, null, new String[] { null }, null));
+        assertFalse(renderer.isSelected(context, component, "", new String[]{null}, null));
+        assertTrue(renderer.isSelected(context, component, null, new String[]{null}, null));
         assertFalse(renderer.isSelected(context, component, "", null, null));
         assertFalse(renderer.isSelected(context, component, new KvPair("", ""), null, null));
 
         assertTrue(renderer.isSelected(context, component, null, null, converter));
-        assertFalse(renderer.isSelected(context, component, null, new String[] { "" }, converter));
+        assertFalse(renderer.isSelected(context, component, null, new String[]{""}, converter));
         assertFalse(renderer.isSelected(context, component, "", null, converter));
-        assertFalse(renderer.isSelected(context, component, "", new String[] { null }, converter));
-        assertTrue(renderer.isSelected(context, component, null, new String[] { null }, converter));
+        assertFalse(renderer.isSelected(context, component, "", new String[]{null}, converter));
+        assertTrue(renderer.isSelected(context, component, null, new String[]{null}, converter));
         assertFalse(renderer.isSelected(context, component, "", null, converter));
         assertFalse(renderer.isSelected(context, component, new KvPair("", ""), null, converter));
     }
@@ -276,7 +280,7 @@ public class SelectRendererTest {
     @Test
     public void isSelected_refEqualArguments() {
         String str = "foo";
-        String[] strArr = new String[] { "" };
+        String[] strArr = new String[]{""};
         KvPair kvPair = new KvPair("foo", "bar");
 
         assertTrue(renderer.isSelected(context, component, str, str, null));

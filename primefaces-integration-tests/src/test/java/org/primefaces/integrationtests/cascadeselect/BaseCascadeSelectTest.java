@@ -33,7 +33,8 @@ import org.primefaces.selenium.component.model.Msg;
 
 import java.util.List;
 
-abstract public class BaseCascadeSelectTest extends AbstractPrimePageTest {
+public abstract class BaseCascadeSelectTest extends AbstractPrimePageTest {
+
     protected void assertItems(CascadeSelect cascadeSelect, int leafItemCount) {
         List<WebElement> options = cascadeSelect.getLeafItems();
         // List<String> labels = cascadeSelect.getLabels();

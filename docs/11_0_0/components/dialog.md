@@ -23,38 +23,38 @@ Dialog is a panel component that can overlay other elements on page.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | widgetVar | null | String | Name of the client side widget
-| header | null | String | Text of the header
-| draggable | true | Boolean | Specifies draggability
-| resizable | true | Boolean | Specifies resizability
-| modal | false | Boolean | Enables modality.
-| visible | false | Boolean | When enabled, dialog is visible by default.
-| width | auto | Integer | Width of the dialog
-| height | auto | Integer | Height of the dialog
-| minWidth | 150 | Integer | Minimum width of a resizable dialog.
-| minHeight | 0 | Integer | Minimum height of a resizable dialog.
-| style | null | String | Inline style of the dialog.
-| styleClass | null | String | Style class of the dialog
-| showEffect | null | String | Effect to use when showing the dialog
-| hideEffect | null | String | Effect to use when hiding the dialog
-| position | null | String | Defines where the dialog should be displayed
-| closable | true | Boolean | Defines if close icon should be displayed or not
-| onShow | null | String | Client side callback to execute when dialog is displayed.
-| onHide | null | String | Client side callback to execute when dialog is hidden.
 | appendTo | null | String | Appends the dialog to the element defined by the given search expression.
-| showHeader | true | Boolean | Defines visibility of the header content.
-| footer | null | String | Text of the footer.
-| dynamic | false | Boolean | Enables lazy loading of the content with ajax.
+| blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
 | cache | true | Boolean | Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once.
-| minimizable | false | Boolean | Whether a dialog is minimizable or not.
-| maximizable | false | Boolean | Whether a dialog is maximizable or not.
+| closable | true | Boolean | Defines if close icon should be displayed or not
 | closeOnEscape | false | Boolean | Defines if dialog should close on escape key.
 | dir | ltr | String | Defines text direction, valid values are ltr and rtl.
+| draggable | true | Boolean | Specifies draggability
+| dynamic | false | Boolean | Enables lazy loading of the content with ajax.
+| fitViewport | false | Boolean | Dialog size might exceed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
 | focus | null | String | Defines which component to apply focus by search expression.
-| fitViewport | false | Boolean | Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically adjusts height to fit dialog within the viewport.
-| positionType | fixed | String | Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute).
-| responsive | true | Boolean | In responsive mode, dialog adjusts itself based on screen width.
-| blockScroll | false | Boolean | Whether to block scrolling of the document when sidebar is active.
+| footer | null | String | Text of the footer.
+| header | null | String | Text of the header
+| height | auto | Integer | Height of the dialog
+| hideEffect | null | String | Effect to use when hiding the dialog
+| maximizable | false | Boolean | Whether a dialog is maximizable or not.
+| minHeight | 0 | Integer | Minimum height of a resizable dialog.
+| minWidth | 150 | Integer | Minimum width of a resizable dialog.
+| minimizable | false | Boolean | Whether a dialog is minimizable or not.
+| modal | false | Boolean | Enables modality.
 | my | center | String | Position of the dialog relative to the target.
+| onHide | null | String | Client side callback to execute when dialog is hidden.
+| onShow | null | String | Client side callback to execute when dialog is displayed.
+| position | null | String | Defines where the dialog should be displayed
+| positionType | fixed | String | Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute).
+| resizable | true | Boolean | Specifies resizability
+| responsive | true | Boolean | In responsive mode the dialog adjusts itself based on screen width, browser resizing, and scrolling of the document.
+| showEffect | null | String | Effect to use when showing the dialog
+| showHeader | true | Boolean | Defines visibility of the header content.
+| style | null | String | Inline style of the dialog.
+| styleClass | null | String | Style class of the dialog
+| visible | false | Boolean | When enabled, dialog is visible by default.
+| width | auto | Integer | Width of the dialog
 
 ## Common Mistakes
 - Use `appendTo` with care as the page definition and HTML DOM will be different!

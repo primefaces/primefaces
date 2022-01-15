@@ -253,9 +253,8 @@ public class DataTable extends DataTableBase {
     public String getColumnSelectionMode() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof Column)) {
+            if (child instanceof Column) {
                 String selectionMode = ((Column) child).getSelectionMode();
-
                 if (selectionMode != null) {
                     return selectionMode;
                 }
@@ -1120,6 +1119,7 @@ public class DataTable extends DataTableBase {
      * Recalculates filteredValue after adding, updating or removing rows to/from a filtered DataTable.
      * NOTE: this is only supported for non-lazy DataTables, eg bound to a java.util.List.
      */
+    @Override
     public void filterAndSort() {
         if (isLazy()) {
             return;

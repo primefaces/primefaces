@@ -25,34 +25,34 @@ package org.primefaces.component.effect;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 import org.junit.jupiter.api.Test;
 
 public class EffectBuilderTest {
 
-	@Test
-	public void buildHighlightEffectWithNoOptions() {
-		String effect = new EffectBuilder("highlight", "id", true).atSpeed(1000).build();
+    @Test
+    public void buildHighlightEffectWithNoOptions() {
+        String effect = new EffectBuilder("highlight", "id", true).atSpeed(1000).build();
 
-		assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{},1000);", effect);
-	}
+        assertEquals("$(PrimeFaces.escapeClientId('id')).effect('highlight',{},1000);", effect);
+    }
 
-	@Test
-	public void buildHighlightEffectWithAnOption() {
-		String effect = new EffectBuilder("highlight","id", false).withOption("startcolor", "'#FFFFFF'").atSpeed(5000).build();
+    @Test
+    public void buildHighlightEffectWithAnOption() {
+        String effect = new EffectBuilder("highlight", "id", false).withOption("startcolor", "'#FFFFFF'").atSpeed(5000).build();
 
-		assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true).effect('highlight',{startcolor:'#FFFFFF'},5000);", effect);
-	}
+        assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true).effect('highlight',{startcolor:'#FFFFFF'},5000);", effect);
+    }
 
-	@Test
-	public void buildHighlightEffectWitManyOptions() {
-		String effect = new EffectBuilder("highlight","id", false)
-													.withOption("startcolor", "'#FFFFFF'")
-													.withOption("endcolor", "'#CCCCCC'")
-													.withOption("restorecolor", "'#000000'")
-													.atSpeed(1000)
-													.build();
+    @Test
+    public void buildHighlightEffectWitManyOptions() {
+        String effect = new EffectBuilder("highlight", "id", false)
+                .withOption("startcolor", "'#FFFFFF'")
+                .withOption("endcolor", "'#CCCCCC'")
+                .withOption("restorecolor", "'#000000'")
+                .atSpeed(1000)
+                .build();
 
-		assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true).effect('highlight',{startcolor:'#FFFFFF',endcolor:'#CCCCCC',restorecolor:'#000000'},1000);", effect);
-	}
+        assertEquals("$(PrimeFaces.escapeClientId('id')).stop(true,true)"
+                + ".effect('highlight',{startcolor:'#FFFFFF',endcolor:'#CCCCCC',restorecolor:'#000000'},1000);", effect);
+    }
 }

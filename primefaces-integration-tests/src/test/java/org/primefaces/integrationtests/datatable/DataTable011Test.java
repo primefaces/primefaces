@@ -39,7 +39,8 @@ public class DataTable011Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: sort and delete (button with fixed id) - https://stackoverflow.com/questions/24754118/after-sorting-it-deletes-the-wrong-line-of-primefaces-datatable")
+    @DisplayName("DataTable: sort and delete (button with fixed id) - "
+            + "https://stackoverflow.com/questions/24754118/after-sorting-it-deletes-the-wrong-line-of-primefaces-datatable")
     public void testSortAndDelete(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
@@ -57,7 +58,8 @@ public class DataTable011Test extends AbstractDataTableTest {
 
     @Test
     @Order(2)
-    @DisplayName("DataTable: sort and delete (delete-button get´s object as parameter) - https://stackoverflow.com/questions/24754118/after-sorting-it-deletes-the-wrong-line-of-primefaces-datatable")
+    @DisplayName("DataTable: sort and delete (delete-button get´s object as parameter) - "
+            + "https://stackoverflow.com/questions/24754118/after-sorting-it-deletes-the-wrong-line-of-primefaces-datatable")
     public void testSortAndDeleteV2(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;

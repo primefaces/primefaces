@@ -190,7 +190,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.33</version>
             <scope>test</scope>
         </dependency>
 
@@ -263,6 +263,10 @@
         </dependency>
 
         <!-- add dependencies which get shaded by PrimeFaces so IDE´s like IntelliJ can run und debug multimoduled integration-tests -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>

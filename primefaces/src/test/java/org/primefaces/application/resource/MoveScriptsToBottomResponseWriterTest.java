@@ -24,24 +24,21 @@
 package org.primefaces.application.resource;
 
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
-
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import org.mockito.ArgumentMatchers;
-
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.matches;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+
+import java.io.IOException;
+
+import javax.faces.context.ResponseWriter;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 
 public class MoveScriptsToBottomResponseWriterTest {
 
@@ -168,18 +165,18 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
+        writer.writeAttribute("src", "include", null);
         writer.writeAttribute("async", "true", null);
         writer.writeAttribute("defer", "true", null);
-        writer.writeText("someJS", null);
         writer.endElement("script");
 
         writer.endElement("body");
 
         verify(wrappedWriter).startElement("script", null);
         verify(wrappedWriter).writeAttribute("type", "text/javascript", null);
-        // FIXME we would expect the attributes to be passed through
-        // verify(wrappedWriter).writeAttribute("async", "true", null);
-        // verify(wrappedWriter).writeAttribute("defer", "true", null);
+        verify(wrappedWriter).writeAttribute("src", "include", null);
+        verify(wrappedWriter).writeAttribute("async", "true", null);
+        verify(wrappedWriter).writeAttribute("defer", "true", null);
         verify(wrappedWriter).endElement("script");
     }
 
@@ -215,7 +212,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("script");
 
         writer.startElement("div", null);
-        writer.writeText("text",null);
+        writer.writeText("text", null);
         writer.endElement("div");
 
         writer.endElement("body");
@@ -235,6 +232,7 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         writer.startElement("script", null);
         writer.writeAttribute("src", "include", null);
+        writer.writeAttribute("charset", "UTF-8", null);
         writer.endElement("script");
 
         writer.startElement("script", null);
@@ -247,6 +245,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         Assertions.assertEquals(1, state.getInlines().get("text/javascript").size());
         verify(wrappedWriter, times(2)).startElement("script", null);
         verify(wrappedWriter).writeAttribute("src", "include", null);
+        verify(wrappedWriter).writeAttribute("charset", "UTF-8", null);
         verify(wrappedWriter).write(contains("inline"));
     }
 

@@ -19,28 +19,29 @@ MenuButton displays different commands in a popup menu.
 
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-value | null | String | Label of the button
-style | null | String | Style of the main container element
-styleClass | null | String | Style class of the main container element
-widgetVar | null | String | Name of the client side widget
-model | null | MenuModel | MenuModel instance to create menus programmatically
-disabled | false | Boolean | Disables or enables the button.
-icon | null | String | Icon of the menu button.
-iconPos | left | String | Position of the icon, valid values are left and right.
-title | null | String | Advisory tooltip information.
-appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
-menuStyleClass | null | String | Style class of the overlay menu element.
-ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
-collision | flip | String | For the overlay menu that shows up when the menu button is clicked. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
-maxHeight | null | String | The maximum height of the overlay menu that shows up when the menu button is clicked. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
-autoDisplay | true | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
-delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
-toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
-buttonStyle | null | String | Style of the button
-buttonStyleClass | null | String | Style class of the button
+| id | null | String | Unique identifier of the component.
+| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
+| value | null | String | Label of the button
+| style | null | String | Style of the main container element
+| styleClass | null | String | Style class of the main container element
+| widgetVar | null | String | Name of the client side widget
+| model | null | MenuModel | MenuModel instance to create menus programmatically
+| disabled | false | Boolean | Disables or enables the button.
+| disableOnAjax | false | Boolean | If true, the button will be disabled during Ajax requests triggered by its menu items.
+| icon | null | String | Icon of the menu button.
+| iconPos | left | String | Position of the icon, valid values are left and right.
+| title | null | String | Advisory tooltip information.
+| appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
+| menuStyleClass | null | String | Style class of the overlay menu element.
+| ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
+| collision | flip | String | For the overlay menu that shows up when the menu button is clicked. When the overlay menu overflows the window in some direction, move it to an alternative position. Supported values are flip, fit, flipfit and none. See https://api.jqueryui.com/position/ for more details. Defaults to flip. When you the body of your layout does not scroll, you may also want to set the option maxHeight.
+| maxHeight | null | String | The maximum height of the overlay menu that shows up when the menu button is clicked. May be either a number (such as 200), which is interpreted as a height in pixels. Alternatively, may also be a CSS length such as 90vh or 10em. Useful in case the body of your layout does not scroll, especially in combination with the collision property.
+| autoDisplay | true | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
+| delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
+| toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
+| buttonStyle | null | String | Style of the button
+| buttonStyleClass | null | String | Style class of the button
 
 ## Getting started with the MenuButton
 MenuButton consists of one ore more menuitems. Following menubutton example has three
@@ -70,6 +71,16 @@ If the body of your web page is scrollable, this is not an issue, users can scro
 </p:menuButton>
 ```
 
+## Client Side API
+Widget: `PrimeFaces.widget.MenuButton`
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| show() | - | void | Displays overlay.
+| hide() | - | void | Hides overlay.
+| disable() | - | void | Disables the button.
+| enable() | - | void | Enables the button.
+
 ## Skinning
 MenuButton resides in a main container which _style_ and _styleClass_ attributes apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
@@ -77,10 +88,10 @@ structural style classes;
 
 | Class | Applies |
 | --- | --- |
-.ui-menu | Container element of menu.
-.ui-menu-list | List container
-.ui-menuitem | Each menu item
-.ui-menuitem-link | Anchor element in a link item
-.ui-menuitem-text | Text element in an item
-.ui-button | Button element
-.ui-button-text | Label of button
+| .ui-menu | Container element of menu.
+| .ui-menu-list | List container
+| .ui-menuitem | Each menu item
+| .ui-menuitem-link | Anchor element in a link item
+| .ui-menuitem-text | Text element in an item
+| .ui-button | Button element
+| .ui-button-text | Label of button

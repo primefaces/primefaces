@@ -23,7 +23,6 @@
  */
 package org.primefaces.util;
 
-import java.util.Arrays;
 import javax.faces.component.TransientStateHelper;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -51,7 +50,8 @@ public class ComponentUtilsTest {
 
     @Test
     public void createContentDisposition() {
-        assertEquals("attachment;filename=\"Test%20Spaces.txt\"; filename*=UTF-8''Test%20Spaces.txt", ComponentUtils.createContentDisposition("attachment", "Test Spaces.txt"));
+        assertEquals("attachment;filename=\"Test%20Spaces.txt\"; filename*=UTF-8''Test%20Spaces.txt",
+                ComponentUtils.createContentDisposition("attachment", "Test Spaces.txt"));
     }
 
     @Test

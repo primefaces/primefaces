@@ -168,6 +168,24 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description>When enabled, only visible data would be exported.</description>
+            <name>visibleOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>When enabled, the header will be exported. Default is true</description>
+            <name>exportHeader</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>When enabled, the footer will be exported. Default is true.</description>
+            <name>exportFooter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description>Exports the header and cell content according to the option.</description>
             <name>options</name>
             <required>false</required>
@@ -377,6 +395,12 @@
         <attribute>
             <description>Title of the Print window (default to page title).</description>
             <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Optional JSON configuration values to completely control PrintJS.</description>
+            <name>configuration</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -1872,9 +1896,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
+                <![CDATA[REST-endpoint for fetching autocomplete-suggestions (instead of completeMethod).]]>
             </description>
             <name>completeEndpoint</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[LazyDataModel for fetching autocomplete-suggestions (instead of completeMethod).]]>
+            </description>
+            <name>lazyModel</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Field of lazyModel to apply query to using `MatchMode.CONTAINS`]]>
+            </description>
+            <name>lazyField</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -6230,6 +6270,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button. Default is 'false'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6296,6 +6344,14 @@
             <name>immediate</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -6666,6 +6722,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the link will be disabled during Ajax requests triggered by the link. Default is 'false'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6831,7 +6895,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[In responsive mode, dialog adjusts itself based on screen width.]]>
+                <![CDATA[In responsive mode the dialog adjusts itself based on screen width, browser resizing, and scrolling of the document.]]>
             </description>
             <name>responsive</name>
             <required>false</required>
@@ -13069,7 +13133,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum number of characters that may be entered in this field.]]>
+                <![CDATA[DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.]]>
             </description>
             <name>maxlength</name>
             <required>false</required>
@@ -17189,6 +17253,14 @@
             <name>buttonStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'false'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -26654,6 +26726,14 @@
                 <![CDATA[If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown.]]>
             </description>
             <name>ignoreComponentNotFound</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'false'.]]>
+            </description>
+            <name>disableOnAjax</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
