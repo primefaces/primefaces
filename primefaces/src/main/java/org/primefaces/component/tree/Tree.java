@@ -127,7 +127,7 @@ public class Tree extends TreeBase {
         }
     }
 
-    public boolean isWithFilter() {
+    public boolean isFiltering() {
         return getValueExpression("filterBy") != null || getFilterFunction() != null;
     }
 

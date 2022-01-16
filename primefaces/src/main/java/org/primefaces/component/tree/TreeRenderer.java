@@ -328,7 +328,7 @@ public class TreeRenderer extends CoreRenderer {
             wb.attr("controlled", true);
         }
 
-        if (tree.isWithFilter()) {
+        if (tree.isFiltering()) {
             wb.attr("filter", true)
                     .attr("filterMode", tree.getFilterMode(), "lenient");
         }
@@ -401,7 +401,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
 
-        if (tree.isWithFilter()) {
+        if (tree.isFiltering()) {
             encodeFilter(context, tree, clientId + "_filter");
         }
 
@@ -677,7 +677,7 @@ public class TreeRenderer extends CoreRenderer {
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
         boolean hidden = false;
-        if (tree.isWithFilter() && !filteredRowKeys.isEmpty()) {
+        if (tree.isFiltering() && !filteredRowKeys.isEmpty()) {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
