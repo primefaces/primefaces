@@ -390,9 +390,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
         writer.writeAttribute("role", "tree", null);
-        if (!isDisabled) {
-            writer.writeAttribute("tabindex", tree.getTabindex(), null);
-        }
 
         writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multipleSelectionMode), null);
         if (tree.getStyle() != null) {
@@ -404,6 +401,9 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.startElement("ul", null);
+        if (!isDisabled) {
+            writer.writeAttribute("tabindex", tree.getTabindex(), null);
+        }
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
         if (root != null) {
