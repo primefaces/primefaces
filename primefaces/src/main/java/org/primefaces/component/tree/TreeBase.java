@@ -61,7 +61,8 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
         multipleDrag,
         dropCopyNode,
         onDrop,
-        filterMode
+        filterMode,
+        filterFunction
     }
 
     public TreeBase() {
@@ -263,5 +264,13 @@ public abstract class TreeBase extends UITree implements Widget, RTLAware, Clien
 
     public void setFilterMode(String filterMode) {
         getStateHelper().put(PropertyKeys.filterMode, filterMode);
+    }
+
+    public javax.el.MethodExpression getFilterFunction() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    }
+
+    public void setFilterFunction(javax.el.MethodExpression filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 }
