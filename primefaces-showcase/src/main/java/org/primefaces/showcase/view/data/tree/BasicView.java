@@ -72,12 +72,15 @@ public class BasicView implements Serializable {
         return root;
     }
 
-    public boolean customFilter(Object data, Object filter, Locale locale) {
-        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
-        if (LangUtils.isBlank(filterText) || data == null) {
+    public boolean customFilter(TreeNode treeNode, Object filter, Locale locale) {
+        if (treeNode.getData() == null || filter == null) {
             return true;
         }
-        return ((String) data).toLowerCase(locale).contains(filterText);
+        String filterText = filter.toString().trim().toLowerCase(locale);
+        if (LangUtils.isBlank(filterText)) {
+            return true;
+        }
+        return ((String) treeNode.getData()).toLowerCase(locale).contains(filterText);
     }
 
 }

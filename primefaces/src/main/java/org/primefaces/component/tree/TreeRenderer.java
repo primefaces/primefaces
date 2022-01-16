@@ -281,7 +281,7 @@ public class TreeRenderer extends CoreRenderer {
 
                 Object value = tree.getFilterFunction() == null
                         ? filterByVE.getValue(context.getELContext())
-                        : childNode.getData();
+                        : childNode;
                 if (filterConstraint.isMatching(context, value, filteredValue, filterLocale)) {
                     tree.getFilteredRowKeys().add(childNode.getRowKey());
                 }

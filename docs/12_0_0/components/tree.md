@@ -57,7 +57,7 @@ multipleDrag | false | Boolean | When enabled, the selected multiple nodes can b
 dropCopyNode | false | Boolean | When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.
 onDrop | null | MethodExpression | Method providing suggestions.
 filterMode | lenient | String | Mode for filtering valid values are lenient and strict. Default is lenient.
-filterFunction | null | MethodExpression | Custom implementation to filter data against a constraint.
+filterFunction | null | MethodExpression | Custom implementation to filter TreeNodes against a constraint.
 
 ## Getting started with the Tree
 Tree is populated with a _org.primefaces.model.TreeNode_ instance which corresponds to the root.
@@ -228,8 +228,8 @@ are _startsWith, endsWidth, contains, exact, lt, lte, gt, gte, equals_ and _in_.
 ```
 
 ```java
-public boolean customFilter(Object value, Object filter, Locale locale) {
-    // return true if the filter matches the tree node data
+public boolean customFilter(TreeNode treeNode, Object filter, Locale locale) {
+    // return true if the filter matches the tree node
 }
 ```
 
@@ -369,6 +369,7 @@ that selection must be enabled in tree component for context menu integration.
     </p:treeNode>
 </p:tree>
 ```
+
 ## Skinning
 Tree resides in a container element which _style_ and _styleClass_ options apply. Following is the list of
 structural style classes;

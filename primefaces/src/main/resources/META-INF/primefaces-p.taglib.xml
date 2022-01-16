@@ -29561,7 +29561,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Custom implementation to filter data against a constraint.]]>
+                <![CDATA[Custom implementation to filter TreeNodes against a constraint.]]>
             </description>
             <name>filterFunction</name>
             <required>false</required>
