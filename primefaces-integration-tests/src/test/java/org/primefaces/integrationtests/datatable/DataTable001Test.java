@@ -56,7 +56,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: Basic & Paginator")
     public void testBasicAndPaginator(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
@@ -112,7 +112,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: single sort")
     public void testSortSingle(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         dataTable.selectPage(1);
@@ -146,7 +146,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: filter")
     public void testFilter(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         dataTable.selectPage(1);
         dataTable.sort("Name");
@@ -173,7 +173,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: filter plus paging")
     public void testFilterPlusPaging(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         dataTable.selectPage(1);
         dataTable.sort("Name");
@@ -205,7 +205,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: global filter with globalFilterOnly=false")
     public void testGlobalFilter(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         InputText globalFilter = getGlobalFilter();
         Assertions.assertNotNull(globalFilter);
@@ -227,7 +227,7 @@ public class DataTable001Test extends AbstractDataTableTest {
     @DisplayName("DataTable: GitHub #7193 global filter with globalFilterOnly=true")
     public void testGlobalFilterIncludeNotDisplayedFilter(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         InputText globalFilter = getGlobalFilter();
         Assertions.assertNotNull(globalFilter);
@@ -251,7 +251,7 @@ public class DataTable001Test extends AbstractDataTableTest {
             + "includes https://github.com/primefaces/primefaces/issues/5465 & https://github.com/primefaces/primefaces/issues/5481")
     public void testRowsPerPageAndReset_5465_5481(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 

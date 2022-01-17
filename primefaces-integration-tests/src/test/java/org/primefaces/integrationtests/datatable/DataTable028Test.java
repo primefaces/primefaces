@@ -46,7 +46,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: filter + sort + edit with own inputs - wrong manipulation of list elements - https://github.com/primefaces/primefaces/issues/7999")
     public void testFilterSortEdit(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         getButtonSave().click();
 
         // Assert
@@ -95,7 +95,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: filter + sort + edit with own inputs - V2")
     public void testFilterSortEditV2(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         getButtonSave().click();
 
         // Assert
@@ -136,7 +136,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: sort + edit with own inputs")
     public void testSortEdit(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         getButtonSave().click();
 
         // Assert
@@ -170,7 +170,7 @@ public class DataTable028Test extends AbstractDataTableTest {
     @DisplayName("DataTable: sort + edit with own inputs - V2")
     public void testSortEditV2(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         getButtonSave().click();
 
         // Assert

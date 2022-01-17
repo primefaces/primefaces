@@ -48,7 +48,7 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: selection - multiple")
     public void testSelectionMultiple(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
@@ -80,7 +80,7 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: GitHub #7368 Selection with filtering")
     public void testSelectionWithFilter(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
