@@ -89,6 +89,12 @@ public final class PrimeSelenium {
 
         T page = PrimePageFactory.create(pageClass, driver);
         driver.get(getUrl(page));
+        if (isSafari()) {
+            /*
+             * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
+             */
+            wait(500);
+        }
 
         return page;
     }
@@ -101,6 +107,22 @@ public final class PrimeSelenium {
     public static void goTo(AbstractPrimePage page) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(page));
+        if (isSafari()) {
+            /*
+             * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
+             */
+            wait(500);
+        }
+    }
+
+    /**
+     * Goto a particular page.
+     *
+     * @param partialUrl the partial URL
+     */
+    public static void goTo(String partialUrl) {
+        WebDriver driver = WebDriverProvider.get();
+        driver.get(getUrl(partialUrl));
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.

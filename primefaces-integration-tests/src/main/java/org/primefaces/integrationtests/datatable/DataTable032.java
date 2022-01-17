@@ -23,32 +23,42 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import lombok.Data;
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
+import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+@Named
+@ViewScoped
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProgrammingLanguage implements Serializable {
-    private static final long serialVersionUID = 398626647627541586L;
-    private Integer id;
-    private String name;
-    private Integer firstAppeared;
-    private ProgrammingLanguageType type;
-    private boolean selectable;
+public class DataTable032 implements Serializable {
 
-    public ProgrammingLanguage(Integer id, String name, Integer firstAppeared, ProgrammingLanguageType type) {
-        this.id = id;
-        this.name = name;
-        this.firstAppeared = firstAppeared;
-        this.type = type;
+    private static final long serialVersionUID = -7518459955779385834L;
+
+    private ProgrammingLanguageLazyDataModel model;
+    private ProgrammingLanguage selection;
+
+
+    @PostConstruct
+    public void init() {
+        model = new ProgrammingLanguageLazyDataModel();
     }
 
-    public enum ProgrammingLanguageType {
-        COMPILED,
-        INTERPRETED
+    public void onRowSelect(SelectEvent<ProgrammingLanguage> event) {
+        TestUtils.addMessage("ProgrammingLanguage Selected", event.getObject().getId() + " - " + event.getObject().getName());
+    }
+
+    public void clearTableState() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String viewId = context.getViewRoot().getViewId();
+        PrimeFaces.current().multiViewState().clearAll(viewId, true);
+
+        //progLanguages = service.getLangs(); //progLanguages may have been sorted from DataTable
     }
 }
