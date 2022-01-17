@@ -631,11 +631,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         matchedOptions = $this.matchOptions(text);
                         if(matchedOptions.length) {
                             var matchIndex = matchedOptions[0].index;
-                            var highlightItem = $this.items.eq(matchIndex);
                             if($this.panel.is(':hidden')) {
-                                $this.selectItem(highlightItem);
+                                $this.callHandleMethod(function() {
+                                    var highlightItem = $this.items.eq(matchIndex);
+                                    $this.selectItem(highlightItem);
+                                }, e);
                             }
                             else {
+                                var highlightItem = $this.items.eq(matchIndex);
                                 $this.highlightItem(highlightItem);
                                 PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
                             }
