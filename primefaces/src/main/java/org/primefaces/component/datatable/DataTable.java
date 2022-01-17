@@ -1018,7 +1018,7 @@ public class DataTable extends DataTableBase {
                 updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
-            if (isSelectionEnabled()) {
+            if (isSelectionEnabled() && ts.getSelectedRowKeys() != null) {
                 updateSelectionWithMVS(ts.getSelectedRowKeys());
             }
 
