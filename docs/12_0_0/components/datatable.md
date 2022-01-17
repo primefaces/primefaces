@@ -1105,6 +1105,17 @@ Widget: _PrimeFaces.widget.DataTable_
 | unselectAllRowsOnPage() | - | void | Unselect all rows on current page.
 | addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
 
+
+## Server Side API
+Class: _org.primefaces.component.datatable.DataTable_
+
+| Method |  Return Type | Description |
+| --- | --- | --- |
+| selectRow(String rowKey) | void | Selects a row
+| unselectRow(String rowKey) | void | Unselects a row
+| expandRow(String rowKey) | void | Expands a row
+| collapseRow(String rowKey) | void | Collapse a row
+
 ## Skinning
 DataTable resides in a main container element which _style_ and _styleClass_ options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
