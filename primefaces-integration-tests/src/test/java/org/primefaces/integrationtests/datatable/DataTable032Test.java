@@ -41,17 +41,19 @@ public class DataTable032Test extends AbstractDataTableTest {
     @DisplayName("DataTable: disableSelection")
     public void testDisabledRowSelection(Page page) {
 
-        // not selectable yet
+        // rows are always "ui-selection-column", indepdent of if the current row is selection disabled or not
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(page.dataTable.getCell(0, 0).getWebElement(), "ui-selection-column"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(page.dataTable.getCell(1, 0).getWebElement(), "ui-selection-column"));
+
+        // not selectable yet, try to trigger it
         page.dataTable.getCell(0, 0).getWebElement().click();
+        Assertions.assertTrue(page.messages.isEmpty());
 
-        Assertions.assertFalse(PrimeSelenium.hasCssClass(page.dataTable.getCell(0, 0).getWebElement(), "ui-selection-column"));
-
+        // make it selectable now
         ToggleSwitch toggleSwitch = PrimeSelenium.createFragment(ToggleSwitch.class, By.id("form:datatable:0:toggle"));
         toggleSwitch.click();
 
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(page.dataTable.getCell(0, 0).getWebElement(), "ui-selection-column"));
-
-        // selectable yet
+        // selectable yet, try to trigger it
         PrimeSelenium.guardAjax(page.dataTable.getCell(0, 0).getWebElement()).click();
 
         Assertions.assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
