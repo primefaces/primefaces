@@ -40,9 +40,8 @@ public class DataTable008Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
-    @DisplayName("DataTable: filter - issue 5481 - https://github.com/primefaces/primefaces/issues/5481")
-    @Disabled("Disabled because DataTable-filter does not support @SessionScoped - see https://github.com/primefaces/primefaces/issues/7373")
-    public void testFilterIssue_5481(Page page) {
+    @DisplayName("DataTable: filter numeric values #8246")
+    public void testFilterIssue_8246(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         Assertions.assertNotNull(dataTable);
@@ -62,6 +61,18 @@ public class DataTable008Test extends AbstractDataTableTest {
         assertRows(dataTable, langsFiltered);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("DataTable: filter - issue 5481 - https://github.com/primefaces/primefaces/issues/5481")
+    @Disabled("Disabled because DataTable-filter does not support @SessionScoped - see https://github.com/primefaces/primefaces/issues/7373")
+    public void testFilterIssue_5481(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        Assertions.assertNotNull(dataTable);
+
+        testFilterIssue_8246(page);
 
         // Act - reload page and go to page 2 (filter is visually removed but to some degree due to SessionScoped-bean still there)
         page.getWebDriver().navigate().refresh();

@@ -27,7 +27,7 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
   - `safari`
 
 Keep in mind there are - as of january 2021 - following limitations for Safari webdriver:
-- headless-mode ist not available (https://github.com/SeleniumHQ/selenium/issues/5985)
+- headless-mode is not available (https://github.com/SeleniumHQ/selenium/issues/5985)
 - no parallel test-execution because Safari does not allow for concurrent sessions (https://github.com/SeleniumHQ/selenium/issues/2172)
 - Safari is only available on MacOS (and iOS / iPadOS)
 
