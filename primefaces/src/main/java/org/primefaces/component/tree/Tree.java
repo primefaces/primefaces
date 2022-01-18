@@ -127,6 +127,10 @@ public class Tree extends TreeBase {
         }
     }
 
+    public boolean isFiltering() {
+        return getValueExpression("filterBy") != null || getFilterFunction() != null;
+    }
+
     public boolean isNodeExpandRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expandNode");
     }

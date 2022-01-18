@@ -21,37 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.tree;
+package org.primefaces.integrationtests.tree;
 
+import java.io.Serializable;
 import java.util.Locale;
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
 
-import org.primefaces.facelets.MethodRule;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import lombok.Data;
+
 import org.primefaces.model.TreeNode;
+import org.primefaces.util.LangUtils;
 
-public class TreeComponentHandler extends ComponentHandler {
+@Named
+@ViewScoped
+@Data
+public class Tree005 implements Serializable {
 
-    private static final MetaRule DROP_LISTENER
-            = new MethodRule("onDrop", Boolean.class, new Class[]{TreeDragDropInfo.class});
+    @Inject
+    private TreeNodeService treeNodeService;
 
-    private static final MetaRule FILTER_FUNCTION
-            = new MethodRule("filterFunction", Boolean.class, new Class[]{TreeNode.class, Object.class, Locale.class});
+    private TreeNode<String> root;
 
-    public TreeComponentHandler(ComponentConfig config) {
-        super(config);
+    @PostConstruct
+    public void init() {
+        root = treeNodeService.createNodes();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected MetaRuleset createMetaRuleset(Class type) {
-        MetaRuleset metaRuleset = super.createMetaRuleset(type);
-
-        metaRuleset.addRule(DROP_LISTENER);
-        metaRuleset.addRule(FILTER_FUNCTION);
-
-        return metaRuleset;
+    public boolean customFilter(TreeNode treeNode, Object filter, Locale locale) {
+        if (treeNode.getData() == null || filter == null) {
+            return true;
+        }
+        String filterText = filter.toString().trim().toLowerCase(locale);
+        if (LangUtils.isBlank(filterText)) {
+            return true;
+        }
+        return ((String) treeNode.getData()).toLowerCase(locale).contains(filterText);
     }
+
 }

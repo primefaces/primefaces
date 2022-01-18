@@ -29559,6 +29559,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to filter TreeNodes against a constraint.]]>
+            </description>
+            <name>filterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
     </tag>
     <tag>
         <description>
