@@ -6278,6 +6278,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, a loading icon will be shown in this button during Ajax requests triggered by the button. Default is 'false'.]]>
+            </description>
+            <name>inlineAjaxStatus</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

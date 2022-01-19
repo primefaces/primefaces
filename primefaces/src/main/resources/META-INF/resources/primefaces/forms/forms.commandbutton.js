@@ -20,7 +20,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinButton(this.jq);
 
-        if (this.cfg.disableOnAjax === true) {
+        if (this.cfg.disableOnAjax || this.cfg.inlineAjaxStatus) {
             this.bindTriggers();
         }
     },
@@ -45,11 +45,21 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                $this.disable();
+                if ($this.cfg.disableOnAjax) {
+                    $this.disable();
+                }
+                if ($this.cfg.inlineAjaxStatus) {
+                    $this.addLoadingIcon();
+                }
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                $this.enable();
+                if ($this.cfg.disableOnAjax) {
+                    $this.enable();
+                }
+                if ($this.cfg.inlineAjaxStatus) {
+                    $this.removeLoadingIcon();
+                }
             }
         });
     },
@@ -66,6 +76,36 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         PrimeFaces.utils.enableButton(this.jq);
+    },
+
+
+    /**
+     * Adds the Ajax loading icon.
+     * @private
+     */
+    addLoadingIcon: function() {
+        var loadIcon = $('<span class="ui-loading-icon ui-icon ui-c pi pi-spin pi-spinner"></span>');
+        var uiIcon = this.jq.find('.ui-icon').hide();
+        if (uiIcon.length) {
+            var prefix = 'ui-button-icon-';
+            this.jq.append(loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right'));
+        }
+        else {
+            var text = this.jq.find('.ui-button-text');
+            text.css('min-width', text.outerWidth() + 'px');
+            this.buttonText = text.html();
+            text.html(loadIcon);
+        }
+    },
+
+    /**
+     * Removes the Ajax loading icon.
+     * @private
+     */
+    removeLoadingIcon: function() {
+        this.jq.find('.ui-loading-icon').remove();
+        this.jq.find('.ui-icon').show();
+        this.jq.find('.ui-button-text').removeAttr('style').html(this.buttonText);
     }
 
 });

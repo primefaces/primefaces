@@ -63,7 +63,8 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
         renderDisabledClick,
         ariaLabel,
         ignoreComponentNotFound,
-        disableOnAjax
+        disableOnAjax,
+        inlineAjaxStatus
     }
 
     public CommandButtonBase() {
@@ -297,5 +298,13 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
+    }
+
+    public boolean isInlineAjaxStatus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.inlineAjaxStatus, false);
+    }
+
+    public void setInlineAjaxStatus(boolean inlineAjaxStatus) {
+        getStateHelper().put(PropertyKeys.inlineAjaxStatus, inlineAjaxStatus);
     }
 }
