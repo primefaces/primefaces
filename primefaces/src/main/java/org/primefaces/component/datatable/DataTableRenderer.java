@@ -1226,7 +1226,7 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean selectionEnabled = table.isSelectionEnabled();
+        boolean selectionEnabled = table.isSelectionEnabled() && !table.isDisabledSelection();
         boolean rowExpansionAvailable = table.getRowExpansion() != null;
         String rowKey = null;
         List<UIColumn> columns = table.getColumns();
@@ -1237,15 +1237,14 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         //Preselection
-        boolean selected = table.getSelectedRowKeys().contains(rowKey);
-        boolean disabled = table.isDisabledSelection();
+        boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
-                .add(selected && !disabled, "ui-state-highlight")
+                .add(selectionEnabled, DataTable.SELECTABLE_ROW_CLASS)
+                .add(selected, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
                 .add(expanded, DataTable.EXPANDED_ROW_CLASS)
@@ -1269,13 +1268,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, selected, disabled, rowIndex);
+                encodeCell(context, table, column, selected, selectionEnabled, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, false, disabled, rowIndex);
+                encodeCell(context, table, dynamicColumn, false, selectionEnabled, rowIndex);
             }
         }
 
@@ -1289,7 +1288,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeCell(FacesContext context, DataTable table, UIColumn column, boolean selected,
-            boolean disabled, int rowIndex) throws IOException {
+            boolean rowSelectionEnabled, int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -1302,7 +1301,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean selectionEnabled = column.getSelectionMode() != null;
+        boolean columnSelectionEnabled = column.getSelectionMode() != null;
         boolean isGroupedColumn = column.isGroupRow();
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
@@ -1310,7 +1309,7 @@ public class DataTableRenderer extends DataRenderer {
         String style = column.getStyle();
 
         String styleClass = getStyleClassBuilder(context)
-                .add(selectionEnabled, DataTable.SELECTION_COLUMN_CLASS)
+                .add(columnSelectionEnabled, DataTable.SELECTION_COLUMN_CLASS)
                 .add(isGroupedColumn, DataTable.GROUPED_COLUMN_CLASS)
                 .add(editorEnabled && editor.isDisabled(), DataTable.CELL_EDITOR_DISABLED_CLASS)
                 .add(editorEnabled && !editor.isDisabled(), DataTable.EDITABLE_COLUMN_CLASS)
@@ -1342,8 +1341,8 @@ public class DataTableRenderer extends DataRenderer {
             renderDynamicPassThruAttributes(context, component);
         }
 
-        if (selectionEnabled) {
-            encodeColumnSelection(context, table, column, selected, disabled);
+        if (columnSelectionEnabled) {
+            encodeColumnSelection(context, table, column, selected, rowSelectionEnabled);
         }
 
         if (hasColumnDefaultRendering(table, column)) {
@@ -1527,16 +1526,16 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean disabled)
+    protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean rowSelectionEnabled)
             throws IOException {
 
         String selectionMode = column.getSelectionMode();
 
         if ("single".equalsIgnoreCase(selectionMode)) {
-            encodeRadio(context, table, selected, disabled);
+            encodeRadio(context, table, selected, !rowSelectionEnabled);
         }
         else if ("multiple".equalsIgnoreCase(selectionMode)) {
-            encodeCheckbox(context, table, selected, disabled, HTML.CHECKBOX_CLASS, false);
+            encodeCheckbox(context, table, selected, !rowSelectionEnabled, HTML.CHECKBOX_CLASS, false);
         }
         else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);

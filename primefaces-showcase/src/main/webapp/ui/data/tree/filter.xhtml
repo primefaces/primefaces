@@ -19,7 +19,15 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
+                <h5>Basic</h5>
                 <p:tree value="#{treeBasicView.root}" var="node" filterBy="#{node}">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+
+                <h5>Custom</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" filterFunction="#{treeBasicView.customFilter}">
                     <p:treeNode>
                         <h:outputText value="#{node}"/>
                     </p:treeNode>

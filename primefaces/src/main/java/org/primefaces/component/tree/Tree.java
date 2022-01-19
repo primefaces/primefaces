@@ -94,9 +94,8 @@ public class Tree extends TreeBase {
             .put(MatchMode.IN, new InFilterConstraint())
             .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.RANGE, new RangeFilterConstraint())
-            .put(MatchMode.BETWEEN, new RangeFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new RangeFilterConstraint()))
+            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
+            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
             .build();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -126,6 +125,10 @@ public class Tree extends TreeBase {
         else {
             return node;
         }
+    }
+
+    public boolean isFiltering() {
+        return getValueExpression("filterBy") != null || getFilterFunction() != null;
     }
 
     public boolean isNodeExpandRequest(FacesContext context) {
@@ -373,8 +376,10 @@ public class Tree extends TreeBase {
         newNode.setSelectable(node.isSelectable());
         newNode.setExpanded(node.isExpanded());
 
-        for (TreeNode childNode : node.getChildren()) {
-            newNode.getChildren().add(createCopyOfTreeNode(childNode));
+        if (node.getChildCount() > 0) {
+            for (TreeNode childNode : node.getChildren()) {
+                newNode.getChildren().add(createCopyOfTreeNode(childNode));
+            }
         }
 
         return newNode;

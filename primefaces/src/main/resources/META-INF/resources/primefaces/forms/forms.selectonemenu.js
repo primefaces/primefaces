@@ -475,7 +475,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Callback for when the user selects an item with the mouse.
      * @private
      * @param {JQuery} item The option to select.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     selectItem: function(item, silent) {
         var selectedOption = this.options.eq(this.resolveItemIndex(item)),
@@ -631,11 +631,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         matchedOptions = $this.matchOptions(text);
                         if(matchedOptions.length) {
                             var matchIndex = matchedOptions[0].index;
-                            var highlightItem = $this.items.eq(matchIndex);
                             if($this.panel.is(':hidden')) {
-                                $this.selectItem(highlightItem);
+                                $this.callHandleMethod(function() {
+                                    var highlightItem = $this.items.eq(matchIndex);
+                                    $this.selectItem(highlightItem);
+                                }, e);
                             }
                             else {
+                                var highlightItem = $this.items.eq(matchIndex);
                                 $this.highlightItem(highlightItem);
                                 PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
                             }
@@ -1142,7 +1145,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     /**
      * Resets the input.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     resetValue: function(silent) {
         if(!this.items || this.items.length === 0) {

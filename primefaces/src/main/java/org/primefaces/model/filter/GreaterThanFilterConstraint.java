@@ -28,7 +28,8 @@ import java.util.function.BiPredicate;
 public class GreaterThanFilterConstraint extends ComparableFilterConstraint {
 
     @Override
-    protected BiPredicate<String, String> getPredicate() {
+    protected BiPredicate<Comparable, Comparable> getPredicate() {
         return (o1, o2) -> o1.compareTo(o2) > 0;
     }
+
 }

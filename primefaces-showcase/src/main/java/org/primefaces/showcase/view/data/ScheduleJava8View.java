@@ -30,6 +30,7 @@ import org.primefaces.model.*;
 import org.primefaces.showcase.service.ExtenderService;
 import org.primefaces.showcase.service.ExtenderService.ExtenderExample;
 
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,7 @@ public class ScheduleJava8View implements Serializable {
     private String minTime = "04:00:00";
     private String maxTime = "20:00:00";
     private String locale = "en";
+    private String serverTimeZone = ZoneId.systemDefault().toString();
     private String timeZone = "";
     private String clientTimeZone = "local";
     private String columnHeaderFormat = "";
@@ -592,5 +594,13 @@ public class ScheduleJava8View implements Serializable {
                 .sorted(Comparator.comparing(ExtenderExample::getName)) //
                 .map(example -> new SelectItem(example.getKey(), example.getName())) //
                 .collect(Collectors.toList());
+    }
+
+    public String getServerTimeZone() {
+        return serverTimeZone;
+    }
+
+    public void setServerTimeZone(String serverTimeZone) {
+        this.serverTimeZone = serverTimeZone;
     }
 }

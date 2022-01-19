@@ -34,7 +34,6 @@ import java.util.stream.Stream;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.jupiter.api.AfterEach;
@@ -44,16 +43,18 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class WebXmlParserTest {
-    private static String XPATH_FACTORY_SYSTEM_PROPERTY = XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI;
+
+    private static final String XPATH_FACTORY_SYSTEM_PROPERTY =
+            XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI;
 
     private FacesContext context;
     private ExternalContext extContext;
 
     private static Stream<Arguments> data() {
         return Stream.of(
-                    Arguments.of("web-namespaces.xml"),
-                    Arguments.of("web-empty-error-code.xml"),
-                    Arguments.of("web-no-namespace.xml"));
+                Arguments.of("web-namespaces.xml"),
+                Arguments.of("web-empty-error-code.xml"),
+                Arguments.of("web-no-namespace.xml"));
     }
 
     private void configureXpathFactory(Class<? extends XPathFactory> factoryClass) {

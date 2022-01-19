@@ -19,13 +19,13 @@ There always may be corner-cases which need some additional manual work. So it´
 **Windows PowerShell:**
 
 ```powershell
-Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0-RC1/primefaces-cli-11.0.0-RC1.jar -OutFile C:\cli\pfcli.jar
+Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0/primefaces-cli-11.0.0.jar -OutFile C:\cli\pfcli.jar
 ```
 
 **Linux WGET:**
 
 ```bash
-wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0-RC1/primefaces-cli-11.0.0-RC1.jar
+wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0/primefaces-cli-11.0.0.jar
 ```
 
 ## PrimeFlex 2 --> PrimeFlex 3 migration
@@ -41,7 +41,7 @@ java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration -
 #### Migrate all XHTML and HTML - files in one directory (including subdirectories)
 
 ```shell
-java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration c:\projects\myapp -e=html,xhtml
+java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration c:\projects\myapp -e="html,xhtml"
 ```
 
 Look at https://www.primefaces.org/primeflex/ for additional information.
@@ -61,5 +61,5 @@ java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.GridCssMigration --h
 #### Migrate all XHTML and HTML - files in one directory (including subdirectories)
 
 ```shell
-java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.GridCssMigration c:\projects\myapp -e=html,xhtml
+java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.GridCssMigration c:\projects\myapp -e="html,xhtml"
 ```

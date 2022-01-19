@@ -37,6 +37,9 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute fileName;
     private final TagAttribute pageOnly;
     private final TagAttribute selectionOnly;
+    private final TagAttribute visibleOnly;
+    private final TagAttribute exportHeader;
+    private final TagAttribute exportFooter;
     private final TagAttribute preProcessor;
     private final TagAttribute postProcessor;
     private final TagAttribute encoding;
@@ -51,6 +54,9 @@ public class DataExporterTagHandler extends TagHandler {
         fileName = getRequiredAttribute("fileName");
         pageOnly = getAttribute("pageOnly");
         selectionOnly = getAttribute("selectionOnly");
+        visibleOnly = getAttribute("visibleOnly");
+        exportHeader = getAttribute("exportHeader");
+        exportFooter = getAttribute("exportFooter");
         encoding = getAttribute("encoding");
         preProcessor = getAttribute("preProcessor");
         postProcessor = getAttribute("postProcessor");
@@ -70,6 +76,9 @@ public class DataExporterTagHandler extends TagHandler {
         ValueExpression fileNameVE = fileName.getValueExpression(faceletContext, Object.class);
         ValueExpression pageOnlyVE = null;
         ValueExpression selectionOnlyVE = null;
+        ValueExpression visibleOnlyVE = null;
+        ValueExpression exportHeaderVE = null;
+        ValueExpression exportFooterVE = null;
         ValueExpression encodingVE = null;
         MethodExpression preProcessorME = null;
         MethodExpression postProcessorME = null;
@@ -85,6 +94,15 @@ public class DataExporterTagHandler extends TagHandler {
         }
         if (selectionOnly != null) {
             selectionOnlyVE = selectionOnly.getValueExpression(faceletContext, Object.class);
+        }
+        if (visibleOnly != null) {
+            visibleOnlyVE = visibleOnly.getValueExpression(faceletContext, Object.class);
+        }
+        if (exportHeader != null) {
+            exportHeaderVE = exportHeader.getValueExpression(faceletContext, Object.class);
+        }
+        if (exportFooter != null) {
+            exportFooterVE = exportFooter.getValueExpression(faceletContext, Object.class);
         }
         if (preProcessor != null) {
             preProcessorME = preProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
@@ -102,9 +120,22 @@ public class DataExporterTagHandler extends TagHandler {
             exporterVE = exporter.getValueExpression(faceletContext, Object.class);
         }
         ActionSource actionSource = (ActionSource) parent;
-        DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
-                encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
-        dataExporter.setExporter(exporterVE);
+        DataExporter dataExporter = DataExporter.builder()
+                    .target(targetVE)
+                    .type(typeVE)
+                    .fileName(fileNameVE)
+                    .encoding(encodingVE)
+                    .exporter(exporterVE)
+                    .exportFooter(exportFooterVE)
+                    .exportHeader(exportHeaderVE)
+                    .onTableRender(onTableRenderME)
+                    .options(optionsVE)
+                    .pageOnly(pageOnlyVE)
+                    .postProcessor(postProcessorME)
+                    .preProcessor(preProcessorME)
+                    .selectionOnly(selectionOnlyVE)
+                    .visibleOnly(visibleOnlyVE)
+                    .build();
         actionSource.addActionListener(dataExporter);
     }
 

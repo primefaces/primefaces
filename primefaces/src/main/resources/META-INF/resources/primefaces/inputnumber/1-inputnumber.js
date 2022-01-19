@@ -39,6 +39,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.valueToRender = cfg.valueToRender;
         this.disabled = cfg.disabled;
 
+        // GitHub #8125 minValue>0 shows js warning and quirky behavior
+        if (this.cfg.minimumValue >= 1 || this.cfg.maximumValue < 0) {
+            this.cfg.overrideMinMaxLimits = 'invalid';
+        }
+
         //bind events if not disabled
         if (this.disabled) {
             this.input.attr("disabled", "disabled");

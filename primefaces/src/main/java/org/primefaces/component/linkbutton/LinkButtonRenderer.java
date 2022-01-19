@@ -75,22 +75,17 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
         }
         renderPassThruAttributes(context, linkButton, HTML.OUTPUT_EVENTS_WITHOUT_CLICK);
 
-        if (disabled) {
-            renderContent(context, linkButton);
+        String targetURL = getTargetURL(context, linkButton);
+        if (targetURL == null) {
+            targetURL = "#";
         }
-        else {
-            String targetURL = getTargetURL(context, linkButton);
-            if (targetURL == null) {
-                targetURL = "#";
-            }
 
-            writer.startElement("a", null);
-            writer.writeAttribute("href", targetURL, null);
-            renderPassThruAttributes(context, linkButton, HTML.LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE, HTML.TITLE);
-            renderDomEvents(context, linkButton, HTML.OUTPUT_EVENTS);
-            renderContent(context, linkButton);
-            writer.endElement("a");
-        }
+        writer.startElement("a", null);
+        writer.writeAttribute("href", targetURL, null);
+        renderPassThruAttributes(context, linkButton, HTML.LINK_ATTRS_WITHOUT_EVENTS_AND_STYLE, HTML.TITLE);
+        renderDomEvents(context, linkButton, HTML.OUTPUT_EVENTS);
+        renderContent(context, linkButton);
+        writer.endElement("a");
 
         writer.endElement("span");
     }

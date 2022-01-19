@@ -219,7 +219,7 @@ public abstract class HotkeyBase extends UICommand implements AjaxSource {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
 
     }
 
@@ -229,7 +229,7 @@ public abstract class HotkeyBase extends UICommand implements AjaxSource {
 
     @Override
     public boolean isIgnoreComponentNotFound() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
     }
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {

@@ -188,7 +188,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Check all available options.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     checkAll: function(silent) {
         var $this = this;
@@ -207,7 +207,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Uncheck all available options.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     uncheckAll: function(silent) {
         var $this = this;
@@ -226,7 +226,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Resets the input.
-     * @param {boolean} silent `true` to suppress triggering event listeners, or `false` otherwise.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
     resetValue: function(silent) {
         this.uncheckAll(silent);

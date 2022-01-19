@@ -56,7 +56,7 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
             contentPanelExists = true;
         }
         catch (NoSuchElementException ex) {
-            ;
+
         }
         Assertions.assertEquals(false, contentPanelExists);
 

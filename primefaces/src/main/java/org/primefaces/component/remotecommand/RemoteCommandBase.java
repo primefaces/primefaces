@@ -227,7 +227,7 @@ public abstract class RemoteCommandBase extends UICommand implements AjaxSource 
 
     @Override
     public boolean isIgnoreComponentNotFound() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
     }
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {

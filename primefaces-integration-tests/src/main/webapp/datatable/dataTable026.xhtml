@@ -25,7 +25,7 @@
                 <p:column headerText="last name endsWith" field="lastName" filterMatchMode="endsWith"/>
                 <p:column headerText="last name contains" field="lastName" filterMatchMode="contains"/>
                 <p:column headerText="last name exact" field="lastName" filterMatchMode="exact"/>
-                <p:column headerText="birthdate" field="birthDate" filterMatchMode="range">
+                <p:column headerText="birthdate" field="birthDate" filterMatchMode="between">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="birthdateRangeFilter"
                                       yearNavigator="true" yearRange="1950:2030"

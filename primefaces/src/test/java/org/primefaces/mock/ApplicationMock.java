@@ -228,8 +228,8 @@ public class ApplicationMock extends Application {
 
     @Override
     public void publishEvent(FacesContext context,
-                             Class<? extends SystemEvent> systemEventClass,
-                             Object source) {
+            Class<? extends SystemEvent> systemEventClass,
+            Object source) {
 
     }
 

@@ -54,3 +54,4 @@ node_modules/
 # End of https://www.gitignore.io/api/node
 /primefaces-showcase/target/
 /primefaces-cli/target/
+/primefaces/target/
