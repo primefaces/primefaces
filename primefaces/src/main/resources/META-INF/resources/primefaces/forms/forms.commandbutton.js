@@ -2,6 +2,9 @@
  * __PrimeFaces CommandButton Widget__
  * 
  * CommandButton is an extended version of standard commandButton with AJAX and theming.
+ *
+ * @prop {string} buttonText of the button. Kept when the Ajax indicator replaces it and put back when the Ajax request
+ * completes.
  * 
  * @interface {PrimeFaces.widget.CommandButtonCfg} cfg The configuration for the {@link  CommandButton| CommandButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
