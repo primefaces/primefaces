@@ -859,10 +859,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     handleEnterKey: function(event) {
         if(this.panel.is(':visible')) {
             this.selectItem(this.getActiveItem());
+            // #8308 prevent Default Command while panel is open
+            event.stopPropagation();
         }
 
         event.preventDefault();
-        event.stopPropagation();
     },
 
     /**
