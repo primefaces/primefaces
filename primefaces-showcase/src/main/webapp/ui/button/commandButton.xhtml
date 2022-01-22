@@ -122,8 +122,38 @@
             <h5>Ajax Disabling and Status Icon</h5>
             <p:commandButton value="Disable" disableOnAjax="true" action="#{bottonBasicView.sleep()}" />
             <p:commandButton value="Status" inlineAjaxStatus="true" action="#{bottonBasicView.sleep()}" />
-            <p:commandButton value="Both + Icon" icon="pi pi-check" inlineAjaxStatus="true" disableOnAjax="true"
+            <p:commandButton value="Both + Icon" inlineAjaxStatus="true" disableOnAjax="true"
+                             icon="pi pi-check" action="#{bottonBasicView.sleep()}" />
+            <p:commandButton value="Both + Icon" inlineAjaxStatus="true" disableOnAjax="true"
+                             icon="pi pi-check" iconPos="right" action="#{bottonBasicView.sleep()}" />
+            <p:commandButton value="Custom" styleClass="custom" disableOnAjax="true" inlineAjaxStatus="true"
                              action="#{bottonBasicView.sleep()}" />
+            <style>
+                html body .custom.ui-button.ui-button-text-only .ui-icon-loading {
+                    opacity: 0;
+                }
+                html body .custom.ui-button.ui-button-text-only .ui-icon-loading:before {
+                    content: "\e94a";
+                }
+                html body .custom.ui-button, html body .custom.ui-button * {
+                    transition-property: all;
+                    transition-duration: .2s;
+                }
+                html body .custom.ui-button.ui-state-loading {
+                    opacity: 1;
+                    background: #888;
+                    border-color: #888;
+                }
+                html body .custom.ui-button.ui-state-loading.ui-button-text-only .ui-button-text {
+                    opacity: 1;
+                    padding-left: 2rem;
+                }
+                html body .custom.ui-button.ui-state-loading.ui-button-text-only .ui-icon-loading {
+                    opacity: 1;
+                    left: 0;
+                    margin-left: 0.5rem;
+                }
+            </style>
         </div>
     </ui:define>
 

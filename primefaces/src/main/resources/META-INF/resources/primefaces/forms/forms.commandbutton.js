@@ -3,9 +3,6 @@
  * 
  * CommandButton is an extended version of standard commandButton with AJAX and theming.
  *
- * @prop {string} buttonText Text of the button. Kept when the Ajax indicator replaces it and put back when the Ajax
- * request completes.
- * 
  * @interface {PrimeFaces.widget.CommandButtonCfg} cfg The configuration for the {@link  CommandButton| CommandButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
@@ -48,20 +45,28 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                $this.jq.toggleClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax) {
                     $this.disable();
                 }
                 if ($this.cfg.inlineAjaxStatus) {
-                    $this.addLoadingIcon();
+                    var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
+                    var uiIcon = $this.jq.find('.ui-icon');
+                    if (uiIcon.length) {
+                        var prefix = 'ui-button-icon-';
+                        loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
+                    }
+                    $this.jq.prepend(loadIcon);
                 }
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                $this.jq.toggleClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax) {
                     $this.enable();
                 }
                 if ($this.cfg.inlineAjaxStatus) {
-                    $this.removeLoadingIcon();
+                    $this.jq.find('.ui-icon-loading').remove();
                 }
             }
         });
@@ -79,36 +84,6 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         PrimeFaces.utils.enableButton(this.jq);
-    },
-
-
-    /**
-     * Adds the Ajax loading icon.
-     * @private
-     */
-    addLoadingIcon: function() {
-        var loadIcon = $('<span class="ui-loading-icon ui-icon ui-c pi pi-spin pi-spinner"></span>');
-        var uiIcon = this.jq.find('.ui-icon').hide();
-        if (uiIcon.length) {
-            var prefix = 'ui-button-icon-';
-            this.jq.append(loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right'));
-        }
-        else {
-            var text = this.jq.find('.ui-button-text');
-            text.css('min-width', text.outerWidth() + 'px');
-            this.buttonText = text.html();
-            text.html(loadIcon);
-        }
-    },
-
-    /**
-     * Removes the Ajax loading icon.
-     * @private
-     */
-    removeLoadingIcon: function() {
-        this.jq.find('.ui-loading-icon').remove();
-        this.jq.find('.ui-icon').show();
-        this.jq.find('.ui-button-text').removeAttr('style').html(this.buttonText);
     }
 
 });
