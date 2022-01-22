@@ -479,7 +479,7 @@ input[type=text]::-ms-clear {
 }
 
 /* button loading */
-.ui-state-loading.ui-button-text-only .ui-button-text {
+.ui-state-loading.ui-button-text-only .ui-icon-loading + .ui-button-text {
     opacity: 0;
 }
 
