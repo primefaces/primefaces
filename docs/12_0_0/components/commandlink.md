@@ -99,3 +99,8 @@ Widget: `PrimeFaces.widget.CommandLink`
 
 ## Skinning
 CommandLink renders an HTML anchor element that `style` and `styleClass` attributes apply.
+Following is the list of structural style classes;
+
+| Class | Applies |
+| --- | --- |
+| .ui-state-loading | Anchor element; when `disableOnAjax` is set and an Ajax request triggered by the link is in progress.

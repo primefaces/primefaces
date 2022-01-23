@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-@Named("bottonBasicView")
+@Named("buttonBasicView")
 @ViewScoped
 public class BasicView implements Serializable {
 
