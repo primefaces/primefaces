@@ -4,7 +4,9 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ## 12.0.0
 
-* AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
+* AutoComplete:
+  * added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
+  * added `inlineAjaxStatus` attribute to show a loading icon while the component is querying.
 * CommandButton: added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
