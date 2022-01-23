@@ -85,7 +85,8 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         dropdownAriaLabel,
         completeEndpoint,
         lazyModel,
-        lazyField
+        lazyField,
+        inlineAjaxStatus
     }
 
     public AutoCompleteBase() {
@@ -465,4 +466,11 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.lazyField, lazyField);
     }
 
+    public boolean isInlineAjaxStatus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.inlineAjaxStatus, false);
+    }
+
+    public void setInlineAjaxStatus(boolean inlineAjaxStatus) {
+        getStateHelper().put(PropertyKeys.inlineAjaxStatus, inlineAjaxStatus);
+    }
 }

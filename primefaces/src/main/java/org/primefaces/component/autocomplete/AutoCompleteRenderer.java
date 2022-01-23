@@ -745,7 +745,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("queryMode", ac.getQueryMode())
                 .attr("completeEndpoint", ac.getCompleteEndpoint())
                 .attr("moreText", ac.getMoreText())
-                .attr("hasFooter", ComponentUtils.shouldRenderFacet(ac.getFacet("footer")));
+                .attr("hasFooter", ComponentUtils.shouldRenderFacet(ac.getFacet("footer")))
+                .attr("inlineAjaxStatus", ac.isInlineAjaxStatus(), false);
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());

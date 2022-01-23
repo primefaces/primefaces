@@ -42,6 +42,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.
 | groupByTooltip | null | String | Tooltip to display on group headers.
 | immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+| inlineAjaxStatus | false | Boolean | If true, a loading icon will be shown in this autocomplete while search queries are executed.
 | inputmode | null | String | Hint at the type of data this control has for touch devices to display appropriate virtual keyboard.
 | inputStyle | null | String | Inline style of the input element.
 | inputStyleClass | null | String | Style class of the input element.
@@ -412,6 +413,7 @@ Following is the list of structural style classes;
 | .ui-autocomplete-items | List of items |
 | .ui-autocomplete-item | Each item in the list. |
 | .ui-autocomplete-query | Highlighted part in suggestions. |
+| .ui-state-loading | Container element; while search queries are executed. |
 
 As skinning style classes are global, see the main theming section for more information.
 
