@@ -28,6 +28,14 @@ Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/prime
 wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0/primefaces-cli-11.0.0.jar
 ```
 
+**12.0.0 BETA:**
+
+Download: https://github.com/primefaces/primefaces/files/7920843/pf-cli-beta.zip
+
+This BETA has many fixes found while converting a PrimeNG project using the CLI.  Thanks to @ThoSap.
+To read about the changes: https://github.com/primefaces/primefaces/issues/8314
+
+
 ## PrimeFlex 2 --> PrimeFlex 3 migration
 
 This tool replaces PrimeFlex 2 - CSS - classes in your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.

@@ -57,11 +57,25 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-col-([0-9]+?)", "col-$1");
         replaceRegex.put("p-col-fixed", "col-fixed");
         replaceRegex.put("p-col-offset-([0-9]+?)", "col-offset-$1");
+        replaceRegex.put("p-offset-([0-9]+?)", "col-offset-$1");
         replaceRegex.put("p-(xl|lg|md|sm)-offset-([0-9]+?)", "$1:col-offset-$2");
-        replaceRegex.put("p-col", "col");
         replaceRegex.put("p-(xl|lg|md|sm)-([0-9]+?)", "$1:col-$2");
 
-//        replaceRegex.put("_xxxPxxx_", "p");
+        replaceRegex.put("p-col-order-(first|0)", "flex-order-0");
+        replaceRegex.put("p-col-order-(1|2)", "flex-order-1");
+        replaceRegex.put("p-col-order-(3|4)", "flex-order-2");
+        replaceRegex.put("p-col-order-(5|6)", "flex-order-3");
+        replaceRegex.put("p-col-order-(7|8)", "flex-order-4");
+        replaceRegex.put("p-col-order-(9|10)", "flex-order-5");
+        replaceRegex.put("p-col-order-(11|12|last)", "flex-order-6");
+
+        replaceRegex.put("p-(xl|lg|md|sm)-order-(first|0)", "$1:flex-order-0");
+        replaceRegex.put("p-(xl|lg|md|sm)-order-(1|2)", "$1:flex-order-1");
+        replaceRegex.put("p-(xl|lg|md|sm)-order-(3|4)", "$1:flex-order-2");
+        replaceRegex.put("p-(xl|lg|md|sm)-order-(5|6)", "$1:flex-order-3");
+        replaceRegex.put("p-(xl|lg|md|sm)-order-(7|8)", "$1:flex-order-4");
+        replaceRegex.put("p-(xl|lg|md|sm)-order-(9|10)", "$1:flex-order-5");
+        replaceRegex.put("p-(xl|lg|md|sm)-order-(11|12|last)", "$1:flex-order-6");
 
         // display
         replaceRegex.put("p-d-none", "hidden");
@@ -79,19 +93,18 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-d-(xl|lg|md|sm)-inline-flex", "$1:inline-flex");
 
         // flexbox
-        replaceRegex.put("p-flex-row", "flex-row");
-        replaceRegex.put("p-flex-column", "flex-column");
-        replaceRegex.put("p-flex-row-reverse", "flex-row-reverse");
-        replaceRegex.put("p-flex-column-reverse", "flex-column-reverse");
+        replaceRegex.put("p-flex-row|p-dir-row", "flex-row");
+        replaceRegex.put("p-flex-column|p-dir-col", "flex-column");
+        replaceRegex.put("p-flex-row-reverse|p-dir-rev", "flex-row-reverse");
+        replaceRegex.put("p-flex-column-reverse|p-dir-col-rev", "flex-column-reverse");
 
         replaceRegex.put("p-flex-(xl|lg|md|sm)-row", "$1:flex-row");
         replaceRegex.put("p-flex-(xl|lg|md|sm)-column", "$1:flex-column");
         replaceRegex.put("p-flex-(xl|lg|md|sm)-row-reverse", "$1:flex-row-reverse");
         replaceRegex.put("p-flex-(xl|lg|md|sm)-column-reverse", "$1:flex-column-reverse");
 
-        replaceRegex.put("p-order-([0-9])", "flex-order-$1");
-
-        replaceRegex.put("p-order-(xl|lg|md|sm)-([0-6])", "$1:flex-order");
+        replaceRegex.put("p-order-([0-6])", "flex-order-$1");
+        replaceRegex.put("p-order-(xl|lg|md|sm)-([0-6])", "$1:flex-order-$2");
 
         replaceRegex.put("p-flex-nowrap", "flex-nowrap");
         replaceRegex.put("p-flex-wrap", "flex-wrap");
@@ -106,8 +119,7 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-(jc|justify)-center", "justify-content-center");
         replaceRegex.put("p-(jc|justify)-between", "justify-content-between");
         replaceRegex.put("p-(jc|justify)-around", "justify-content-around");
-        replaceRegex.put("p-jc-evenly", "justify-content-evenly");
-        replaceRegex.put("p-justify-even", "justify-content-evenly"); // Note: even -> evenly
+        replaceRegex.put("p-jc-evenly|p-justify-even", "justify-content-evenly");
 
         replaceRegex.put("p-jc-(xl|lg|md|sm)-start", "$1:justify-content-start");
         replaceRegex.put("p-jc-(xl|lg|md|sm)-end", "$1:justify-content-end");
@@ -116,11 +128,11 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-jc-(xl|lg|md|sm)-around", "$1:justify-content-around");
         replaceRegex.put("p-jc-(xl|lg|md|sm)-evenly", "$1:justify-content-evenly");
 
-        replaceRegex.put("p-ai-start", "align-items-start");
-        replaceRegex.put("p-ai-end", "align-items-end");
-        replaceRegex.put("p-ai-center", "align-items-center");
-        replaceRegex.put("p-ai-baseline", "align-items-baseline");
-        replaceRegex.put("p-ai-stretch", "align-items-stretch");
+        replaceRegex.put("p-ai-start|p-align-start", "align-items-start");
+        replaceRegex.put("p-ai-end|p-align-end", "align-items-end");
+        replaceRegex.put("p-ai-center|p-align-center", "align-items-center");
+        replaceRegex.put("p-ai-baseline|p-align-baseline", "align-items-baseline");
+        replaceRegex.put("p-ai-stretch|p-align-stretch", "align-items-stretch");
 
         replaceRegex.put("p-ai-(xl|lg|md|sm)-start", "$1:align-items-start");
         replaceRegex.put("p-ai-(xl|lg|md|sm)-end", "$1:align-items-end");
@@ -128,11 +140,11 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-ai-(xl|lg|md|sm)-baseline", "$1:align-items-baseline");
         replaceRegex.put("p-ai-(xl|lg|md|sm)-stretch", "$1:align-items-stretch");
 
-        replaceRegex.put("p-as-start", "align-self-start");
-        replaceRegex.put("p-as-end", "align-self-end");
-        replaceRegex.put("p-as-center", "align-self-center");
-        replaceRegex.put("p-as-baseline", "align-self-baseline");
-        replaceRegex.put("p-as-stretch", "align-self-stretch");
+        replaceRegex.put("p-as-start|p-col-align-start", "align-self-start");
+        replaceRegex.put("p-as-end|p-col-align-end", "align-self-end");
+        replaceRegex.put("p-as-center|p-col-align-center", "align-self-center");
+        replaceRegex.put("p-as-baseline|p-col-align-baseline", "align-self-baseline");
+        replaceRegex.put("p-as-stretch|p-col-align-stretch", "align-self-stretch");
 
         replaceRegex.put("p-as-(xl|lg|md|sm)-start", "$1:align-self-start");
         replaceRegex.put("p-as-(xl|lg|md|sm)-end", "$1:align-self-end");
@@ -163,6 +175,7 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-text-normal", "font-normal");
         replaceRegex.put("p-text-light", "font-light");
         replaceRegex.put("p-text-italic", "font-italic");
+        replaceRegex.put("p-text-nowrap", "white-space-nowrap");
         replaceRegex.put("p-text-truncate", "overflow-hidden white-space-nowrap text-overflow-ellipsis");
 
         // elevation
@@ -176,11 +189,14 @@ public class PrimeFlexMigration extends AbstractPrimeMigration implements Runnab
         replaceRegex.put("p-shadow-(21|22|23)", "shadow-8");
 
         // form layout
-        replaceRegex.put("p-field", "field");
         replaceRegex.put("p-formgrid", "formgrid");
         replaceRegex.put("p-formgroup-inline", "formgroup-inline");
         replaceRegex.put("p-field-checkbox", "field-checkbox");
         replaceRegex.put("p-field-radiobutton", "field-radiobutton");
+
+        // special look ahead type regexes
+        replaceRegex.put("(?!\\<\\s*p-col|p-col\\w)p-col", "col");
+        replaceRegex.put("(?!\\<\\s*p-field|p-field\\w)p-field", "field");
 
         // complete?
     }

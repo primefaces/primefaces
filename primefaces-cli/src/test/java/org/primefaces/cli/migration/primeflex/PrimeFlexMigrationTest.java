@@ -79,4 +79,60 @@ class PrimeFlexMigrationTest {
         Assertions.assertEquals("<div class=\"lg:p-3\"></div>", result);
     }
 
+    @Test
+    void primeNgBug8314_pcol_1() {
+        String source = "<p-colorPicker></p-colorPicker>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<p-colorPicker></p-colorPicker>", result);
+    }
+
+    @Test
+    void primeNgBug8314_pcol_2() {
+        String source = "<div class=\"p-col p-justify-end\"></div>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<div class=\"col justify-content-end\"></div>", result);
+    }
+
+    @Test
+    void primeNgBug8314_pcol_dbquote() {
+        String source = "<div class=\"p-col\"></div>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<div class=\"col\"></div>", result);
+    }
+
+    @Test
+    void primeNgBug8314_pcol_singlebquote() {
+        String source = "<div class='p-col'></div>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<div class='col'></div>", result);
+    }
+
+    @Test
+    void primeNgBug8314_pcol_4() {
+        String source = "<p-columnFilter></p-columnFilter>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<p-columnFilter></p-columnFilter>", result);
+    }
+
+    @Test
+    void primeNgBug8314_fieldset_1() {
+        String source = "<p-fieldset></p-fieldset>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<p-fieldset></p-fieldset>", result);
+    }
+
+    @Test
+    void primeNgBug8314_fieldset_2() {
+        String source = "<div class=\"p-field p-justify-end\"></div>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<div class=\"field justify-content-end\"></div>", result);
+    }
+
+    @Test
+    void primeNgBug8314_borderTopColor() {
+        String source = "<div class=\"border-top-color\"></div>";
+        String result = MIGRATION.migrateSource(source);
+        Assertions.assertEquals("<div class=\"border-top-color\"></div>", result);
+    }
+
 }
