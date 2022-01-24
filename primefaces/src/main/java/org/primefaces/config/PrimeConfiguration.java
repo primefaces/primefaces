@@ -91,7 +91,7 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.RESET_VALUES);
         resetValuesEnabled = Boolean.parseBoolean(value);
 
-        value = externalContext.getInitParameter(Constants.ContextParams.PFV_KEY);
+        value = externalContext.getInitParameter(Constants.ContextParams.CSV);
         clientSideValidationEnabled = Boolean.parseBoolean(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.UPLOADER);
