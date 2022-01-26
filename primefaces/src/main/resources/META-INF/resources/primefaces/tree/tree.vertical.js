@@ -360,7 +360,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} A node to focus.
      */
     searchDown: function(node) {
-        var nextOfParent = $this.nextNode(node.closest('ul').parent('li')),
+        var nextOfParent = this.nextNode(node.closest('ul').parent('li')),
         nodeToFocus = null;
 
         if(nextOfParent.length) {
