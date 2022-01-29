@@ -627,7 +627,8 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         rowKey = this.getRowKey(treeNode);
 
         box.removeClass('ui-state-active');
-        treeNode.find('> .ui-treenode-content > .ui-treenode-label').removeClass('ui-state-highlight');
+        treeNode.find('> .ui-treenode-content').removeClass('ui-state-highlight')
+                .find('> .ui-treenode-label').removeClass('ui-state-highlight');
         icon.removeClass('ui-icon-blank ui-icon-check').addClass('ui-icon-minus');
         treeNode.removeClass('ui-treenode-selected ui-treenode-unselected').addClass('ui-treenode-hasselected').attr('aria-checked', false).attr('aria-selected', false);
 
