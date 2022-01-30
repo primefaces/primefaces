@@ -505,16 +505,7 @@
          * @return {string} The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.
          */
         getTheme : function() {
-            var themeLink = PrimeFaces.getThemeLink();
-            if (themeLink.length === 0) {
-                return "";
-            }
-
-            var themeURL = themeLink.attr('href'),
-                plainURL = themeURL.split('&')[0],
-                oldTheme = plainURL.split('ln=primefaces-')[1];
-
-            return oldTheme;
+            return PrimeFaces.env.getTheme();
         },
 
         /**
