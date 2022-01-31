@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -186,6 +187,11 @@ public abstract class DatePicker extends AbstractInputComponent {
 
     public void setValue(long millis) {
         setDate(millis);
+    }
+
+    public void setValue(String string) {
+        getInput().sendKeys(string);
+        getInput().sendKeys(Keys.ENTER);
     }
 
     public String millisAsFormattedDate(long millis) {

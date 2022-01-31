@@ -40,6 +40,18 @@
                         </p:selectManyMenu>
                     </f:facet>
                 </p:column>
+                <p:column headerText="last login date time" field="lastLoginDateTime" filterMatchMode="between">
+                    <f:facet name="filter">
+                        <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"
+                                      pattern="yyyy-MM-dd" />
+                    </f:facet>
+                </p:column>
+                <p:column headerText="last login date" field="lastLoginDate" filterMatchMode="between">
+                    <f:facet name="filter">
+                        <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateFilter"
+                                      pattern="yyyy-MM-dd" />
+                    </f:facet>
+                </p:column>
 
             </p:dataTable>
 

@@ -23,15 +23,19 @@
  */
 package org.primefaces.model.filter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import javax.faces.context.FacesContext;
 import java.util.List;
 import java.util.Locale;
+import org.primefaces.util.CalendarUtils;
 
 public class BetweenFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (!(filter instanceof List) || ((List<?>) filter).size() != 2) {
+        if (!(filter instanceof List) || ((List) filter).size() != 2 || value == null) {
             return false;
         }
 
@@ -43,8 +47,28 @@ public class BetweenFilterConstraint implements FilterConstraint {
     }
 
     protected boolean isBetween(Comparable value, List filter) {
-        Comparable start = (Comparable) filter.get(0);
-        Comparable end = (Comparable) filter.get(1);
+        Comparable<?> start = (Comparable) filter.get(0);
+        Comparable<?> end = (Comparable) filter.get(1);
+        if (start == null || end == null) {
+            return false;
+        }
+        if (end instanceof LocalDate) {
+            LocalDate date = toLocalDate(value);
+            return date.compareTo((LocalDate) start) >= 0 && date.compareTo((LocalDate) end) <= 0;
+        }
         return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
+    }
+
+    protected LocalDate toLocalDate(Object value) {
+        if (value instanceof LocalDate) {
+            return (LocalDate) value;
+        }
+        if (value instanceof LocalDateTime) {
+            return ((LocalDateTime) value).toLocalDate();
+        }
+        if (value instanceof Date) {
+            return CalendarUtils.convertDate2LocalDate((Date) value);
+        }
+        throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid types are LocalDate, LocalDateTime, Date.");
     }
 }

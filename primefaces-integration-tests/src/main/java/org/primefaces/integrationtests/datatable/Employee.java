@@ -30,6 +30,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -43,6 +45,8 @@ public class Employee implements Serializable {
     private LocalDate birthDate;
     private Integer salary;
     private Role role;
+    private LocalDateTime lastLoginDateTime;
+    private Date lastLoginDate;
 
     public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
 }

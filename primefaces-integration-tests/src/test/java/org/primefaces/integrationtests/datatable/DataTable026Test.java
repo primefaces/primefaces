@@ -302,6 +302,54 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(13)
+    @DisplayName("DataTable: filter: between LocalDateTime")
+    public void testFilterBetweenLocalDateTime(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.of(2021, 1, 10);
+        page.lastLoginDateTimeFilter.setValue("" + start + " - " + end); // 2021-01-01 - 2021-01-10
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> {
+                    LocalDate date = e.getLastLoginDateTime().toLocalDate();
+                    return date.equals(start) || date.equals(end) || (date.isAfter(start) && date.isBefore(end));
+                })
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("DataTable: filter: between Date")
+    public void testFilterBetweenDate(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.of(2021, 1, 10);
+        page.lastLoginDateFilter.setValue("" + start + " - " + end); // 2021-01-01 - 2021-01-10
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> {
+                    LocalDate date = e.getLastLoginDateTime().toLocalDate();
+                    return date.equals(start) || date.equals(end) || (date.isAfter(start) && date.isBefore(end));
+                })
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
@@ -325,6 +373,12 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:roleFilter")
         SelectManyMenu roleFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter")
+        DatePicker lastLoginDateTimeFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter")
+        DatePicker lastLoginDateFilter;
 
         @Override
         public String getLocation() {
