@@ -47,16 +47,13 @@ public class BetweenFilterConstraint implements FilterConstraint {
     }
 
     protected boolean isBetween(Comparable value, List filter) {
-        Comparable<?> start = (Comparable) filter.get(0);
-        Comparable<?> end = (Comparable) filter.get(1);
+        Comparable start = (Comparable) filter.get(0);
+        Comparable end = (Comparable) filter.get(1);
         if (start == null || end == null) {
             return false;
         }
-        if (end instanceof LocalDate) {
-            LocalDate date = toLocalDate(value);
-            return date.compareTo((LocalDate) start) >= 0 && date.compareTo((LocalDate) end) <= 0;
-        }
-        return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
+        Comparable convertedValue = (end instanceof LocalDate) ? toLocalDate(value) : value;
+        return convertedValue.compareTo(start) >= 0 && convertedValue.compareTo(end) <= 0;
     }
 
     protected LocalDate toLocalDate(Object value) {
