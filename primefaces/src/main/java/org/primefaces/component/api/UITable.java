@@ -178,6 +178,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }
+        setFilterByAsMap(filterBy);
 
         return f != null;
     }
@@ -386,6 +387,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (s != null) {
             sortBy.put(s.getColumnKey(), s);
         }
+        setSortByAsMap(sortBy);
 
         return s != null;
     }
