@@ -189,9 +189,18 @@ public abstract class DatePicker extends AbstractInputComponent {
         setDate(millis);
     }
 
+    /**
+     * Sets string value and TAB key.
+     *
+     * @param string to set.
+     */
     public void setValue(String string) {
+        setValue(string, Keys.TAB);
+    }
+
+    public void setValue(String string, Keys key) {
         getInput().sendKeys(string);
-        getInput().sendKeys(Keys.ENTER);
+        getInput().sendKeys(key);
     }
 
     public String millisAsFormattedDate(long millis) {
