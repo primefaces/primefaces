@@ -252,4 +252,16 @@ public class FileUploadUtilsTest {
         assertEquals("", result);
     }
 
+    @Test
+    public void getValidFilename_GitHub8359() {
+        // Arrange
+        String filename = "~myfile.txt";
+
+        // Act
+        String result = FileUploadUtils.getValidFilename(filename);
+
+        // Assert
+        assertEquals(filename, result);
+    }
+
 }
