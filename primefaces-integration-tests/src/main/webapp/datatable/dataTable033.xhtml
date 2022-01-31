@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+        <h:head>
+
+        </h:head>
+
+        <h:body>
+
+            <h:form id="form">
+                <div class="p-mt-3 p-mb-5">
+                    <p:inputText id="template" value="#{dataTable033.columnTemplate}" size="50" styleClass="p-mr-2"/>
+                    <p:commandButton id="updateColumns" update="customers" action="#{dataTable033.updateColumns}" value="Update"
+                                     process="@parent" icon="pi pi-refresh"
+                                     oncomplete="PF('customersTable').clearFilters()"/>
+                </div>
+
+                <p:dataTable id="customers" var="customer" value="#{dataTable033.customers}" widgetVar="customersTable"
+                             filteredValue="#{dataTable033.filteredCustomers}">
+
+                    <p:columns value="#{dataTable033.columns}" var="column" headerText="#{column.header}" field="#{column.property}">
+                        <f:facet name="filter">
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" rendered="#{column.type eq 'date'}"/>
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" rendered="#{column.type eq 'enum'}">
+                                <f:selectItem itemValue="#{null}" itemLabel=""/>
+                                <f:selectItems value="#{column.klazz.enumConstants}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:columns>
+
+                </p:dataTable>
+            </h:form>
+
+        </h:body>
+    </f:view>
+
+</html>
