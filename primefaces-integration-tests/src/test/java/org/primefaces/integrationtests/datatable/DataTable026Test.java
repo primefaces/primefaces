@@ -41,6 +41,7 @@ import org.primefaces.selenium.component.model.datatable.Row;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.primefaces.util.CalendarUtils;
 
 public class DataTable026Test extends AbstractDataTableTest {
 
@@ -341,7 +342,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         // Assert
         List<Employee> employeesFiltered = employees.stream()
                 .filter(e -> {
-                    LocalDate date = e.getLastLoginDateTime().toLocalDate();
+                    LocalDate date = CalendarUtils.convertDate2LocalDate(e.getLastLoginDate());
                     return date.equals(start) || date.equals(end) || (date.isAfter(start) && date.isBefore(end));
                 })
                 .collect(Collectors.toList());
