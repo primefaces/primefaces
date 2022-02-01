@@ -23,10 +23,6 @@
  */
 package org.primefaces.model.filter;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.function.BiPredicate;
@@ -39,34 +35,19 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
             return false;
         }
         if (value instanceof Number) {
-            BigDecimal filterBigDecimal = toBigDecimal(filter, locale);
-            return filterBigDecimal != null && getPredicate().test(toBigDecimal(value, locale), filterBigDecimal);
+            if (!(filter instanceof Number)) {
+                throw new IllegalArgumentException("Filter should be a number. Forgot to add f:converter?");
+            }
+            if (value.getClass() == filter.getClass()) {
+                return getPredicate().test((Comparable) value, (Comparable) filter);
+            }
+            return getPredicate().test(((Number) value).doubleValue(), ((Number) filter).doubleValue());
         }
         else {
             return getPredicate()
                     .test(StringFilterConstraint.toString(value, locale),
                             StringFilterConstraint.toString(filter, locale));
         }
-    }
-
-    static BigDecimal toBigDecimal(Object object, Locale locale) {
-        if (object instanceof BigDecimal) {
-            return (BigDecimal) object;
-        }
-        if (object instanceof Number) {
-            return new BigDecimal(object.toString());
-        }
-        if (object instanceof String) {
-            try {
-                DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(locale);
-                decimalFormat.setParseBigDecimal(true);
-                return (BigDecimal) decimalFormat.parseObject((String) object);
-            }
-            catch (ParseException e) {
-                return null;
-            }
-        }
-        throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
     }
 
     protected abstract BiPredicate<Comparable, Comparable> getPredicate();
