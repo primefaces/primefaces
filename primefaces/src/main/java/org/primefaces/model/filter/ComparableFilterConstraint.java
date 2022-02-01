@@ -34,20 +34,18 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         if (value == null || filter == null) {
             return false;
         }
-        if (value.getClass() == filter.getClass() && value instanceof Comparable) {
-            return getPredicate().test((Comparable) value, (Comparable) filter);
+        if (!(value instanceof Comparable)) {
+            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
         }
-        if (value instanceof Number) {
-            if (!(filter instanceof Number)) {
-                throw new IllegalArgumentException("Filter should be a number. Forgot to add f:converter?");
-            }
-            return getPredicate().test(((Number) value).doubleValue(), ((Number) filter).doubleValue());
+        if (!filter.getClass().isAssignableFrom(value.getClass())) {
+            throw new IllegalArgumentException("Filter class should be assignable from value class. Forgot to add a converter?");
         }
-        else {
-            return getPredicate()
-                    .test(StringFilterConstraint.toString(value, locale),
-                            StringFilterConstraint.toString(filter, locale));
+        if (value instanceof String) {
+            String valueStr = StringFilterConstraint.toString(value, locale);
+            String filterStr = StringFilterConstraint.toString(filter, locale);
+            return getPredicate().test(valueStr, filterStr);
         }
+        return getPredicate().test((Comparable) value, (Comparable) filter);
     }
 
     protected abstract BiPredicate<Comparable, Comparable> getPredicate();
