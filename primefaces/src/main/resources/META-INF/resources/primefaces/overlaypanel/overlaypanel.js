@@ -211,7 +211,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         //hide overlay when mousedown is at outside of overlay
         if (this.cfg.dismissable && !this.cfg.modal) {
-            this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.jq,
+            // anything focused outside the overlay will close it
+            var eventNamespace = 'keyup.' + this.id + '_hide mousedown.' + this.id + '_hide';
+            this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, eventNamespace, this.jq,
                 function() { return $this.target; },
                 function(e, eventTarget) {
                     if (!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0 || eventTarget.closest('.ui-input-overlay').length > 0)) {
