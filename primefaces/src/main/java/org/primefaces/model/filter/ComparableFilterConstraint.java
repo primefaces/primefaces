@@ -34,12 +34,12 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         if (value == null || filter == null) {
             return false;
         }
+        if (value.getClass() == filter.getClass() && value instanceof Comparable) {
+            return getPredicate().test((Comparable) value, (Comparable) filter);
+        }
         if (value instanceof Number) {
             if (!(filter instanceof Number)) {
                 throw new IllegalArgumentException("Filter should be a number. Forgot to add f:converter?");
-            }
-            if (value.getClass() == filter.getClass()) {
-                return getPredicate().test((Comparable) value, (Comparable) filter);
             }
             return getPredicate().test(((Number) value).doubleValue(), ((Number) filter).doubleValue());
         }
