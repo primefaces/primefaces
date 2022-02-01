@@ -230,7 +230,7 @@
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
-            <version>9.9.1-8</version>
+            <version>11.1</version>
             <scope>test</scope>
         </dependency>
 
