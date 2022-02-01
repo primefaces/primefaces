@@ -118,9 +118,7 @@ public class ColumnsView implements Serializable {
     public void updateColumns() {
         //reset table state
         DataTable table = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:customers");
-        table.setSortByAsMap(null);
-        table.setFilterByAsMap(null);
-        table.setColumnMeta(null);
+        table.resetColumns();
 
         //update columns
         createDynamicColumns();
