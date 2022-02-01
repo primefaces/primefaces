@@ -164,9 +164,11 @@ public class ConfirmDialog001Test extends AbstractPrimePageTest {
                 // modal dialog should block clickability of button
                 page.confirm.click();
                 Assertions.fail("Button should not be clickable because modal mask is covering it!");
-            } catch (ElementClickInterceptedException ex) {
+            }
+            catch (ElementClickInterceptedException ex) {
                 // element should be blocked by modal mask!
-            } catch (WebDriverException ex) {
+            }
+            catch (WebDriverException ex) {
                 // Safari: element should be blocked by modal mask!
             }
         }

@@ -63,12 +63,12 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         // items
         List<WebElement> optgroups = selectOneMenu.getInput().findElements(By.tagName("optgroup"));
         Assertions.assertEquals(2, optgroups.size());
-        List<WebElement> options= selectOneMenu.getInput().findElements(By.tagName("option"));
+        List<WebElement> options = selectOneMenu.getInput().findElements(By.tagName("option"));
         Assertions.assertEquals(8, options.size());
         // panel-content
         optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
         Assertions.assertEquals(2, optgroups.size());
-        options= selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals(8, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
@@ -89,7 +89,7 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         Assertions.assertEquals("German Cars", optgroups.get(0).getText());
         Assertions.assertEquals("American <Cars>", optgroups.get(1).getText());
 
-        List<WebElement> options= selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals("Mercedes", options.get(2).getText());
         Assertions.assertEquals("Chry<sler", options.get(4).getText());
 

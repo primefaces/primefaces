@@ -36,13 +36,12 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
 
 /**
- * Tests advanced single file upload.
- * p:fileUpload mode=advanced auto=false multiple=false dragDropSupport=false maxChunkSize="1024k"
+ * Tests advanced single file upload. p:fileUpload mode=advanced auto=false
+ * multiple=false dragDropSupport=false maxChunkSize="1024k"
  */
 @Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
 public class FileUpload011Test extends AbstractFileUploadTest {
@@ -75,7 +74,8 @@ public class FileUpload011Test extends AbstractFileUploadTest {
                     rnd.nextBytes(buf);
                     Files.write(BIG_FILES[i], buf, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                 }
-            } catch(IOException ioe) {
+            }
+            catch (IOException ioe) {
                 throw new UncheckedIOException(ioe);
             }
         }
@@ -91,10 +91,11 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     private static void deleteFolder(Path path) {
         try {
             Files.walk(path)
-              .sorted(Comparator.reverseOrder())
-              .map(Path::toFile)
-              .forEach(File::delete);
-        } catch (IOException ignore) {
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        }
+        catch (IOException ignore) {
         }
     }
 
@@ -273,6 +274,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:fileupload")
         FileUpload fileupload;
 

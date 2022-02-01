@@ -137,11 +137,17 @@ public class SelectionFeature implements DataTableFeature {
             if (o != null) {
                 Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
                 String var = table.getVar();
+
+                List<Object> selectionTmp = Collections.emptyList();
                 Set<String> rowKeysTmp = Collections.emptySet();
                 if (isSelectable(table, var, requestMap, o)) {
-                    rowKeysTmp = Collections.singleton(rowKey);
+                    selectionTmp = new ArrayList(1);
+                    selectionTmp.add(o);
+                    rowKeysTmp = new HashSet(1);
+                    rowKeysTmp.add(rowKey);
                 }
-                setSelection(context, table, false, Collections.singletonList(o), rowKeysTmp);
+
+                setSelection(context, table, false, selectionTmp, rowKeysTmp);
             }
             else {
                 setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());

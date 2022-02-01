@@ -44,7 +44,7 @@ public class DataTable031Test extends AbstractDataTableTest {
         page.toogle.click();
         Assertions.assertSame(page.dataTable.getRows().size(), 4);
         Assertions.assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
-        
+
         // filter for "Data 1 *"
         page.dataTable.filter("data", "Data 1");
         Assertions.assertSame(page.dataTable.getRows().size(), 4);
@@ -53,7 +53,7 @@ public class DataTable031Test extends AbstractDataTableTest {
         // display "Data 2", filter is still "Data 1", so no data should be displayed
         page.toogle.click();
         Assertions.assertSame(page.dataTable.getRows().size(), 0);
-        
+
         // reset filter
         page.dataTable.removeFilter("data");
         Assertions.assertSame(page.dataTable.getRows().size(), 4);
@@ -70,6 +70,7 @@ public class DataTable031Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:dt")
         DataTable dataTable;
 

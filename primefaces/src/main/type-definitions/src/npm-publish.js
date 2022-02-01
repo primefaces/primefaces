@@ -1,9 +1,11 @@
 // @ts-check
 
-const { basename, normalize, resolve } = require("path");
+const { manifest } = require("pacote");
+const { basename, normalize, resolve, dirname } = require("path");
 const { createInterface } = require("readline");
 const semver = require("semver");
-const Registry = require("npm-registry-client");
+const { publish: publishToNpm } = require("libnpmpublish");
+const npmFetch = require("npm-registry-fetch");
 const { pack } = require("tar-stream");
 const { consumeBoolean, consumeInt, consumeString, consumeStringArray } = require('./cli-helper');
 const { DefaultNpmRegistry, Names, Paths } = require('./constants');
@@ -16,6 +18,7 @@ const DefaultCliArgs = {
     access: "public",
     askForMissingCredentials: true,
     credentials: {
+        type: "token",
         token: "",
     },
     declarations: {
@@ -45,10 +48,10 @@ async function question(readlineInterface, query) {
 
 /**
  * @param {import("readline").Interface} readlineInterface
- * @return {Promise<undefined | import("npm-registry-client").Credentials>}
+ * @return {Promise<undefined | NpmRegistry.Credentials>}
  */
 async function readCredentials(readlineInterface) {
-    /** @type {undefined | import("npm-registry-client").Credentials} */
+    /** @type {undefined | NpmRegistry.Credentials} */
     let result = undefined;
 
     console.log("No credentials were given for publishing the type declarations to npm.")
@@ -59,11 +62,15 @@ async function readCredentials(readlineInterface) {
         if (type.toLowerCase().startsWith("t")) {
             const token = await question(readlineInterface, "Enter npm auth token: ");
             if (token) {
-                result = { token };
+                result = { type: "token", token };
             }
             else {
                 console.log("Skipping npm publish as no token was entered.");
                 result = undefined;
+            }
+            const otp = await question(readlineInterface, "Enter optional OTP for 2 factor authentication ? ");
+            if (result && otp) {
+                result.otp = otp;
             }
         }
         else if (type.toLowerCase().startsWith("u")) {
@@ -71,11 +78,15 @@ async function readCredentials(readlineInterface) {
             const password = await question(readlineInterface, "Enter password: ");
             const email = await question(readlineInterface, "Enter email: ");
             if (username && password && email) {
-                result = { email, password, username };
+                result = { type: "username", email, password, username };
             }
             else {
                 console.log("Skipping npm publish as one of username, password, token was not entered.");
                 result = undefined;
+            }
+            const otp = await question(readlineInterface, "Enter optional OTP for 2 factor authentication ? ");
+            if (result && otp) {
+                result.otp = otp;
             }
         }
         else {
@@ -95,14 +106,14 @@ async function readCredentials(readlineInterface) {
 async function parseCliArgs() {
     const result = Object.assign({}, DefaultCliArgs);
     const stack = process.argv.slice(2).reverse();
-    /** @type {Partial<import("npm-registry-client").UsernameCredentials>} */
+    /** @type {Partial<NpmRegistry.UsernameCredentials>} */
     const usernameCredentials = {
         email: undefined,
         password: undefined,
         username: undefined,
         alwaysAuth: true,
     };
-    /** @type {Partial<import("npm-registry-client").TokenCredentials>} */
+    /** @type {Partial<NpmRegistry.TokenCredentials>} */
     const tokenCredentials = {
         token: undefined,
         alwaysAuth: true,
@@ -143,6 +154,9 @@ async function parseCliArgs() {
                     console.log(`     Path to additional files to include in the published package, separated with commas and relative to the project root directory.`);
                     console.log("");
                     console.log("== Authorization == ");
+                    console.log(` -2`);
+                    console.log(` --otp`);
+                    console.log(`     Optional npm OTP token for 2 factor authentication.`);
                     console.log(` -t`);
                     console.log(` --token`);
                     console.log(`     Npm auth token for authorization. You must specify either "token"; or "username", "password" and "email".`);
@@ -184,6 +198,10 @@ async function parseCliArgs() {
                     console.log(` --dryrun`);
                     console.log(`     Optional. When set, do not publish to npm, but only write the tarball that would be published to the given file path (relative to the project root dir)`);
                     process.exit(0);
+                case "-2":
+                case "--otp":
+                    consumeString(stack, v => result.otp = v);
+                    break;
                 case "-a":
                 case "--access": {
                     consumeString(stack, access => {
@@ -272,6 +290,7 @@ async function parseCliArgs() {
     if (usernameCredentials.email && usernameCredentials.password && usernameCredentials.username) {
         credentialsCount += 1;
         result.credentials = {
+            type: "username",
             email: usernameCredentials.email,
             password: usernameCredentials.password,
             username: usernameCredentials.username,
@@ -280,8 +299,12 @@ async function parseCliArgs() {
     if (tokenCredentials.token) {
         credentialsCount += 1;
         result.credentials = {
+            type: "token",
             token: tokenCredentials.token,
         };
+    }
+    if (result.otp) {
+        result.credentials.otp = result.otp;
     }
 
     // Resolve relative paths
@@ -335,41 +358,91 @@ async function parseCliArgs() {
 }
 
 /**
- * @param {import("npm-registry-client")} client 
- * @param {string} uri
- * @param {import("npm-registry-client").PublishParams} params
- * @return {Promise<void>}
+ * @param {NpmRegistry.Credentials} auth
+ * @returns {Partial<import("npm-registry-fetch").Options>}
  */
-function publishPromise(client, uri, params) {
-    return new Promise((resolve, reject) => {
-        client.publish(uri, params, error => {
-            if (error) {
-                reject(error);
-            }
-            else {
-                resolve(undefined);
-            }
-        });
-    });
+function createAuth(auth) {
+    /** @type {import("npm-registry-fetch").Options} */
+    const opts = {};
+    /** @type {import("npm-registry-fetch").AuthOptions} */
+    const forceAuth = {};
+    if (forceAuth.alwaysAuth !== undefined) {
+        forceAuth.alwaysAuth = auth.alwaysAuth;
+    }
+    if (auth.type === "token") {
+        forceAuth.token = auth.token;
+    }
+    if (auth.type === "username") {
+        forceAuth.username = auth.username;
+        forceAuth.password = auth.password;
+        forceAuth.email = auth.email;
+    }
+    if (Object.keys(forceAuth).length > 0) {
+        opts.forceAuth = forceAuth;
+    }
+    if (auth.otp !== undefined) {
+        // Currently only works when set at the opts,
+        // not inside the forceAuth, but set it on
+        // both anyways for the future
+        forceAuth.otp = auth.otp;
+        opts.otp = auth.otp;
+    }
+    return opts;
 }
 
 /**
- * @param {import("npm-registry-client")} client 
- * @param {string} uri
- * @param {import("npm-registry-client").GetParams} params
- * @return {Promise<import("npm-registry-client").PackageInfo>}
+ * @param {NpmRegistry.PublishParams} params
+ * @return {Promise<void>}
  */
-function getPromise(client, uri, params) {
-    return new Promise((resolve, reject) => {
-        client.get(uri, params, (error, info) => {
-            if (error || !info) {
-                reject(error);
-            }
-            else {
-                resolve(info);
-            }
-        })
-    });
+async function publishPromise(params) {
+    /** @type {import("npm-registry-fetch").Options} */
+    const opts = {
+        registry: params.registry,
+        ...createAuth(params.auth),
+    };
+    if (params.access !== undefined) {
+        // @ts-expect-error Type defs are wrong
+        opts.access = params.access;
+    }
+
+    // @ts-expect-error
+    opts.npmVersion = `${params.metadata["name"]}@${params.metadata["version"]}`
+
+    const buffer = await stream2Buffer(params.body);
+
+    const response = await publishToNpm(
+        /** @type {import("pacote").Manifest} */(params.metadata),
+        buffer,
+        opts
+    );
+    if (response.status < 200 || response.status >= 300) {
+        throw new Error(`NPM publish returned response code ${response.status}`);
+    }
+}
+
+/**
+ * @param {NpmRegistry.GetParams} params
+ * @return {Promise<NpmRegistry.PackageInfo>}
+ */
+async function getPromise(params) {
+    /** @type {import("npm-registry-fetch").Options} */
+    const opts = {
+        registry: params.registry,
+    };
+    if (params.auth !== undefined) {
+        Object.assign(opts, createAuth(params.auth));
+    }
+    const uri = `/${encodeURIComponent(params.packageName)}`;
+    const response = await npmFetch(uri, opts);
+    if (response.status < 200 || response.status >= 300) {
+        throw new Error(`NPM fetch failed with status code ${response.status}`);
+    }
+    const text = await response.text();
+    const json = JSON.parse(text);
+    if (typeof json.error === "string") {
+        throw new Error("NPM fetch failed: " + json.error);
+    }
+    return json;
 }
 
 /**
@@ -387,12 +460,10 @@ async function findNewVersion(registry, packageName, majorVersion, minorVersion,
     }
     else {
         // Find nearest non existing patch version
-        console.log("No patch version given, attempting to locate next non-existing version.")
-        const client = new Registry({
-        });
-        const uri = `${registry}/${packageName}`;
         try {
-            const info = await getPromise(client, uri, {
+            const info = await getPromise({
+                registry: registry,
+                packageName: packageName,
                 follow: true,
                 fullMetadata: false,
                 staleOk: false,
@@ -437,6 +508,27 @@ function streamPromise(stream) {
 }
 
 /**
+ * 
+ * @param {NodeJS.ReadableStream} stream 
+ * @returns {Promise<Buffer>}
+ */
+function stream2Buffer(stream) {
+    return new Promise((resolve, reject) => {
+        /** @type {Uint8Array[]} */
+        const buffer = [];
+        stream.on("data", chunk => {
+            if (!(chunk instanceof Uint8Array)) {
+                reject(new Error("Expected Uint8Array chunk, but got: " + chunk));
+            }
+            buffer.push(chunk);
+        });
+        stream.on("end", () => resolve(Buffer.concat(buffer)));
+        stream.on("error", err => reject(err));
+    });
+}
+
+
+/**
  * @param {NpmPublishFiles} files 
  * @return {NodeJS.ReadableStream}
  */
@@ -452,11 +544,9 @@ function createPackageTgz(files) {
 }
 
 /**
- * @param {{access: import("npm-registry-client").Access, credentials: import("npm-registry-client").Credentials, files: NpmPublishFiles, registry: string, dryRun: string | undefined}} param0
+ * @param {{access: NpmRegistry.Access, credentials: NpmRegistry.Credentials, files: NpmPublishFiles, registry: string, dryRun: string | undefined}} param0
  */
 async function publish({ access, credentials, files, registry, dryRun }) {
-    const client = new Registry({
-    });
     const packageJson = parseJsonObject(files[Names.NpmPackageJson] ?? "{}");
     if (packageJson === undefined) {
         throw new Error("No package.json was provided");
@@ -472,23 +562,25 @@ async function publish({ access, credentials, files, registry, dryRun }) {
         await streamPromise(packedFiles.pipe(require("fs").createWriteStream(dryRun)));
     }
     else {
-        const url = `${registry}/${encodeURIComponent(name)}`;
-        await publishPromise(client, url, {
-            metadata: packageJson,
+        await publishPromise({
             access: access,
             auth: credentials,
             body: packedFiles,
+            metadata: packageJson,
+            registry: registry,
         });
     }
 }
 
 /**
  * @param {PublishCliArgs} cliArgs
- * @return {Promise<JsonObject>}
+ * @return {Promise<import("pacote").Manifest>}
  */
 async function readAndAdjustPackageJson(cliArgs) {
-    const packageJson = parseJsonObject(await readFileUtf8(cliArgs.packageJson));
-    const packageName = typeof packageJson["name"] === "string" ? packageJson["name"] : "";
+    const packageJson = await manifest(dirname(cliArgs.packageJson));
+    const packageName = typeof packageJson["name"] === "string"
+        ? packageJson["name"]
+        : "";
     if (!packageName) {
         throw new Error("package.json does not contain a 'name' field");
     }

@@ -342,6 +342,10 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 $this.removeFiles(data.files);
 
                 PrimeFaces.ajax.Response.handle(data.result, data.textStatus, data.jqXHR, null);
+                
+                if($this.cfg.global) {
+                    $(document).trigger('pfAjaxSuccess');
+                }
             },
             always: function(e, data) {
                 if($this.cfg.oncomplete) {

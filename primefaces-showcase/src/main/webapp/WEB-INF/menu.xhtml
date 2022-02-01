@@ -25,7 +25,7 @@
         <div class="layout-menu">
             <ui:repeat value="#{appMenu.menuCategories}" var="menuCategory">
                 <div class="menu-category">#{menuCategory.label}</div>
-                <div class="menu-items">
+                <h:panelGroup layout="block" class="menu-items" rendered="#{not menuCategory.custom}">
                     <ui:repeat value="#{menuCategory.menuItems}" var="menuItem">
                         <h:outputLink rendered="#{empty menuItem.url and not empty menuItem.badge and empty menuItem.menuItems}" styleClass="hidden">
                             #{menuItem.label}<p:tag value="#{menuItem.badge}" severity="warning" styleClass="p-ml-2" rendered="#{not empty menuItem.badge}"/>
@@ -52,7 +52,14 @@
                             </div>
                         </p:outputPanel>
                     </ui:repeat>
-                </div>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="menu-image" rendered="#{menuCategory.custom}">
+                    <ui:repeat value="#{menuCategory.menuItems}" var="menuItem">
+                        <h:outputLink value="#{menuItem.url}" rendered="#{not empty menuItem.url and not empty menuItem.imageSrc}" target="_blank">
+                            <h:graphicImage name="#{menuItem.imageSrc}" alt="#{menuItem.label}" />
+                        </h:outputLink>
+                    </ui:repeat>
+                </h:panelGroup>
             </ui:repeat>
 
         </div>

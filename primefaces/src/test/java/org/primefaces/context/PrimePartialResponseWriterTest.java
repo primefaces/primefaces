@@ -33,8 +33,8 @@ import org.json.JSONObject;
 
 @SuppressWarnings("resource")
 public class PrimePartialResponseWriterTest {
-    
-	@Test
+
+    @Test
     public void testEncodeJSONArray() throws IOException, JSONException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
@@ -46,7 +46,7 @@ public class PrimePartialResponseWriterTest {
         jsonArray.put("test123&");
 
         primePartialResponseWriter.encodeJSONArray("myArray", jsonArray);
-        
+
         Assertions.assertEquals("\"myArray\":[&#34;test&#34;,12,1" + ",&#34;test123&amp;&#34;]", partialResponseWriter.toString());
     }
 
@@ -60,7 +60,7 @@ public class PrimePartialResponseWriterTest {
         jsonObject.put("isThatTrue", false);
 
         primePartialResponseWriter.encodeJSONObject("myObj", jsonObject);
-        
+
         Assertions.assertEquals("\"myObj\":{&#34;myStrVal&#34;:&#34;Hello&lt;&gt;World!&#34;,&#34;isThatTrue&#34;:false}", partialResponseWriter.toString());
     }
 
@@ -71,8 +71,7 @@ public class PrimePartialResponseWriterTest {
 
         primePartialResponseWriter.encodeJSONValue("myVal", "test123>");
         Assertions.assertEquals("&#34;myVal&#34;:&#34;test123&gt;&#34;", partialResponseWriter.toString());
-        
-        
+
         partialResponseWriter = new CollectingPartialResponseWriter();
         primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
 

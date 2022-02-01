@@ -34,19 +34,21 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        var _self = this;
+        var $this = this;
 
         //relocate
-        this.jq.css(this.cfg.position, '0px').appendTo($('body'));
+        this.jq.css(this.cfg.position, '0px');
+        this.cfg.appendTo = '@(body)';
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
 
         //display initially
-        if(this.cfg.autoDisplay) {
-            $(this.jq).css('display', 'block');
+        if (this.cfg.autoDisplay) {
+            this.jq.css('display', 'block');
         }
 
         //bind events
         this.jq.children('.ui-notificationbar-close').on("click", function() {
-            _self.hide();
+            $this.hide();
         });
     },
 
@@ -64,24 +66,30 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
      * @see http://api.jquery.com/show/
      */
     show: function(a1, a2, a3) {
-        if(this.cfg.effect === 'slide')
-            $(this.jq).slideDown(a1, a2, a3);
-        else if(this.cfg.effect === 'fade')
-            $(this.jq).fadeIn(a1, a2, a3);
-        else if(this.cfg.effect === 'none')
-            $(this.jq).show(a1, a2, a3);
+        if (this.cfg.effect === 'slide') {
+            this.jq.slideDown(a1, a2, a3);
+        }
+        else if (this.cfg.effect === 'fade') {
+            this.jq.fadeIn(a1, a2, a3);
+        }
+        else if (this.cfg.effect === 'none') {
+            this.jq.show(a1, a2, a3);
+        }
     },
 
     /**
      * Hides the notification bar.
      */
     hide: function() {
-        if(this.cfg.effect === 'slide')
-            $(this.jq).slideUp(this.cfg.effect);
-        else if(this.cfg.effect === 'fade')
-            $(this.jq).fadeOut(this.cfg.effect);
-        else if(this.cfg.effect === 'none')
-            $(this.jq).hide();
+        if (this.cfg.effect === 'slide') {
+            this.jq.slideUp(this.cfg.effect);
+        }
+        else if (this.cfg.effect === 'fade') {
+            this.jq.fadeOut(this.cfg.effect);
+        } 
+        else if (this.cfg.effect === 'none') {
+            this.jq.hide();
+        }
     },
 
     /**
@@ -96,10 +104,12 @@ PrimeFaces.widget.NotificationBar = PrimeFaces.widget.BaseWidget.extend({
      * Shows the notification bar it is currently hidden, or hides it if it is currently displayed.
      */
     toggle: function() {
-        if(this.isVisible())
+        if (this.isVisible()) {
             this.hide();
-        else
+        }
+        else {
             this.show();
+        }
     }
 
 });

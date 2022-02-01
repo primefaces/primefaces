@@ -53,7 +53,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.expression.SearchExpressionFacade;
 
 public class SearchExpressionFacadeTest {
 
@@ -84,7 +83,7 @@ public class SearchExpressionFacadeTest {
 
         return SearchExpressionFacade.resolveClientId(context, source, expression);
     }
-    
+
     private String resolveClientId(UIComponent source, String expression, Set<SearchExpressionHint> hints) {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -1200,7 +1199,8 @@ public class SearchExpressionFacadeTest {
         UIComponent source = new UICommand();
         source.setId("source");
 
-        assertEquals("source @(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3) source", resolveClientIds(source, " @this,@(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3),@this"));
+        assertEquals("source @(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3) source",
+                resolveClientIds(source, " @this,@(.ui-panel :input:not(select), #myPanel, #myPanel2) @(myId3),@this"));
 
     }
 
@@ -1978,11 +1978,6 @@ public class SearchExpressionFacadeTest {
         assertTrue(result.contains(innerContainer3));
     }
 
-    
-    
-    
-    
-    
     @Test
     public void resolveClientIdClientSide() {
 
@@ -1997,7 +1992,7 @@ public class SearchExpressionFacadeTest {
         String clientId = resolveClientId(root, " @widgetVar(myDlg) ", EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
         assertEquals("@widgetVar(myDlg)", clientId);
     }
-    
+
     @Test
     public void resolveClientId() {
 

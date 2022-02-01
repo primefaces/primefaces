@@ -45,7 +45,7 @@ const WhiteSpaceChars = {
 
 const Indentation = "    ";
 
-const DefaultNpmRegistry = "https://registry.npmjs.com";
+const DefaultNpmRegistry = "https://registry.npmjs.org/";
 
 const Names = {
     PrimeFacesDeclaration: "PrimeFaces.d.ts",

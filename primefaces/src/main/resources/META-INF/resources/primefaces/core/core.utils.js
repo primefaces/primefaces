@@ -293,27 +293,6 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-
-                // this checks were moved to the used components
-
-                // do nothing when the clicked element is a child of the overlay
-                /*
-                if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
-                    return;
-                }
-                */
-
-                // OLD WAY: do nothing when the clicked element is a child of the overlay
-                /*
-                var offset = overlay.offset();
-                if (e.pageX < offset.left
-                        || e.pageX > offset.left + overlay.width()
-                        || e.pageY < offset.top
-                        || e.pageY > offset.top + overlay.height()) {
-                    hideCallback();
-                }
-                */
-
                 hideCallback(e, $eventTarget);
             });
 
@@ -659,7 +638,8 @@ if (!PrimeFaces.utils) {
          */
         enableButton: function(jq) {
             if (jq) {
-                jq.removeClass('ui-state-disabled').removeAttr('disabled');
+                jq.removeClass('ui-state-disabled')
+                  .removeAttr('disabled aria-disabled');
             }
         },
 
@@ -672,7 +652,8 @@ if (!PrimeFaces.utils) {
             if (jq) {
                 jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
                   .addClass('ui-state-disabled')
-                  .attr('disabled', 'disabled');
+                  .attr('disabled', 'disabled')
+                  .attr('aria-disabled', 'true');
             }
         },
 

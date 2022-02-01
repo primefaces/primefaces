@@ -89,7 +89,7 @@ public class CaptchaRenderer extends CoreRenderer {
         wb.init("Captcha", captcha);
 
         wb.attr("sitekey", publicKey)
-                .attr("theme", captcha.getTheme(), "light")
+                .attr("theme", captcha.getTheme(), "auto")
                 .attr("language", captcha.getLanguage(), "en")
                 .attr("tabindex", captcha.getTabindex(), 0)
                 .attr("callback", captcha.getCallback(), null)

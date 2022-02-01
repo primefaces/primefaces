@@ -51,6 +51,10 @@ public class Schedule001 implements Serializable {
 
     private ScheduleModel eventModel;
     private String locale = "en";
+    private String timeZone = "UTC";
+    private String clientTimeZone = "UTC";
+
+    private ScheduleEvent<?> event = new DefaultScheduleEvent<>();
 
     @PostConstruct
     public void init() {
@@ -61,6 +65,7 @@ public class Schedule001 implements Serializable {
                     .startDate(previousDay8Pm())
                     .endDate(previousDay11Pm())
                     .description("Team A vs. Team B")
+                    .groupId("GroupA")
                     .build();
         eventModel.addEvent(event);
 
@@ -70,6 +75,7 @@ public class Schedule001 implements Serializable {
                     .endDate(today6Pm())
                     .description("Aragon")
                     .overlapAllowed(true)
+                    .groupId("GroupA")
                     .build();
         eventModel.addEvent(event);
 
@@ -79,6 +85,7 @@ public class Schedule001 implements Serializable {
                     .endDate(nextDay11Am())
                     .description("all you can eat")
                     .overlapAllowed(true)
+                    .groupId("GroupA")
                     .build();
         eventModel.addEvent(event);
 
@@ -87,6 +94,7 @@ public class Schedule001 implements Serializable {
                     .startDate(theDayAfter3Pm())
                     .endDate(fourDaysLater3pm())
                     .description("Trees, flowers, ...")
+                    .groupId("GroupB")
                     .build();
         eventModel.addEvent(event);
 
@@ -95,6 +103,7 @@ public class Schedule001 implements Serializable {
                     .startDate(sevenDaysLater0am())
                     .endDate(eightDaysLater0am())
                     .description("sleep as long as you want")
+                    .groupId("GroupB")
                     .allDay(true)
                     .build();
         eventModel.addEvent(scheduleEventAllDay);
@@ -144,11 +153,18 @@ public class Schedule001 implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event selected",
                     selectEvent.getObject().getGroupId() + ": " + selectEvent.getObject().getTitle());
         addMessage(message);
+
+        setEvent(selectEvent.getObject());
     }
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Date selected", selectEvent.getObject().toString());
         addMessage(message);
+
+        event = DefaultScheduleEvent.builder()
+                .startDate(selectEvent.getObject())
+                .endDate(selectEvent.getObject().plusHours(1))
+                .build();
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {
@@ -170,8 +186,15 @@ public class Schedule001 implements Serializable {
         setLocale("fr");
     }
 
+    public void german() {
+        setLocale("de");
+    }
+
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void deleteAllEvents() {
+        eventModel = new DefaultScheduleModel();
+    }
 }

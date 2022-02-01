@@ -14,6 +14,10 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
 - Run integration tests with the _verify_ phase and profiles activated: `mvn verify -Pintegration-tests,mojarra-2.3`
 - Run a single test with `mvn verify -Pintegration-tests,mojarra-2.3 -Dit.test=DatePicker001Test`
 
+## Run as web application
+- `mvn clean jetty:run -Pmojarra-2.3`
+- Now you can open it on 'http://localhost:8080/integrationtests/'
+
 ## Profiles
 
 #### Browsers
@@ -23,7 +27,7 @@ It utilizes Tomcat Embedded, OpenWebBeans, RestEasy and different JSF implementa
   - `safari`
 
 Keep in mind there are - as of january 2021 - following limitations for Safari webdriver:
-- headless-mode ist not available (https://github.com/SeleniumHQ/selenium/issues/5985)
+- headless-mode is not available (https://github.com/SeleniumHQ/selenium/issues/5985)
 - no parallel test-execution because Safari does not allow for concurrent sessions (https://github.com/SeleniumHQ/selenium/issues/2172)
 - Safari is only available on MacOS (and iOS / iPadOS)
 

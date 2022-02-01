@@ -29,11 +29,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test the Java date time pattern to jquery UI pattern conversion {@link DateTimePatternConverter}.
+ * Test the Java date time pattern to jquery UI pattern conversion
+ * {@link DateTimePatternConverter}.
  */
 public class DateTimePatternConverterTest {
-    private static final PatternConverter[] PATTERN_CONVERTERS = new PatternConverter[] { new OldTimePatternConverter(),
-            new OldDatePatternConverter() };
+
+    private static final PatternConverter[] PATTERN_CONVERTERS = new PatternConverter[]{new OldTimePatternConverter(),
+        new OldDatePatternConverter()};
 
     private PatternConverter converter;
 
@@ -406,7 +408,9 @@ public class DateTimePatternConverterTest {
         assertEquals(oldExpectedPattern, oldConverted, "Expected old conversion to match result");
     }
 
-    /** Checks that the pattern is converted the same way as before PF 9 */
+    /**
+     * Checks that the pattern is converted the same way as before PF 9
+     */
     private void assertConvertsSame(String expectedPattern, String inputPattern) {
         assertConvertsDifferently(expectedPattern, expectedPattern, inputPattern);
     }

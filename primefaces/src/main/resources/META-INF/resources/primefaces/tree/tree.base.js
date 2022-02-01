@@ -182,7 +182,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                                 this.showNodeChildren(node);
 
                                 if(this.cfg.draggable) {
-                                    this.makeDraggable(nodeChildrenContainer.find('div.ui-treenode-content'));
+                                    this.makeDraggable(nodeChildrenContainer.find('.ui-treenode-content'));
                                 }
 
                                 if(this.cfg.droppable) {

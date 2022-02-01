@@ -276,7 +276,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             tabs = this.headerContainer;
 
         /* For Screen Reader and Keyboard accessibility */
-        tabs.attr('tabindex', this.tabindex);
+        tabs.not('.ui-state-disabled').attr('tabindex', this.tabindex);
 
         tabs.on('focus.tabview', function(e) {
             var focusedTab = $(this);
@@ -734,7 +734,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to disable.
      */
     disable: function(index) {
-        this.headerContainer.eq(index).addClass('ui-state-disabled');
+        this.headerContainer.eq(index).addClass('ui-state-disabled').attr('tabindex', '-1');
     },
 
     /**
@@ -742,7 +742,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {number} index 0-based index of the tab to enable.
      */
     enable: function(index) {
-        this.headerContainer.eq(index).removeClass('ui-state-disabled');
+        this.headerContainer.eq(index).removeClass('ui-state-disabled').attr('tabindex', this.tabindex);
     },
 
     /**

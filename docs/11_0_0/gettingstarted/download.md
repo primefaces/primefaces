@@ -22,7 +22,7 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 </dependency>
 ```
 
-### jakarta (JSF 3.0)
+### jakarta (JSF 3.0 - JSF 4.0)
 
 ```xml
 <dependency>

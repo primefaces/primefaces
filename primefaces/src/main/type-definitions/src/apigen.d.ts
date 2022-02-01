@@ -222,13 +222,75 @@ interface ArgSignature {
 /** Files to include in the package to publish. Key is path to file, value is file content. */
 type NpmPublishFiles = Record<string, string>;
 
+declare namespace NpmRegistry {
+    type Access = "public" | "restricted";
+
+    interface BaseCredentials {
+        alwaysAuth?: boolean;
+        otp?: string;
+    }
+    interface TokenCredentials extends BaseCredentials {
+        type: "token",
+        token: string;
+    }
+    interface UsernameCredentials extends BaseCredentials {
+        type: "username",
+        username: string;
+        password: string;
+        email: string;
+    }
+
+    type Credentials = UsernameCredentials | TokenCredentials;
+
+    interface Person {
+        name: string;
+        email?: string;
+        url?: string;
+        githubUsername?: string;
+    }
+    interface GetParams {
+        registry: string;
+        packageName: string;
+        timeout?: number;
+        follow?: boolean;
+        staleOk?: boolean;
+        auth?: Credentials;
+        fullMetadata?: boolean;
+    }
+
+    interface PublishParams {
+        access: Access,
+        metadata: Record<string, unknown>;
+        body: NodeJS.ReadableStream;
+        auth: Credentials;
+        registry: string;
+    }
+
+    interface PackageInfo {
+        homepage?: string;
+        repository?: { type: string, url: string },
+        keywords?: string[];
+        time?: Record<string, string>;
+        license?: string;
+        users?: Record<string, boolean>;
+        maintainers?: Person[];
+        versions?: Record<string, Json>;
+        author?: Person;
+        name?: string;
+        bugs?: { url: string };
+        readme?: string;
+        description?: string;
+        readmeFilename?: string;
+    }
+}
+
 interface PublishCliArgs {
     /** Either `public` or `protected`. */
-    access: import("npm-registry-client").Access;
+    access: NpmRegistry.Access;
     /** Whether to prompt the user if they did pass credentials via the CLI. */
     askForMissingCredentials: boolean;
     /** Credentials for publishing. */
-    credentials: import("npm-registry-client").Credentials;
+    credentials: NpmRegistry.Credentials;
     /** Path to the directory with the generated declaration files. */
     declarations: {
         /** Entry declaration file */
@@ -242,6 +304,8 @@ interface PublishCliArgs {
     excludedPackageJsonFields: string[];
     /** Extra files to include in the published package */
     extraFiles: string[];
+    /** OTP for 2 factor authentication */
+    otp?: string;
     /** Path to the package.json file to use */
     packageJson: string;
     /** Path to a file to be used as the README.md for the package */

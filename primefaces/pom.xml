@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>11.0.0-SNAPSHOT</version>
+        <version>12.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -61,6 +61,10 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>jcl-over-slf4j</artifactId>
                 </exclusion>
+                <exclusion>
+                	<groupId>org.apache.logging.log4j</groupId>
+                	<artifactId>log4j-api</artifactId>
+                </exclusion>
             </exclusions>
             <scope>provided</scope>
         </dependency>
@@ -95,6 +99,10 @@
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                	<groupId>org.apache.logging.log4j</groupId>
+                	<artifactId>log4j-api</artifactId>
                 </exclusion>
             </exclusions>
             <scope>provided</scope>
@@ -159,7 +167,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.0.0</version>
+            <version>4.3.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -171,7 +179,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.54</version>
+            <version>9.0.58</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -183,7 +191,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.35</version>
             <scope>test</scope>
         </dependency>
 
@@ -191,7 +199,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.2.2</version>
+            <version>4.2.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -209,7 +217,7 @@
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.9.7</version>
+            <version>3.9.9</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -258,7 +266,7 @@
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.12.0</version>
+                    <version>1.12.1</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
                         <nodeVersion>v16.8.0</nodeVersion>
@@ -320,7 +328,7 @@
                             </goals>
                             <phase>deploy</phase>
                             <configuration>
-                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles ../LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token}</arguments>
+                                <arguments>run npm-publish -- --major ${parsedVersion.majorVersion} --minor ${parsedVersion.minorVersion} --readme src/main/type-definitions/NPM.md --extrafiles ../LICENSE --prompt false --username ${npm.username} --password ${npm.password} --email ${npm.email} --token ${npm.token} --otp=${npm.otp}</arguments>
                             </configuration>
                         </execution>
                     </executions>
@@ -350,7 +358,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.4.3</version>
+                <version>3.5.1</version>
             </extension>
         </extensions>
 
@@ -384,7 +392,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>parse-version</id>
@@ -397,7 +405,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>5.1.2</version>
+                <version>5.1.4</version>
                 <extensions>true</extensions>
                 <configuration>
                     <supportedProjectTypes>
@@ -661,6 +669,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanymenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.cascadeselect.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.commandbutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.commandlink.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.button.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.linkbutton.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/forms/forms.selectmanybutton.js</include>
@@ -929,6 +938,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/texteditor.css</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/0-texteditor.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/texteditor/1-texteditor-theme.css</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/filedownload.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/filedownload/0-download.js</include>
@@ -1038,7 +1056,19 @@
                                             <resource>META-INF/primefaces-p.taglib.xml</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/ajaxstatus/ajaxstatus.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/core.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.ajax.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/core/core.csp.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/validation/validation.js</resource>
@@ -1048,6 +1078,9 @@
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/fileupload/fileupload.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/lifecycle/lifecycle.js</resource>
                                         </transformer>
                                     </delegates>
                                 </transformer>
@@ -1118,6 +1151,14 @@
                                     <pattern>javax.xml.soap</pattern>
                                     <shadedPattern>jakarta.xml.soap</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>window.jsf</pattern>
+                                    <shadedPattern>window.faces</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>jsf.ajax</pattern>
+                                    <shadedPattern>faces.ajax</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -1146,7 +1187,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.4.1</version>
+                        <version>6.5.3</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
