@@ -3738,7 +3738,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Theme of the captcha. Default is light.]]>
+                <![CDATA[Theme of the captcha either 'light', 'dark', or 'auto'. Default is auto.]]>
             </description>
             <name>theme</name>
             <required>false</required>

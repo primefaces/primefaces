@@ -3,7 +3,7 @@
  *
  * Captcha is a form validation component based on Recaptcha API V2.
  *
- * @typedef {"light" | "dark"} PrimeFaces.widget.Captcha.Theme Captcha features light and dark modes for theme.
+ * @typedef {"auto" | "light" | "dark"} PrimeFaces.widget.Captcha.Theme Captcha features light and dark modes for theme.
  *
  * @interface {PrimeFaces.widget.CaptchaCfg} cfg The configuration for the {@link  Captcha| Captcha widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -31,6 +31,8 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.cfg.language = this.cfg.language||'en';
+        this.cfg.theme = this.cfg.theme || PrimeFaces.env.getThemeContrast();
+
         var $this = this;
 
         window[this.getInitCallbackName()] = function() {

@@ -32,7 +32,7 @@ Captcha is a form validation component based on Recaptcha API V2.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | validatorMessage | null | String | Message to be displayed when validation fields.
 | publicKey | null | String | Public recaptcha key for a specific domain (deprecated)
-| theme | red | String | Theme of the captcha.
+| theme | auto | String | Theme of the captcha. Values are "light", "dark", or "auto" to try and auto detect based on current theme.
 | language | en | String | Key of the supported languages.
 | tabindex | null | Integer | Position of the input element in the tabbing order.
 | label | null | String | User presentable field name.

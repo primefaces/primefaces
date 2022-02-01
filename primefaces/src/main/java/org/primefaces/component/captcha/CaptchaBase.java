@@ -54,7 +54,7 @@ public abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getTheme() {
-        return (String) getStateHelper().eval(PropertyKeys.theme, "light");
+        return (String) getStateHelper().eval(PropertyKeys.theme, "auto");
     }
 
     public void setTheme(String theme) {
