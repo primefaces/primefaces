@@ -177,7 +177,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         $(this.originalInputs).on('focus.selectOneRadio', function() {
             var radio = $this.jq.find('.ui-radiobutton-box.ui-state-active').parent().find(':radio');
             if (!radio.length) {
-                var first = this.id.replace(/^.*:(\d)+$/, '$1') === '0';
+                var first = this.id.endsWith(':0');
                 var inputs = $this.enabledInputs;
                 radio = first ? inputs.first() : inputs.last();
             }
