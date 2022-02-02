@@ -422,7 +422,7 @@
         <profile>
             <id>it - enable parallel execution</id>
             <activation>
-                <jdk>[9,)</jdk>
+                <jdk>[9,16]</jdk>
             </activation>
             <properties>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
