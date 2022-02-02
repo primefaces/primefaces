@@ -25,7 +25,7 @@
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
         <primefaces.UPLOADER>auto</primefaces.UPLOADER>
-        <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+        <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
@@ -420,6 +420,15 @@
             </properties>
         </profile>
         <profile>
+            <id>it - enable parallel execution</id>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+            <properties>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+            </properties>
+        </profile>
+        <profile>
             <id>safari</id>
             <properties>
                 <webdriver.browser>safari</webdriver.browser>
@@ -428,15 +437,6 @@
                 <groups>SafariBasic</groups>
                 -->
                 <excludedGroups>SafariExclude</excludedGroups>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-            </properties>
-        </profile>
-        <profile>
-            <id>it - disable parallel execution</id>
-            <activation>
-                <jdk>(,1.8]</jdk>
-            </activation>
-            <properties>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
             </properties>
         </profile>
