@@ -434,7 +434,7 @@
         <profile>
             <id>it - disable parallel execution</id>
             <activation>
-                <jdk>1.8</jdk>
+                <jdk>(,1.8]</jdk>
             </activation>
             <properties>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
