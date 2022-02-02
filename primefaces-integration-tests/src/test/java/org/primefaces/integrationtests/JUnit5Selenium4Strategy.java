@@ -39,8 +39,8 @@ public class JUnit5Selenium4Strategy implements ParallelExecutionConfiguration, 
 
     @Override
     public int getMinimumRunnable() {
-        return Runtime.getRuntime().availableProcessors();
-        // return 0;
+        // return Runtime.getRuntime().availableProcessors();
+        return 0;
     }
 
     @Override
