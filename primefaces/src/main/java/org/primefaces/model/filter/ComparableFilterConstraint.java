@@ -37,7 +37,7 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         if (!(value instanceof Comparable)) {
             throw new IllegalArgumentException("Value should be a java.lang.Comparable");
         }
-        if (!value.getClass().isAssignableFrom(filter.getClass())) {
+        if (!filter.getClass().isAssignableFrom(value.getClass())) {
             throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
         }
         return getPredicate().test((Comparable) value, (Comparable) filter);
