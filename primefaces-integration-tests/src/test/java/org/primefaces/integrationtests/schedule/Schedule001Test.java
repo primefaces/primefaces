@@ -215,7 +215,9 @@ public class Schedule001Test extends AbstractPrimePageTest {
         setDifferingServerAndClientTimezone(page);
 
         // Assert
-        todaysEvents = schedule.findElements(By.cssSelector(".fc-day-today .fc-daygrid-event"));
+        eventTime = "";
+        // Don´t use .fc-day-today because this may already point to the day before or the next day in some time of day constellations
+        todaysEvents = schedule.findElements(By.cssSelector(".fc-daygrid-event"));
         for (WebElement eventElt : todaysEvents) {
             if (eventElt.findElement(By.className("fc-event-title")).getText().equals(referenceEvent.getTitle())) {
                 eventTime = eventElt.findElement(By.className("fc-event-time")).getText();
