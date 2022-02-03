@@ -2447,6 +2447,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} rowElement Row that was clicked.
      * @param {PrimeFaces.widget.DataTable.CmSelectionMode} cmSelMode The current selection mode.
      * @param {() => void} [fnShowMenu] Optional callback function invoked when the menu was opened.
+     * @return {boolean} true to hide the native browser context menu, false to display it
      */
     onRowRightClick: function(event, rowElement, cmSelMode, fnShowMenu) {
         var row = $(rowElement),
@@ -2466,6 +2467,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
         }
+
+        return this.hasBehavior('contextMenu');
     },
 
     /**
