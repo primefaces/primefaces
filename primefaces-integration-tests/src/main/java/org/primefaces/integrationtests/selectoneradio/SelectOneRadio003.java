@@ -21,28 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.filter;
+package org.primefaces.integrationtests.selectoneradio;
 
-import javax.faces.context.FacesContext;
-import java.util.Locale;
-import java.util.function.BiPredicate;
+import java.io.Serializable;
+import java.util.List;
 
-public abstract class ComparableFilterConstraint implements FilterConstraint {
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-    @Override
-    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value == null || filter == null) {
-            return false;
-        }
-        if (!(value instanceof Comparable)) {
-            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
-        }
-        if (!filter.getClass().isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
-        }
-        return getPredicate().test((Comparable) value, (Comparable) filter);
+import org.primefaces.integrationtests.general.model.Driver;
+import org.primefaces.integrationtests.general.service.RealDriverService;
+
+import lombok.Data;
+
+@Named
+@ViewScoped
+@Data
+public class SelectOneRadio003 implements Serializable {
+
+    private static final long serialVersionUID = -7518459955779385834L;
+
+    @Inject
+    private RealDriverService driverService;
+    private List<Driver> drivers;
+
+    private int value;
+
+    @PostConstruct
+    public void init() {
+        drivers = driverService.getDrivers();
+        value = 2;
     }
-
-    protected abstract BiPredicate<Comparable, Comparable> getPredicate();
 
 }

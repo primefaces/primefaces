@@ -1008,6 +1008,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {JQuery.TriggeredEvent} event The click event that occurred.
      * @param {JQuery} node The node that was clicked.
+     * @return {boolean} true to hide the native browser context menu, false to display it
      */
     onRowRightClick: function(event, node) {
         var selected = node.hasClass('ui-state-highlight'),
@@ -1030,6 +1031,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
         }
+
+        return this.hasBehavior('contextMenu');
     },
 
     /**

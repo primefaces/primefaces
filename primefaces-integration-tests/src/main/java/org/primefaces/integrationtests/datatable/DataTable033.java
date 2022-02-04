@@ -87,8 +87,7 @@ public class DataTable033 implements Serializable {
     public void updateColumns() {
         //reset table state
         DataTable table = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:customers");
-        table.setSortByAsMap(null);
-        table.setFilterByAsMap(null);
+        table.resetColumns();
 
         //update columns
         createDynamicColumns();

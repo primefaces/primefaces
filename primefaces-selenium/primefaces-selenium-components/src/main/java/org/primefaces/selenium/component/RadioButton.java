@@ -21,28 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.filter;
+package org.primefaces.selenium.component;
 
-import javax.faces.context.FacesContext;
-import java.util.Locale;
-import java.util.function.BiPredicate;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractComponent;
 
-public abstract class ComparableFilterConstraint implements FilterConstraint {
+/**
+ * Component wrapper for the PrimeFaces {@code p:radioButton}.
+ */
+public abstract class RadioButton extends AbstractComponent {
 
-    @Override
-    public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (value == null || filter == null) {
-            return false;
-        }
-        if (!(value instanceof Comparable)) {
-            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
-        }
-        if (!filter.getClass().isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
-        }
-        return getPredicate().test((Comparable) value, (Comparable) filter);
+    @FindBy(css = ".ui-radiobutton-box")
+    private WebElement box;
+
+    public boolean isSelected() {
+        return PrimeSelenium.hasCssClass(box, "ui-state-active");
     }
 
-    protected abstract BiPredicate<Comparable, Comparable> getPredicate();
+    public void select() {
+        box.click();
+    }
 
 }

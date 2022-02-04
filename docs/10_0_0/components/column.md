@@ -52,7 +52,6 @@ treetable and more.
 | sortable | true | Boolean | Boolean value to mark column as sortable.
 | sortBy | null | ValueExpr | ValueExpression to be used for sorting.
 | sortFunction              | null               | MethodExpression | Custom pluggable sortFunction.
-| sortFunction | null | MethodExpr | Custom pluggable sortFunction.
 | sortOrder                 | asc                | String           | Sets sorting order in 'single' sortMode. Default is "ascending"
 | sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Lower values have more priority.
 | style | null | String | Inline style of the column.
