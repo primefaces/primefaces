@@ -23,49 +23,36 @@
  */
 package org.primefaces.model.filter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import javax.faces.context.FacesContext;
 import java.util.List;
 import java.util.Locale;
-import org.primefaces.util.CalendarUtils;
 
 public class BetweenFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (!(filter instanceof List) || ((List) filter).size() != 2 || value == null) {
+        if (filter != null && !(filter instanceof List)) {
+            throw new IllegalArgumentException("Filter should be a java.util.List");
+        }
+        List<?> filterList = (List) filter;
+        if (filterList == null || filterList.size() != 2 || value == null) {
             return false;
         }
-
-        if (value instanceof Comparable) {
-            return isBetween((Comparable) value, (List) filter);
+        if (!(value instanceof Comparable)) {
+            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
         }
-
-        throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
-    }
-
-    protected boolean isBetween(Comparable value, List filter) {
-        Comparable start = (Comparable) filter.get(0);
-        Comparable end = (Comparable) filter.get(1);
+        Object start = filterList.get(0);
+        Object end = filterList.get(1);
         if (start == null || end == null) {
             return false;
         }
-        Comparable convertedValue = (end instanceof LocalDate) ? toLocalDate(value) : value;
-        return convertedValue.compareTo(start) >= 0 && convertedValue.compareTo(end) <= 0;
+        if (!end.getClass().isAssignableFrom(value.getClass())) {
+            throw new IllegalArgumentException("Filter values cannot be casted to value type. Forgot to add a converter?");
+        }
+        return isBetween((Comparable) value, (Comparable) start, (Comparable) end);
     }
 
-    protected LocalDate toLocalDate(Object value) {
-        if (value instanceof LocalDate) {
-            return (LocalDate) value;
-        }
-        if (value instanceof LocalDateTime) {
-            return ((LocalDateTime) value).toLocalDate();
-        }
-        if (value instanceof Date) {
-            return CalendarUtils.convertDate2LocalDate((Date) value);
-        }
-        throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid types are LocalDate, LocalDateTime, Date.");
+    protected boolean isBetween(Comparable value, Comparable start, Comparable end) {
+        return value.compareTo(start) >= 0 && value.compareTo(end) <= 0;
     }
 }

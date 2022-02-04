@@ -180,6 +180,11 @@
         <converter-class>org.primefaces.convert.NumberConverter</converter-class>
     </converter>
 
+    <converter>
+        <converter-id>org.primefaces.range.LocalDateTime</converter-id>
+        <converter-class>org.primefaces.convert.RangedLocalDateTimeConverter</converter-class>
+    </converter>
+
     <component>
         <component-type>org.primefaces.component.UIRepeat</component-type>
         <component-class>org.primefaces.component.repeat.UIRepeat</component-class>
