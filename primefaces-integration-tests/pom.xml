@@ -367,7 +367,8 @@
         <profile>
             <id>it - enable parallel execution</id>
             <activation>
-                <jdk>[9,)</jdk>
+<!--                <jdk>[9,)</jdk>-->
+                <jdk>11</jdk>
             </activation>
             <properties>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
