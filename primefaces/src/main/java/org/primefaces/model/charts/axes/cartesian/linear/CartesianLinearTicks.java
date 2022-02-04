@@ -36,7 +36,6 @@ public class CartesianLinearTicks extends CartesianTicks {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean beginAtZero;
     private Number min;
     private Number max;
     private Number maxTicksLimit;
@@ -44,24 +43,6 @@ public class CartesianLinearTicks extends CartesianTicks {
     private Number stepSize;
     private Number suggestedMax;
     private Number suggestedMin;
-
-    /**
-     * Gets the beginAtZero
-     *
-     * @return beginAtZero
-     */
-    public boolean isBeginAtZero() {
-        return beginAtZero;
-    }
-
-    /**
-     * Sets the beginAtZero
-     *
-     * @param beginAtZero if true, scale will include 0 if it is not already included.
-     */
-    public void setBeginAtZero(boolean beginAtZero) {
-        this.beginAtZero = beginAtZero;
-    }
 
     /**
      * Gets the min
@@ -199,7 +180,6 @@ public class CartesianLinearTicks extends CartesianTicks {
     public String encode() throws IOException {
         try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write(super.encode());
-            ChartUtils.writeDataValue(fsw, "beginAtZero", this.beginAtZero, true);
             ChartUtils.writeDataValue(fsw, "min", this.min, true);
             ChartUtils.writeDataValue(fsw, "max", this.max, true);
             ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
