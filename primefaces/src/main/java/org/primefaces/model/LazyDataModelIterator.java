@@ -35,7 +35,7 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
     protected Map<String, SortMeta> sortBy;
     protected Map<String, FilterMeta> filterBy;
 
-    LazyDataModelIterator(LazyDataModel<T> model) {
+    public LazyDataModelIterator(LazyDataModel<T> model) {
         this.model = model;
         index = -1;
         pages = new HashMap<>();
@@ -43,7 +43,7 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
         filterBy = Collections.emptyMap();
     }
 
-    LazyDataModelIterator(LazyDataModel<T> model, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+    public LazyDataModelIterator(LazyDataModel<T> model, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         this(model);
         if (sortBy != null) {
             this.sortBy = sortBy;
