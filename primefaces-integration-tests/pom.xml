@@ -365,11 +365,10 @@
 
     <profiles>
         <profile>
-            <id>it - enable parallel execution</id>
-            <activation>
+            <id>integration-tests-enable-parallel-execution</id>
+<!--            <activation>-->
 <!--                <jdk>[9,)</jdk>-->
-                <jdk>11</jdk>
-            </activation>
+<!--            </activation>-->
             <properties>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
             </properties>
