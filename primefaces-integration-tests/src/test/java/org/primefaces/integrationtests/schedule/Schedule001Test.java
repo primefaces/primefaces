@@ -92,11 +92,6 @@ public class Schedule001Test extends AbstractPrimePageTest {
         }
 
         String expectedMessage = "T10:00";
-        // changed behaviour with Selenium 4
-//        if (PrimeSelenium.isChrome()) {
-//            //moveToElement used by selectSlot currently only works on Chrome
-//            expectedMessage = startOfWeek.toString() + expectedMessage;
-//        }
         Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
 
         // check with different clientTimeZone and (server)timeZone - settings ------------------------
@@ -112,11 +107,6 @@ public class Schedule001Test extends AbstractPrimePageTest {
         // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
 
         expectedMessage = "T" + String.format("%02d", hour) + ":00";
-        // changed behaviour with Selenium 4
-//        if (PrimeSelenium.isChrome()) {
-//            //moveToElement used by selectSlot currently only works on Chrome
-//            expectedMessage = startOfWeek.toString() + expectedMessage;
-//        }
         Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
     }
 
