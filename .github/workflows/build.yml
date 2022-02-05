@@ -33,4 +33,4 @@ jobs:
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
       - name: Integration Tests (parallel)
         if: matrix.java != 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,integration-tests-enable-parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}

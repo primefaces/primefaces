@@ -365,7 +365,7 @@
 
     <profiles>
         <profile>
-            <id>integration-tests-enable-parallel-execution</id>
+            <id>parallel-execution</id>
 <!--            <activation>-->
 <!--                <jdk>[9,)</jdk>-->
 <!--            </activation>-->
