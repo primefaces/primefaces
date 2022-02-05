@@ -123,7 +123,7 @@ public class AccordionPanel extends AccordionPanelBase {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
                     changeEvent.setData(getIndexData());
-                    changeEvent.setTab((Tab) getChildren().get(0));
+                    changeEvent.setTab(getDynamicTab());
                 }
 
                 changeEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -142,7 +142,7 @@ public class AccordionPanel extends AccordionPanelBase {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
                     closeEvent.setData(getIndexData());
-                    closeEvent.setTab((Tab) getChildren().get(0));
+                    closeEvent.setTab(getDynamicTab());
                 }
 
                 closeEvent.setPhaseId(behaviorEvent.getPhaseId());

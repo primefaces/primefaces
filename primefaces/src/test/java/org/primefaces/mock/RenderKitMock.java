@@ -32,32 +32,32 @@ import javax.faces.render.RenderKit;
 import javax.faces.render.Renderer;
 import javax.faces.render.ResponseStateManager;
 
-public class RenderKitMock extends RenderKit{
+public class RenderKitMock extends RenderKit {
 
-	@Override
-	public void addRenderer(String arg0, String arg1, Renderer arg2) {
+    @Override
+    public void addRenderer(String arg0, String arg1, Renderer arg2) {
 
-	}
+    }
 
-	@Override
-	public ResponseStream createResponseStream(OutputStream arg0) {
-		return null;
-	}
+    @Override
+    public ResponseStream createResponseStream(OutputStream arg0) {
+        return null;
+    }
 
-	@Override
-	public ResponseWriter createResponseWriter(Writer arg0, String arg1,
-			String arg2) {
-		return null;
-	}
+    @Override
+    public ResponseWriter createResponseWriter(Writer arg0, String arg1,
+            String arg2) {
+        return null;
+    }
 
-	@Override
-	public Renderer getRenderer(String arg0, String arg1) {
-		return new RendererMock();
-	}
+    @Override
+    public Renderer getRenderer(String arg0, String arg1) {
+        return new RendererMock();
+    }
 
-	@Override
-	public ResponseStateManager getResponseStateManager() {
-		return null;
-	}
+    @Override
+    public ResponseStateManager getResponseStateManager() {
+        return null;
+    }
 
 }

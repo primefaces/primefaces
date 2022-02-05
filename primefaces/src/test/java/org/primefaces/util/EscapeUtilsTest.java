@@ -34,7 +34,7 @@ public class EscapeUtilsTest {
         final String input = "hello world & >";
 
         // invalid
-        assertEquals("hello world &amp; &gt;", EscapeUtils.forXml(input), "Not valid XML tag"); 
+        assertEquals("hello world &amp; &gt;", EscapeUtils.forXml(input), "Not valid XML tag");
         // invalid
         assertEquals("hello world &amp; >", EscapeUtils.forXmlAttribute(input), "Not valid XML tag");
         // correct!!!
@@ -43,11 +43,11 @@ public class EscapeUtilsTest {
 
     @Test
     public void forJavascriptVarName() {
-        assertEquals("form_datatable_0_my_input_text", EscapeUtils.forJavaScriptVarName("form:datatable:0:my_input_text")); 
+        assertEquals("form_datatable_0_my_input_text", EscapeUtils.forJavaScriptVarName("form:datatable:0:my_input_text"));
     }
 
     @Test
     public void forJavascriptNullInput() {
-        assertEquals("null", EscapeUtils.forJavaScript(null)); 
+        assertEquals("null", EscapeUtils.forJavaScript(null));
     }
 }

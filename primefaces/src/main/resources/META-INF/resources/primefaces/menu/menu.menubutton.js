@@ -36,11 +36,26 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         this.menuitems = this.jq.find('.ui-menuitem');
         this.cfg.disabled = this.button.is(':disabled');
 
-        if(!this.cfg.disabled) {
-            this.bindButtonEvents();
-            PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
-            this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
-        }
+        this.bindButtonEvents();
+        PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
+    },
+
+    /**
+     * Disables this button so that the user cannot press the button anymore.
+     */
+    disable: function() {
+        this.cfg.disabled = true;
+        this.hide();
+        PrimeFaces.utils.disableButton(this.button);
+    },
+
+    /**
+     * Enables this button so that the user can press the button.
+     */
+    enable: function() {
+        this.cfg.disabled = false;
+        PrimeFaces.utils.enableButton(this.button);
     },
 
     /**
@@ -75,6 +90,11 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) {
+        this.button.off('mouseover.menubutton mouseout.menubutton mousedown.menubutton mouseup.menubutton focus.menubutton blur.menubutton');
+        this.menuitems.off('mouseover.menubutton mouseout.menubutton click.menubutton');
+        this.button.off('keydown.menubutton');
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+
         this._super(cfg);
     },
 
@@ -86,17 +106,22 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         var $this = this;
 
         //button visuals
-        this.button.on("mouseover", function(){
+        this.button.on('mouseover.menubutton', function(){
             if(!$this.button.hasClass('ui-state-focus')) {
                 $this.button.addClass('ui-state-hover');
             }
-        }).on("mouseout", function() {
+        }).on('mouseout.menubutton', function() {
             if(!$this.button.hasClass('ui-state-focus')) {
                 $this.button.removeClass('ui-state-hover ui-state-active');
             }
-        }).on("mousedown", function() {
-            $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
-        }).on("mouseup", function() {
+        }).on('mousedown.menubutton', function() {
+            if (!$this.cfg.disabled) {
+                $(this).removeClass('ui-state-focus ui-state-hover').addClass('ui-state-active');
+            }
+        }).on('mouseup.menubutton', function() {
+            if ($this.cfg.disabled) {
+                return;
+            }
             var el = $(this);
             el.removeClass('ui-state-active');
 
@@ -108,9 +133,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 el.addClass('ui-state-focus');
                 $this.show();
             }
-        }).on("focus", function() {
+        }).on('focus.menubutton', function() {
             $(this).addClass('ui-state-focus');
-        }).on("blur", function() {
+        }).on('blur.menubutton', function() {
             $(this).removeClass('ui-state-focus');
         });
 
@@ -118,20 +143,23 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         //menuitem visuals
-        this.menuitems.on("mouseover", function(e) {
+        this.menuitems.on('mouseover.menubutton', function(e) {
             var element = $(this);
             if(!element.hasClass('ui-state-disabled')) {
                 element.addClass('ui-state-hover');
             }
-        }).on("mouseout", function(e) {
+        }).on('mouseout.menubutton', function(e) {
             $(this).removeClass('ui-state-hover');
-        }).on("click", function() {
+        }).on('click.menubutton', function() {
             $this.button.removeClass('ui-state-focus');
             $this.hide();
         });
 
         //keyboard support
-        this.button.on("keydown", function(e) {
+        this.button.on('keydown.menubutton', function(e) {
+            if ($this.cfg.disabled) {
+                return;
+            }
             var keyCode = $.ui.keyCode;
 
             switch(e.which) {
@@ -171,7 +199,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                     e.preventDefault();
                 break;
 
-
                 case keyCode.ESCAPE:
                 case keyCode.TAB:
                     $this.hide();
@@ -179,8 +206,35 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             }
         });
 
+        if (this.cfg.disableOnAjax === true) {
+            $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+                if ($this.isXhrSource(settings)) {
+                    $this.disable();
+                }
+            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+                if ($this.isXhrSource(settings)) {
+                    $this.enable();
+                }
+            });
+        }
+
         //aria
-        this.button.attr('role', 'button').attr('aria-disabled', this.button.is(':disabled'));
+        this.button.attr('role', 'button').attr('aria-disabled', this.cfg.disabled);
+    },
+
+    /**
+     * Checks whether one if its menu items equals the source ID from the provided settings.
+     *
+     * @param {JQuery.AjaxSettings} settings containing source ID.
+     * @returns {boolean} `true` if one if its menu items equals the source ID from the provided settings.
+     * @private
+     */
+    isXhrSource: function(settings) {
+        var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
+        if (sourceId === null) {
+            return false;
+        }
+        return this.menuitems.find('[id="' + sourceId + '"]').length;
     },
 
     /**
@@ -250,6 +304,9 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * @override
      */
     show: function() {
+        if (this.cfg.disabled) {
+           return;
+        }
         var $this = this;
 
         if (this.transition) {
@@ -302,7 +359,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 my: 'left top',
                 at: 'left bottom',
                 of: this.button,
-                collision: this.cfg.collision || "flip",
+                collision: this.cfg.collision || 'flip',
                 using: function(pos, directions) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
                 }

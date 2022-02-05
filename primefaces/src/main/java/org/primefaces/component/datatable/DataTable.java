@@ -255,7 +255,6 @@ public class DataTable extends DataTableBase {
             UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child instanceof Column)) {
                 String selectionMode = ((Column) child).getSelectionMode();
-
                 if (selectionMode != null) {
                     return selectionMode;
                 }
@@ -1019,7 +1018,7 @@ public class DataTable extends DataTableBase {
                 updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
-            if (isSelectionEnabled()) {
+            if (isSelectionEnabled() && ts.getSelectedRowKeys() != null) {
                 updateSelectionWithMVS(ts.getSelectedRowKeys());
             }
 
@@ -1135,5 +1134,51 @@ public class DataTable extends DataTableBase {
 
         FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this);
         SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
+    }
+
+    public void selectRow(String rowKey) {
+        getSelectedRowKeys().add(rowKey);
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(true);
+            if (mvs.getSelectedRowKeys() == null) {
+                mvs.setSelectedRowKeys(new HashSet<>());
+            }
+            mvs.getSelectedRowKeys().add(rowKey);
+        }
+    }
+
+    public void unselectRow(String rowKey) {
+        if (getSelectedRowKeys().contains(rowKey)) {
+            getSelectedRowKeys().remove(rowKey);
+        }
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(false);
+            if (mvs != null && mvs.getSelectedRowKeys() != null && mvs.getSelectedRowKeys().contains(rowKey)) {
+                mvs.getSelectedRowKeys().remove(rowKey);
+            }
+        }
+    }
+
+    public void expandRow(String rowKey) {
+        getExpandedRowKeys().add(rowKey);
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(true);
+            if (mvs.getExpandedRowKeys() == null) {
+                mvs.setExpandedRowKeys(new HashSet<>());
+            }
+            mvs.getExpandedRowKeys().add(rowKey);
+        }
+    }
+
+    public void collapseRow(String rowKey) {
+        if (getExpandedRowKeys().contains(rowKey)) {
+            getExpandedRowKeys().remove(rowKey);
+        }
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(false);
+            if (mvs != null && mvs.getExpandedRowKeys() != null && mvs.getExpandedRowKeys().contains(rowKey)) {
+                mvs.getExpandedRowKeys().remove(rowKey);
+            }
+        }
     }
 }

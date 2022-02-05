@@ -30,6 +30,8 @@ import org.primefaces.model.TreeNode;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Locale;
+import org.primefaces.util.LangUtils;
 
 @Named("treeBasicView")
 @ViewScoped
@@ -69,4 +71,16 @@ public class BasicView implements Serializable {
     public TreeNode getRoot() {
         return root;
     }
+
+    public boolean customFilter(TreeNode treeNode, Object filter, Locale locale) {
+        if (treeNode.getData() == null || filter == null) {
+            return true;
+        }
+        String filterText = filter.toString().trim().toLowerCase(locale);
+        if (LangUtils.isBlank(filterText)) {
+            return true;
+        }
+        return ((String) treeNode.getData()).toLowerCase(locale).contains(filterText);
+    }
+
 }

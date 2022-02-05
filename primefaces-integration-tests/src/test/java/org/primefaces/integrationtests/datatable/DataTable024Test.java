@@ -63,6 +63,7 @@ public class DataTable024Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:msgs")
         Messages messages;
 

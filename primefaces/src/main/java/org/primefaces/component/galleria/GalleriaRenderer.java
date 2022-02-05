@@ -113,12 +113,11 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeItems(FacesContext context, Galleria galleria) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String var = galleria.getVar();
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Galleria.ITEMS_CLASS, null);
 
-        if (var != null) {
+        if (galleria.isRepeating()) {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             int rowCount = galleria.getRowCount();
             String varStatus = galleria.getVarStatus();
@@ -169,12 +168,11 @@ public class GalleriaRenderer extends CoreRenderer {
 
         if (galleria.isShowCaption() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
-            String var = galleria.getVar();
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", Galleria.CAPTION_ITEMS_CLASS, null);
 
-            if (var != null) {
+            if (galleria.isRepeating()) {
                 for (int i = 0; i < galleria.getRowCount(); i++) {
                     galleria.setIndex(i);
 
@@ -222,12 +220,11 @@ public class GalleriaRenderer extends CoreRenderer {
 
         if (galleria.isShowIndicators() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
-            String var = galleria.getVar();
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", Galleria.INDICATORS_CLASS, null);
 
-            if (var != null) {
+            if (galleria.isRepeating()) {
                 Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
                 int rowCount = galleria.getRowCount();
                 String varStatus = galleria.getVarStatus();
@@ -294,12 +291,11 @@ public class GalleriaRenderer extends CoreRenderer {
 
         if (galleria.isShowThumbnails() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
-            String var = galleria.getVar();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", Galleria.THUMBNAIL_ITEMS_CLASS, null);
 
-            if (var != null) {
+            if (galleria.isRepeating()) {
                 for (int i = 0; i < galleria.getRowCount(); i++) {
                     galleria.setIndex(i);
 

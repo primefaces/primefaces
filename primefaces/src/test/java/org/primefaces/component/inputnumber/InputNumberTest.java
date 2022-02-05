@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.inputnumber;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
@@ -157,16 +156,15 @@ public class InputNumberTest {
     @Test
     public void testDecodeInvalidNumber() {
         setupValues("crash", false, null, null, false);
-        
+
         // Act
         FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
             renderer.decode(context, inputNumber);
         });
-        
 
         // Assert (expected exception)
         assertEquals("Invalid number", thrown.getMessage());
-        
+
     }
 
     @Test

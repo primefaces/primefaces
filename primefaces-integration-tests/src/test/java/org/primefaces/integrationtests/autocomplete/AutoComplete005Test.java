@@ -122,17 +122,17 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         List<Driver> drivers = realDriverService.getDrivers();
         Driver driverMax = drivers.stream().filter(d -> "Max".equals(d.getName())).findFirst().get();
         Driver driverLando = drivers.stream().filter(d -> "Lando".equals(d.getName())).findFirst().get();
-        
+
         WebElement hInputSelect = autoComplete.getWrappedElement().findElement(By.id(autoComplete.getId() + "_hinput"));
         List<WebElement> options = hInputSelect.findElements(By.cssSelector("option"));
         Assertions.assertEquals(3, options.size());
         Assertions.assertEquals(Integer.toString(driverMax.getId()), options.get(0).getAttribute("value"));
         Assertions.assertEquals(Integer.toString(driverLando.getId()), options.get(1).getAttribute("value"));
         Assertions.assertEquals("Chr", options.get(2).getAttribute("value"));
-        
+
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
-    
+
     @Test
     @Order(3)
     @DisplayName("AutoComplete: invalid behaviour for forceSelection=true and autoSelection=false - https://github.com/primefaces/primefaces/issues/7832")
@@ -154,7 +154,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
         autoComplete.wait4Panel();
         page.buttonSubmit.click();
 
-        // Assert        
+        // Assert
         Assertions.assertTrue(page.messages.getAllMessages().isEmpty());
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
@@ -166,9 +166,10 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:autocompleteMultiple")
         AutoComplete autocompleteMultiple;
-        
+
         @FindBy(id = "form:autocompleteSingle")
         AutoComplete autocompleteSingle;
 
@@ -183,13 +184,13 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:btnUnforce")
         CommandButton buttonUnforceSelection;
-        
+
         @FindBy(id = "form:btnAutoSelect")
         CommandButton buttonAutoSelect;
 
         @FindBy(id = "form:btnUnAutoSelect")
         CommandButton buttonUnAutoSelect;
-        
+
         @FindBy(id = "form:buttonSubmit")
         CommandButton buttonSubmit;
 

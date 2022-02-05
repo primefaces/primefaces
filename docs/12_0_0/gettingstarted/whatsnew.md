@@ -1,4 +1,4 @@
-# Whats new?
+# What is new?
 
 This page contains a list of big features. Please check the GitHub issues for all changes.
 
@@ -9,8 +9,16 @@ This page contains a list of big features. Please check the GitHub issues for al
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
+* Exporter: added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output.
+* MenuButton
+  * Now can be enabled and disabled by its widget.
+  * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by its menu items.
+* Printer: added `configuration` attribute for passing custom JSON options to PrintJS.
+* SelectOneRadio: improved accessibility of custom layout via `custom` facet.
+* Spinner: added `modifyValueOnWheel` to increment or decrement the element value with the mouse wheel.
+* SplitButton
+  * Now can be enabled and disabled by its widget.
+  * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
+* Tree: added `filterFunction` attribute for custom filtering.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
-
-## Exporter
-  * Added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output

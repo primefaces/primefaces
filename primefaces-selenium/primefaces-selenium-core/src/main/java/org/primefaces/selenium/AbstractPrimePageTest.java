@@ -257,6 +257,10 @@ public abstract class AbstractPrimePageTest {
         return PrimeSelenium.goTo(pageClass);
     }
 
+    protected void goTo(String partialUrl) {
+        PrimeSelenium.goTo(partialUrl);
+    }
+
     protected WebDriver getWebDriver() {
         return WebDriverProvider.get();
     }

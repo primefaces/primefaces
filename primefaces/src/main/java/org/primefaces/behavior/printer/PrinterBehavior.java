@@ -26,8 +26,8 @@ package org.primefaces.behavior.printer;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
-import org.primefaces.behavior.base.AbstractBehavior;
 
+import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.EscapeUtils;
@@ -42,7 +42,8 @@ public class PrinterBehavior extends AbstractBehavior {
 
     public enum PropertyKeys implements BehaviorAttribute {
         target(String.class),
-        title(String.class);
+        title(String.class),
+        configuration(String.class);
 
         private final Class<?> expectedType;
 
@@ -70,9 +71,13 @@ public class PrinterBehavior extends AbstractBehavior {
             title = "document.title";
         }
 
+        String config = getConfiguration();
+        if (LangUtils.isBlank(config)) {
+            config = "type: 'html'";
+        }
 
-        return String.format("printJS({ printable: '%s', type: 'html', documentTitle: %s});return false;",
-                    component, title);
+        return String.format("printJS({ printable: '%s', documentTitle: %s, %s});return false;",
+                    component, title, config);
     }
 
     @Override
@@ -94,5 +99,13 @@ public class PrinterBehavior extends AbstractBehavior {
 
     public void setTitle(String title) {
         put(PropertyKeys.title, title);
+    }
+
+    public String getConfiguration() {
+        return eval(PropertyKeys.configuration, null);
+    }
+
+    public void setConfiguration(String configuration) {
+        put(PropertyKeys.configuration, configuration);
     }
 }

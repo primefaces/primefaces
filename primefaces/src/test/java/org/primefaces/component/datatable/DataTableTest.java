@@ -82,7 +82,7 @@ public class DataTableTest {
         container.setValue("MyValue");
         bean.setContainer(container);
 
-        ((SimpleContext)context.getELContext()).setVariable("column",
+        ((SimpleContext) context.getELContext()).setVariable("column",
                 expFactory.createValueExpression(bean, MyBean.class));
 
         // correct syntax

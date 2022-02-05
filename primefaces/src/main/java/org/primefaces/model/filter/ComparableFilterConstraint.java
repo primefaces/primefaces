@@ -25,15 +25,24 @@ package org.primefaces.model.filter;
 
 import javax.faces.context.FacesContext;
 import java.util.Locale;
+import java.util.function.BiPredicate;
 
-public abstract class ComparableFilterConstraint extends StringFilterConstraint {
+public abstract class ComparableFilterConstraint implements FilterConstraint {
 
     @Override
     public boolean isMatching(FacesContext ctxt, Object value, Object filter, Locale locale) {
-        if (!(value instanceof Comparable) || !(filter instanceof Comparable)) {
-            throw new IllegalArgumentException("Invalid type: " + value.getClass() + ". Valid type: " + Comparable.class.getName());
+        if (value == null || filter == null) {
+            return false;
         }
-
-        return super.isMatching(ctxt, value, filter, locale);
+        if (!(value instanceof Comparable)) {
+            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
+        }
+        if (!filter.getClass().isAssignableFrom(value.getClass())) {
+            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
+        }
+        return getPredicate().test((Comparable) value, (Comparable) filter);
     }
+
+    protected abstract BiPredicate<Comparable, Comparable> getPredicate();
+
 }

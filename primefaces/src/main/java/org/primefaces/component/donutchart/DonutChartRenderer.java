@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.charts.ChartRenderer;
 import org.primefaces.model.charts.donut.DonutChartOptions;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DonutChartRenderer extends ChartRenderer {
@@ -74,7 +75,7 @@ public class DonutChartRenderer extends ChartRenderer {
         writer.write("}");
 
         if (donutOptions.getCutout() != null) {
-            writer.write(",cutout:" + donutOptions.getCutout());
+            ChartUtils.writeDataValue(writer, "cutout", donutOptions.getCutout(), true);
         }
 
         if (donutOptions.getRotation() != null) {

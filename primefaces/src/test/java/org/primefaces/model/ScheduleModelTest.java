@@ -23,8 +23,6 @@
  */
 package org.primefaces.model;
 
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
@@ -33,40 +31,69 @@ import org.junit.jupiter.api.Test;
 
 public class ScheduleModelTest {
 
-	@Test
-	public void addEvents() {
-		ScheduleModel model = new DefaultScheduleModel();
-		model.addEvent(DefaultScheduleEvent.builder().title("Entry 1").startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusHours(1)).build());
-		model.addEvent(DefaultScheduleEvent.builder().title("Entry 2").startDate(LocalDateTime.now().plusDays(1)).endDate(LocalDateTime.now().plusDays(1).plusHours(1)).build());
+    @Test
+    public void addEvents() {
+        ScheduleModel model = new DefaultScheduleModel();
+        model.addEvent(DefaultScheduleEvent.builder()
+                .title("Entry 1")
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now().plusHours(1))
+                .build());
+        model.addEvent(DefaultScheduleEvent.builder()
+                .title("Entry 2")
+                .startDate(LocalDateTime.now().plusDays(1))
+                .endDate(LocalDateTime.now().plusDays(1).plusHours(1))
+                .build());
 
-		assertEquals(2, model.getEventCount());
-	}
+        assertEquals(2, model.getEventCount());
+    }
 
-	@Test
-	public void deleteEvent() {
-		ScheduleModel model = new DefaultScheduleModel();
-		ScheduleEvent event1 = DefaultScheduleEvent.builder().title("Entry 1").startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusHours(1)).build();
-		ScheduleEvent event2 = DefaultScheduleEvent.builder().title("Entry 2").startDate(LocalDateTime.now().plusDays(1)).endDate(LocalDateTime.now().plusDays(1).plusHours(1)).build();
+    @Test
+    public void deleteEvent() {
+        ScheduleModel model = new DefaultScheduleModel();
+        ScheduleEvent event1 = DefaultScheduleEvent.builder().title("Entry 1")
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now().plusHours(1))
+                .build();
+        ScheduleEvent event2 = DefaultScheduleEvent.builder().title("Entry 2")
+                .startDate(LocalDateTime.now().plusDays(1))
+                .endDate(LocalDateTime.now().plusDays(1).plusHours(1))
+                .build();
 
-		model.addEvent(event1);
-		model.addEvent(event2);
+        model.addEvent(event1);
+        model.addEvent(event2);
 
-		model.deleteEvent(event2);
+        model.deleteEvent(event2);
 
-		assertEquals(1, model.getEventCount());
-		assertEquals("Entry 1", model.getEvents().get(0).getTitle());
-	}
+        assertEquals(1, model.getEventCount());
+        assertEquals("Entry 1", model.getEvents().get(0).getTitle());
+    }
 
-	@Test
-	public void findEventById() {
-		ScheduleModel model = new DefaultScheduleModel();
-		model.addEvent(DefaultScheduleEvent.builder().title("Entry 1").startDate(LocalDateTime.now()).endDate(LocalDateTime.now().plusHours(1)).build());
-		model.addEvent(DefaultScheduleEvent.builder().title("Entry 2").startDate(LocalDateTime.now().plusDays(1)).endDate(LocalDateTime.now().plusDays(1).plusHours(1)).build());
-		model.addEvent(DefaultScheduleEvent.builder().title("Entry 3").startDate(LocalDateTime.now().plusDays(2)).endDate(LocalDateTime.now().plusDays(2).plusHours(1)).build());
-		model.addEvent(DefaultScheduleEvent.builder().title("Entry 4").startDate(LocalDateTime.now().plusDays(3)).endDate(LocalDateTime.now().plusDays(3).plusHours(1)).build());
-		model.addEvent(DefaultScheduleEvent.builder().title("Entry 5").startDate(LocalDateTime.now().plusDays(4)).endDate(LocalDateTime.now().plusDays(4).plusHours(1)).build());
-		String id = model.getEvents().get(2).getId();
+    @Test
+    public void findEventById() {
+        ScheduleModel model = new DefaultScheduleModel();
+        model.addEvent(DefaultScheduleEvent.builder().title("Entry 1")
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now().plusHours(1))
+                .build());
+        model.addEvent(DefaultScheduleEvent.builder().title("Entry 2")
+                .startDate(LocalDateTime.now().plusDays(1))
+                .endDate(LocalDateTime.now().plusDays(1).plusHours(1))
+                .build());
+        model.addEvent(DefaultScheduleEvent.builder().title("Entry 3")
+                .startDate(LocalDateTime.now().plusDays(2))
+                .endDate(LocalDateTime.now().plusDays(2).plusHours(1))
+                .build());
+        model.addEvent(DefaultScheduleEvent.builder().title("Entry 4")
+                .startDate(LocalDateTime.now().plusDays(3))
+                .endDate(LocalDateTime.now().plusDays(3).plusHours(1))
+                .build());
+        model.addEvent(DefaultScheduleEvent.builder().title("Entry 5")
+                .startDate(LocalDateTime.now().plusDays(4))
+                .endDate(LocalDateTime.now().plusDays(4).plusHours(1))
+                .build());
+        String id = model.getEvents().get(2).getId();
 
-		assertEquals("Entry 3", model.getEvent(id).getTitle());
-	}
+        assertEquals("Entry 3", model.getEvent(id).getTitle());
+    }
 }

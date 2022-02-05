@@ -156,8 +156,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             if($(e.target).is(':not(:input:enabled)')) {
                 e.preventDefault();
             }
-        })
-        .on('focus.tree', function() {
+        });
+        this.jq.children('.ui-tree-container').on('focus.tree', function() {
             if(!$this.focusedNode && !pressTab) {
                 $this.focusNode($this.getFirstNode());
             }
@@ -301,7 +301,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                 case keyCode.TAB:
                     pressTab = true;
-                    $this.jq.trigger('focus');
+                    $this.container.trigger('focus');
                     setTimeout(function() {
                         pressTab = false;
                     }, 2);
@@ -360,7 +360,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} A node to focus.
      */
     searchDown: function(node) {
-        var nextOfParent = $this.nextNode(node.closest('ul').parent('li')),
+        var nextOfParent = this.nextNode(node.closest('ul').parent('li')),
         nodeToFocus = null;
 
         if(nextOfParent.length) {

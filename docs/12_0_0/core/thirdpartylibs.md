@@ -14,7 +14,7 @@ are many other third party libraries and plugins used to support features.
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.9.0 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#idleTimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
-| [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.Static.html) | 5.0.6 | https://github.com/RobinHerbots/Inputmask |
+| [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.Static.html) | 5.0.8 | https://github.com/RobinHerbots/Inputmask |
 | jqPlot | 1.0.9 | http://www.jqplot.com/ |
 | [jQuery Autosize](../jsdocs/modules/src_PrimeFaces.html#autosize-1) | 4.0.2 | http://www.jacklmoore.com/autosize |
 | [jQuery Browser Plugin](../jsdocs/interfaces/src_PrimeFaces.JQueryStatic.html#browser)  | 0.1.0 | https://github.com/gabceb/jquery-browser-plugin |
@@ -28,7 +28,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Roundabout](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#roundabout) | 2.4.2 | http://fredhq.com/projects/roundabout |
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
 | jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
-| [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.0 | https://github.com/jquery/jquery-ui |
+| [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.1 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.6.0 | https://jquery.com/ |
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |

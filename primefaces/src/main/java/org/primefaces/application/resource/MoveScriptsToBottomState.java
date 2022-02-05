@@ -24,16 +24,13 @@
 package org.primefaces.application.resource;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MoveScriptsToBottomState implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Map<String, List<String>> includes;
+    private Map<String, List<Map<String, String>>> includes;
     private Map<String, List<String>> inlines;
     private int savedInlineTags;
 
@@ -43,10 +40,10 @@ public class MoveScriptsToBottomState implements Serializable {
         savedInlineTags = -1;
     }
 
-    public void addInclude(String type, StringBuilder src) {
-        if (src.length() > 0) {
-            List<String> includeList = includes.computeIfAbsent(type, k -> new ArrayList<>(20));
-            includeList.add(src.toString());
+    public void addInclude(String type, Map<String, String> includeAttributes) {
+        if (includeAttributes.size() > 0) {
+            List<Map<String, String>> includeList = includes.computeIfAbsent(type, k -> new ArrayList<>(20));
+            includeList.add(new LinkedHashMap<>(includeAttributes));
         }
     }
 
@@ -59,7 +56,7 @@ public class MoveScriptsToBottomState implements Serializable {
         }
     }
 
-    public Map<String, List<String>> getIncludes() {
+    public Map<String, List<Map<String, String>>> getIncludes() {
         return includes;
     }
 

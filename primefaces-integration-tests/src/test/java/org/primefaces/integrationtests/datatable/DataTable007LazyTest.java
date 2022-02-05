@@ -131,6 +131,7 @@ public class DataTable007LazyTest extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:msgs")
         Messages messages;
 

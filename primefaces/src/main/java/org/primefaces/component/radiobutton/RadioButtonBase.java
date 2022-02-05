@@ -24,10 +24,11 @@
 package org.primefaces.component.radiobutton;
 
 import javax.faces.component.UIComponentBase;
+import org.primefaces.component.api.InputHolder;
 
 import org.primefaces.component.api.Widget;
 
-public abstract class RadioButtonBase extends UIComponentBase implements Widget {
+public abstract class RadioButtonBase extends UIComponentBase implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

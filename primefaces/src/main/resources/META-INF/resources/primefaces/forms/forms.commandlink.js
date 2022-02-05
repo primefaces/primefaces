@@ -74,8 +74,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         this.jq.removeClass('ui-state-disabled')
-                .removeAttr('tabindex')
-                .removeAttr('aria-disabled');
+                .removeAttr('tabindex aria-disabled');
     }
 
 });

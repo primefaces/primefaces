@@ -33,8 +33,8 @@
         <lombok.version>1.18.22</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.56</tomcat.version>
-        <resteasy.version>5.0.1.Final</resteasy.version>
+        <tomcat.version>9.0.58</tomcat.version>
+        <resteasy.version>5.0.2.Final</resteasy.version>
         <owb.version>2.0.25</owb.version>
         <jetty.version>9.4.44.v20210927</jetty.version>
     </properties>
@@ -114,7 +114,7 @@
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.5</version>
+            <version>2.3.6</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -190,7 +190,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.35</version>
             <scope>test</scope>
         </dependency>
 
@@ -263,6 +263,10 @@
         </dependency>
 
         <!-- add dependencies which get shaded by PrimeFaces so IDE´s like IntelliJ can run und debug multimoduled integration-tests -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>

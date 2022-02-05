@@ -527,7 +527,7 @@
 
         isDateBetween: function (start, end, dateMeta) {
             var between = false;
-            if (start && end) {
+            if (this.isDate(start) && this.isDate(end)) {
                 var date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
                 return start.getTime() <= date.getTime() && end.getTime() >= date.getTime();
             }
@@ -1800,6 +1800,10 @@
         onInputKeyDown: function (event) {
             if (PrimeFaces.env.isIE()) {
                 this.isKeydown = true;
+            }
+            
+            if (event.keyCode === 13) {
+                this.inputfield.val(this.getValueToRender());
             }
 
             if (event.keyCode === 27) {

@@ -40,6 +40,7 @@ import org.primefaces.component.api.UITree;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -278,7 +279,10 @@ public class TreeRenderer extends CoreRenderer {
                 TreeNode childNode = node.getChildren().get(i);
                 requestMap.put(var, childNode.getData());
 
-                if (filterConstraint.isMatching(context, filterByVE.getValue(context.getELContext()), filteredValue, filterLocale)) {
+                Object value = tree.getFilterFunction() == null
+                        ? filterByVE.getValue(context.getELContext())
+                        : childNode;
+                if (filterConstraint.isMatching(context, value, filteredValue, filterLocale)) {
                     tree.getFilteredRowKeys().add(childNode.getRowKey());
                 }
                 encodeFilteredNodes(context, tree, childNode, filteredValue, filterLocale);
@@ -290,7 +294,6 @@ public class TreeRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, Tree tree) throws IOException {
         boolean dynamic = tree.isDynamic();
-        boolean filter = tree.getValueExpression("filterBy") != null;
         String widget = tree.getOrientation().equals("vertical") ? "VerticalTree" : "HorizontalTree";
 
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -325,7 +328,7 @@ public class TreeRenderer extends CoreRenderer {
             wb.attr("controlled", true);
         }
 
-        if (filter) {
+        if (tree.isFiltering()) {
             wb.attr("filter", true)
                     .attr("filterMode", tree.getFilterMode(), "lenient");
         }
@@ -362,7 +365,6 @@ public class TreeRenderer extends CoreRenderer {
         boolean multipleSelectionMode = selectionEnabled && tree.isMultipleSelectionMode();
         boolean checkboxSelectionMode = selectionEnabled && tree.isCheckboxSelectionMode();
         boolean droppable = tree.isDroppable();
-        boolean filter = (tree.getValueExpression("filterBy") != null);
         boolean isDisabled = tree.isDisabled();
 
         if (root != null && root.getRowKey() == null) {
@@ -390,20 +392,20 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
         writer.writeAttribute("role", "tree", null);
-        if (!isDisabled) {
-            writer.writeAttribute("tabindex", tree.getTabindex(), null);
-        }
 
         writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multipleSelectionMode), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
 
-        if (filter) {
+        if (tree.isFiltering()) {
             encodeFilter(context, tree, clientId + "_filter");
         }
 
         writer.startElement("ul", null);
+        if (!isDisabled) {
+            writer.writeAttribute("tabindex", tree.getTabindex(), null);
+        }
         writer.writeAttribute("class", Tree.ROOT_NODES_CLASS, null);
 
         if (root != null) {
@@ -665,7 +667,6 @@ public class TreeRenderer extends CoreRenderer {
         }
         boolean selected = node.isSelected();
         boolean partialSelected = node.isPartialSelected();
-        boolean filter = (tree.getValueExpression("filterBy") != null);
         boolean isStrictMode = tree.getFilterMode().equals("strict");
 
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
@@ -676,7 +677,7 @@ public class TreeRenderer extends CoreRenderer {
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
         boolean hidden = false;
-        if (filter && !filteredRowKeys.isEmpty()) {
+        if (tree.isFiltering() && !filteredRowKeys.isEmpty()) {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
@@ -891,9 +892,15 @@ public class TreeRenderer extends CoreRenderer {
             throw new FacesException("Illegal filter match mode:" + filterMatchMode);
         }
 
-        FilterConstraint filterConstraint = Tree.FILTER_CONSTRAINTS.get(matchMode);
-        if (filterConstraint == null) {
-            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
+        FilterConstraint filterConstraint;
+        if (tree.getFilterFunction() != null) {
+            filterConstraint = new FunctionFilterConstraint(tree.getFilterFunction());
+        }
+        else {
+            filterConstraint = Tree.FILTER_CONSTRAINTS.get(matchMode);
+            if (filterConstraint == null) {
+                throw new FacesException("Illegal filter match mode:" + filterMatchMode);
+            }
         }
 
         return filterConstraint;

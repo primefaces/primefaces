@@ -194,4 +194,7 @@ public class Schedule001 implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void deleteAllEvents() {
+        eventModel = new DefaultScheduleModel();
+    }
 }

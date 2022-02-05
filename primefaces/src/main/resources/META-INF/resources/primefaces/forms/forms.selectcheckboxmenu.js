@@ -550,8 +550,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             switch(key) {
                 case keyCode.ENTER:
                 case keyCode.SPACE:
-                    if ($this.panel.is(":hidden"))
+                    if ($this.panel.is(":hidden")) {
                         $this.show();
+                        e.stopPropagation(); // GitHub #8340
+                    }
                     else
                         $this.hide();
 

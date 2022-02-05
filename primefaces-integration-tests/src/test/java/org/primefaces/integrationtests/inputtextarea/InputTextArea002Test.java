@@ -43,17 +43,17 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
     @DisplayName("InputTextarea: Test floating label empty field does not have class 'ui-state-filled' but has 'ui-state-hover' ")
     public void testEmptyField(Page page) {
         // Arrange
-        InputTextarea InputTextarea = page.InputTextarea;
+        InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
 
         // Act
-        InputTextarea.click();
+        inputTextarea.click();
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("FillMe*", InputTextarea.getAssignedLabelText());
-        Assertions.assertEquals("", InputTextarea.getValue());
-        assertCss(InputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-hover", "ui-state-focus");
+        Assertions.assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
+        Assertions.assertEquals("", inputTextarea.getValue());
+        assertCss(inputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-hover", "ui-state-focus");
 
         Assertions.assertEquals(0, messages.getAllMessages().size());
     }
@@ -63,18 +63,18 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
     @DisplayName("InputTextarea: Test input with data has class 'ui-state-filled'")
     public void testFilledField(Page page) {
         // Arrange
-        InputTextarea InputTextarea = page.InputTextarea;
+        InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
 
         // Act
-        InputTextarea.setValue("filled");
+        inputTextarea.setValue("filled");
         page.button.click();
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("FillMe*", InputTextarea.getAssignedLabelText());
-        Assertions.assertEquals("filled", InputTextarea.getValue());
-        assertCss(InputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-filled");
+        Assertions.assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
+        Assertions.assertEquals("filled", inputTextarea.getValue());
+        assertCss(inputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-filled");
         Assertions.assertEquals(0, messages.getAllMessages().size());
     }
 
@@ -83,16 +83,16 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
     @DisplayName("InputTextarea: Test empty input submission causes required error message")
     public void testRequiredFieldError(Page page) {
         // Arrange
-        InputTextarea InputTextarea = page.InputTextarea;
+        InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
 
         // Act
-        InputTextarea.setValue("");
+        inputTextarea.setValue("");
         page.button.click();
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("", InputTextarea.getValue());
+        Assertions.assertEquals("", inputTextarea.getValue());
         Assertions.assertEquals(1, messages.getAllMessages().size());
         Msg msg = messages.getAllMessages().get(0);
         Assertions.assertEquals(Severity.ERROR, msg.getSeverity());
@@ -105,22 +105,22 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
     @DisplayName("InputTextarea: Test valid input submission does not cause an error.")
     public void testRequiredFieldPass(Page page) {
         // Arrange
-        InputTextarea InputTextarea = page.InputTextarea;
+        InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
 
         // Act
-        InputTextarea.setValue("test");
+        inputTextarea.setValue("test");
         page.button.click();
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("test", InputTextarea.getValue());
+        Assertions.assertEquals("test", inputTextarea.getValue());
         Assertions.assertEquals(0, messages.getAllMessages().size());
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:inputtext")
-        InputTextarea InputTextarea;
+        InputTextarea inputTextarea;
 
         @FindBy(id = "form:messages")
         Messages messages;

@@ -17,11 +17,17 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <p:commandButton value="Print" type="button" icon="pi pi-print" styleClass="block shadow-1 mb-3">
+            <p:commandButton value="Print" type="button" icon="pi pi-print" styleClass="shadow-1 mb-3 mr-2">
+
                 <p:printer target="image"/>
             </p:commandButton>
+            <p:commandButton value="Print (custom configuration)" type="button" icon="pi pi-print" styleClass="p-shadow-2 p-mb-3">
+                <p:printer target="pnlPrint" configuration="type: 'html', header: 'Nature Image Header',  headerStyle: 'font-weight:900;'"/>
+            </p:commandButton>
 
-            <p:graphicImage id="image" name="demo/images/nature/nature10.jpg"/>
+            <p:outputPanel id="pnlPrint">
+               <p:graphicImage id="image" name="demo/images/nature/nature10.jpg"/>
+            </p:outputPanel>
         </div>
     </ui:define>
 

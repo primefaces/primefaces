@@ -154,9 +154,9 @@ public class CarouselRenderer extends CoreRenderer {
 
     protected void encodeItem(FacesContext context, Carousel carousel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int rowCount = carousel.getRowCount();
 
-        if (carousel.getVar() != null) {
+        if (carousel.isRepeating()) {
+            int rowCount = carousel.getRowCount();
             for (int i = 0; i < rowCount; i++) {
                 carousel.setIndex(i);
 

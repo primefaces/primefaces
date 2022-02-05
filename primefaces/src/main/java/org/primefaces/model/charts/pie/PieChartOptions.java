@@ -32,7 +32,7 @@ public class PieChartOptions extends ChartOptions {
 
     private static final long serialVersionUID = 1L;
 
-    private String cutout;
+    private Object cutout;
     private Number rotation;
     private Number circumference;
     private boolean animateRotate = true;
@@ -43,7 +43,7 @@ public class PieChartOptions extends ChartOptions {
      *
      * @return cutout  accepts pixels as number and percent as string ending with %.
      */
-    public String getCutout() {
+    public Object getCutout() {
         return cutout;
     }
 
@@ -52,7 +52,7 @@ public class PieChartOptions extends ChartOptions {
      *
      * @param cutout accepts pixels as number and percent as string ending with %.
      */
-    public void setCutout(String cutout) {
+    public void setCutout(Object cutout) {
         this.cutout = cutout;
     }
 

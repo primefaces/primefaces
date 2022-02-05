@@ -398,6 +398,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>Optional JSON configuration values to completely control PrintJS.</description>
+            <name>configuration</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
 
     <tag>
@@ -3732,7 +3738,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Theme of the captcha. Default is light.]]>
+                <![CDATA[Theme of the captcha either 'light', 'dark', or 'auto'. Default is auto.]]>
             </description>
             <name>theme</name>
             <required>false</required>
@@ -6889,7 +6895,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[In responsive mode, dialog adjusts itself based on screen width.]]>
+                <![CDATA[In responsive mode the dialog adjusts itself based on screen width, browser resizing, and scrolling of the document.]]>
             </description>
             <name>responsive</name>
             <required>false</required>
@@ -13127,7 +13133,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum number of characters that may be entered in this field.]]>
+                <![CDATA[DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.]]>
             </description>
             <name>maxlength</name>
             <required>false</required>
@@ -17247,6 +17253,14 @@
             <name>buttonStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'false'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -26225,6 +26239,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to increment or decrement the element value with the mouse wheel, default is true.]]>
+            </description>
+            <name>modifyValueOnWheel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -26712,6 +26734,14 @@
                 <![CDATA[If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown.]]>
             </description>
             <name>ignoreComponentNotFound</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'false'.]]>
+            </description>
+            <name>disableOnAjax</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -29536,6 +29566,14 @@
             <name>filterMode</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to filter TreeNodes against a constraint.]]>
+            </description>
+            <name>filterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
         </attribute>
     </tag>
     <tag>

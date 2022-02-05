@@ -40,39 +40,39 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
 
     public List<ProgrammingLanguage> sortByNoLimit(final Comparator comparator) {
         return (List<ProgrammingLanguage>) languages.stream()
-                    .sorted(comparator)
-                    .collect(Collectors.toList());
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 
     public List<ProgrammingLanguage> sortBy(final Comparator comparator) {
         return (List<ProgrammingLanguage>) languages.stream()
-                    .sorted(comparator)
-                    .limit(3)
-                    .collect(Collectors.toList());
+                .sorted(comparator)
+                .limit(3)
+                .collect(Collectors.toList());
     }
 
     public List<ProgrammingLanguage> filterByName(final String name) {
         return languages.stream()
-                    .sorted(Comparator.comparing(ProgrammingLanguage::getName))
-                    .filter(l -> l.getName().startsWith(name))
-                    .limit(3)
-                    .collect(Collectors.toList());
+                .sorted(Comparator.comparing(ProgrammingLanguage::getName))
+                .filter(l -> l.getName().startsWith(name))
+                .limit(3)
+                .collect(Collectors.toList());
     }
-    
+
     public List<ProgrammingLanguage> filterById(final int id) {
         return languages.stream()
-                    .sorted(Comparator.comparing(ProgrammingLanguage::getId))
-                    .filter(l -> l.getId().equals(id))
-                    .limit(3)
-                    .collect(Collectors.toList());
+                .sorted(Comparator.comparing(ProgrammingLanguage::getId))
+                .filter(l -> l.getId().equals(id))
+                .limit(3)
+                .collect(Collectors.toList());
     }
 
     public List<ProgrammingLanguage> filterByType(final ProgrammingLanguage.ProgrammingLanguageType type) {
         return languages.stream()
-                    .sorted(Comparator.comparing(ProgrammingLanguage::getType))
-                    .filter(l -> l.getType().equals(type))
-                    .limit(3)
-                    .collect(Collectors.toList());
+                .sorted(Comparator.comparing(ProgrammingLanguage::getType))
+                .filter(l -> l.getType().equals(type))
+                .limit(3)
+                .collect(Collectors.toList());
     }
 
     protected void assertRows(DataTable dataTable, List<ProgrammingLanguage> langs) {

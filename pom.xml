@@ -98,7 +98,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.9.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
@@ -122,7 +122,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.2</version>
             </plugin>
 
             <plugin>
@@ -231,7 +231,7 @@
                 <version>3.1.2</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>/conf/checkstyle.xml</configLocation>
+                    <failOnViolation>true</failOnViolation>
                     <includeResources>false</includeResources>
                 </configuration>
                 <executions>
@@ -242,7 +242,18 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <failOnViolation>true</failOnViolation>
+                            <configLocation>/conf/checkstyle.xml</configLocation>
+                        </configuration>
+                    </execution>
+                   <execution>
+                        <id>checkstyle-tests</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                            <configLocation>/conf/checkstyle-tests.xml</configLocation>
                         </configuration>
                     </execution>
                 </executions>
@@ -250,7 +261,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>9.2.1</version>
+                        <version>9.3</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -330,12 +341,12 @@
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
-                <version>5.1.0</version>
+                <version>5.2.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
-                <version>5.1.0</version>
+                <version>5.2.0</version>
             </dependency>
             <dependency>
                 <groupId>com.github.librepdf</groupId>

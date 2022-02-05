@@ -99,9 +99,8 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
         boolean visibleColumnsOnly = getExportConfiguration().isVisibleOnly();
 
         if (columnMetadata == null || columnMetadata.isEmpty()) {
-            table.forEachColumn(col -> {
-                if (col.isRendered() && col.isExportable() &&
-                            (!visibleColumnsOnly || (visibleColumnsOnly && col.isVisible()))) {
+            table.forEachColumn(true, true, true, col -> {
+                if (col.isExportable() && (!visibleColumnsOnly || (visibleColumnsOnly && col.isVisible()))) {
                     exportcolumns.add(col);
                 }
                 return true;

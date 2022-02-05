@@ -27,15 +27,12 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
@@ -51,7 +48,7 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: selection - multiple")
     public void testSelectionMultiple(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 
@@ -83,7 +80,7 @@ public class DataTable005Test extends AbstractDataTableTest {
     @DisplayName("DataTable: GitHub #7368 Selection with filtering")
     public void testSelectionWithFilter(String xhtml) {
         // Arrange
-        getWebDriver().get(PrimeSelenium.getUrl(xhtml));
+        goTo(xhtml);
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
 

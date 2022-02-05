@@ -178,6 +178,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }
+        setFilterByAsMap(filterBy);
 
         return f != null;
     }
@@ -386,6 +387,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (s != null) {
             sortBy.put(s.getColumnKey(), s);
         }
+        setSortByAsMap(sortBy);
 
         return s != null;
     }
@@ -616,4 +618,15 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
      * Recalculates filteredValue after adding, updating or removing object to/from a filtered UITable.
      */
     void filterAndSort();
+
+    /**
+     * Resets all column related state after adding/removing/moving columns.
+     */
+    default void resetColumns() {
+        resetDynamicColumns();
+        setColumns(null);
+        setSortByAsMap(null);
+        setFilterByAsMap(null);
+        setColumnMeta(null);
+    }
 }
