@@ -73,8 +73,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         this.format();
 
-        this.addARIA();
-
         if(this.input.prop('disabled')||this.input.prop('readonly')) {
             return;
         }
@@ -84,6 +82,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
         PrimeFaces.skinInput(this.input);
+        this.addARIA();
     },
 
     /**
