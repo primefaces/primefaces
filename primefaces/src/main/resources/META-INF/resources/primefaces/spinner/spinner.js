@@ -30,6 +30,7 @@
  * @prop {string} cfg.suffix Suffix added to the displayed value.
  * @prop {string} cfg.thousandSeparator Character for the integral part of the number that separates each group of three
  * digits.
+ * @prop {boolean} cfg.modifyValueOnWheel Increment or decrement the element value with the mouse wheel if true.
  */
 PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
@@ -52,6 +53,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
           this.cfg.decimalSeparator = '.';
         }
         this.cursorOffset = this.cfg.prefix ? this.cfg.prefix.length: 0;
+        this.cfg.modifyValueOnWheel = this.cfg.modifyValueOnWheel !== false;
 
         var inputValue = this.input.val();
 
@@ -204,7 +206,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             $this.format();
         })
         .on('mousewheel.spinner', function(event, delta) {
-            if($this.input.is(':focus')) {
+            if($this.cfg.modifyValueOnWheel && $this.input.is(':focus')) {
                 if(delta > 0)
                     $this.spin(1);
                 else
