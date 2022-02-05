@@ -4916,6 +4916,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.tbody.children('tr.ui-datatable-empty-message').remove();
                 }
 
+                if ($this.isCheckboxSelectionEnabled()) {
+                    $this.enableHeaderCheckbox();
+                }
+
                 return true;
             }
         };
