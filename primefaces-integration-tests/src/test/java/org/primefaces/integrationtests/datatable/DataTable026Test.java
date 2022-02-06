@@ -323,8 +323,7 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
-//        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -349,8 +348,7 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
-//        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
