@@ -36,7 +36,7 @@
         <tomcat.version>9.0.58</tomcat.version>
         <resteasy.version>5.0.2.Final</resteasy.version>
         <owb.version>2.0.25</owb.version>
-        <jetty.version>9.4.44.v20210927</jetty.version>
+        <jetty.version>9.4.45.v20220203</jetty.version>
     </properties>
 
     <dependencies>
