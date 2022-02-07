@@ -34,15 +34,23 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         if (value == null || filter == null) {
             return false;
         }
-        if (!(value instanceof Comparable)) {
-            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
-        }
-        if (!filter.getClass().isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
-        }
+        assertComparable(value);
+        assertAssignable(filter, value);
         return getPredicate().test((Comparable) value, (Comparable) filter);
     }
 
     protected abstract BiPredicate<Comparable, Comparable> getPredicate();
+
+    static void assertComparable(Object value) {
+        if (!(value instanceof Comparable)) {
+            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
+        }
+    }
+
+    static void assertAssignable(Object filter, Object value) {
+        if (!filter.getClass().isAssignableFrom(value.getClass())) {
+            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
+        }
+    }
 
 }

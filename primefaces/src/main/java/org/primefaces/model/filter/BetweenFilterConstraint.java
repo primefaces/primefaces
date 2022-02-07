@@ -38,17 +38,13 @@ public class BetweenFilterConstraint implements FilterConstraint {
         if (filterList == null || filterList.size() != 2 || value == null) {
             return false;
         }
-        if (!(value instanceof Comparable)) {
-            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
-        }
+        ComparableFilterConstraint.assertComparable(value);
         Object start = filterList.get(0);
         Object end = filterList.get(1);
         if (start == null || end == null) {
             return false;
         }
-        if (!end.getClass().isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException("Filter values cannot be casted to value type. Forgot to add a converter?");
-        }
+        ComparableFilterConstraint.assertAssignable(end, value);
         return isBetween((Comparable) value, (Comparable) start, (Comparable) end);
     }
 
