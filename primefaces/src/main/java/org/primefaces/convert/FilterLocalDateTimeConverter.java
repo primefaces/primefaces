@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -68,7 +69,7 @@ public class FilterLocalDateTimeConverter implements Converter<LocalDateTime> {
 
     static DatePicker assertDatePicker(UIComponent component) {
         if (!(component instanceof DatePicker)) {
-            throw new ConverterException("Component must be a DatePicker");
+            throw new FacesException("Component must be a DatePicker");
         }
         return (DatePicker) component;
     }
