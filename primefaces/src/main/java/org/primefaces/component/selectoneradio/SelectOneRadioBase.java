@@ -81,4 +81,9 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
     public void setUnselectable(boolean unselectable) {
         getStateHelper().put(PropertyKeys.unselectable, unselectable);
     }
+
+    @Override
+    public String getTabindex() {
+        return (String) getStateHelper().eval(HtmlSelectOneRadio.PropertyKeys.tabindex, "0");
+    }
 }

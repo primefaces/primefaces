@@ -36,7 +36,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         //custom layout
         if(this.cfg.custom) {
             this.facet = this.jq.attr('role') === 'radiogroup';
-            this.originalInputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio');
+            this.originalInputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio').attr('tabindex', '-1');
             this.inputs = $('input:radio[name="' + this.id + '"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();
@@ -84,7 +84,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         }
 
-        this.enabledInputs = this.inputs.filter(':not(:disabled)');
+        this.enabledInputs = this.inputs.attr('tabindex', '-1').filter(':not(:disabled)');
         this.checkedRadio = this.outputs.filter('.ui-state-active');
 
         this.bindEvents();
