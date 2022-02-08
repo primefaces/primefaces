@@ -323,7 +323,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                     LocalDateTime endDate = isDate
                             ? CalendarUtils.convertDate2LocalDateTime((Date) end)
                             : (LocalDateTime) end;
-                    endDate = endDate.plusDays(1).minus(1, ChronoUnit.MILLIS);
+                    endDate = endDate.plusDays(1).minus(1, ChronoUnit.NANOS);
                     range.set(1, isDate ? CalendarUtils.convertLocalDateTime2Date(endDate) : endDate);
                 }
                 return range;

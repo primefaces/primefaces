@@ -23,7 +23,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
 * Tree: added `filterFunction` attribute for custom filtering.
 
-### `LocalDateTime` and `Date` filtering
+#### `LocalDateTime` and `Date` filtering
 In case you want to filter `LocalDateTime` or `Date` values in for example a `DataTable` component, use the converters
 `org.primefaces.filter.LocalDateTime` or `org.primefaces.filter.Date` on the filtering `DatePicker` component.
 
