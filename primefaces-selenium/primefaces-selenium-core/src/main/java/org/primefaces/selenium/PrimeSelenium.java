@@ -35,6 +35,8 @@ import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
+import java.time.Duration;
+
 public final class PrimeSelenium {
 
     private static final String HEADLESS_MODE_SYSPROP_NAME = "webdriver.headless";
@@ -407,7 +409,7 @@ public final class PrimeSelenium {
     public static WebDriverWait waitGui() {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
-        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutGui(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutGui()), Duration.ofMillis(100));
         return wait;
     }
 
@@ -420,7 +422,7 @@ public final class PrimeSelenium {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
 
-        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutDocumentLoad(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutDocumentLoad()), Duration.ofMillis(100));
         wait.until(PrimeExpectedConditions.documentLoaded());
 
         return wait;

@@ -25,7 +25,7 @@
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
         <primefaces.UPLOADER>auto</primefaces.UPLOADER>
-        <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+        <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
@@ -365,6 +365,15 @@
 
     <profiles>
         <profile>
+            <id>parallel-execution</id>
+<!--            <activation>-->
+<!--                <jdk>[9,)</jdk>-->
+<!--            </activation>-->
+            <properties>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+            </properties>
+        </profile>
+        <profile>
             <id>integration-tests</id>
             <build>
                 <plugins>
@@ -393,7 +402,8 @@
                                 <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
                                 <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
-                                <junit.jupiter.execution.parallel.config.dynamic.factor>1</junit.jupiter.execution.parallel.config.dynamic.factor>
+                                <junit.jupiter.execution.parallel.config.strategy>custom</junit.jupiter.execution.parallel.config.strategy>
+                                <junit.jupiter.execution.parallel.config.custom.class>org.primefaces.integrationtests.JUnit5Selenium4Strategy</junit.jupiter.execution.parallel.config.custom.class>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
