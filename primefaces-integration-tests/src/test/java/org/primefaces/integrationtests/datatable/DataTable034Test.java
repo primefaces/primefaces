@@ -44,11 +44,8 @@ public class DataTable034Test extends AbstractDataTableTest {
         Assertions.assertEquals("Language 1", it.getValue());
 
         it.clear();
-
-        it = PrimeSelenium.createFragment(InputText.class, By.id("form:datatable:0:name"));
         it.setValue("Language 666");
 
-        it = PrimeSelenium.createFragment(InputText.class, By.id("form:datatable:0:name"));
         Assertions.assertEquals("Language 666", it.getValue());
     }
 
