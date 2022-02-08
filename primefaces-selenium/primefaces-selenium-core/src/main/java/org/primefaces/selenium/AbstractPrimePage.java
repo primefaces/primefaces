@@ -25,7 +25,6 @@ package org.primefaces.selenium;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.html5.WebStorage;
-import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 public abstract class AbstractPrimePage {
@@ -61,18 +60,6 @@ public abstract class AbstractPrimePage {
      *         WebStorage via WebDriver. In this case null is returned.
      */
     public WebStorage getWebStorage() {
-        WebDriver webDriver = this.getWebDriver();
-
-        if (webDriver instanceof WebDriverDecorator) {
-            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = driver.getDecoratedDriver().getOriginal();
-        }
-
-        if (webDriver instanceof WebStorage) {
-            return (WebStorage) webDriver;
-        }
-        else {
-            return null;
-        }
+        return PrimeSelenium.getWebStorage();
     }
 }
