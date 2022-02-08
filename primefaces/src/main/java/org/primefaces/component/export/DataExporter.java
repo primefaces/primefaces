@@ -47,7 +47,6 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.export.TreeTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
 
