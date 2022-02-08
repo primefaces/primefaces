@@ -23,8 +23,10 @@
  */
 package org.primefaces.selenium;
 
+import java.util.List;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
@@ -61,8 +63,17 @@ public final class PrimeSelenium {
      * @return the component
      */
     public static <T extends WebElement> T createFragment(Class<T> fragmentClass, By by) {
-        WebElement element = getWebDriver().findElement(by);
-        return createFragment(fragmentClass, element);
+        return PrimePageFragmentFactory.create(fragmentClass, new ElementLocator() {
+            @Override
+            public WebElement findElement() {
+                return getWebDriver().findElement(by);
+            }
+
+            @Override
+            public List<WebElement> findElements() {
+                return getWebDriver().findElements(by);
+            }
+        });
     }
 
     /**
