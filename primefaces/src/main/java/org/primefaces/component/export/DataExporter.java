@@ -232,7 +232,8 @@ public class DataExporter implements ActionListener, StateHolder {
     }
 
     protected void addResponseCookie(FacesContext context) {
-        ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
+        ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", null);
     }
 
     @Override

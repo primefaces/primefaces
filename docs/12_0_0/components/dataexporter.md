@@ -259,12 +259,13 @@ public class TextExporter extends DataTableExporter {
     }
 
     protected void configureResponse(ExternalContext externalContext, String filename) {
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
         externalContext.setResponseContentType("text/plain");
         externalContext.setResponseHeader("Expires", "0");
         externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
         externalContext.setResponseHeader("Pragma", "public");
         externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".txt"));
-        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        externalContext.addResponseCookie(monitorKeyCookieName, "true", Collections.<String, Object>emptyMap());
     }
 }
 ```
