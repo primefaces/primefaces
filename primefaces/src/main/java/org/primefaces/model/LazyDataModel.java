@@ -178,11 +178,14 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     public void setRowIndex(int rowIndex) {
         int oldIndex = this.rowIndex;
 
-        if (rowIndex == -1 || pageSize == 0) {
+        if (rowIndex == -1) {
             this.rowIndex = -1;
         }
-        else {
+        else if (pageSize > 0) {
             this.rowIndex = (rowIndex % pageSize);
+        }
+        else {
+            this.rowIndex = rowIndex;
         }
 
         if (data == null) {

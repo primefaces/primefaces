@@ -23,8 +23,10 @@
  */
 package org.primefaces.selenium;
 
+import java.util.List;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
@@ -32,6 +34,8 @@ import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
 import org.primefaces.selenium.spi.DeploymentAdapter;
+
+import java.time.Duration;
 
 public final class PrimeSelenium {
 
@@ -61,8 +65,17 @@ public final class PrimeSelenium {
      * @return the component
      */
     public static <T extends WebElement> T createFragment(Class<T> fragmentClass, By by) {
-        WebElement element = getWebDriver().findElement(by);
-        return createFragment(fragmentClass, element);
+        return PrimePageFragmentFactory.create(fragmentClass, new ElementLocator() {
+            @Override
+            public WebElement findElement() {
+                return getWebDriver().findElement(by);
+            }
+
+            @Override
+            public List<WebElement> findElements() {
+                return getWebDriver().findElements(by);
+            }
+        });
     }
 
     /**
@@ -396,7 +409,7 @@ public final class PrimeSelenium {
     public static WebDriverWait waitGui() {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
-        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutGui(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutGui()), Duration.ofMillis(100));
         return wait;
     }
 
@@ -409,7 +422,7 @@ public final class PrimeSelenium {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
 
-        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutDocumentLoad(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutDocumentLoad()), Duration.ofMillis(100));
         wait.until(PrimeExpectedConditions.documentLoaded());
 
         return wait;

@@ -224,6 +224,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                         $this.select(currentRadio);
                         input.trigger('focus').trigger('change');
                     }
+                    else if ($this.cfg.unselectable) {
+                        $this.unselect(currentRadio);
+                        input.trigger('focus').trigger('change');
+                    }
 
                     e.preventDefault();
                 break;

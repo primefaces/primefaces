@@ -25,53 +25,38 @@ package org.primefaces.integrationtests.datatable;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.InputText;
 
-public class DataTable024Test extends AbstractDataTableTest {
+public class DataTable034Test extends AbstractDataTableTest {
 
     @Test
-    @Order(1)
-    @DisplayName("DataTable: RowGroup - rowspan")
-    public void testRowGroup(Page page) {
-        // Arrange
-        DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+    @DisplayName("DataTable: RequestScoped LazyDataModel with input change")
+    public void test(Page page) throws InterruptedException {
 
-        // Act
-        CommandButton button = PrimeSelenium.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
-        button.click();
+        InputText it = PrimeSelenium.createFragment(InputText.class, By.id("form:datatable:0:name"));
 
-        // Assert
-        Assertions.assertEquals("Entry selected: 1", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("Language 1", it.getValue());
 
-        // Act
-        // Act - do some filtering
-        dataTable.filter("Id", "2");
-        button.click();
+        it.clear();
+        it.setValue("Language 666");
 
-        // Assert
-        Assertions.assertEquals("Entry selected: 2", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("Language 666", it.getValue());
     }
 
     public static class Page extends AbstractPrimePage {
-
-        @FindBy(id = "form:msgs")
-        Messages messages;
 
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 
         @Override
         public String getLocation() {
-            return "datatable/dataTable024.xhtml";
+            return "datatable/dataTable034.xhtml";
         }
     }
 }
