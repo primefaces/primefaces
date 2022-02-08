@@ -25,7 +25,7 @@ package org.primefaces.selenium;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.html5.WebStorage;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 public abstract class AbstractPrimePage {
@@ -63,9 +63,9 @@ public abstract class AbstractPrimePage {
     public WebStorage getWebStorage() {
         WebDriver webDriver = this.getWebDriver();
 
-        if (webDriver instanceof EventFiringWebDriver) {
-            EventFiringWebDriver driver = (EventFiringWebDriver) webDriver;
-            webDriver = driver.getWrappedDriver();
+        if (webDriver instanceof WebDriverDecorator) {
+            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
+            webDriver = driver.getDecoratedDriver().getOriginal();
         }
 
         if (webDriver instanceof WebStorage) {

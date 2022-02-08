@@ -23,39 +23,26 @@
  */
 package org.primefaces.selenium.internal;
 
+import java.lang.reflect.Method;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
+import org.openqa.selenium.support.events.WebDriverListener;
 
-public class OnloadScriptsEventListener extends AbstractWebDriverEventListener {
+public class OnloadScriptsEventListener implements WebDriverListener {
 
     @Override
-    public void afterNavigateTo(String url, WebDriver driver) {
+    public void afterAnyNavigationCall(WebDriver.Navigation navigation, Method method, Object[] args, Object result) {
+        OnloadScripts.execute();
+    }
+
+
+    @Override
+    public void beforeClick(WebElement element) {
         OnloadScripts.execute();
     }
 
     @Override
-    public void afterNavigateBack(WebDriver driver) {
-        OnloadScripts.execute();
-    }
-
-    @Override
-    public void afterNavigateForward(WebDriver driver) {
-        OnloadScripts.execute();
-    }
-
-    @Override
-    public void afterNavigateRefresh(WebDriver driver) {
-        OnloadScripts.execute();
-    }
-
-    @Override
-    public void beforeClickOn(WebElement element, WebDriver driver) {
-        OnloadScripts.execute();
-    }
-
-    @Override
-    public void afterClickOn(WebElement element, WebDriver driver) {
+    public void afterClick(WebElement element) {
         OnloadScripts.execute();
     }
 }
