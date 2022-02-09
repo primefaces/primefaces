@@ -4,8 +4,8 @@ on: [push, pull_request]
 
 jobs:
   build:
-    #runs-on: ubuntu-latest
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+#    runs-on: macos-latest
     name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }} - ${{ matrix.browser }}
     strategy:
       fail-fast: false
@@ -14,7 +14,8 @@ jobs:
         java: [11]
         #jsfimpl: [ 'mojarra-2.3', 'myfaces-2.3']
         jsfimpl: [ 'mojarra-2.3']
-        browser: [ 'firefox', 'chrome', 'safari' ]
+#        browser: [ 'firefox', 'chrome', 'safari' ]
+        browser: [ 'firefox', 'chrome' ]
 
     steps:
       - uses: actions/checkout@v2
