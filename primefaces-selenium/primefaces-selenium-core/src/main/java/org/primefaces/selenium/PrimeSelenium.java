@@ -25,7 +25,6 @@ package org.primefaces.selenium;
 
 import java.util.List;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
@@ -36,6 +35,8 @@ import org.primefaces.selenium.spi.WebDriverProvider;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
 import java.time.Duration;
+import org.openqa.selenium.html5.WebStorage;
+import org.openqa.selenium.support.decorators.WebDriverDecorator;
 
 public final class PrimeSelenium {
 
@@ -496,7 +497,7 @@ public final class PrimeSelenium {
      * @return true if Chrome, false if any other browser
      */
     public static boolean isChrome() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        Capabilities cap = getCapabilities();
         return "Chrome".equalsIgnoreCase(cap.getBrowserName());
     }
 
@@ -506,7 +507,7 @@ public final class PrimeSelenium {
      * @return true if Firefox, false if any other browser
      */
     public static boolean isFirefox() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        Capabilities cap = getCapabilities();
         return "Firefox".equalsIgnoreCase(cap.getBrowserName());
     }
 
@@ -516,7 +517,7 @@ public final class PrimeSelenium {
      * @return true if Safari, false if any other browser
      */
     public static boolean isSafari() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        Capabilities cap = getCapabilities();
         return "Safari".equalsIgnoreCase(cap.getBrowserName());
     }
 
@@ -555,5 +556,46 @@ public final class PrimeSelenium {
                 Thread.currentThread().interrupt();
             }
         }
+    }
+
+    /**
+     * Get WebStorage of WebDriver.
+     *
+     * @return Returns WebStorage of WebDriver when this feature is supported by the browser. Some browsers like Safari (as of january 2021) do not support
+     *         WebStorage via WebDriver. In this case null is returned.
+     */
+    public static WebStorage getWebStorage() {
+        WebDriver webDriver = getWebDriver();
+
+        if (webDriver instanceof WebDriverDecorator) {
+            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
+            webDriver = driver.getDecoratedDriver().getOriginal();
+        }
+
+        if (webDriver instanceof WebStorage) {
+            return (WebStorage) webDriver;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get Capabilities of WebDriver.
+     *
+     * @return Returns Capabilities of WebDriver
+     */
+    public static Capabilities getCapabilities() {
+        WebDriver webDriver = getWebDriver();
+
+        if (webDriver instanceof WebDriverDecorator) {
+            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
+            webDriver = driver.getDecoratedDriver().getOriginal();
+        }
+
+        if (webDriver instanceof HasCapabilities) {
+            return ((HasCapabilities) webDriver).getCapabilities();
+        }
+
+        return null;
     }
 }

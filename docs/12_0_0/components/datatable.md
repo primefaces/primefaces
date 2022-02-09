@@ -76,7 +76,7 @@ DataTable displays data in tabular format.
 | rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
 | rowIndexVar               | null               | String           | Name of iterator to refer each row index.
 | rowKey                    | null               | String           | Unique identifier of a row. Must be defined when using selection together with non-lazy datasource (eg value-attribute bound to a instance of `java.util.List`).
-| rowSelectMode             | new                | String           | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".
+| rowSelectMode             | new                | String           | Defines row selection mode. Valid values are "new", "add" and "none".
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
 | rowStyleClass             | null               | String           | Style class for each row.
@@ -535,10 +535,10 @@ DataTable will also provide a selectAll checkbox at column header.
 </p:dataTable>
 ```
 
-**Tip**: Use rowSelectMode option to customize the default behavior on row click of a multiple
+**Tip**: Use rowSelectMode option to customize the default behavior on row click of a
 selection enabled datatable. Default value is "new" that clears previous selections, "add" mode
 keeps previous selections same as selecting a row with mouse click when metakey is on and
-"checkbox" mode allows row selection with checkboxes only.
+"none" completely disables selection when clicking on the row itself.
 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected

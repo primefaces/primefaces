@@ -30,9 +30,9 @@
  *
  * @typedef {"expand" | "fit"} PrimeFaces.widget.DataTable.ResizeMode Indicates the resize behavior of columns.
  *
- * @typedef {"new" | "add" | "checkbox"} PrimeFaces.widget.DataTable.RowSelectMode Indicates how rows of a DataTable
- * may be selected. `new` always unselects other rows, `add` preserves the currently selected rows, and `checkbox` adds
- * a checkbox next to each row.
+ * @typedef {"new" | "add" | "none"} PrimeFaces.widget.DataTable.RowSelectMode Indicates how rows of a DataTable
+ * may be selected, when clicking on the row itself (not the checkbox / radiobutton from p:column).
+ * `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables row selection.
  *
  * @typedef {"cancel" | "save"} PrimeFaces.widget.DataTable.RowEditAction When a row is editable: whether to `save` the
  * current contents of the row or `cancel` the row edit and discard all changes.
@@ -173,8 +173,7 @@
  * @prop {PrimeFaces.widget.DataTable.RowEditMode} cfg.rowEditMode Defines the row edit.
  * @prop {PrimeFaces.widget.DataTable.RowExpandMode} cfg.rowExpandMode Defines row expand mode.
  * @prop {boolean} cfg.rowHover Adds hover effect to rows. Hover is always on when selection is enabled.
- * @prop {PrimeFaces.widget.DataTable.RowSelectMode} cfg.rowSelectMode Defines row selection mode for multiple
- * selection.
+ * @prop {PrimeFaces.widget.DataTable.RowSelectMode} cfg.rowSelectMode Defines row selection mode when clicking on the row itself.
  * @prop {string} cfg.rowSelector CSS selector find finding the rows of this DataTable.
  * @prop {boolean} cfg.saveOnCellBlur Saves the changes in cell editing on blur, when set to false changes are
  * discarded.
@@ -824,13 +823,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSelectionEvents: function() {
         if(this.cfg.selectionMode === 'radio') {
             this.bindRadioEvents();
-            this.bindRowEvents();
+
+            if(this.cfg.rowSelectMode !== 'none') {
+                this.bindRowEvents();
+            }
         }
         else if(this.cfg.selectionMode === 'checkbox') {
             this.bindCheckboxEvents();
             this.updateHeaderCheckbox();
 
-            if(this.cfg.rowSelectMode !== 'checkbox') {
+            if(this.cfg.rowSelectMode !== 'none') {
                 this.bindRowEvents();
             }
         }
