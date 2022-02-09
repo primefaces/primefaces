@@ -32,8 +32,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Password;
 
 public class Password002Test extends AbstractPrimePageTest {
@@ -65,7 +63,6 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Act
         password.hideFeedback();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
