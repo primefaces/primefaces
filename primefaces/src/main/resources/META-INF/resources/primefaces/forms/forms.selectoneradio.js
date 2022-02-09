@@ -36,7 +36,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         //custom layout
         if(this.cfg.custom) {
             this.facet = this.jq.attr('role') === 'radiogroup';
-            this.originalInputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio');
+            this.originalInputs = this.jq.find((this.facet ? '.ui-helper-custom ' : '') + ':radio');
             this.inputs = $('input:radio[name="' + this.id + '"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();
@@ -174,12 +174,17 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
+        // for custom radio buttons, transfer the focus from original to the matching custom button
         $(this.originalInputs).on('focus.selectOneRadio', function() {
-            var radio = $this.jq.find('.ui-radiobutton-box.ui-state-active').parent().find(':radio');
+            // 1 = JSF separator, 2 = index
+            var matches = this.id.match(/^.*([^\d])(\d)+$/);
+            // first try to get the active radio button
+            var radio = $(':radio[id="' + $this.id + matches[1] + matches[2] + '_clone"]')
+                    .parent().next().filter('.ui-state-active').parent().find(':radio');
+            // else the first or last based on the index
             if (!radio.length) {
-                var first = this.id.endsWith(':0');
                 var inputs = $this.enabledInputs;
-                radio = first ? inputs.first() : inputs.last();
+                radio = matches[2] === '0' ? inputs.first() : inputs.last();
             }
             radio.trigger('focus');
         });
@@ -287,6 +292,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             this.inputs.off();
             this.labels.off();
             this.outputs.off();
+            $(this.originalInputs).off();
         }
     },
 

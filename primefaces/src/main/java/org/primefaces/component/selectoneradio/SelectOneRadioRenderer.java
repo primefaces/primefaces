@@ -247,7 +247,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (addId) {
             writer.writeAttribute("id", radio.getClientId(context), "id");
         }
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "ui-helper-custom", null);
 
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
