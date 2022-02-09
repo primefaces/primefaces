@@ -116,7 +116,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("tabindex", radio.getTabindex(), "tabindex");
         renderARIARequired(context, radio);
 
         Converter converter = radio.getConverter();
@@ -185,7 +184,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        writer.writeAttribute("tabindex", radio.getTabindex(), "tabindex");
 
         renderARIARequired(context, radio);
         encodeSelectItems(context, radio, selectItems, layout);
@@ -384,6 +382,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         renderDomEvents(context, radio, SelectOneRadio.DOM_EVENTS);
 
+        if (radio.getTabindex() != null) {
+            writer.writeAttribute("tabindex", radio.getTabindex(), null);
+        }
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
