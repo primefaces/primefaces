@@ -1,24 +1,24 @@
 /**
  * __PrimeFaces SelectOneRadio Widget__
- * 
+ *
  * SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
- * 
+ *
  * @prop {boolean} facet Whether custom is used with a facet.
  * @prop {JQuery} originalInputs The DOM elements for the hidden radio input fields of type checkbox storing the value
  * of this widget.
  * @prop {JQuery} enabledInputs The (cloned) DOM elements for the non-disabled hidden input fields of type radio storing
- * the value of this widget. 
+ * the value of this widget.
  * @prop {JQuery} inputs The (cloned) DOM elements for the hidden input fields of type radio storing the value of this
  * widget.
  * @prop {JQuery} outputs The DOM elements for the radio icons shown on the UI.
  * @prop {JQuery} checkedRadio The DOM elements for the active radio icons shown on the UI .
  * @prop {JQuery} labels The DOM elements for the label texts of each radio button.
- * 
+ *
  * @interface {PrimeFaces.widget.SelectOneRadioCfg} cfg The configuration for the {@link  SelectOneRadio| SelectOneRadio widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * 
+ *
  * @prop {boolean} cfg.custom Whether a custom layout is enabled.
  * @prop {boolean} cfg.unselectable Unselectable mode when true clicking a radio again will clear the selection.
  */
@@ -37,7 +37,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.custom) {
             this.facet = this.jq.attr('role') === 'radiogroup';
             this.originalInputs = this.jq.find((this.facet ? '.ui-helper-hidden ' : '') + ':radio');
-            this.inputs = $('input:radio[name="' + this.id + '"].ui-radio-clone');
+            this.inputs = $('input:radio[name="' + this.id + '_clone"].ui-radio-clone');
             this.outputs = this.inputs.parent().next('.ui-radiobutton-box');
             this.labels = $();
 
@@ -269,7 +269,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Removes some of the event listeners added by `bindEvents`. Called when this widget is disabled.
      * @private
-     * @param {JQuery} input Radio input element for which to remove the listeners. 
+     * @param {JQuery} input Radio input element for which to remove the listeners.
      */
     unbindEvents: function(input) {
         if(input) {
@@ -286,7 +286,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Disables a given radio button option of this widget.
-     * @param {number} index Index of the radio button option to disable. 
+     * @param {number} index Index of the radio button option to disable.
      */
     disable: function(index) {
         if(index == null) {
@@ -307,7 +307,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Enables a given radio button option of this widget.
-     * @param {number} index Index of the radio button option to enable. 
+     * @param {number} index Index of the radio button option to enable.
      */
     enable: function(index) {
         if(index == null) {
