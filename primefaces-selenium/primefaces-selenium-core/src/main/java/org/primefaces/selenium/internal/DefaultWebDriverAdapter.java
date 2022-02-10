@@ -83,7 +83,9 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 firefoxOptions.setHeadless(config.isWebdriverHeadless());
-                firefoxOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+                if (!config.isWebdriverHeadless()) {
+                    firefoxOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+                }
                 return new FirefoxDriver(firefoxOptions);
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
