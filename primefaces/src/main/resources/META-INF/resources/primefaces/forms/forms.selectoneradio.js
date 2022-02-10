@@ -277,7 +277,6 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             this.inputs.off();
             this.labels.off();
             this.outputs.off();
-            $(this.originalInputs).off();
         }
     },
 
