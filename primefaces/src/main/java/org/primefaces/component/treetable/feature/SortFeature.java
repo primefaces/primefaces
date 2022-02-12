@@ -185,7 +185,7 @@ public class SortFeature implements TreeTableFeature {
             });
 
             for (int i = 0; i < childrenArray.length; i++) {
-                children.setSibling(i, (TreeNode) childrenArray[i]);
+                children.set(i, (TreeNode) childrenArray[i]);
             }
             for (int i = 0; i < children.size(); i++) {
                 sortNode(table, sortBy, comparisonResult, children.get(i), context, var, locale, collator);
