@@ -8248,7 +8248,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add and checkbox.]]>
+                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add none.]]>
             </description>
             <name>rowSelectMode</name>
             <required>false</required>
@@ -26238,6 +26238,14 @@
             <name>downButtonStyleClass</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to increment or decrement the element value with the mouse wheel, default is true.]]>
+            </description>
+            <name>modifyValueOnWheel</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>

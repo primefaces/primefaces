@@ -33,6 +33,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.primefaces.selenium.spi.WebDriverAdapter;
@@ -74,20 +75,23 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
             throw new RuntimeException("No webdriver.browser configured; Please either configure it or implement WebDriverAdapter#getWebDriver!");
         }
 
+        LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable(LogType.BROWSER, Level.ALL);
+
         switch (config.getWebdriverBrowser()) {
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 firefoxOptions.setHeadless(config.isWebdriverHeadless());
+                if (!config.isWebdriverHeadless()) {
+                    firefoxOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+                }
                 return new FirefoxDriver(firefoxOptions);
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 chromeOptions.setHeadless(config.isWebdriverHeadless());
-                LoggingPreferences logPrefs = new LoggingPreferences();
-                logPrefs.enable(LogType.BROWSER, Level.ALL);
-                chromeOptions.setCapability("goog:loggingPrefs", logPrefs);
-                chromeOptions.setExperimentalOption("w3c", false);
+                chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
                 return new ChromeDriver(chromeOptions);
             case "safari":
                 SafariOptions safariOptions = new SafariOptions();

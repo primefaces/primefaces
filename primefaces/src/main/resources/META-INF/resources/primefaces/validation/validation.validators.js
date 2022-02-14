@@ -36,7 +36,7 @@ if (window.PrimeFaces) {
                 max = element.data('p-maxvalue'),
                 vc = PrimeFaces.validation.ValidationContext;
 
-                if(!this.regex.test(element.val())) {
+                if(!this.regex.test(value)) {
                     throw vc.getMessage(this.TYPE_MESSAGE_ID, vc.getLabel(element));
                 }
 
@@ -66,7 +66,7 @@ if (window.PrimeFaces) {
                 max = element.data('p-maxvalue'),
                 vc = PrimeFaces.validation.ValidationContext;
 
-                if(!this.regex.test(element.val())) {
+                if(!this.regex.test(value)) {
                     throw vc.getMessage(this.TYPE_MESSAGE_ID, vc.getLabel(element));
                 }
 

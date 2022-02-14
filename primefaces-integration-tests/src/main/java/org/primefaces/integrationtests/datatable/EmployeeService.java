@@ -47,9 +47,9 @@ public class EmployeeService {
                 .salary(2200).role(Employee.Role.DEVELOPER).build());
         employees.add(Employee.builder().id(6).firstName("Trish").lastName("Mayer").birthDate(LocalDate.of(1970, 1, 5))
                 .salary(2300).role(Employee.Role.QS).build());
-        employees.add(Employee.builder().id(7).firstName("Margret").lastName("Johnson").birthDate(LocalDate.of(1969, 12, 31))
+        employees.add(Employee.builder().id(11).firstName("Margret").lastName("Johnson").birthDate(LocalDate.of(1969, 12, 31))
                 .salary(2600).role(Employee.Role.FINANCE).build());
-        employees.add(Employee.builder().id(8).firstName("Mary").lastName("March").birthDate(LocalDate.of(1980, 5, 10))
+        employees.add(Employee.builder().id(553).firstName("Mary").lastName("March").birthDate(LocalDate.of(1980, 5, 10))
                 .salary(2800).role(Employee.Role.SALES).build());
 
         return employees;

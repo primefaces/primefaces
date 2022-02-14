@@ -1798,6 +1798,11 @@
         },
 
         onInputKeyDown: function (event) {
+
+            if (event.keyCode === 13) {
+                this.inputfield.val(this.getValueToRender());
+            }
+
             if (event.keyCode === 27) {
                 //put the focus back to the inputfield
                 this.inputfield.trigger('focus');

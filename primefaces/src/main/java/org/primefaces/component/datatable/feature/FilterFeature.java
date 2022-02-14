@@ -39,6 +39,7 @@ import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
 
@@ -208,7 +209,7 @@ public class FilterFeature implements DataTableFeature {
         }
 
         //Metadata for callback
-        if (table.isPaginator() || table.isVirtualScroll()) {
+        if ((table.isPaginator() || table.isVirtualScroll()) && ComponentUtils.isRequestSource(table, context)) {
             PrimeFaces.current().ajax().addCallbackParam("totalRecords", filtered.size());
         }
 

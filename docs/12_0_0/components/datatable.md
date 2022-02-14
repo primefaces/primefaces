@@ -76,7 +76,7 @@ DataTable displays data in tabular format.
 | rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
 | rowIndexVar               | null               | String           | Name of iterator to refer each row index.
 | rowKey                    | null               | String           | Unique identifier of a row. Must be defined when using selection together with non-lazy datasource (eg value-attribute bound to a instance of `java.util.List`).
-| rowSelectMode             | new                | String           | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".
+| rowSelectMode             | new                | String           | Defines row selection mode. Valid values are "new", "add" and "none".
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
 | rowStyleClass             | null               | String           | Style class for each row.
@@ -331,6 +331,11 @@ When a custom component is used as a filter facet, filtering needs to be called 
 preferred event such as `onchange="PF('carsTable').filter()"`. Also defining a converter might be
 necessary if the value of the filter facet is not defined.
 
+Please make sure that the filter is using the **same type as the column field** if you are using comparable
+filter match modes (like greater than). For example, if the column field is an integer, and you would like to
+add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
+(see example below).
+
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
 
@@ -520,10 +525,10 @@ DataTable will also provide a selectAll checkbox at column header.
 </p:dataTable>
 ```
 
-**Tip**: Use rowSelectMode option to customize the default behavior on row click of a multiple
+**Tip**: Use rowSelectMode option to customize the default behavior on row click of a
 selection enabled datatable. Default value is "new" that clears previous selections, "add" mode
 keeps previous selections same as selecting a row with mouse click when metakey is on and
-"checkbox" mode allows row selection with checkboxes only.
+"none" completely disables selection when clicking on the row itself.
 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected

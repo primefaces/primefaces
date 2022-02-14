@@ -808,6 +808,8 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
+        loadLazyDataIfRequired();
+
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();

@@ -21,28 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.internal;
+package org.primefaces.model;
 
-import java.lang.reflect.Method;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.events.WebDriverListener;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
-public class OnloadScriptsEventListener implements WebDriverListener {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @Override
-    public void afterAnyNavigationCall(WebDriver.Navigation navigation, Method method, Object[] args, Object result) {
-        OnloadScripts.execute();
+public class TreeNodeChildrenTest {
+
+    @Test
+    public void swapRetainsParent() {
+        // Arrange
+        TreeNode<String> root = new DefaultTreeNode<>("Parent", null);
+        TreeNode<String> child1 = new DefaultTreeNode<>("Child1", root);
+        TreeNode<String> child2 = new DefaultTreeNode<>("Child2", root);
+
+        List<TreeNode<String>> values = new TreeNodeChildren<>(root);
+
+        values.add(child1);
+        values.add(child2);
+
+        // Pre-assert
+        assertEquals(child1, values.get(0));
+        assertEquals(root, values.get(0).getParent());
+        assertEquals(child2, values.get(1));
+        assertEquals(root, values.get(1).getParent());
+
+        // Act
+        Collections.swap(values, 0, 1);
+
+        // Assert
+        assertEquals(child2, values.get(0));
+        assertEquals(root, values.get(0).getParent());
+        assertEquals(child1, values.get(1));
+        assertEquals(root, values.get(1).getParent());
     }
 
-
-    @Override
-    public void beforeClick(WebElement element) {
-        OnloadScripts.execute();
-    }
-
-    @Override
-    public void afterClick(WebElement element) {
-        OnloadScripts.execute();
-    }
 }

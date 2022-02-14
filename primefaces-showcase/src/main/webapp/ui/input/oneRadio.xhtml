@@ -46,8 +46,8 @@
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
 
-                <h5>Responsive</h5>
-                <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3">
+                <h5>Responsive + Unselectable</h5>
+                <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3" unselectable="true">
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
 

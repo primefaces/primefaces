@@ -27,22 +27,23 @@ import java.util.*;
 
 public class LazyDataModelIterator<T> implements Iterator<T> {
 
-    private LazyDataModel<T> model;
-    private int index;
-    private Map<Integer, List<T>> pages;
+    protected LazyDataModel<T> model;
+    protected int index;
+    protected Map<Integer, List<T>> pages;
+    protected List<T> rows;
 
-    private Map<String, SortMeta> sortBy;
-    private Map<String, FilterMeta> filterBy;
+    protected Map<String, SortMeta> sortBy;
+    protected Map<String, FilterMeta> filterBy;
 
-    LazyDataModelIterator(LazyDataModel<T> model) {
+    public LazyDataModelIterator(LazyDataModel<T> model) {
         this.model = model;
-        index = -1;
-        pages = new HashMap<>();
-        sortBy = Collections.emptyMap();
-        filterBy = Collections.emptyMap();
+        this.index = -1;
+        this.pages = new HashMap<>();
+        this.sortBy = Collections.emptyMap();
+        this.filterBy = Collections.emptyMap();
     }
 
-    LazyDataModelIterator(LazyDataModel<T> model, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+    public LazyDataModelIterator(LazyDataModel<T> model, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         this(model);
         if (sortBy != null) {
             this.sortBy = sortBy;
@@ -55,32 +56,52 @@ public class LazyDataModelIterator<T> implements Iterator<T> {
     @Override
     public boolean hasNext() {
         int nextIndex = index + 1;
-        int pageNo = nextIndex / model.getPageSize();
+        int pageSize = model.getPageSize();
 
-        if (!pages.containsKey(pageNo)) {
-            List<T> page = model.load(nextIndex, model.getPageSize(), sortBy, filterBy);
+        if (pageSize > 0) {
+            int pageNo = nextIndex / pageSize;
 
-            if (page == null || page.isEmpty()) {
-                return false;
+            if (!pages.containsKey(pageNo)) {
+                List<T> page = model.load(nextIndex, pageSize, sortBy, filterBy);
+
+                if (page == null || page.isEmpty()) {
+                    return false;
+                }
+                pages.remove(pageNo - 1);
+                pages.put(pageNo, page);
             }
-            pages.remove(pageNo - 1);
-            pages.put(pageNo, page);
+
+            int pageIndex = nextIndex % pageSize;
+            return pageIndex < pages.get(pageNo).size();
         }
 
-        int pageIndex = nextIndex % model.getPageSize();
-        return pageIndex < pages.get(pageNo).size();
+        // there are cases when LazyDataModel is used without paging
+        if (rows == null) {
+            rows = model.load(0, 0, sortBy, filterBy);
+        }
+        return nextIndex < rows.size();
     }
 
     @Override
     public T next() {
         index++;
-        int pageNo = index / model.getPageSize();
-        int pageIndex = index % model.getPageSize();
-        List<T> page = pages.get(pageNo);
-        if (page == null || pageIndex >= page.size()) {
-            throw new NoSuchElementException();
+
+        int pageSize = model.getPageSize();
+        if (pageSize > 0) {
+            int pageNo = index / pageSize;
+            int pageIndex = index % pageSize;
+            List<T> page = pages.get(pageNo);
+            if (page == null || pageIndex >= page.size()) {
+                throw new NoSuchElementException();
+            }
+            return page.get(pageIndex);
         }
-        return page.get(pageIndex);
+
+        // there are cases when LazyDataModel is used without paging
+        if (rows == null) {
+            rows = model.load(0, 0, sortBy, filterBy);
+        }
+        return rows.get(index);
     }
 
     @Override

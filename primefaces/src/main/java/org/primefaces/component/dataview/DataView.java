@@ -158,7 +158,7 @@ public class DataView extends DataViewBase {
             lazyModel.setWrappedData(data);
 
             //Update paginator
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator() ) {
+            if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator()) {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
