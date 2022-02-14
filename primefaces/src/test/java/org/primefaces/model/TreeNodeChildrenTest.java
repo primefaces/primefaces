@@ -23,10 +23,40 @@
  */
 package org.primefaces.model;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
-public class TreeNodeList<T> extends ArrayList<TreeNode<T>> {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    private static final long serialVersionUID = 1L;
+public class TreeNodeChildrenTest {
+
+    @Test
+    public void swapRetainsParent() {
+        // Arrange
+        TreeNode<String> root = new DefaultTreeNode<>("Parent", null);
+        TreeNode<String> child1 = new DefaultTreeNode<>("Child1", root);
+        TreeNode<String> child2 = new DefaultTreeNode<>("Child2", root);
+
+        List<TreeNode<String>> values = new TreeNodeChildren<>(root);
+
+        values.add(child1);
+        values.add(child2);
+
+        // Pre-assert
+        assertEquals(child1, values.get(0));
+        assertEquals(root, values.get(0).getParent());
+        assertEquals(child2, values.get(1));
+        assertEquals(root, values.get(1).getParent());
+
+        // Act
+        Collections.swap(values, 0, 1);
+
+        // Assert
+        assertEquals(child2, values.get(0));
+        assertEquals(root, values.get(0).getParent());
+        assertEquals(child1, values.get(1));
+        assertEquals(root, values.get(1).getParent());
+    }
 
 }

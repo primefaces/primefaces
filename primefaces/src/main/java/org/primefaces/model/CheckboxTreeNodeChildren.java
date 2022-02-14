@@ -150,35 +150,6 @@ public class CheckboxTreeNodeChildren<T> extends TreeNodeList<T> {
         }
     }
 
-    /**
-     * Optimized set implementation to be used in sorting
-     *
-     * @param index index of the element to replace
-     * @param node node to be stored at the specified position
-     * @return the node previously at the specified position
-     */
-    @Override
-    public TreeNode setSibling(int index, TreeNode node) {
-        if (node == null) {
-            throw new NullPointerException();
-        }
-        else if ((index < 0) || (index >= size())) {
-            throw new IndexOutOfBoundsException();
-        }
-        else {
-            if (!parent.equals(node.getParent())) {
-                eraseParent(node);
-            }
-
-            TreeNode previous = get(index);
-            super.set(index, node);
-            node.setParent(parent);
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-            return previous;
-        }
-    }
-
     @Override
     public TreeNode remove(int index) {
         TreeNode node = get(index);
