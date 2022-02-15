@@ -199,29 +199,18 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         if (elements == null || elements.isEmpty()) {
             return null;
         }
-        else {
-            String[] paths = id.split(SEPARATOR);
-
-            if (paths.length == 0) {
-                return null;
+        for (MenuElement element : elements) {
+            if (Objects.equals(element.getId(), id)) {
+                return (MenuItem) element;
             }
-
-            int childIndex = Integer.parseInt(paths[0]);
-            if (childIndex >= elements.size()) {
-                return null;
-            }
-
-            MenuElement childElement = elements.get(childIndex);
-
-            if (paths.length == 1) {
-                return (MenuItem) childElement;
-            }
-            else {
-                String relativeIndex = id.substring(id.indexOf(SEPARATOR) + 1);
-
-                return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
+            if (element instanceof MenuGroup) {
+                MenuItem result = findMenuitem(((MenuGroup) element).getElements(), id);
+                if (result != null) {
+                    return result;
+                }
             }
         }
+        return null;
     }
 
     /**
@@ -237,16 +226,23 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         String menuid = params.get(clientId + "_menuid");
         if (menuid != null) {
             MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
-            MenuActionEvent event = new MenuActionEvent(component, menuitem);
+            // skip removed/disabled menu items
+            if (menuitem != null && !menuitem.isDisabled()) {
+                MenuActionEvent event = new MenuActionEvent(component, menuitem);
 
-            if (menuitem.isImmediate()) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+                if (menuitem.isImmediate()) {
+                    event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+                }
+                else {
+                    event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                }
+
+                component.queueEvent(event);
             }
             else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                // not sure about SplitButtonRenderer
+                return false;
             }
-
-            component.queueEvent(event);
         }
 
         return menuid != null;
