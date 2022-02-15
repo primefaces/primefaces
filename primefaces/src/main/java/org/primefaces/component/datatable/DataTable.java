@@ -855,7 +855,7 @@ public class DataTable extends DataTableBase {
                     else if (child instanceof RowExpansion) {
                         Object rowData = getRowData();
                         String rowKey = getRowKey(rowData);
-                        if (getExpandedRowKeys().contains(rowKey)) {
+                        if (getExpandedRowKeys().contains(rowKey) || isExpandedRow()) {
                             process(context, child, phaseId);
                         }
                     }
