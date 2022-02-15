@@ -21,6 +21,7 @@
  *
  * @prop {boolean} cfg.custom Whether a custom layout is enabled.
  * @prop {boolean} cfg.unselectable Unselectable mode when true clicking a radio again will clear the selection.
+ * @prop {boolean} cfg.readonly Whether the radio group is readonly.
  */
 PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
 
@@ -32,6 +33,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         var $this = this;
+        this.cfg.readonly = this.cfg.readonly === true;
 
         //custom layout
         if(this.cfg.custom) {
@@ -127,52 +129,54 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter.selectOneRadio', function() {
-            $(this).addClass('ui-state-hover');
-        })
-        .on('mouseleave.selectOneRadio', function() {
-            $(this).removeClass('ui-state-hover');
-        })
-        .on('click.selectOneRadio', function(e) {
-            var radio = $(this),
-            input = radio.prev().children(':radio');
+        if (!this.cfg.readonly) {
+            this.outputs.filter(':not(.ui-state-disabled)').on('mouseenter.selectOneRadio', function() {
+                $(this).addClass('ui-state-hover');
+            })
+            .on('mouseleave.selectOneRadio', function() {
+                $(this).removeClass('ui-state-hover');
+            })
+            .on('click.selectOneRadio', function(e) {
+                var radio = $(this),
+                input = radio.prev().children(':radio');
 
-            $this.jq.find('[role=radio]').attr('aria-checked', false);
-            $this.setAriaChecked(radio, true);
-            if(!radio.hasClass('ui-state-active')) {
-                $this.unselect($this.checkedRadio);
-                $this.select(radio);
-                $this.fireClickEvent(input, e);
-                input.trigger('change');
-            }
-            else {
-                if ($this.cfg.unselectable) {
+                $this.jq.find('[role=radio]').attr('aria-checked', false);
+                $this.setAriaChecked(radio, true);
+                if(!radio.hasClass('ui-state-active')) {
                     $this.unselect($this.checkedRadio);
+                    $this.select(radio);
+                    $this.fireClickEvent(input, e);
+                    input.trigger('change');
                 }
-                $this.fireClickEvent(input, e);
-            }
+                else {
+                    if ($this.cfg.unselectable) {
+                        $this.unselect($this.checkedRadio);
+                    }
+                    $this.fireClickEvent(input, e);
+                }
 
-            input.trigger('focus.selectOneRadio');
+                input.trigger('focus.selectOneRadio');
 
-            // Github issue #4467
-            e.stopPropagation();
-            e.preventDefault();
-        });
+                // Github issue #4467
+                e.stopPropagation();
+                e.preventDefault();
+            });
 
-        this.labels.filter(':not(.ui-state-disabled)').on('click.selectOneRadio', function(e) {
-            var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
-            radio = null;
+            this.labels.filter(':not(.ui-state-disabled)').on('click.selectOneRadio', function(e) {
+                var target = $(PrimeFaces.escapeClientId($(this).attr('for'))),
+                radio = null;
 
-            //checks if target is input or not(custom labels)
-            if(target.is(':input'))
-                radio = target.parent().next();
-            else
-                radio = target.children('.ui-radiobutton-box'); //custom layout
+                //checks if target is input or not(custom labels)
+                if(target.is(':input'))
+                    radio = target.parent().next();
+                else
+                    radio = target.children('.ui-radiobutton-box'); //custom layout
 
-            radio.trigger('click.selectOneRadio');
+                radio.trigger('click.selectOneRadio');
 
-            e.preventDefault();
-        });
+                e.preventDefault();
+            });
+        }
 
         this.enabledInputs.on('focus.selectOneRadio', function() {
             var input = $(this),
@@ -187,6 +191,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             radio.removeClass('ui-state-focus');
         })
         .on('keydown.selectOneRadio', function(e) {
+            if (this.cfg.readonly) {
+                return;
+            }
+
             var input = $(this),
             currentRadio = input.parent().next(),
             index = $this.enabledInputs.index(input),
@@ -240,6 +248,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} radio A radio button of this widget to unselect.
      */
     unselect: function(radio) {
+        if (this.cfg.readonly) {
+            return;
+        }
+
         var radioInput = radio.prev().children(':radio');
         radioInput.prop('checked', false);
         radio.removeClass('ui-state-active').children('.ui-radiobutton-icon').removeClass('ui-icon-bullet').addClass('ui-icon-blank');
@@ -255,6 +267,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} radio A radio button of this widget to select.
      */
     select: function(radio) {
+        if (this.cfg.readonly) {
+            return;
+        }
+
         var radioInput = radio.prev().children(':radio');
         this.checkedRadio = radio;
         radio.addClass('ui-state-active').children('.ui-radiobutton-icon').addClass('ui-icon-bullet').removeClass('ui-icon-blank');
@@ -289,6 +305,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} index Index of the radio button option to disable.
      */
     disable: function(index) {
+        if (this.cfg.readonly) {
+            return;
+        }
+
         if(index == null) {
             this.inputs.attr('disabled', 'disabled');
             this.labels.addClass('ui-state-disabled');
@@ -302,7 +322,6 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             label.addClass('ui-state-disabled');
             this.unbindEvents(input);
         }
-
     },
 
     /**
@@ -310,6 +329,10 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} index Index of the radio button option to enable.
      */
     enable: function(index) {
+        if (this.cfg.readonly) {
+            return;
+        }
+
         if(index == null) {
             this.inputs.removeAttr('disabled');
             this.labels.removeClass('ui-state-disabled');
