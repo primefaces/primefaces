@@ -54,7 +54,7 @@ public abstract class Password extends InputText {
          * "Timeout Expected condition failed" on Github Actions with Selenium 4 and Firefox 96.
          */
         PrimeSelenium.waitGui().until(ExpectedConditions.and(
-                PrimeExpectedConditions.documentLoaded(),
+                //PrimeExpectedConditions.documentLoaded(),
                 PrimeExpectedConditions.animationNotActive(),
                 PrimeExpectedConditions.ajaxQueueEmpty()));
     }
