@@ -25,6 +25,7 @@ package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 
@@ -47,7 +48,15 @@ public abstract class Password extends InputText {
      */
     public void showFeedback() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()));
+
+        /*
+         * PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()) causes sometimes
+         * "Timeout Expected condition failed" on Github Actions with Selenium 4 and Firefox 96.
+         */
+        PrimeSelenium.waitGui().until(ExpectedConditions.and(
+                PrimeExpectedConditions.documentLoaded(),
+                PrimeExpectedConditions.animationNotActive(),
+                PrimeExpectedConditions.ajaxQueueEmpty()));
     }
 
     /**

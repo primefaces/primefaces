@@ -5,12 +5,13 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }}
+    name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }} - ${{ matrix.browser }}
     strategy:
       fail-fast: false
       matrix:
         java: [8, 11, 17]
         jsfimpl: [ 'mojarra-2.3', 'myfaces-2.3']
+        browser: [ 'chrome', 'firefox']
 
     steps:
       - uses: actions/checkout@v2
@@ -30,7 +31,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Integration Tests (serial)
         if: matrix.java == 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,${{ matrix.browser }},theme-saga,csp,${{ matrix.jsfimpl }}
       - name: Integration Tests (parallel)
         if: matrix.java != 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,${{ matrix.browser }},theme-saga,csp,${{ matrix.jsfimpl }}
