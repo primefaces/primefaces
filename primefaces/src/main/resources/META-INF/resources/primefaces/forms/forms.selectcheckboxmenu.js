@@ -625,7 +625,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             var togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
             this.bindCheckboxKeyEvents(togglerCheckboxInput);
-            togglerCheckboxInput.on('keyup.selectCheckboxMenu', function(e) {
+            togglerCheckboxInput.on('keydown.selectCheckboxMenu', function(e) {
+                if(e.which === $.ui.keyCode.TAB && e.shiftKey) {
+                    e.preventDefault();
+                }
+            })
+                .on('keyup.selectCheckboxMenu', function(e) {
                         if(e.which === $.ui.keyCode.SPACE) {
                             var input = $(this);
 
@@ -651,7 +656,21 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         var itemKeyInputs = this.itemContainer.find('> li > div.ui-chkbox > div.ui-helper-hidden-accessible > input');
         this.bindCheckboxKeyEvents(itemKeyInputs);
-        itemKeyInputs.on('keyup.selectCheckboxMenu', function(e) {
+        itemKeyInputs.on('keydown.selectCheckboxMenu', function(e) {
+            var input = $(this),
+                item = input.closest("li"),
+                index = $this.items.index(item);
+
+            if(e.which === $.ui.keyCode.TAB && !e.shiftKey
+                && index === $this.items.length - 1) {
+                e.preventDefault();
+            }
+            else if(e.which === $.ui.keyCode.TAB && e.shiftKey
+                && !$this.cfg.showHeader && index === 0) {
+                e.preventDefault();
+            }
+        })
+            .on('keyup.selectCheckboxMenu', function(e) {
                     if(e.which === $.ui.keyCode.SPACE) {
                         var input = $(this),
                         box = input.parent().next();
@@ -1044,6 +1063,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     $this.postHide();
                 }
             });
+
+            this.keyboardTarget.focus();
         }
     },
 
