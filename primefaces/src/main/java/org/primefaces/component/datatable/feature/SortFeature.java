@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ValueExpression;
+import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements DataTableFeature {
 
@@ -120,7 +121,7 @@ public class SortFeature implements DataTableFeature {
 
             sort(context, table);
 
-            if (table.isPaginator()) {
+            if (table.isPaginator() && ComponentUtils.isRequestSource(table, context)) {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
             }
 
@@ -206,15 +207,21 @@ public class SortFeature implements DataTableFeature {
     public static int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
             Collator collator, Locale locale) {
 
+        ValueExpression ve = sortMeta.getSortBy();
+
+        context.getExternalContext().getRequestMap().put(var, o1);
+        Object value1 = ve.getValue(context.getELContext());
+
+        context.getExternalContext().getRequestMap().put(var, o2);
+        Object value2 = ve.getValue(context.getELContext());
+
+        return compare(context, sortMeta, value1, value2, collator, locale);
+    }
+
+    public static int compare(FacesContext context, SortMeta sortMeta, Object value1, Object value2,
+            Collator collator, Locale locale) {
+
         try {
-            ValueExpression ve = sortMeta.getSortBy();
-
-            context.getExternalContext().getRequestMap().put(var, o1);
-            Object value1 = ve.getValue(context.getELContext());
-
-            context.getExternalContext().getRequestMap().put(var, o2);
-            Object value2 = ve.getValue(context.getELContext());
-
             int result;
 
             if (sortMeta.getFunction() == null) {

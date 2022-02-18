@@ -9437,10 +9437,9 @@ declare namespace PrimeFaces.widget.DataTable {
 declare namespace PrimeFaces.widget.DataTable {
     /**
      * Indicates how rows of a DataTable
-     * may be selected. `new` always unselects other rows, `add` preserves the currently selected rows, and `checkbox` adds
-     * a checkbox next to each row.
+     * may be selected. `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables selection when clicking on the row itself.
      */
-    export type RowSelectMode = "new" | "add" | "checkbox";
+    export type RowSelectMode = "new" | "add" | "none";
 }
 declare namespace PrimeFaces.widget.DataTable {
     /**

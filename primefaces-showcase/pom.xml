@@ -17,13 +17,13 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <owb.version>2.0.25</owb.version>
-        <hibernate-validator.version>6.2.1.Final</hibernate-validator.version>
+        <owb.version>2.0.26</owb.version>
+        <hibernate-validator.version>6.2.2.Final</hibernate-validator.version>
         <mojarra.version>2.3.17</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
         <resteasy.version>5.0.2.Final</resteasy.version>
-        <jetty.version>9.4.44.v20210927</jetty.version>
+        <jetty.version>9.4.45.v20220203</jetty.version>
     </properties>
 
     <dependencies>
@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.35</version>
+            <version>1.7.36</version>
         </dependency>
 
         <!-- GraphicImage -->

@@ -46,6 +46,8 @@ import org.primefaces.selenium.component.model.Severity;
 
 public class DatePicker011Test extends AbstractDatePickerTest {
 
+    public static final int SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS = 250;
+
     private enum DatePickerBehaviour {
         _none, dateSelect, viewChange, close;
     };
@@ -222,7 +224,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -237,7 +239,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -251,7 +253,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -266,7 +268,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -280,7 +282,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.selectMonthDropdown(LocalDate.now().getMonth().getValue() % 12);
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -294,7 +296,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.selectYearDropdown(LocalDate.now().getYear() + 1);
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -308,7 +310,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
@@ -343,7 +345,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         link.click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -401,10 +403,10 @@ public class DatePicker011Test extends AbstractDatePickerTest {
             default:
                 break;
         }
-        button.click();
+        button.click(); // may trigger 2 ajax-calls due to DatePicker internals; PrimeSelenium.guardAjax only covers the first one
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
@@ -439,7 +441,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
             case dateSelect:

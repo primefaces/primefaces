@@ -23,10 +23,6 @@
  */
 package org.primefaces.model.filter;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.function.BiPredicate;
@@ -38,35 +34,13 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
         if (value == null || filter == null) {
             return false;
         }
-        if (value instanceof Number) {
-            BigDecimal filterBigDecimal = toBigDecimal(filter, locale);
-            return filterBigDecimal != null && getPredicate().test(toBigDecimal(value, locale), filterBigDecimal);
+        if (!(value instanceof Comparable)) {
+            throw new IllegalArgumentException("Value should be a java.lang.Comparable");
         }
-        else {
-            return getPredicate()
-                    .test(StringFilterConstraint.toString(value, locale),
-                            StringFilterConstraint.toString(filter, locale));
+        if (!filter.getClass().isAssignableFrom(value.getClass())) {
+            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
         }
-    }
-
-    static BigDecimal toBigDecimal(Object object, Locale locale) {
-        if (object instanceof BigDecimal) {
-            return (BigDecimal) object;
-        }
-        if (object instanceof Number) {
-            return new BigDecimal(object.toString());
-        }
-        if (object instanceof String) {
-            try {
-                DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(locale);
-                decimalFormat.setParseBigDecimal(true);
-                return (BigDecimal) decimalFormat.parseObject((String) object);
-            }
-            catch (ParseException e) {
-                return null;
-            }
-        }
-        throw new IllegalArgumentException("Unsupported type: " + object.getClass().getName());
+        return getPredicate().test((Comparable) value, (Comparable) filter);
     }
 
     protected abstract BiPredicate<Comparable, Comparable> getPredicate();

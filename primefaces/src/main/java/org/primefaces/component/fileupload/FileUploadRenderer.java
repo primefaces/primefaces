@@ -278,7 +278,6 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", cssClass, null);
         writer.writeAttribute("tabindex", tabindex, null);
-        writer.writeAttribute("role", "button", null);
         writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_label", null);
 
         String chooseButtonTitle = fileUpload.getChooseButtonTitle();
