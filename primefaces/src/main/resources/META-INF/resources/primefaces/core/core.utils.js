@@ -821,6 +821,21 @@ if (!PrimeFaces.utils) {
             }
 
             return undefined;
+        },
+
+        /**
+         * When configuring numeric value like 'showDelay' and the user wants '0' we can't treat 0 as Falsey 
+         * so we make the value 0.  Otherwise Falsey returns the default value.
+         *
+         * @param {number|undefined} value the original value
+         * @param {number} defaultValue the required default value if value is not set
+         * @return {number} the calculated value
+         */
+        defaultNumeric: function(value, defaultValue) {
+            if (value === 0) {
+                return 0;
+            }
+            return value || defaultValue;
         }
     };
 
