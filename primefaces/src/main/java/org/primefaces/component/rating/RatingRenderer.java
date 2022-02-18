@@ -31,7 +31,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -138,11 +137,12 @@ public class RatingRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
-        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("type", "range", null);
+        writer.writeAttribute("min", "0", null);
+        writer.writeAttribute("max", rating.getStars(), null);
         writer.writeAttribute("autocomplete", "off", null);
         if (rating.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
-            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
         }
         if (value != null) {
             writer.writeAttribute("value", value, null);
@@ -150,10 +150,7 @@ public class RatingRenderer extends InputRenderer {
 
         //for keyboard accessibility and ScreenReader
         writer.writeAttribute("tabindex", rating.getTabindex(), null);
-        writer.writeAttribute("role", "slider", null);
-        writer.writeAttribute("aria-valuemin", "1", null);
-        writer.writeAttribute("aria-valuemax", rating.getStars(), null);
-        writer.writeAttribute("aria-valuenow", value, null);
+
 
         writer.endElement("input");
 
