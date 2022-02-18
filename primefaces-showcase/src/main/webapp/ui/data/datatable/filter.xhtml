@@ -38,8 +38,10 @@
                         <div class="p-d-flex p-ai-center p-jc-between">
                             <span>List of Customers</span>
                             <div>
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:10rem" placeholder="Enter keyword" />
-                            <p:commandButton value="Global Filter Only" update="@form" action="#{dtFilterView.toggleGlobalFilter()}"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:10rem"
+                                         placeholder="Enter keyword" />
+                            <p:commandButton value="Global Filter Only" update="@form" styleClass="p-ml-2"
+                                             action="#{dtFilterView.toggleGlobalFilter()}"/>
                             </div>
                         </div>
 
@@ -57,7 +59,7 @@
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                         sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.representatives}" />
                             </p:selectOneMenu>
@@ -76,7 +78,7 @@
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.customerStatus}" />
                             </p:selectOneMenu>
@@ -86,6 +88,11 @@
                     </p:column>
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt">
+                        <f:facet name="filter">
+                            <p:inputText onkeyup="PF('customersTable').filter()" styleClass="ui-column-filter">
+                                <f:converter converterId="javax.faces.Integer" />
+                            </p:inputText>
+                        </f:facet>
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 
@@ -128,13 +135,13 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter"/>
                         </f:facet>
                     </p:column>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.customerStatus}" />
                             </p:selectOneMenu>
@@ -144,6 +151,11 @@
                     </p:column>
 
                     <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}">
+                        <f:facet name="filter">
+                            <p:inputText onkeyup="PF('customersTable2').filter()" styleClass="ui-column-filter">
+                                <f:converter converterId="javax.faces.Integer" />
+                            </p:inputText>
+                        </f:facet>
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
                 </p:dataTable>

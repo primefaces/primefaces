@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
+      fail-fast: false
       matrix:
         java: [8, 11]
         profile: [

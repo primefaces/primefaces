@@ -99,6 +99,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
+                .attr("modifyValueOnWheel", spinner.isModifyValueOnWheel(), true)
                 .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
                 .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
 

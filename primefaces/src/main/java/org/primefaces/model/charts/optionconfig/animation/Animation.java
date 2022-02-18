@@ -36,9 +36,17 @@ public class Animation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private boolean loop;
     private Number duration;
     private String easing;
+    private Number delay;
 
+    public boolean isLoop() {
+        return loop;
+    }
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
     public Number getDuration() {
         return duration;
     }
@@ -51,6 +59,12 @@ public class Animation implements Serializable {
     public void setEasing(String easing) {
         this.easing = easing;
     }
+    public Number getDelay() {
+        return delay;
+    }
+    public void setDelay(Number delay) {
+        this.delay = delay;
+    }
 
     /**
      * Write the options of Title
@@ -60,10 +74,13 @@ public class Animation implements Serializable {
      */
     public String encode() throws IOException {
         try (FastStringWriter fsw = new FastStringWriter()) {
-            ChartUtils.writeDataValue(fsw, "duration", this.duration, false);
-            ChartUtils.writeDataValue(fsw, "easing", this.easing, this.duration != null);
+            ChartUtils.writeDataValue(fsw, "loop", this.loop, false);
+            ChartUtils.writeDataValue(fsw, "duration", this.duration, true);
+            ChartUtils.writeDataValue(fsw, "easing", this.easing, true);
+            ChartUtils.writeDataValue(fsw, "delay", this.delay, true);
             return fsw.toString();
         }
     }
+
 
 }

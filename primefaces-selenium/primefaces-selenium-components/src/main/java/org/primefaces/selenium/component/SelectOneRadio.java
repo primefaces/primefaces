@@ -170,4 +170,13 @@ public abstract class SelectOneRadio extends AbstractComponent {
     public void enableOption(int index) {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable(" + index + ");");
     }
+
+    /**
+     * Is this component readonly?
+     *
+     * @return true if readonly
+     */
+    public boolean isReadOnly() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".cfg.readonly");
+    }
 }

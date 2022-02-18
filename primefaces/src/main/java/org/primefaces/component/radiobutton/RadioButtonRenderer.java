@@ -87,7 +87,7 @@ public class RadioButtonRenderer extends InputRenderer {
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id + "_clone", null);
-        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("name", name + "_clone", null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);

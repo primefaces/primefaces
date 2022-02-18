@@ -808,6 +808,8 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
+        loadLazyDataIfRequired();
+
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
@@ -853,7 +855,7 @@ public class DataTable extends DataTableBase {
                     else if (child instanceof RowExpansion) {
                         Object rowData = getRowData();
                         String rowKey = getRowKey(rowData);
-                        if (getExpandedRowKeys().contains(rowKey)) {
+                        if (getExpandedRowKeys().contains(rowKey) || isExpandedRow()) {
                             process(context, child, phaseId);
                         }
                     }

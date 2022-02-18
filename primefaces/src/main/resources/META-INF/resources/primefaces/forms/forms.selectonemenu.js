@@ -648,36 +648,38 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                             // find all options with the same first letter
                             matchedOptions = $this.matchOptions(text);
                             if(matchedOptions.length) {
-                                var selectedIndex = -1;
+                                $this.callHandleMethod(function() {
+                                    var selectedIndex = -1;
 
-                                // is current selection one of our matches?
-                                matchedOptions.each(function() {
-                                   var option = $(this);
-                                   var currentIndex = option[0].index;
-                                   var currentItem = $this.items.eq(currentIndex);
-                                   if (currentItem.hasClass('ui-state-highlight')) {
-                                       selectedIndex = currentIndex;
-                                       return false;
-                                   }
-                                });
+                                    // is current selection one of our matches?
+                                    matchedOptions.each(function() {
+                                       var option = $(this);
+                                       var currentIndex = option[0].index;
+                                       var currentItem = $this.items.eq(currentIndex);
+                                       if (currentItem.hasClass('ui-state-highlight')) {
+                                           selectedIndex = currentIndex;
+                                           return false;
+                                       }
+                                    });
 
-                                matchedOptions.each(function() {
-                                    var option = $(this);
-                                    var currentIndex = option[0].index;
-                                    var currentItem = $this.items.eq(currentIndex);
+                                    matchedOptions.each(function() {
+                                        var option = $(this);
+                                        var currentIndex = option[0].index;
+                                        var currentItem = $this.items.eq(currentIndex);
 
-                                    // select next item after the current selection
-                                    if (currentIndex > selectedIndex) {
-                                         if($this.panel.is(':hidden')) {
-                                             $this.selectItem(currentItem);
+                                        // select next item after the current selection
+                                        if (currentIndex > selectedIndex) {
+                                             if($this.panel.is(':hidden')) {
+                                                 $this.selectItem(currentItem);
+                                             }
+                                             else {
+                                                 $this.highlightItem(currentItem);
+                                                 PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                             }
+                                             return false;
                                          }
-                                         else {
-                                             $this.highlightItem(currentItem);
-                                             PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
-                                         }
-                                         return false;
-                                     }
-                                });
+                                    });
+                                }, e);
                             }
                         }
 
