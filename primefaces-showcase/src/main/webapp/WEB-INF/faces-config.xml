@@ -23,6 +23,7 @@
     </lifecycle>
 
     <factory>
+        <faces-context-factory>org.primefaces.showcase.application.Html5ContextFactory</faces-context-factory>
         <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
         <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
     </factory>
