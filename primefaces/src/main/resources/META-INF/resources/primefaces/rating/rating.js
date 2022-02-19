@@ -138,8 +138,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     getValue: function() {
         var inputVal = this.input.val();
-
-        return inputVal === '' ? null : parseInt(inputVal);
+        return inputVal === '0' ? null : parseInt(inputVal);
     },
 
     /**
@@ -229,7 +228,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * Resets the rating so that no stars are selected.
      */
     reset: function() {
-        this.input.attr('value', '');
+        this.input.attr('value', '0');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 
