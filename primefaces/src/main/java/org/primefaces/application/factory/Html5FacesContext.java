@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.application;
+package org.primefaces.application.factory;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
@@ -29,15 +29,18 @@ import javax.faces.context.ResponseWriter;
 
 /**
  * JSF generates all script tags with 'type="text/javascript"' which throws HTML5 validation warnings.
+ * NOTE: Not necessary for Faces 4.0+.
+ *
+ * @since 12.0.0
  */
-public class Html5Context extends FacesContextWrapper {
+public class Html5FacesContext extends FacesContextWrapper {
 
-    public Html5Context(FacesContext context) {
+    public Html5FacesContext(FacesContext context) {
         super(context);
     }
 
     @Override
     public void setResponseWriter(ResponseWriter responseWriter) {
-        super.setResponseWriter(new Html5ResponseWriter(responseWriter));
+        super.setResponseWriter(new Html5FacesContextResponseWriter(responseWriter));
     }
 }

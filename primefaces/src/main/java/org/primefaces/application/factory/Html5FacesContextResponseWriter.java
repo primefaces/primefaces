@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.application;
+package org.primefaces.application.factory;
 
 import java.io.IOException;
 
@@ -31,14 +31,17 @@ import javax.faces.context.ResponseWriterWrapper;
 
 /**
  * JSF generates all script tags with 'type="text/javascript"' which throws HTML5 validation warnings.
+ * NOTE: Not necessary for Faces 4.0+.
+ *
+ * @since 12.0.0
  */
-public class Html5ResponseWriter extends ResponseWriterWrapper {
+public class Html5FacesContextResponseWriter extends ResponseWriterWrapper {
 
     private static final String SCRIPT = "script";
     private static final String TYPE = "text/javascript";
     private boolean inScriptStartTag;
 
-    public Html5ResponseWriter(ResponseWriter wrapped) {
+    public Html5FacesContextResponseWriter(ResponseWriter wrapped) {
         super(wrapped);
     }
 
