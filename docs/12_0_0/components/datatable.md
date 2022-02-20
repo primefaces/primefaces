@@ -336,8 +336,8 @@ filter match modes (like greater than). For example, if the column field is an i
 add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
 (see example below).
 
-In case you want to filter `LocalDateTime` or `Date` values, use the converters `org.primefaces.filter.LocalDateTime`
-or `org.primefaces.filter.Date` on the filtering `DatePicker` component.
+In case you want to filter `LocalDateTime` or `Date` values, use the converters `org.primefaces.midnightLocalDateTime`
+or `org.primefaces.midnightDate` on the filtering `DatePicker` component.
 
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">

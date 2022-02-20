@@ -181,13 +181,13 @@
     </converter>
 
     <converter>
-        <converter-id>org.primefaces.filter.Date</converter-id>
-        <converter-class>org.primefaces.convert.FilterDateConverter</converter-class>
+        <converter-id>org.primefaces.midnightDate</converter-id>
+        <converter-class>org.primefaces.convert.MidnightDateConverter</converter-class>
     </converter>
 
     <converter>
-        <converter-id>org.primefaces.filter.LocalDateTime</converter-id>
-        <converter-class>org.primefaces.convert.FilterLocalDateTimeConverter</converter-class>
+        <converter-id>org.primefaces.midnightLocalDateTime</converter-id>
+        <converter-class>org.primefaces.convert.MidnightLocalDateTimeConverter</converter-class>
     </converter>
 
     <component>

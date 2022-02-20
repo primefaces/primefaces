@@ -33,14 +33,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.datepicker.DatePicker;
-import static org.primefaces.convert.FilterLocalDateTimeConverter.getDateTimeFormatter;
+import static org.primefaces.convert.MidnightLocalDateTimeConverter.getDateTimeFormatter;
 import org.primefaces.util.CalendarUtils;
 
-public class FilterDateConverter implements Converter<Date> {
+public class MidnightDateConverter implements Converter<Date> {
 
     @Override
     public Date getAsObject(FacesContext context, UIComponent component, String value) {
-        DatePicker datePicker = FilterLocalDateTimeConverter.assertDatePicker(component);
+        DatePicker datePicker = MidnightLocalDateTimeConverter.assertDatePicker(component);
         if (value == null) {
             return null;
         }
@@ -56,7 +56,7 @@ public class FilterDateConverter implements Converter<Date> {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Date value) {
-        DatePicker datePicker = FilterLocalDateTimeConverter.assertDatePicker(component);
+        DatePicker datePicker = MidnightLocalDateTimeConverter.assertDatePicker(component);
         if (value == null) {
             return null;
         }

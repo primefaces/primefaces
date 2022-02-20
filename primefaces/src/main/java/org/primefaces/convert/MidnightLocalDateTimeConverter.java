@@ -34,7 +34,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.datepicker.DatePicker;
 
-public class FilterLocalDateTimeConverter implements Converter<LocalDateTime> {
+public class MidnightLocalDateTimeConverter implements Converter<LocalDateTime> {
 
     @Override
     public LocalDateTime getAsObject(FacesContext context, UIComponent component, String value) {
