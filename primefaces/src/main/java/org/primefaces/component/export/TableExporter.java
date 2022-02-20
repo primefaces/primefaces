@@ -46,7 +46,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
     protected void exportColumn(FacesContext context, T table, UIColumn column, List<UIComponent> components,
             boolean joinComponents, Consumer<String> callback) {
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
+        if (column.getExportValue() != null) {
             callback.accept(column.getExportValue());
         }
         else if (column.getExportFunction() != null) {
