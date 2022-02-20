@@ -7,14 +7,14 @@
 
     <ui:define name="head">
 
-        <style type="text/css">
+        <style>
             .ui-log {
                 left: 600px;
                 top: 100px;
             }
         </style>
 
-        <script type="text/javascript">
+        <script>
             function handleComplete(xhr, status, args) {
                 if (args.validationFailed) {
                     PrimeFaces.debug("Validation Failed");

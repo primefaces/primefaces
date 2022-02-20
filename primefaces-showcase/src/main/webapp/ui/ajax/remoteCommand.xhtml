@@ -43,7 +43,7 @@
                 <p>Receiving values form the server as a serialized json object.</p>
                 <p:commandButton type="button" value="Send" icon="pi pi-refresh" onclick="rc2()"/>
 
-                <script type="text/javascript">
+                <script>
                     function runRemoteCommand(param1, param2) {
                         var promise = rc([{name: 'param1', value: param1}, {name: 'param2', value: param2}]);
                         promise.then(function (responseData) {

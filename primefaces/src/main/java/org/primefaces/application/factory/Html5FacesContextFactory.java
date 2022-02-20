@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.application;
+package org.primefaces.application.factory;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -41,19 +41,23 @@ import javax.faces.lifecycle.Lifecycle;
  *        &lt;/factory&gt;
  *    &lt;/faces-config&gt;
  * </pre>
+ *
+ * NOTE: Not necessary for Faces 4.0+.
+ *
+ * @since 12.0.0
  */
-public class Html5ContextFactory extends FacesContextFactory {
+public class Html5FacesContextFactory extends FacesContextFactory {
 
     private FacesContextFactory wrapped;
 
     // #6212 - don't remove it
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public Html5ContextFactory() {
+    public Html5FacesContextFactory() {
 
     }
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public Html5ContextFactory(FacesContextFactory wrapped) {
+    public Html5FacesContextFactory(FacesContextFactory wrapped) {
         this.wrapped = wrapped;
     }
 
@@ -61,7 +65,7 @@ public class Html5ContextFactory extends FacesContextFactory {
     public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
                 throws FacesException {
         FacesContext wrappedContext = wrapped.getFacesContext(context, request, response, lifecycle);
-        return wrappedContext instanceof Html5Context ? wrappedContext : new Html5Context(wrappedContext);
+        return wrappedContext instanceof Html5FacesContext ? wrappedContext : new Html5FacesContext(wrappedContext);
     }
 
     @Override

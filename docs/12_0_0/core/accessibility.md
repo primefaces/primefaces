@@ -33,3 +33,18 @@ bundle to provide your own values.
 - primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER = Toggle Row Group
 - primefaces.rowtoggler.aria.ROW_TOGGLER = Toggle Row
 
+## HTML5 Compliance
+
+Along with ARIA standards, PrimeFaces strives to be fully [W3C Validation](https://validator.w3.org/) compliant with the
+HTML5 specification.
+
+Before JSF 4.0 all script links required `type="text/javascript"`. However, according to the HTML5 specification
+this is not necessary as all scripts by default are Javascript.  If running an application on JSF lower than 4.0 you
+can remove the `type="text/javascript"` on all `<script>` links with the following line in your `faces-config.xml`.
+
+```xml
+<factory>
+   <faces-context-factory>org.primefaces.application.factory.Html5FacesContextFactory</faces-context-factory>
+</factory>
+
+```
