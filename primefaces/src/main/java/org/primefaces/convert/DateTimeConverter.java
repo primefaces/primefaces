@@ -25,15 +25,57 @@ package org.primefaces.convert;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.HTML;
 
 public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {
 
     private Map<String, Object> metadata;
+
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        if (value == null) {
+            return null;
+        }
+        String type = getType();
+        boolean isDate = "date".equals(type);
+        boolean isLocalDateTime = "localDateTime".equals(type);
+        if (component instanceof DatePicker && (isDate || isLocalDateTime)) {
+            DatePicker datePicker = (DatePicker) component;
+            Class<?> typeClass = datePicker.getValueType();
+            if (typeClass == null || List.class.isAssignableFrom(typeClass)) {
+                try {
+                    DateTimeFormatter formatter = getDateTimeFormatter(context, datePicker);
+                    LocalDateTime localDateTime = LocalDate.parse(value, formatter).atStartOfDay();
+                    if (isDate) {
+                        return CalendarUtils.convertLocalDateTime2Date(localDateTime);
+                    }
+                    return localDateTime;
+                }
+                catch (Exception ex) {
+                    throw new ConverterException(ex.getMessage(), ex);
+                }
+            }
+        }
+        return super.getAsObject(context, component, value);
+    }
+
+    protected DateTimeFormatter getDateTimeFormatter(FacesContext context, DatePicker datePicker) {
+        String pattern = datePicker.calculatePattern();
+        Locale locale = datePicker.calculateLocale(context);
+        return DateTimeFormatter.ofPattern(pattern, locale);
+    }
 
     @Override
     public Map<String, Object> getMetadata() {

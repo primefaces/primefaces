@@ -73,13 +73,15 @@
                 <p:column headerText="last login date time" field="lastLoginDateTime" filterMatchMode="between">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"
-                                      pattern="yyyy-MM-dd" rangeSeparator="-" converter="org.primefaces.midnightLocalDateTime"/>
+                                      pattern="yyyy-MM-dd" rangeSeparator="-">
+                            <f:convertDateTime type="localDateTime"/>
+                        </p:datePicker>
                     </f:facet>
                 </p:column>
                 <p:column headerText="last login date" field="lastLoginDate" filterMatchMode="between">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateFilter"
-                                      pattern="yyyy-MM-dd" rangeSeparator="-" converter="org.primefaces.midnightDate"/>
+                                      pattern="yyyy-MM-dd" rangeSeparator="-" converter="javax.faces.DateTime"/>
                     </f:facet>
                 </p:column>
 
