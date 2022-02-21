@@ -29,7 +29,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.faces.component.UIComponent;
@@ -45,30 +44,33 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        if (component instanceof DatePicker) {
+            return getAsObject(context, (DatePicker) component, value);
+        }
+        return super.getAsObject(context, component, value);
+    }
+
+    public Object getAsObject(FacesContext context, DatePicker datePicker, String value) {
         if (value == null) {
             return null;
         }
         String type = getType();
         boolean isDate = "date".equals(type);
         boolean isLocalDateTime = "localDateTime".equals(type);
-        if (component instanceof DatePicker && (isDate || isLocalDateTime)) {
-            DatePicker datePicker = (DatePicker) component;
-            Class<?> typeClass = datePicker.getValueType();
-            if (typeClass == null || List.class.isAssignableFrom(typeClass)) {
-                try {
-                    DateTimeFormatter formatter = getDateTimeFormatter(context, datePicker);
-                    LocalDateTime localDateTime = LocalDate.parse(value, formatter).atStartOfDay();
-                    if (isDate) {
-                        return CalendarUtils.convertLocalDateTime2Date(localDateTime);
-                    }
-                    return localDateTime;
+        if ("range".equals(datePicker.getSelectionMode()) && (isDate || isLocalDateTime)) {
+            try {
+                DateTimeFormatter formatter = getDateTimeFormatter(context, datePicker);
+                LocalDateTime localDateTime = LocalDate.parse(value, formatter).atStartOfDay();
+                if (isDate) {
+                    return CalendarUtils.convertLocalDateTime2Date(localDateTime);
                 }
-                catch (Exception ex) {
-                    throw new ConverterException(ex.getMessage(), ex);
-                }
+                return localDateTime;
+            }
+            catch (Exception ex) {
+                throw new ConverterException(ex.getMessage(), ex);
             }
         }
-        return super.getAsObject(context, component, value);
+        return super.getAsObject(context, datePicker, value);
     }
 
     protected DateTimeFormatter getDateTimeFormatter(FacesContext context, DatePicker datePicker) {
