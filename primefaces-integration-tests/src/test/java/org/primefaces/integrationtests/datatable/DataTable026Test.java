@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.datatable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -351,6 +352,51 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(15)
+    @DisplayName("DataTable: filter: lt LocalDateTime")
+    public void testFilterLtLocalDateTime(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 10, 15, 16, 04);
+        page.lastLoginDateTimeFilter2.getInput().sendKeys("2021-01-10 15:16:04");
+        PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter2.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getLastLoginDateTime().isBefore(localDateTime))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("DataTable: filter: lt Date")
+    public void testFilterLtDate(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 10, 15, 16, 04);
+        page.lastLoginDateFilter2.getInput().sendKeys("2021-01-10 15:16:04");
+        PrimeSelenium.guardAjax(page.lastLoginDateFilter2.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> {
+                    LocalDateTime value = CalendarUtils.convertDate2LocalDateTime(e.getLastLoginDate());
+                    return value.isBefore(localDateTime);
+                })
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
@@ -380,6 +426,12 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:lastLoginDateFilter")
         DatePicker lastLoginDateFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter2")
+        DatePicker lastLoginDateTimeFilter2;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter2")
+        DatePicker lastLoginDateFilter2;
 
         @Override
         public String getLocation() {

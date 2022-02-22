@@ -12,6 +12,10 @@
     <h:body>
 
         <h:form id="form">
+            <style>
+                html .ui-datatable table { table-layout: auto; }
+                td, th { white-space: nowrap; max-width: 60px; font-size: .75rem; }
+            </style>
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable026.employees}" var="employee"
                          filteredValue="#{dataTable026.filteredEmployees}" filterEvent="enter">
 
@@ -82,6 +86,20 @@
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateFilter"
                                       pattern="yyyy-MM-dd" rangeSeparator="-" converter="javax.faces.DateTime"/>
+                    </f:facet>
+                </p:column>
+                <p:column headerText="last login date time" field="lastLoginDateTime" filterMatchMode="lt">
+                    <f:facet name="filter">
+                        <p:datePicker onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter2"
+                                      pattern="yyyy-MM-dd HH:mm:ss" showTime="true">
+                            <f:convertDateTime type="localDateTime"/>
+                        </p:datePicker>
+                    </f:facet>
+                </p:column>
+                <p:column headerText="last login date" field="lastLoginDate" filterMatchMode="lt">
+                    <f:facet name="filter">
+                        <p:datePicker onchange="PF('wgtTable').filter()" id="lastLoginDateFilter2"
+                                      pattern="yyyy-MM-dd HH:mm:ss" showTime="true" converter="javax.faces.DateTime"/>
                     </f:facet>
                 </p:column>
 
