@@ -11,7 +11,7 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-	   <!-- Load custom tag into JSF web application -->
+   <!-- Load custom tag into JSF web application -->
     <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/showcase.taglib.xml</param-value>
@@ -27,7 +27,7 @@
     </context-param>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Production</param-value>
+        <param-value>${jsf.project.stage}</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
