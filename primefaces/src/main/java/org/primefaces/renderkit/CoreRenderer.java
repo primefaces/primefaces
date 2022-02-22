@@ -281,7 +281,6 @@ public abstract class CoreRenderer extends Renderer {
         writer.writeAttribute("autocomplete", "off", null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
-            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
         }
         if (value != null) {
             writer.writeAttribute("value", value, null);

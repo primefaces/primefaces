@@ -52,6 +52,12 @@ mvn clean install            -- first build PrimeFaces
 cd primefaces-showcase
 ```
 
+##### Development Mode (runs MyFaces 2.3 in JSF Development mode)
+
+```
+mvn clean jetty:run -Ddev
+```
+
 ##### Mojarra 2.3
 
 ```

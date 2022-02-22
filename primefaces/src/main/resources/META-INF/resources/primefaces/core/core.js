@@ -307,13 +307,6 @@
                 }
             });
 
-            //aria
-            if(input.is(':not([type="password"])')) {
-                input.attr('role', 'textbox')
-                     .attr('aria-readonly', input.prop('readonly'));
-            }
-            input.attr('aria-disabled', input.is(':disabled'));
-
             if(input.is('textarea')) {
                 input.attr('aria-multiline', true);
             }
