@@ -147,33 +147,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
             if(!this.cfg.multiple) {
-                if(this.cfg.updateLabel) {
-                    this.defaultLabel = this.label.text();
-                    this.label.css({
-                        'text-overflow': 'ellipsis',
-                        overflow: 'hidden'
-                    });
-
-                    this.updateLabel();
-                }
-
                 this.label.attr('id', this.labelId);
                 this.keyboardTarget.attr('aria-expanded', false).attr('aria-labelledby', this.labelId);
             }
-        } else {
-            // disabled
-            if(!this.cfg.multiple) {
-                if (this.cfg.updateLabel) {
-                    this.defaultLabel = this.label.text();
-                    this.label.css({
-                        'text-overflow': 'ellipsis',
-                        overflow: 'hidden'
-                    });
-
-                    this.updateLabel();
-                }
-            }
         }
+
+        this.renderLabel();
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -237,6 +216,31 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
         else if(this.inputs.length > 10) {
             this.itemContainerWrapper.height(200);
+        }
+    },
+
+    /**
+     * Create the label to display values
+     * @private
+     */
+    renderLabel: function() {
+        if (!this.cfg.updateLabel) {
+            return;
+        }
+        if (this.cfg.multiple) {
+            if (!this.multiItemContainer.children().length) {
+                this.multiItemContainer.empty().append(this.multiItemContainer.data('label'));
+            }
+        }
+        else {
+            // single select
+            this.defaultLabel = this.label.text();
+            this.label.css({
+                'text-overflow': 'ellipsis',
+                overflow: 'hidden'
+            });
+
+            this.updateLabel();
         }
     },
 
@@ -1192,11 +1196,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            if (this.cfg.emptyLabel) {
-                labelText = this.cfg.emptyLabel;
-            } else {
-                labelText = this.defaultLabel;
-            }
+            labelText = this.cfg.emptyLabel || this.defaultLabel;
         }
 
         this.label.text(labelText);
@@ -1224,6 +1224,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         itemDisplayMarkup += '<span class="ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close"></span>';
         itemDisplayMarkup += '<span class="ui-selectcheckboxmenu-token-label">' + label + '</span></li>';
 
+        if (!items.length) {
+            this.multiItemContainer.empty();
+        }
         this.multiItemContainer.append(itemDisplayMarkup);
     },
 
@@ -1237,6 +1240,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if(items.length) {
             items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').remove();
         }
+        // update the label if there are no more items to display empty
+        this.renderLabel();
     },
 
     /**
