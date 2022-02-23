@@ -66,8 +66,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.tooltip' : 'mouseleave.tooltip';
         this.cfg.showEffect = this.cfg.showEffect ? this.cfg.showEffect : 'fade';
         this.cfg.hideEffect = this.cfg.hideEffect ? this.cfg.hideEffect : 'fade';
-        this.cfg.showDelay = this.cfg.showDelay||150;
-        this.cfg.hideDelay = this.cfg.hideDelay||0;
+        this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 150);
+        this.cfg.hideDelay = PrimeFaces.utils.defaultNumeric(this.cfg.hideDelay, 0);
         this.cfg.hideEffectDuration = this.cfg.target ? 250 : 1;
         this.cfg.position = this.cfg.position||'right';
         this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
