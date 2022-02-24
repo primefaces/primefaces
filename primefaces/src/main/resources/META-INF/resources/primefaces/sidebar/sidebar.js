@@ -28,6 +28,8 @@
  * @prop {boolean} cfg.visible Whether the sidebar is initially opened.
  * @prop {boolean} cfg.dynamic `true` to load the content via AJAX when the overlay panel is opened, `false` to load
  * the content immediately.
+ *
+ * @prop {JQuery} content DOM element of the container for the content of this sidebar.
  */
 PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
