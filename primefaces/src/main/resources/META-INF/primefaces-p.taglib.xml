@@ -32107,6 +32107,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[This is the breakpoint in pixels when to automatically switch to optimized interface if autoDetectDisplay=true. Default is 576.]]>
+            </description>
+            <name>responsiveBreakpoint</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[When enabled, calendar overlay is displayed as optimized for touch devices. Default is false.]]>
             </description>
             <name>touchUI</name>

@@ -125,6 +125,8 @@ public class Constants {
 
     public static final String MULTI_VIEW_STATES = "primefaces.MULTI_VIEW_STATES";
 
+    public static final int DEFAULT_RESPONSIVE_BREAKPOINT = 576;
+
     private Constants() {
     }
 }

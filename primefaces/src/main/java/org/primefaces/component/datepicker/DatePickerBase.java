@@ -29,12 +29,14 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.CalendarUtils;
 import org.primefaces.model.datepicker.DateMetadataModel;
+import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.Constants;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
@@ -80,6 +82,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         numberOfMonths,
         view,
         autoDetectDisplay,
+        responsiveBreakpoint,
         touchUI,
         dateTemplate,
         appendTo,
@@ -466,6 +469,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setModel(DateMetadataModel model) {
         getStateHelper().put(PropertyKeys.model, model);
+    }
+
+    public void setResponsiveBreakpoint(int responsiveBreakpoint) {
+        getStateHelper().put(PropertyKeys.responsiveBreakpoint, responsiveBreakpoint);
+    }
+
+    public int getResponsiveBreakpoint() {
+        return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, Constants.DEFAULT_RESPONSIVE_BREAKPOINT);
     }
 
     @Override

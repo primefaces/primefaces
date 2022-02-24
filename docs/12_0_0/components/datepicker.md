@@ -106,6 +106,7 @@ ajax selection and more.
 | required | false | Boolean | Marks component as required
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | resolverStyle | smart | String | Relevant when parsing to a Java 8 Date/Time object. lenient, smart or strict. See [ResolverStyle](https://docs.oracle.com/javase/8/docs/api/java/time/format/ResolverStyle.html).
+| responsiveBreakpoint | 576 | int | This is the breakpoint in pixels when to automatically switch to optimized interface if autoDetectDisplay=true.
 | selectOtherMonths | false | Boolean | Enables selection of days belonging to other months.
 | selectionMode | single | String | Defines the selection mode, valid values are "single", "multiple" and "range"
 | shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.

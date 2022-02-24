@@ -45,7 +45,7 @@ if (!PrimeFaces.env) {
             this.mobile = (this.browser.mobile) ? true : false;
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && PrimeFaces.env.touch);
-            this.preferredColorSchemeDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            this.preferredColorSchemeDark = PrimeFaces.env.evaluateMediaQuery('(prefers-color-scheme: dark)');
             this.preferredColorSchemeLight = !this.preferredModeDark;
         },
 
@@ -119,6 +119,34 @@ if (!PrimeFaces.env) {
             var theme = PrimeFaces.env.getTheme();
             var darkRegex = /(^(arya|vela|.+-(dim|dark))$)/gm;
             return darkRegex.test(theme) ? 'dark' : 'light';
+        },
+        
+        /**
+         * Evaluate a media query and return true/false if its a match.
+         *
+         * @param {string} mediaquery the media query to evaluate
+         * @return {boolean} true if it matches the query false if not
+         */
+        evaluateMediaQuery: function(mediaquery) {
+            return window.matchMedia && window.matchMedia(mediaquery).matches;
+        },
+
+        /**
+         * Media query to determine if screen size is below pixel count.
+         * @param {number} pixels the number of pixels to check
+         * @return {boolean} true if screen is less than number of pixels
+         */
+        isScreenSizeLessThan: function(pixels) {
+            return PrimeFaces.env.evaluateMediaQuery('(max-width: ' + pixels + 'px)');
+        },
+
+        /**
+         * Media query to determine if screen size is above pixel count.
+         * @param {number} pixels the number of pixels to check
+         * @return {boolean} true if screen is greater than number of pixels
+         */
+        isScreenSizeGreaterThan: function(pixels) {
+            return PrimeFaces.env.evaluateMediaQuery('(min-width: ' + pixels + 'px)');
         }
     };
 
