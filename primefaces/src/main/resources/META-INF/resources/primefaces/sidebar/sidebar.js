@@ -43,6 +43,8 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.showCloseIcon = (this.cfg.showCloseIcon === true || this.cfg.showCloseIcon === undefined);
         this.cfg.baseZIndex = this.cfg.baseZIndex||0;
 
+        this.content = this.jq.children('.ui-sidebar-content');
+
         if(this.cfg.showCloseIcon) {
             this.closeIcon = this.jq.children('.ui-sidebar-close');
         }
@@ -240,14 +242,14 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            $this.jq.html(content);
-                            $this.loaded = true;
+                            this.content.html(content);
                         }
                     });
 
                 return true;
             },
             oncomplete: function() {
+                $this.loaded = true;
                 $this._show();
             }
         };
