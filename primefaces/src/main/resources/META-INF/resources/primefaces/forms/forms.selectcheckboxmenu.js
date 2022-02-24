@@ -629,56 +629,62 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             var togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
             this.bindCheckboxKeyEvents(togglerCheckboxInput);
-            togglerCheckboxInput.on('keyup.selectCheckboxMenu', function(e) {
-                        if(e.which === $.ui.keyCode.SPACE) {
-                            var input = $(this);
-
-                            if(input.prop('checked'))
-                                $this.uncheckAll();
-                            else
-                                $this.checkAll();
-
-                            e.preventDefault();
-                        }
-                    })
-                    .on('change.selectCheckboxMenu', function(e) {
-                        var input = $(this);
-
-                        if(input.prop('checked')) {
-                            $this.checkAll();
-                        }
-                        else {
-                            $this.uncheckAll();
-                        }
-                    });
+            togglerCheckboxInput.on('keydown.selectCheckboxMenu', function(e) {
+                if (e.which === $.ui.keyCode.TAB && e.shiftKey) {
+                    e.preventDefault();
+                }
+            }).on('keyup.selectCheckboxMenu', function(e) {
+                if (e.which === $.ui.keyCode.SPACE) {
+                    var input = $(this);
+                    if(input.prop('checked'))
+                        $this.uncheckAll();
+                    else
+                        $this.checkAll();
+                    e.preventDefault();
+                }
+            }).on('change.selectCheckboxMenu', function(e) {
+                var input = $(this);
+                if (input.prop('checked')) {
+                    $this.checkAll();
+                }
+                else {
+                    $this.uncheckAll();
+                }
+            });
         }
 
         var itemKeyInputs = this.itemContainer.find('> li > div.ui-chkbox > div.ui-helper-hidden-accessible > input');
         this.bindCheckboxKeyEvents(itemKeyInputs);
-        itemKeyInputs.on('keyup.selectCheckboxMenu', function(e) {
-                    if(e.which === $.ui.keyCode.SPACE) {
-                        var input = $(this),
-                        box = input.parent().next();
+        itemKeyInputs.on('keydown.selectCheckboxMenu', function(e) {
+            var index = $this.items.index($(this).closest("li"));
 
-                        if(input.prop('checked'))
-                            $this.uncheck(box, true);
-                        else
-                            $this.check(box, true);
-
-                        e.preventDefault();
-                    }
-                })
-                .on('change.selectCheckboxMenu', function(e) {
-                    var input = $(this),
+            if (e.which === $.ui.keyCode.TAB) {
+                if (!e.shiftKey && index === $this.items.length - 1) {
+                    e.preventDefault();
+                } else if (e.shiftKey && !$this.cfg.showHeader && index === 0) {
+                    e.preventDefault();
+                }
+            }
+        }).on('keyup.selectCheckboxMenu', function(e) {
+            if (e.which === $.ui.keyCode.SPACE) {
+                var input = $(this),
                     box = input.parent().next();
-
-                    if(input.prop('checked')) {
-                        $this.check(box, true);
-                    }
-                    else {
-                        $this.uncheck(box, true);
-                    }
-                });
+                if (input.prop('checked'))
+                    $this.uncheck(box, true);
+                else
+                    $this.check(box, true);
+                e.preventDefault();
+            }
+        }).on('change.selectCheckboxMenu', function(e) {
+            var input = $(this),
+                box = input.parent().next();
+            if (input.prop('checked')) {
+                $this.check(box, true);
+            }
+            else {
+                $this.uncheck(box, true);
+            }
+        });
     },
 
     /**
@@ -1048,6 +1054,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     $this.postHide();
                 }
             });
+
+            this.keyboardTarget.trigger('focus');
         }
     },
 
