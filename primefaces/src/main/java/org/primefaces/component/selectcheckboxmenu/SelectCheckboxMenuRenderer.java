@@ -167,13 +167,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
         if (selectItemGroupLabel != null) {
             writer.writeAttribute("data-group-label", selectItemGroupLabel, null);
         }
 
+        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
@@ -366,6 +366,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("readonly", "readonly", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "combobox", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
