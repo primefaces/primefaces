@@ -69,7 +69,7 @@ public class SidebarRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", sidebar.CONTENT_CLASS, null);
+        writer.writeAttribute("class", Sidebar.CONTENT_CLASS, null);
         writer.writeAttribute("id", sidebar.getClientId(context) + "_content", null);
 
         if (!sidebar.isDynamic()) {
