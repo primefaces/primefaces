@@ -37,7 +37,7 @@ import javax.faces.lifecycle.Lifecycle;
  * <pre>
  *    &lt;faces-config&gt;
  *        &lt;factory&gt;
- *            &lt;faces-context-factory>org.primefaces.extensions.application.Html5ContextFactory&lt;/faces-context-factory&gt;
+ *            &lt;faces-context-factory&gt;org.primefaces.extensions.application.Html5ContextFactory&lt;/faces-context-factory&gt;
  *        &lt;/factory&gt;
  *    &lt;/faces-config&gt;
  * </pre>
