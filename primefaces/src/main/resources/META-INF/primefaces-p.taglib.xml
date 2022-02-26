@@ -393,13 +393,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Title of the Print window (default to page title).</description>
-            <name>title</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Optional JSON configuration values to completely control PrintJS.</description>
+            <description>Optional JSON configuration values to completely control jQuery.print.</description>
             <name>configuration</name>
             <required>false</required>
             <type>java.lang.String</type>
