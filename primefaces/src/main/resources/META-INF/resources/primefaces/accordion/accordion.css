@@ -21,3 +21,24 @@
     outline: dotted thin;
     z-index: 1;
 }
+
+.ui-accordion .ui-panel-titlebar-icon {
+    float: right;
+    cursor: pointer;
+}
+
+.ui-accordion .ui-panel-titlebar-icon,
+.ui-accordion .ui-panel-titlebar-icon:hover,
+.ui-accordion .ui-panel-titlebar-icon:focus {
+    margin-left:0.2em;
+    margin-top:-0.2em;
+    *margin:-1.5em 0em 0em 0.2em;
+}
+
+.ui-accordion .ui-panel-actions {
+    float: right;
+}
+
+.ui-accordion .ui-accordion-header .ui-panel-titlebar-icon .ui-icon {
+    position: inherit
+}

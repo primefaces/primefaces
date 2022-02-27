@@ -6561,7 +6561,8 @@ body .ui-panel .ui-panel-titlebar {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
-body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon {
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon
+, body .ui-accordion .ui-accordion-header .ui-panel-titlebar-icon {
   margin: 0;
   margin-left: 0.5rem;
   width: 2rem;
@@ -6581,6 +6582,11 @@ body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon {
 body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon:hover {
   background: #e9ecef;
   color: #495057;
+  border-color: transparent;
+}
+body .ui-accordion .ui-accordion-header .ui-panel-titlebar-icon:hover {
+  background: #f8f9fa;
+  color: #6c757d;
   border-color: transparent;
 }
 body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-closethick {
@@ -6613,14 +6619,16 @@ body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-plusthick {
 body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-plusthick:before {
   content: "\e90d";
 }
-body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear {
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear
+, body .ui-accordion .ui-accordion-header .ui-panel-titlebar-icon .ui-icon-gear {
   font-family: "primeicons" !important;
   font-style: normal;
   font-weight: normal;
   display: inline-block;
   background: none;
 }
-body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear:before {
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear:before
+, body .ui-accordion .ui-accordion-header .ui-panel-titlebar-icon .ui-icon-gear:before {
   content: "\e94a";
 }
 body .ui-panel .ui-panel-content {
