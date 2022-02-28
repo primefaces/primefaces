@@ -342,5 +342,5 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         writer.endElement("a");
     }
-    
+
 }
