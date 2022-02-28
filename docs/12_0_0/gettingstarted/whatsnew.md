@@ -6,6 +6,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ### PrimeFaces
 
+* AccordionPanel: added support for `options` and `actions` facets of contained `Tab` components.
 * AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
 * CommandButton: added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
 * CommandLink
