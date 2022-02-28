@@ -91,7 +91,8 @@
                 <p:column headerText="last login date time" field="lastLoginDateTime" filterMatchMode="lt">
                     <f:facet name="filter">
                         <p:datePicker onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter2"
-                                      pattern="yyyy-MM-dd HH:mm:ss" showTime="true">
+                                      pattern="yyyy-MM-dd HH:mm:ss" showTime="true"
+                                      timeZone="GMT+12:00">
                             <f:convertDateTime type="localDateTime"/>
                         </p:datePicker>
                     </f:facet>

@@ -25,6 +25,8 @@ package org.primefaces.integrationtests.datatable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -360,8 +362,11 @@ public class DataTable026Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
-        LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 10, 15, 16, 04);
-        page.lastLoginDateTimeFilter2.getInput().sendKeys("2021-01-10 15:16:04");
+        LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 10, 1, 16, 04)
+                .atZone(ZoneId.ofOffset("GMT", ZoneOffset.ofHours(12)))
+                .withZoneSameInstant(ZoneId.systemDefault())
+                .toLocalDateTime();
+        page.lastLoginDateTimeFilter2.getInput().sendKeys("2021-01-10 01:16:04");
         PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter2.getInput()).sendKeys(Keys.TAB);
 
         // Assert

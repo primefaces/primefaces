@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
@@ -61,10 +62,15 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
         if (isDate || isLocalDateTime) {
             try {
                 DateTimeFormatter formatter = getDateTimeFormatter(context, datePicker);
-                LocalTime localTime = datePicker.isShowTime()
+                LocalTime time = datePicker.isShowTime()
                         ? LocalTime.parse(value, formatter)
                         : LocalTime.MIDNIGHT;
-                LocalDateTime localDateTime = LocalDate.parse(value, formatter).atTime(localTime);
+                ZoneId zone = CalendarUtils.calculateZoneId(datePicker.getTimeZone());
+                LocalDateTime localDateTime = LocalDate.parse(value, formatter)
+                        .atTime(time)
+                        .atZone(zone)
+                        .withZoneSameInstant(ZoneId.systemDefault())
+                        .toLocalDateTime();
                 if (isDate) {
                     return CalendarUtils.convertLocalDateTime2Date(localDateTime);
                 }
