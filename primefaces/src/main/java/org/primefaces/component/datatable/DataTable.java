@@ -811,13 +811,17 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
-        loadLazyDataIfRequired();
+        if (getFacesContext().isPostback()) {
+            loadLazyDataIfRequired();
+        }
         return super.visitRows(context, callback, visitRows);
     }
 
     @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
-        loadLazyDataIfRequired();
+        if (getFacesContext().isPostback()) {
+            loadLazyDataIfRequired();
+        }
 
         int first = getFirst();
         int rows = getRows();
