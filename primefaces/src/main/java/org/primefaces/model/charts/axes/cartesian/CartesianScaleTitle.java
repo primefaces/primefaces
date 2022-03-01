@@ -31,14 +31,16 @@ import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
 /**
- * The scale label configuration is nested under the scale configuration in the scaleLabel key. It defines options for the scale title.
+ * The scale label configuration is nested under the scale configuration in the scaleLabel key.
+ * It defines options for the scale title.
  */
-public class CartesianScaleLabel implements Serializable {
+public class CartesianScaleTitle implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private boolean display;
-    private String labelString;
+    private String text;
+    private String align;
     private Object lineHeight;
     private String fontColor;
     private ChartFont font;
@@ -66,21 +68,39 @@ public class CartesianScaleLabel implements Serializable {
     }
 
     /**
-     * Gets the labelString
+     * Gets the title
      *
-     * @return labelString
+     * @return title
      */
-    public String getLabelString() {
-        return labelString;
+    public String getText() {
+        return text;
     }
 
     /**
-     * Sets the labelString
+     * Sets the title
      *
-     * @param labelString The text for the title.
+     * @param title The text for the title.
      */
-    public void setLabelString(String labelString) {
-        this.labelString = labelString;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    /**
+     * Gets the align
+     *
+     * @return align
+     */
+    public String getAlign() {
+        return align;
+    }
+
+    /**
+     * Alignment of the axis title. Possible options are 'start', 'center' and 'end'
+     *
+     * @param align The align for the title.
+     */
+    public void setAlign(String align) {
+        this.align = align;
     }
 
     /**
@@ -217,7 +237,8 @@ public class CartesianScaleLabel implements Serializable {
             fsw.write("{");
 
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
-            ChartUtils.writeDataValue(fsw, "labelString", this.labelString, true);
+            ChartUtils.writeDataValue(fsw, "text", this.text, true);
+            ChartUtils.writeDataValue(fsw, "align", this.align, true);
             ChartUtils.writeDataValue(fsw, "lineHeight", this.lineHeight, true);
             ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
