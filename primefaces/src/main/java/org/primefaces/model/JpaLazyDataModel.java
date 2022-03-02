@@ -153,7 +153,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         if (filterBy != null) {
             for (FilterMeta filter : filterBy.values()) {
-                if (filter.getField() == null || filter.getFilterValue() == null) {
+                if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
                 }
 
