@@ -149,7 +149,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<Predicate> predicates = new ArrayList<>();
 
-        applyGlobalFilters(cb, cq, root, predicates);
+        applyGlobalFilters(filterBy, cb, cq, root, predicates);
 
         if (filterBy != null) {
             for (FilterMeta filter : filterBy.values()) {
@@ -173,7 +173,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
     }
 
-    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, List<Predicate> predicates) {
+    protected void applyGlobalFilters(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq,
+            Root<T> root, List<Predicate> predicates) {
 
     }
 
