@@ -48,6 +48,7 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
+        Assertions.assertTrue(feedback.isDisplayed());
         Assertions.assertEquals("block", feedback.getCssValue("display"));
         assertText(feedback, "Please enter a password");
         assertConfiguration(password.getWidgetConfiguration());
@@ -66,6 +67,7 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
+        Assertions.assertFalse(feedback.isDisplayed());
         Assertions.assertEquals("none", feedback.getCssValue("display"));
         assertConfiguration(password.getWidgetConfiguration());
     }
@@ -83,6 +85,7 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
+        Assertions.assertTrue(feedback.isDisplayed());
         assertText(feedback, "Weak");
         assertConfiguration(password.getWidgetConfiguration());
     }
@@ -100,6 +103,7 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
+        Assertions.assertTrue(feedback.isDisplayed());
         assertText(feedback, "Good");
         assertConfiguration(password.getWidgetConfiguration());
     }
@@ -117,6 +121,7 @@ public class Password002Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
+        Assertions.assertTrue(feedback.isDisplayed());
         assertText(feedback, "Strong");
         assertConfiguration(password.getWidgetConfiguration());
     }
