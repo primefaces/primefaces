@@ -426,16 +426,13 @@
             <id>firefox</id>
             <properties>
                 <webdriver.browser>firefox</webdriver.browser>
+                <excludedGroups>FirefoxExclude</excludedGroups>
             </properties>
         </profile>
         <profile>
             <id>safari</id>
             <properties>
                 <webdriver.browser>safari</webdriver.browser>
-                <!-- optionally only run tests with specific @Tag -->
-                <!--
-                <groups>SafariBasic</groups>
-                -->
                 <excludedGroups>SafariExclude</excludedGroups>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
             </properties>
