@@ -24,16 +24,14 @@
 package org.primefaces.integrationtests.password;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Password;
 
+@Tag("FirefoxExclude") // stability-issues for Firefox (96, 97) together with Selenium 4 and password.showFeedback
 public class Password003Test extends AbstractPrimePageTest {
 
     @Test
