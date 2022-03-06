@@ -336,6 +336,10 @@ filter match modes (like greater than). For example, if the column field is an i
 add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
 (see example below).
 
+In case you want to filter `LocalDateTime` or `Date` values, use the converter tag
+`<f:convertDateTime type="localDateTime"/>` or `<f:convertDateTime type="date"/>` as child of the filtering `DatePicker`
+component.
+
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
 
@@ -386,16 +390,23 @@ _filterMatchMode_ defines which built-in filtering algorithm would be used per c
 for this attribute are;
 
 - **startsWith** : Checks if column value starts with the filter value.
+- **notStartsWith** : Checks if column value does not start with the filter value.
 - **endsWith** : Checks if column value ends with the filter value.
+- **notEndsWith** : Checks if column value does not end with the filter value.
 - **contains** : Checks if column value contains the filter value.
-- **exact** : Checks if string representations of column value and filter value are same.
+- **notContains** : Checks if column value does not contain the filter value.
+- **exact** : Checks if string representations of column value and filter value are the same.
+- **notExact** : Checks if string representations of column value and filter value are not the same.
 - **lt** : Checks if column value is less than the filter value.
 - **lte** : Checks if column value is less than or equals the filter value.
 - **gt** : Checks if column value is greater than the filter value.
 - **gte** : Checks if column value is greater than or equals the filter value.
 - **equals** : Checks if column value equals the filter value.
+- **notEquals** : Checks if column value does not equal the filter value.
 - **in** : Checks if column value is in the collection of the filter value.
-- **range** : Checks if column value is within a provided range `(p:datePicker offers this functionality)`
+- **notIn** : Checks if column value is not in the collection of the filter value.
+- **between** : Checks if column value is within a provided range `(p:datePicker offers this functionality)`
+- **notBetween** : Checks if column value is not within a provided range `(p:datePicker offers this functionality)`
 
 In case the built-in methods do not suffice, custom filtering can be implemented using
 filterFunction approach.

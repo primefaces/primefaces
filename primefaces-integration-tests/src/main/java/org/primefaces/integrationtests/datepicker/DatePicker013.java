@@ -21,32 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.datatable;
+package org.primefaces.integrationtests.datepicker;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
+@Named
+@ViewScoped
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Employee implements Serializable {
-    private static final long serialVersionUID = 4840835873002977452L;
-    private Integer id;
-    private String firstName;
-    private String lastName;
-    private LocalDate birthDate;
-    private Integer salary;
-    private Role role;
-    private LocalDateTime lastLoginDateTime;
-    private Date lastLoginDate;
+public class DatePicker013 implements Serializable {
 
-    public enum Role { MANAGER, HR, DEVELOPER, QS, SALES, FINANCE };
+    private static final long serialVersionUID = 1L;
+
+    private LocalDateTime localDateTime1;
+    private LocalDateTime localDateTime2;
+
+    @PostConstruct
+    public void init() {
+        localDateTime1 = LocalDateTime.of(2021, 1, 10, 1, 16, 04);
+        localDateTime2 = LocalDateTime.of(2021, 1, 10, 1, 16, 04);
+    }
 }

@@ -24,6 +24,9 @@
 package org.primefaces.integrationtests.datatable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +44,7 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.model.datatable.Row;
+import org.primefaces.util.CalendarUtils;
 
 public class DataTable026Test extends AbstractDataTableTest {
 
@@ -244,7 +248,6 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -266,7 +269,6 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -302,6 +304,104 @@ public class DataTable026Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(13)
+    @DisplayName("DataTable: filter: between LocalDateTime")
+    public void testFilterBetweenLocalDateTime(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.of(2021, 1, 10);
+        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start + " - " + end); // 2021-01-01 - 2021-01-10
+        PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> {
+                    LocalDate date = e.getLastLoginDateTime().toLocalDate();
+                    return date.equals(start) || date.equals(end) || (date.isAfter(start) && date.isBefore(end));
+                })
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("DataTable: filter: between Date")
+    public void testFilterBetweenDate(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        LocalDate end = LocalDate.of(2021, 1, 10);
+        page.lastLoginDateFilter.getInput().sendKeys("" + start + " - " + end); // 2021-01-01 - 2021-01-10
+        PrimeSelenium.guardAjax(page.lastLoginDateFilter.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> {
+                    LocalDate date = CalendarUtils.convertDate2LocalDate(e.getLastLoginDate());
+                    return date.equals(start) || date.equals(end) || (date.isAfter(start) && date.isBefore(end));
+                })
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("DataTable: filter: lt LocalDateTime")
+    public void testFilterLtLocalDateTime(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 10, 1, 16, 04)
+                .atZone(ZoneId.ofOffset("GMT", ZoneOffset.ofHours(12)))
+                .withZoneSameInstant(ZoneId.systemDefault())
+                .toLocalDateTime();
+        page.lastLoginDateTimeFilter2.getInput().sendKeys("2021-01-10 01:16:04");
+        PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter2.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> e.getLastLoginDateTime().isBefore(localDateTime))
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("DataTable: filter: lt Date")
+    public void testFilterLtDate(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 10, 15, 16, 04);
+        page.lastLoginDateFilter2.getInput().sendKeys("2021-01-10 15:16:04");
+        PrimeSelenium.guardAjax(page.lastLoginDateFilter2.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        List<Employee> employeesFiltered = employees.stream()
+                .filter(e -> {
+                    LocalDateTime value = CalendarUtils.convertDate2LocalDateTime(e.getLastLoginDate());
+                    return value.isBefore(localDateTime);
+                })
+                .collect(Collectors.toList());
+        assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
@@ -325,6 +425,18 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:roleFilter")
         SelectManyMenu roleFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter")
+        DatePicker lastLoginDateTimeFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter")
+        DatePicker lastLoginDateFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter2")
+        DatePicker lastLoginDateTimeFilter2;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter2")
+        DatePicker lastLoginDateFilter2;
 
         @Override
         public String getLocation() {
