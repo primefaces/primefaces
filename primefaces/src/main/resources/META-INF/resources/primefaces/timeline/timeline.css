@@ -1207,3 +1207,8 @@ div.timeline-menu-rtl {
 	left: 0px;
 	right: inherit;
 }
+/** GitHub #8503 */
+div.vis-item .vis-drag-center {
+   z-index: -1;
+   /*allows context menus to work*/
+}
