@@ -78,7 +78,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
 
             FacesContext context = FacesContext.getCurrentInstance();
             PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
-            if (config.isCsp()) {
+            if (config.isCspOrCspReportOnly()) {
                 writer = new CspPartialResponseWriter(writer, context, PrimeFacesContext.getCspState(context));
             }
         }

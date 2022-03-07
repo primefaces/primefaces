@@ -64,7 +64,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
             moveScriptsToBottomState = new MoveScriptsToBottomState();
         }
 
-        csp = config.isCsp();
+        csp = config.isCspOrCspReportOnly();
         if (csp) {
             cspState = getCspState(this);
         }

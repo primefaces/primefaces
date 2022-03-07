@@ -19,6 +19,20 @@ CSP is disabled by default and a global parameter is required to turn it on.
     <param-value>true</param-value>
 </context-param>
 ```
+
+In large web applications you might decide to report CSP violations only as a start instead of directly forcing them. Browsers will report CSP violations to a user-defined HTTP endpoint then.
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP_REPORT_ONLY</param-name>
+    <param-value>true</param-value>
+</context-param>
+<context-param>
+    <param-name>primefaces.CSP_REPORT_ENDPOINT</param-name>
+    <param-value>/csp-reporting</param-value>
+</context-param>
+```
+
 ## Policy
 There are many ways to configure CSP for different levels of security. Currently, PrimeFaces has chosen to
 support the NONCE (number used once) based checking for script evaluation only. Nonce attributes are automatically

@@ -42,12 +42,18 @@ public class CspPhaseListener implements PhaseListener {
 
     private Lazy<Boolean> enabled;
     private Lazy<String> customPolicy;
+    private Lazy<Boolean> reportOnly;
+    private Lazy<String> reportEndpoint;
 
     public CspPhaseListener() {
         enabled = new Lazy<>(() ->
-                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp());
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCspOrCspReportOnly());
         customPolicy = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspPolicy());
+        reportOnly = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCspReportOnly());
+        reportEndpoint = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspReportEndpoint());
     }
 
     @Override
@@ -67,7 +73,20 @@ public class CspPhaseListener implements PhaseListener {
         CspState state = PrimeFacesContext.getCspState(context);
 
         String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
-        externalContext.addResponseHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
+        policy += " 'nonce-" + state.getNonce() + "';";
+
+        if (LangUtils.isNotBlank(reportEndpoint.get())) {
+            // current browser compatibility
+            policy += " report-uri " + reportEndpoint.get() + ";";
+            // TODO forward compatibility via report-to directive and Report-To header left out for the moment to reduce complexity
+        }
+
+        if (reportOnly.get()) {
+            externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
+        }
+        else {
+            externalContext.addResponseHeader("Content-Security-Policy", policy);
+        }
 
         String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');};";
         PrimeFaces.current().executeInitScript(init);
