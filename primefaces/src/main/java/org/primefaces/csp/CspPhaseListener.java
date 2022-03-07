@@ -78,7 +78,7 @@ public class CspPhaseListener implements PhaseListener {
         if (LangUtils.isNotBlank(reportEndpoint.get())) {
             // current browser compatibility
             policy += " report-uri " + reportEndpoint.get() + ";";
-            // TODO forward compatibility via report-to directive and Report-To header left out for the moment to reduce complexity
+            // forward compatibility via report-to directive and Report-To header left out for the moment to reduce complexity
         }
 
         if (reportOnly.get()) {
