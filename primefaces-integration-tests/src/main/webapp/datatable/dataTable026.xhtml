@@ -12,10 +12,6 @@
     <h:body>
 
         <h:form id="form">
-            <style>
-                html .ui-datatable table { table-layout: auto; }
-                td, th { white-space: nowrap; max-width: 60px; font-size: .75rem; }
-            </style>
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable026.employees}" var="employee"
                          filteredValue="#{dataTable026.filteredEmployees}" filterEvent="enter">
 
