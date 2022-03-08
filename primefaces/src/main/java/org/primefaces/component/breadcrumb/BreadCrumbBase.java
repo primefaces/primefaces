@@ -38,7 +38,8 @@ public abstract class BreadCrumbBase extends AbstractMenu {
         styleClass,
         homeDisplay,
         tabindex,
-        lastItemDisabled;
+        lastItemDisabled,
+        seo;
     }
 
     public BreadCrumbBase() {
@@ -99,5 +100,13 @@ public abstract class BreadCrumbBase extends AbstractMenu {
 
     public void setLastItemDisabled(boolean lastItemDisabled) {
         getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
+    }
+
+    public boolean isSeo() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.seo, false);
+    }
+
+    public void setSeo(boolean seo) {
+        getStateHelper().put(PropertyKeys.seo, seo);
     }
 }

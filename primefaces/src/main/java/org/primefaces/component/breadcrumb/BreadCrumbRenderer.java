@@ -25,15 +25,20 @@ package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.seo.JsonLDItem;
+import org.primefaces.model.seo.JsonLDModel;
+import org.primefaces.seo.JsonLD;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
@@ -53,6 +58,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
         String wrapper = "nav";
         String listType = "ol";
+
+        // SEO
+        boolean isSEO = breadCrumb.isSeo();
+        List<JsonLDItem> ldItems = new ArrayList<>();
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
@@ -76,6 +85,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
                 if (element.isRendered() && element instanceof MenuItem) {
                     MenuItem item = (MenuItem) element;
+
+                    if (isSEO) {
+                        ldItems.add(new JsonLDItem("ListItem", i, item.getValue(), getTargetRequestURL(context, (UIOutcomeTarget) item)));
+                    }
 
                     writer.startElement("li", null);
 
@@ -107,6 +120,11 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         }
 
         writer.endElement(wrapper);
+
+        if (isSEO) {
+            JsonLDModel ldModel = new JsonLDModel("https://schema.org", "BreadcrumbList", "itemListElement", ldItems);
+            JsonLD.encode(context, ldModel);
+        }
     }
 
     @Override

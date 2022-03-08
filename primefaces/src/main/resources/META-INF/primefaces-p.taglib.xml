@@ -2326,6 +2326,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Used to produce an Advanced SEO structure on the page. Default is false.]]>
+            </description>
+            <name>seo</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

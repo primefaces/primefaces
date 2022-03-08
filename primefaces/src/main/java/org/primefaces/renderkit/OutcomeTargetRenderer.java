@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionListener;
 import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
+import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.PrimeApplicationContext;
@@ -204,5 +205,18 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         }
 
         return url;
+    }
+
+    protected String getTargetRequestURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String href = outcomeTarget.getHref();
+        String requestURL = req.getRequestURL().toString();
+
+        if (href != null) {
+            return "#".equals(href) ? requestURL + "#" : href;
+        }
+        else {
+            return requestURL.substring(0, requestURL.length() - req.getRequestURI().length()) + getTargetURL(context, outcomeTarget);
+        }
     }
 }
