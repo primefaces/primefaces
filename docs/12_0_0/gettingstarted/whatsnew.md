@@ -7,6 +7,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 ### PrimeFaces
 
 * AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
+* BreadCrumb: added `seo` attribute for creating JSON Link Data for better SEO.
 * CommandButton: added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
