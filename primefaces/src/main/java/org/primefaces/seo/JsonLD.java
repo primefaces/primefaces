@@ -24,21 +24,25 @@
 package org.primefaces.seo;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.json.JSONObject;
 import org.primefaces.model.seo.JsonLDItem;
 import org.primefaces.model.seo.JsonLDModel;
 import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.LangUtils;
 
-/*
- * Create a script of type `ld+json` for Advanced SEO
+/**
+ * Create a script of type `ld+json` for Advanced SEO using JSON for Linking Data.
+ * Data is messy and disconnected. JSON-LD organizes and connects it, creating a better Web.
+ *
+ * @see <a href="https://json-ld.org/">JSON for Linking Data</a>
+ * @since 12.0.0
  */
-public class JsonLD implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class JsonLD {
 
     private JsonLD() { }
 
@@ -106,7 +110,7 @@ public class JsonLD implements Serializable {
             if (hasComma) {
                 writer.write(",");
             }
-            writer.write("\"" + name + "\":" + (value instanceof String ? "\"" + value + "\"" : value));
+            writer.write(JSONObject.quote(name) + ":" + JSONObject.valueToString(value));
         }
     }
 }

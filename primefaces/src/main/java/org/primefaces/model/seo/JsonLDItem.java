@@ -25,6 +25,13 @@ package org.primefaces.model.seo;
 
 import java.io.Serializable;
 
+/**
+ * JSON for Linking Data Item.
+ * Data is messy and disconnected. JSON-LD organizes and connects it, creating a better Web.
+ *
+ * @see <a href="https://json-ld.org/">JSON for Linking Data</a>
+ * @since 12.0.0
+ */
 public class JsonLDItem implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -208,7 +208,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     }
 
     protected String getTargetRequestURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
-        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletRequest req = (HttpServletRequest) context.getExternalContext().getRequest();
         String href = outcomeTarget.getHref();
         String requestURL = req.getRequestURL().toString();
 
@@ -216,7 +216,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             return "#".equals(href) ? requestURL + "#" : href;
         }
         else {
-            return requestURL.substring(0, requestURL.length() - req.getRequestURI().length()) + getTargetURL(context, outcomeTarget);
+            return LangUtils.substring(requestURL, 0, requestURL.length() - req.getRequestURI().length()) + getTargetURL(context, outcomeTarget);
         }
     }
 }
