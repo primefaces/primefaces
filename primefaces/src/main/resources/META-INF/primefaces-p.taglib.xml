@@ -29200,6 +29200,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide tooltip when hovering over tooltip content, default is true.]]>
+            </description>
+            <name>autoHide</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Tooltip position follows pointer on mousemove, default is false]]>
             </description>
             <name>trackMouse</name>

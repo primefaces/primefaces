@@ -1,7 +1,6 @@
 .ui-tooltip {
     position:absolute;
     display:none;
-    pointer-events: none;
 }
 
 .ui-tooltip.ui-tooltip-right,
