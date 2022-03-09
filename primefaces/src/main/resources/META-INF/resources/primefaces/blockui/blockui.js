@@ -42,6 +42,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.blocked) {
             this.show();
         }
+
+        // GitHub #8494 do not remove BlockUI if its panel is removed from DOM
+        this.jq.off('remove');
     },
 
     /**
@@ -101,6 +104,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * milliseconds, respectively.
      */
     show: function(duration) {
+        if (!$.contains(document.documentElement, this.blocker.get(0))) {
+            // GitHub #8494 blocker is not longer in DOM so create another
+            this.refresh(this.cfg);
+        }
         this.blocker.css('z-index', PrimeFaces.nextZindex());
 
         //center position of content
