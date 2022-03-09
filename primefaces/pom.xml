@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.2.4</version>
+            <version>5.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
