@@ -87,7 +87,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                     MenuItem item = (MenuItem) element;
 
                     if (isSEO) {
-                        ldItems.add(new JsonLDItem("ListItem", i, item.getValue(), getTargetRequestURL(context, (UIOutcomeTarget) item)));
+                        ldItems.add(new JsonLDItem("ListItem", ldItems.size() + 1, item.getValue(), getTargetRequestURL(context, (UIOutcomeTarget) item)));
                     }
 
                     writer.startElement("li", null);
