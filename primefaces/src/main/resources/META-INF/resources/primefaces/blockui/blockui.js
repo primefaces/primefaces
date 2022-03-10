@@ -179,7 +179,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     render: function() {
-        var isMultiple = this.target.length > 1;
+        var isMultiple = this.target.length > 1,
+            widgetId = this.id;
         // there can be 1 to N targets
         for (var i = 0; i < this.target.length; i++) {
             var currentTarget = $(this.target[i]),
@@ -200,8 +201,12 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             // when more than 1 target need to clone the blocker for each target
             if (isMultiple) {
                 currentContent = currentContent.clone();
-                currentContent.attr('id', currentTargetId + '_blockcontent');
             }
+            currentContent.attr('id', currentTargetId + '_blockcontent');
+
+            // assign data ids to this widget
+            currentBlocker.attr('data-bui-overlay', widgetId);
+            currentContent.attr('data-bui-content', widgetId);
 
             // configure the target positioning
             var position = currentTarget.css("position");
@@ -212,13 +217,30 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             // ARIA 
             currentTarget.attr('aria-busy', this.cfg.blocked);
 
-            // append the blocker to the target 
-            currentTarget.append(currentBlocker).append(currentContent);
+            // set the size and position to match the target
+            var height = currentTarget.height(),
+                width = currentTarget.width(),
+                position = currentTarget.position();
+            currentBlocker.css({
+                'height': height + 'px',
+                'width': width + 'px',
+                'left': position.left + 'px',
+                'top': position.top + 'px'
+            });
+            currentContent.css({
+                'height': height + 'px',
+                'width': width + 'px',
+                'left': position.left + 'px',
+                'top': position.top + 'px'
+            });
+
+            // append the blocker to the document 
+            $(document.body).append(currentBlocker).append(currentContent);
         }
 
         // assign all matching blockers to widget
-        this.blocker = $(this.target.find('.ui-blockui.ui-widget-overlay'));
-        this.content = $(this.target.find('.ui-blockui-content'));
+        this.blocker = $('[data-bui-overlay~="' + widgetId + '"]');
+        this.content = $('[data-bui-content~="' + widgetId + '"]');
     },
 
     /**
