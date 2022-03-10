@@ -179,30 +179,46 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     render: function() {
-        this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+        var isMultiple = this.target.length > 1;
+        // there can be 1 to N targets
+        for (var i = 0; i < this.target.length; i++) {
+            var currentTarget = $(this.target[i]),
+                currentTargetId = currentTarget.attr('id') || this.id,
+                currentContent = this.jq;
 
-        if (this.cfg.styleClass) {
-            this.blocker.addClass(this.cfg.styleClass);
+            // create a specific blocker for this target
+            var currentBlocker = $('<div id="' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+
+            // style the blocker
+            if (this.cfg.styleClass) {
+                currentBlocker.addClass(this.cfg.styleClass);
+            }
+            if (currentTarget.hasClass('ui-corner-all')) {
+                currentBlocker.addClass('ui-corner-all');
+            }
+
+            // when more than 1 target need to clone the blocker for each target
+            if (isMultiple) {
+                currentContent = currentContent.clone();
+                currentContent.attr('id', currentTargetId + '_blockcontent');
+            }
+
+            // configure the target positioning
+            var position = currentTarget.css("position");
+            if (position !== "fixed" && position !== "absolute") {
+                currentTarget.css('position', 'relative');
+            }
+
+            // ARIA 
+            currentTarget.attr('aria-busy', this.cfg.blocked);
+
+            // append the blocker to the target 
+            currentTarget.append(currentBlocker).append(currentContent);
         }
 
-        if (this.target.hasClass('ui-corner-all')) {
-            this.blocker.addClass('ui-corner-all');
-        }
-
-        if (this.target.length > 1) {
-            this.content = this.content.clone();
-        }
-
-        var position = this.target.css("position");
-        if (position !== "fixed" && position !== "absolute") {
-            this.target.css('position', 'relative');
-        }
-        this.target.attr('aria-busy', this.cfg.blocked).append(this.blocker).append(this.content);
-
-        if (this.target.length > 1) {
-            this.blocker = $(PrimeFaces.escapeClientId(this.id + '_blocker'));
-            this.content = this.target.children('.ui-blockui-content');
-        }
+        // assign all matching blockers to widget
+        this.blocker = $(this.target.find('.ui-blockui.ui-widget-overlay'));
+        this.content = $(this.target.find('.ui-blockui-content'));
     },
 
     /**
