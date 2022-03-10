@@ -1287,15 +1287,13 @@ if (!PrimeFaces.ajax) {
                     var widgetVar = PrimeFaces.detachedWidgets[i];
 
                     var widget = PF(widgetVar);
-                    if (widget) {
-                        if (widget.isDetached() === true) {
-                            PrimeFaces.widgets[widgetVar] = null;
-                            widget.destroy();
+                    if (widget && widget.isDetached() === true) {
+                        widget.destroy();
 
-                            try {
-                                delete widget;
-                            } catch (e) {}
-                        }
+                        try {
+                            delete PrimeFaces.widgets[widgetVar];
+                            delete widget;
+                        } catch (e) { }
                     }
                 }
 
