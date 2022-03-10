@@ -684,6 +684,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.base.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.breadcrumb.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tieredmenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.menubar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.slidemenu.js</include>

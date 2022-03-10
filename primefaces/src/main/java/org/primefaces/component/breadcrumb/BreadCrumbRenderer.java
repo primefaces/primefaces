@@ -41,6 +41,7 @@ import org.primefaces.model.seo.JsonLDModel;
 import org.primefaces.seo.JsonLD;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -123,7 +124,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         if (isSEO) {
             JsonLDModel ldModel = new JsonLDModel("https://schema.org", "BreadcrumbList", "itemListElement", ldItems);
-            JsonLD.encode(context, ldModel);
+            JsonLD.encode(context, ldModel, clientId + "_seo");
         }
     }
 
@@ -139,7 +140,13 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        // Do nothing
+        BreadCrumb breadcrumb = (BreadCrumb) abstractMenu;
+
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("BreadCrumb", breadcrumb)
+                .attr("seo", breadcrumb.isSeo());
+
+        wb.finish();
     }
 
     private void encodeDisabledMenuItem(FacesContext context, MenuItem menuItem) throws IOException {

@@ -46,10 +46,11 @@ public class JsonLD {
 
     private JsonLD() { }
 
-    public static void encode(FacesContext context, JsonLDModel model) throws IOException {
+    public static void encode(FacesContext context, JsonLDModel model, String id) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("script", null);
+        writer.writeAttribute("id", id, null);
         writer.writeAttribute("type", "application/ld+json", null);
 
         encodeModel(context, model);
