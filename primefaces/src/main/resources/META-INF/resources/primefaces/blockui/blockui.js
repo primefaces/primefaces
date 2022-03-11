@@ -71,7 +71,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      */
     _cleanup: function() {
         this.blocker.remove();
-        this.target.children('.ui-blockui-content').remove();
+        this.content.remove();
         $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
     },
 
@@ -221,18 +221,14 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var height = currentTarget.height(),
                 width = currentTarget.width(),
                 position = currentTarget.position();
-            currentBlocker.css({
+            var sizeAndPosition = {
                 'height': height + 'px',
                 'width': width + 'px',
                 'left': position.left + 'px',
                 'top': position.top + 'px'
-            });
-            currentContent.css({
-                'height': height + 'px',
-                'width': width + 'px',
-                'left': position.left + 'px',
-                'top': position.top + 'px'
-            });
+            };
+            currentBlocker.css(sizeAndPosition);
+            currentContent.css(sizeAndPosition);
 
             // append the blocker to the document 
             $(document.body).append(currentBlocker).append(currentContent);
