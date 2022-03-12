@@ -355,7 +355,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     public Class<?> getValueType() {
-        return ELUtils.getType(getFacesContext(), getValueExpression("value"), () -> getValue());
+        return ELUtils.getType(getFacesContext(), getValueExpression("value"), this::getValue);
     }
 
     public void validateMinMax(FacesContext context) {

@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ValueExpression;
+import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements DataTableFeature {
 
@@ -120,7 +121,7 @@ public class SortFeature implements DataTableFeature {
 
             sort(context, table);
 
-            if (table.isPaginator()) {
+            if (table.isPaginator() && ComponentUtils.isRequestSource(table, context)) {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
             }
 

@@ -32,6 +32,8 @@ import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.DataModel;
@@ -486,7 +488,8 @@ public class DataTable extends DataTableBase {
 
             List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), filterBy);
             lazyModel.setPageSize(rows);
-            lazyModel.setWrappedData(data);
+            // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
+            lazyModel.setWrappedData(data == null ? Collections.emptyList() : data);
 
             //Update paginator/livescroller for callback
             if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
@@ -807,7 +810,19 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
+    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if (getFacesContext().isPostback()) {
+            loadLazyDataIfRequired();
+        }
+        return super.visitRows(context, callback, visitRows);
+    }
+
+    @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
+        if (getFacesContext().isPostback()) {
+            loadLazyDataIfRequired();
+        }
+
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
@@ -853,7 +868,7 @@ public class DataTable extends DataTableBase {
                     else if (child instanceof RowExpansion) {
                         Object rowData = getRowData();
                         String rowKey = getRowKey(rowData);
-                        if (getExpandedRowKeys().contains(rowKey)) {
+                        if (getExpandedRowKeys().contains(rowKey) || isExpandedRow()) {
                             process(context, child, phaseId);
                         }
                     }

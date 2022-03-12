@@ -16,7 +16,7 @@ jobs:
         profile: [ 'firefox,theme-saga,myfaces-2.3', 'firefox,csp,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-next-2.3','chrome,csp,theme-nova,myfaces-2.3', 'chrome,csp,theme-nova,mojarra-2.3', 'chrome,client-state-saving,theme-nova,mojarra-2.3' ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:

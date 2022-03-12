@@ -105,6 +105,9 @@ Widget: _PrimeFaces.widget.SelectCheckBoxMenu_
 | --- | --- | --- | --- |
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |
+| show() | - | void | Brings up the overlay panel with the available checkbox options. |
+| hide() | - | void | Hides the overlay panel with the available checkbox options. |
+| togglePanel() | - | void | Bring up the overlay panel if its not showing or hide it if it is showing. |
 
 ## Skinning
 SelectCheckboxMenu resides in a main container which _style_ and _styleClass_ attributes apply. As

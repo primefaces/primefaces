@@ -30,9 +30,9 @@
  *
  * @typedef {"expand" | "fit"} PrimeFaces.widget.DataTable.ResizeMode Indicates the resize behavior of columns.
  *
- * @typedef {"new" | "add" | "checkbox"} PrimeFaces.widget.DataTable.RowSelectMode Indicates how rows of a DataTable
- * may be selected. `new` always unselects other rows, `add` preserves the currently selected rows, and `checkbox` adds
- * a checkbox next to each row.
+ * @typedef {"new" | "add" | "none"} PrimeFaces.widget.DataTable.RowSelectMode Indicates how rows of a DataTable
+ * may be selected, when clicking on the row itself (not the checkbox / radiobutton from p:column).
+ * `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables row selection.
  *
  * @typedef {"cancel" | "save"} PrimeFaces.widget.DataTable.RowEditAction When a row is editable: whether to `save` the
  * current contents of the row or `cancel` the row edit and discard all changes.
@@ -173,8 +173,7 @@
  * @prop {PrimeFaces.widget.DataTable.RowEditMode} cfg.rowEditMode Defines the row edit.
  * @prop {PrimeFaces.widget.DataTable.RowExpandMode} cfg.rowExpandMode Defines row expand mode.
  * @prop {boolean} cfg.rowHover Adds hover effect to rows. Hover is always on when selection is enabled.
- * @prop {PrimeFaces.widget.DataTable.RowSelectMode} cfg.rowSelectMode Defines row selection mode for multiple
- * selection.
+ * @prop {PrimeFaces.widget.DataTable.RowSelectMode} cfg.rowSelectMode Defines row selection mode when clicking on the row itself.
  * @prop {string} cfg.rowSelector CSS selector find finding the rows of this DataTable.
  * @prop {boolean} cfg.saveOnCellBlur Saves the changes in cell editing on blur, when set to false changes are
  * discarded.
@@ -600,12 +599,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.reflowDD && this.cfg.reflow) {
             PrimeFaces.skinSelect(this.reflowDD);
             this.reflowDD.on('change', function(e) {
-                var arrVal = $(this).val().split('_'),
-                    columnHeader = $this.sortableColumns.eq(parseInt(arrVal[0])),
-                    sortOrder = parseInt(arrVal[1]);
+                var selectedOption = $(this).find(":selected");
+                var columnKey = selectedOption.data('columnkey');
+                var sortOrder = selectedOption.data('sortorder');
+                var columnHeader = $this.jq.find(PrimeFaces.escapeClientId(columnKey));
 
-                    columnHeader.data('sortorder', sortOrder);
-                    columnHeader.trigger('click.dataTable');
+                columnHeader.data('sortorder', sortOrder);
+                columnHeader.trigger('click.dataTable');
             });
         }
     },
@@ -824,13 +824,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindSelectionEvents: function() {
         if(this.cfg.selectionMode === 'radio') {
             this.bindRadioEvents();
-            this.bindRowEvents();
+
+            if(this.cfg.rowSelectMode !== 'none') {
+                this.bindRowEvents();
+            }
         }
         else if(this.cfg.selectionMode === 'checkbox') {
             this.bindCheckboxEvents();
             this.updateHeaderCheckbox();
 
-            if(this.cfg.rowSelectMode !== 'checkbox') {
+            if(this.cfg.rowSelectMode !== 'none') {
                 this.bindRowEvents();
             }
         }
@@ -4916,6 +4919,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.tbody.children('tr.ui-datatable-empty-message').remove();
                 }
 
+                if ($this.isCheckboxSelectionEnabled()) {
+                    $this.enableHeaderCheckbox();
+                }
+
                 return true;
             }
         };
@@ -4978,18 +4985,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     updateReflowDD: function(columnHeader, sortOrder) {
         if(this.reflowDD && this.cfg.reflow) {
-            var options = this.reflowDD.children('option'),
-            orderIndex = sortOrder > 0 ? 0 : 1;
-            var header = columnHeader.text();
-            var filterby = header.indexOf("Filter by");
-            if (filterby !== -1) {
-                header = header.substring(0, filterby);
-            }
-            header = $.escapeSelector(header);
+            sortOrder = sortOrder > 0 ? 0 : 1;
 
-            options.each(function() {
-                var optionText = $.escapeSelector(this.text);
-                this.selected = optionText.startsWith(header) && this.value.endsWith("_" + orderIndex);
+            var columnHeader = columnHeader.text();
+            var filterby = columnHeader.indexOf("Filter by");
+            if (filterby !== -1) {
+                columnHeader = columnHeader.substring(0, filterby);
+            }
+            columnHeader = $.escapeSelector(columnHeader);
+
+            this.reflowDD.children('option').each(function() {
+                var optionLabel = $.escapeSelector(this.text);
+                var optionSortOrder = $(this).data('sortorder');
+                this.selected = optionLabel.startsWith(columnHeader) && optionSortOrder == sortOrder;
             });
         }
     },

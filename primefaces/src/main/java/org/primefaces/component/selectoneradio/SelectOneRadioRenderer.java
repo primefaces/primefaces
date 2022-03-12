@@ -91,7 +91,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneRadio", radio)
                 .attr("custom", custom, false)
-                .attr("unselectable", radio.isUnselectable()).finish();
+                .attr("unselectable", radio.isUnselectable())
+                .attr("readonly", radio.isReadonly(), false)
+                .finish();
     }
 
     protected void encodeResponsiveLayout(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -247,7 +249,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (addId) {
             writer.writeAttribute("id", radio.getClientId(context), "id");
         }
-        writer.writeAttribute("class", "ui-helper-hidden", "styleClass");
+        writer.writeAttribute("class", "ui-helper-hidden", null);
 
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);

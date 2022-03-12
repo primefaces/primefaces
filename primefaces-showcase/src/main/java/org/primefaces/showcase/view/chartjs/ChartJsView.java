@@ -403,7 +403,7 @@ public class ChartJsView implements Serializable {
         legend.setDisplay(true);
         legend.setPosition("top");
         LegendLabel legendLabels = new LegendLabel();
-        legendLabels.setFontStyle("bold");
+        legendLabels.setFontStyle("italic");
         legendLabels.setFontColor("#2980B9");
         legendLabels.setFontSize(24);
         legend.setLabels(legendLabels);

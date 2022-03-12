@@ -91,7 +91,7 @@ public class AvatarRenderer extends CoreRenderer {
         if (LangUtils.isNotBlank(label)) {
             writer.startElement("span", null);
             writer.writeAttribute("class", Avatar.SIZE_TEXT_CLASS, "styleClass");
-            writer.write(label);
+            writer.writeText(label, "label");
             writer.endElement("span");
         }
         else if (avatar.getIcon() != null) {

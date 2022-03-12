@@ -111,7 +111,7 @@ public class CardRenderer extends CoreRenderer {
         writer.endElement("div");
 
         //footer
-        String footer = card.getSubtitle();
+        String footer = card.getFooter();
         if (LangUtils.isNotBlank(footer)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.FOOTER_CLASS, null);

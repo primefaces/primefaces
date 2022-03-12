@@ -4,7 +4,10 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ## 12.0.0
 
+### PrimeFaces
+
 * AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
+* BreadCrumb: added `seo` attribute for creating JSON Link Data for better SEO.
 * CommandButton: added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
@@ -22,3 +25,9 @@ This page contains a list of big features. Please check the GitHub issues for al
 * Tree: added `filterFunction` attribute for custom filtering.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
+
+### PrimeFaces Selenium 
+
+* Switched from Selenium 3.x to Selenium 4.x
+  * Most adaptions are done by PrimeFaces Selenium behind the scenes.
+  * For usecases where you directly interact with Selenium without PrimeFaces Selenium abstraction look into https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4/ for details.

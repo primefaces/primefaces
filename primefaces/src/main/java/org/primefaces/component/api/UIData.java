@@ -26,6 +26,7 @@ package org.primefaces.component.api;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -61,6 +62,7 @@ import org.primefaces.util.SharedStringBuilder;
 @SuppressWarnings("unchecked")
 public class UIData extends javax.faces.component.UIData {
 
+    private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
     private static final String SB_ID = UIData.class.getName() + "#id";
 
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
@@ -82,16 +84,20 @@ public class UIData extends javax.faces.component.UIData {
 
     public boolean isLazy() {
         return ComponentUtils.eval(getStateHelper(), PropertyKeys.lazy, () -> {
+            boolean lazy = false;
+
             // if not set by xhtml, we need to check the type of the value binding
             Class<?> type = ELUtils.getType(getFacesContext(),
                     getValueExpression("value"),
                     () -> getValue());
             if (type == null) {
-                throw new FacesException("Unable to automatically determine the `lazy` attribute. "
+                LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
                         + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
                         + "clientId: " + this.getClientId());
             }
-            boolean lazy = LazyDataModel.class.isAssignableFrom(type);
+            else {
+                lazy = LazyDataModel.class.isAssignableFrom(type);
+            }
 
             // remember in ViewState, to not do the same check again
             setLazy(lazy);

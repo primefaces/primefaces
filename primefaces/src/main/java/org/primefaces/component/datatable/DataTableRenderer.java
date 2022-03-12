@@ -25,12 +25,12 @@ package org.primefaces.component.datatable;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -1670,9 +1670,9 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<String> options = getSortableHeadersText(context, table);
+        Map<SortMeta, String> headers = getSortableColumnHeaders(context, table);
 
-        if (!options.isEmpty()) {
+        if (!headers.isEmpty()) {
             String reflowId = table.getContainerClientId(context) + "_reflowDD";
 
             writer.startElement("label", null);
@@ -1688,15 +1688,17 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-reflow-dropdown ui-state-default", null);
             writer.writeAttribute("autocomplete", "off", null);
 
-            for (int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
-                for (int order = 0; order < 2; order++) {
-                    String orderVal = (order == 0)
+            for (Map.Entry<SortMeta, String> header : headers.entrySet()) {
+                for (int sortOrder = 0; sortOrder < 2; sortOrder++) {
+                    String sortOrderLabel = (sortOrder == 0)
                                       ? MessageFactory.getMessage(DataTable.SORT_ASC)
                                       : MessageFactory.getMessage(DataTable.SORT_DESC);
 
                     writer.startElement("option", null);
-                    writer.writeAttribute("value", headerIndex + "_" + order, null);
-                    writer.writeText(options.get(headerIndex) + " " + orderVal, null);
+                    writer.writeAttribute("value", header.getKey().getColumnKey() + "_" + sortOrder, null);
+                    writer.writeAttribute("data-columnkey", header.getKey().getColumnKey(), null);
+                    writer.writeAttribute("data-sortorder", sortOrder, null);
+                    writer.writeText(header.getValue() + " " + sortOrderLabel, null);
                     writer.endElement("option");
                 }
             }
@@ -1705,18 +1707,23 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
-        return table.getSortByAsMap().values().stream()
-                .filter(s -> !s.isHeaderRow())
-                .map(sortMeta -> {
-                    AtomicReference<String> headerLabel = new AtomicReference<>(null);
-                    table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                        headerLabel.set(getHeaderLabel(context, column));
-                    });
-                    return headerLabel.get();
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+    protected Map<SortMeta, String> getSortableColumnHeaders(FacesContext context, DataTable table) {
+        AtomicReference<String> headerLabel = new AtomicReference<>(null);
+
+        Map<SortMeta, String> headers = new HashMap<>();
+        for (SortMeta sortMeta : table.getSortByAsMap().values()) {
+            if (sortMeta.isHeaderRow()) {
+                continue;
+            }
+
+            headerLabel.set(null);
+            table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
+                headerLabel.set(getHeaderLabel(context, column));
+            });
+            headers.put(sortMeta, headerLabel.get());
+        }
+
+        return headers;
     }
 
     protected boolean hasColumnDefaultRendering(DataTable table, UIColumn column) {

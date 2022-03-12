@@ -25,18 +25,18 @@
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
         <primefaces.UPLOADER>auto</primefaces.UPLOADER>
-        <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+        <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
-        <hibernate-validator.version>6.2.1.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
         <lombok.version>1.18.22</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.58</tomcat.version>
+        <tomcat.version>9.0.59</tomcat.version>
         <resteasy.version>5.0.2.Final</resteasy.version>
-        <owb.version>2.0.25</owb.version>
-        <jetty.version>9.4.44.v20210927</jetty.version>
+        <owb.version>2.0.26</owb.version>
+        <jetty.version>9.4.45.v20220203</jetty.version>
     </properties>
 
     <dependencies>
@@ -190,7 +190,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.35</version>
+            <version>1.7.36</version>
             <scope>test</scope>
         </dependency>
 
@@ -346,7 +346,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -364,6 +364,15 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>parallel-execution</id>
+<!--            <activation>-->
+<!--                <jdk>[9,)</jdk>-->
+<!--            </activation>-->
+            <properties>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+            </properties>
+        </profile>
         <profile>
             <id>integration-tests</id>
             <build>
@@ -393,7 +402,8 @@
                                 <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
                                 <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
-                                <junit.jupiter.execution.parallel.config.dynamic.factor>1</junit.jupiter.execution.parallel.config.dynamic.factor>
+                                <junit.jupiter.execution.parallel.config.strategy>custom</junit.jupiter.execution.parallel.config.strategy>
+                                <junit.jupiter.execution.parallel.config.custom.class>org.primefaces.integrationtests.JUnit5Selenium4Strategy</junit.jupiter.execution.parallel.config.custom.class>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
@@ -416,16 +426,13 @@
             <id>firefox</id>
             <properties>
                 <webdriver.browser>firefox</webdriver.browser>
+                <excludedGroups>FirefoxExclude</excludedGroups>
             </properties>
         </profile>
         <profile>
             <id>safari</id>
             <properties>
                 <webdriver.browser>safari</webdriver.browser>
-                <!-- optionally only run tests with specific @Tag -->
-                <!--
-                <groups>SafariBasic</groups>
-                -->
                 <excludedGroups>SafariExclude</excludedGroups>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
             </properties>

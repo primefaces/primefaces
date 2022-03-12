@@ -6,7 +6,7 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.6.0 | https://github.com/autoNumeric/autoNumeric |
-| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.6.0 | https://www.chartjs.org |
+| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.7.1 | https://www.chartjs.org |
 | [Color Picker](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#colorpicker) | (2012) | www.eyecon.ro |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [ContentFlow](../jsdocs/classes/src_PrimeFaces.ContentFlow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
@@ -24,6 +24,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Keyfilter](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keyfilter) | 1.8 | https://github.com/akzhan/jquery-keyfilter |
 | [jQuery Knob](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#knob) | 1.2.13 | https://github.com/aterrien/jQuery-Knob |
 | [jQuery MouseWheel](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#mousewheel) | 3.1.13 | https://github.com/jquery/jquery-mousewheel |
+| [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |
 | [jQuery Rangy](../jsdocs/modules/src_PrimeFaces.JQueryRangy.html) | 0.1.205 | https://github.com/timdown/rangy |
 | [jQuery Roundabout](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#roundabout) | 2.4.2 | http://fredhq.com/projects/roundabout |
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
@@ -35,7 +36,6 @@ are many other third party libraries and plugins used to support features.
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.29.1 | https://github.com/moment/moment |
 | [moment-timezone.js](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.33 | https://github.com/moment/moment-timezone |
-| [Print.js](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.0 | https://printjs.crabbly.com |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
