@@ -68,18 +68,18 @@ public class CartesianScaleTitle implements Serializable {
     }
 
     /**
-     * Gets the title
+     * Gets the title text
      *
-     * @return title
+     * @return text
      */
     public String getText() {
         return text;
     }
 
     /**
-     * Sets the title
+     * Sets the title text
      *
-     * @param title The text for the title.
+     * @param text The text for the title.
      */
     public void setText(String text) {
         this.text = text;

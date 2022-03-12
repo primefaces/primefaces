@@ -124,18 +124,18 @@ public abstract class CartesianAxes implements Serializable {
     }
 
     /**
-     * Gets the scaleLabel
+     * Gets the title
      *
-     * @return scaleLabel
+     * @return title
      */
     public CartesianScaleTitle getScaleTitle() {
         return title;
     }
 
     /**
-     * Sets the scaleLabel
+     * Sets the title
      *
-     * @param scaleLabel the {@link CartesianScaleTitle} object
+     * @param title the {@link CartesianScaleTitle} object
      */
     public void setScaleTitle(CartesianScaleTitle title) {
         this.title = title;
