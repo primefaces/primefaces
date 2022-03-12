@@ -405,8 +405,8 @@ for this attribute are;
 - **notEquals** : Checks if column value does not equal the filter value.
 - **in** : Checks if column value is in the collection of the filter value.
 - **notIn** : Checks if column value is not in the collection of the filter value.
-- **between** : Checks if column value is within a provided range `(p:datePicker offers this functionality)`
-- **notBetween** : Checks if column value is not within a provided range `(p:datePicker offers this functionality)`
+- **between** : Checks if column value is within a provided range (`p:datePicker` offers this functionality).
+- **notBetween** : Checks if column value is not within a provided range (`p:datePicker` offers this functionality).
 
 In case the built-in methods do not suffice, custom filtering can be implemented using
 filterFunction approach.
