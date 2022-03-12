@@ -58,7 +58,7 @@ public class DataTable026NotTest extends AbstractDataTableTest {
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
-                .filter(e -> e.getSalary() != null && e.getSalary() != 3000)
+                .filter(e -> e.getSalary() == null || e.getSalary() != 3000)
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
@@ -67,28 +67,46 @@ public class DataTable026NotTest extends AbstractDataTableTest {
 
     @Test
     @Order(2)
-    @DisplayName("DataTable: filter: NOT between LocalDateTime")
-    public void testFilterBetweenLocalDateTime(Page page) {
+    @DisplayName("DataTable: filter: NOT between")
+    public void testFilterNotBetween(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
 
         // Act
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.of(2021, 1, 10);
-        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start + " - " + end); // 2021-01-01 - 2021-01-10
+        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start + " - " + end);
         PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
                 .filter(e -> {
                     if (e.getLastLoginDateTime() == null) {
-                        return false;
+                        return true;
                     }
                     LocalDate date = e.getLastLoginDateTime().toLocalDate();
                     return !(date.equals(start) || date.equals(end) || (date.isAfter(start) && date.isBefore(end)));
                 })
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("DataTable: filter: NOT between invalid filter")
+    public void testFilterNotBetweenInvalid(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start);
+        PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        assertEmployeeRows(dataTable, employees);
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }

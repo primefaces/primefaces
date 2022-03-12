@@ -162,6 +162,24 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(5)
+    @DisplayName("DataTable: filter: between invalid filter")
+    public void testFilterNotBetweenInvalid(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+
+        // Act
+        LocalDate start = LocalDate.of(2021, 1, 1);
+        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start);
+        PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
+
+        // Assert
+        assertEmployeeRows(dataTable, employees);
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
