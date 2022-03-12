@@ -20,13 +20,7 @@
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable026.employees}" var="employee"
                          filteredValue="#{dataTable026.filteredEmployees}" filterEvent="enter">
 
-                <p:column headerText="ID lt" field="id" filterMatchMode="lt">
-                    <f:facet name="filter">
-                        <p:inputText onkeyup="PF('wgtTable').filter()">
-                            <f:converter converterId="javax.faces.Integer" />
-                        </p:inputText>
-                    </f:facet>
-                </p:column>
+                <p:column headerText="ID" field="id"/>
                 <p:column headerText="last login date time" field="lastLoginDateTime" filterMatchMode="between">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"
