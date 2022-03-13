@@ -106,8 +106,8 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     _cleanup: function() {
-        if (cfg.target) {
-            var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(cfg.id));
+        if (this.cfg.target) {
+            var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(this.cfg.id));
             if (targetTooltip.length)
                 targetTooltip.remove();
         }
