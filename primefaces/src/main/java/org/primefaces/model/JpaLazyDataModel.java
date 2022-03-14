@@ -47,6 +47,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
@@ -231,13 +232,22 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                              Map<String, SortMeta> sortBy) {
 
         if (sortBy != null) {
+            List<Order> orders = null;
             for (SortMeta sort : sortBy.values()) {
                 if (sort.getField() == null || sort.getOrder() == SortOrder.UNSORTED) {
                     continue;
                 }
 
+                if (orders == null) {
+                    orders = new ArrayList<>();
+                }
+
                 Expression<?> fieldExpression = resolveFieldExpression(cb, cq, root, sort.getField());
-                cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(fieldExpression) : cb.desc(fieldExpression));
+                orders.add(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(fieldExpression) : cb.desc(fieldExpression));
+            }
+
+            if (orders != null) {
+                cq.orderBy(orders);
             }
         }
     }
