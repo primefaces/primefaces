@@ -1206,6 +1206,19 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Quick build for developers which skips many build steps for speed -->
+        <profile>
+            <id>quick</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+                <maven.source.skip>true</maven.source.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+                <license.skipCheckLicense>true</license.skipCheckLicense>
+                <license.skipAddThirdParty>true</license.skipAddThirdParty>
+                <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
+            </properties>
+        </profile>
         <!-- Generates the JavaScript Api docs in the target directory, to check whether the docs compile -->
         <!-- This DOES NOT update the docs in docs/jsdoc, use the profile "jsdoc-update" for that (see below) -->
         <!-- Use "-Djsdoc.skip.typedoc=true" if you only want to check and lint the declarations file -->
