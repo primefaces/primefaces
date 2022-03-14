@@ -19031,6 +19031,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide overlay when hovering over overlay content when using custom show/hide events, default is true.]]>
+            </description>
+            <name>autoHide</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Event to show the overlay panel, default is "click".]]>
             </description>
             <name>showEvent</name>
