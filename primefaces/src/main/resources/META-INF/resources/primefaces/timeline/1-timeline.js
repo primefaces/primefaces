@@ -438,8 +438,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 var snap = inst.itemSet.options.snap || null;
                 var scale = inst.body.util.getScale();
                 var step = inst.body.util.getStep();
-                var snappedStart = snap ? snap(xstart, scale, step).toDate() : xstart;
-                var snappedEnd = snap ? snap(xend, scale, step).toDate() : xend;
+                var snappedStart = snap ? new Date(snap(xstart, scale, step)) : xstart;
+                var snappedEnd = snap ? new Date(snap(xend, scale, step)) : xend;
 
                 var params = [];
                 params.push({
