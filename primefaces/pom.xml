@@ -179,7 +179,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.59</version>
+            <version>9.0.60</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -1168,7 +1168,7 @@
                     <dependency>
                         <groupId>io.yupiik.maven</groupId>
                         <artifactId>maven-shade-transformers</artifactId>
-                        <version>0.0.1</version>
+                        <version>0.0.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -1205,6 +1205,19 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <!-- Quick build for developers which skips many build steps for speed -->
+        <profile>
+            <id>quick</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+                <maven.source.skip>true</maven.source.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+                <license.skipCheckLicense>true</license.skipCheckLicense>
+                <license.skipAddThirdParty>true</license.skipAddThirdParty>
+                <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
+            </properties>
         </profile>
         <!-- Generates the JavaScript Api docs in the target directory, to check whether the docs compile -->
         <!-- This DOES NOT update the docs in docs/jsdoc, use the profile "jsdoc-update" for that (see below) -->
