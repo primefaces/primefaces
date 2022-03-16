@@ -269,6 +269,13 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 $this.allowHide = false;
             })
             .on("mouseleave.tooltip", function(e) {
+                var mouseTarget = $(e.relatedTarget);
+                if (mouseTarget.is($this.target) || 
+                    mouseTarget.attr('aria-describedby') === $this.id || 
+                    mouseTarget.parent().attr('aria-describedby') === $this.id) {
+                    $this.allowHide = true;
+                    return;
+                }
                 $this.allowHide = true;
                 $this.hide(e);
             });
@@ -368,6 +375,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      * Brings up this tooltip and displays it next to the target component.
      */
     show: function() {
+        if (this.isVisible()) {
+            return;
+        }
+
         if (this.getTarget()) {
             var $this = this;
             this.clearTimeout();
