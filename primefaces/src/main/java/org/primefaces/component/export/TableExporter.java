@@ -94,15 +94,14 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
             return exportableColumns.get(table);
         }
 
-        List<UIColumn> allColumns = table.getColumns();
-        List<UIColumn> exportcolumns = new ArrayList<>(allColumns.size());
+        int allColumnsSize = table.getColumns().size();
+        List<UIColumn> exportcolumns = new ArrayList<>(allColumnsSize);
         boolean visibleColumnsOnly = getExportConfiguration().isVisibleOnly();
-        AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
-        final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumns.size());
+        final AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
+        final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumnsSize);
 
         table.forEachColumn(true, true, true, column -> {
             if (column.isExportable() && (!visibleColumnsOnly || (visibleColumnsOnly && column.isVisible()))) {
-                String metaColumnKey = column.getColumnKey();
                 int displayPriority = column.getDisplayPriority();
                 ColumnMeta metaCopy = new ColumnMeta(column.getColumnKey());
                 metaCopy.setDisplayPriority(displayPriority);
