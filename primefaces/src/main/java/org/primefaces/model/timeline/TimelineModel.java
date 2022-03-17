@@ -152,6 +152,7 @@ public class TimelineModel<E, G> implements Serializable {
      * @param timelineUpdater TimelineUpdater instance to update the event in UI
      */
     public void update(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
+        // GitHub #8577 must update event
         int index = IntStream.range(0, events.size())
                 .filter(i -> event.equals(events.get(i)))
                 .findFirst().orElse(-1);
