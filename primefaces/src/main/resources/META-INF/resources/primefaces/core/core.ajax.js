@@ -278,7 +278,13 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    var target = $(PrimeFaces.escapeClientId(id));
+                    if (target.length === 0) {
+                        PrimeFaces.warn("DOM element with id '" + id + "' cant be found; skip update...");
+                    }
+                    else {
+                        target.replaceWith(content);
+                    }
                 }
             }
         },
