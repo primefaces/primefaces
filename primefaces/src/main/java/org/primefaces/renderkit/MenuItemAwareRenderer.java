@@ -23,18 +23,8 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.component.api.MenuItemAware;
-import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.component.api.DialogReturnAware;
-import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.component.divider.Divider;
-import org.primefaces.event.MenuActionEvent;
-import org.primefaces.model.menu.*;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
+import java.io.IOException;
+import java.util.*;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -45,8 +35,18 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
-import java.io.IOException;
-import java.util.*;
+
+import org.primefaces.behavior.confirm.ConfirmBehavior;
+import org.primefaces.component.api.*;
+import org.primefaces.component.divider.Divider;
+import org.primefaces.event.MenuActionEvent;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuGroup;
+import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
 
 public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
@@ -199,7 +199,8 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         if (elements == null || elements.isEmpty()) {
             return null;
         }
-        for (MenuElement element : elements) {
+        for (int i = 0; i < elements.size(); i++) {
+            MenuElement element = elements.get(i);
             if (Objects.equals(element.getId(), id)) {
                 return (MenuItem) element;
             }
