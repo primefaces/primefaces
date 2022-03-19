@@ -25,15 +25,69 @@ package org.primefaces.convert;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
+import org.primefaces.component.datepicker.DatePicker;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.HTML;
 
 public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {
 
     private Map<String, Object> metadata;
+
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        if (component instanceof DatePicker) {
+            return getAsObject(context, (DatePicker) component, value);
+        }
+        return super.getAsObject(context, component, value);
+    }
+
+    public Object getAsObject(FacesContext context, DatePicker datePicker, String value) {
+        if (value == null) {
+            return null;
+        }
+        String type = getType();
+        boolean isDate = "date".equals(type);
+        boolean isLocalDateTime = "localDateTime".equals(type);
+        if (isDate || isLocalDateTime) {
+            try {
+                DateTimeFormatter formatter = getDateTimeFormatter(context, datePicker);
+                LocalTime time = datePicker.isShowTime()
+                        ? LocalTime.parse(value, formatter)
+                        : LocalTime.MIDNIGHT;
+                ZoneId zone = CalendarUtils.calculateZoneId(datePicker.getTimeZone());
+                LocalDateTime localDateTime = LocalDate.parse(value, formatter)
+                        .atTime(time)
+                        .atZone(zone)
+                        .withZoneSameInstant(ZoneId.systemDefault())
+                        .toLocalDateTime();
+                if (isDate) {
+                    return CalendarUtils.convertLocalDateTime2Date(localDateTime);
+                }
+                return localDateTime;
+            }
+            catch (Exception ex) {
+                throw new ConverterException(ex.getMessage(), ex);
+            }
+        }
+        return super.getAsObject(context, datePicker, value);
+    }
+
+    protected DateTimeFormatter getDateTimeFormatter(FacesContext context, DatePicker datePicker) {
+        String pattern = datePicker.calculatePattern();
+        Locale locale = datePicker.calculateLocale(context);
+        return DateTimeFormatter.ofPattern(pattern, locale);
+    }
 
     @Override
     public Map<String, Object> getMetadata() {

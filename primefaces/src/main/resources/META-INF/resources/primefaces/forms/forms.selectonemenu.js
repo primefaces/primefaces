@@ -184,14 +184,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.syncTitle(selectedOption);
         }
 
-        //for Screen Readers
+        // ARIA
         for(var i = 0; i < this.items.length; i++) {
             this.items.eq(i).attr('id', this.id + '_' + i);
         }
 
-        var highlightedItemId = highlightedItem.attr('id');
-        this.jq.attr('aria-owns', this.itemsContainer.attr('id'));
+        var highlightedItemId = highlightedItem.attr('id'),
+            itemsContainerId = this.itemsContainer.attr('id');
+        this.jq.attr('aria-owns', itemsContainerId);
         this.focusInput.attr('aria-autocomplete', 'list')
+            .attr('aria-owns', itemsContainerId)
             .attr('aria-activedescendant', highlightedItemId)
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
@@ -1491,7 +1493,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        var dataLabel = label.replace(/(<([^>]+)>)/gi, "").replaceAll('"', '&quot;');
+        var dataLabel = PrimeFaces.escapeHTML(label.replace(/(<([^>]+)>)/gi, ""));
         if ($item.data("noselection-option")) {
             cssClass += " ui-noselection-option";
         }

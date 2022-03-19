@@ -6,8 +6,8 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
-        <script type="text/javascript">
+        <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+        <script>
             function geocode() {
                 PF('geoMap').geocode(document.getElementById('address').value);
             }

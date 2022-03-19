@@ -28,6 +28,8 @@
  * @prop {boolean} cfg.visible Whether the sidebar is initially opened.
  * @prop {boolean} cfg.dynamic `true` to load the content via AJAX when the overlay panel is opened, `false` to load
  * the content immediately.
+ *
+ * @prop {JQuery} content DOM element of the container for the content of this sidebar.
  */
 PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
@@ -42,6 +44,8 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.modal = (this.cfg.modal === true || this.cfg.modal === undefined);
         this.cfg.showCloseIcon = (this.cfg.showCloseIcon === true || this.cfg.showCloseIcon === undefined);
         this.cfg.baseZIndex = this.cfg.baseZIndex||0;
+
+        this.content = this.jq.children('.ui-sidebar-content');
 
         if(this.cfg.showCloseIcon) {
             this.closeIcon = this.jq.children('.ui-sidebar-close');
@@ -240,14 +244,14 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            $this.jq.html(content);
-                            $this.loaded = true;
+                            this.content.html(content);
                         }
                     });
 
                 return true;
             },
             oncomplete: function() {
+                $this.loaded = true;
                 $this._show();
             }
         };

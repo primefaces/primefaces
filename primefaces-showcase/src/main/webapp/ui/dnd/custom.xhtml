@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .active-drop {
                 background-color: var(--primary-color);
             }
@@ -15,7 +15,7 @@
                 background-color: var(--primary-color);
             }
         </style>
-        <script type="text/javascript">
+        <script>
             function initDND() {
                 $('.ui-treenode-leaf').draggable({
                     helper: 'clone',

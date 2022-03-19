@@ -7,6 +7,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 ### PrimeFaces
 
 * AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
+* BreadCrumb: added `seo` attribute for creating JSON Link Data for better SEO.
 * CommandButton: added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
@@ -22,6 +23,8 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
 * Tree: added `filterFunction` attribute for custom filtering.
+* Tooltip: added `autoHide` attribute when set to false will keep the tooltip showing while focused.
+* OverlayPanel: added `autoHide` attribute when set to false will keep the overlay showing while focused.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
 

@@ -25,6 +25,8 @@ PrimeFaces.locales['nl'] = {
     week: 'Week',
     day: 'Dag',
     allDayText: 'Alle dagen',
+    today: 'Vandaag',
+    clear: 'Wissen',
     aria: {
         'paginator.PAGE': 'Pagina {0}',
         'calendar.BUTTON': 'Toon kalender',

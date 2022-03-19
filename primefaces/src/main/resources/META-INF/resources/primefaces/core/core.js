@@ -307,13 +307,6 @@
                 }
             });
 
-            //aria
-            if(input.is(':not([type="password"])')) {
-                input.attr('role', 'textbox')
-                     .attr('aria-readonly', input.prop('readonly'));
-            }
-            input.attr('aria-disabled', input.is(':disabled'));
-
             if(input.is('textarea')) {
                 input.attr('aria-multiline', true);
             }
@@ -355,13 +348,6 @@
             }).on("keyup", function() {
                 $(this).removeClass('ui-state-active');
             });
-
-            //aria
-            var role = button.attr('role');
-            if(!role) {
-                button.attr('role', 'button');
-            }
-            button.attr('aria-disabled', button.prop('disabled'));
 
             return this;
         },

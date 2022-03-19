@@ -18,12 +18,13 @@
 
     <properties>
         <owb.version>2.0.26</owb.version>
-        <hibernate-validator.version>6.2.2.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
         <mojarra.version>2.3.17</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
         <resteasy.version>5.0.2.Final</resteasy.version>
         <jetty.version>9.4.45.v20220203</jetty.version>
+        <jsf.project.stage>Production</jsf.project.stage>
     </properties>
 
     <dependencies>
@@ -290,6 +291,17 @@
                 </filters>
             </build>
         </profile>
+        <profile>
+            <id>localhost</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
+            <properties>
+                <jsf.project.stage>Development</jsf.project.stage>
+            </properties>
+        </profile>
 
         <profile>
             <id>mojarra-2.3</id>
@@ -308,6 +320,11 @@
         </profile>
         <profile>
             <id>myfaces-2.3</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
@@ -351,6 +368,11 @@
 
         <profile>
             <id>non-ee</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.hibernate.validator</groupId>

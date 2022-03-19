@@ -61,6 +61,7 @@ Currently, only the following components are implemented (partially):
 
 - AccordionPanel
 - AutoComplete
+- BlockUI
 - Calendar
 - CascadeSelect
 - Chips

@@ -131,12 +131,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.isDynamicLoaded = false;
         this.cfg.labelSeparator = (this.cfg.labelSeparator === undefined) ? ', ' : this.cfg.labelSeparator;
 
-        if(!this.disabled) {
-            if(this.cfg.multiple) {
+        if (!this.disabled) {
+            if (this.cfg.multiple) {
                 this.triggers = this.jq.find('.ui-selectcheckboxmenu-trigger, .ui-selectcheckboxmenu-multiple-container');
             }
 
-            if(!this.cfg.dynamic) {
+            if (!this.cfg.dynamic) {
                 this._renderPanel();
             }
 
@@ -146,34 +146,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             //mark trigger and descandants of trigger as a trigger for a primefaces overlay
             this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
-            if(!this.cfg.multiple) {
-                if(this.cfg.updateLabel) {
-                    this.defaultLabel = this.label.text();
-                    this.label.css({
-                        'text-overflow': 'ellipsis',
-                        overflow: 'hidden'
-                    });
-
-                    this.updateLabel();
-                }
-
+            if (!this.cfg.multiple) {
                 this.label.attr('id', this.labelId);
-                this.keyboardTarget.attr('aria-expanded', false).attr('aria-labelledby', this.labelId);
+                this.keyboardTarget.attr('aria-labelledby', this.labelId);
             }
-        } else {
-            // disabled
-            if(!this.cfg.multiple) {
-                if (this.cfg.updateLabel) {
-                    this.defaultLabel = this.label.text();
-                    this.label.css({
-                        'text-overflow': 'ellipsis',
-                        overflow: 'hidden'
-                    });
-
-                    this.updateLabel();
-                }
-            }
+            this.keyboardTarget.attr('aria-expanded', false);
         }
+
+        this.renderLabel();
 
         //pfs metadata
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -196,7 +176,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     _renderPanel: function() {
         this.renderPanel();
 
-        if(this.tabindex) {
+        if (this.tabindex) {
             this.panel.find('a, input').attr('tabindex', this.tabindex);
         }
 
@@ -216,10 +196,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     renderPanel: function() {
         this.panel = $('<div id="' + this.panelId + '" class="ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-input-overlay" role="dialog"></div>');
         this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
-        if(this.cfg.panelStyle) {
+        if (this.cfg.panelStyle) {
             this.panel.attr('style', this.cfg.panelStyle);
         }
-        if(this.cfg.panelStyleClass) {
+        if (this.cfg.panelStyleClass) {
             this.panel.addClass(this.cfg.panelStyleClass);
         }
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
@@ -232,11 +212,38 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.renderItems();
 
-        if(this.cfg.scrollHeight) {
+        if (this.cfg.scrollHeight) {
             this.itemContainerWrapper.height(this.cfg.scrollHeight);
         }
-        else if(this.inputs.length > 10) {
+        else if (this.inputs.length > 10) {
             this.itemContainerWrapper.height(200);
+        }
+        this.keyboardTarget.attr('aria-controls', this.panelId);
+    },
+
+    /**
+     * Create the label to display values
+     * @private
+     */
+    renderLabel: function() {
+        if (!this.cfg.updateLabel) {
+            return;
+        }
+        if (this.cfg.multiple) {
+            var items = this.multiItemContainer.children();
+            if (!items.length) {
+                this.multiItemContainer.empty().append('<li class="ui-selectcheckboxmenu-emptylabel">' + this.multiItemContainer.data('label') + '</li>');
+            }
+        }
+        else {
+            // single select
+            this.defaultLabel = this.label.text();
+            this.label.css({
+                'text-overflow': 'ellipsis',
+                overflow: 'hidden'
+            });
+
+            this.updateLabel();
         }
     },
 
@@ -247,23 +254,23 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     renderHeader: function() {
         this.header = $('<div class="ui-widget-header ui-corner-all ui-selectcheckboxmenu-header ui-helper-clearfix"></div>')
-                        .appendTo(this.panel);
+            .appendTo(this.panel);
 
         //toggler
-        this.toggler = $('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox" aria-label="Select All" readonly="readonly"></div><div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default"><span class="ui-chkbox-icon ui-icon ui-icon-blank"></span></div></div>')
-                            .appendTo(this.header);
+        this.toggler = $('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox" aria-label="Select All"></div><div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default"><span class="ui-chkbox-icon ui-icon ui-icon-blank"></span></div></div>')
+            .appendTo(this.header);
         this.togglerBox = this.toggler.children('.ui-chkbox-box');
-        if(this.inputs.filter(':not(:checked)').length === 0) {
+        if (this.inputs.filter(':not(:checked)').length === 0) {
             this.check(this.togglerBox);
         }
 
         //filter
-        if(this.cfg.filter) {
+        if (this.cfg.filter) {
             this.filterInputWrapper = $('<div class="ui-selectcheckboxmenu-filter-container"></div>').appendTo(this.header);
-            this.filterInput = $('<input type="text" aria-multiline="false" aria-readonly="false" aria-disabled="false" aria-label="Filter Input" role="textbox" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all">')
-                                .appendTo(this.filterInputWrapper);
+            this.filterInput = $('<input type="text" aria-multiline="false" aria-readonly="false" aria-disabled="false" aria-label="Filter Input" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all">')
+                .appendTo(this.filterInputWrapper);
 
-            if(this.cfg.filterPlaceholder) {
+            if (this.cfg.filterPlaceholder) {
                 this.filterInput.attr('placeholder', this.cfg.filterPlaceholder);
             }
 
@@ -272,7 +279,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //closer
         this.closer = $('<a class="ui-selectcheckboxmenu-close ui-corner-all" href="#"><span class="ui-icon ui-icon-circle-close"></span></a>')
-                    .attr('aria-label', 'Close').appendTo(this.header);
+            .attr('aria-label', 'Close').appendTo(this.header);
 
     },
 
@@ -284,7 +291,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.itemContainerWrapper = $('<div class="ui-selectcheckboxmenu-items-wrapper"><ul class="ui-selectcheckboxmenu-items ui-selectcheckboxmenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset"></ul></div>')
-                .appendTo(this.panel);
+            .appendTo(this.panel);
 
         this.itemContainer = this.itemContainerWrapper.children('ul.ui-selectcheckboxmenu-items');
 
@@ -292,44 +299,44 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         var grouped = this.inputs.filter('[data-group-label]');
 
         var currentGroupName = null;
-        for(var i = 0; i < this.inputs.length; i++) {
+        for (var i = 0; i < this.inputs.length; i++) {
             var input = this.inputs.eq(i),
-            label = input.next(),
-            disabled = input.is(':disabled'),
-            checked = input.is(':checked'),
-            title = input.attr('title'),
-            boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default',
-            itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all',
-            escaped = input.data('escaped');
+                label = input.next(),
+                disabled = input.is(':disabled'),
+                checked = input.is(':checked'),
+                title = input.attr('title'),
+                boxClass = 'ui-chkbox-box ui-widget ui-corner-all ui-state-default',
+                itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all',
+                escaped = input.data('escaped');
 
-            if(grouped.length && currentGroupName !== input.attr('data-group-label')) {
+            if (grouped.length && currentGroupName !== input.attr('data-group-label')) {
                 currentGroupName = input.attr('data-group-label');
-            	var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
-            	itemGroup.text(currentGroupName);
-            	$this.itemContainer.append(itemGroup);
+                var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
+                itemGroup.text(currentGroupName);
+                $this.itemContainer.append(itemGroup);
             }
 
-            if(disabled) {
+            if (disabled) {
                 boxClass += " ui-state-disabled";
             }
 
-            if(checked) {
+            if (checked) {
                 boxClass += " ui-state-active";
             }
 
             var iconClass = checked ? 'ui-chkbox-icon ui-icon ui-icon-check' : 'ui-chkbox-icon ui-icon ui-icon-blank',
-            itemClass = checked ? itemClass + ' ui-selectcheckboxmenu-checked' : itemClass + ' ui-selectcheckboxmenu-unchecked';
+                itemClass = checked ? itemClass + ' ui-selectcheckboxmenu-checked' : itemClass + ' ui-selectcheckboxmenu-unchecked';
 
             var item = $('<li class="' + itemClass + '"></li>');
-            item.append('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox" role="checkbox" readonly="readonly"></input></div>' +
-                    '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
+            item.append('<div class="ui-chkbox ui-widget"><div class="ui-helper-hidden-accessible"><input type="checkbox"></input></div>' +
+                '<div class="' + boxClass + '"><span class="' + iconClass + '"></span></div></div>');
 
             var uuid = PrimeFaces.uuid();
-            var itemLabel = $('<label for='+uuid+'></label>'),
-            labelHtml = label.html().trim(),
-            labelLength = labelHtml.length;
+            var itemLabel = $('<label for=' + uuid + '></label>'),
+                labelHtml = label.html().trim(),
+                labelLength = labelHtml.length;
             if (labelLength > 0 && labelHtml !== '&nbsp;')
-                if(escaped)
+                if (escaped)
                     itemLabel.text(label.text());
                 else
                     itemLabel.html(label.html());
@@ -338,15 +345,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             itemLabel.appendTo(item);
 
-            if(title) {
+            if (title) {
                 item.attr('title', title);
             }
 
-            if($this.cfg.multiple) {
+            if ($this.cfg.multiple) {
                 item.attr('data-item-value', input.val());
             }
 
-            item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked).attr('aria-checked', checked).attr('id', uuid);
+            item.find('> .ui-chkbox > .ui-helper-hidden-accessible > input').prop('checked', checked).attr('id', uuid);
             $this.itemContainer.attr('role', 'group');
 
             $this.itemContainer.append(item);
@@ -365,43 +372,38 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         //Events to show/hide the panel
         this.triggers.on('mouseenter.selectCheckboxMenu', function() {
-            if(!$this.disabled) {
+            if (!$this.disabled) {
                 $this.jq.addClass('ui-state-hover');
                 $this.triggers.addClass('ui-state-hover');
             }
         }).on('mouseleave.selectCheckboxMenu', function() {
-            if(!$this.disabled) {
+            if (!$this.disabled) {
                 $this.jq.removeClass('ui-state-hover');
                 $this.triggers.removeClass('ui-state-hover');
             }
         }).on('mousedown.selectCheckboxMenu', function(e) {
-            if(!$this.disabled) {
-                if($this.cfg.multiple && $(e.target).is('.ui-selectcheckboxmenu-token-icon')) {
+            if (!$this.disabled) {
+                if ($this.cfg.multiple && $(e.target).is('.ui-selectcheckboxmenu-token-icon')) {
                     return;
                 }
 
-                if(!$this.isLoaded()) {
+                if (!$this.isLoaded()) {
                     $this._renderPanel();
                 }
 
-                if($this.panel.is(":hidden")) {
-                    $this.show();
-                }
-                else {
-                    $this.hide();
-                }
+                $this.togglePanel();
             }
         }).on('click.selectCheckboxMenu', function(e) {
             $this.keyboardTarget.trigger('focus');
             e.preventDefault();
         });
 
-        if(this.cfg.multiple) {
+        if (this.cfg.multiple) {
             this.bindMultipleModeEvents();
         }
 
         //Client Behaviors
-        if(this.cfg.behaviors) {
+        if (this.cfg.behaviors) {
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
     },
@@ -424,16 +426,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.bindCheckboxHover(this.togglerBox);
             this.togglerBox.on('click.selectCheckboxMenu', function() {
                 var el = $(this);
-                if(el.hasClass('ui-state-active')) {
-                    $this.uncheckAll();
-                }
-                else {
-                    $this.checkAll();
-                }
+                $this.toggleSelection(!el.hasClass('ui-state-active'));
             });
-            
+
             //filter
-            if(this.cfg.filter) {
+            if (this.cfg.filter) {
                 this.setupFilterMatcher();
 
                 PrimeFaces.skinInput(this.filterInput);
@@ -441,14 +438,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.filterInput.on('keyup.selectCheckboxMenu', function() {
                     $this.filter($(this).val());
                 }).on('keydown.selectCheckboxMenu', function(e) {
-                    if(e.which === $.ui.keyCode.ESCAPE) {
+                    if (e.which === $.ui.keyCode.ESCAPE) {
                         $this.hide();
                     }
                 });
             }
 
             //Closer
-            this.closer.on('mouseenter.selectCheckboxMenu', function(){
+            this.closer.on('mouseenter.selectCheckboxMenu', function() {
                 $(this).addClass('ui-state-hover');
             }).on('mouseleave.selectCheckboxMenu', function() {
                 $(this).removeClass('ui-state-hover');
@@ -479,7 +476,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', this.panel,
             function() { return $this.triggers; },
             function(e, eventTarget) {
-                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
+                if (!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     $this.hide();
                 }
             });
@@ -519,7 +516,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (this.resizeHandler) {
             this.resizeHandler.unbind();
         }
-    
+
         if (this.scrollHandler) {
             this.scrollHandler.unbind();
         }
@@ -541,39 +538,33 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             $this.menuIcon.removeClass('ui-state-focus');
         }).on('keydown.selectCheckboxMenu', function(e) {
             var keyCode = $.ui.keyCode,
-            key = e.which;
+                key = e.which;
 
-            if(!$this.isLoaded()) {
+            if (!$this.isLoaded()) {
                 $this._renderPanel();
             }
 
-            switch(key) {
+            switch (key) {
                 case keyCode.ENTER:
                 case keyCode.SPACE:
+                    $this.togglePanel();
                     if ($this.panel.is(":hidden")) {
-                        $this.show();
                         e.stopPropagation(); // GitHub #8340
                     }
-                    else
-                        $this.hide();
-
                     e.preventDefault();
-                break;
+                    break;
 
                 case keyCode.DOWN:
                     if (e.altKey) {
-                        if ($this.panel.is(":hidden"))
-                            $this.show();
-                        else
-                            $this.hide();
+                        $this.togglePanel();
                     }
 
                     e.preventDefault();
-                break;
+                    break;
 
                 case keyCode.TAB:
-                    if($this.panel.is(':visible')) {
-                       if(!$this.cfg.showHeader) {
+                    if ($this.panel.is(':visible')) {
+                        if (!$this.cfg.showHeader) {
                             $this.itemContainer.children('li:not(.ui-state-disabled):first').find('div.ui-helper-hidden-accessible > input').trigger('focus');
                         }
                         else {
@@ -582,11 +573,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     }
 
-                break;
+                    break;
 
                 case keyCode.ESCAPE:
                     $this.hide();
-                break;
+                    break;
             };
         });
     },
@@ -603,78 +594,69 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.closer.on('focus.selectCheckboxMenu', function(e) {
                 $this.closer.addClass('ui-state-focus');
             })
-            .on('blur.selectCheckboxMenu', function(e) {
-                $this.closer.removeClass('ui-state-focus');
-            })
-            .on('keydown.selectCheckboxMenu', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
+                .on('blur.selectCheckboxMenu', function(e) {
+                    $this.closer.removeClass('ui-state-focus');
+                })
+                .on('keydown.selectCheckboxMenu', function(e) {
+                    var keyCode = $.ui.keyCode,
+                        key = e.which;
 
-                switch(key) {
-                    case keyCode.ENTER:
-                        $this.hide();
+                    switch (key) {
+                        case keyCode.ENTER:
+                        case keyCode.SPACE:
+                            $this.hide();
 
-                        e.preventDefault();
-                    break;
+                            e.preventDefault();
+                            break;
 
-                    case keyCode.ESCAPE:
-                        $this.hide();
-                    break;
-                };
-            });
+                        case keyCode.ESCAPE:
+                            $this.hide();
+                            break;
+                    };
+                });
 
             var togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
             this.bindCheckboxKeyEvents(togglerCheckboxInput);
-            togglerCheckboxInput.on('keyup.selectCheckboxMenu', function(e) {
-                        if(e.which === $.ui.keyCode.SPACE) {
-                            var input = $(this);
-
-                            if(input.prop('checked'))
-                                $this.uncheckAll();
-                            else
-                                $this.checkAll();
-
-                            e.preventDefault();
-                        }
-                    })
-                    .on('change.selectCheckboxMenu', function(e) {
-                        var input = $(this);
-
-                        if(input.prop('checked')) {
-                            $this.checkAll();
-                        }
-                        else {
-                            $this.uncheckAll();
-                        }
-                    });
+            togglerCheckboxInput.on('keydown.selectCheckboxMenu', function(e) {
+                if (e.which === $.ui.keyCode.TAB && e.shiftKey) {
+                    e.preventDefault();
+                }
+            }).on('keyup.selectCheckboxMenu', function(e) {
+                if (e.which === $.ui.keyCode.SPACE) {
+                    var input = $(this);
+                    $this.toggleSelection(!input.prop('checked'));
+                    e.preventDefault();
+                }
+            }).on('change.selectCheckboxMenu', function(e) {
+                var input = $(this);
+                $this.toggleSelection(!input.prop('checked'));
+            });
         }
 
         var itemKeyInputs = this.itemContainer.find('> li > div.ui-chkbox > div.ui-helper-hidden-accessible > input');
         this.bindCheckboxKeyEvents(itemKeyInputs);
-        itemKeyInputs.on('keyup.selectCheckboxMenu', function(e) {
-                    if(e.which === $.ui.keyCode.SPACE) {
-                        var input = $(this),
-                        box = input.parent().next();
+        itemKeyInputs.on('keydown.selectCheckboxMenu', function(e) {
+            var index = $this.items.index($(this).closest("li"));
 
-                        if(input.prop('checked'))
-                            $this.uncheck(box, true);
-                        else
-                            $this.check(box, true);
-
-                        e.preventDefault();
-                    }
-                })
-                .on('change.selectCheckboxMenu', function(e) {
-                    var input = $(this),
+            if (e.which === $.ui.keyCode.TAB) {
+                if (!e.shiftKey && index === $this.items.length - 1) {
+                    e.preventDefault();
+                } else if (e.shiftKey && !$this.cfg.showHeader && index === 0) {
+                    e.preventDefault();
+                }
+            }
+        }).on('keyup.selectCheckboxMenu', function(e) {
+            if (e.which === $.ui.keyCode.SPACE) {
+                var input = $(this),
                     box = input.parent().next();
-
-                    if(input.prop('checked')) {
-                        $this.check(box, true);
-                    }
-                    else {
-                        $this.uncheck(box, true);
-                    }
-                });
+                $this.toggleItem(box, input);
+                e.preventDefault();
+            }
+        }).on('change.selectCheckboxMenu', function(e) {
+            var input = $(this),
+                box = input.parent().next();
+            $this.toggleItem(box, input);
+        });
     },
 
     /**
@@ -688,18 +670,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         var closeSelector = '> li.ui-selectcheckboxmenu-token > .ui-selectcheckboxmenu-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(e) {
             var itemValue = $(this).parent().data("item-value");
-            var item = $this.items.filter('[data-item-value="' + $.escapeSelector(itemValue) +'"]');
-            if(item && item.length) {
-                if(!$this.isLoaded()) {
+            var item = $this.items.filter('[data-item-value="' + $.escapeSelector(itemValue) + '"]');
+            if (item && item.length) {
+                if (!$this.isLoaded()) {
                     $this._renderPanel();
                 }
 
                 $this.uncheck(item.children('.ui-chkbox').children('.ui-chkbox-box'), true);
 
-                if($this.hasBehavior('itemUnselect')) {
+                if ($this.hasBehavior('itemUnselect')) {
                     var ext = {
-                        params : [
-                            {name: $this.id + '_itemUnselect', value: itemValue}
+                        params: [
+                            { name: $this.id + '_itemUnselect', value: itemValue }
                         ]
                     };
 
@@ -719,7 +701,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     bindCheckboxHover: function(item) {
         item.on('mouseenter.selectCheckboxMenu', function() {
             var item = $(this);
-            if(!item.hasClass('ui-state-disabled')) {
+            if (!item.hasClass('ui-state-disabled')) {
                 item.addClass('ui-state-hover');
             }
         }).on('mouseleave.selectCheckboxMenu', function() {
@@ -735,16 +717,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     filter: function(value) {
         var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
 
-        if(filterValue === '') {
+        if (filterValue === '') {
             this.itemContainer.children('li.ui-selectcheckboxmenu-item').filter(':hidden').show();
         }
         else {
-            for(var i = 0; i < this.labels.length; i++) {
+            for (var i = 0; i < this.labels.length; i++) {
                 var labelElement = this.labels.eq(i),
-                item = labelElement.parent(),
-                itemLabel = this.cfg.caseSensitive ? labelElement.text() : labelElement.text().toLowerCase();
+                    item = labelElement.parent(),
+                    itemLabel = this.cfg.caseSensitive ? labelElement.text() : labelElement.text().toLowerCase();
 
-                if(this.filterMatcher(itemLabel, filterValue)) {
+                if (this.filterMatcher(itemLabel, filterValue)) {
                     item.show();
                 }
                 else {
@@ -754,11 +736,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         var groupHeaderLength = this.groupHeaders.length;
-        for(var i = 0; i < groupHeaderLength; i++) {
+        for (var i = 0; i < groupHeaderLength; i++) {
             var header = $(this.groupHeaders[i]),
-            groupedItems = header.nextUntil('li.ui-selectcheckboxmenu-item-group');
+                groupedItems = header.nextUntil('li.ui-selectcheckboxmenu-item-group');
 
-            if(groupedItems.length === groupedItems.filter(':hidden').length) {
+            if (groupedItems.length === groupedItems.filter(':hidden').length) {
                 header.hide();
             }
             else {
@@ -766,8 +748,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        if(this.cfg.scrollHeight) {
-            if(this.itemContainer.height() < this.cfg.initialHeight) {
+        if (this.cfg.scrollHeight) {
+            if (this.itemContainer.height() < this.cfg.initialHeight) {
                 this.itemContainerWrapper.css('height', 'auto');
             }
             else {
@@ -784,12 +766,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     setupFilterMatcher: function() {
-        this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
+        this.cfg.filterMatchMode = this.cfg.filterMatchMode || 'startsWith';
         this.filterMatchers = {
             'startsWith': this.startsWithFilter
-            ,'contains': this.containsFilter
-            ,'endsWith': this.endsWithFilter
-            ,'custom': this.cfg.filterFunction
+            , 'contains': this.containsFilter
+            , 'endsWith': this.endsWithFilter
+            , 'custom': this.cfg.filterFunction
         };
 
         this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
@@ -829,6 +811,19 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Toggles either selecting all items or unselecting all items.
+     * @param {boolean} selectAll true to select all items and false to uncheck all items
+     */
+    toggleSelection: function(selectAll) {
+        if (selectAll) {
+            this.checkAll();
+        }
+        else {
+            this.uncheckAll();
+        }
+    },
+
+    /**
      * Selects all available options.
      * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
@@ -844,7 +839,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 var inputNative = input[0];
 
                 if (!inputNative.disabled) {
-                    input.prop('checked', true).attr('aria-checked', true);
+                    input.prop('checked', true);
                     this.check(el.children('.ui-chkbox').children('.ui-chkbox-box'));
 
                     if (this.cfg.multiple) {
@@ -857,21 +852,21 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.check(this.togglerBox);
 
         if (!silent) {
-           var togglerInput = this.togglerBox.prev().children('input');
-           if(this.cfg.onChange) {
-               this.cfg.onChange.call(this);
-           }
+            var togglerInput = this.togglerBox.prev().children('input');
+            if (this.cfg.onChange) {
+                this.cfg.onChange.call(this);
+            }
 
-           if(!this.togglerBox.hasClass('ui-state-disabled')) {
-               togglerInput.trigger('focus.selectCheckboxMenu');
-               this.togglerBox.addClass('ui-state-active');
-           }
+            if (!this.togglerBox.hasClass('ui-state-disabled')) {
+                togglerInput.trigger('focus.selectCheckboxMenu');
+                this.togglerBox.addClass('ui-state-active');
+            }
 
-           if(this.cfg.multiple) {
-               this.alignPanel();
-           }
+            if (this.cfg.multiple) {
+                this.alignPanel();
+            }
 
-           this.fireToggleSelectEvent(true);
+            this.fireToggleSelectEvent(true);
         }
     },
 
@@ -891,7 +886,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 var inputNative = input[0];
 
                 if (!inputNative.disabled) {
-                    this.inputs.eq(i).prop('checked', false).attr('aria-checked', false);
+                    this.inputs.eq(i).prop('checked', false);
                     this.uncheck(el.children('.ui-chkbox').children('.ui-chkbox-box'));
 
                     if (this.cfg.multiple) {
@@ -904,21 +899,23 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.uncheck(this.togglerBox);
 
         if (!silent) {
-           var togglerInput = this.togglerBox.prev().children('input');
-           if(this.cfg.onChange) {
-               this.cfg.onChange.call(this);
-           }
+            var togglerInput = this.togglerBox.prev().children('input');
+            if (this.cfg.onChange) {
+                this.cfg.onChange.call(this);
+            }
 
-           if(!this.togglerBox.hasClass('ui-state-disabled')) {
-               togglerInput.trigger('focus.selectCheckboxMenu');
-           }
+            if (!this.togglerBox.hasClass('ui-state-disabled')) {
+                togglerInput.trigger('focus.selectCheckboxMenu');
+            }
 
-           if(this.cfg.multiple) {
-               this.alignPanel();
-           }
+            if (this.cfg.multiple) {
+                this.alignPanel();
+            }
 
-           this.fireToggleSelectEvent(false);
+            this.fireToggleSelectEvent(false);
         }
+        
+        this.renderLabel();
     },
 
     /**
@@ -927,9 +924,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} checked Whether the checkbox option is now checked.
      */
     fireToggleSelectEvent: function(checked) {
-        if(this.hasBehavior('toggleSelect')) {
+        if (this.hasBehavior('toggleSelect')) {
             var ext = {
-                params: [{name: this.id + '_checked', value: checked}]
+                params: [{ name: this.id + '_checked', value: checked }]
             };
 
             this.callBehavior('toggleSelect', ext);
@@ -943,32 +940,32 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} updateInput If `true`, update the hidden input field with the current value of this widget.
      */
     check: function(checkbox, updateInput) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
+        if (!checkbox.hasClass('ui-state-disabled')) {
             var checkedInput = checkbox.prev().children('input'),
-            item = checkbox.closest('li.ui-selectcheckboxmenu-item');
+                item = checkbox.closest('li.ui-selectcheckboxmenu-item');
 
-            checkedInput.prop('checked', true).attr('aria-checked', true);
-            if(updateInput) {
+            checkedInput.prop('checked', true);
+            if (updateInput) {
                 checkedInput.trigger('focus.selectCheckboxMenu');
             }
 
             checkbox.addClass('ui-state-active').children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
             item.removeClass('ui-selectcheckboxmenu-unchecked').addClass('ui-selectcheckboxmenu-checked');
 
-            if(updateInput) {
-            	var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
-                input = this.inputs.eq(item.index() - itemGroups.length);
-                input.prop('checked', true).attr('aria-checked', true).trigger('change');
+            if (updateInput) {
+                var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
+                    input = this.inputs.eq(item.index() - itemGroups.length);
+                input.prop('checked', true).trigger('change');
 
                 this.updateToggler();
 
-                if(this.cfg.multiple) {
+                if (this.cfg.multiple) {
                     this.createMultipleItem(item);
                     this.alignPanel();
                 }
             }
 
-            if(this.cfg.updateLabel) {
+            if (this.cfg.updateLabel) {
                 this.updateLabel();
             }
         }
@@ -981,29 +978,41 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} updateInput If `true`, update the hidden input field with the current value of this widget.
      */
     uncheck: function(checkbox, updateInput) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
+        if (!checkbox.hasClass('ui-state-disabled')) {
             var uncheckedInput = checkbox.prev().children('input'),
-            item = checkbox.closest('li.ui-selectcheckboxmenu-item');
+                item = checkbox.closest('li.ui-selectcheckboxmenu-item');
             checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
             checkbox.closest('li.ui-selectcheckboxmenu-item').addClass('ui-selectcheckboxmenu-unchecked').removeClass('ui-selectcheckboxmenu-checked');
-            uncheckedInput.prop('checked', false).attr('aria-checked', false);
+            uncheckedInput.prop('checked', false);
 
-            if(updateInput) {
+            if (updateInput) {
                 var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
-                input = this.inputs.eq(item.index() - itemGroups.length);
-                input.prop('checked', false).attr('aria-checked', false).trigger('change');
+                    input = this.inputs.eq(item.index() - itemGroups.length);
+                input.prop('checked', false).trigger('change');
                 uncheckedInput.trigger('focus.selectCheckboxMenu');
                 this.updateToggler();
 
-                if(this.cfg.multiple) {
+                if (this.cfg.multiple) {
                     this.removeMultipleItem(item);
                     this.alignPanel();
                 }
             }
 
-            if(this.cfg.updateLabel) {
+            if (this.cfg.updateLabel) {
                 this.updateLabel();
             }
+        }
+    },
+
+    /**
+     * Bring up the overlay panel if its not showing or hide it if it is showing.
+     */
+    togglePanel: function() {
+        if (this.panel.is(":hidden")) {
+            this.show();
+        }
+        else {
+            this.hide();
         }
     },
 
@@ -1013,7 +1022,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     show: function() {
         var $this = this;
 
-        if (this.transition) {
+        if (this.panel.is(":hidden") && this.transition) {
             this.transition.show({
                 onEnter: function() {
                     $this.panel.css('z-index', PrimeFaces.nextZindex());
@@ -1044,6 +1053,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     $this.postHide();
                 }
             });
+
+            this.keyboardTarget.trigger('focus');
         }
     },
 
@@ -1052,7 +1063,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     postShow: function() {
-        if(this.cfg.onShow) {
+        if (this.cfg.onShow) {
             this.cfg.onShow.call(this);
         }
     },
@@ -1062,7 +1073,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     postHide: function() {
-        if(this.cfg.onHide) {
+        if (this.cfg.onHide) {
             this.cfg.onHide.call(this);
         }
     },
@@ -1072,18 +1083,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     alignPanel: function() {
         var fixedPosition = this.panel.css('position') == 'fixed',
-        win = $(window),
-        positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
-        panelStyle = this.panel.attr('style');
+            win = $(window),
+            positionOffset = fixedPosition ? '-' + win.scrollLeft() + ' -' + win.scrollTop() : null,
+            panelStyle = this.panel.attr('style');
 
         this.panel.css({
-                'left':'',
-                'top':'',
-                'z-index': PrimeFaces.nextZindex(),
-                'transform-origin': 'center top'
+            'left': '',
+            'top': '',
+            'z-index': PrimeFaces.nextZindex(),
+            'transform-origin': 'center top'
         });
 
-        if(this.panel.parent().attr('id') === this.id) {
+        if (this.panel.parent().attr('id') === this.id) {
             this.panel.css({
                 left: '0px',
                 top: this.jq.innerHeight() + 'px'
@@ -1091,18 +1102,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.panel.position({
-                                my: 'left top'
-                                ,at: 'left bottom'
-                                ,of: this.jq
-                                ,offset : positionOffset
-                                ,collision: 'flipfit'
-                                ,using: function(pos, directions) {
-                                    $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
-                                }
-                            });
+                my: 'left top'
+                , at: 'left bottom'
+                , of: this.jq
+                , offset: positionOffset
+                , collision: 'flipfit'
+                , using: function(pos, directions) {
+                    $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
+                }
+            });
         }
 
-        if(!this.widthAligned && (this.panel.width() < this.jq.width()) && (!panelStyle||panelStyle.toLowerCase().indexOf('width') === -1)) {
+        if (!this.widthAligned && (this.panel.width() < this.jq.width()) && (!panelStyle || panelStyle.toLowerCase().indexOf('width') === -1)) {
             this.panel.width(this.jq.width());
             this.widthAligned = true;
         }
@@ -1111,10 +1122,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Select or unselect the given checkbox option.
      * @param {JQuery} checkbox One of the checkbox options of this widget to toggle.
+     * @param {JQuery} input (optional) input element representing the value of the checkbox
      */
-    toggleItem: function(checkbox) {
-        if(!checkbox.hasClass('ui-state-disabled')) {
-            if(checkbox.hasClass('ui-state-active')) {
+    toggleItem: function(checkbox, input) {
+        if (!checkbox.hasClass('ui-state-disabled')) {
+            var isChecked = !input || input.prop('checked');
+            if (checkbox.hasClass('ui-state-active') && isChecked) {
                 this.uncheck(checkbox, true);
             }
             else {
@@ -1131,7 +1144,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.showHeader) {
             var visibleItems = this.itemContainer.children('li.ui-selectcheckboxmenu-item:visible');
 
-            if(visibleItems.length && visibleItems.filter('.ui-selectcheckboxmenu-unchecked').length === 0) {
+            if (visibleItems.length && visibleItems.filter('.ui-selectcheckboxmenu-unchecked').length === 0) {
                 this.check(this.togglerBox);
             }
             else {
@@ -1150,29 +1163,29 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         items.on('focus.selectCheckboxMenu', function(e) {
             var input = $(this),
-            box = input.parent().next();
+                box = input.parent().next();
 
             box.addClass('ui-state-focus');
 
             PrimeFaces.scrollInView($this.itemContainerWrapper, box);
         })
-        .on('blur.selectCheckboxMenu', function(e) {
-            var input = $(this),
-            box = input.parent().next();
+            .on('blur.selectCheckboxMenu', function(e) {
+                var input = $(this),
+                    box = input.parent().next();
 
-            box.removeClass('ui-state-focus');
-        })
-        .on('keydown.selectCheckboxMenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+                box.removeClass('ui-state-focus');
+            })
+            .on('keydown.selectCheckboxMenu', function(e) {
+                var keyCode = $.ui.keyCode,
+                    key = e.which;
 
-            if(key === keyCode.SPACE) {
-                e.preventDefault();
-            }
-            else if(key === keyCode.ESCAPE) {
-                $this.hide();
-            }
-        });
+                if (key === keyCode.SPACE) {
+                    e.preventDefault();
+                }
+                else if (key === keyCode.ESCAPE) {
+                    $this.hide();
+                }
+            });
     },
 
     /**
@@ -1183,20 +1196,16 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         var checkedItems = this.jq.find(':checked'),
             labelText = '';
 
-        if(checkedItems && checkedItems.length) {
-            for(var i = 0; i < checkedItems.length; i++) {
-                if(i != 0) {
+        if (checkedItems && checkedItems.length) {
+            for (var i = 0; i < checkedItems.length; i++) {
+                if (i != 0) {
                     labelText = labelText + this.cfg.labelSeparator;
                 }
                 labelText = labelText + $(checkedItems[i]).next().text();
             }
         }
         else {
-            if (this.cfg.emptyLabel) {
-                labelText = this.cfg.emptyLabel;
-            } else {
-                labelText = this.defaultLabel;
-            }
+            labelText = this.cfg.emptyLabel || this.defaultLabel;
         }
 
         this.label.text(labelText);
@@ -1210,20 +1219,24 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     createMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
-        if(items.length && items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').length > 0) {
+        var itemCount = !items.length ? 0 : items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').length;
+        if (itemCount > 0) {
             return;
         }
 
         var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
-        input = this.inputs.eq(item.index() - itemGroups.length),
-        escaped = input.data('escaped'),
-        labelHtml = input.next().html().trim(),
-        labelLength = labelHtml.length,
-        label = labelLength > 0 && labelHtml !== '&nbsp;' ? (escaped ? PrimeFaces.escapeHTML(input.next().text()) : input.next().html()) : PrimeFaces.escapeHTML(input.val()),
-        itemDisplayMarkup = '<li class="ui-selectcheckboxmenu-token ui-state-active ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(input.val()) +'">';
+            input = this.inputs.eq(item.index() - itemGroups.length),
+            escaped = input.data('escaped'),
+            labelHtml = input.next().html().trim(),
+            labelLength = labelHtml.length,
+            label = labelLength > 0 && labelHtml !== '&nbsp;' ? (escaped ? PrimeFaces.escapeHTML(input.next().text()) : input.next().html()) : PrimeFaces.escapeHTML(input.val()),
+            itemDisplayMarkup = '<li class="ui-selectcheckboxmenu-token ui-state-active ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(input.val()) + '">';
         itemDisplayMarkup += '<span class="ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close"></span>';
         itemDisplayMarkup += '<span class="ui-selectcheckboxmenu-token-label">' + label + '</span></li>';
 
+        if (items.filter('[class="ui-selectcheckboxmenu-emptylabel"]').length) {
+            this.multiItemContainer.empty();
+        }
         this.multiItemContainer.append(itemDisplayMarkup);
     },
 
@@ -1234,19 +1247,21 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     removeMultipleItem: function(item) {
         var items = this.multiItemContainer.children();
-        if(items.length) {
+        if (items.length) {
             items.filter('[data-item-value="' + $.escapeSelector(item.data('item-value')) + '"]').remove();
         }
+        // update the label if there are no more items to display empty
+        this.renderLabel();
     },
 
     /**
      * Checks the checkbox option with the given value.
      * @param {string} value Value of the option to check.
      */
-    selectValue: function(value) {                                                                     // Patch
+    selectValue: function(value) {
         var idx = -1;
         // find input-index
-        for(var i = 0; i < this.inputs.length; i++) {
+        for (var i = 0; i < this.inputs.length; i++) {
             if (this.inputs.eq(i).val() === value) {
                 idx = i;
                 break;
@@ -1256,13 +1271,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         var input = this.inputs.eq(idx);   // the hidden input
-        var item  = this.items.eq(idx);    // the Overlay-Panel-Item (li)
+        var item = this.items.eq(idx);    // the Overlay-Panel-Item (li)
 
         // check (see this.checkAll())
-        input.prop('checked', true).attr('aria-checked', true);
+        input.prop('checked', true);
         this.check(item.children('.ui-chkbox').children('.ui-chkbox-box'));
 
-        if(this.cfg.multiple) {
+        if (this.cfg.multiple) {
             this.createMultipleItem(item);
         }
     },
@@ -1297,7 +1312,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     resetValue: function(silent) {
         if (this.isLoaded()) {
-           this.uncheckAll(silent);
+            this.uncheckAll(silent);
         }
     }
 

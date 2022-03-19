@@ -167,7 +167,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.3.1</version>
+            <version>4.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -179,7 +179,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.58</version>
+            <version>9.0.60</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>4.2.4</version>
+            <version>5.1.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -684,6 +684,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.base.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.breadcrumb.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tieredmenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.menubar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.slidemenu.js</include>
@@ -1167,7 +1168,7 @@
                     <dependency>
                         <groupId>io.yupiik.maven</groupId>
                         <artifactId>maven-shade-transformers</artifactId>
-                        <version>0.0.1</version>
+                        <version>0.0.3</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -1187,7 +1188,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>6.5.3</version>
+                        <version>7.0.0</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
@@ -1204,6 +1205,19 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <!-- Quick build for developers which skips many build steps for speed -->
+        <profile>
+            <id>quick</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+                <maven.source.skip>true</maven.source.skip>
+                <checkstyle.skip>true</checkstyle.skip>
+                <license.skipCheckLicense>true</license.skipCheckLicense>
+                <license.skipAddThirdParty>true</license.skipAddThirdParty>
+                <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
+            </properties>
         </profile>
         <!-- Generates the JavaScript Api docs in the target directory, to check whether the docs compile -->
         <!-- This DOES NOT update the docs in docs/jsdoc, use the profile "jsdoc-update" for that (see below) -->

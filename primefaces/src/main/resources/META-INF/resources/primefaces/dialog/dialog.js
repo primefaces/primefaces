@@ -267,7 +267,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         //offset
         if(this.cfg.absolutePositioned) {
             var winScrollTop = $(window).scrollTop();
-            this.jq.css('top', String(parseFloat(this.jq.css('top')) + (winScrollTop - this.lastScrollTop)));
+            this.jq.css('top', parseFloat(this.jq.css('top')) + (winScrollTop - this.lastScrollTop) + 'px');
             this.lastScrollTop = winScrollTop;
         }
 

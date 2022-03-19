@@ -69,7 +69,7 @@ public class ClientValidator extends AbstractBehavior {
         UIComponent component = behaviorContext.getComponent();
         String target = (component instanceof InputHolder) ? "'" + ((InputHolder) component).getValidatableInputClientId() + "'" : "this";
 
-        return "return PrimeFaces.vi(" + target + ")";
+        return "return PrimeFaces.vi(" + target + ", true, true)";
     }
 
     @Override

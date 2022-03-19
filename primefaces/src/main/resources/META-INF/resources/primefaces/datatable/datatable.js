@@ -599,12 +599,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.reflowDD && this.cfg.reflow) {
             PrimeFaces.skinSelect(this.reflowDD);
             this.reflowDD.on('change', function(e) {
-                var arrVal = $(this).val().split('_'),
-                    columnHeader = $this.sortableColumns.eq(parseInt(arrVal[0])),
-                    sortOrder = parseInt(arrVal[1]);
+                var selectedOption = $(this).find(":selected");
+                var columnKey = selectedOption.data('columnkey');
+                var sortOrder = selectedOption.data('sortorder');
+                var columnHeader = $this.jq.find(PrimeFaces.escapeClientId(columnKey));
 
-                    columnHeader.data('sortorder', sortOrder);
-                    columnHeader.trigger('click.dataTable');
+                columnHeader.data('sortorder', sortOrder);
+                columnHeader.trigger('click.dataTable');
             });
         }
     },
@@ -4984,18 +4985,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     updateReflowDD: function(columnHeader, sortOrder) {
         if(this.reflowDD && this.cfg.reflow) {
-            var options = this.reflowDD.children('option'),
-            orderIndex = sortOrder > 0 ? 0 : 1;
-            var header = columnHeader.text();
-            var filterby = header.indexOf("Filter by");
-            if (filterby !== -1) {
-                header = header.substring(0, filterby);
-            }
-            header = $.escapeSelector(header);
+            sortOrder = sortOrder > 0 ? 0 : 1;
 
-            options.each(function() {
-                var optionText = $.escapeSelector(this.text);
-                this.selected = optionText.startsWith(header) && this.value.endsWith("_" + orderIndex);
+            var columnHeader = columnHeader.text();
+            var filterby = columnHeader.indexOf("Filter by");
+            if (filterby !== -1) {
+                columnHeader = columnHeader.substring(0, filterby);
+            }
+            columnHeader = $.escapeSelector(columnHeader);
+
+            this.reflowDD.children('option').each(function() {
+                var optionLabel = $.escapeSelector(this.text);
+                var optionSortOrder = $(this).data('sortorder');
+                this.selected = optionLabel.startsWith(columnHeader) && optionSortOrder == sortOrder;
             });
         }
     },
