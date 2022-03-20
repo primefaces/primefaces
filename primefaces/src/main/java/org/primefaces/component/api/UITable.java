@@ -61,7 +61,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
-        Map<String, FilterMeta> filterBy = new HashMap<>();
+        Map<String, FilterMeta> filterBy = new LinkedHashMap<>();
         AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
@@ -274,7 +274,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setGlobalFilterOnly(boolean globalFilterOnly);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortBy = new HashMap<>();
+        Map<String, SortMeta> sortBy = new LinkedHashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
