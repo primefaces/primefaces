@@ -251,7 +251,6 @@
             <artifactId>encoder</artifactId>
             <optional>true</optional>
         </dependency>
-        <!-- use 2.4 as later versions would require multiple files to shade -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -999,10 +998,9 @@
                             <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
                             <includes>
                                 <include>org.apache.commons.io.FilenameUtils</include>
-                                <include>org.apache.commons.io.IOUtils</include>
+                                <include>org.apache.commons.io.FileSystem</include>
+                                <include>org.apache.commons.io.IOCase</include>
                                 <include>org.apache.commons.io.input.BoundedInputStream</include>
-                                <include>org.apache.commons.io.output.StringBuilderWriter</include>
-                                <include>org.apache.commons.io.output.ByteArrayOutputStream</include>
                             </includes>
                         </relocation>
                     </relocations>
@@ -1011,10 +1009,9 @@
                             <artifact>commons-io:commons-io</artifact>
                             <includes>
                                 <include>org/apache/commons/io/FilenameUtils.class</include>
-                                <include>org/apache/commons/io/IOUtils.class</include>
+                                <include>org/apache/commons/io/FileSystem.class</include>
+                                <include>org/apache/commons/io/IOCase.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
-                                <include>org/apache/commons/io/output/StringBuilderWriter.class</include>
-                                <include>org/apache/commons/io/output/ByteArrayOutputStream.class</include>
                             </includes>
                         </filter>
                         <filter>
