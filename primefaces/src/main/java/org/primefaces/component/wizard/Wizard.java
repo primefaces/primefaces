@@ -41,7 +41,7 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

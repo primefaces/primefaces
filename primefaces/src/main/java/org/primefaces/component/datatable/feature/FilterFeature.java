@@ -31,7 +31,7 @@ import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;

@@ -21,39 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.util.lang;
+package org.primefaces.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.function.Supplier;
 
 /**
- * Fluent builder for {@link Map}'s
+ * Inspired by commons-lang LazyInitializer.
  *
- * @param <K> key type
- * @param <V> value type
+ * @param <T> The type to be lazy initialized.
  */
-public final class MapBuilder<K, V> {
+public class Lazy<T> implements Serializable, Supplier<T> {
 
-    private final Map<K, V> map;
+    private static final Object NOT_INITIALIZED = new Object();
 
-    private MapBuilder(Map<K, V> map) {
-        this.map = map;
+    @SuppressWarnings("unchecked")
+    private volatile T value = (T) NOT_INITIALIZED;
+    private volatile SerializableSupplier<T> init;
+
+    public Lazy(SerializableSupplier<T> init) {
+        this.init = init;
     }
 
-    public static <K, V> MapBuilder<K, V> builder(Map<K, V> map) {
-        return new MapBuilder<>(map);
+    public synchronized void reset(SerializableSupplier<T> init) {
+        this.init = init;
+        this.value = (T) NOT_INITIALIZED;
     }
 
-    public static <K, V> MapBuilder<K, V> builder() {
-        return new MapBuilder<>(new HashMap<>());
+    public synchronized void reset(T value) {
+        this.value = value;
     }
 
-    public MapBuilder<K, V> put(K key, V value) {
-        map.put(key, value);
-        return this;
+    public T get() {
+        T result = value;
+
+        if (result == NOT_INITIALIZED) {
+            synchronized (this) {
+                result = value;
+                if (result == NOT_INITIALIZED) {
+                    value = init.get();
+                    result = value;
+                }
+            }
+        }
+
+        return result;
     }
 
-    public Map<K, V> build() {
-        return map;
+    public boolean isInitialized() {
+        return value != NOT_INITIALIZED;
     }
 }

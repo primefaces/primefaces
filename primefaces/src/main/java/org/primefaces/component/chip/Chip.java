@@ -23,7 +23,7 @@
  */
 package org.primefaces.component.chip;
 
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.BehaviorEvent;

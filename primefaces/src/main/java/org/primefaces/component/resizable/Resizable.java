@@ -35,7 +35,7 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.event.ResizeEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

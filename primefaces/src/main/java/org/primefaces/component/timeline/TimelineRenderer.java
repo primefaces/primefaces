@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.timeline;
 
-import org.primefaces.util.lang.FastStringWriter;
 import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;

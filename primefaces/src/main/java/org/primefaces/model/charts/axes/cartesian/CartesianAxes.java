@@ -28,7 +28,7 @@ import java.io.Serializable;
 
 import org.primefaces.model.charts.axes.AxesGridLines;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 
 /**
  * Axes that follow a cartesian grid are known as 'Cartesian Axes'.

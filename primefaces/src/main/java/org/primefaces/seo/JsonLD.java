@@ -32,7 +32,7 @@ import javax.faces.context.ResponseWriter;
 import org.json.JSONObject;
 import org.primefaces.model.seo.JsonLDItem;
 import org.primefaces.model.seo.JsonLDModel;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.LangUtils;
 
 /**

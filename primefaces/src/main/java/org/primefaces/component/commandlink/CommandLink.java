@@ -33,7 +33,7 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.component.api.DialogReturnAware;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

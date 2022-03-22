@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 
 /**
  * The grid line configuration is nested under the scale configuration.

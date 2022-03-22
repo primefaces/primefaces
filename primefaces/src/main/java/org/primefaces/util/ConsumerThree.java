@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.util.lang;
+package org.primefaces.util;
 
 @FunctionalInterface
-public interface ConsumerTwo<T, U> {
-    void accept(T t, U u);
+public interface ConsumerThree<T, U, R> {
+    void accept(T t, U u, R r);
 }

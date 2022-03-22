@@ -32,7 +32,7 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;

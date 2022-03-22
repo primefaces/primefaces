@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 import org.primefaces.util.LangUtils;
 
 /**

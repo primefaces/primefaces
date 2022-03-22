@@ -27,7 +27,7 @@ import java.io.IOException;
 
 import org.primefaces.model.charts.axes.AxesTicks;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to provide radial linear ticks. RadialLinearTicks extends {@link AxesTicks}

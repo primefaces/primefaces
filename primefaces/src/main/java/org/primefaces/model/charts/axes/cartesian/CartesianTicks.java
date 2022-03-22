@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 
 /**
  * Common ticks options for cartesian types

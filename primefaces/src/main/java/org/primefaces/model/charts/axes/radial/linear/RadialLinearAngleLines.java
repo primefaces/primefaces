@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 
 /**
  * Used to configure angled lines that radiate from the center of the chart to the point labels.

@@ -21,10 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.util.lang;
+package org.primefaces.util;
 
 import java.util.List;
-import org.primefaces.util.LangUtils;
 
 /**
  * @author jagatai

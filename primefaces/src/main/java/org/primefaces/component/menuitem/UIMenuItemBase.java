@@ -31,7 +31,7 @@ import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.model.menu.MenuItem;
-import org.primefaces.util.lang.SerializableFunction;
+import org.primefaces.util.SerializableFunction;
 
 
 public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable,

@@ -41,7 +41,7 @@ import javax.validation.MessageInterpolator;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 public class BeanValidationMetadataMapper {
 

@@ -30,7 +30,7 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.lang.Lazy;
+import org.primefaces.util.Lazy;
 import org.primefaces.virusscan.VirusScannerService;
 import org.primefaces.webapp.FileUploadChunksServlet;
 

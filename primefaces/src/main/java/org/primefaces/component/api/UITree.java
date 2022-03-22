@@ -47,7 +47,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import java.io.IOException;
 import java.util.*;
-import org.primefaces.util.lang.Lazy;
+import org.primefaces.util.Lazy;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 

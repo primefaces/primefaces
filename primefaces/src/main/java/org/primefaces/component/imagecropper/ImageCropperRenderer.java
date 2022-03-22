@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.imagecropper;
 
-import org.primefaces.util.lang.Lazy;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;

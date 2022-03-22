@@ -34,7 +34,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
-import org.primefaces.util.lang.Lazy;
+import org.primefaces.util.Lazy;
 
 public class GraphicImageRenderer extends CoreRenderer {
 

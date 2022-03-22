@@ -23,7 +23,6 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.util.lang.MapBuilder;
 import java.io.IOException;
 import java.util.Map;
 

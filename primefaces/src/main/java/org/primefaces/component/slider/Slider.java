@@ -41,7 +41,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
 @ResourceDependency(library = "primefaces", name = "components.css")

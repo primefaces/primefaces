@@ -24,7 +24,7 @@
 package org.primefaces.component.media.player;
 
 import java.util.Map;
-import org.primefaces.util.lang.MapBuilder;
+import org.primefaces.util.MapBuilder;
 
 public class MediaPlayerFactory {
 

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.util.lang;
+package org.primefaces.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

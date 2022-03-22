@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.lang.FastStringWriter;
+import org.primefaces.util.FastStringWriter;
 
 /**
  * Line elements are used to represent the line in a line chart.
