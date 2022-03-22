@@ -33,9 +33,4 @@
         <packageUrl regex="true">^pkg:maven/org\.apache\.geronimo\.specs/geronimo\-ws\-metadata_2\.0_spec@.*$</packageUrl>
         <cve>CVE-2021-41568</cve>
     </suppress>
-    <suppress>
-       <notes><![CDATA[file name: hazelcast-5.1.jar False Positive https://github.com/jeremylong/DependencyCheck/issues/4208 ]]></notes>
-       <packageUrl regex="true">^pkg:maven/com\.hazelcast/hazelcast@.*$</packageUrl>
-       <cve>CVE-2022-0265</cve>
-    </suppress>
 </suppressions>
