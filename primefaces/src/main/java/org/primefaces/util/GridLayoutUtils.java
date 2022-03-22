@@ -23,6 +23,7 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.util.lang.MapBuilder;
 import java.util.Map;
 
 public class GridLayoutUtils {

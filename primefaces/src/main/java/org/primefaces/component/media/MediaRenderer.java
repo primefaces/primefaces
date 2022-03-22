@@ -37,7 +37,7 @@ import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
-import org.primefaces.util.Lazy;
+import org.primefaces.util.lang.Lazy;
 
 public class MediaRenderer extends CoreRenderer {
 

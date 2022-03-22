@@ -48,9 +48,9 @@ import javax.faces.convert.Converter;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
-import org.primefaces.util.BeanUtils;
-import org.primefaces.util.Lazy;
-import org.primefaces.util.SerializableSupplier;
+import org.primefaces.util.lang.BeanUtils;
+import org.primefaces.util.lang.Lazy;
+import org.primefaces.util.lang.SerializableSupplier;
 
 /**
  * Basic {@link LazyDataModel} implementation with JPA and Criteria API.

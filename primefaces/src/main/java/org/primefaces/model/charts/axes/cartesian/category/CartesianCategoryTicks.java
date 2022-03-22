@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.primefaces.model.charts.axes.cartesian.CartesianTicks;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * Used to provide cartesian category ticks. CartesianCategoryTicks extends {@link CartesianTicks}

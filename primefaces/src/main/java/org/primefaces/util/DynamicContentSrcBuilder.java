@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.util.lang.Lazy;
+import org.primefaces.util.lang.LimitedSizeHashMap;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;

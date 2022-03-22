@@ -25,7 +25,7 @@ package org.primefaces.model.menu;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.util.SerializableFunction;
+import org.primefaces.util.lang.SerializableFunction;
 
 import javax.faces.component.UIComponent;
 import java.io.Serializable;

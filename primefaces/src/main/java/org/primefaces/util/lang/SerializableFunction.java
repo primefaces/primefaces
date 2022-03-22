@@ -21,39 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.util;
+package org.primefaces.util.lang;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.function.Function;
 
-/**
- * Fluent builder for {@link Map}'s
- *
- * @param <K> key type
- * @param <V> value type
- */
-public final class MapBuilder<K, V> {
+@FunctionalInterface
+public interface SerializableFunction<T, R> extends Function<T, R>, Serializable {
 
-    private final Map<K, V> map;
-
-    private MapBuilder(Map<K, V> map) {
-        this.map = map;
-    }
-
-    public static <K, V> MapBuilder<K, V> builder(Map<K, V> map) {
-        return new MapBuilder<>(map);
-    }
-
-    public static <K, V> MapBuilder<K, V> builder() {
-        return new MapBuilder<>(new HashMap<>());
-    }
-
-    public MapBuilder<K, V> put(K key, V value) {
-        map.put(key, value);
-        return this;
-    }
-
-    public Map<K, V> build() {
-        return map;
-    }
 }

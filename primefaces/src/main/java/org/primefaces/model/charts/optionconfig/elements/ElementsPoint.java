@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * Point elements are used to represent the points in a line chart or a bubble chart.

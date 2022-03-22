@@ -27,7 +27,7 @@ import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.lang.MapBuilder;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;

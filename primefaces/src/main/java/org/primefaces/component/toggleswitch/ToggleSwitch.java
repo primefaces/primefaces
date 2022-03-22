@@ -29,7 +29,7 @@ import java.util.Map;
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.BehaviorEvent;
 
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.lang.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "toggleswitch/toggleswitch.css")

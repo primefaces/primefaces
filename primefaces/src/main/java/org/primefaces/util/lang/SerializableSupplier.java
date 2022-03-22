@@ -21,12 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.util;
+package org.primefaces.util.lang;
 
 import java.io.Serializable;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @FunctionalInterface
-public interface SerializableConsumer<T> extends Consumer<T>, Serializable {
+public interface SerializableSupplier<T> extends Supplier<T>, Serializable {
 
 }

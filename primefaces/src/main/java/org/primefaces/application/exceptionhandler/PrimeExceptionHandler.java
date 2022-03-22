@@ -57,7 +57,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.Lazy;
+import org.primefaces.util.lang.Lazy;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 

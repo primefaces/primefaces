@@ -37,7 +37,7 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.component.api.DialogReturnAware;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.lang.MapBuilder;
 
 
 public class UIMenuItem extends UIMenuItemBase implements DialogReturnAware {

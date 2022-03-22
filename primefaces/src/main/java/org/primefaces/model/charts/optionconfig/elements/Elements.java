@@ -26,7 +26,7 @@ package org.primefaces.model.charts.optionconfig.elements;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * Used to configure element option under chart options

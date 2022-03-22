@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.util;
+package org.primefaces.util.lang;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

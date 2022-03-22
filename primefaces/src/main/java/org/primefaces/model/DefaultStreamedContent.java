@@ -23,7 +23,7 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.util.SerializableSupplier;
+import org.primefaces.util.lang.SerializableSupplier;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,7 +31,7 @@ import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javax.faces.FacesException;
-import org.primefaces.util.SerializableConsumer;
+import org.primefaces.util.lang.SerializableConsumer;
 
 /**
  * Default implementation of a StreamedContent

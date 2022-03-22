@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.filedownload;
 
+import org.primefaces.util.lang.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;

@@ -28,7 +28,7 @@ import java.io.Serializable;
 
 import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * The scale label configuration is nested under the scale configuration in the scaleLabel key.

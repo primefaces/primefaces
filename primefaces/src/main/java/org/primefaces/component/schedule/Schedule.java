@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.schedule;
 
+import org.primefaces.util.lang.MapBuilder;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collection;

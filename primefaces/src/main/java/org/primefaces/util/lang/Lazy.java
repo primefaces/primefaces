@@ -21,45 +21,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.media.player;
+package org.primefaces.util.lang;
 
-import java.util.Map;
-import org.primefaces.util.lang.MapBuilder;
+import java.io.Serializable;
+import java.util.function.Supplier;
 
-public class MediaPlayerFactory {
+/**
+ * Inspired by commons-lang LazyInitializer.
+ *
+ * @param <T> The type to be lazy initialized.
+ */
+public class Lazy<T> implements Serializable, Supplier<T> {
 
-    private static final Map<String, MediaPlayer> PLAYERS = MapBuilder.<String, MediaPlayer>builder()
-            .put(MediaPlayer.QUICKTIME, new QuickTimePlayer())
-            .put(MediaPlayer.WINDOWS, new WindowsPlayer())
-            .put(MediaPlayer.REAL, new RealPlayer())
-            .put(MediaPlayer.PDF, new PDFPlayer())
-            .build();
+    private static final Object NOT_INITIALIZED = new Object();
 
-    private MediaPlayerFactory() {
+    @SuppressWarnings("unchecked")
+    private volatile T value = (T) NOT_INITIALIZED;
+    private volatile SerializableSupplier<T> init;
+
+    public Lazy(SerializableSupplier<T> init) {
+        this.init = init;
     }
 
-    /**
-     * @return Provides all players configured by this factory
-     */
-    public static Map<String, MediaPlayer> getPlayers() {
-        return PLAYERS;
+    public synchronized void reset(SerializableSupplier<T> init) {
+        this.init = init;
+        this.value = (T) NOT_INITIALIZED;
     }
 
-    /**
-     * @return the specific player
-     */
-    public static MediaPlayer getPlayer(String type) {
-        if (type == null) {
-            throw new IllegalArgumentException("A media player type must be provided");
+    public synchronized void reset(T value) {
+        this.value = value;
+    }
+
+    public T get() {
+        T result = value;
+
+        if (result == NOT_INITIALIZED) {
+            synchronized (this) {
+                result = value;
+                if (result == NOT_INITIALIZED) {
+                    value = init.get();
+                    result = value;
+                }
+            }
         }
 
-        MediaPlayer player = PLAYERS.get(type);
+        return result;
+    }
 
-        if (player != null) {
-            return player;
-        }
-        else {
-            throw new IllegalArgumentException(type + " is not a valid media player type");
-        }
+    public boolean isInitialized() {
+        return value != NOT_INITIALIZED;
     }
 }

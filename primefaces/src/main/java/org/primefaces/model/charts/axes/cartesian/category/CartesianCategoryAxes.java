@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * If global configuration is used, labels are drawn from one of the label arrays included in the chart data.

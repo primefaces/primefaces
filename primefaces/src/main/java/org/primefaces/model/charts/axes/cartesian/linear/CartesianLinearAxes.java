@@ -27,7 +27,7 @@ import java.io.IOException;
 
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * The linear scale is use to chart numerical data.

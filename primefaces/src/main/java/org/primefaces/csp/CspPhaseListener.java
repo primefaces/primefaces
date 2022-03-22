@@ -34,7 +34,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeFacesContext;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
+import org.primefaces.util.lang.Lazy;
 
 public class CspPhaseListener implements PhaseListener {
 

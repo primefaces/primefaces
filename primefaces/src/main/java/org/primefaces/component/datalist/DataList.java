@@ -30,7 +30,7 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.lang.MapBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;

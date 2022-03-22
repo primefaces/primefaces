@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * Arcs are used in the polar area, doughnut and pie charts.

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.datatable;
 
+import org.primefaces.util.lang.MapBuilder;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

@@ -29,7 +29,7 @@ import java.util.List;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.data.BubblePoint;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * Used to provide DataSet objects to Bubble chart component.

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.timeline;
 
+import org.primefaces.util.lang.MapBuilder;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;

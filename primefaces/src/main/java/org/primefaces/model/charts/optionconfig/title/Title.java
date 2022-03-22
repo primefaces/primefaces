@@ -28,7 +28,7 @@ import java.io.Serializable;
 
 import org.primefaces.model.charts.ChartFont;
 import org.primefaces.util.ChartUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 /**
  * The title configuration is passed into the options.title namespace.

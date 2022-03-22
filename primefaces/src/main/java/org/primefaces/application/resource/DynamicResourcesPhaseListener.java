@@ -30,7 +30,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.Lazy;
+import org.primefaces.util.lang.Lazy;
 import org.primefaces.util.ResourceUtils;
 
 public class DynamicResourcesPhaseListener implements PhaseListener {

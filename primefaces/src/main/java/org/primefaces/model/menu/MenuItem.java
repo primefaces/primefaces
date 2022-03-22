@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import javax.el.MethodExpression;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.util.SerializableFunction;
+import org.primefaces.util.lang.SerializableFunction;
 
 public interface MenuItem extends MenuElement, Confirmable {
 

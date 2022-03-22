@@ -35,7 +35,7 @@ import javax.faces.event.BehaviorEvent;
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalCommand;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.lang.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "terminal/terminal.css")
 @ResourceDependency(library = "primefaces", name = "components.css")

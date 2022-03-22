@@ -44,7 +44,7 @@ import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.util.CalendarUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.lang.FastStringWriter;
 
 public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseListener {
 

@@ -47,7 +47,7 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
-import org.primefaces.util.ConsumerTwo;
+import org.primefaces.util.lang.ConsumerTwo;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
