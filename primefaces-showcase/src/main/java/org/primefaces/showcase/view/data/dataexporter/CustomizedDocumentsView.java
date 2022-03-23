@@ -23,7 +23,18 @@
  */
 package org.primefaces.showcase.view.data.dataexporter;
 
-import com.lowagie.text.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -33,16 +44,7 @@ import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.List;
+import com.lowagie.text.*;
 
 @Named
 @RequestScoped
@@ -73,7 +75,7 @@ public class CustomizedDocumentsView implements Serializable {
         excelOpt.setFacetFontSize("10");
         excelOpt.setFacetFontColor("#0000ff");
         excelOpt.setFacetFontStyle("BOLD");
-        excelOpt.setCellFontColor("#00ff00");
+        excelOpt.setCellFontColor("#145c14");
         excelOpt.setCellFontSize("8");
         excelOpt.setFontName("Verdana");
 
