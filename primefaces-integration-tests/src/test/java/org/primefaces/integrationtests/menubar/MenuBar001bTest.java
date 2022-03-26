@@ -30,17 +30,18 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Messages;
 
-public class MenuBar001Test extends AbstractPrimePageTest {
+public class MenuBar001bTest extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("MenuBar: basic (click)")
+    @DisplayName("MenuBar: basic (hover)")
     public void testBasic(Page page) {
         // Arrange
         WebElement eltMenu = page.getWebDriver().findElement(By.id("form:menubar"));
@@ -53,13 +54,25 @@ public class MenuBar001Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
 
         // Act
+        Actions actions = new Actions(page.getWebDriver());
         WebElement eltMenuMainA = eltMenu.findElement(By.id("form:mainA"));
-        eltMenuMainA.click();
         WebElement eltMenuSubA2 = eltMenuMainA.findElement(By.id("form:subA2"));
+        actions.moveToElement(eltMenuMainA).build().perform();
         PrimeSelenium.guardAjax(eltMenuSubA2).click();
 
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
+
+        // Act
+        actions = new Actions(page.getWebDriver());
+        WebElement eltMenuSubA1 = eltMenuMainA.findElement(By.id("form:subA1"));
+        WebElement eltMenuDetailA1II = eltMenuMainA.findElement(By.id("form:detailA1II"));
+        actions.moveToElement(eltMenuMainA).build().perform();
+        actions.moveToElement(eltMenuSubA1).build().perform();
+        PrimeSelenium.guardAjax(eltMenuDetailA1II).click();
+
+        // Assert
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Detail A-1-II"));
 
 //        assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -82,7 +95,7 @@ public class MenuBar001Test extends AbstractPrimePageTest {
 
         @Override
         public String getLocation() {
-            return "menubar/menuBar001.xhtml";
+            return "menubar/menuBar001b.xhtml";
         }
     }
 }
