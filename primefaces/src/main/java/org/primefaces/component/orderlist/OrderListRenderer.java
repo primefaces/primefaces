@@ -46,11 +46,9 @@ public class OrderListRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         OrderList pickList = (OrderList) component;
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
-        String values = pickList.getClientId(context) + "_values";
 
-        if (values != null) {
-            pickList.setSubmittedValue(params.get(values));
-        }
+        String[] values = params.get(pickList.getClientId(context) + "_values");
+        pickList.setSubmittedValue(values);
 
         decodeBehaviors(context, component);
     }
