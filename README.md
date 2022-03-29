@@ -68,14 +68,14 @@ For a full list of the available downloads, please visit the [download page](htt
 - Official release 
 
   ```xml
-  <!-- Java EE / javax.* (JSF 2.0 - JSF 2.3) -->
+  <!-- Java EE / javax.* / JSF 2.0 - JSF 2.3 -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>11.0.0</version>
   </dependency>
 
-  <!-- Jakarta EE / jakarta:* (Faces 3.0 - Faces 4.0) -->	
+  <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
@@ -87,14 +87,14 @@ For a full list of the available downloads, please visit the [download page](htt
 - SNAPSHOT
 
   ```xml
-  <!-- Java EE / javax.* (JSF 2.0 - JSF 2.3) -->
+  <!-- Java EE / javax.* / JSF 2.0 - JSF 2.3 -->
   <dependency>
       <groupId>com.github.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>master-SNAPSHOT</version>
   </dependency>
 
-  <!-- Jakarta EE / jakarta:* (Faces 3.0 - Faces 4.0) -->
+  <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->
   <dependency>
       <groupId>com.github.primefaces</groupId>
       <artifactId>primefaces</artifactId>
