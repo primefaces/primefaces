@@ -32,7 +32,7 @@ What does that mean?
 - We, the community on GitHub, only provide support for issues, which are reproducable with the current SNAPSHOT (scroll down for more informations how to use it!)
 - We are NOT able to port bugfixes to elite releases, this is up to PrimeTek and can e.g. be triggered with PrimeFaces PRO
 
-### Download
+### Versions
 ***
 
 Version | Binary | Source | JSF version | Java version | Documentation
