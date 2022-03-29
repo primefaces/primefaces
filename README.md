@@ -22,7 +22,7 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 ### Community <> Elite <> Pro
 ***
 
-This is the open source code and issue tracker of the PrimeFaces Master (a.k.a. community version).  
+This is the open source code and issue tracker of the PrimeFaces master (a.k.a. community version).  
 Please check the following link for informations about Elite and Pro: [PrimeFaces Support](https://www.primefaces.org/support/)  
 
 What does that mean?
