@@ -32,12 +32,10 @@ What does that mean?
 - We, the community on GitHub, only provide support for issues, which are reproducable with the current SNAPSHOT (scroll down for more informations how to use it!)
 - We are NOT able to port bugfixes to elite releases, this is up to PrimeTek and can e.g. be triggered with PrimeFaces PRO
 
-### Getting Started
+### Download
 ***
 
-**PrimeFaces** can be downloaded manually or via maven.
-
-##### Latest Downloads
+##### Latest
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
@@ -46,7 +44,7 @@ Version | Binary | Source | JSF version | Java version | Documentation
 8.0| [primefaces-8.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
 
 <details>
-  <summary>Download Archive</summary>
+  <summary>Archive</summary>
   
 
 Version | Binary | Source | JSF version | Java version | Documentation
@@ -63,9 +61,9 @@ Version | Binary | Source | JSF version | Java version | Documentation
 
 For a full list of the available downloads, please visit the [download page](https://www.primefaces.org/downloads).
 
-##### Maven
+### Maven
 
-- Official release 
+##### Release 
 
   ```xml
   <!-- Java EE / javax.* / JSF 2.0 - JSF 2.3 -->
@@ -84,7 +82,7 @@ For a full list of the available downloads, please visit the [download page](htt
   </dependency>
   ```
 
-- SNAPSHOT
+##### SNAPSHOT
 
   ```xml
   <!-- Java EE / javax.* / JSF 2.0 - JSF 2.3 -->
