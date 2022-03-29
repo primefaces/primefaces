@@ -27,6 +27,15 @@
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>primefaces</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>https://repository.primefaces.org</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.tomee</groupId>
@@ -131,6 +140,7 @@
         <dependency>
             <groupId>net.sf.barcode4j</groupId>
             <artifactId>barcode4j-light</artifactId>
+            <version>2.1</version>
         </dependency>
 
         <!-- Cache -->
