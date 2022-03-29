@@ -27,7 +27,7 @@ Please check the following link for informations about Elite and Pro: [PrimeFace
 
 What does that mean?
 - PrimeFaces is developed by PrimeTek and the open source community
-- The most contribuers are working on PrimeFaces in their spare time on this open source project
+- The most contributers of PrimeFaces do it their spare time
 - PrimeTek pushes fixes and new features from their closed source Elite and Pro repositories to the community edition
 - We, the community, only provide support for issues, which are reproducable which are still reproducable with the current SNAPSHOT (scroll down for more informations how to use it!)
 - We are NOT able to port bugfixes to elite releases, this is up to PrimeTek and can e.g. be triggered with PrimeFaces PRO
