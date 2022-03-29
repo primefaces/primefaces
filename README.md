@@ -46,7 +46,7 @@ Version | Binary | Source | JSF version | Java version | Documentation
 8.0| [primefaces-8.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0.jar)  | [primefaces-8.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/8.0/primefaces-8.0-sources.jar) | 2.0 - 2.3 | 1.8 - ? | [8.0 Documentation](https://primefaces.github.io/primefaces/8_0/#/)
 
 <details>
-  <summary>Download Archiv</summary>
+  <summary>Download Archive</summary>
   
 
 Version | Binary | Source | JSF version | Java version | Documentation
@@ -155,10 +155,6 @@ xmlns:p="http://primefaces.org/ui"
 ### Demo
 ***
 Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase are available within module [primefaces-showcase](https://github.com/primefaces/primefaces/tree/master/primefaces-showcase).
-
-### Documentation
-***
-A User Guide is available [here](https://primefaces.github.io/primefaces/).
 
 ### Contribution
 ***
