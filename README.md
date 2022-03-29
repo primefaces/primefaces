@@ -65,19 +65,17 @@ For a full list of the available downloads, please visit the [download page](htt
 
 ##### Maven
 
-- Official release (javax; JSF 2.0 - JSF 2.3)
+- Official release 
 
   ```xml
+  <!-- Java EE / javax.* (JSF 2.0 - JSF 2.3) -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>11.0.0</version>
   </dependency>
-  ```
 
-- Official release (jakarta; Faces 3.0 - Faces 4.0)
-
-  ```xml
+  <!-- Jakarta EE / jakarta:* (Faces 3.0 - Faces 4.0) -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
@@ -86,26 +84,17 @@ For a full list of the available downloads, please visit the [download page](htt
   </dependency>
   ```
 
-- Snapshot (javax; JSF 2.0 - JSF 2.3; should NOT be used in production environments!)
+- SNAPSHOT
 
   ```xml
+  <!-- Java EE / javax.* (JSF 2.0 - JSF 2.3) -->
   <dependency>
       <groupId>com.github.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>master-SNAPSHOT</version>
   </dependency>
 
-  <repositories>
-      <repository>
-          <id>jitpack.io</id>
-          <url>https://jitpack.io</url>
-      </repository>
-  </repositories>
-  ```
-
-- Snapshot (jakarta; Faces 3.0 - Faces 4.0; should NOT be used in production environments!)
-
-  ```xml
+  <!-- Jakarta EE / jakarta:* (Faces 3.0 - Faces 4.0) -->
   <dependency>
       <groupId>com.github.primefaces</groupId>
       <artifactId>primefaces</artifactId>
@@ -120,6 +109,7 @@ For a full list of the available downloads, please visit the [download page](htt
       </repository>
   </repositories>
   ```
+
 ### Usage
 ***
 
