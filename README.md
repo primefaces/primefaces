@@ -161,7 +161,7 @@ Visit the [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Cont
 - Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=11.0.0` to update all modules versions
 - Commit and push the changes to GitHub
 - In GitHub create a new Release titled `11.0.0` to tag this release
-- Run `mvn clean deploy -Pminify,release` to push to Maven Central
+- Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone
 
