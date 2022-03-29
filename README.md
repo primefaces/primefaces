@@ -109,16 +109,6 @@ For a full list of the available downloads, please visit the [download page](htt
 ### Usage
 ***
 
-##### Namespaces
-
-The PrimeFaces namespace is necessary to add PrimeFaces components to your pages.
-
-```xml
-xmlns:p="http://primefaces.org/ui"
-```
-
-##### Test Run
-
 ```xml
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
