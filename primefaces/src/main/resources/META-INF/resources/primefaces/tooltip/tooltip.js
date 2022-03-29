@@ -403,11 +403,17 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        this.jq.css({ 'display': 'block', 'opacity': '0', 'pointer-events': 'none' });
+        // allow pointer events when autohide is disabled
+        var pointerEvents = '';
+        if (this.isAutoHide()) {
+            pointerEvents = 'none';
+        }
+
+        this.jq.css({ 'display': 'block', 'opacity': '0', 'pointer-events': pointerEvents });
 
         this.align();
 
-        this.jq.css({ 'display': 'none', 'opacity': '', 'pointer-events': '' });
+        this.jq.css({ 'display': 'none', 'opacity': '' });
 
         if (this.cfg.trackMouse) {
             this.followMouse();
