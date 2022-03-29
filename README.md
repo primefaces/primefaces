@@ -35,8 +35,6 @@ What does that mean?
 ### Download
 ***
 
-##### Latest
-
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
 11.0.0| [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
