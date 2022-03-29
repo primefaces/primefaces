@@ -6,7 +6,13 @@ labels: defect
 
 ---
 
-**Before creating a issue, please try the newest version! Older versions are not supported by the community!**
+**
+----------------------------------------------------
+----------------------------------------------------
+Before creating a issue, please carefully read: https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro
+----------------------------------------------------
+----------------------------------------------------
+*
 
 **Describe the defect**
 A clear and concise description of what the defect is.
