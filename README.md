@@ -20,6 +20,7 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 [PrimeFaces](https://www.primefaces.org/) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. Here are [some of the users](https://www.primefaces.org/whouses) who notified us or subscribed to a [PrimeFaces Support Service](https://www.primefaces.org/support).
 
 ### Community <> Elite <> Pro
+***
 
 This is the open source code and issue tracker of the PrimeFaces Master (a.k.a. community version)
 Please check the following link for informations about Elite and Pro: [PrimeFaces Support](https://www.primefaces.org/support/)  
