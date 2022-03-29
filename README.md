@@ -53,6 +53,17 @@ Version | Binary | Source | JSF version | Java version | Documentation
 5.1| [primefaces-5.1.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar) | 2.0 - 2.2 | 1.5 - ? | [5.1 Documentation](https://www.primefaces.org/docs/guide/primefaces_user_guide_5_1.pdf)
 
 
+<details>
+  <summary>Older Versions</summary>
+  
+  ## Heading
+  1. A numbered
+  2. list
+     * With some
+     * Sub bullets
+</details>
+
+
 For a full list of the available downloads, please visit the [download page](https://www.primefaces.org/downloads).
 
 ##### Maven
