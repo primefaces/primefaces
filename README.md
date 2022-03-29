@@ -60,6 +60,7 @@ Version | Binary | Source | JSF version | Java version | Documentation
 For a full list of the available downloads, please visit the [download page](https://www.primefaces.org/downloads).
 
 ### Maven
+***
 
 ##### Release 
 
