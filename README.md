@@ -19,6 +19,18 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 
 [PrimeFaces](https://www.primefaces.org/) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. Here are [some of the users](https://www.primefaces.org/whouses) who notified us or subscribed to a [PrimeFaces Support Service](https://www.primefaces.org/support).
 
+### Community <> Elite <> Pro
+
+This is the open source code and issue tracker of the PrimeFaces Master (a.k.a. community version)
+Please check the following link for informations about Elite and Pro: [PrimeFaces Support](https://www.primefaces.org/support/)  
+
+What does that mean?
+- PrimeFaces is developed by PrimeTek and the open source community
+- The most contribuers are working on PrimeFaces in their spare time on this open source project
+- PrimeTek pushes fixes and new features from their closed source Elite and Pro repositories to the community edition
+- We, the community, only provide support for issues, which are reproducable which are still reproducable with the current SNAPSHOT (scroll down for more informations how to use it!)
+- We are NOT able to port bugfixes to elite releases, this is up to PrimeTek and can e.g. be triggered with PrimeFaces PRO
+
 ### Getting Started
 ***
 
