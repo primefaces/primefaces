@@ -116,8 +116,8 @@ function fixupInlineBlockComments(sourceCode) {
         if (indexSlashStarStar >= 0 && i < lines.length - 1) {
             const nextLine = lines[i + 1] ?? "";
             const indexStar = nextLine.indexOf("*");
-            const lineBeforeComment = trimmed.substr(0, indexSlashStarStar).trimRight();
-            if (indexStar >= 0 && lineBeforeComment.length > 0 && nextLine.substr(0, indexStar).trim().length === 0) {
+            const lineBeforeComment = trimmed.slice(0, indexSlashStarStar).trimRight();
+            if (indexStar >= 0 && lineBeforeComment.length > 0 && nextLine.slice(0, indexStar).trim().length === 0) {
                 const commentBeginLine = " ".repeat(indexStar - 1) + "/**";
                 result.push(lineBeforeComment);
                 result.push(commentBeginLine);
