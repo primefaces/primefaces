@@ -1194,6 +1194,9 @@
         </profile>
         <profile>
             <id>release</id>
+            <properties>
+                <minify.disabled>false</minify.disabled>
+            </properties>
             <build>
                 <plugins>
                     <!-- Write docs and *.d.ts file to the current documentation directory docs/jsdocs -->
