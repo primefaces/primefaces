@@ -23,6 +23,9 @@
  */
 package org.primefaces.integrationtests.schedule;
 
+import java.time.*;
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -35,9 +38,6 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
-
-import java.time.*;
-import java.util.List;
 
 public class Schedule001Test extends AbstractPrimePageTest {
 
@@ -106,8 +106,10 @@ public class Schedule001Test extends AbstractPrimePageTest {
         int hour = 10 - calcOffsetInHoursBetweenClientAndServerAndTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
         // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
 
-        expectedMessage = "T" + String.format("%02d", hour) + ":00";
-        Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
+        String hourDST = String.format("T%02d:00", hour);
+        String hourST = String.format("T%02d:00", hour + 1);
+        boolean hourOK = msg.getDetail().endsWith(hourDST) || msg.getDetail().endsWith(hourST);
+        Assertions.assertTrue(hourOK, String.format("Expected: %s or %s , Actual: %s", hourDST, hourST, msg.getDetail()));
     }
 
     private void selectSlot(Page page, String time) {
