@@ -206,15 +206,22 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
-        headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
-        headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
-        String iconClass = active
-                           ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
-                           : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
-        String contentClass = active
-                              ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
-                              : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+        String headerStyleClass = getStyleClassBuilder(context)
+            .add(active, AccordionPanel.ACTIVE_TAB_HEADER_CLASS, AccordionPanel.TAB_HEADER_CLASS)
+            .add(tab.isDisabled(), "ui-state-disabled")
+            .add(tab.getTitleStyleClass())
+            .build();
+
+        String iconStyleClass = getStyleClassBuilder(context)
+            .add(active, AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS)
+            .add(!active && rtl, AccordionPanel.TAB_HEADER_ICON_RTL_CLASS)
+            .add(!active && !rtl, AccordionPanel.TAB_HEADER_ICON_CLASS)
+            .build();
+
+        String contentStyleClass = getStyleClassBuilder(context)
+            .add(active, AccordionPanel.ACTIVE_TAB_CONTENT_CLASS, AccordionPanel.INACTIVE_TAB_CONTENT_CLASS)
+            .build();
+
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();
@@ -222,7 +229,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         //header container
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context) + "_header", null);
-        writer.writeAttribute("class", headerClass, null);
+        writer.writeAttribute("class", headerStyleClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
@@ -237,7 +244,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
+        writer.writeAttribute("class", iconStyleClass, null);
         writer.endElement("span");
 
         if (ComponentUtils.shouldRenderFacet(titleFacet)) {
@@ -255,7 +262,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         //content
         writer.startElement("div", null);
         writer.writeAttribute("id", tab.getClientId(context), null);
-        writer.writeAttribute("class", contentClass, null);
+        writer.writeAttribute("class", contentStyleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
 

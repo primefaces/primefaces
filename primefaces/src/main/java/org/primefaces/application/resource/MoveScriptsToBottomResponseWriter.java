@@ -201,12 +201,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
             // write script includes
             for (Entry<String, List<Map<String, String>>> entry : state.getIncludes().entrySet()) {
-                String scriptType = entry.getKey();
-                List<Map<String, String>> includes = entry.getValue();
 
+                List<Map<String, String>> includes = entry.getValue();
                 for (int i = 0; i < includes.size(); i++) {
                     Map<String, String> attributes = includes.get(i);
-                    attributes.put(TYPE_ATTRIBUTE, scriptType);
+                    attributes.put(TYPE_ATTRIBUTE, entry.getKey());
                     getWrapped().startElement(SCRIPT_TAG, null);
                     for (Entry<String, String> attribute : attributes.entrySet()) {
                         String attributeName = attribute.getKey();
