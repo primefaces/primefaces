@@ -6,13 +6,11 @@ labels: defect
 
 ---
 
-**
 ----------------------------------------------------
 ----------------------------------------------------
-Before creating a issue, please carefully read: https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro
+# Before creating a issue, please carefully read: https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro
 ----------------------------------------------------
 ----------------------------------------------------
-*
 
 **Describe the defect**
 A clear and concise description of what the defect is.
