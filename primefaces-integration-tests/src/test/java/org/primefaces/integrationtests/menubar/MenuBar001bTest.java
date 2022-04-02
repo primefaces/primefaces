@@ -35,6 +35,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.Menubar;
 import org.primefaces.selenium.component.Messages;
 
 public class MenuBar001bTest extends AbstractPrimePageTest {
@@ -44,10 +45,10 @@ public class MenuBar001bTest extends AbstractPrimePageTest {
     @DisplayName("MenuBar: basic (hover)")
     public void testBasic(Page page) {
         // Arrange
-        WebElement eltMenu = page.getWebDriver().findElement(By.id("form:menubar"));
+        Menubar menubar = page.menubar;
 
         // Act
-        WebElement eltMenuMainC = eltMenu.findElement(By.id("form:mainC"));
+        WebElement eltMenuMainC = menubar.findElement(By.id("form:mainC"));
         PrimeSelenium.guardAjax(eltMenuMainC).click();
 
         // Assert
@@ -55,7 +56,7 @@ public class MenuBar001bTest extends AbstractPrimePageTest {
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
-        WebElement eltMenuMainA = eltMenu.findElement(By.id("form:mainA"));
+        WebElement eltMenuMainA = menubar.findElement(By.id("form:mainA"));
         WebElement eltMenuSubA2 = eltMenuMainA.findElement(By.id("form:subA2"));
         actions.moveToElement(eltMenuMainA).build().perform();
         PrimeSelenium.guardAjax(eltMenuSubA2).click();
@@ -74,24 +75,60 @@ public class MenuBar001bTest extends AbstractPrimePageTest {
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Detail A-1-II"));
 
-//        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+        assertConfiguration(menubar.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("MenuBar: basic (hover, selection via value)")
+    public void testBasicByValue(Page page) {
+        // Arrange
+        Menubar menubar = page.menubar;
+
+        // Act
+        WebElement eltMenuMainC = menubar.findMenuitemByValue("Main C");
+        PrimeSelenium.guardAjax(eltMenuMainC).click();
+
+        // Assert
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
+
+        // Act
+        Actions actions = new Actions(page.getWebDriver());
+        WebElement eltMenuMainA = menubar.findMenuitemByValue("Main A");
+        actions.moveToElement(eltMenuMainA).build().perform();
+        WebElement eltMenuSubA2 = menubar.findMenuitemByValue(eltMenuMainA, "Sub A-2");
+        PrimeSelenium.guardAjax(eltMenuSubA2).click();
+
+        // Assert
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
+
+        // Act
+        actions = new Actions(page.getWebDriver());
+        actions.moveToElement(eltMenuMainA).build().perform();
+        WebElement eltMenuSubA1 = menubar.findMenuitemByValue(eltMenuMainA, "Sub A-1");
+        actions.moveToElement(eltMenuSubA1).build().perform();
+        WebElement eltMenuDetailA1II = menubar.findMenuitemByValue(eltMenuSubA1, "Detail A-1-II");
+        PrimeSelenium.guardAjax(eltMenuDetailA1II).click();
+
+        // Assert
+        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Detail A-1-II"));
+
+        assertConfiguration(menubar.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("MenuBar Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        Assertions.assertTrue(cfg.has("toggleEvent"));
+        Assertions.assertEquals("hover", cfg.getString("toggleEvent"));
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:msgs")
         Messages messages;
 
-//        @FindBy(id = "form:selectonemenu")
-//        SelectOneMenu selectOneMenu;
-//
-//        @FindBy(id = "form:button")
-//        CommandButton button;
+        @FindBy(id = "form:menubar")
+        Menubar menubar;
 
         @Override
         public String getLocation() {
