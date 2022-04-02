@@ -73,17 +73,14 @@ public class MenuBar001Test extends AbstractPrimePageTest {
         Menubar menubar = page.menubar;
 
         // Act
-        WebElement eltMenuMainC = menubar.findMenuitemByValue("Main C");
-        PrimeSelenium.guardAjax(eltMenuMainC).click();
+        menubar.selectMenuitemByValue("Main C");
 
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
 
         // Act
-        WebElement eltMenuMainA = menubar.findMenuitemByValue("Main A");
-        eltMenuMainA.click();
-        WebElement eltMenuSubA2 = menubar.findMenuitemByValue(eltMenuMainA, "Sub A-2");
-        PrimeSelenium.guardAjax(eltMenuSubA2).click();
+        WebElement eltMenuMainA = menubar.selectMenuitemByValue("Main A");
+        menubar.selectMenuitemByValue(eltMenuMainA, "Sub A-2");
 
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));

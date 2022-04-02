@@ -26,6 +26,8 @@ package org.primefaces.selenium.component;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 
 import java.util.List;
@@ -44,6 +46,39 @@ public abstract class Menubar extends AbstractInputComponent {
         return subElements.stream()
                 .filter(e -> e.getText().equals(value))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("no menuitem with label '" + value + "'"));
+                .orElseThrow(() -> new NoSuchElementException("no menuitem with value '" + value + "'"));
+    }
+
+    public WebElement selectMenuitemByValue(String value) {
+        return selectMenuitemByValue(this, value);
+    }
+
+    public WebElement selectMenuitemByValue(WebElement parentElt, String value) {
+        WebElement elt = findMenuitemByValue(parentElt, value);
+
+        if ((PrimeSelenium.hasCssClass(elt, "ui-menu-parent")) && isToggleEventHover()) {
+            Actions actions = new Actions(getWebDriver());
+            actions.moveToElement(elt).build().perform();
+        }
+        else {
+            WebElement eltA = elt.findElement(By.xpath("./a"));
+            if (isAjaxified(eltA, "onclick")) {
+                PrimeSelenium.guardAjax(elt).click();
+            }
+            else {
+                elt.click();
+            }
+            // some more cases?
+        }
+
+        return  elt;
+    }
+
+    public boolean isToggleEventHover() {
+        return "hover".equals(getWidgetConfiguration().getString("toggleEvent"));
+    }
+
+    public boolean isToggleEventClick() {
+        return "click".equals(getWidgetConfiguration().getString("toggleEvent"));
     }
 }

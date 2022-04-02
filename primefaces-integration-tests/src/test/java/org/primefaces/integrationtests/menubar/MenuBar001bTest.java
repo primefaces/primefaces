@@ -86,29 +86,22 @@ public class MenuBar001bTest extends AbstractPrimePageTest {
         Menubar menubar = page.menubar;
 
         // Act
-        WebElement eltMenuMainC = menubar.findMenuitemByValue("Main C");
-        PrimeSelenium.guardAjax(eltMenuMainC).click();
+        menubar.selectMenuitemByValue("Main C");
 
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Main C"));
 
         // Act
-        Actions actions = new Actions(page.getWebDriver());
-        WebElement eltMenuMainA = menubar.findMenuitemByValue("Main A");
-        actions.moveToElement(eltMenuMainA).build().perform();
-        WebElement eltMenuSubA2 = menubar.findMenuitemByValue(eltMenuMainA, "Sub A-2");
-        PrimeSelenium.guardAjax(eltMenuSubA2).click();
+        WebElement eltMenuMainA = menubar.selectMenuitemByValue("Main A");
+        menubar.selectMenuitemByValue(eltMenuMainA, "Sub A-2");
 
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Sub A-2"));
 
         // Act
-        actions = new Actions(page.getWebDriver());
-        actions.moveToElement(eltMenuMainA).build().perform();
-        WebElement eltMenuSubA1 = menubar.findMenuitemByValue(eltMenuMainA, "Sub A-1");
-        actions.moveToElement(eltMenuSubA1).build().perform();
-        WebElement eltMenuDetailA1II = menubar.findMenuitemByValue(eltMenuSubA1, "Detail A-1-II");
-        PrimeSelenium.guardAjax(eltMenuDetailA1II).click();
+        eltMenuMainA = menubar.selectMenuitemByValue("Main A");
+        WebElement eltMenuSubA1 = menubar.selectMenuitemByValue(eltMenuMainA, "Sub A-1");
+        menubar.selectMenuitemByValue(eltMenuSubA1, "Detail A-1-II");
 
         // Assert
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Detail A-1-II"));
