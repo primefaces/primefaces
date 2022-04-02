@@ -68,6 +68,7 @@ public class MenuBar001bTest extends AbstractPrimePageTest {
         actions = new Actions(page.getWebDriver());
         WebElement eltMenuSubA1 = eltMenuMainA.findElement(By.id("form:subA1"));
         WebElement eltMenuDetailA1II = eltMenuMainA.findElement(By.id("form:detailA1II"));
+        actions.moveToElement(menubar.getWrappedElement()).build().perform();
         actions.moveToElement(eltMenuMainA).build().perform();
         actions.moveToElement(eltMenuSubA1).build().perform();
         PrimeSelenium.guardAjax(eltMenuDetailA1II).click();

@@ -49,10 +49,23 @@ public abstract class Menubar extends AbstractInputComponent {
                 .orElseThrow(() -> new NoSuchElementException("no menuitem with value '" + value + "'"));
     }
 
+    /**
+     * Select L1 menuitem
+     * @param value
+     * @return
+     */
     public WebElement selectMenuitemByValue(String value) {
+        Actions actions = new Actions(getWebDriver());
+        actions.moveToElement(this.getWrappedElement()).build().perform(); // FF - workaround when clicking on multiple menuitems successively
         return selectMenuitemByValue(this, value);
     }
 
+    /**
+     * Select L2+ menuitem
+     * @param parentElt parent menuitem
+     * @param value
+     * @return
+     */
     public WebElement selectMenuitemByValue(WebElement parentElt, String value) {
         WebElement elt = findMenuitemByValue(parentElt, value);
 
