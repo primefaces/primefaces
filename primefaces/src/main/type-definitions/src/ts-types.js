@@ -113,7 +113,7 @@ function getReturnType({ async, generator, baseTypeNext, baseTypeReturn, baseTyp
  * @return {string} The type, without the rest "..." indicator if present.
  */
 function removeRestFromType(type) {
-    return hasRestSpecifier(type) ? type.substr(3) : type;
+    return hasRestSpecifier(type) ? type.slice(3) : type;
 }
 
 /**
