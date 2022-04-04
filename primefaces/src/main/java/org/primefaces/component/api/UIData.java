@@ -90,12 +90,7 @@ public class UIData extends javax.faces.component.UIData {
             Class<?> type = ELUtils.getType(getFacesContext(),
                     getValueExpression("value"),
                     () -> getValue());
-            if (type == null) {
-                LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
-                        + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
-                        + "clientId: " + this.getClientId());
-            }
-            else {
+            if (type != null) {
                 lazy = LazyDataModel.class.isAssignableFrom(type);
             }
 
