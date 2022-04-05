@@ -235,7 +235,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 'top': position.top + 'px'
             };
             currentBlocker.css(sizeAndPosition);
-            currentContent.css(sizeAndPosition);
 
             // append the blocker to the document 
             $(document.body).append(currentBlocker).append(currentContent);
