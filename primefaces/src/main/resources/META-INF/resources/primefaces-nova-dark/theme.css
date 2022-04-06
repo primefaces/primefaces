@@ -2137,6 +2137,9 @@ body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-chkbox .ui-icon-minus 
 body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-chkbox .ui-icon-minus:before {
   content: "\e90f";
 }
+body .ui-tree.ui-tree-horizontal .ui-treenode:before {
+  background-color: #ffffff;
+}
 body .ui-tree .ui-tree-filter-container {
   margin: 0 0 0.5rem 0;
 }
