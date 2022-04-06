@@ -727,6 +727,12 @@ body .ui-carousel .ui-carousel-content .ui-carousel-next:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-carousel .ui-carousel-content .ui-carousel-prev:focus,
+body .ui-carousel .ui-carousel-content .ui-carousel-next:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-carousel .ui-carousel-indicators {
   padding: 1rem;
 }
@@ -1028,6 +1034,11 @@ body .ui-datatable .ui-datatable-data > tr .ui-row-editor > a:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-datatable .ui-datatable-data > tr .ui-row-editor > a:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-datatable .ui-datatable-data > tr .ui-row-editor > a.ui-row-editor-check {
   margin-right: 0.5rem;
 }
@@ -1079,6 +1090,11 @@ body .ui-datatable .ui-datatable-data > tr .ui-row-toggler:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-datatable .ui-datatable-data > tr .ui-row-toggler:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-datatable .ui-datatable-data > tr .ui-row-toggler.ui-icon-circle-triangle-e {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -1119,6 +1135,11 @@ body .ui-datatable .ui-datatable-data > tr .ui-rowgroup-toggler .ui-rowgroup-tog
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-datatable .ui-datatable-data > tr .ui-rowgroup-toggler .ui-rowgroup-toggler-icon:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-datatable .ui-datatable-data > tr .ui-rowgroup-toggler .ui-rowgroup-toggler-icon.ui-icon-circle-triangle-e {
   font-family: "primeicons" !important;
@@ -1882,6 +1903,11 @@ body .timeline-frame .timeline-navigation:hover {
   color: #495057;
   border-color: transparent;
 }
+body .timeline-frame .timeline-navigation:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .timeline-frame .timeline-navigation .ui-icon.ui-icon-circle-zoomin {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -2003,6 +2029,11 @@ body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-togg
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-e {
   font-family: "primeicons" !important;
@@ -2327,6 +2358,11 @@ body .ui-treetable .ui-treetable-data > tr > td .ui-treetable-toggler:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-treetable .ui-treetable-data > tr > td .ui-treetable-toggler:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-treetable .ui-treetable-data > tr > td .ui-treetable-toggler.ui-icon-triangle-1-e {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -2394,6 +2430,11 @@ body .ui-treetable .ui-treetable-data > tr .ui-row-editor .ui-icon:hover {
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-treetable .ui-treetable-data > tr .ui-row-editor .ui-icon:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-treetable .ui-treetable-data > tr .ui-row-editor .ui-icon.ui-icon-pencil {
   font-family: "primeicons" !important;
@@ -2980,6 +3021,12 @@ body .ui-datepicker .ui-datepicker-prev:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-datepicker .ui-datepicker-next:focus,
+body .ui-datepicker .ui-datepicker-prev:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-datepicker .ui-datepicker-next span,
 body .ui-datepicker .ui-datepicker-prev span {
   display: none;
@@ -3026,6 +3073,11 @@ body .ui-datepicker .ui-datepicker-calendar td a:hover {
   background: #e9ecef;
   border-color: transparent;
 }
+body .ui-datepicker .ui-datepicker-calendar td a:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-datepicker .ui-datepicker-calendar td a.ui-state-active {
   background: #E3F2FD;
   color: #495057;
@@ -3062,6 +3114,31 @@ body .ui-datepicker .ui-timepicker-div dl dt.ui_tpicker_time_label {
 body .ui-datepicker .ui-timepicker-div dl dd {
   padding: 0.5em 0;
   margin: 0 0.714em 0.714em 40%;
+}
+body .ui-datepicker .ui-timepicker-timeinput input {
+  color: #495057;
+  background: #ffffff;
+  padding: 0.5rem 0.5rem;
+  border: 1px solid #ced4da;
+  outline: 0 none;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  width: auto;
+}
+body .ui-datepicker .ui-timepicker-timeinput input:hover {
+  border-color: #2196F3;
+}
+body .ui-datepicker .ui-timepicker-timeinput input:focus {
+  border-color: #2196F3;
+  outline: 0 none;
+  box-shadow: 0 0 0 0.2em #a6d5fa;
+}
+body .ui-datepicker .ui-timepicker-timeinput .ui-separator > span {
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
 }
 body .ui-datepicker .ui-datepicker-buttonpane button,
 body .ui-datepicker .ui-datepicker-buttonbar button {
@@ -3148,6 +3225,11 @@ body .ui-datepicker .ui-monthpicker-month:hover {
   background: #e9ecef;
   border-color: transparent;
 }
+body .ui-datepicker .ui-monthpicker-month:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-datepicker .ui-monthpicker-month.ui-state-active {
   background: #E3F2FD;
   color: #495057;
@@ -3173,6 +3255,11 @@ body .ui-datepicker .ui-picker-up:hover {
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-datepicker .ui-picker-up:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-datepicker .ui-picker-up .ui-icon {
   font-family: "primeicons" !important;
@@ -3201,6 +3288,11 @@ body .ui-datepicker .ui-picker-down:hover {
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-datepicker .ui-picker-down:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-datepicker .ui-picker-down .ui-icon {
   font-family: "primeicons" !important;
@@ -3950,6 +4042,11 @@ body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckb
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close .ui-icon {
   font-family: "primeicons" !important;
@@ -5303,6 +5400,11 @@ body .ui-messages .ui-messages-close:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-messages .ui-messages-close:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-messages .ui-messages-close .ui-icon-close {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -5736,6 +5838,11 @@ body .ui-log .ui-log-header .ui-log-button:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-log .ui-log-header .ui-log-button:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-log .ui-log-header .ui-log-button .ui-icon-trash {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -5974,6 +6081,11 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon .ui-icon-closethick {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -6178,6 +6290,11 @@ body .ui-lightbox .ui-lightbox-caption .ui-lightbox-close:hover {
   color: #495057;
   border-color: transparent;
 }
+body .ui-lightbox .ui-lightbox-caption .ui-lightbox-close:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
 body .ui-lightbox .ui-lightbox-caption .ui-lightbox-close .ui-icon {
   font-family: "primeicons" !important;
   font-style: normal;
@@ -6309,6 +6426,11 @@ body .ui-sidebar .ui-sidebar-close:hover {
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-sidebar .ui-sidebar-close:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-sidebar .ui-sidebar-close .ui-icon {
   font-family: "primeicons" !important;
@@ -6588,6 +6710,11 @@ body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon:hover {
   background: #e9ecef;
   color: #495057;
   border-color: transparent;
+}
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-closethick {
   font-family: "primeicons" !important;
