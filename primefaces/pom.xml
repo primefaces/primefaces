@@ -19,6 +19,7 @@
     <properties>
         <minify.disabled>true</minify.disabled>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
+        <theme.dir.compressed>${project.build.directory}/classes/META-INF/resources</theme.dir.compressed>
     </properties>
 
     <dependencies>
@@ -552,6 +553,128 @@
                     <languageIn>ECMASCRIPT_2015</languageIn>
                     <languageOut>ECMASCRIPT5</languageOut>
                     <resourcesSets>
+                        <!-- themes -->
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-arya/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-arya/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-luna-amber/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-luna-amber/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-luna-blue/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-luna-blue/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-luna-green/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-luna-green/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-luna-pink/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-luna-pink/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-nova-colored/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-nova-colored/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-nova-dark/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-nova-dark/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-nova-light/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-nova-light/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-saga/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-saga/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>primefaces-vela/theme.css</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${theme.dir.compressed}</inputDir>
+                                    <outputFile>${theme.dir.compressed}/primefaces-vela/theme.css</outputFile>
+                                    <withoutCompress>${minify.disabled}</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <!-- components -->
                         <resourcesSet>
                             <includes>
                                 <include>charts/**</include>
