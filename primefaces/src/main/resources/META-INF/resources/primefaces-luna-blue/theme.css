@@ -1486,6 +1486,9 @@ body .ui-orderlist .ui-orderlist-list .ui-orderlist-item.ui-state-highlight {
 body .ui-orderlist .ui-orderlist-list .ui-orderlist-item.ui-state-highlight.ui-sortable-placeholder {
   background-color: #38bbf7;
 }
+body .ui-orderlist.ui-orderlist-controls-right .ui-g > div.ui-orderlist-controls {
+  padding: 0 0 0 0.5rem;
+}
 @media (max-width: 640px) {
   body .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
     -ms-flex-direction: row;
@@ -2653,7 +2656,8 @@ body .ui-autocomplete-panel {
   border: 1px solid #191919;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
 }
-body .ui-autocomplete-panel .ui-autocomplete-emptyMessage {
+body .ui-autocomplete-panel .ui-autocomplete-emptyMessage,
+body .ui-autocomplete-panel .ui-autocomplete-empty-message {
   border: 0 none;
   margin: 0;
   padding: 0.429rem 0.857rem;
@@ -3027,17 +3031,17 @@ body .ui-datepicker .ui-datepicker-calendar td a.ui-state-active {
   color: #212529;
   border: 0 none;
 }
-body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a {
+body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a, body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-current-day a {
   background: #29B6F6;
   color: #212529;
   font-weight: 600;
   border: 0 none;
 }
-body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a:hover {
+body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a:hover, body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-current-day a:hover {
   background: #4c4c4c;
   border-color: transparent;
 }
-body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a.ui-state-active {
+body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a.ui-state-active, body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-current-day a.ui-state-active {
   background: #81D4FA;
   color: #212529;
   border: 0 none;
@@ -6557,7 +6561,6 @@ body .ui-panel .ui-panel-title {
 }
 body .ui-panel .ui-panel-titlebar {
   border: 1px solid #191919;
-  border-bottom: 0 none;
   background: #191919;
   color: #dedede;
   padding: 0.857rem 1rem;
@@ -6628,6 +6631,9 @@ body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear {
 }
 body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear:before {
   content: "\e94a";
+}
+body .ui-panel .ui-panel-titlebar + .ui-panel-content {
+  border-top: 0 none;
 }
 body .ui-panel .ui-panel-content {
   border: 1px solid #191919;
@@ -7011,3 +7017,5 @@ body .ui-wizard .ui-icon-arrowthick-1-e {
 body .ui-wizard .ui-icon-arrowthick-1-e:before {
   content: "\e91b";
 }
+
+/* Customizations to the designer theme should be defined here */

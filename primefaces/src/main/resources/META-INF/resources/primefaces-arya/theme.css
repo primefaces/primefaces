@@ -745,8 +745,8 @@ body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator button:hover {
   background: rgba(255, 255, 255, 0.03);
 }
 body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator.ui-state-highlight button {
-  background: rgba(100, 181, 246, 0.16);
-  color: rgba(255, 255, 255, 0.87);
+  background: #90CAF9;
+  color: #212529;
 }
 
 body .ui-chronoline .ui-chronoline-event-marker {
@@ -1485,6 +1485,9 @@ body .ui-orderlist .ui-orderlist-list .ui-orderlist-item.ui-state-highlight {
 }
 body .ui-orderlist .ui-orderlist-list .ui-orderlist-item.ui-state-highlight.ui-sortable-placeholder {
   background-color: rgba(35, 150, 242, 0.16);
+}
+body .ui-orderlist.ui-orderlist-controls-right .ui-g > div.ui-orderlist-controls {
+  padding: 0 0 0 0.5rem;
 }
 @media (max-width: 640px) {
   body .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
@@ -2653,7 +2656,8 @@ body .ui-autocomplete-panel {
   border: 1px solid #383838;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.16);
 }
-body .ui-autocomplete-panel .ui-autocomplete-emptyMessage {
+body .ui-autocomplete-panel .ui-autocomplete-emptyMessage,
+body .ui-autocomplete-panel .ui-autocomplete-empty-message {
   border: 0 none;
   margin: 0;
   padding: 0.5rem 1rem;
@@ -3024,17 +3028,17 @@ body .ui-datepicker .ui-datepicker-calendar td a.ui-state-active {
   color: rgba(255, 255, 255, 0.87);
   border: 0 none;
 }
-body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a {
+body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a, body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-current-day a {
   background: transparent;
   color: #90CAF9;
   font-weight: 600;
   border: 0 none;
 }
-body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a:hover {
+body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a:hover, body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-current-day a:hover {
   background: rgba(255, 255, 255, 0.03);
   border-color: transparent;
 }
-body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a.ui-state-active {
+body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a.ui-state-active, body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-current-day a.ui-state-active {
   background: rgba(100, 181, 246, 0.16);
   color: rgba(255, 255, 255, 0.87);
   border: 0 none;
@@ -5579,8 +5583,8 @@ body .ui-galleria .ui-galleria-indicators .ui-galleria-indicator button:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 body .ui-galleria .ui-galleria-indicators .ui-galleria-indicator.ui-state-highlight button {
-  background: rgba(100, 181, 246, 0.16);
-  color: rgba(255, 255, 255, 0.87);
+  background: #90CAF9;
+  color: #212529;
 }
 body .ui-galleria.ui-galleria-indicators-bottom .ui-galleria-indicator, body .ui-galleria.ui-galleria-indicators-top .ui-galleria-indicator {
   margin-right: 0.5rem;
@@ -6551,7 +6555,6 @@ body .ui-panel .ui-panel-title {
 }
 body .ui-panel .ui-panel-titlebar {
   border: 1px solid #383838;
-  border-bottom: 0 none;
   background: #1e1e1e;
   color: rgba(255, 255, 255, 0.87);
   padding: 1rem;
@@ -6622,6 +6625,9 @@ body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear {
 }
 body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-gear:before {
   content: "\e94a";
+}
+body .ui-panel .ui-panel-titlebar + .ui-panel-content {
+  border-top: 0 none;
 }
 body .ui-panel .ui-panel-content {
   border: 1px solid #383838;
@@ -7006,12 +7012,4 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
   content: "\e91b";
 }
 
-body .ui-carousel .ui-carousel-indicators .ui-carousel-indicator.ui-state-highlight button {
-  background-color: #90CAF9;
-}
-body .ui-galleria .ui-galleria-indicators .ui-galleria-indicator.ui-state-highlight button {
-  background-color: #90CAF9;
-}
-body .ui-galleria.ui-galleria-indicator-onitem .ui-galleria-indicators .ui-galleria-indicator.ui-state-highlight button {
-  background: #90CAF9;
-}
+/* Customizations to the designer theme should be defined here */
