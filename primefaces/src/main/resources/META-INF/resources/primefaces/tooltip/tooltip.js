@@ -171,9 +171,6 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
                 if ($this.globalTitle) {
                     $this.hide();
-                    $this.globalTitle = null;
-                    $this.target = null;
-                    $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
                 }
             });
 
@@ -459,6 +456,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     $this.cfg.onHide.call();
                 }
             });
+
+            if ($this.globalTitle) {
+                $this.globalTitle = null;
+                $this.target = null;
+                $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
+            }
         }
     },
 
