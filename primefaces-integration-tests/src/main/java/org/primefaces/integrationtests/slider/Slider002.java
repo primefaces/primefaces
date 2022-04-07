@@ -29,26 +29,29 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.primefaces.integrationtests.general.utilities.TestUtils;
+
 import lombok.Data;
 
 @Named
 @ViewScoped
 @Data
-public class Slider001 implements Serializable {
+public class Slider002 implements Serializable {
 
     private static final long serialVersionUID = -1382444427572306080L;
 
-    private int val1;
+    private int spinner;
 
-    private float val2;
+    private int slider;
 
     @PostConstruct
     public void init() {
-        val1 = 5;
-        val2 = 3.14f;
+        spinner = 800;
+        slider = 800;
     }
 
     public void submit() {
+        TestUtils.addMessage("Submitted", String.format("Slider = %d, Spinner = %d", slider, spinner));
     }
 
 }
