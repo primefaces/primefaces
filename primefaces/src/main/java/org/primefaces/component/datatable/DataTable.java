@@ -811,7 +811,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
-        if (getFacesContext().isPostback()) {
+        if (getFacesContext().isPostback() && !ComponentUtils.isSkipIteration(context, context.getFacesContext())) {
             loadLazyDataIfRequired();
         }
         return super.visitRows(context, callback, visitRows);
