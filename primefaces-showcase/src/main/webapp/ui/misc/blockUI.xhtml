@@ -36,7 +36,7 @@
                     <p:commandButton id="saveBtn" value="Save" icon="pi pi-check" action="#{blockUIView.save}" update="growl" styleClass="p-mt-3" />
                 </p:panel>
 
-                <p:blockUI block="pnl" trigger="saveBtn"/>
+                <p:blockUI block="pnl" trigger="saveBtn" widgetVar="buiBasic"/>
 
                 <h5>Custom Content</h5>
                 <p:dataTable id="dataTable" var="customer" value="#{blockUIView.customers}"
@@ -74,7 +74,7 @@
                     </p:column>
                 </p:dataTable>
 
-                <p:blockUI block="dataTable" trigger="dataTable">
+                <p:blockUI block="dataTable" trigger="dataTable" widgetVar="buiDatatable">
                     <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
                 </p:blockUI>
 

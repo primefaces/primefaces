@@ -127,6 +127,10 @@ public class Tree extends TreeBase {
         }
     }
 
+    public boolean isFiltering() {
+        return getValueExpression("filterBy") != null || getFilterFunction() != null;
+    }
+
     public boolean isNodeExpandRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expandNode");
     }
@@ -372,8 +376,10 @@ public class Tree extends TreeBase {
         newNode.setSelectable(node.isSelectable());
         newNode.setExpanded(node.isExpanded());
 
-        for (TreeNode childNode : node.getChildren()) {
-            newNode.getChildren().add(createCopyOfTreeNode(childNode));
+        if (node.getChildCount() > 0) {
+            for (TreeNode childNode : node.getChildren()) {
+                newNode.getChildren().add(createCopyOfTreeNode(childNode));
+            }
         }
 
         return newNode;

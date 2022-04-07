@@ -70,10 +70,12 @@ public class SelectOneMenu009Test extends AbstractPrimePageTest {
         filter.forEach(f -> {
             // Act
             selectOneMenu.getFilterInput().clear();
-            ComponentUtils.sendKeys(selectOneMenu.getFilterInput(),f);
+            ComponentUtils.sendKeys(selectOneMenu.getFilterInput(), f);
 
             // Assert
-            Assertions.assertEquals(drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(), selectOneMenu.getLabels().size());
+            Assertions.assertEquals(
+                    drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(),
+                    selectOneMenu.getLabels().size());
         });
 
         // Act

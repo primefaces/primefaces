@@ -23,21 +23,34 @@
  */
 package org.primefaces.integrationtests.schedule;
 
+import java.time.*;
+import java.util.List;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.Schedule;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
 
 public class Schedule001Test extends AbstractPrimePageTest {
+
+    public static final String ALTERNATIV_SERVER_TIMEZONE = "Europe/Vienna";
+    public static final String ALTERNATIV_CLIENT_TIMEZONE = "Europe/Moscow";
+
+    private Schedule001 schedule001;
+
+    @BeforeEach
+    public void init() {
+        schedule001 = new Schedule001();
+        schedule001.init();
+    }
 
     @Test
     @Order(1)
@@ -59,6 +72,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     public void testDateSelect(Page page) {
         // Arrange
         Schedule schedule = page.schedule;
+        page.buttonDeleteAllEvents.click();
 
         // Act
         schedule.select("fc-daygrid-day-top");
@@ -66,6 +80,49 @@ public class Schedule001Test extends AbstractPrimePageTest {
         // Assert
         assertMessage(page, "Date selected");
         assertConfiguration(schedule.getWidgetConfiguration(), "en");
+
+        // Act
+        selectSlot(page, "10:00:00");
+
+        // Assert
+        Msg msg = page.messages.getMessage(0);
+        LocalDate startOfWeek = LocalDate.now();
+        while (startOfWeek.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            startOfWeek = startOfWeek.minusDays(1);
+        }
+
+        String expectedMessage = "T10:00";
+        Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
+
+        // check with different clientTimeZone and (server)timeZone - settings ------------------------
+        // Arrange
+        setDifferingServerAndClientTimezone(page);
+
+        // Act
+        selectSlot(page, "10:00:00");
+
+        // Assert
+        msg = page.messages.getMessage(0);
+        int hour = 10 - calcOffsetInHoursBetweenClientAndServerAndTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
+        // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
+
+        String hourDST = String.format("T%02d:00", hour);
+        String hourST = String.format("T%02d:00", hour + 1);
+        boolean hourOK = msg.getDetail().endsWith(hourDST) || msg.getDetail().endsWith(hourST);
+        Assertions.assertTrue(hourOK, String.format("Expected: %s or %s , Actual: %s", hourDST, hourST, msg.getDetail()));
+    }
+
+    private void selectSlot(Page page, String time) {
+        Schedule schedule = page.schedule;
+        schedule.findElement(By.className("fc-timeGridWeek-button")).click();
+        List<WebElement> slotLaneElements = schedule.findElements(By.cssSelector(".fc-timegrid-slots table tr .fc-timegrid-slot-lane"));
+        for (WebElement slotLaneElt : slotLaneElements) {
+            if (slotLaneElt.getAttribute("data-time").equals(time)) {
+                Actions actions = new Actions(page.getWebDriver());
+                actions.moveToElement(slotLaneElt, 1, 1); //click on first day of this week (week starts with sunday)
+                PrimeSelenium.guardAjax(actions.click().build()).perform();
+            }
+        }
     }
 
     @Test
@@ -80,6 +137,25 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Event selected");
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
+
+        // check with different clientTimeZone and (server)timeZone - settings ------------------------
+        // Arrange
+        setDifferingServerAndClientTimezone(page);
+
+        // Act
+        schedule.select("fc-daygrid-event");
+
+        // Assert
+        assertMessage(page, "Event selected");
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
+        // DatePicker does not recognize clientTimeZone, so we see startDate and endDate transfered into server-timezone,
+        // what may be confusing from a user perspective
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
+        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
+
         assertConfiguration(schedule.getWidgetConfiguration(), "en");
     }
 
@@ -110,6 +186,56 @@ public class Schedule001Test extends AbstractPrimePageTest {
         assertConfiguration(schedule.getWidgetConfiguration(), "fr");
     }
 
+    @Test
+    @Order(5)
+    @DisplayName("Schedule: event display - recognizing (server)timeZone and clientTimeZone")
+    public void testEventDisplayRecognizingClientTimeZone(Page page) {
+        // Arrange
+        Schedule schedule = page.schedule;
+        page.buttonGerman.click();
+
+        // Assert
+        List<WebElement> todaysEvents = schedule.findElements(By.cssSelector(".fc-day-today .fc-daygrid-event"));
+        Assertions.assertEquals(1, todaysEvents.size());
+        String eventTime = todaysEvents.get(0).findElement(By.className("fc-event-time")).getText();
+        String eventTitle = todaysEvents.get(0).findElement(By.className("fc-event-title")).getText();
+
+        ScheduleEvent referenceEvent = schedule001.getEventModel().getEvents().get(1);
+        Assertions.assertEquals(referenceEvent.getTitle(), eventTitle);
+        Assertions.assertEquals(referenceEvent.getStartDate().getHour() + " Uhr", eventTime);
+
+        // check with different clientTimeZone and (server)timeZone - settings ------------------------
+        // Arrange
+        setDifferingServerAndClientTimezone(page);
+
+        // Assert
+        eventTime = "";
+        // Don´t use .fc-day-today because this may already point to the day before or the next day in some time of day constellations
+        todaysEvents = schedule.findElements(By.cssSelector(".fc-daygrid-event"));
+        for (WebElement eventElt : todaysEvents) {
+            if (eventElt.findElement(By.className("fc-event-title")).getText().equals(referenceEvent.getTitle())) {
+                eventTime = eventElt.findElement(By.className("fc-event-time")).getText();
+            }
+        }
+
+        Assertions.assertEquals(
+                (referenceEvent.getStartDate().getHour() + calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime.now())) + " Uhr",
+                eventTime);
+        assertNoJavascriptErrors();
+    }
+
+    private void setDifferingServerAndClientTimezone(Page page) {
+        page.timeZone.select(ALTERNATIV_SERVER_TIMEZONE);
+        page.clientTimeZone.select(ALTERNATIV_CLIENT_TIMEZONE);
+    }
+
+    private int calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime zonedDateTime) {
+        ZonedDateTime zonedDateTimeClient = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_CLIENT_TIMEZONE));
+        ZonedDateTime zonedDateTimeServer = zonedDateTime.withZoneSameInstant(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE));
+        Duration offsetBetweenClientAndServer = Duration.between(zonedDateTimeServer.toLocalDateTime(), zonedDateTimeClient.toLocalDateTime());
+        return (int) offsetBetweenClientAndServer.toHours();
+    }
+
     private void assertButton(WebElement button, String text) {
         Assertions.assertEquals(text, button.getText());
     }
@@ -128,6 +254,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:msgs")
         Messages messages;
 
@@ -139,6 +266,27 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:btnFrench")
         CommandButton buttonFrench;
+
+        @FindBy(id = "form:btnGerman")
+        CommandButton buttonGerman;
+
+        @FindBy(id = "form:btnDeleteAllEvents")
+        CommandButton buttonDeleteAllEvents;
+
+        @FindBy(id = "form:timeZone")
+        SelectOneMenu timeZone;
+
+        @FindBy(id = "form:clientTimeZone")
+        SelectOneMenu clientTimeZone;
+
+        @FindBy(id = "form:selectedEventTitle")
+        InputText selectedEventTitle;
+
+        @FindBy(id = "form:selectedEventStartDate")
+        DatePicker selectedEventStartDate;
+
+        @FindBy(id = "form:selectedEventEndDate")
+        DatePicker selectedEventEndDate;
 
         @Override
         public String getLocation() {

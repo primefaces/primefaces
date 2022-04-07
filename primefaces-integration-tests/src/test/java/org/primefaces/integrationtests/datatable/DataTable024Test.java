@@ -55,7 +55,6 @@ public class DataTable024Test extends AbstractDataTableTest {
         // Act
         // Act - do some filtering
         dataTable.filter("Id", "2");
-        button = PrimeSelenium.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
         button.click();
 
         // Assert
@@ -63,6 +62,7 @@ public class DataTable024Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:msgs")
         Messages messages;
 

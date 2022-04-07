@@ -35,7 +35,6 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
-import org.primefaces.selenium.component.Messages;
 
 public class DataTable019Test extends AbstractDataTableTest {
 
@@ -143,6 +142,7 @@ public class DataTable019Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 

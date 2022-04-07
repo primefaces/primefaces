@@ -23,15 +23,20 @@
  */
 package org.primefaces.selenium;
 
+import java.time.Duration;
+import java.util.List;
+
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.html5.WebStorage;
+import org.openqa.selenium.support.decorators.WebDriverDecorator;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
+import org.primefaces.selenium.spi.DeploymentAdapter;
 import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
-import org.primefaces.selenium.spi.DeploymentAdapter;
 
 public final class PrimeSelenium {
 
@@ -61,8 +66,17 @@ public final class PrimeSelenium {
      * @return the component
      */
     public static <T extends WebElement> T createFragment(Class<T> fragmentClass, By by) {
-        WebElement element = getWebDriver().findElement(by);
-        return createFragment(fragmentClass, element);
+        return PrimePageFragmentFactory.create(fragmentClass, new ElementLocator() {
+            @Override
+            public WebElement findElement() {
+                return getWebDriver().findElement(by);
+            }
+
+            @Override
+            public List<WebElement> findElements() {
+                return getWebDriver().findElements(by);
+            }
+        });
     }
 
     /**
@@ -89,6 +103,12 @@ public final class PrimeSelenium {
 
         T page = PrimePageFactory.create(pageClass, driver);
         driver.get(getUrl(page));
+        if (isSafari()) {
+            /*
+             * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
+             */
+            wait(500);
+        }
 
         return page;
     }
@@ -101,6 +121,22 @@ public final class PrimeSelenium {
     public static void goTo(AbstractPrimePage page) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(page));
+        if (isSafari()) {
+            /*
+             * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
+             */
+            wait(500);
+        }
+    }
+
+    /**
+     * Goto a particular page.
+     *
+     * @param partialUrl the partial URL
+     */
+    public static void goTo(String partialUrl) {
+        WebDriver driver = WebDriverProvider.get();
+        driver.get(getUrl(partialUrl));
         if (isSafari()) {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
@@ -277,7 +313,10 @@ public final class PrimeSelenium {
      * @return true if clickable false if not
      */
     public static boolean isElementClickable(WebElement element) {
-        return isElementDisplayed(element) && isElementEnabled(element) && !hasCssClass(element, "ui-state-disabled");
+        return isElementDisplayed(element) &&
+                    isElementEnabled(element) &&
+                    !hasCssClass(element, "ui-state-disabled") &&
+                    !Boolean.parseBoolean(element.getAttribute("aria-busy"));
     }
 
     /**
@@ -374,7 +413,7 @@ public final class PrimeSelenium {
     public static WebDriverWait waitGui() {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
-        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutGui(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutGui()), Duration.ofMillis(100));
         return wait;
     }
 
@@ -387,7 +426,7 @@ public final class PrimeSelenium {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
 
-        WebDriverWait wait = new WebDriverWait(driver, config.getTimeoutDocumentLoad(), 100);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutDocumentLoad()), Duration.ofMillis(100));
         wait.until(PrimeExpectedConditions.documentLoaded());
 
         return wait;
@@ -461,7 +500,7 @@ public final class PrimeSelenium {
      * @return true if Chrome, false if any other browser
      */
     public static boolean isChrome() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        Capabilities cap = getCapabilities();
         return "Chrome".equalsIgnoreCase(cap.getBrowserName());
     }
 
@@ -471,7 +510,7 @@ public final class PrimeSelenium {
      * @return true if Firefox, false if any other browser
      */
     public static boolean isFirefox() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        Capabilities cap = getCapabilities();
         return "Firefox".equalsIgnoreCase(cap.getBrowserName());
     }
 
@@ -481,7 +520,7 @@ public final class PrimeSelenium {
      * @return true if Safari, false if any other browser
      */
     public static boolean isSafari() {
-        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        Capabilities cap = getCapabilities();
         return "Safari".equalsIgnoreCase(cap.getBrowserName());
     }
 
@@ -520,5 +559,46 @@ public final class PrimeSelenium {
                 Thread.currentThread().interrupt();
             }
         }
+    }
+
+    /**
+     * Get WebStorage of WebDriver.
+     *
+     * @return Returns WebStorage of WebDriver when this feature is supported by the browser. Some browsers like Safari (as of january 2021) do not support
+     *         WebStorage via WebDriver. In this case null is returned.
+     */
+    public static WebStorage getWebStorage() {
+        WebDriver webDriver = getWebDriver();
+
+        if (webDriver instanceof WebDriverDecorator) {
+            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
+            webDriver = driver.getDecoratedDriver().getOriginal();
+        }
+
+        if (webDriver instanceof WebStorage) {
+            return (WebStorage) webDriver;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get Capabilities of WebDriver.
+     *
+     * @return Returns Capabilities of WebDriver
+     */
+    public static Capabilities getCapabilities() {
+        WebDriver webDriver = getWebDriver();
+
+        if (webDriver instanceof WebDriverDecorator) {
+            WebDriverDecorator driver = (WebDriverDecorator) webDriver;
+            webDriver = driver.getDecoratedDriver().getOriginal();
+        }
+
+        if (webDriver instanceof HasCapabilities) {
+            return ((HasCapabilities) webDriver).getCapabilities();
+        }
+
+        return null;
     }
 }

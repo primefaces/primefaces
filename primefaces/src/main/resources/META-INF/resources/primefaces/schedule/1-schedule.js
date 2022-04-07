@@ -136,7 +136,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.cfg.options.dateClick = function(dateClickInfo) {
-            var currentDate = PrimeFaces.toISOString(dateClickInfo.date);
+            var currentDate = dateClickInfo.date.toISOString();
             var ext = {
                 params: [{
                     name: $this.id + '_selectedDate',
@@ -284,8 +284,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 formId: $this.getParentFormId(),
                 params: [
                     {name: $this.id + '_event', value: true},
-                    {name: $this.id + '_start', value: PrimeFaces.toISOString(fetchInfo.start)},
-                    {name: $this.id + '_end', value:  PrimeFaces.toISOString(fetchInfo.end)}
+                    {name: $this.id + '_start', value: fetchInfo.start.toISOString()},
+                    {name: $this.id + '_end', value:  fetchInfo.end.toISOString()}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

@@ -49,7 +49,8 @@ public class DataTable020Test extends AbstractDataTableTest {
         assertNoJavascriptErrors();
     }
 
-     public static class Page extends AbstractPrimePage {
+    public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 

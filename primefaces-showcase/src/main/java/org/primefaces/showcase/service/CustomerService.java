@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.service;
 
+import java.security.SecureRandom;
 import org.primefaces.showcase.domain.*;
 
 import javax.annotation.PostConstruct;
@@ -32,22 +33,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import org.primefaces.util.Constants;
 
 @Named
 @ApplicationScoped
 public class CustomerService {
 
-    private List<Customer> customers;
+    private Random random = new SecureRandom();
     private Country[] countries;
     private Representative[] representatives;
-    private String[] names;
+    private String[] firstNames;
+    private String[] lastNames;
     private String[] companies;
 
     @PostConstruct
     public void init() {
-        customers = new ArrayList<>();
-
         countries = new Country[]{
             new Country(0, "Argentina", "ar"),
             new Country(1, "Australia", "au"),
@@ -79,16 +81,26 @@ public class CustomerService {
             new Representative("Stephen Shaw", "stephenshaw.png"),
             new Representative("Xuxue Feng", "xuxuefeng.png")};
 
-        names = new String[]{"James Butt", "David Darakjy", "Jeanfrancois Venere", "Ivar Paprocki", "Tony Foller",
-            "Adams Morasca", "Claire Tollner", "Costa Dilliard", "Juan Wieser", "Maria Marrier", "Jennifer Amigon",
-            "Stacey Maclead", "Leja Caldarera", "Morrow Ruta", "Arvin Albares", "Darci Poquette", "Izzy Garufi",
-            "Ricardo Gaucho", "Clifford Rim", "Emily Whobrey", "Kadeem Flosi", "Mujtaba Nicka", "Aika Inouye",
-            "Mayumi Kolmetz", "Misaki Royster", "Silvio Slusarski", "Nicolas Iturbide", "Antonio Caudy",
-            "Deepesh Chui", "Aditya Kusko", "Aruna Figeroa", "Jones Vocelka", "Julie Stenseth", "Smith Glick",
-            "Johnson Sergi", "Francesco Shinko", "Salvatore Stockham", "Kaitlin Ostrosky", "Faith Gillian",
-            "Maisha Rulapaugh", "Jefferson Schemmer", "Leon Oldroyd", "Rodrigues Campain", "Alejandro Perin",
-            "Munro Ferencz", "Cody Saylors", "Chavez Briddick", "Sinclair Waycott", "Isabel Bowley", "Octavia Malet",
-            "Murillo Malet", "Greenwood Bolognia", "Wickens Nestle", "Ashley Doe"};
+        firstNames = new String[]{"James", "David", "Jeanfrancois", "Ivar", "Tony",
+            "Adams", "Claire", "Costa", "Juan", "Maria", "Jennifer",
+            "Stacey", "Leja", "Morrow", "Arvin", "Darci", "Izzy",
+            "Ricardo", "Clifford", "Emily", "Kadeem", "Mujtaba", "Aika",
+            "Mayumi", "Misaki", "Silvio", "Nicolas", "Antonio",
+            "Deepesh", "Aditya", "Aruna", "Jones", "Julie", "Smith",
+            "Johnson", "Francesco", "Salvatore", "Kaitlin", "Faith",
+            "Maisha", "Jefferson", "Leon", "Rodrigues", "Alejandro",
+            "Munro", "Cody", "Chavez", "Sinclair", "Isabel", "Octavia",
+            "Murillo", "Greenwood", "Wickens", "Ashley"};
+        lastNames = new String[]{"Butt", "Darakjy", "Venere", "Paprocki", "Foller",
+            "Morasca", "Tollner", "Dilliard", "Wieser", "Marrier", "Amigon",
+            "Maclead", "Caldarera", "Ruta", "Albares", "Poquette", "Garufi",
+            "Gaucho", "Rim", "Whobrey", "Flosi", "Nicka", "Inouye",
+            "Kolmetz", "Royster", "Slusarski", "Iturbide", "Caudy",
+            "Chui", "Kusko", "Figeroa", "Vocelka", "Stenseth", "Glick",
+            "Sergi", "Shinko", "Stockham", "Ostrosky", "Gillian",
+            "Rulapaugh", "Schemmer", "Oldroyd", "Campain", "Perin",
+            "Ferencz", "Saylors", "Briddick", "Waycott", "Bowley", "Malet",
+            "Malet", "Bolognia", "Nestle", "Doe"};
     }
 
     public List<Customer> getCustomers(int number) {
@@ -114,15 +126,17 @@ public class CustomerService {
     }
 
     private String getName() {
-        return names[(int) (Math.random() * names.length)];
+        return firstNames[random.nextInt(firstNames.length)] + Constants.SPACE
+                + (char) (random.nextInt(26) + 'A') + Constants.SPACE
+                + lastNames[random.nextInt(lastNames.length)];
     }
 
     private Country getCountry() {
-        return countries[(int) (Math.random() * countries.length)];
+        return countries[random.nextInt(countries.length)];
     }
 
     private String getCompany() {
-        return companies[(int) (Math.random() * companies.length)];
+        return companies[random.nextInt(companies.length)];
     }
 
     private LocalDate getDate() {
@@ -132,10 +146,10 @@ public class CustomerService {
     }
 
     private int getActivity() {
-        return (int) (Math.random() * 100);
+        return random.nextInt(100);
     }
 
     private Representative getRepresentative() {
-        return representatives[(int) (Math.random() * representatives.length)];
+        return representatives[random.nextInt(representatives.length)];
     }
 }

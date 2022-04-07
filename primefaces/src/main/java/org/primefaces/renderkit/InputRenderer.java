@@ -153,12 +153,10 @@ public abstract class InputRenderer extends CoreRenderer {
 
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
-            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
         }
 
         if (readonly) {
             writer.writeAttribute("readonly", "readonly", null);
-            writer.writeAttribute(HTML.ARIA_READONLY, "true", null);
         }
     }
 

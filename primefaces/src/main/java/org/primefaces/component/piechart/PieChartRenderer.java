@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.charts.ChartRenderer;
 import org.primefaces.model.charts.pie.PieChartOptions;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PieChartRenderer extends ChartRenderer {
@@ -73,8 +74,8 @@ public class PieChartRenderer extends ChartRenderer {
         writer.write(",\"animateScale\":" + pieOptions.isAnimateScale());
         writer.write("}");
 
-        if (pieOptions.getCutoutPercentage() != null) {
-            writer.write(",\"cutoutPercentage\":" + pieOptions.getCutoutPercentage());
+        if (pieOptions.getCutout() != null) {
+            ChartUtils.writeDataValue(writer, "cutout", pieOptions.getCutout(), true);
         }
 
         if (pieOptions.getRotation() != null) {

@@ -68,10 +68,15 @@ public class SidebarRenderer extends CoreRenderer {
             encodeCloseIcon(context);
         }
 
+        writer.startElement("div", null);
+        writer.writeAttribute("class", Sidebar.CONTENT_CLASS, null);
+        writer.writeAttribute("id", sidebar.getClientId(context) + "_content", null);
+
         if (!sidebar.isDynamic()) {
             renderChildren(context, sidebar);
         }
 
+        writer.endElement("div");
         writer.endElement("div");
     }
 

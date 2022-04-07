@@ -54,7 +54,8 @@
             <h:form>
                 <p:growl id="messages" showDetail="true"/>
 
-                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule" locale="de"/>
+                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule" locale="de"
+                            timeZone="#{scheduleJava8View.serverTimeZone}" clientTimeZone="#{scheduleJava8View.serverTimeZone}"/>
             </h:form>
         </div>
     </ui:define>

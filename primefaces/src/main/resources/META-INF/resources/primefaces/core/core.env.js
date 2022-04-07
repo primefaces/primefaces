@@ -26,6 +26,16 @@ if (!PrimeFaces.env) {
          * @type {string}
          */
         browser : null,
+        /**
+         * `true` if the user's current OS setting prefers dark mode, `false` otherwise.
+         * @type {boolean}
+         */
+        preferredColorSchemeDark : false,
+        /**
+         * `true` if the user's current OS setting prefers light mode, `false` otherwise.
+         * @type {boolean}
+         */
+        preferredColorSchemeLight : false,
 
         /**
          * Initializes the environment by reading the browser environment.
@@ -35,6 +45,8 @@ if (!PrimeFaces.env) {
             this.mobile = (this.browser.mobile) ? true : false;
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && PrimeFaces.env.touch);
+            this.preferredColorSchemeDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            this.preferredColorSchemeLight = !this.preferredModeDark;
         },
 
         /**
@@ -60,6 +72,23 @@ if (!PrimeFaces.env) {
             return (this.browser.msie) ? parseInt(this.browser.version, 10) < version : false;
         },
 
+       /**
+         * Gets the currently loaded PrimeFaces theme.
+         * @return {string} The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.
+         */
+        getTheme : function() {
+            var themeLink = PrimeFaces.getThemeLink();
+            if (themeLink.length === 0) {
+                return "";
+            }
+
+            var themeURL = themeLink.attr('href'),
+                plainURL = themeURL.split('&')[0],
+                oldTheme = plainURL.split('ln=primefaces-')[1];
+
+            return oldTheme;
+        },
+
         /**
          * A widget is touch enabled if the browser supports touch AND the widget has the touchable property enabled.
          * The default will be true if it widget status can't be determined.
@@ -70,6 +99,26 @@ if (!PrimeFaces.env) {
         isTouchable: function(cfg) {
             var widgetTouchable = (cfg == undefined) || (cfg.touchable != undefined ? cfg.touchable : true);
             return PrimeFaces.env.touch && widgetTouchable;
+        },
+
+        /**
+         * Gets the user's preferred color scheme set in their operating system.
+         * 
+         * @return {string} either 'dark' or 'light'
+         */
+        getOSPreferredColorScheme: function() {
+            return PrimeFaces.env.preferredColorSchemeLight ? 'light' : 'dark';
+        },
+
+       /**
+         * Based on the current PrimeFaces theme determine if light or dark contrast is being applied.
+         * 
+         * @return {string} either 'dark' or 'light'
+         */
+        getThemeContrast: function() {
+            var theme = PrimeFaces.env.getTheme();
+            var darkRegex = /(^(arya|vela|.+-(dim|dark))$)/gm;
+            return darkRegex.test(theme) ? 'dark' : 'light';
         }
     };
 

@@ -103,6 +103,15 @@
                     </div>
 
                     <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel value="LazyModel" for="lazyModel"/>
+                        <p:autoComplete id="lazyModel" widgetVar="lazyModel" value="#{autoCompleteView.txt11}"
+                                        var="customer" itemLabel="#{customer.name}" itemValue="#{customer.name}"
+                                        lazyModel="#{autoCompleteView.lazyModel}" lazyField="name"
+                                        forceSelection="true" emptyMessage="sorry, no suggestions"
+                                        moreText="more items available" maxResults="10"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
                         <p:outputLabel value="Custom Content" for="@next"/>
                         <p:autoComplete id="countryCustom" value="#{autoCompleteView.country2}"
                                         completeMethod="#{autoCompleteView.completeCountry}"

@@ -22,7 +22,8 @@
             <h:form>
                 <p:growl id="messages" showDetail="true"/>
 
-                <p:schedule value="#{scheduleJava8View.lazyEventModel}"/>
+                <p:schedule value="#{scheduleJava8View.lazyEventModel}"
+                            timeZone="#{scheduleJava8View.serverTimeZone}" clientTimeZone="#{scheduleJava8View.serverTimeZone}"/>
             </h:form>
         </div>
     </ui:define>

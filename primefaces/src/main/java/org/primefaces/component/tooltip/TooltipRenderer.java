@@ -109,6 +109,7 @@ public class TooltipRenderer extends CoreRenderer {
                 .attr("atPos", tooltip.getAt(), null)
                 .attr("delegate", tooltip.isDelegate(), false)
                 .attr("styleClass", tooltip.getStyleClass(), null)
+                .attr("autoHide", tooltip.isAutoHide(), true)
                 .returnCallback("beforeShow", "function()", tooltip.getBeforeShow())
                 .callback("onShow", "function()", tooltip.getOnShow())
                 .callback("onHide", "function()", tooltip.getOnHide());

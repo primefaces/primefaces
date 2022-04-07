@@ -30,18 +30,17 @@ import javax.faces.FacesException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
 public class NativeUploadedFileTest {
 
-    NativeUploadedFile file = new NativeUploadedFile();
+    private NativeUploadedFile file = new NativeUploadedFile();
 
     @Test
     public void testValid1() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"hello.png\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"hello.png\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("hello.png", output);
@@ -50,10 +49,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testValid2() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"Test;123.txt\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"Test;123.txt\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("Test;123.txt", output);
@@ -62,10 +61,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testValid3() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"Test; \\\"123.txt\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"Test; \\\"123.txt\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("Test; \"123.txt", output);
@@ -74,10 +73,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testValid4() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"Test;123.txt\"; charset=\"UTF-8\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"Test;123.txt\"; charset=\"UTF-8\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("Test;123.txt", output);
@@ -86,10 +85,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testPercent() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"test%.jpg\"; charset=\"UTF-8\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"test%.jpg\"; charset=\"UTF-8\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("test%.jpg", output);
@@ -98,10 +97,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testPlus() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"test+.jpg\"; charset=\"UTF-8\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"test+.jpg\"; charset=\"UTF-8\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("test+.jpg", output);
@@ -110,10 +109,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testSlashes() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"hello\\\\.png\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"hello\\\\.png\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("hello\\\\.png", output);
@@ -122,10 +121,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testOnlySlashes() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"\\\\\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"\\\\\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("\\\\", output);
@@ -134,10 +133,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testSingleSlash() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"\\\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"\\\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("\\", output);
@@ -146,10 +145,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testSpaces() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"%22%22\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"%22%22\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("\"\"", output);
@@ -158,10 +157,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testEscapeCharacters() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"hello\t\b\t\n.png\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=\"hello\t\b\t\n.png\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertEquals("hello\t\b\t\n.png", output);
@@ -170,10 +169,10 @@ public class NativeUploadedFileTest {
     @Test
     public void testNoFilename() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; file=\"hello.png\"";
+        String input = "form-data; name=\"XXX:XXX\"; file=\"hello.png\"";
 
         // Act
-        final String output = file.getContentDispositionFileName(input);
+        String output = file.getContentDispositionFileName(input);
 
         // Assert
         Assertions.assertNull(output);
@@ -182,13 +181,12 @@ public class NativeUploadedFileTest {
     @Test
     public void testNoEquals() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename\"hello.png\"";
-        
+        String input = "form-data; name=\"XXX:XXX\"; filename\"hello.png\"";
+
         // Act
         FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
             file.getContentDispositionFileName(input);
         });
-        
 
         // Assert (expected exception)
         assertEquals("Content-Disposition filename property did not have '='.", thrown.getMessage());
@@ -197,7 +195,7 @@ public class NativeUploadedFileTest {
     @Test
     public void testNoStartQuote() {
         // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=hello.png\"";
+        String input = "form-data; name=\"XXX:XXX\"; filename=hello.png\"";
 
         // Act
         FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {

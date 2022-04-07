@@ -65,10 +65,12 @@ public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
         filter.forEach(f -> {
             // Act
             selectManyMenu.getFilterInput().clear();
-            ComponentUtils.sendKeys(selectManyMenu.getFilterInput(),f);
+            ComponentUtils.sendKeys(selectManyMenu.getFilterInput(), f);
 
             // Assert
-            Assertions.assertEquals(drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(), selectManyMenu.getLabels().size());
+            Assertions.assertEquals(
+                    drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(),
+                    selectManyMenu.getLabels().size());
         });
 
         // Act

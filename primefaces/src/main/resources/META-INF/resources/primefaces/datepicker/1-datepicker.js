@@ -215,12 +215,19 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.inline || this.input.is('[readonly]') || this.input.is(':disabled')) {
             return;
         }
+        var $this = this;
         if (this.cfg.mask) {
             var maskCfg = {
                 placeholder: this.cfg.maskSlotChar||'_',
                 clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
                 clearIncomplete: this.cfg.maskAutoClear||true,
-                autoUnmask: false
+                autoUnmask: false,
+                onBeforePaste: function (pastedValue, opts) {
+                    // GitHub #8319 issue with pasting mask
+                    // TODO: Remove if InputMask 5.0.8+ fixes the issue
+                    setTimeout(function(){ $this.input.trigger("input")}, 20);
+                    return pastedValue;
+                }
             };
             var pattern = new RegExp("m|d|y|h|s", 'i');
             var isAlias = pattern.test(this.cfg.mask);
@@ -244,6 +251,10 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.onPanelCreate = function() {
             $this.panel = this.panel;
             $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.panel);
+            // #8423
+            if ($this.cfg.inline) {
+                $this.panel.css('position', '');
+            }
             this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.cfg.appendTo);
         };
     },

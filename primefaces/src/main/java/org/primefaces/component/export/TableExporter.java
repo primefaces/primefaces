@@ -24,8 +24,9 @@
 package org.primefaces.component.export;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
+
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -46,7 +47,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
     protected void exportColumn(FacesContext context, T table, UIColumn column, List<UIComponent> components,
             boolean joinComponents, Consumer<String> callback) {
 
-        if (LangUtils.isNotBlank(column.getExportValue())) {
+        if (column.getExportValue() != null) {
             callback.accept(column.getExportValue());
         }
         else if (column.getExportFunction() != null) {
@@ -82,7 +83,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
     }
 
     /**
-     * Gets and caches the list of UIColumns that are exportable="true" and rendered="true".
+     * Gets and caches the list of UIColumns that are exportable="true", visible="true", and rendered="true".
      * Orders them by displayPriority so they match the UI display of the columns.
      *
      * @param table the Table with columns to export
@@ -93,33 +94,36 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
             return exportableColumns.get(table);
         }
 
-        List<UIColumn> allColumns = table.getColumns();
-        List<UIColumn> exportcolumns = new ArrayList<>(allColumns.size());
-        Map<String, ColumnMeta> columnMetadata = table.getColumnMeta();
+        int allColumnsSize = table.getColumns().size();
+        List<UIColumn> exportcolumns = new ArrayList<>(allColumnsSize);
+        boolean visibleColumnsOnly = getExportConfiguration().isVisibleOnly();
+        final AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
+        final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumnsSize);
 
-        if (columnMetadata == null || columnMetadata.isEmpty()) {
-            table.forEachColumn(col -> {
-                if (col.isRendered() && col.isExportable()) {
-                    exportcolumns.add(col);
+        table.forEachColumn(true, true, true, column -> {
+            if (column.isExportable() && (!visibleColumnsOnly || (visibleColumnsOnly && column.isVisible()))) {
+                int displayPriority = column.getDisplayPriority();
+                ColumnMeta metaCopy = new ColumnMeta(column.getColumnKey());
+                metaCopy.setDisplayPriority(displayPriority);
+                visibleColumnMetadata.add(metaCopy);
+                if (displayPriority != 0) {
+                    hasNonDefaultSortPriorities.set(true);
                 }
-                return true;
-            });
-        }
-        else {
+            }
+            return true;
+        });
+
+        if (hasNonDefaultSortPriorities.get()) {
             // sort by display priority
             Comparator<Integer> sortIntegersNaturallyWithNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
-            List<ColumnMeta> columnMetas = columnMetadata.values().stream().
-                        sorted(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast))
-                        .collect(Collectors.toList());
+            visibleColumnMetadata.sort(Comparator.comparing(ColumnMeta::getDisplayPriority, sortIntegersNaturallyWithNullsLast));
+        }
 
-            for (ColumnMeta meta : columnMetas) {
-                String metaColumnKey = meta.getColumnKey();
-                table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), column -> {
-                    if (column.isRendered() && column.isExportable()) {
-                        exportcolumns.add(column);
-                    }
-                });
-            }
+        for (ColumnMeta meta : visibleColumnMetadata) {
+            String metaColumnKey = meta.getColumnKey();
+            table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), column -> {
+                exportcolumns.add(column);
+            });
         }
 
         exportableColumns.put(table, exportcolumns);

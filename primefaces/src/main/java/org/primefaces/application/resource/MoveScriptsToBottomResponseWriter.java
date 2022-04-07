@@ -23,31 +23,36 @@
  */
 package org.primefaces.application.resource;
 
-import org.primefaces.util.AgentUtils;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
+import org.primefaces.util.AgentUtils;
+import org.primefaces.util.LangUtils;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     private static final String SCRIPT_TAG = "script";
     private static final String BODY_TAG = "body";
     private static final String HTML_TAG = "html";
+    private static final String SCRIPT_TYPE = "text/javascript";
+    private static final String TYPE_ATTRIBUTE = "type";
 
     private final ResponseWriter wrapped;
     private final MoveScriptsToBottomState state;
 
     private boolean inScript;
     private String scriptType;
-    private StringBuilder include;
+    private Map<String, String> includeAttributes;
     private StringBuilder inline;
     private boolean scriptsRendered;
 
@@ -62,7 +67,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         scriptsRendered = false;
         writeFouc = false;
 
-        include = new StringBuilder(50);
+        includeAttributes = new LinkedHashMap<>(6);
         inline = new StringBuilder(75);
     }
 
@@ -144,7 +149,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            updateScriptSrcOrType(name, (String) value);
+            updateAttributes(name, (String) value);
         }
         else {
             getWrapped().writeAttribute(name, value, property);
@@ -154,7 +159,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            updateScriptSrcOrType(name, (String) value);
+            updateAttributes(name, (String) value);
         }
         else {
             getWrapped().writeURIAttribute(name, value, property);
@@ -165,7 +170,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     public void startElement(String name, UIComponent component) throws IOException {
         if (SCRIPT_TAG.equalsIgnoreCase(name)) {
             inScript = true;
-            scriptType = "text/javascript";
+            scriptType = SCRIPT_TYPE;
         }
         else {
             writeFouc();
@@ -184,27 +189,32 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             inScript = false;
 
             state.addInline(scriptType, inline);
-            state.addInclude(scriptType, include);
+            if (LangUtils.isNotBlank(includeAttributes.get("src"))) {
+                state.addInclude(scriptType, includeAttributes);
+            }
 
             scriptType = null;
-            include.setLength(0);
+            includeAttributes.clear();
             inline.setLength(0);
         }
         else if (BODY_TAG.equalsIgnoreCase(name) || (HTML_TAG.equalsIgnoreCase(name) && !scriptsRendered)) {
 
             // write script includes
-            for (Map.Entry<String, List<String>> entry : state.getIncludes().entrySet()) {
-                String type = entry.getKey();
-                List<String> includes = entry.getValue();
+            for (Entry<String, List<Map<String, String>>> entry : state.getIncludes().entrySet()) {
 
+                List<Map<String, String>> includes = entry.getValue();
                 for (int i = 0; i < includes.size(); i++) {
-                    String src = includes.get(i);
-                    if (src != null && !src.isEmpty()) {
-                        getWrapped().startElement(SCRIPT_TAG, null);
-                        getWrapped().writeAttribute("type", type, null);
-                        getWrapped().writeAttribute("src", src, null);
-                        getWrapped().endElement(SCRIPT_TAG);
+                    Map<String, String> attributes = includes.get(i);
+                    attributes.put(TYPE_ATTRIBUTE, entry.getKey());
+                    getWrapped().startElement(SCRIPT_TAG, null);
+                    for (Entry<String, String> attribute : attributes.entrySet()) {
+                        String attributeName = attribute.getKey();
+                        String attributeValue = attribute.getValue();
+                        if (LangUtils.isNotBlank(attributeValue)) {
+                            getWrapped().writeAttribute(attributeName, attributeValue, null);
+                        }
                     }
+                    getWrapped().endElement(SCRIPT_TAG);
                 }
             }
 
@@ -219,7 +229,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 if (LangUtils.isNotBlank(merged)) {
                     getWrapped().startElement(SCRIPT_TAG, null);
                     getWrapped().writeAttribute("id", id, null);
-                    getWrapped().writeAttribute("type", type, null);
+                    getWrapped().writeAttribute(TYPE_ATTRIBUTE, type, null);
                     getWrapped().write(merged);
                     getWrapped().endElement(SCRIPT_TAG);
                 }
@@ -256,7 +266,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         String minimized = script.toString();
 
         if (LangUtils.isNotBlank(minimized)) {
-            if ("text/javascript".equalsIgnoreCase(type)) {
+            if (SCRIPT_TYPE.equalsIgnoreCase(type)) {
                 minimized = minimized.replace(";;", ";");
 
                 if (minimized.contains("PrimeFaces")) {
@@ -283,13 +293,10 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         return getWrapped().cloneWithWriter(writer);
     }
 
-    protected void updateScriptSrcOrType(String name, String value) {
-        if ("src".equalsIgnoreCase(name)) {
-            if (LangUtils.isNotBlank(value)) {
-                include.append(value);
-            }
-        }
-        else if ("type".equalsIgnoreCase(name)) {
+    protected void updateAttributes(String name, String value) {
+        includeAttributes.put(name, value);
+
+        if (TYPE_ATTRIBUTE.equalsIgnoreCase(name)) {
             if (LangUtils.isNotBlank(value)) {
                 scriptType = value;
             }

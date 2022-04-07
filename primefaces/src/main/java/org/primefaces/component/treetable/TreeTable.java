@@ -684,6 +684,7 @@ public class TreeTable extends TreeTableBase {
     /**
      * Recalculates filteredValue after adding, updating or removing TreeNodes to/from a filtered TreeTable.
      */
+    @Override
     public void filterAndSort() {
         setValue(null);
         FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this, getValue());

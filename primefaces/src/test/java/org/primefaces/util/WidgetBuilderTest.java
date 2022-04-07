@@ -53,12 +53,13 @@ public class WidgetBuilderTest {
         when(panel.resolveWidgetVar(context)).thenReturn("acco");
         when(panel.getClientId(context)).thenReturn("accoId");
 
-        WidgetBuilder builder= getWidgetBuilder(context);
+        WidgetBuilder builder = getWidgetBuilder(context);
         builder.init("AccordionPanel", panel);
         builder.finish();
 
         assertEquals(
-                "<script id=\"accoId_s\" type=\"text/javascript\">$(function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
+                "<script id=\"accoId_s\" type=\"text/javascript\">$(function(){"
+                        + "PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
                 writer.toString());
     }
 
@@ -92,7 +93,8 @@ public class WidgetBuilderTest {
         builder.finish();
 
         assertEquals(
-                "<script id=\"accoId_s\" type=\"text/javascript\">$(window).on(\"load\",function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
+                "<script id=\"accoId_s\" type=\"text/javascript\">$(window)"
+                        + ".on(\"load\",function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
                 writer.toString());
     }
 
@@ -101,12 +103,14 @@ public class WidgetBuilderTest {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
-        WidgetBuilder builder= getWidgetBuilder(context);
+        WidgetBuilder builder = getWidgetBuilder(context);
         builder.initWithComponentLoad("AccordionPanel", "acco", "accoId", "test");
         builder.finish();
 
         assertEquals(
-                "<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces.onElementLoad($(PrimeFaces.escapeClientId(\"test\")),function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
+                "<script id=\"accoId_s\" type=\"text/javascript\">PrimeFaces"
+                        + ".onElementLoad($(PrimeFaces.escapeClientId(\"test\")),"
+                        + "function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
                 writer.toString());
     }
 
@@ -128,7 +132,8 @@ public class WidgetBuilderTest {
         builder.finish();
 
         assertEquals(
-                "<script id=\"dt1_s\" type=\"text/javascript\">$(function(){PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",selectionMode:\"single\",lazy:true});});</script>",
+                "<script id=\"dt1_s\" type=\"text/javascript\">$(function(){PrimeFaces"
+                        + ".cw(\"DataTable\",\"dt\",{id:\"dt1\",selectionMode:\"single\",lazy:true});});</script>",
                 writer.toString());
     }
 
@@ -150,7 +155,9 @@ public class WidgetBuilderTest {
         builder.callback("onRowSelect", "function(row)", "alert(row);");
         builder.finish();
 
-        assertEquals("<script id=\"dt1_s\" type=\"text/javascript\">$(function(){PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",selectionMode:\"single\",lazy:true,onRowSelect:function(row){alert(row);}});});</script>", writer.toString());
+        assertEquals("<script id=\"dt1_s\" type=\"text/javascript\">$(function(){"
+                + "PrimeFaces.cw(\"DataTable\",\"dt\",{id:\"dt1\",selectionMode:\"single\",lazy:true,"
+                + "onRowSelect:function(row){alert(row);}});});</script>", writer.toString());
     }
 
     @Test
@@ -170,17 +177,18 @@ public class WidgetBuilderTest {
         String defaultValue = "'My custom default value'";
         builder.attr("someAttribute", null, defaultValue);
         builder.finish();
-        
+
         String output = writer.toString();
         assertFalse(output.contains(defaultValue));
 
-        String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces.cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\"});</script>";
+        String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces"
+                + ".cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\"});</script>";
         assertEquals(expectedOutput, output);
     }
 
     @Test
     public void attrJavascriptEscapeJavascript() throws IOException {
-    	CollectingResponseWriter writer = new CollectingResponseWriter();
+        CollectingResponseWriter writer = new CollectingResponseWriter();
 
         FacesContext context = new FacesContextMock(writer);
         PrimeConfigurationMock config = new PrimeConfigurationMock(context, new PrimeEnvironment(context));
@@ -194,10 +202,12 @@ public class WidgetBuilderTest {
         builder.init("MyComponent", panel);
         builder.attr("someAttribute", "<script>alert('Hello World!')</script>", null);
         builder.finish();
-        
+
         String output = writer.toString();
 
-        String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces.cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\",someAttribute:\"<script>alert(\\x27Hello World!\\x27)<\\/script>\"});</script>";
+        String expectedOutput = "<script id=\"myComponent1_s\" type=\"text/javascript\">PrimeFaces"
+                + ".cw(\"MyComponent\",\"myComponent\",{id:\"myComponent1\","
+                + "someAttribute:\"<script>alert(\\x27Hello World!\\x27)<\\/script>\"});</script>";
         assertEquals(expectedOutput, output);
     }
 }

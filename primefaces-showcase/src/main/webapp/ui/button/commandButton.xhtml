@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
                 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             button.ui-button {
                 margin-right: .5rem;
             }
@@ -118,6 +118,9 @@
             <p:commandButton type="button" icon="pi pi-bell" styleClass="rounded-button ui-button-warning ui-button-outlined" />
             <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-outlined" />
             <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-outlined" />
+
+            <h5>Disable on Ajax</h5>
+            <p:commandButton value="Sleep" disableOnAjax="true" action="#{bottonBasicView.sleep(1000)}" />
         </div>
     </ui:define>
 

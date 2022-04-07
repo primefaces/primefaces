@@ -40,11 +40,14 @@ public class DataTable029 implements Serializable {
 
     private static final long serialVersionUID = -9070796086139839567L;
 
-    public static class Data {
+    public static class Data implements Serializable {
 
-        private final String text;
+        private String text;
+        private int num;
 
-        private final int num;
+        public Data() {
+
+        }
 
         public Data(String text, int num) {
             this.text = text;

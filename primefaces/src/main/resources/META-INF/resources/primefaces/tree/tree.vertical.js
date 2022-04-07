@@ -1,13 +1,13 @@
 /**
  * __PrimeFaces Vertical Tree Widget__
- * 
+ *
  * Tree is used for displaying hierarchical data and creating a site navigation. This implements a vertical tree.
- * 
+ *
  * @typedef {"none" | "sibling"} PrimeFaces.widget.VerticalTree.DropRestrictMode Defines parent-child restrictions when
  * a node is dropped.
- * 
+ *
  * @interface {PrimeFaces.widget.VerticalTree.DroppedNodeParams} DroppedNodeParams Describes a drag & drop operation
- * when a tree node is being dragged. 
+ * when a tree node is being dragged.
  * @prop {JQueryUI.DroppableOptions} DroppedNodeParams.ui Details about the drop event.
  * @prop {PrimeFaces.widget.VerticalTree} DroppedNodeParams.dragSource Tree widget of the dragged node.
  * @prop {JQuery} DroppedNodeParams.dragNode The node that was dragged.
@@ -16,23 +16,23 @@
  * @prop {JQuery} DroppedNodeParams.dropNode The node on which the dragged node was dropped.
  * @prop {boolean} DroppedNodeParams.transfer Whether a transfer should occur, i.e. whether the node was not dropped on
  * itself.
- * 
+ *
  * @prop {JQuery} container The DOM element for the tree container.
  * @prop {PrimeFaces.widget.VerticalTree.DroppedNodeParams[]} droppedNodeParams List of parameter describing the drag &
  * drop operations.
  * @prop {JQuery} filterInput The DOM element for the filter input field that lets the user search the tree.
  * @prop {number} filterTimeout The set-timeout timer ID of the timer for the filter delay.
  * @prop {string[]} invalidSourceKeys A list of row keys for rows that are not valid drag sources.
- * @prop {number} scrollInterval The set-interval time ID of the timer for scrolling. 
+ * @prop {number} scrollInterval The set-interval time ID of the timer for scrolling.
  * @prop {JQuery} scrollStateHolder Form element that holds the current scroll state.
  * @prop {boolean} shiftKey For drag&drop, whether the shift is pressed.
- * 
+ *
  * @interface {PrimeFaces.widget.VerticalTreeCfg} cfg The configuration for the
  * {@link  VerticalTree| VerticalTree widget}. You can access this configuration via
  * {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this configuration is usually meant to be
  * read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseTreeCfg} cfg
- * 
+ *
  * @prop {string} cfg.collapsedIcon Named of the icon for collapsed nodes.
  * @prop {boolean} cfg.controlled Whether drag & drop operations of this tree table are controlled.
  * @prop {PrimeFaces.widget.VerticalTree.DropRestrictMode} cfg.dropRestrict Defines parent-child restrictions when a node is
@@ -125,7 +125,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 if (PrimeFaces.utils.ignoreFilterKey(e)) {
                     return;
                 }
-                
+
                 if($this.filterTimeout) {
                     clearTimeout($this.filterTimeout);
                 }
@@ -156,8 +156,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             if($(e.target).is(':not(:input:enabled)')) {
                 e.preventDefault();
             }
-        })
-        .on('focus.tree', function() {
+        });
+        this.jq.children('.ui-tree-container').on('focus.tree', function() {
             if(!$this.focusedNode && !pressTab) {
                 $this.focusNode($this.getFirstNode());
             }
@@ -301,7 +301,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                 case keyCode.TAB:
                     pressTab = true;
-                    $this.jq.trigger('focus');
+                    $this.container.trigger('focus');
                     setTimeout(function() {
                         pressTab = false;
                     }, 2);
@@ -360,7 +360,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @return {JQuery} A node to focus.
      */
     searchDown: function(node) {
-        var nextOfParent = $this.nextNode(node.closest('ul').parent('li')),
+        var nextOfParent = this.nextNode(node.closest('ul').parent('li')),
         nodeToFocus = null;
 
         if(nextOfParent.length) {
@@ -382,8 +382,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
     /**
      * Collapses the given node, as if the user had clicked on the `-` icon of the node. The children of the node will
-     * now be visible. 
-     * @param {JQuery} node Node to collapse. 
+     * now be visible.
+     * @param {JQuery} node Node to collapse.
      */
     collapseNode: function(node) {
         var _self = this,
@@ -636,14 +636,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     initDroppable: function() {
         this.makeDropPoints(this.jq.find('li.ui-tree-droppoint'));
-        this.makeDropNodes(this.jq.find('span.ui-treenode-droppable'));
+        this.makeDropNodes(this.jq.find('.ui-treenode-droppable'));
         this.initDropScrollers();
     },
 
     /**
      * Sets up the JQuery UI draggable for the given elements.
      * @private
-     * @param {JQuery} elements A list of draggable nodes to set up. 
+     * @param {JQuery} elements A list of draggable nodes to set up.
      */
     makeDraggable: function(elements) {
         var $this = this,
@@ -684,7 +684,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     /**
      * Sets up the JQuery UI drop points for the given elements.
      * @private
-     * @param {JQuery} elements A list of drop points to set up. 
+     * @param {JQuery} elements A list of drop points to set up.
      */
     makeDropPoints: function(elements) {
         var $this = this,
@@ -784,8 +784,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQueryUI.DroppableOptions} ui Details about the drop event.
      * @param {PrimeFaces.widget.VerticalTree} dragSource Tree widget of the dragged node.
      * @param {JQuery} dragNode Node that was dragged.
-     * @param {JQuery} targetDragNode Node that was the target of the drag. 
-     * @param {JQuery} dropPoint The drop point where the node was dropped. 
+     * @param {JQuery} targetDragNode Node that was the target of the drag.
+     * @param {JQuery} dropPoint The drop point where the node was dropped.
      * @param {JQuery} dropNode The node on which the dragged node was dropped.
      * @param {boolean} transfer Whether a transfer should occur, i.e. whether the node was not dropped on itself.
      */
@@ -838,7 +838,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     /**
      * Sets up the JQuery UI dropables for the droppable nodes.
      * @private
-     * @param {JQuery} elements List of elements to make droppable. 
+     * @param {JQuery} elements List of elements to make droppable.
      */
     makeDropNodes: function(elements) {
         var $this = this,
@@ -948,8 +948,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {JQueryUI.DroppableOptions} ui Details about the drop event.
      * @param {PrimeFaces.widget.VerticalTree} dragSource Tree widget of the dragged node.
      * @param {JQuery} dragNode Node that was dragged.
-     * @param {JQuery} targetDragNode Node that was the target of the drag. 
-     * @param {JQuery} droppable The jQUery UI droppable where the drop occurred. 
+     * @param {JQuery} targetDragNode Node that was the target of the drag.
+     * @param {JQuery} droppable The jQUery UI droppable where the drop occurred.
      * @param {JQuery} dropNode The node on which the dragged node was dropped.
      * @param {boolean} transfer Whether a transfer should occur.
      */
@@ -1056,7 +1056,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
     /**
      * Scrolls this tree by the given amount.
-     * @param {number} step Amount by which to scroll. 
+     * @param {number} step Amount by which to scroll.
      */
     scroll: function(step) {
         this.container.scrollTop(this.container.scrollTop() + step);
@@ -1065,7 +1065,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     /**
      * Updates the drag&drop settings for the given node.
      * @private
-     * @param {JQuery} node Node to update. 
+     * @param {JQuery} node Node to update.
      */
     updateDragDropBindings: function(node) {
         //self droppoint
@@ -1241,7 +1241,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      */
     makeParent: function(node) {
         node.removeClass('ui-treenode-leaf').addClass('ui-treenode-parent');
-        node.find('> ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
+        node.find('> .ui-treenode-content > span.ui-treenode-leaf-icon').removeClass('ui-treenode-leaf-icon').addClass('ui-tree-toggler ui-icon ui-icon-triangle-1-e');
         node.children('.ui-treenode-children').append('<li class="ui-tree-droppoint ui-droppable"></li>');
 
         this.makeDropPoints(node.find('> ul.ui-treenode-children > li.ui-tree-droppoint'));
@@ -1274,7 +1274,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @private
      * @param {PrimeFaces.widget.VerticalTree} dragSource Tree widget that is the source of the drag, when dragging
      * between two widgets.
-     * @param {JQuery} oldParentNode Old node that was parent of the dropped node. 
+     * @param {JQuery} oldParentNode Old node that was parent of the dropped node.
      * @param {JQuery} newParentNode New node that is to be the parent of the dropped node.
      */
     syncDNDCheckboxes: function(dragSource, oldParentNode, newParentNode) {
@@ -1289,7 +1289,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
     /**
      * Unselects the node and all child nodes.
-     * @param {JQuery} node Node to unselect. 
+     * @param {JQuery} node Node to unselect.
      */
     unselectSubtree: function(node) {
         var $this = this;

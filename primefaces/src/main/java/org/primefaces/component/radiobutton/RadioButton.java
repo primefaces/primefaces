@@ -24,6 +24,9 @@
 package org.primefaces.component.radiobutton;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import org.primefaces.expression.SearchExpressionFacade;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -32,4 +35,27 @@ import javax.faces.application.ResourceDependency;
 public class RadioButton extends RadioButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RadioButton";
+
+    @Override
+    public String getInputClientId() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return SearchExpressionFacade.resolveComponent(context, this, getFor()).getClientId(context)
+                + UINamingContainer.getSeparatorChar(context) + getItemIndex() + "_clone";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getInputClientId();
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
+
 }

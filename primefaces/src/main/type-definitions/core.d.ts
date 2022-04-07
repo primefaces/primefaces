@@ -6,8 +6,10 @@
 /// <reference types="cropperjs" />
 /// <reference types="downloadjs" />
 /// <reference types="google.maps" />
+/// <reference types="inputmask" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
+/// <reference types="js-cookie" />
 /// <reference types="moment-timezone" />
 /// <reference path="PrimeFaces-module.d.ts" />
 

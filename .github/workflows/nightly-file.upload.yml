@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Java ${{ matrix.java }}, Profile ${{ matrix.profile }}
     strategy:
+      fail-fast: false
       matrix:
         java: [8, 11]
         profile: [
@@ -20,14 +21,14 @@ jobs:
         ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}

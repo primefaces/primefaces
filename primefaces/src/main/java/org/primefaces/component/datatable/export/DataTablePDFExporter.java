@@ -147,10 +147,12 @@ public class DataTablePDFExporter extends DataTableExporter {
             config.getOnTableRender().invoke(context.getELContext(), new Object[]{pdfTable, table});
         }
 
-        addTableFacets(context, table, pdfTable, ColumnType.HEADER);
-        boolean headerGroup = addColumnGroup(table, pdfTable, ColumnType.HEADER);
-        if (!headerGroup) {
-            addColumnFacets(table, pdfTable, ColumnType.HEADER);
+        if (config.isExportHeader()) {
+            addTableFacets(context, table, pdfTable, ColumnType.HEADER);
+            boolean headerGroup = addColumnGroup(table, pdfTable, ColumnType.HEADER);
+            if (!headerGroup) {
+                addColumnFacets(table, pdfTable, ColumnType.HEADER);
+            }
         }
 
         if (config.isPageOnly()) {
@@ -163,11 +165,13 @@ public class DataTablePDFExporter extends DataTableExporter {
             exportAll(context, table, pdfTable);
         }
 
-        addColumnGroup(table, pdfTable, ColumnType.FOOTER);
-        if (table.hasFooterColumn()) {
-            addColumnFacets(table, pdfTable, ColumnType.FOOTER);
+        if (config.isExportFooter()) {
+            addColumnGroup(table, pdfTable, ColumnType.FOOTER);
+            if (table.hasFooterColumn()) {
+                addColumnFacets(table, pdfTable, ColumnType.FOOTER);
+            }
+            addTableFacets(context, table, pdfTable, ColumnType.FOOTER);
         }
-        addTableFacets(context, table, pdfTable, ColumnType.FOOTER);
 
         table.setRowIndex(-1);
 

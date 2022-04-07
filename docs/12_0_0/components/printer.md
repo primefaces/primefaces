@@ -19,7 +19,7 @@ id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 target | null | String | Target component to print.
-title | document.title | String | Title of the print window defaults to page title.
+configuration | null | String | Optional JSON configuration values to completely control jQuery.print.
 
 ## Getting started with the Printer
 Printer is attached to any command component like a button or a link. Examples below
@@ -31,7 +31,7 @@ demonstrates how to print a simple output text or a particular image on page;
 </h:commandButton>
 <h:outputText id="output" value="PrimeFaces Rocks!" />
 <h:outputLink id="lnk" value="#">
-    <p:printer target="image" title="My Image" />
+    <p:printer target="image" />
     <h:outputText value="Print Image" />
 </h:outputLink>
 <p:graphicImage id="image" value="/images/nature1.jpg" />

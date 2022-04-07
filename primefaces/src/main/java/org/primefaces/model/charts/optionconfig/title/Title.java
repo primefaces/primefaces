@@ -38,6 +38,7 @@ public class Title implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private boolean display;
+    private boolean fullSize = true;
     private String position;
     private ChartFont font;
     private Number fontSize;
@@ -210,6 +211,14 @@ public class Title implements Serializable {
         this.text = text;
     }
 
+    public boolean isFullSize() {
+        return fullSize;
+    }
+
+    public void setFullSize(boolean fullSize) {
+        this.fullSize = fullSize;
+    }
+
     public ChartFont getFont() {
         if (font == null) {
             font = new ChartFont();
@@ -234,6 +243,9 @@ public class Title implements Serializable {
     public String encode() throws IOException {
         try (FastStringWriter fsw = new FastStringWriter()) {
             ChartUtils.writeDataValue(fsw, "display", this.display, false);
+            if (!isFullSize()) {
+                ChartUtils.writeDataValue(fsw, "fullSize", this.fullSize, true);
+            }
             ChartUtils.writeDataValue(fsw, "position", this.position, true);
             ChartUtils.writeDataValue(fsw, "color", this.fontColor, true);
             ChartUtils.writeDataValue(fsw, "padding", this.padding, true);

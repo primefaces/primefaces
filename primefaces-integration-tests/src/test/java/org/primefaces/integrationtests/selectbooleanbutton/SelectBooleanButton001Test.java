@@ -116,7 +116,7 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         // Assert
         assertChecked(page, true);
     }
-    
+
     @Test
     @Order(5)
     @DisplayName("SelectBooleanButton: GitHub #7963 icon only should have no default labels")
@@ -134,7 +134,7 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         Assertions.assertEquals("ui-button", selectBooleanButton.getLabel());
         Assertions.assertTrue(selectBooleanButton.isSelected());
     }
-    
+
     @Test
     @Order(5)
     @DisplayName("SelectBooleanButton: GitHub #722 should have default labels")
@@ -172,12 +172,13 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:selectBooleanButton")
         SelectBooleanButton selectBooleanButton;
-        
+
         @FindBy(id = "form:iconOnly")
         SelectBooleanButton iconOnly;
-        
+
         @FindBy(id = "form:defaultLabels")
         SelectBooleanButton defaultLabels;
 

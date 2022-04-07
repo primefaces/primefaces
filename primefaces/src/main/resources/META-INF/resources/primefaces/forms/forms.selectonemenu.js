@@ -108,6 +108,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
 
+        //pfs metadata
+        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+
         if(this.cfg.dynamic || (this.itemsWrapper.children().length === 0)) {
             var selectedOption = this.options.filter(':selected'),
             labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
@@ -181,17 +184,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.syncTitle(selectedOption);
         }
 
-        //pfs metadata
-        this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
-
-        //for Screen Readers
+        // ARIA
         for(var i = 0; i < this.items.length; i++) {
             this.items.eq(i).attr('id', this.id + '_' + i);
         }
 
-        var highlightedItemId = highlightedItem.attr('id');
-        this.jq.attr('aria-owns', this.itemsContainer.attr('id'));
+        var highlightedItemId = highlightedItem.attr('id'),
+            itemsContainerId = this.itemsContainer.attr('id');
+        this.jq.attr('aria-owns', itemsContainerId);
         this.focusInput.attr('aria-autocomplete', 'list')
+            .attr('aria-owns', itemsContainerId)
             .attr('aria-activedescendant', highlightedItemId)
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
@@ -631,11 +633,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         matchedOptions = $this.matchOptions(text);
                         if(matchedOptions.length) {
                             var matchIndex = matchedOptions[0].index;
-                            var highlightItem = $this.items.eq(matchIndex);
                             if($this.panel.is(':hidden')) {
-                                $this.selectItem(highlightItem);
+                                $this.callHandleMethod(function() {
+                                    var highlightItem = $this.items.eq(matchIndex);
+                                    $this.selectItem(highlightItem);
+                                }, e);
                             }
                             else {
+                                var highlightItem = $this.items.eq(matchIndex);
                                 $this.highlightItem(highlightItem);
                                 PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
                             }
@@ -645,36 +650,38 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                             // find all options with the same first letter
                             matchedOptions = $this.matchOptions(text);
                             if(matchedOptions.length) {
-                                var selectedIndex = -1;
+                                $this.callHandleMethod(function() {
+                                    var selectedIndex = -1;
 
-                                // is current selection one of our matches?
-                                matchedOptions.each(function() {
-                                   var option = $(this);
-                                   var currentIndex = option[0].index;
-                                   var currentItem = $this.items.eq(currentIndex);
-                                   if (currentItem.hasClass('ui-state-highlight')) {
-                                       selectedIndex = currentIndex;
-                                       return false;
-                                   }
-                                });
+                                    // is current selection one of our matches?
+                                    matchedOptions.each(function() {
+                                       var option = $(this);
+                                       var currentIndex = option[0].index;
+                                       var currentItem = $this.items.eq(currentIndex);
+                                       if (currentItem.hasClass('ui-state-highlight')) {
+                                           selectedIndex = currentIndex;
+                                           return false;
+                                       }
+                                    });
 
-                                matchedOptions.each(function() {
-                                    var option = $(this);
-                                    var currentIndex = option[0].index;
-                                    var currentItem = $this.items.eq(currentIndex);
+                                    matchedOptions.each(function() {
+                                        var option = $(this);
+                                        var currentIndex = option[0].index;
+                                        var currentItem = $this.items.eq(currentIndex);
 
-                                    // select next item after the current selection
-                                    if (currentIndex > selectedIndex) {
-                                         if($this.panel.is(':hidden')) {
-                                             $this.selectItem(currentItem);
+                                        // select next item after the current selection
+                                        if (currentIndex > selectedIndex) {
+                                             if($this.panel.is(':hidden')) {
+                                                 $this.selectItem(currentItem);
+                                             }
+                                             else {
+                                                 $this.highlightItem(currentItem);
+                                                 PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                             }
+                                             return false;
                                          }
-                                         else {
-                                             $this.highlightItem(currentItem);
-                                             PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
-                                         }
-                                         return false;
-                                     }
-                                });
+                                    });
+                                }, e);
                             }
                         }
 
@@ -856,10 +863,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     handleEnterKey: function(event) {
         if(this.panel.is(':visible')) {
             this.selectItem(this.getActiveItem());
+            // #8308 prevent Default Command while panel is open
+            event.stopPropagation();
         }
 
         event.preventDefault();
-        event.stopPropagation();
     },
 
     /**
@@ -1485,7 +1493,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        var dataLabel = label.replace(/(<([^>]+)>)/gi, "").replaceAll('"', '&quot;');
+        var dataLabel = PrimeFaces.escapeHTML(label.replace(/(<([^>]+)>)/gi, ""));
         if ($item.data("noselection-option")) {
             cssClass += " ui-noselection-option";
         }

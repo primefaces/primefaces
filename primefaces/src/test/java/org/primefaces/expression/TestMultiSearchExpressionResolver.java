@@ -38,12 +38,14 @@ public class TestMultiSearchExpressionResolver  implements SearchExpressionResol
     }
 
     @Override
-    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, Set<SearchExpressionHint> hints) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression,
+            Set<SearchExpressionHint> hints) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, Set<SearchExpressionHint> hints) {
+    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression,
+            List<UIComponent> components, Set<SearchExpressionHint> hints) {
         components.addAll(this.components);
     }
 }

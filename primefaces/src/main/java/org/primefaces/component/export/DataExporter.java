@@ -47,7 +47,6 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.export.TreeTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
 
@@ -59,6 +58,9 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression encoding;
     private ValueExpression pageOnly;
     private ValueExpression selectionOnly;
+    private ValueExpression visibleOnly;
+    private ValueExpression exportHeader;
+    private ValueExpression exportFooter;
     private MethodExpression preProcessor;
     private MethodExpression postProcessor;
     private ValueExpression options;
@@ -67,22 +69,6 @@ public class DataExporter implements ActionListener, StateHolder {
 
     public DataExporter() {
         ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
-    }
-
-    public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,
-                        ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor,
-                        MethodExpression postProcessor, ValueExpression options, MethodExpression onTableRender) {
-        this();
-        this.target = target;
-        this.type = type;
-        this.fileName = fileName;
-        this.pageOnly = pageOnly;
-        this.selectionOnly = selectionOnly;
-        this.preProcessor = preProcessor;
-        this.postProcessor = postProcessor;
-        this.encoding = encoding;
-        this.options = options;
-        this.onTableRender = onTableRender;
     }
 
     @Override
@@ -102,15 +88,36 @@ public class DataExporter implements ActionListener, StateHolder {
         boolean isPageOnly = false;
         if (pageOnly != null) {
             isPageOnly = pageOnly.isLiteralText()
-                         ? Boolean.parseBoolean(pageOnly.getValue(context.getELContext()).toString())
-                         : (Boolean) pageOnly.getValue(context.getELContext());
+                        ? Boolean.parseBoolean(pageOnly.getValue(context.getELContext()).toString())
+                        : (Boolean) pageOnly.getValue(context.getELContext());
         }
 
         boolean isSelectionOnly = false;
         if (selectionOnly != null) {
             isSelectionOnly = selectionOnly.isLiteralText()
-                              ? Boolean.parseBoolean(selectionOnly.getValue(context.getELContext()).toString())
-                              : (Boolean) selectionOnly.getValue(context.getELContext());
+                        ? Boolean.parseBoolean(selectionOnly.getValue(context.getELContext()).toString())
+                        : (Boolean) selectionOnly.getValue(context.getELContext());
+        }
+
+        boolean isVisibleOnly = false;
+        if (visibleOnly != null) {
+            isVisibleOnly = visibleOnly.isLiteralText()
+                        ? Boolean.parseBoolean(visibleOnly.getValue(context.getELContext()).toString())
+                        : (Boolean) visibleOnly.getValue(context.getELContext());
+        }
+
+        boolean isExportHeader = true;
+        if (exportHeader != null) {
+            isExportHeader = exportHeader.isLiteralText()
+                        ? Boolean.parseBoolean(exportHeader.getValue(context.getELContext()).toString())
+                        : (Boolean) exportHeader.getValue(context.getELContext());
+        }
+
+        boolean isExportFooter = true;
+        if (exportFooter != null) {
+            isExportFooter = exportFooter.isLiteralText()
+                        ? Boolean.parseBoolean(exportFooter.getValue(context.getELContext()).toString())
+                        : (Boolean) exportFooter.getValue(context.getELContext());
         }
 
         ExporterOptions exporterOptions = null;
@@ -127,15 +134,19 @@ public class DataExporter implements ActionListener, StateHolder {
             List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
             Class<? extends UIComponent> targetClass = guessTargetClass(components);
             Exporter exporterInstance = getExporter(exportAs, exporterOptions, customExporterInstance, targetClass);
-            ExportConfiguration config = new ExportConfiguration()
-                    .setOutputFileName(outputFileName)
-                    .setEncodingType(encodingType)
-                    .setPageOnly(isPageOnly)
-                    .setSelectionOnly(isSelectionOnly)
-                    .setOptions(exporterOptions)
-                    .setPreProcessor(preProcessor)
-                    .setPostProcessor(postProcessor)
-                    .setOnTableRender(onTableRender);
+            ExportConfiguration config = ExportConfiguration.builder()
+                        .outputFileName(outputFileName)
+                        .encodingType(encodingType)
+                        .pageOnly(isPageOnly)
+                        .selectionOnly(isSelectionOnly)
+                        .visibleOnly(isVisibleOnly)
+                        .exportHeader(isExportHeader)
+                        .exportFooter(isExportFooter)
+                        .options(exporterOptions)
+                        .preProcessor(preProcessor)
+                        .postProcessor(postProcessor)
+                        .onTableRender(onTableRender)
+                        .build();
 
             ExternalContext externalContext = context.getExternalContext();
             String filenameWithExtension = config.getOutputFileName() + exporterInstance.getFileExtension();
@@ -156,6 +167,7 @@ public class DataExporter implements ActionListener, StateHolder {
                 addResponseCookie(context);
             }
 
+            exporterInstance.setExportConfiguration(config);
             exporterInstance.export(context, components, outputStream, config);
 
             if (PrimeFaces.current().isAjaxRequest()) {
@@ -193,7 +205,7 @@ public class DataExporter implements ActionListener, StateHolder {
             }
             else {
                 throw new FacesException("Component " + getClass().getName() + " customExporterInstance="
-                       + customExporterInstance.getClass().getName() + " does not implement Exporter!");
+                            + customExporterInstance.getClass().getName() + " does not implement Exporter!");
             }
         }
 
@@ -210,16 +222,17 @@ public class DataExporter implements ActionListener, StateHolder {
 
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                data, contentType, filenameWithExtension, monitorKeyCookieName));
+                    data, contentType, filenameWithExtension, monitorKeyCookieName));
     }
 
-    protected void setResponseHeader(ExternalContext externalContext , String contentDisposition) {
+    protected void setResponseHeader(ExternalContext externalContext, String contentDisposition) {
         ResourceUtils.addNoCacheControl(externalContext);
         externalContext.setResponseHeader("Content-disposition", contentDisposition);
     }
 
     protected void addResponseCookie(FacesContext context) {
-        ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
+        ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", null);
     }
 
     @Override
@@ -232,14 +245,6 @@ public class DataExporter implements ActionListener, StateHolder {
         // NOOP
     }
 
-    public ValueExpression getExporter() {
-        return exporter;
-    }
-
-    public void setExporter(ValueExpression exporter) {
-        this.exporter = exporter;
-    }
-
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
@@ -249,30 +254,159 @@ public class DataExporter implements ActionListener, StateHolder {
         fileName = (ValueExpression) values[2];
         pageOnly = (ValueExpression) values[3];
         selectionOnly = (ValueExpression) values[4];
-        preProcessor = (MethodExpression) values[5];
-        postProcessor = (MethodExpression) values[6];
-        encoding = (ValueExpression) values[7];
-        options = (ValueExpression) values[8];
-        onTableRender = (MethodExpression) values[9];
-        exporter = (ValueExpression) values[10];
+        visibleOnly = (ValueExpression) values[5];
+        exportHeader = (ValueExpression) values[6];
+        exportFooter = (ValueExpression) values[7];
+        preProcessor = (MethodExpression) values[8];
+        postProcessor = (MethodExpression) values[9];
+        encoding = (ValueExpression) values[10];
+        options = (ValueExpression) values[11];
+        onTableRender = (MethodExpression) values[12];
+        exporter = (ValueExpression) values[13];
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[12];
+        Object[] values = new Object[14];
 
         values[0] = target;
         values[1] = type;
         values[2] = fileName;
         values[3] = pageOnly;
         values[4] = selectionOnly;
-        values[5] = preProcessor;
-        values[6] = postProcessor;
-        values[7] = encoding;
-        values[8] = options;
-        values[9] = onTableRender;
-        values[10] = exporter;
+        values[5] = visibleOnly;
+        values[6] = exportHeader;
+        values[7] = exportFooter;
+        values[8] = preProcessor;
+        values[9] = postProcessor;
+        values[10] = encoding;
+        values[11] = options;
+        values[12] = onTableRender;
+        values[13] = exporter;
 
         return (values);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private ValueExpression target;
+        private ValueExpression type;
+        private ValueExpression fileName;
+        private ValueExpression encoding;
+        private ValueExpression pageOnly;
+        private ValueExpression selectionOnly;
+        private ValueExpression visibleOnly;
+        private ValueExpression exportHeader;
+        private ValueExpression exportFooter;
+        private MethodExpression preProcessor;
+        private MethodExpression postProcessor;
+        private ValueExpression options;
+        private MethodExpression onTableRender;
+        private ValueExpression exporter;
+
+        Builder() {
+        }
+
+        public Builder target(ValueExpression target) {
+            this.target = target;
+            return this;
+        }
+
+        public Builder type(ValueExpression type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder fileName(ValueExpression fileName) {
+            this.fileName = fileName;
+            return this;
+        }
+
+        public Builder encoding(ValueExpression encoding) {
+            this.encoding = encoding;
+            return this;
+        }
+
+        public Builder pageOnly(ValueExpression pageOnly) {
+            this.pageOnly = pageOnly;
+            return this;
+        }
+
+        public Builder selectionOnly(ValueExpression selectionOnly) {
+            this.selectionOnly = selectionOnly;
+            return this;
+        }
+
+        public Builder visibleOnly(ValueExpression visibleOnly) {
+            this.visibleOnly = visibleOnly;
+            return this;
+        }
+
+        public Builder exportHeader(ValueExpression exportHeader) {
+            this.exportHeader = exportHeader;
+            return this;
+        }
+
+        public Builder exportFooter(ValueExpression exportFooter) {
+            this.exportFooter = exportFooter;
+            return this;
+        }
+
+        public Builder preProcessor(MethodExpression preProcessor) {
+            this.preProcessor = preProcessor;
+            return this;
+        }
+
+        public Builder postProcessor(MethodExpression postProcessor) {
+            this.postProcessor = postProcessor;
+            return this;
+        }
+
+        public Builder options(ValueExpression options) {
+            this.options = options;
+            return this;
+        }
+
+        public Builder onTableRender(MethodExpression onTableRender) {
+            this.onTableRender = onTableRender;
+            return this;
+        }
+
+        public Builder exporter(ValueExpression exporter) {
+            this.exporter = exporter;
+            return this;
+        }
+
+        public DataExporter build() {
+            DataExporter exporter = new DataExporter();
+            exporter.target = this.target;
+            exporter.type = this.type;
+            exporter.fileName = this.fileName;
+            exporter.encoding = this.encoding;
+            exporter.pageOnly = this.pageOnly;
+            exporter.selectionOnly = this.selectionOnly;
+            exporter.visibleOnly = this.visibleOnly;
+            exporter.exportHeader = this.exportHeader;
+            exporter.exportFooter = this.exportFooter;
+            exporter.preProcessor = this.preProcessor;
+            exporter.postProcessor = this.postProcessor;
+            exporter.options = this.options;
+            exporter.onTableRender = this.onTableRender;
+            exporter.exporter = this.exporter;
+            return exporter;
+        }
+
+        @Override
+        public String toString() {
+            return "DataExporter.DataExporterBuilder(target=" + this.target + ", type=" + this.type + ", fileName=" + this.fileName + ", encoding="
+                        + this.encoding + ", pageOnly=" + this.pageOnly + ", selectionOnly=" + this.selectionOnly + ", visibleOnly=" + this.visibleOnly
+                        + ", exportHeader=" + this.exportHeader + ", exportFooter=" + this.exportFooter + ", preProcessor=" + this.preProcessor
+                        + ", postProcessor=" + this.postProcessor + ", options=" + this.options + ", onTableRender=" + this.onTableRender + ", exporter="
+                        + this.exporter + ")";
+        }
     }
 }

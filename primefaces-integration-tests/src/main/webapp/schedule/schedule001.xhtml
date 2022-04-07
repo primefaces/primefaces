@@ -16,17 +16,65 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:schedule id="schedule" value="#{schedule001.eventModel}" widgetVar="myschedule" locale="#{schedule001.locale}">
+            <p:schedule id="schedule" value="#{schedule001.eventModel}" widgetVar="myschedule" locale="#{schedule001.locale}"
+                        timeZone="#{schedule001.timeZone}" clientTimeZone="#{schedule001.clientTimeZone}">
 
-                <p:ajax event="dateSelect" listener="#{schedule001.onDateSelect}"/>
-                <p:ajax event="eventSelect" listener="#{schedule001.onEventSelect}"/>
-                <p:ajax event="eventMove" listener="#{schedule001.onEventMove}"/>
-                <p:ajax event="eventResize" listener="#{schedule001.onEventResize}"/>
+                <p:ajax event="dateSelect" listener="#{schedule001.onDateSelect}" update="panelSelectedEvent"/>
+                <p:ajax event="eventSelect" listener="#{schedule001.onEventSelect}" update="panelSelectedEvent"/>
+                <p:ajax event="eventMove" listener="#{schedule001.onEventMove}" update="panelSelectedEvent"/>
+                <p:ajax event="eventResize" listener="#{schedule001.onEventResize}" update="panelSelectedEvent"/>
 
             </p:schedule>
 
             <p:commandButton id="btnEnglish" update="@form" value="English" actionListener="#{schedule001.english}"/>
             <p:commandButton id="btnFrench" update="@form" value="French" actionListener="#{schedule001.french}"/>
+            <p:commandButton id="btnGerman" update="@form" value="French" actionListener="#{schedule001.german}"/>
+            <p:commandButton id="btnDeleteAllEvents" update="@form" value="delete all events" actionListener="#{schedule001.deleteAllEvents()}"/>
+
+            <br/>
+
+            <p:outputLabel value="timeZone" for="@next"/>
+            <p:selectOneMenu id="timeZone" value="#{schedule001.timeZone}">
+                <f:selectItem itemLabel="ZoneId.systemDefault()"/>
+                <f:selectItem itemLabel="UTC" itemValue="UTC"/>
+                <f:selectItem itemLabel="GMT-1" itemValue="GMT-1"/>
+                <f:selectItem itemLabel="GMT-5" itemValue="GMT-5"/>
+                <f:selectItem itemLabel="GMT+13" itemValue="GMT+13"/>
+                <f:selectItem itemLabel="Europe/Moscow" itemValue="Europe/Moscow"/>
+                <f:selectItem itemLabel="Europe/Vienna" itemValue="Europe/Vienna"/>
+
+                <p:ajax update="schedule"/>
+            </p:selectOneMenu>
+
+            <br/>
+
+            <p:outputLabel value="clientTimeZone" for="@next"/>
+            <p:selectOneMenu id="clientTimeZone" value="#{schedule001.clientTimeZone}">
+                <f:selectItem itemLabel="local" itemValue="local"/>
+                <f:selectItem itemLabel="UTC" itemValue="UTC"/>
+                <f:selectItem itemLabel="America/New_York" itemValue="America/New_York"/>
+                <f:selectItem itemLabel="Europe/Moscow" itemValue="Europe/Moscow"/>
+                <f:selectItem itemLabel="Europe/Vienna" itemValue="Europe/Vienna"/>
+
+                <p:ajax update="schedule"/>
+            </p:selectOneMenu>
+
+            <br/>
+
+            <p:outputPanel id="panelSelectedEvent">
+                Selected Event:<br/>
+
+                <p:outputLabel value="Title" for="@next"/>
+                <p:inputText value="#{schedule001.event.title}" id="selectedEventTitle" />
+                <br/>
+
+                <p:outputLabel value="From" for="@next"/>
+                <p:datePicker value="#{schedule001.event.startDate}" id="selectedEventStartDate" />
+                <br/>
+
+                <p:outputLabel value="To" for="@next"/>
+                <p:datePicker value="#{schedule001.event.endDate}" id="selectedEventEndDate" />
+            </p:outputPanel>
         </h:form>
 
     </h:body>

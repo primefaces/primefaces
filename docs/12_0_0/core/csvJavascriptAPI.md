@@ -40,14 +40,16 @@ the main method used by `p:clientBehavior` which only validates a single input.
  * This is used by `p:clientValidator`.
  * @function
  * @param {string | HTMLElement | JQuery} el The ID of an element to validate, or the element itself.
+ * @param {boolean} highlight If invalid elements should be highlighted.
+ * @param {boolean} renderMessages If messages should be rendered.
  * @return {boolean} `true` if the element is valid, or `false` otherwise.
  */
-validateInstant : function(el) {
+validateInstant : function(el, highlight, renderMessages) {
     ...
 }
 ```
 
 Example:
 ```js
-PrimeFaces.validation.validateInstant($('#myInput'));
+PrimeFaces.validation.validateInstant($('#myInput'), true, true);
 ```

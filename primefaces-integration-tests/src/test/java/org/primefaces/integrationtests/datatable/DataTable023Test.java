@@ -34,8 +34,8 @@ import org.primefaces.selenium.component.DataTable;
 
 /**
  * Test for multiple filtered columns added via
- * {@link javax.faces.view.facelets.FaceletContext#includeFacelet}
- * and filtered via method
+ * {@link javax.faces.view.facelets.FaceletContext#includeFacelet} and filtered
+ * via method
  */
 public class DataTable023Test extends AbstractDataTableTest {
 
@@ -89,6 +89,7 @@ public class DataTable023Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 
