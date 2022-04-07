@@ -127,7 +127,7 @@ public class Slider002Test extends AbstractPrimePageTest {
         else {
             Assertions.assertEquals(value.floatValue(), slider.getValue().floatValue());
         }
-        Assertions.assertEquals(value,Integer.parseInt(StringUtils.remove(spinner.getValue(), ',')));
+        Assertions.assertEquals(value, Integer.parseInt(StringUtils.remove(spinner.getValue(), ',')));
     }
 
 
