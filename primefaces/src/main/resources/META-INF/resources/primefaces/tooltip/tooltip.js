@@ -199,8 +199,14 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.target.attr("aria-describedby", describedBy);
 
         var $this = this;
-        if (this.cfg.delegate) {
-            var targetSelector = "*[id='" + this.target.attr('id') + "']";
+        if (this.cfg.delegate)
+            var targetSelector;
+             // try to get jq selectors from pf target selector to bind on all elements, not on the 1st one only
+             if ((tg = this.cfg.target.match('@\\((.+)\\)')) && (tg.length > 1)) {
+                 targetSelector = tg[1];
+             } else {
+                 targetSelector = "*[id='" + this.target.attr('id') + "']";
+             }
 
             $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, targetSelector)
                 .on(this.cfg.showEvent, targetSelector, function(e) {
@@ -209,6 +215,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     }
 
                     if (PrimeFaces.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                        $this.target = $(this);
                         $this.show();
                     }
                 })
@@ -224,6 +231,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     }
 
                     if (PrimeFaces.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                        $this.target = $(this);
                         $this.show();
                     }
                 })
