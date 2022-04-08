@@ -136,7 +136,10 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     slideUp: function() {
-        this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc');
+        var $this = this;
+        this.content.slideUp(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
+            $this.jq.addClass('ui-panel-collapsed');
+        });
     },
 
     /**
@@ -144,6 +147,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     slideDown: function() {
+        this.jq.removeClass('ui-panel-collapsed');
         this.content.slideDown(this.cfg.toggleSpeed, 'easeInOutCirc');
     },
 

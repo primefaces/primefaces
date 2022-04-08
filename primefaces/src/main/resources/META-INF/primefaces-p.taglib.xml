@@ -393,13 +393,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Title of the Print window (default to page title).</description>
-            <name>title</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Optional JSON configuration values to completely control PrintJS.</description>
+            <description>Optional JSON configuration values to completely control jQuery.print.</description>
             <name>configuration</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -2286,6 +2280,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[MenuModel instance to create menus programmatically.]]>
             </description>
             <name>model</name>
@@ -2329,6 +2331,14 @@
                 <![CDATA[Boolean flag indicating whether the last item should be disabled. Default is false.]]>
             </description>
             <name>lastItemDisabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Used to produce an Advanced SEO structure on the page. Default is false.]]>
+            </description>
+            <name>seo</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -19021,6 +19031,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide overlay when hovering over overlay content when using custom show/hide events, default is true.]]>
+            </description>
+            <name>autoHide</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Event to show the overlay panel, default is "click".]]>
             </description>
             <name>showEvent</name>
@@ -27410,6 +27428,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Title attribute for menu element on tab header.]]>
+            </description>
+            <name>menuTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -29193,6 +29219,14 @@
                 <![CDATA[Defines whether html would be escaped or not, defaults to true.]]>
             </description>
             <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to hide tooltip when hovering over tooltip content, default is true.]]>
+            </description>
+            <name>autoHide</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

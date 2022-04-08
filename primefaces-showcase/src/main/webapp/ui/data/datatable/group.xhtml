@@ -18,15 +18,15 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <div class="p-d-flex p-jc-between">
+                <div class="flex justify-content-between">
                    <div>
                    </div>
                    <div>
-                      <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2" >
+                      <p:commandButton value="XLSX" styleClass="mr-2 mb-2" >
                           <p:dataExporter type="xlsxstream" target="tblSales tblPlayers" fileName="grouped"/>
                       </p:commandButton>
 
-                      <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2" >
+                      <p:commandButton value="PDF" styleClass="mr-2 mb-2" >
                           <p:dataExporter type="pdf" target="tblSales tblPlayers" fileName="grouped"/>
                       </p:commandButton>
                    </div>
@@ -124,7 +124,7 @@
                     </p:columns>
 
                     <f:facet name="footer">
-                        <h:outputText value="Data between 2010-2014" styleClass="p-text-bold" />
+                        <h:outputText value="Data between 2010-2014" styleClass="font-bold" />
                     </f:facet>
                 </p:dataTable>
             </h:form>

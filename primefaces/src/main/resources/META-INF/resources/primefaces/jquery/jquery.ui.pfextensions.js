@@ -448,3 +448,35 @@ $.widget( "ui.sortable", $.ui.sortable, {
     });
 })();
 
+// GitHub #8619 fix slider dealing with odd min and max settings that don't align with step'
+(function() {
+    $.ui.slider.prototype._trimAlignValue = function(val) {
+        if (val <= this._valueMin()) {
+            return this._valueMin();
+        }
+        if (val >= this._valueMax()) {
+            return this._valueMax();
+        }
+        var step = (this.options.step > 0) ? this.options.step : 1,
+            valModStep = (val - this._valueMin()) % step;
+
+        var alignValue = (valModStep > 0) ? Math.floor(val / step) * step : Math.ceil(val / step) * step;
+
+        if (alignValue <= this._valueMin()) {
+            return this._valueMin();
+        }
+        if (alignValue >= this._valueMax()) {
+            return this._valueMax();
+        }
+
+        // Since JavaScript has problems with large floats, round
+        // the final value to 5 digits after the decimal point (see #4124)
+        return parseFloat(alignValue.toFixed(5));
+    };
+
+    $.ui.slider.prototype._calculateNewMax = function() {
+        var max = this.options.max;
+        this.max = parseFloat(max.toFixed(this._precision()));
+    };
+})();
+

@@ -42,8 +42,13 @@ public abstract class CartesianAxes implements Serializable {
     private boolean offset;
     private String id;
     private AxesGridLines gridLines;
-    private CartesianScaleLabel scaleLabel;
+    private CartesianScaleTitle title;
     private boolean stacked;
+    private boolean reverse;
+    private Number min;
+    private Number max;
+    private Number suggestedMax;
+    private Number suggestedMin;
 
     /**
      * Gets the position
@@ -119,21 +124,21 @@ public abstract class CartesianAxes implements Serializable {
     }
 
     /**
-     * Gets the scaleLabel
+     * Gets the title
      *
-     * @return scaleLabel
+     * @return title
      */
-    public CartesianScaleLabel getScaleLabel() {
-        return scaleLabel;
+    public CartesianScaleTitle getScaleTitle() {
+        return title;
     }
 
     /**
-     * Sets the scaleLabel
+     * Sets the title
      *
-     * @param scaleLabel the {@link CartesianScaleLabel} object
+     * @param title the {@link CartesianScaleTitle} object
      */
-    public void setScaleLabel(CartesianScaleLabel scaleLabel) {
-        this.scaleLabel = scaleLabel;
+    public void setScaleTitle(CartesianScaleTitle title) {
+        this.title = title;
     }
 
     /**
@@ -155,6 +160,97 @@ public abstract class CartesianAxes implements Serializable {
     }
 
     /**
+     * Reverse the scale.
+     *
+     * @return reverse
+     */
+    public boolean isReverse() {
+        return reverse;
+    }
+
+    /**
+     * Reverse the scale.
+     *
+     * @param reverse Reverse the scale.
+     */
+    public void setReverse(boolean reverse) {
+        this.reverse = reverse;
+    }
+
+    /**
+     * Gets the suggestedMax
+     *
+     * @return suggestedMax
+     */
+    public Number getSuggestedMax() {
+        return suggestedMax;
+    }
+
+    /**
+     * Sets the suggestedMax
+     *
+     * @param suggestedMax Adjustment used when calculating the maximum data value.
+     */
+    public void setSuggestedMax(Number suggestedMax) {
+        this.suggestedMax = suggestedMax;
+    }
+
+    /**
+     * Gets the suggestedMin
+     *
+     * @return suggestedMin
+     */
+    public Number getSuggestedMin() {
+        return suggestedMin;
+    }
+
+    /**
+     * Sets the suggestedMin
+     *
+     * @param suggestedMin Adjustment used when calculating the minimum data value.
+     */
+    public void setSuggestedMin(Number suggestedMin) {
+        this.suggestedMin = suggestedMin;
+    }
+
+    /**
+     * Gets the min
+     *
+     * @return min
+     */
+    public Number getMin() {
+        return min;
+    }
+
+    /**
+     * Sets the min
+     *
+     * @param min User defined minimum number for the scale, overrides minimum value from data.
+     */
+    public void setMin(Number min) {
+        this.min = min;
+    }
+
+    /**
+     * Gets the max
+     *
+     * @return max
+     */
+    public Number getMax() {
+        return max;
+    }
+
+    /**
+     * Sets the max
+     *
+     * @param max User defined maximum number for the scale, overrides maximum value from data.
+     */
+    public void setMax(Number max) {
+        this.max = max;
+    }
+
+
+    /**
      * Write the common options of cartesian axes
      *
      * @return options as JSON object
@@ -166,13 +262,19 @@ public abstract class CartesianAxes implements Serializable {
             ChartUtils.writeDataValue(fsw, "position", this.position, true);
             ChartUtils.writeDataValue(fsw, "id", this.id, true);
             ChartUtils.writeDataValue(fsw, "stacked", this.stacked, true);
+            ChartUtils.writeDataValue(fsw, "reverse", this.reverse, true);
+            ChartUtils.writeDataValue(fsw, "min", this.min, true);
+            ChartUtils.writeDataValue(fsw, "max", this.max, true);
+            ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
+            ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
+
 
             if (this.gridLines != null) {
                 fsw.write(",\"gridLines\":" + this.gridLines.encode());
             }
 
-            if (this.scaleLabel != null) {
-                fsw.write(",\"scaleLabel\":" + this.scaleLabel.encode());
+            if (this.title != null) {
+                fsw.write(",\"title\":" + this.title.encode());
             }
 
             return fsw.toString();

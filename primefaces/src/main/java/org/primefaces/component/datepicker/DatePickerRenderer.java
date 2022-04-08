@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -317,8 +319,17 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                     for (int i = 0; i < rangeStr.size(); i++) {
                         range.add(super.getConvertedValue(context, component, rangeStr.get(i)));
                     }
+                    // #8351 adjust end date to end of day
+                    Object end = range.get(1);
+                    boolean isDate = end instanceof Date;
+                    if (end instanceof LocalDateTime || isDate) {
+                        LocalDateTime endDate = isDate
+                                ? CalendarUtils.convertDate2LocalDateTime((Date) end)
+                                : (LocalDateTime) end;
+                        endDate = endDate.plusDays(1).minus(1, ChronoUnit.NANOS);
+                        range.set(1, isDate ? CalendarUtils.convertLocalDateTime2Date(endDate) : endDate);
+                    }
                 }
-
                 return range;
             default:
                 return super.getConvertedValue(context, component, value);

@@ -1493,7 +1493,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        var dataLabel = label.replace(/(<([^>]+)>)/gi, "").replaceAll('"', '&quot;');
+        var dataLabel = PrimeFaces.escapeHTML(label.replace(/(<([^>]+)>)/gi, ""));
         if ($item.data("noselection-option")) {
             cssClass += " ui-noselection-option";
         }

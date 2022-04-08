@@ -34,7 +34,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:selectOneRadio id="console" value="#{radioView.console}">
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
@@ -58,19 +58,19 @@
                     <f:selectItem itemLabel="Blue" itemValue="Blue"/>
 
                     <f:facet name="custom">
-                        <div class="p-field-radiobutton" role="radio">
+                        <div class="field-radiobutton" role="radio">
                             <p:radioButton id="facet1" for="customRadio" itemIndex="0"/>
                             <p:outputLabel for="facet1">
                                 <span class="legend" style="background:red"/> Red
                             </p:outputLabel>
                         </div>
-                        <div class="p-field-radiobutton" role="radio">
+                        <div class="field-radiobutton" role="radio">
                             <p:radioButton id="facet2" for="customRadio" itemIndex="1"/>
                             <p:outputLabel for="facet2">
                                 <span class="legend" style="background:green"/> Green
                             </p:outputLabel>
                         </div>
-                        <div class="p-field-radiobutton" role="radio">
+                        <div class="field-radiobutton" role="radio">
                             <p:radioButton id="facet3" for="customRadio" itemIndex="2"/>
                             <p:outputLabel for="facet3">
                                 <span class="legend" style="background:blue"/> Blue

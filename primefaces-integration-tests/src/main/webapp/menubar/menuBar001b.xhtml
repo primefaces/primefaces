@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true" skipDetailIfEqualsSummary="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:menubar id="menubar">
+                <p:submenu label="Main A" id="mainA">
+                    <p:submenu label="Sub A-1" id="subA1">
+                        <p:menuitem value="Detail A-1-I" id="detailA1I" action="#{menuBar001.someAction('Detail A-1-I')}"/>
+                        <p:menuitem value="Detail A-1-II" id="detailA1II" action="#{menuBar001.someAction('Detail A-1-II')}"/>
+                    </p:submenu>
+                    <p:menuitem value="Sub A-2" id="subA2" action="#{menuBar001.someAction('Sub A-2')}"/>
+                    <p:divider />
+                    <p:menuitem value="Sub A-3" id="subA3" action="#{menuBar001.someAction('Sub A-3')}"/>
+                </p:submenu>
+
+                <p:submenu label="Main B" id="mainB">
+                    <p:menuitem value="Sub B-1" id="subB1" action="#{menuBar001.someAction('Sub B-1')}"/>
+                    <p:menuitem value="Sub B-2" id="subB2" action="#{menuBar001.someAction('Sub B-2')}"/>
+                    <p:menuitem value="Sub B-3" id="subB3" action="#{menuBar001.someAction('Sub B-3')}"/>
+                    <p:menuitem value="Sub B-4" id="subB4" action="#{menuBar001.someAction('Sub B-4')}"/>
+                </p:submenu>
+
+                <p:divider layout="vertical"/>
+
+                <p:menuitem value="Main C" id="mainC" action="#{menuBar001.someAction('Main C')}"/>
+            </p:menubar>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

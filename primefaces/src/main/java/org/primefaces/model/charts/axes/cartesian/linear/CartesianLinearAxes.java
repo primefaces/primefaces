@@ -109,7 +109,6 @@ public class CartesianLinearAxes extends CartesianAxes {
 
             ChartUtils.writeDataValue(fsw, "type", this.type, true);
             ChartUtils.writeDataValue(fsw, "beginAtZero", this.beginAtZero, true);
-
             if (this.ticks != null) {
                 fsw.write(",\"ticks\":{");
                 fsw.write(this.ticks.encode());

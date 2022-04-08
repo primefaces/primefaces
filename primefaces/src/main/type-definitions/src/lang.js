@@ -239,7 +239,7 @@ function newEmptyArray() {
  * @return {string} The given string, with the first character turned to upper case.
  */
 function capitalize(str) {
-    return str ? str.charAt(0).toUpperCase() + str.substr(1) : "";
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 }
 
 /**
@@ -248,10 +248,10 @@ function capitalize(str) {
  */
 function removeLineBreaksFromStartAndEnd(str) {
     while (str.startsWith("\n") || str.startsWith("\r")) {
-        str = str.substr(1);
+        str = str.slice(1);
     }
     while (str.endsWith("\n") || str.endsWith("\r")) {
-        str = str.substr(0, str.length - 1);
+        str = str.slice(0, -1);
     }
     return str;
 }

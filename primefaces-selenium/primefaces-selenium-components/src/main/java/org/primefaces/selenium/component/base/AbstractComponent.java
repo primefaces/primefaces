@@ -99,4 +99,11 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
         String cspScript = String.format(CSP_SCRIPT, id, event);
         return PrimeSelenium.executeScript(cspScript);
     }
+
+    /**
+     * Destroy the widget.
+     */
+    public void destroy() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".destroy();");
+    }
 }

@@ -1573,7 +1573,7 @@
             var hourDisplay = hour < 10 ? '0' + hour : hour;
 
             //type="number" min="' + minHour + '" max="' + maxHour + '" - does not work well on Firefox 70, so we don´t use it
-            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="1"></input>' : '<span>' + hourDisplay + '</span>';
+            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="1" class="ui-inputfield"></input>' : '<span>' + hourDisplay + '</span>';
             return this.renderTimeElements("ui-hour-picker", html, 0);
         },
 
@@ -1582,7 +1582,7 @@
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
             //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
-            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="2"></input>' : '<span>' + minuteDisplay + '</span>';
+            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="2" class="ui-inputfield"></input>' : '<span>' + minuteDisplay + '</span>';
             return this.renderTimeElements("ui-minute-picker", html, 1);
         },
 
@@ -1592,7 +1592,7 @@
                     secondDisplay = second < 10 ? '0' + second : second;
 
                 //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
-                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="3"></input>' : '<span>' + secondDisplay + '</span>';
+                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="3" class="ui-inputfield"></input>' : '<span>' + secondDisplay + '</span>';
                 return this.renderTimeElements("ui-second-picker", html, 2);
             }
 
@@ -1605,7 +1605,7 @@
                     millisecondDisplay = millisecond < 10 ? '00' + millisecond : millisecond < 100 ? '0' + millisecond : millisecond;
 
                 //type="number" min="0" max="999" does not work well on Firefox 70, so we don´t use it
-                var html =  this.options.timeInput ? '<input value="' + millisecondDisplay + '" size="3" maxlength="3" tabindex="4"></input>' : '<span>' + millisecondDisplay + '</span>';
+                var html =  this.options.timeInput ? '<input value="' + millisecondDisplay + '" size="3" maxlength="3" tabindex="4" class="ui-inputfield"></input>' : '<span>' + millisecondDisplay + '</span>';
                 return this.renderTimeElements("ui-millisecond-picker", html, 3);
             }
 

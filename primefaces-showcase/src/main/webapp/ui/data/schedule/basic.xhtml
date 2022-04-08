@@ -33,23 +33,23 @@
 
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
                     <h:panelGrid id="eventDetails" columns="2" cellpadding="7">
-                        <p:outputLabel for="title" value="Titles" styleClass="p-text-bold"/>
+                        <p:outputLabel for="title" value="Titles" styleClass="font-bold"/>
                         <p:inputText id="title" value="#{scheduleJava8View.event.title}" required="true"/>
 
-                        <p:outputLabel for="from" value="From" styleClass="p-text-bold"/>
+                        <p:outputLabel for="from" value="From" styleClass="font-bold"/>
                         <p:datePicker id="from" value="#{scheduleJava8View.event.startDate}" pattern="dd/MM/yyyy"
                                       showTime="true" appendTo="@(body)"/>
 
-                        <p:outputLabel for="to" value="To" styleClass="p-text-bold"/>
+                        <p:outputLabel for="to" value="To" styleClass="font-bold"/>
                         <p:datePicker id="to" value="#{scheduleJava8View.event.endDate}" pattern="dd/MM/yyyy"
                                       showTime="true" appendTo="@(body)"/>
 
-                        <p:outputLabel for="allDay" value="All Day" styleClass="p-text-bold"/>
+                        <p:outputLabel for="allDay" value="All Day" styleClass="font-bold"/>
                         <h:selectBooleanCheckbox id="allDay" value="#{scheduleJava8View.event.allDay}"/>
                     </h:panelGrid>
 
-                    <div class="p-d-flex p-jc-between p-mt-3">
-                        <p:commandButton type="reset" value="Reset" styleClass="p-text-bold ui-button-outlined"/>
+                    <div class="flex justify-content-between mt-3">
+                        <p:commandButton type="reset" value="Reset" styleClass="font-bold ui-button-outlined"/>
                         <p:commandButton id="addButton" value="Save" action="#{scheduleJava8View.addEvent}" 
                                     oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
                     </div>               

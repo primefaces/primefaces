@@ -96,6 +96,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("showCloseIcon", panel.isShowCloseIcon(), false)
                 .attr("modal", panel.isModal(), false)
                 .attr("blockScroll", panel.isBlockScroll(), false)
+                .attr("autoHide", panel.isAutoHide(), true)
                 .attr("showDelay", panel.getShowDelay(), 0);
 
         encodeClientBehaviors(context, panel);
