@@ -23,12 +23,13 @@
  */
 package org.primefaces.showcase.menu;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 @Named
 @ApplicationScoped
@@ -83,23 +84,12 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("PrimeBlocks", primeBlocksMenuItems, true));
         //PRIMEBLOCKS CATEGORY END
 
-        //PRIMEFLEX 3 CATEGORY START
-        List<MenuItem> primeFlex3MenuItems = new ArrayList<>();
-        primeFlex3MenuItems.add(new MenuItem("PrimeFlex", "https://www.primefaces.org/primeflex", null, "showcase/images/menu/banner-primeflex.svg"));
-        menuCategories.add(new MenuCategory("PrimeFlex 3.0", primeFlex3MenuItems, true));
-        //PRIMEFLEX 3 CATEGORY END
-
         //PRIMEFLEX 2 CATEGORY START
-        List<MenuItem> primeFlex2MenuItems = new ArrayList<>();
-        primeFlex2MenuItems.add(new MenuItem("Setup", "/primeflex/setup"));
-        primeFlex2MenuItems.add(new MenuItem("Display", "/primeflex/display"));
-        primeFlex2MenuItems.add(new MenuItem("Elevation", "/primeflex/elevation"));
-        primeFlex2MenuItems.add(new MenuItem("FlexBox", "/primeflex/flexbox"));
-        primeFlex2MenuItems.add(new MenuItem("Form Layout", "/primeflex/formlayout"));
-        primeFlex2MenuItems.add(new MenuItem("Grid System", "/primeflex/grid"));
-        primeFlex2MenuItems.add(new MenuItem("Spacing", "/primeflex/spacing"));
-        primeFlex2MenuItems.add(new MenuItem("Text", "/primeflex/text"));
-        menuCategories.add(new MenuCategory("PrimeFlex 2.0", primeFlex2MenuItems));
+        List<MenuItem> primeFlexMenuItems = new ArrayList<>();
+        primeFlexMenuItems.add(new MenuItem("Setup", "/primeflex/setup"));
+        primeFlexMenuItems.add(new MenuItem("PrimeFlex v3", "https://www.primefaces.org/primeflex", "New"));
+        primeFlexMenuItems.add(new MenuItem("PrimeFlex v2", "https://github.com/primefaces/primeflex/wiki/PrimeFlex-v2"));
+        menuCategories.add(new MenuCategory("PrimeFlex", primeFlexMenuItems));
         //PRIMEFLEX 2 CATEGORY END
 
         //PRIMEICONS CATEGORY START
