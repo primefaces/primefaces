@@ -31,7 +31,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MessageFactory;
 
 /**
@@ -179,12 +178,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     @Override
     public int getRows() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.rows, () -> {
-            if (isPaginator()) {
-                return 10;
-            }
-            return 0;
-        });
+        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
     }
 
     @Override
