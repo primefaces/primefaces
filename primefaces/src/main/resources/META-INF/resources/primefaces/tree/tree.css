@@ -43,13 +43,12 @@
     padding: 0 3px;
 }
 
-.ui-tree .ui-tree-selectable .ui-treenode-label,
-.ui-tree .ui-tree-selectable .ui-treenode-icon {
+.ui-tree .ui-tree-selectable .ui-treenode-content {
     cursor: pointer;
 }
 
-.ui-tree .ui-treenode-label.ui-state-hover,
-.ui-tree .ui-treenode-label.ui-state-highlight {
+.ui-tree .ui-treenode-content.ui-state-hover,
+.ui-tree .ui-treenode-content.ui-state-highlight {
     font-weight: normal;
     border: 0 none;
 }
@@ -96,7 +95,7 @@
     vertical-align: bottom;
 }
 
-.ui-tree.ui-tree-horizontal .ui-treenode-label {
+.ui-tree.ui-tree-horizontal .ui-treenode-content {
     outline: 0 none;
 }
 
@@ -178,7 +177,7 @@
 }
 
 .ui-tree.ui-state-disabled .ui-tree-toggler,
-.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-label,
+.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-content,
 .ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-icon,
 .ui-tree.ui-state-disabled .ui-chkbox-box {
     cursor: default;
