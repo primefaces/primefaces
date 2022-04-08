@@ -29,14 +29,14 @@
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
-        <hibernate-validator.version>6.2.2.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
         <lombok.version>1.18.22</lombok.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.59</tomcat.version>
+        <tomcat.version>9.0.62</tomcat.version>
         <resteasy.version>5.0.2.Final</resteasy.version>
         <owb.version>2.0.26</owb.version>
-        <jetty.version>9.4.45.v20220203</jetty.version>
+        <jetty.version>9.4.46.v20220331</jetty.version>
     </properties>
 
     <dependencies>
@@ -346,7 +346,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -426,16 +426,13 @@
             <id>firefox</id>
             <properties>
                 <webdriver.browser>firefox</webdriver.browser>
+                <excludedGroups>FirefoxExclude</excludedGroups>
             </properties>
         </profile>
         <profile>
             <id>safari</id>
             <properties>
                 <webdriver.browser>safari</webdriver.browser>
-                <!-- optionally only run tests with specific @Tag -->
-                <!--
-                <groups>SafariBasic</groups>
-                -->
                 <excludedGroups>SafariExclude</excludedGroups>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
             </properties>

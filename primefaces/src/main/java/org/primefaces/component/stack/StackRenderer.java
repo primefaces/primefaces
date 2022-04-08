@@ -101,7 +101,7 @@ public class StackRenderer extends BaseMenuRenderer {
 
         writer.startElement("span", null);
         if (menuitem.getValue() != null) {
-            writer.write((String) menuitem.getValue());
+            writer.writeText(menuitem.getValue(), "value");
         }
 
         writer.endElement("span");

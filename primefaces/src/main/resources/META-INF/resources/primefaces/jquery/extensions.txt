@@ -13,7 +13,6 @@ List of Plugins
 - Touch Punch (https://github.com/RWAP/jquery-ui-touch-punch custom fork of https://github.com/furf/jquery-ui-touch-punch)
 
 
-
 Extensions:
 
 jquery.autosize.js:
@@ -31,3 +30,5 @@ jquery.ui.pfextensions:
 - Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4295)
 - Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4719)
 - Datepicker style fix (https://github.com/primefaces/primefaces/issues/5374)
+- Slider step min max fix (https://github.com/primefaces/primefaces/issues/8619)
+

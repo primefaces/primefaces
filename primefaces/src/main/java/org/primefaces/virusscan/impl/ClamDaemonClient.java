@@ -34,8 +34,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import org.apache.commons.io.IOUtils;
-
 /**
  * Simple client for ClamAV's clamd scanner.
  * Provides straightforward instream scanning.
@@ -87,13 +85,15 @@ public class ClamDaemonClient {
      * @throws IOException if there is an I/O problem communicating with CLAMD
      */
     public boolean ping() throws IOException {
-        try (Socket s = getSocket(); OutputStream outs = s.getOutputStream()) {
+        try (Socket s = getSocket(); OutputStream os = s.getOutputStream()) {
             s.setSoTimeout(timeout);
-            outs.write(asBytes("zPING\0"));
-            outs.flush();
-            final byte[] buffer = new byte[4];
-            IOUtils.read(s.getInputStream(), buffer);
-            return Arrays.equals(buffer, asBytes("PONG"));
+            os.write(asBytes("zPING\0"));
+            os.flush();
+            try (InputStream is = s.getInputStream()) {
+                byte[] buffer = new byte[4];
+                int read = is.read(buffer);
+                return Arrays.equals(buffer, asBytes("PONG"));
+            }
         }
     }
 

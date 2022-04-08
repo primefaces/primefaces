@@ -244,7 +244,6 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -266,7 +265,6 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
@@ -325,6 +323,18 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:roleFilter")
         SelectManyMenu roleFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter")
+        DatePicker lastLoginDateTimeFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter")
+        DatePicker lastLoginDateFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter2")
+        DatePicker lastLoginDateTimeFilter2;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter2")
+        DatePicker lastLoginDateFilter2;
 
         @Override
         public String getLocation() {

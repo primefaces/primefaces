@@ -36,49 +36,10 @@ public class CartesianLinearTicks extends CartesianTicks {
 
     private static final long serialVersionUID = 1L;
 
-    private Number min;
-    private Number max;
     private Number maxTicksLimit;
     private Number precision;
     private Number stepSize;
-    private Number suggestedMax;
-    private Number suggestedMin;
 
-    /**
-     * Gets the min
-     *
-     * @return min
-     */
-    public Number getMin() {
-        return min;
-    }
-
-    /**
-     * Sets the min
-     *
-     * @param min User defined minimum number for the scale, overrides minimum value from data.
-     */
-    public void setMin(Number min) {
-        this.min = min;
-    }
-
-    /**
-     * Gets the max
-     *
-     * @return max
-     */
-    public Number getMax() {
-        return max;
-    }
-
-    /**
-     * Sets the max
-     *
-     * @param max User defined maximum number for the scale, overrides maximum value from data.
-     */
-    public void setMax(Number max) {
-        this.max = max;
-    }
 
     /**
      * Gets the maxTicksLimit
@@ -134,41 +95,7 @@ public class CartesianLinearTicks extends CartesianTicks {
         this.stepSize = stepSize;
     }
 
-    /**
-     * Gets the suggestedMax
-     *
-     * @return suggestedMax
-     */
-    public Number getSuggestedMax() {
-        return suggestedMax;
-    }
 
-    /**
-     * Sets the suggestedMax
-     *
-     * @param suggestedMax Adjustment used when calculating the maximum data value.
-     */
-    public void setSuggestedMax(Number suggestedMax) {
-        this.suggestedMax = suggestedMax;
-    }
-
-    /**
-     * Gets the suggestedMin
-     *
-     * @return suggestedMin
-     */
-    public Number getSuggestedMin() {
-        return suggestedMin;
-    }
-
-    /**
-     * Sets the suggestedMin
-     *
-     * @param suggestedMin Adjustment used when calculating the minimum data value.
-     */
-    public void setSuggestedMin(Number suggestedMin) {
-        this.suggestedMin = suggestedMin;
-    }
 
     /**
      * Write the options of cartesian linear ticks
@@ -180,13 +107,9 @@ public class CartesianLinearTicks extends CartesianTicks {
     public String encode() throws IOException {
         try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write(super.encode());
-            ChartUtils.writeDataValue(fsw, "min", this.min, true);
-            ChartUtils.writeDataValue(fsw, "max", this.max, true);
             ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
             ChartUtils.writeDataValue(fsw, "precision", this.precision, true);
             ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
-            ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
-            ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
 
             return fsw.toString();
         }

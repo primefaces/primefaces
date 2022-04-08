@@ -243,7 +243,7 @@
         _destroy: function () {
             $(document.body).removeClass('ui-overflow-hidden');
             
-            if (this.state.slideShowActive) {
+            if (this.state && this.state.slideShowActive) {
                 this.stopSlideShow();
             }
         },
