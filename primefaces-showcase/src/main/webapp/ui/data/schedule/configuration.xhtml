@@ -25,7 +25,7 @@
 
                 <p:panel header="Settings">
                     <p:panelGrid columns="2" layout="flex" styleClass="ui-noborder"
-                                 columnClasses="p-col-12 p-xl-6, p-col-12 p-xl-6">
+                                 columnClasses="col-12 xl:col-6, col-12 xl:col-6">
                         <p:selectBooleanCheckbox value="#{scheduleJava8View.resizable}" itemLabel="resizable events">
                             <p:ajax update="schedule"/>
                         </p:selectBooleanCheckbox>
@@ -59,7 +59,7 @@
                     </p:panelGrid>
 
                     <p:panelGrid columns="4" layout="flex" styleClass="ui-noborder"
-                                 columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4">
+                                 columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4">
                         <p:outputLabel value="height" for="@next"/>
                         <p:inputText id="height" value="#{scheduleJava8View.height}">
                             <p:ajax update="schedule"/>
