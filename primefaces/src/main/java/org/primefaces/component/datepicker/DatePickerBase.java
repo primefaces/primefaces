@@ -36,13 +36,17 @@ import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
-import org.primefaces.util.Constants;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DatePickerRenderer";
+
+    /**
+     * Standard 576px considered a small screen so we can auto switch the picker to touch mode
+     */
+    public static final int RESPONSIVE_BREAKPOINT_SMALL = 576;
 
     protected String timeSeparator;
     protected String fractionSeparator;
@@ -476,7 +480,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
     }
 
     public int getResponsiveBreakpoint() {
-        return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, Constants.DEFAULT_RESPONSIVE_BREAKPOINT);
+        return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, RESPONSIVE_BREAKPOINT_SMALL);
     }
 
     @Override
