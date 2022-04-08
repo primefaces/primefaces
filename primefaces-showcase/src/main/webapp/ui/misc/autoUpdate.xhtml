@@ -19,13 +19,13 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <p:outputPanel styleClass="p-mb-3">
+                <p:outputPanel styleClass="mb-3">
                     <p:autoUpdate/>
 
                     Time: #{autoUpdateView.time}
                 </p:outputPanel>
 
-                <p:commandButton value="AJAX request" update="@none" process="@this" styleClass="p-mr-2" />
+                <p:commandButton value="AJAX request" update="@none" process="@this" styleClass="mr-2" />
                 <p:commandButton value="Ignore AutoUpdate" update="@none" process="@this" ignoreAutoUpdate="true"/>
             </h:form>
         </div>

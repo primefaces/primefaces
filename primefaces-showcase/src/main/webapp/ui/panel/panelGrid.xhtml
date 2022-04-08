@@ -109,7 +109,7 @@
         <div class="card">
             <h5>Responsive (PrimeFlex, ColumnClasses)</h5>
             <p:panelGrid columns="4" layout="flex" styleClass="showcase-text-align-center"
-                         columnClasses="p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3, p-col-12 p-md-6 p-lg-3">
+                         columnClasses="col-12 md:col-6 lg:col-3, col-12 md:col-6 lg:col-3, col-12 md:col-6 lg:col-3, col-12 md:col-6 lg:col-3">
                 <h:outputText value="Content"/>
                 <h:outputText value="Content"/>
                 <h:outputText value="Content"/>
@@ -130,7 +130,7 @@
         <div class="card">
             <h5>Responsive (PrimeFlex, p-align-baseline)</h5>
             <p:panelGrid columns="4" layout="flex"
-                         columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                         columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
                          contentStyleClass="p-align-baseline ui-fluid">
                 <p:outputLabel for="text1" value="Text 1"/>
                 <p:inputText id="text1"/>
@@ -160,7 +160,7 @@
         <div class="card">
             <h5>Responsive (PrimeFlex, align-items: center)</h5>
             <p:panelGrid columns="4" layout="flex"
-                         columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                         columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
                          styleClass="customPanelGrid" contentStyleClass="ui-fluid">
                 <p:outputLabel for="textA1" value="Text 1"/>
                 <p:inputText id="textA1"/>
@@ -190,7 +190,7 @@
         <div class="card">
             <h5>Responsive (PrimeFlex, Default alignment)</h5>
             <p:panelGrid columns="4" layout="flex"
-                         columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                         columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4"
                          contentStyleClass="ui-fluid">
                 <p:outputLabel for="textB1" value="Text 1"/>
                 <p:inputText id="textB1"/>
@@ -411,8 +411,8 @@
 
                 <p:row>
                     <p:column styleClass="ui-grid-col-12">
-                        <p:commandButton value="Accept" styleClass="p-mr-2" style="width: auto"/>
-                        <p:commandButton value="Reject" styleClass="p-mr-2" style="width: auto"/>
+                        <p:commandButton value="Accept" styleClass="mr-2" style="width: auto"/>
+                        <p:commandButton value="Reject" styleClass="mr-2" style="width: auto"/>
                         <p:commandButton value="Refer" style="width: auto" />
                     </p:column>
                 </p:row>

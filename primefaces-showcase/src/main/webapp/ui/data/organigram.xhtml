@@ -120,7 +120,7 @@
             </h:form>
 
             <h:form>
-                <p:panel header="Options" styleClass="p-mt-5">
+                <p:panel header="Options" styleClass="mt-5">
                     <h:panelGrid columns="2" cellpadding="7">
                         <p:outputLabel for="@next" value="zoom" styleClass="text-secondary" />
                         <p:selectBooleanCheckbox value="#{organigramView.zoom}">
@@ -143,8 +143,8 @@
                         </p:inputText>
                     </h:panelGrid>
 
-                    <p:commandButton value="Scroll To Selection" onclick="PF('organigram').scrollToSelection(); return false;" styleClass="p-mt-3 p-mr-2" />
-                        <p:commandButton value="Update Organigram" update=":form:organigram" styleClass="p-mt-3" />
+                    <p:commandButton value="Scroll To Selection" onclick="PF('organigram').scrollToSelection(); return false;" styleClass="mt-3 mr-2" />
+                        <p:commandButton value="Update Organigram" update=":form:organigram" styleClass="mt-3" />
                 </p:panel>
             </h:form>
         </div>

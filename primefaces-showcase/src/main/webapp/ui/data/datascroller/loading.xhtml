@@ -22,7 +22,7 @@
                 <p:dataScroller widgetVar="ds" value="#{dataScrollerView.products}" var="product" chunkSize="5">
                     <f:facet name="loading">
                         <div class="product">
-                            <div class="product-list-item p-p-5">
+                            <div class="product-list-item p-5">
                                 <p:skeleton height="100px" width="150px" style="margin-right:2rem"/>
                                 <div class="product-list-detail">
                                     <p:skeleton width="200px" height="34px" style="margin-bottom:14px"/>
@@ -39,7 +39,7 @@
                     </f:facet>
 
                     <div class="product">
-                        <div class="product-list-item p-p-5">
+                        <div class="product-list-item p-5">
                             <p:graphicImage name="demo/images/product/#{product.image}"/>
                             <div class="product-list-detail">
                                 <div class="product-name">#{product.name}</div>
@@ -61,7 +61,7 @@
                     </div>
 
                     <f:facet name="loader">
-                        <div class="p-text-center">
+                        <div class="text-center">
                             <p:commandButton type="button" value="More" icon="pi pi-refresh"/>
                         </div>
                     </f:facet>

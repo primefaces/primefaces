@@ -20,49 +20,49 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-               <div class="p-d-flex p-jc-between">
+               <div class="flex justify-content-between">
                     <div>
                         <h5>Standard</h5>
-                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2">
                             <p:dataExporter type="xls" target="tbl" fileName="documents"/>
                         </p:commandButton>
     
-                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2">
                             <p:dataExporter type="xlsxstream" target="tbl" fileName="documents"/>
                         </p:commandButton>
     
-                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2">
                             <p:dataExporter type="pdf" target="tbl" fileName="documents"/>
                         </p:commandButton>
     
-                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2">
                             <p:dataExporter type="csv" target="tbl" fileName="documents" />
                         </p:commandButton>
     
-                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2">
                             <p:dataExporter type="xml" target="tbl" fileName="documents"/>
                         </p:commandButton>
                     </div>
 
                     <div>
                         <h5>Page Only</h5>
-                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="xls" target="tbl" fileName="documents" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="xlsxstream" target="tbl" fileName="documents" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="pdf" target="tbl" fileName="documents" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="csv" target="tbl" fileName="documents" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="xml" target="tbl" fileName="documents" pageOnly="true"/>
                         </p:commandButton>
                     </div>
