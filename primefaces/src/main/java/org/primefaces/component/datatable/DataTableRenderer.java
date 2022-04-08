@@ -24,11 +24,7 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -272,7 +268,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
         boolean resizable = table.isResizableColumns();
-        String style = table.getStyle();
+        String style = Objects.toString(table.getStyle(), Constants.EMPTY_STRING);
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
         boolean hasFrozenColumns = (frozenColumns != 0);
@@ -1710,8 +1706,9 @@ public class DataTableRenderer extends DataRenderer {
     protected Map<SortMeta, String> getSortableColumnHeaders(FacesContext context, DataTable table) {
         AtomicReference<String> headerLabel = new AtomicReference<>(null);
 
-        Map<SortMeta, String> headers = new HashMap<>();
-        for (SortMeta sortMeta : table.getSortByAsMap().values()) {
+        Map<String, SortMeta> sortByAsMap = table.getSortByAsMap();
+        Map<SortMeta, String> headers = new LinkedHashMap<>(sortByAsMap.size());
+        for (SortMeta sortMeta : sortByAsMap.values()) {
             if (sortMeta.isHeaderRow()) {
                 continue;
             }

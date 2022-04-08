@@ -88,11 +88,4 @@ public abstract class BlockUI extends AbstractComponent {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
     }
 
-    /**
-     * Destroy the widget.
-     */
-    public void destroy() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".destroy();");
-    }
-
 }

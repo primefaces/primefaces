@@ -81,6 +81,7 @@ Currently, only the following components are implemented (partially):
 - InputText
 - InputTextarea
 - Messages
+- Menubar
 - OutputLabel
 - OverlayPanel
 - Panel

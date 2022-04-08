@@ -116,7 +116,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             length = value.length;
 
             if(length > _self.cfg.maxlength) {
-                _self.jq.val(value.substr(0, _self.cfg.maxlength));
+                _self.jq.val(value.slice(0, _self.cfg.maxlength));
             }
         });
     },

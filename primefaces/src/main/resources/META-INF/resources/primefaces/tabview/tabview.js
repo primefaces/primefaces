@@ -170,6 +170,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
                         if(!element.hasClass('ui-state-disabled') && index !== $this.cfg.selected) {
                             $this.select(index);
+                            element.trigger('focus.tabview');
                         }
                     }
 

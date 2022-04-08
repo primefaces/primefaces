@@ -533,10 +533,6 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected Cell applyColumnAlignments(UIColumn column, Cell cell) {
-        if (cell.getCellStyle() != null) {
-            // don't apply style if cell already has one
-            return cell;
-        }
         String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
         if (LangUtils.containsIgnoreCase(styles, "right")) {
             cell.setCellStyle(cellStyleRightAlign);

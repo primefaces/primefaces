@@ -483,7 +483,7 @@ public class DataTable extends DataTableBase {
 
             if (isClientCacheRequest(context)) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
+                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + rows;
             }
 
             List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), filterBy);
@@ -811,7 +811,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
-        if (getFacesContext().isPostback()) {
+        if (getFacesContext().isPostback() && !ComponentUtils.isSkipIteration(context, context.getFacesContext())) {
             loadLazyDataIfRequired();
         }
         return super.visitRows(context, callback, visitRows);

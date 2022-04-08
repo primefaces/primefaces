@@ -20,7 +20,7 @@
             <h:form>
                 <h5>Processors</h5>
                 <p:commandButton value="XLS" styleClass="mr-2 mb-2">
-                    <p:dataExporter type="xls" target="tbl" fileName="products"
+                    <p:dataExporter type="xlsxstream" target="tbl" fileName="products"
                                     postProcessor="#{customizedDocumentsView.postProcessXLS}"/>
                 </p:commandButton>
 
@@ -61,8 +61,9 @@
                 </p:dataTable>
 
                 <h5>Options</h5>
+
                 <p:commandButton value="XLS" styleClass="mr-2 mb-2">
-                    <p:dataExporter type="xls" target="tbl2" fileName="products"
+                    <p:dataExporter type="xlsxstream" target="tbl2" fileName="products"
                                     options="#{customizedDocumentsView.excelOpt}"/>
                 </p:commandButton>
 

@@ -4,6 +4,8 @@
  * Timeline is an interactive graph to visualize events in time. Currently uses
  * [vis-timeline](https://github.com/visjs/vis-timeline).
  *
+ * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.Timeline>}
+ *
  * @typedef PrimeFaces.widget.Timeline.AddCallbackCallback Callback that is invoked when an event was added to this
  * timeline. See also {@link Timeline.addCallback}.
  * @param {import("vis-timeline").TimelineItem} PrimeFaces.widget.Timeline.AddCallbackCallback.item The timeline item
@@ -438,8 +440,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 var snap = inst.itemSet.options.snap || null;
                 var scale = inst.body.util.getScale();
                 var step = inst.body.util.getStep();
-                var snappedStart = snap ? snap(xstart, scale, step).toDate() : xstart;
-                var snappedEnd = snap ? snap(xend, scale, step).toDate() : xend;
+                var snappedStart = snap ? new Date(snap(xstart, scale, step)) : xstart;
+                var snappedEnd = snap ? new Date(snap(xend, scale, step)) : xend;
 
                 var params = [];
                 params.push({
@@ -484,6 +486,22 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             // make the timeline droppable
             $(el).droppable(droppableOpts);
         }
+    },
+
+   /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.widget.ContextMenu} menuWidget
+     * @param {PrimeFaces.widget.Timeline} targetWidget
+     * @param {string} targetId
+     * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
+     */
+    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        // block default context menu
+        targetWidget.instance.on('contextmenu', function (properties) {
+           menuWidget.show(properties.event);
+           properties.event.preventDefault();
+        });
     },
 
     /**

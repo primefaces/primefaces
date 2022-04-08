@@ -618,6 +618,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     setupStickyHeader: function() {
         var table = this.thead.parent(),
         offset = table.offset(),
+        orginTableContent = this.jq.children('table'),
         win = $(window),
         $this = this;
 

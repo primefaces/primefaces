@@ -38,6 +38,7 @@ dismissable | true | Boolean | When set true, clicking outside of the panel hide
 showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
 modal | false | Boolean | Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.
 appendTo | null | String | Appends the overlayPanel to the given search expression.
+autoHide | true | boolean | Whether to hide overlay when hovering over overlay content when using custom show/hide events.
 
 ## Getting started with OverlayPanel
 OverlayPanel needs a component as a target in addition to the content to display. Example below

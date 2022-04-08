@@ -80,7 +80,7 @@ DataTable displays data in tabular format.
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
 | rowStyleClass             | null               | String           | Style class for each row.
-| rows                      | null               | Integer          | Number of rows to display per page.
+| rows                      | 0 / 10             | Integer          | Number of rows to display per page. Defaults to 10 if paginator=true.
 | rowsPerPageLabel          | null               | String           | Label for the rowsPerPage dropdown.
 | rowsPerPageTemplate       | null               | String           | Template of the rowsPerPage dropdown.
 | saveOnCellBlur            | true               | Boolean          | Saves the changes in cell editing on blur, when set to false changes are discarded.

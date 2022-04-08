@@ -742,6 +742,10 @@ button.ui-button::-moz-focus-inner {
     box-sizing: border-box;
 }
 
+.ui-splitbuttonmenu .ui-divider-horizontal {
+    width: auto;
+}
+
 /** IE Hacks **/
 div.ui-button, .ui-splitbutton {
     display: inline-block;
