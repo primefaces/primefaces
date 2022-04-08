@@ -199,7 +199,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.target.attr("aria-describedby", describedBy);
 
         var $this = this;
-        if (this.cfg.delegate)
+        if (this.cfg.delegate) {
             var targetSelector;
              // try to get jq selectors from pf target selector to bind on all elements, not on the 1st one only
              if ((tg = this.cfg.target.match('@\\((.+)\\)')) && (tg.length > 1)) {
