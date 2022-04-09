@@ -121,7 +121,7 @@ Examples here demonstrates vertical and horizontal layout alternatives.
 
 <h3>Horizontal Checkbox</h3>
 <div class="formgroup-inline">
-    <div cla="field-checkbox">
+    <div class="field-checkbox">
         <p:selectBooleanCheckbox id="h_option1" />
         <p:outputLabel for="h_option1" value="Option 1" />
     </div>
