@@ -103,7 +103,7 @@ However, you may find your labels not lining up in horizontal forms.  You can us
              styleClass="customPanelGrid">
 ```
 
-Note: This documentation refers to version 2.0.0 of PrimeFlex.
+Note: This documentation refers to version 3.0.0 of PrimeFlex.
 
 ## Responsive Style, StyleClass, and ID
 PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS and

@@ -3,7 +3,7 @@
 Form layout is a CSS utility optimized for creating forms with ease.
 FormLayout is not included in PrimeFaces as it is provided by [PrimeFlex](https://github.com/primefaces/primeflex), a shared grid library between PrimeFaces, PrimeNG, PrimeReact and PrimeVue projects.
 
-Note: This documentation refers to version 2.0.0 of PrimeFlex.
+Note: This documentation refers to version 3.0.0 of PrimeFlex.
 
 ## Getting Started with FormLayout
 Core member of the FormLayout is the `.field` class that wraps the input field and the associated label.
