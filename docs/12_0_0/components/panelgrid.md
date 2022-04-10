@@ -99,11 +99,11 @@ However, you may find your labels not lining up in horizontal forms.  You can us
 
 <p:panelGrid columns="4" 
              layout="flex" 
-             columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4" 
+             columnClasses="col-12 md-3 xl-2, col-12 md-9 xl-4, col-12 md-3 xl-2, col-12 md-9 xl-4" 
              styleClass="customPanelGrid">
 ```
 
-Note: This documentation refers to version 2.0.0 of PrimeFlex.
+Note: This documentation refers to version 3.0.0 of PrimeFlex.
 
 ## Responsive Style, StyleClass, and ID
 PanelGrid offers responsive support using `layout="flex"` for PrimeFlex or `layout="grid"` for Grid CSS and

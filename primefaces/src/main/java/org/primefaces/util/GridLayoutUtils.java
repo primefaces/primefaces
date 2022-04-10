@@ -37,12 +37,12 @@ public class GridLayoutUtils {
             .build();
 
     private static final Map<Integer, String> FLEX_COLUMN_MAP = MapBuilder.<Integer, String>builder()
-            .put(1, "p-col-12 p-md-12")
-            .put(2, "p-col-12 p-md-6")
-            .put(3, "p-col-12 p-md-4")
-            .put(4, "p-col-12 p-md-3")
-            .put(6, "p-col-12 p-md-2")
-            .put(12, "p-col-12 p-md-1")
+            .put(1, "col-12 md-12")
+            .put(2, "col-12 md-6")
+            .put(3, "col-12 md-4")
+            .put(4, "col-12 md-3")
+            .put(6, "col-12 md-2")
+            .put(12, "col-12 md-1")
             .build();
 
     private GridLayoutUtils() {
