@@ -70,6 +70,15 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         else if (stateHolderVal != null) {
             this.cfg.active = parseInt(this.stateHolder.val());
         }
+        
+        this.headers.each(function() {
+            var containerId = PrimeFaces.escapeClientId(this.id.replace('_header', ''));
+            if ($(containerId + ' .ui-state-error').length > 0) {
+                $(this).addClass('ui-state-error');
+            } else {
+                $(this).removeClass('ui-state-error');
+            }
+        });
     },
 
     /**
