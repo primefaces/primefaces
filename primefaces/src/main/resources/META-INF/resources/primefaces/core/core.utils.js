@@ -843,6 +843,7 @@ if (!PrimeFaces.utils) {
          * Is this component wrapped in a float label?
          *
          * @param {JQuery | undefined | null} jq An element to check if wrapped in float label. 
+         * @return {boolean} true this this JQ has a float label parent
          */
         hasFloatLabel: function(jq) {
             if (!jq || !jq.parent()) {
