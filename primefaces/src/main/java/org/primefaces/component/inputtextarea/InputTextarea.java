@@ -48,13 +48,14 @@ public class InputTextarea extends InputTextareaBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
     public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
 
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
+    private static final List<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "query");
+    private static final Collection<String> EVENT_NAMES_COMBINED = LangUtils.concat(EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     private List suggestions;
 
     @Override
     public Collection<String> getEventNames() {
-        return EVENT_NAMES;
+        return EVENT_NAMES_COMBINED;
     }
 
     @Override
