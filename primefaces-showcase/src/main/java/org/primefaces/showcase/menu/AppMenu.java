@@ -557,6 +557,7 @@ public class AppMenu {
         //miscMenuItems.add(new MenuItem("Responsive", "/ui/misc/responsive"));
         miscMenuItems.add(new MenuItem("AutoUpdate", "/ui/misc/autoUpdate"));
         miscMenuItems.add(new MenuItem("OutputLabel", "/ui/misc/outputLabel"));
+        miscMenuItems.add(new MenuItem("FloatLabel", "/ui/misc/floatLabel"));
         miscMenuItems.add(new MenuItem("BlockUI", "/ui/misc/blockUI"));
         miscMenuItems.add(new MenuItem("Cache", "/ui/misc/cache"));
         miscMenuItems.add(new MenuItem("Captcha", "/ui/misc/captcha"));

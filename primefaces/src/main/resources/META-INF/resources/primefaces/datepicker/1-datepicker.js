@@ -222,6 +222,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
                 clearIncomplete: this.cfg.maskAutoClear||true,
                 autoUnmask: false,
+                showMaskOnHover: false,
                 onBeforePaste: function (pastedValue, opts) {
                     // GitHub #8319 issue with pasting mask
                     // TODO: Remove if InputMask 5.0.8+ fixes the issue
