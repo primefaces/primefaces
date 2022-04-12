@@ -23,7 +23,7 @@
                 <p:textEditor widgetVar="editor1" value="#{editorView.text}" height="300"  />
 
                 <h3 class="first">Custom Toolbar</h3>
-                <p:textEditor widgetVar="editor2" value="#{editorView.text2}" height="300" placeholder="Enter your content">
+                <p:textEditor widgetVar="editor2" value="#{editorView.text2}" height="300" placeholder="Enter your content" required="true">
                     <f:facet name="toolbar">
                      <span class="ql-formats">
                         <button class="ql-bold"></button>
@@ -37,6 +37,7 @@
                     </span>
                     </f:facet>
                 </p:textEditor>
+                <p:commandButton value="Save" update="@form" icon="pi pi-check"/>
             </h:form>
         </div>
     </ui:define>
