@@ -639,7 +639,8 @@ if (!PrimeFaces.utils) {
         enableButton: function(jq) {
             if (jq) {
                 jq.removeClass('ui-state-disabled')
-                  .removeAttr('disabled aria-disabled');
+                  .prop( "disabled", false)
+                  .removeAttr('aria-disabled');
             }
         },
 
