@@ -353,8 +353,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if (!this.hasFloatLabel) {
             return;
         }
-        this.panel = $(this.jqId + '_panel');
-
         this.panel.addClass('ui-input-overlay-panel');
         this.jq.addClass('ui-inputwrapper');
 
