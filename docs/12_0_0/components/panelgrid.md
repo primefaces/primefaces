@@ -99,7 +99,7 @@ However, you may find your labels not lining up in horizontal forms.  You can us
 
 <p:panelGrid columns="4" 
              layout="flex" 
-             columnClasses="col-12 md-3 xl-2, col-12 md-9 xl-4, col-12 md-3 xl-2, col-12 md-9 xl-4" 
+             columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4" 
              styleClass="customPanelGrid">
 ```
 
