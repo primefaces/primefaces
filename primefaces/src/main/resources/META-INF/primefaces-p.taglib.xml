@@ -12978,6 +12978,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when the input gets focus. Default is true.]]>
+            </description>
+            <name>showMaskOnFocus</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when hovering the mouse. Default is true.]]>
+            </description>
+            <name>showMaskOnHover</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

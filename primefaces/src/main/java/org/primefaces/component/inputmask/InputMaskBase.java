@@ -40,7 +40,9 @@ public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implement
         slotChar,
         autoClear,
         type,
-        validateMask
+        validateMask,
+        showMaskOnFocus,
+        showMaskOnHover
     }
 
     public InputMaskBase() {
@@ -106,5 +108,21 @@ public abstract class InputMaskBase extends AbstractPrimeHtmlInputText implement
 
     public void setValidateMask(boolean validateMask) {
         getStateHelper().put(PropertyKeys.validateMask, validateMask);
+    }
+
+    public boolean isShowMaskOnFocus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMaskOnFocus, true);
+    }
+
+    public void setShowMaskOnFocus(boolean showMaskOnFocus) {
+        getStateHelper().put(PropertyKeys.showMaskOnFocus, showMaskOnFocus);
+    }
+
+    public boolean isShowMaskOnHover() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMaskOnHover, true);
+    }
+
+    public void setShowMaskOnHover(boolean showMaskOnHover) {
+        getStateHelper().put(PropertyKeys.showMaskOnHover, showMaskOnHover);
     }
 }
