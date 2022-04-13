@@ -36,6 +36,7 @@ public class MaskView {
     private String taxId;
     private String ssn;
     private String productKey;
+    private String rtl;
 
     public String getDate() {
         return date;
@@ -83,5 +84,13 @@ public class MaskView {
 
     public void setProductKey(String productKey) {
         this.productKey = productKey;
+    }
+
+    public String getRtl() {
+        return rtl;
+    }
+
+    public void setRtl(String rtl) {
+        this.rtl = rtl;
     }
 }
