@@ -161,6 +161,6 @@ structural style classes;
 | .ui-button | Button element
 | .ui-button-text-only | Button element when icon is not used
 | .ui-button-text | Label of button
-| .ui-state-loading | Button element; when `disableOnAjax` or `inlineAjaxStatus` is set and an Ajax request triggered by the button is in progress.
+| .ui-state-loading | Button element; when `disableOnAjax` is set and an Ajax request triggered by the button is in progress.
 
 As skinning style classes are global, see the main theming section for more information.
