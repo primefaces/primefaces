@@ -112,7 +112,7 @@
 
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
-        <filter-class>org.primefaces.showcase.filter.CharacterEncodingFilter</filter-class>
+        <filter-class>org.primefaces.webapp.filter.CharacterEncodingFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Character Encoding Filter</filter-name>
