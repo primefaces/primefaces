@@ -20,9 +20,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinButton(this.jq);
 
-        if (this.cfg.disableOnAjax || this.cfg.inlineAjaxStatus) {
-            this.bindTriggers();
-        }
+        this.bindTriggers();
     },
 
     /**
@@ -46,28 +44,24 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                 $this.jq.toggleClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax) {
+                if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
                 }
-                if ($this.cfg.inlineAjaxStatus) {
-                    var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
-                    var uiIcon = $this.jq.find('.ui-icon');
-                    if (uiIcon.length) {
-                        var prefix = 'ui-button-icon-';
-                        loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
-                    }
-                    $this.jq.prepend(loadIcon);
+                var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
+                var uiIcon = $this.jq.find('.ui-icon');
+                if (uiIcon.length) {
+                    var prefix = 'ui-button-icon-';
+                    loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
                 }
+                $this.jq.prepend(loadIcon);
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                 $this.jq.toggleClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax) {
+                if ($this.cfg.disableOnAjax !== false) {
                     $this.enable();
                 }
-                if ($this.cfg.inlineAjaxStatus) {
-                    $this.jq.find('.ui-icon-loading').remove();
-                }
+                $this.jq.find('.ui-icon-loading').remove();
             }
         });
     },

@@ -76,7 +76,6 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
 | renderDisabledClick | true | Boolean | When enabled, click event can be added to disabled button.
 | validateClient | false | Boolean | When set to true client side validation is enabled, global setting is required to be enabled as a prerequisite.
-| inlineAjaxStatus | false | Boolean | If true, a loading icon will be shown in this button during Ajax requests triggered by the button.
 
 
 ## Getting started with CommandButton

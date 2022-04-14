@@ -121,14 +121,10 @@
 
             <h5>Ajax Disabling and Status Icon</h5>
             <h:form>
-                <p:commandButton value="Disable" disableOnAjax="true" action="#{buttonBasicView.sleep()}" />
-                <p:commandButton value="Status" inlineAjaxStatus="true" action="#{buttonBasicView.sleep()}" />
-                <p:commandButton value="Both + Icon" inlineAjaxStatus="true" disableOnAjax="true"
-                                 icon="pi pi-check" action="#{buttonBasicView.sleep()}" />
-                <p:commandButton value="Both + Icon" inlineAjaxStatus="true" disableOnAjax="true"
-                                 icon="pi pi-check" iconPos="right" action="#{buttonBasicView.sleep()}" />
-                <p:commandButton value="Custom" styleClass="custom" disableOnAjax="true" inlineAjaxStatus="true"
-                                 action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Keep Enabled" disableOnAjax="false" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Icon Left" icon="pi pi-check" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Icon Right" icon="pi pi-check" iconPos="right" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Custom" styleClass="custom" action="#{buttonBasicView.sleep()}" />
             </h:form>
             <style>
                 html body .custom.ui-button.ui-button-text-only .ui-icon-loading {
