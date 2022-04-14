@@ -37,7 +37,6 @@ import javax.faces.application.Application;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -250,6 +249,18 @@ public class FileUploadUtilsTest {
 
         // Assert
         assertEquals("", result);
+    }
+
+    @Test
+    public void getValidFilename_GitHub8359() {
+        // Arrange
+        String filename = "~myfile.txt";
+
+        // Act
+        String result = FileUploadUtils.getValidFilename(filename);
+
+        // Assert
+        assertEquals(filename, result);
     }
 
 }

@@ -20,7 +20,7 @@
             <h:form>
                 <p:growl widgetVar="msgs" />
 
-                <h:panelGrid columns="2" cellpadding="7" styleClass="p-mb-3">
+                <h:panelGrid columns="2" cellpadding="7" styleClass="mb-3">
                     <h:outputLabel for="name" value="Name:" style="font-weight:bold"/>
                     <p:inputText id="name" value="#{lifecycleView.text}" widgetVar="wgtName">
                         <f:attribute name="widgetPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: 'Widget Created'})"/>
@@ -29,7 +29,7 @@
                     </p:inputText>
                 </h:panelGrid>
 
-                <p:commandButton value="Submit" update="@form" icon="pi pi-check" styleClass="p-mr-2" />
+                <p:commandButton value="Submit" update="@form" icon="pi pi-check" styleClass="mr-2" />
                 <p:commandButton value="Destroy" icon="pi pi-times" onclick="PF('wgtName').destroy(); return false" styleClass="ui-button-danger" />
             </h:form>
         </div>

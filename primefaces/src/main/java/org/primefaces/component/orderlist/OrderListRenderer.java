@@ -46,11 +46,9 @@ public class OrderListRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         OrderList pickList = (OrderList) component;
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
-        String values = pickList.getClientId(context) + "_values";
 
-        if (values != null) {
-            pickList.setSubmittedValue(params.get(values));
-        }
+        String[] values = params.get(pickList.getClientId(context) + "_values");
+        pickList.setSubmittedValue(values);
 
         decodeBehaviors(context, component);
     }
@@ -68,20 +66,19 @@ public class OrderListRenderer extends CoreRenderer {
         String clientId = ol.getClientId(context);
         String controlsLocation = ol.getControlsLocation();
         String style = ol.getStyle();
-        String styleClass = ol.getStyleClass();
-        styleClass = styleClass == null ? OrderList.CONTAINER_CLASS : OrderList.CONTAINER_CLASS + " " + styleClass;
 
-        if (ol.isDisabled()) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
-
-        if (ol.isResponsive()) {
-            styleClass = styleClass + " ui-grid-responsive";
-        }
+        //style class
+        String containerClass = getStyleClassBuilder(context)
+                .add(OrderList.CONTAINER_CLASS)
+                .add(ol.getStyleClass())
+                .add(ol.isDisabled(), "ui-state-disabled")
+                .add(ol.isResponsive(), "ui-grid-responsive")
+                .add("right".equals(ol.getControlsLocation()), OrderList.CONTROLS_RIGHT_CLASS)
+                .build();
 
         writer.startElement("div", ol);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("class", containerClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }

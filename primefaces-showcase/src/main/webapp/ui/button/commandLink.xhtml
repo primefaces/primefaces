@@ -21,14 +21,14 @@
             <h:form>
                 <p:growl id="growl" life="2000"/>
 
-                <h5 class="p-mt-0">Basic</h5>
-                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" class="p-mr-4"
+                <h5 class="mt-0">Basic</h5>
+                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" class="mr-4"
                                value="Ajax Post"/>
 
-                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" class="p-mr-4" ajax="false"
+                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" class="mr-4" ajax="false"
                                value="Regular Post"/>
 
-                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" class="p-mr-4" disabled="true"
+                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" class="mr-4" disabled="true"
                                value="Disabled"/>
 
                 <h5>Disable on Ajax</h5>

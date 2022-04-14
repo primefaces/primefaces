@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .ui-log {
                 left: 750px;
                 top: 250px;
@@ -30,12 +30,12 @@
         <div class="card">
             <p:log id="log"/>
 
-            <h5 class="p-mt-0">Client Side API</h5>
+            <h5 class="mt-0">Client Side API</h5>
             <p:commandButton type="button" id="info" value="Info"
-                             onclick="PrimeFaces.info('This is an info message.')" styleClass="p-mr-2" />
-            <p:commandButton type="button" id="warn" value="Warn" onclick="PrimeFaces.warn('This is a warn message.')" styleClass="p-mr-2" />
+                             onclick="PrimeFaces.info('This is an info message.')" styleClass="mr-2" />
+            <p:commandButton type="button" id="warn" value="Warn" onclick="PrimeFaces.warn('This is a warn message.')" styleClass="mr-2" />
             <p:commandButton type="button" id="debug" value="Debug"
-                             onclick="PrimeFaces.debug('This is a debug message.')" styleClass="p-mr-2" />
+                             onclick="PrimeFaces.debug('This is a debug message.')" styleClass="mr-2" />
             <p:commandButton type="button" id="error" value="Error"
                              onclick="PrimeFaces.error('This is an error message.')"/>
 
@@ -46,7 +46,7 @@
                     <p:inputText id="name"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Submit" update="grid" styleClass="p-mt-3" />
+                <p:commandButton value="Submit" update="grid" styleClass="mt-3" />
             </h:form>
         </div>
     </ui:define>

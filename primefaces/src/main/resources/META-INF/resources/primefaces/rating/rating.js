@@ -138,8 +138,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      */
     getValue: function() {
         var inputVal = this.input.val();
-
-        return inputVal === '' ? null : parseInt(inputVal);
+        return inputVal === '0' ? null : parseInt(inputVal);
     },
 
     /**
@@ -163,8 +162,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //set hidden value
-        this.input.val(newValue);
-        this.input.attr('aria-valuenow', newValue);
+        this.input.attr('value', newValue);
 
         //update visuals
         this.stars.removeClass('ui-rating-star-on');
@@ -230,8 +228,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
      * Resets the rating so that no stars are selected.
      */
     reset: function() {
-        this.input.val('');
-        this.input.attr('aria-valuenow', '');
+        this.input.attr('value', '0');
 
         this.stars.filter('.ui-rating-star-on').removeClass('ui-rating-star-on');
 

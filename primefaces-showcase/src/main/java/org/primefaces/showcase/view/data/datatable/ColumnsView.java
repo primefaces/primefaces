@@ -27,7 +27,6 @@ import org.primefaces.showcase.domain.Customer;
 import org.primefaces.showcase.service.CustomerService;
 
 import javax.annotation.PostConstruct;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -40,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.primefaces.component.datatable.DataTable;
 
 @Named("dtColumnsView")
 @ViewScoped
@@ -117,8 +117,8 @@ public class ColumnsView implements Serializable {
 
     public void updateColumns() {
         //reset table state
-        UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:customers");
-        table.setValueExpression("sortBy", null);
+        DataTable table = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:customers");
+        table.resetColumns();
 
         //update columns
         createDynamicColumns();

@@ -393,13 +393,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Title of the Print window (default to page title).</description>
-            <name>title</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Optional JSON configuration values to completely control PrintJS.</description>
+            <description>Optional JSON configuration values to completely control jQuery.print.</description>
             <name>configuration</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -2286,6 +2280,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[MenuModel instance to create menus programmatically.]]>
             </description>
             <name>model</name>
@@ -2329,6 +2331,14 @@
                 <![CDATA[Boolean flag indicating whether the last item should be disabled. Default is false.]]>
             </description>
             <name>lastItemDisabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Used to produce an Advanced SEO structure on the page. Default is false.]]>
+            </description>
+            <name>seo</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -3738,7 +3748,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Theme of the captcha. Default is light.]]>
+                <![CDATA[Theme of the captcha either 'light', 'dark', or 'auto'. Default is auto.]]>
             </description>
             <name>theme</name>
             <required>false</required>
@@ -8256,7 +8266,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add and checkbox.]]>
+                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add none.]]>
             </description>
             <name>rowSelectMode</name>
             <required>false</required>
@@ -12973,6 +12983,22 @@
                 <![CDATA[Defines whether mask pattern would be validated or not on the server side.]]>
             </description>
             <name>validateMask</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when the input gets focus. Default is true.]]>
+            </description>
+            <name>showMaskOnFocus</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when hovering the mouse. Default is true.]]>
+            </description>
+            <name>showMaskOnHover</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -19029,6 +19055,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide overlay when hovering over overlay content when using custom show/hide events, default is true.]]>
+            </description>
+            <name>autoHide</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Event to show the overlay panel, default is "click".]]>
             </description>
             <name>showEvent</name>
@@ -24861,6 +24895,14 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -26247,6 +26289,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to increment or decrement the element value with the mouse wheel, default is true.]]>
+            </description>
+            <name>modifyValueOnWheel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -27399,6 +27449,14 @@
                 <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
             </description>
             <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Title attribute for menu element on tab header.]]>
+            </description>
+            <name>menuTitle</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -29185,6 +29243,14 @@
                 <![CDATA[Defines whether html would be escaped or not, defaults to true.]]>
             </description>
             <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to hide tooltip when hovering over tooltip content, default is true.]]>
+            </description>
+            <name>autoHide</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

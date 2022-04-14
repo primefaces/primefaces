@@ -26,7 +26,7 @@
                 <p:growl id="messages" widgetVar="messagesGrowl" showDetail="true"
                          globalOnly="true"/>
 
-                <p:panel id="settings" header="Extender settings" styleClass="p-mb-6">
+                <p:panel id="settings" header="Extender settings" styleClass="mb-6">
 
                     <!-- Additional CSS or JavaScript required by the extender example -->
                     <h:outputText escape="false"
@@ -34,7 +34,7 @@
                     </h:outputText>
 
                     <p:panelGrid columns="2" layout="flex" styleClass="ui-noborder"
-                                 columnClasses="p-col-12 p-xl-12, p-col-12 p-xl-12">
+                                 columnClasses="col-12 xl:col-12, col-12 xl:col-12">
 
                         <p:selectOneMenu id="examples" label="Examples"
                                          style="width: 100%;"
@@ -67,7 +67,7 @@
                                 rendered="#{not empty scheduleJava8View.extenderExample}">
                             <pre id="extenderCode" name="extenderCode"
                                  class="brush:js">#{scheduleJava8View.extenderCode}</pre>
-                            <script type="text/javascript">SyntaxHighlighter.highlight(document.getElementById('extenderCode'))</script>
+                            <script>SyntaxHighlighter.highlight(document.getElementById('extenderCode'))</script>
                         </ui:fragment>
 
                         <ui:fragment
@@ -76,7 +76,7 @@
                                     value="Additional CSS or JavaScript required for this example"/>
                             <pre id="extenderHtml" name="html"
                                  class="brush:html">#{scheduleJava8View.extenderExample.html}</pre>
-                            <script type="text/javascript">SyntaxHighlighter.highlight(document.getElementById('extenderHtml'))</script>
+                            <script>SyntaxHighlighter.highlight(document.getElementById('extenderHtml'))</script>
                         </ui:fragment>
 
                         <p:commandButton id="update" styleClass="extender-update"
@@ -88,10 +88,10 @@
                 <p:outputPanel id="schedulePanel">
 
                     <!-- Load the extender and catch errors -->
-                    <script type="text/javascript">
+                    <script>
                         window.ExtenderShowcase = undefined;
                     </script>
-                    <script type="text/javascript">
+                    <script>
                         window.ExtenderShowcase = function () {
                             try {
                                 #{ scheduleJava8View.extenderCode }
@@ -105,7 +105,7 @@
                             }
                         };
                     </script>
-                    <script type="text/javascript">
+                    <script>
                         if (typeof window.ExtenderShowcase === "undefined") {
                             PF("messagesGrowl").renderMessage({
                                 severity: "error",

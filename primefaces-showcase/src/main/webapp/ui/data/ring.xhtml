@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .image-ring .ui-ring-item {
                 border: 0 none;
             }
@@ -34,7 +34,7 @@
             <div class="card">
                 <p:ring id="custom" value="#{ringView.products}" var="product" styleClass="image-ring"
                         easing="easeInOutBack">
-                    <p:graphicImage id="img" name="/demo/images/product/#{product.image}" styleClass="p-shadow-4" />
+                    <p:graphicImage id="img" name="/demo/images/product/#{product.image}" styleClass="shadow-2" />
                 </p:ring>
             </div>
 

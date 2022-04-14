@@ -26,6 +26,7 @@ package org.primefaces.model.charts.axes.cartesian.linear;
 import java.io.IOException;
 
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
 /**
@@ -38,6 +39,7 @@ public class CartesianLinearAxes extends CartesianAxes {
     private static final long serialVersionUID = 1L;
 
     private String type;
+    private boolean beginAtZero;
     private CartesianLinearTicks ticks;
 
     /**
@@ -56,6 +58,24 @@ public class CartesianLinearAxes extends CartesianAxes {
      */
     public void setTicks(CartesianLinearTicks ticks) {
         this.ticks = ticks;
+    }
+
+    /**
+     * Gets the beginAtZero
+     *
+     * @return beginAtZero
+     */
+    public boolean isBeginAtZero() {
+        return beginAtZero;
+    }
+
+    /**
+     * Sets the beginAtZero
+     *
+     * @param beginAtZero if true, scale will include 0 if it is not already included.
+     */
+    public void setBeginAtZero(boolean beginAtZero) {
+        this.beginAtZero = beginAtZero;
     }
 
     /**
@@ -87,10 +107,8 @@ public class CartesianLinearAxes extends CartesianAxes {
         try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write(super.encode());
 
-            if (this.type != null) {
-                fsw.write(",\"type\":\"" + this.type + "\"");
-            }
-
+            ChartUtils.writeDataValue(fsw, "type", this.type, true);
+            ChartUtils.writeDataValue(fsw, "beginAtZero", this.beginAtZero, true);
             if (this.ticks != null) {
                 fsw.write(",\"ticks\":{");
                 fsw.write(this.ticks.encode());

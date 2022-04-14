@@ -25,6 +25,8 @@ package org.primefaces.metadata.transformer.impl;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.Set;
@@ -170,13 +172,33 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             Temporal now = CalendarUtils.now(uicalendar);
 
             if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? now : now.minus(1, ChronoUnit.DAYS));
+                Object maxDate = now;
+                Class<?> dataType = uicalendar.getValueType();
+                if (dataType != null) {
+                    if (LocalDate.class.isAssignableFrom(dataType)) {
+                        maxDate = now.minus(1, ChronoUnit.DAYS);
+                    }
+                    else if (YearMonth.class.isAssignableFrom(dataType)) {
+                        maxDate = now.minus(1, ChronoUnit.MONTHS);
+                    }
+                }
+                uicalendar.setMaxdate(maxDate);
             }
             if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
                 uicalendar.setMaxdate(now);
             }
             if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? now : now.plus(1, ChronoUnit.DAYS));
+                Object minDate = now;
+                if (!hasTime) {
+                    Class<?> dataType = uicalendar.getValueType();
+                    if (dataType != null && YearMonth.class.isAssignableFrom(dataType)) {
+                        minDate = now.plus(1, ChronoUnit.MONTHS);
+                    }
+                    else {
+                        minDate = now.plus(1, ChronoUnit.DAYS);
+                    }
+                }
+                uicalendar.setMindate(minDate);
             }
             if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
                 uicalendar.setMindate(now);

@@ -713,23 +713,23 @@ public class TreeRenderer extends CoreRenderer {
         String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;
 
         //style class of node
-        String containerClass = isLeaf ? Tree.LEAF_NODE_CLASS : Tree.PARENT_NODE_CLASS;
-
+        String selectedStateClass;
         if (selected) {
-            containerClass += " ui-treenode-selected";
+            selectedStateClass = "ui-treenode-selected";
         }
         else if (partialSelected) {
-            containerClass += " ui-treenode-hasselected";
+            selectedStateClass = "ui-treenode-hasselected";
         }
         else {
-            containerClass += " ui-treenode-unselected";
+            selectedStateClass = "ui-treenode-unselected";
         }
 
-        if (hidden) {
-            containerClass += " ui-treenode-hidden";
-        }
-
-        containerClass = uiTreeNode.getStyleClass() == null ? containerClass : containerClass + " " + uiTreeNode.getStyleClass();
+        String containerClass = getStyleClassBuilder(context)
+                .add(uiTreeNode.getStyleClass())
+                .add(selectedStateClass)
+                .add(isLeaf, Tree.LEAF_NODE_CLASS, Tree.PARENT_NODE_CLASS)
+                .add(hidden, "ui-treenode-hidden")
+                .build();
 
         writer.startElement("li", null);
         writer.writeAttribute("id", nodeId, null);
@@ -742,14 +742,19 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         //content
-        String contentClass = selectable ? Tree.SELECTABLE_NODE_CONTENT_CLASS_V : Tree.NODE_CONTENT_CLASS_V;
-        if (dragdrop) {
-            contentClass += " ui-treenode-droppable";
-        }
+        String contentClass = getStyleClassBuilder(context)
+                .add(selectable, Tree.SELECTABLE_NODE_CONTENT_CLASS_V, Tree.NODE_CONTENT_CLASS_V)
+                .add(dragdrop, "ui-treenode-droppable")
+                .add(selected, "ui-state-highlight")
+                .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "treeitem", null);
+        if (!tree.isDisabled()) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+        writer.writeAttribute(HTML.ARIA_LABEL, uiTreeNode.getAriaLabel(), null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         if (checkbox) {
@@ -770,16 +775,8 @@ public class TreeRenderer extends CoreRenderer {
         encodeIcon(context, uiTreeNode, expanded);
 
         //label
-        String nodeLabelClass = selected ? Tree.NODE_LABEL_CLASS + " ui-state-highlight" : Tree.NODE_LABEL_CLASS;
-
         writer.startElement("span", null);
-        writer.writeAttribute("class", nodeLabelClass, null);
-        if (!tree.isDisabled()) {
-            writer.writeAttribute("tabindex", "-1", null);
-        }
-
-        writer.writeAttribute("role", "treeitem", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, uiTreeNode.getAriaLabel(), null);
+        writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
         uiTreeNode.encodeAll(context);
         writer.endElement("span");
 

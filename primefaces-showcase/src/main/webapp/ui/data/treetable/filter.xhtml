@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .ui-treetable {
                 margin-top: 40px
             }
@@ -34,7 +34,7 @@
                 <p:treeTable widgetVar="treeTable" value="#{ttScrollableView.root1}" var="document"
                              style="margin-top:0">
                     <f:facet name="header">
-                        <div class="p-d-flex p-ai-center p-jc-between">
+                        <div class="flex align-items-center justify-content-between">
                             <span>Vertical</span>
                             <p:inputText id="globalFilter" onkeyup="PF('treeTable').filter()" style="width:10rem" placeholder="Enter keyword" />
                         </div>

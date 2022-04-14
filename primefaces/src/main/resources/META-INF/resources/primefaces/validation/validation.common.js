@@ -53,10 +53,12 @@ if (window.PrimeFaces) {
      * A shortcut for `PrimeFaces.validation.validateInstant`. This is used by `p:clientValidator`.
      * @function
      * @param {string | HTMLElement | JQuery} element The ID of an element to validate, or the element itself.
+     * @param {boolean} highlight If the invalid element should be highlighted.
+     * @param {boolean} renderMessages If messages should be rendered.
      * @return {boolean} `true` if the element is valid, or `false` otherwise.
      */
-    PrimeFaces.vi = function(element) {
-        return PrimeFaces.validation.validateInstant(element);
+    PrimeFaces.vi = function(element, highlight, renderMessages) {
+        return PrimeFaces.validation.validateInstant(element, highlight, renderMessages);
     };
     
     /**
@@ -248,37 +250,44 @@ if (window.PrimeFaces) {
          * This is used by `p:clientValidator`.
          * @function
          * @param {string | HTMLElement | JQuery} el The ID of an input to validate, or the input itself.
+         * @param {boolean} highlight If the invalid element should be highlighted.
+         * @param {boolean} renderMessages If messages should be rendered.
          * @return {boolean} `true` if the element is valid, or `false` otherwise.
          */
-        validateInstant : function(el) {
+        validateInstant : function(el, highlight, renderMessages) {
+            highlight = (highlight === undefined) ? true : highlight;
+            renderMessages = (renderMessages === undefined) ? true : renderMessages;
+
             var vc = PrimeFaces.validation.ValidationContext;
 
             var element = typeof el === 'string'
                 ? $(PrimeFaces.escapeClientId(el))
                 : $(el);
             var clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');
+
             var uiMessageId = element.data('uimessageid');
-
             var uiMessage = null;
-            if (uiMessageId) {
-                uiMessage = uiMessageId === 'p-nouimessage'
-                    ? null
-                    : $(PrimeFaces.escapeClientId(uiMessageId));
-            }
-            else {
-                uiMessage = PrimeFaces.validation.Utils.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
+            if (renderMessages === true) {
+                if (uiMessageId) {
+                    uiMessage = uiMessageId === 'p-nouimessage'
+                        ? null
+                        : $(PrimeFaces.escapeClientId(uiMessageId));
+                }
+                else {
+                    uiMessage = PrimeFaces.validation.Utils.findUIMessage(clientId, element.closest('form').find('div.ui-message'));
 
-                if (uiMessage)
-                    element.data('uimessageid', uiMessage.attr('id'));
-                else
-                    element.data('uimessageid', 'p-nouimessage');
+                    if (uiMessage)
+                        element.data('uimessageid', uiMessage.attr('id'));
+                    else
+                        element.data('uimessageid', 'p-nouimessage');
+                }
+
+                if (uiMessage) {
+                    uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
+                }
             }
 
-            if (uiMessage) {
-                uiMessage.html('').removeClass('ui-message-error ui-message-icon-only ui-widget ui-corner-all ui-helper-clearfix');
-            }
-
-            PrimeFaces.validation.validateInput(element);
+            PrimeFaces.validation.validateInput(element, highlight);
 
             if (!vc.isEmpty()) {
                 if (uiMessage) {

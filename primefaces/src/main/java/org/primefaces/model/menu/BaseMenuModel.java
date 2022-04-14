@@ -26,6 +26,7 @@ package org.primefaces.model.menu;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.primefaces.util.LangUtils;
 
@@ -51,26 +52,25 @@ public class BaseMenuModel implements MenuModel, Serializable {
 
     @Override
     public void generateUniqueIds() {
-        generateUniqueIds(getElements(), null);
+        generateUniqueIds(getElements(), true);
     }
 
-    private void generateUniqueIds(List<MenuElement> elements, String seed) {
+    private void generateUniqueIds(List<MenuElement> elements, boolean root) {
         if (elements == null || elements.isEmpty()) {
             return;
         }
-
-        int counter = 0;
 
         for (MenuElement element : elements) {
             // #1039 check if ID was already manually set
             String id = element.getId();
             if (LangUtils.isBlank(id)) {
-                id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
-                element.setId(id);
+                // 1. prepend root elements with "_" to distinguish them from others in MenubarRenderer#encodeSubmenuIcon - stupid, but still
+                // 2. UUID.randomUUID is overkill (used just as an example)
+                element.setId((root ? "_" : "") + UUID.randomUUID());
             }
 
             if (element instanceof MenuGroup) {
-                generateUniqueIds(((MenuGroup) element).getElements(), id);
+                generateUniqueIds(((MenuGroup) element).getElements(), false);
             }
         }
     }

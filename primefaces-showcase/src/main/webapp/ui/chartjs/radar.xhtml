@@ -4,7 +4,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script type="text/javascript">
+        <script>
             function skinRadarChart() {
                 Chart.defaults.startAngle = 36;
                 Chart.defaults.plugins.tooltip.cornerRadius = 3;
@@ -27,14 +27,14 @@
     <ui:param name="widgetLink" value="RadarChart"/>
 
     <ui:define name="implementation">
-        <div class="p-grid">
-            <div class="p-col-12 p-lg-6 p-xl-4">
+        <div class="grid">
+            <div class="col-12 lg:col-6 xl:col-4">
                 <div class="card">
                     <p:radarChart model="#{chartJsView.radarModel}"/>
                 </div>
             </div>
 
-            <div class="p-col-12 p-lg-6 p-xl-4">
+            <div class="col-12 lg:col-6 xl:col-4">
                 <div class="card">
                     <p:radarChart model="#{chartJsView.radarModel2}"/>
                 </div>

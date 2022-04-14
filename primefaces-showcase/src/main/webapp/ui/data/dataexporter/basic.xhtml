@@ -20,57 +20,57 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <div class="p-d-flex p-jc-between">
+                <div class="flex justify-content-between">
                     <div>
                         <h5>Standard</h5>
-                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2">
                             <p:dataExporter type="xls" target="tbl" fileName="products"/>
                         </p:commandButton>
     
-                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2">
                             <p:dataExporter type="xlsxstream" target="tbl" fileName="products"/>
                         </p:commandButton>
     
-                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2">
                             <p:dataExporter type="pdf" target="tbl" fileName="products"/>
                         </p:commandButton>
     
-                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2">
                             <p:dataExporter type="csv" target="tbl" fileName="products" />
                         </p:commandButton>
     
-                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2">
                             <p:dataExporter type="xml" target="tbl" fileName="products"/>
                         </p:commandButton>
     
-                        <p:commandButton value="TXT" styleClass="p-mr-2 p-mb-2">
+                        <p:commandButton value="TXT" styleClass="mr-2 mb-2">
                             <p:dataExporter type="txt" target="tbl" fileName="products" exporter="#{dataExporterView.textExporter}"/>
                         </p:commandButton>
                     </div>
 
                     <div>
                         <h5>Page Only</h5>
-                        <p:commandButton value="XLS" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="xls" target="tbl" fileName="products" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="XLSX" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="xlsxstream" target="tbl" fileName="products" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="pdf" target="tbl" fileName="products" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="CSV" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="csv" target="tbl" fileName="products" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="XML" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="xml" target="tbl" fileName="products" pageOnly="true"/>
                         </p:commandButton>
         
-                        <p:commandButton value="TXT" styleClass="p-mr-2 p-mb-2 ui-button-outlined">
+                        <p:commandButton value="TXT" styleClass="mr-2 mb-2 ui-button-outlined">
                             <p:dataExporter type="txt" target="tbl" fileName="products" pageOnly="true"
                                             exporter="#{dataExporterView.textExporter}"/>
                         </p:commandButton>
@@ -79,7 +79,7 @@
 
                 <p:dataTable id="tbl" var="product" value="#{dataExporterView.products}"
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                             paginator="true" rows="10" styleClass="p-mt-2">
+                             paginator="true" rows="10" styleClass="mt-2">
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Code"/>
@@ -94,21 +94,21 @@
                         <h:outputText value="#{product.name}"/>
                     </p:column>
 
-                    <p:column  styleClass="p-text-center">
+                    <p:column  styleClass="text-center">
                         <f:facet name="header">
                             <h:outputText value="Category"/>
                         </f:facet>
                         <h:outputText value="#{product.category}"/>
                     </p:column>
 
-                    <p:column styleClass="p-text-right">
+                    <p:column styleClass="text-right">
                         <f:facet name="header">
                             <h:outputText value="Quantity"/>
                         </f:facet>
                         <h:outputText value="#{product.quantity}"/>
                     </p:column>
 
-                    <p:column styleClass="p-text-right">
+                    <p:column styleClass="text-right">
                         <f:facet name="header">
                             <h:outputText value="Price"/>
                         </f:facet>

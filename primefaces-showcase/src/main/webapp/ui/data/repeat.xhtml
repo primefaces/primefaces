@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .logo {
                 width: 5%
             }
@@ -37,7 +37,7 @@
             <h:form id="form">
                 <p:repeat value="#{dataListView.products1}" var="product">
                     <div class="product">
-                        <div class="product-list-item border-1 p-p-5">
+                        <div class="product-list-item border-1 p-5">
                             <p:graphicImage name="demo/images/product/#{product.image}"/>
                             <div class="product-list-detail">
                                 <div class="product-name">#{product.name}</div>

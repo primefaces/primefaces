@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.tag;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import java.io.IOException;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 
 public class TagRenderer extends CoreRenderer {
 
@@ -84,7 +84,7 @@ public class TagRenderer extends CoreRenderer {
         if (value != null) {
             writer.startElement("span", tag);
             writer.writeAttribute("class", Tag.VALUE_CLASS, null);
-            writer.write(value);
+            writer.writeText(value, "value");
             writer.endElement("span");
         }
     }

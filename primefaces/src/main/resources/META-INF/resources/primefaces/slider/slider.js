@@ -96,6 +96,13 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                 $this.setValue($(this).val());
             });
         }
+        else if (this.input.hasClass('ui-spinner-input')) {
+            this.input.off('change.slider').on('change.slider', function () {
+                var spinnerId = $this.input.closest('.ui-spinner').attr('id');
+                var spinnerWidget = PrimeFaces.getWidgetById(spinnerId);
+                $this.setValue(spinnerWidget.getValue());
+            });
+        }
         else {
             this.input.on('keydown.slider', function (e) {
                 var keyCode = $.ui.keyCode,

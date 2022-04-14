@@ -27,7 +27,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -42,7 +45,6 @@ import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.component.fileupload.FileUploadDecoder;
@@ -71,7 +73,9 @@ public class FileUploadUtils {
 
         if (isSystemWindows()) {
             if (!filename.contains("\\\\")) {
-                String[] parts = filename.substring(FilenameUtils.getPrefixLength(filename)).split(Pattern.quote(File.separator));
+                int length = FilenameUtils.getPrefixLength(filename);
+                String prefix = LangUtils.substring(filename, 0, length);
+                String[] parts = prefix.split(Pattern.quote(File.separator));
                 for (String part : parts) {
                     if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
                         throw new FacesException("Invalid filename: " + filename);

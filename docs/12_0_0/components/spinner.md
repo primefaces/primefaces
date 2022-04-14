@@ -94,6 +94,7 @@ upIcon | null | String | Up icon (if buttons are not stacked, default is "pi pi-
 downIcon | null | String | Down icon (if buttons are not stacked, default is "pi pi-minus").
 upButtonStyleClass | null | String | Up button style class. Default is null.
 downButtonStyleClass | null | String | Down button style class. Default is null.
+modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
 
 ## Getting Started with Spinner
 Spinner is an input component and used just like a standard input text.
@@ -186,6 +187,6 @@ structural style classes:
 .ui-spinner-button-down | Decrement button
 
 ### Text alignment
-The PrimeFlex 2.0.0 classes `text-left`, `text-center` and `text-right` are supported to align the text of the Spinner input field.
+The PrimeFlex 3.0.0 classes `text-left`, `text-center` and `text-right` are supported to align the text of the Spinner input field.
 
 As skinning style classes are global, see the main theming section for more information.
