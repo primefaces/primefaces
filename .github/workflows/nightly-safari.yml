@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 7 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   nightly:
     if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
