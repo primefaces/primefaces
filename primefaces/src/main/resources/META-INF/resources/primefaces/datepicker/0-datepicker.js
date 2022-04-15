@@ -207,6 +207,7 @@
                     this.options.disabledDates[i] = this.parseOptionValue(this.options.disabledDates[i]);
                 }
             }
+            this.bindResponsiveResizeListener();
         },
 
         parseOptionValue: function(option) {
@@ -2186,6 +2187,16 @@
             }
         },
 
+        bindResponsiveResizeListener: function() {
+            var $this = this;
+            if (this.options.autoDetectDisplay && !this.options.inline) {
+                var namespace = 'resize.responsive' + this.options.id;
+                $(window).off(namespace).on(namespace, function() {
+                    $this.updateResponsiveness();
+                });
+            }
+        },
+
         bindWindowResizeListener: function () {
             if (this.options.inline) {
                 return;
@@ -2225,6 +2236,17 @@
                 }
 
                 this.scrollableListener = null;
+            }
+        },
+
+        updateResponsiveness: function() {
+            if (this.options.autoDetectDisplay && this.options.responsiveBreakpoint && !this.options.inline) {
+                var currentUI = this.options.touchUI;
+                var newUi = PrimeFaces.env.mobile || PrimeFaces.env.isScreenSizeLessThan(this.options.responsiveBreakpoint);
+                if (currentUI !== newUi) {
+                    this.options.touchUI = newUi;
+                    this._render();
+                }
             }
         },
 
