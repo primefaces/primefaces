@@ -477,7 +477,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     unselectAllNodes: function() {
         this.selections = [];
         this.jq.find('.ui-treenode-content.ui-state-highlight').each(function() {
-            $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false);
+            $(this).removeClass('ui-state-highlight').closest('.ui-treenode').attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected');
         });
     },
 
@@ -488,7 +488,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
      * @param {boolean} [silent]
      */
     selectNode: function(node, silent) {
-        node.attr('aria-selected', true)
+        node.attr('aria-selected', true).removeClass('ui-treenode-unselected').addClass('ui-treenode-selected')
             .find('> .ui-treenode-content').addClass('ui-state-highlight');
 
         this.addToSelection(this.getRowKey(node));
@@ -507,8 +507,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
     unselectNode: function(node, silent) {
         var rowKey = this.getRowKey(node);
 
-        node.attr('aria-selected', false).
-            find('> .ui-treenode-content').removeClass('ui-state-highlight');
+        node.attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected')
+            .find('> .ui-treenode-content').removeClass('ui-state-highlight');
 
         this.removeFromSelection(rowKey);
         this.writeSelections();
@@ -1304,7 +1304,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
         else {
             node.find('.ui-treenode-content.ui-state-highlight').each(function() {
-                $(this).removeClass('ui-state-highlight').closest('li.ui-treenode').attr('aria-selected', false);
+                $(this).removeClass('ui-state-highlight').closest('li.ui-treenode').attr('aria-selected', false).removeClass('ui-treenode-selected').addClass('ui-treenode-unselected');
             });
         }
     },
