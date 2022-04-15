@@ -28,12 +28,11 @@
                 <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" class="mr-4" ajax="false"
                                value="Regular Post"/>
 
-                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" class="mr-4" disabled="true"
+                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" disabled="true"
                                value="Disabled"/>
 
                 <h5>Disable on Ajax</h5>
-                <p:commandLink id="disableOnAjax" disableOnAjax="true" action="#{bottonBasicView.sleep(1000)}"
-                               value="Sleep"/>
+                <p:commandLink id="disableOnAjax" action="#{buttonBasicView.sleep()}" value="Sleep"/>
 
             </h:form>
         </div>

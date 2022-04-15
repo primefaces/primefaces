@@ -292,10 +292,11 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
     }
 
     public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
     }
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
     }
+
 }

@@ -6282,7 +6282,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button. Default is 'false'.]]>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
@@ -6734,7 +6734,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the link will be disabled during Ajax requests triggered by the link. Default is 'false'.]]>
+                <![CDATA[If true, the link will be disabled during Ajax requests triggered by the link. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
@@ -17282,7 +17282,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'false'.]]>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
@@ -26781,7 +26781,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'false'.]]>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
