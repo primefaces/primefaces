@@ -26,28 +26,31 @@ package org.primefaces.webapp.filter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-public class CharacterEncodingFilter extends HttpFilter {
+import javax.servlet.*;
+
+public class CharacterEncodingFilter implements Filter {
 
     private Charset encoding = StandardCharsets.UTF_8;
 
     @Override
-    public void init() throws ServletException {
-        String encodingParam = getInitParameter("encoding");
+    public void init(FilterConfig filterConfig) throws ServletException {
+        String encodingParam = filterConfig.getInitParameter("encoding");
         if (encodingParam != null) {
             encoding = Charset.forName(encodingParam);
         }
     }
 
     @Override
-    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         request.setCharacterEncoding(encoding.name());
 
         chain.doFilter(request, response);
     }
+
+    @Override
+    public void destroy() {
+       // do nothing
+    }
+
 }
