@@ -10,7 +10,9 @@ This page contains a list of big features. Please check the GitHub issues for al
 * AccordionPanel: now `ui-state-error` class is added to tabs that contain invalid inputs.
 * AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
 * BreadCrumb: added `seo` attribute for creating JSON Link Data for better SEO.
-* CommandButton: added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
+* CommandButton:
+  * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
+  * Added Ajax load indicator (spinner) within the button during Ajax requests triggered by it.
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
