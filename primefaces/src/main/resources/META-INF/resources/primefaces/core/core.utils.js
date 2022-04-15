@@ -157,7 +157,8 @@ if (!PrimeFaces.utils) {
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
             var $document = $(document);
             $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
-                if ($(event.target).zIndex() < zIndex) {
+                var target = $(event.target);
+                if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
@@ -198,7 +199,7 @@ if (!PrimeFaces.utils) {
                         }
                     }
                 }
-                else if(!target.is(document.body) && (target.zIndex() < zIndex)) {
+                else if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
