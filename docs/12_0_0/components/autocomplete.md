@@ -412,6 +412,7 @@ Following is the list of structural style classes;
 | .ui-autocomplete-items | List of items |
 | .ui-autocomplete-item | Each item in the list. |
 | .ui-autocomplete-query | Highlighted part in suggestions. |
+| .ui-state-loading | Container element; while search queries are executed. |
 
 As skinning style classes are global, see the main theming section for more information.
 

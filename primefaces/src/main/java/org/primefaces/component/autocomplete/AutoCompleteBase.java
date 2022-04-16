@@ -464,5 +464,4 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
     public void setLazyField(String lazyField) {
         getStateHelper().put(PropertyKeys.lazyField, lazyField);
     }
-
 }

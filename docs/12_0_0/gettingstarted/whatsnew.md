@@ -6,9 +6,12 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ### PrimeFaces
 
-* AccordionPanel: added support for `options` and `actions` facets of contained `Tab` components.
-* AccordionPanel: now `ui-state-error` class is added to tabs that contain invalid inputs.
-* AutoComplete: added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
+* AccordionPanel
+  * Added support for `options` and `actions` facets of contained `Tab` components.
+  * Added `ui-state-error` class to tabs that contain invalid inputs.
+* AutoComplete:
+  * Added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
+  * Added Ajax load indicator (spinner) within the component while the component is querying.
 * BreadCrumb: added `seo` attribute for creating JSON Link Data for better SEO.
 * CommandButton:
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
@@ -27,7 +30,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 * SplitButton
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
-* TabView: now `ui-state-error` class is added to tabs that contain invalid inputs.
+* TabView: added `ui-state-error` class to tabs that contain invalid inputs.
 * Tree: added `filterFunction` attribute for custom filtering.
 * Tooltip: added `autoHide` attribute when set to false will keep the tooltip showing while focused.
 * OverlayPanel: added `autoHide` attribute when set to false will keep the overlay showing while focused.

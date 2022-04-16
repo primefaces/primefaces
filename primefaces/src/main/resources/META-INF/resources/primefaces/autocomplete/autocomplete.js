@@ -897,7 +897,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
-        this.querying = true;
+        this.setQuerying(true);
 
         var $this = this;
 
@@ -941,7 +941,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     return true;
                 },
                 oncomplete: function () {
-                    $this.querying = false;
+                    $this.setQuerying(false);
                     $this.isDynamicLoaded = true;
                 }
             };
@@ -963,7 +963,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.callBehavior('query', options);
         }
         else {
-            if (!!this.cfg.completeEndpoint) {
+            if (this.cfg.completeEndpoint) {
                 $.ajax({
                         url: this.cfg.completeEndpoint,
                         data: { query: query },
@@ -990,13 +990,30 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         $this.showSuggestions(query);
                     })
                     .always(function() {
-                        $this.querying = false;
+                        $this.setQuerying(false);
                     });
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);
             }
         }
+    },
+
+    /**
+     * Sets the querying state.
+     * @param {boolean} state Querying state to set.
+     * @private
+     */
+    setQuerying: function(state) {
+        if (state === true) {
+            this.jq.addClass('ui-state-loading')
+                    .append('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
+        }
+        else {
+            this.jq.removeClass('ui-state-loading')
+                    .find('.ui-icon-loading').remove();
+        }
+        this.querying = state === true;
     },
 
     /**
