@@ -24,6 +24,8 @@
 package org.primefaces.component.datatable;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -184,6 +186,7 @@ public class DataTable extends DataTableBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
 
     private boolean reset = false;
     private List<UIColumn> columns;
@@ -305,6 +308,7 @@ public class DataTable extends DataTableBase {
                 // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
                 // and caused bugs with editing and serialization like #7999
                 if (isFilteringCurrentlyActive()) {
+                    LOGGER.log(Level.WARNING, "DataTable with filtering should also set the 'filteredValue' attribute. ClientId: " + getClientId());
                     filterAndSort();
                 }
             }
