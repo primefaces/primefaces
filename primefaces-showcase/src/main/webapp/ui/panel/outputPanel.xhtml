@@ -33,10 +33,10 @@
             <div class="card" style="min-height: 230px">
                 <p:tabView dynamic="true">
                     <p:tab title="Skeletons">
-                        <p:outputPanel deferred="true" class="p-mt-2">
+                        <p:outputPanel deferred="true" class="mt-2">
                             <p:ajax event="load" listener="#{outputPanelView.loadData}"/>
                             <f:facet name="loading">
-                                <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+                                <p:skeleton width="200px" height="21px" class="mb-4"/>
                                 <p:skeleton width="100%" height="42px"/>
                             </f:facet>
                             <h5>#{outputPanelView.data.title}</h5>
@@ -44,10 +44,10 @@
                         </p:outputPanel>
                     </p:tab>
                     <p:tab title="Ajax / Loaded">
-                        <p:outputPanel deferred="true" loaded="#{not empty outputPanelView.data2}" class="p-mt-2">
+                        <p:outputPanel deferred="true" loaded="#{not empty outputPanelView.data2}" class="mt-2">
                             <p:ajax event="load" listener="#{outputPanelView.loadData2}"/>
                             <f:facet name="loading">
-                                <p:skeleton width="200px" height="21px" class="p-mb-4"/>
+                                <p:skeleton width="200px" height="21px" class="mb-4"/>
                                 <p:skeleton width="100%" height="42px"/>
                             </f:facet>
                             <h5>#{outputPanelView.data2.title}</h5>

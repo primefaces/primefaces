@@ -4,6 +4,8 @@
  * Timeline is an interactive graph to visualize events in time. Currently uses
  * [vis-timeline](https://github.com/visjs/vis-timeline).
  *
+ * @implements {PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.Timeline>}
+ *
  * @typedef PrimeFaces.widget.Timeline.AddCallbackCallback Callback that is invoked when an event was added to this
  * timeline. See also {@link Timeline.addCallback}.
  * @param {import("vis-timeline").TimelineItem} PrimeFaces.widget.Timeline.AddCallbackCallback.item The timeline item
@@ -195,13 +197,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                     params.push({
                         name: this.id + '_startDate',
-                        value: PrimeFaces.toISOString(item.start)
+                        value: item.start.toISOString()
                     });
 
                     if (item.end) {
                         params.push({
                             name: this.id + '_endDate',
-                            value: PrimeFaces.toISOString(item.end)
+                            value: item.end.toISOString()
                         });
                     }
 
@@ -235,13 +237,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                     params.push({
                         name: this.id + '_startDate',
-                        value: PrimeFaces.toISOString(item.start)
+                        value: item.start.toISOString()
                     });
 
                     if (item.end) {
                         params.push({
                             name: this.id + '_endDate',
-                            value: PrimeFaces.toISOString(item.end)
+                            value: item.end.toISOString()
                         });
                     }
 
@@ -269,13 +271,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
 
                     params.push({
                         name: this.id + '_startDate',
-                        value: PrimeFaces.toISOString(item.start)
+                        value: item.start.toISOString()
                     });
 
                     if (item.end) {
                         params.push({
                             name: this.id + '_endDate',
-                            value: PrimeFaces.toISOString(item.end)
+                            value: item.end.toISOString()
                         });
                     }
 
@@ -367,8 +369,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             this.instance.on('rangechange', $.proxy(function (properties) {
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: PrimeFaces.toISOString(properties.start)},
-                        {name: this.id + '_endDate', value: PrimeFaces.toISOString(properties.end)}
+                        {name: this.id + '_startDate', value: properties.start.toISOString()},
+                        {name: this.id + '_endDate', value: properties.end.toISOString()}
                     ],
                     properties: properties
                 };
@@ -382,8 +384,8 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             this.instance.on('rangechanged', $.proxy(function (properties) {
                 var options = {
                     params: [
-                        {name: this.id + '_startDate', value: PrimeFaces.toISOString(properties.start)},
-                        {name: this.id + '_endDate', value: PrimeFaces.toISOString(properties.end)}
+                        {name: this.id + '_startDate', value: properties.start.toISOString()},
+                        {name: this.id + '_endDate', value: properties.end.toISOString()}
                     ],
                     properties: properties
                 };
@@ -438,18 +440,18 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
                 var snap = inst.itemSet.options.snap || null;
                 var scale = inst.body.util.getScale();
                 var step = inst.body.util.getStep();
-                var snappedStart = snap ? snap(xstart, scale, step).toDate() : xstart;
-                var snappedEnd = snap ? snap(xend, scale, step).toDate() : xend;
+                var snappedStart = snap ? new Date(snap(xstart, scale, step)) : xstart;
+                var snappedEnd = snap ? new Date(snap(xend, scale, step)) : xend;
 
                 var params = [];
                 params.push({
                     name: this.id + '_startDate',
-                    value: PrimeFaces.toISOString(snappedStart)
+                    value: snappedStart.toISOString()
                 });
 
                 params.push({
                     name: this.id + '_endDate',
-                    value: PrimeFaces.toISOString(snappedEnd)
+                    value: snappedEnd.toISOString()
                 });
 
                 var group = inst.itemSet.groupFromTarget(evt); // (group may be undefined)
@@ -484,6 +486,22 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
             // make the timeline droppable
             $(el).droppable(droppableOpts);
         }
+    },
+
+   /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.widget.ContextMenu} menuWidget
+     * @param {PrimeFaces.widget.Timeline} targetWidget
+     * @param {string} targetId
+     * @param {PrimeFaces.widget.ContextMenuCfg} cfg 
+     */
+    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        // block default context menu
+        targetWidget.instance.on('contextmenu', function (properties) {
+           menuWidget.show(properties.event);
+           properties.event.preventDefault();
+        });
     },
 
     /**
@@ -550,13 +568,13 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if (range.startFirst != null && range.endFirst != null) {
-            options.params[0] = {name: this.id + '_startDateFirst', value: PrimeFaces.toISOString(new Date(range.startFirst))};
-            options.params[1] = {name: this.id + '_endDateFirst', value: PrimeFaces.toISOString(new Date(range.endFirst))};
+            options.params[0] = {name: this.id + '_startDateFirst', value: new Date(range.startFirst).toISOString()};
+            options.params[1] = {name: this.id + '_endDateFirst', value: new Date(range.endFirst).toISOString()};
         }
 
         if (range.startSecond != null && range.endSecond != null) {
-            options.params[2] = {name: this.id + '_startDateSecond', value: PrimeFaces.toISOString(new Date(range.startSecond))};
-            options.params[3] = {name: this.id + '_endDateSecond', value: PrimeFaces.toISOString(new Date(range.endSecond))};
+            options.params[2] = {name: this.id + '_startDateSecond', value: new Date(range.startSecond).toISOString()};
+            options.params[3] = {name: this.id + '_endDateSecond', value: new Date(range.endSecond).toISOString()};
         }
 
         this.callBehavior("lazyload", options);

@@ -278,7 +278,13 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    var target = $(PrimeFaces.escapeClientId(id));
+                    if (target.length === 0) {
+                        PrimeFaces.warn("DOM element with id '" + id + "' cant be found; skip update...");
+                    }
+                    else {
+                        target.replaceWith(content);
+                    }
                 }
             }
         },
@@ -1287,15 +1293,13 @@ if (!PrimeFaces.ajax) {
                     var widgetVar = PrimeFaces.detachedWidgets[i];
 
                     var widget = PF(widgetVar);
-                    if (widget) {
-                        if (widget.isDetached() === true) {
-                            PrimeFaces.widgets[widgetVar] = null;
-                            widget.destroy();
+                    if (widget && widget.isDetached() === true) {
+                        widget.destroy();
 
-                            try {
-                                delete widget;
-                            } catch (e) {}
-                        }
+                        try {
+                            delete PrimeFaces.widgets[widgetVar];
+                            delete widget;
+                        } catch (e) { }
                     }
                 }
 

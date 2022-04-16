@@ -10,6 +10,7 @@
  * @extends {Inputmask.Options} cfg
  * 
  * @prop {string} cfg.mask The mask template to use.
+ * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
  */
 PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
 
@@ -20,6 +21,7 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
+        this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.jq);
 
         this.applyMask();
 
@@ -32,6 +34,9 @@ PrimeFaces.widget.InputMask = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     applyMask: function() {
+        if (this.hasFloatLabel) {
+            this.cfg.showMaskOnHover = false;
+        }
         if(this.cfg.mask && !this.jq.is('[readonly]') && !this.jq.is(':disabled')) {
             this.cfg.clearIncomplete = (this.cfg.autoClear === undefined) ? true : this.cfg.autoClear;
             this.jq.inputmask('remove').inputmask(this.cfg);

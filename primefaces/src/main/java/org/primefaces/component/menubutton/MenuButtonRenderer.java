@@ -168,7 +168,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         wb.attr("autoDisplay", button.isAutoDisplay());
         wb.attr("toggleEvent", button.getToggleEvent(), null);
         wb.attr("delay", button.getDelay());
-        wb.attr("disableOnAjax", button.isDisableOnAjax(), false);
+        wb.attr("disableOnAjax", button.isDisableOnAjax(), true);
         wb.finish();
     }
 }

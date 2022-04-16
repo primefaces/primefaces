@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .loading-icon {
                font-size: 3rem;
                color: var(--primary-color);
@@ -28,7 +28,7 @@
 
     <ui:define name="implementation">
         <div class="card text-secondary">
-            <p:ajaxStatus styleClass="p-d-block p-mb-4">
+            <p:ajaxStatus styleClass="block mb-4">
                 <f:facet name="default">
                     <h:outputText value="Status: StandBy" />
                 </f:facet>
@@ -45,7 +45,7 @@
             <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
 
             <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-                <div class="p-text-center">
+                <div class="text-center">
                     <i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true"></i>
                 </div>
             </p:dialog>

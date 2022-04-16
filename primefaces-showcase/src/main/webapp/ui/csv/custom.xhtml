@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script type="text/javascript">
+        <script>
             //<![CDATA[
             /**
              * Faces Validator
@@ -81,7 +81,7 @@
                     <h:outputText value="#{customValidationView.email}"/>
                 </h:panelGrid>
                 
-                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="p-mt-3" />
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mt-3" />
             </h:form>
         </div>
     </ui:define>

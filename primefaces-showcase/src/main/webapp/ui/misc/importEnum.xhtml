@@ -22,12 +22,12 @@
             <p:importEnum type="javax.faces.application.ProjectStage" var="JsfProjectStages"
                           allSuffix="ALL_ENUM_VALUES"/>
 
-            <h5 class="p-mt-0">Development</h5>
+            <h5 class="mt-0">Development</h5>
             <h:outputText value="#{JsfProjectStages.Development}" />
 
             <h5>ALL</h5>
             <ui:repeat var="current" value="#{JsfProjectStages.ALL_ENUM_VALUES}">
-                <h:outputText value="#{current}" styleClass="p-mb-2 p-d-block"/>
+                <h:outputText value="#{current}" styleClass="mb-2 block"/>
             </ui:repeat>
         </div>
     </ui:define>

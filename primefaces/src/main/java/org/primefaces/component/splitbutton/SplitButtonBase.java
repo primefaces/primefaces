@@ -320,7 +320,7 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
     }
 
     public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
     }
 
     public void setDisableOnAjax(boolean disableOnAjax) {

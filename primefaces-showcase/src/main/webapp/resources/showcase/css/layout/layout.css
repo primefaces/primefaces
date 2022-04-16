@@ -90,6 +90,9 @@ input[type="number"] {
 .text-secondary {
   color: var(--text-color-secondary); }
 
+.floatlabel-demo .field {
+  margin-top: 2rem; }
+
 .p-connected-overlay {
   opacity: 0;
   transform: scaleY(0.8);

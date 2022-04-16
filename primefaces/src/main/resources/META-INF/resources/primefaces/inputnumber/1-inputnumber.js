@@ -156,6 +156,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                     newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
                 element.set(newValue, null, true);
+
+                // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00
+                if (Number(element.rawValue) === Number(element.rawValueOnFocus)) {
+                   element.rawValueOnFocus = element.rawValue;
+                }
             }
             $this.copyValueToHiddenInput();
         });

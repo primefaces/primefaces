@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .ui-splitbutton {
                 margin-right: .5rem;
             }
@@ -29,7 +29,7 @@
             <h:form>
                 <p:growl id="messages"/>
 
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save">
                     <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
                     <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>

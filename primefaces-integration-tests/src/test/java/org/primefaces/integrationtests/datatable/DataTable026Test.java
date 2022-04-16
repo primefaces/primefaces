@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -37,10 +41,6 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.model.datatable.Row;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class DataTable026Test extends AbstractDataTableTest {
 
@@ -244,8 +244,7 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
-//        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -266,8 +265,7 @@ public class DataTable026Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         assertEmployeeRows(dataTable, employeesFiltered);
 
-        // Setting range via Selenium (sendKeys) causes JS-errors. So we don´t check for them.
-//        assertConfiguration(dataTable.getWidgetConfiguration());
+        assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
@@ -325,6 +323,18 @@ public class DataTable026Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable:roleFilter")
         SelectManyMenu roleFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter")
+        DatePicker lastLoginDateTimeFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter")
+        DatePicker lastLoginDateFilter;
+
+        @FindBy(id = "form:datatable:lastLoginDateTimeFilter2")
+        DatePicker lastLoginDateTimeFilter2;
+
+        @FindBy(id = "form:datatable:lastLoginDateFilter2")
+        DatePicker lastLoginDateFilter2;
 
         @Override
         public String getLocation() {

@@ -293,27 +293,6 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-
-                // this checks were moved to the used components
-
-                // do nothing when the clicked element is a child of the overlay
-                /*
-                if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
-                    return;
-                }
-                */
-
-                // OLD WAY: do nothing when the clicked element is a child of the overlay
-                /*
-                var offset = overlay.offset();
-                if (e.pageX < offset.left
-                        || e.pageX > offset.left + overlay.width()
-                        || e.pageY < offset.top
-                        || e.pageY > offset.top + overlay.height()) {
-                    hideCallback();
-                }
-                */
-
                 hideCallback(e, $eventTarget);
             });
 
@@ -660,7 +639,8 @@ if (!PrimeFaces.utils) {
         enableButton: function(jq) {
             if (jq) {
                 jq.removeClass('ui-state-disabled')
-                  .removeAttr('disabled aria-disabled');
+                  .prop( "disabled", false)
+                  .removeAttr('aria-disabled');
             }
         },
 
@@ -842,6 +822,53 @@ if (!PrimeFaces.utils) {
             }
 
             return undefined;
+        },
+
+        /**
+         * When configuring numeric value like 'showDelay' and the user wants '0' we can't treat 0 as Falsey 
+         * so we make the value 0.  Otherwise Falsey returns the default value.
+         *
+         * @param {number|undefined} value the original value
+         * @param {number} defaultValue the required default value if value is not set
+         * @return {number} the calculated value
+         */
+        defaultNumeric: function(value, defaultValue) {
+            if (value === 0) {
+                return 0;
+            }
+            return value || defaultValue;
+        },
+
+        /**
+         * Is this component wrapped in a float label?
+         *
+         * @param {JQuery | undefined | null} jq An element to check if wrapped in float label. 
+         * @return {boolean} true this this JQ has a float label parent
+         */
+        hasFloatLabel: function(jq) {
+            if (!jq || !jq.parent()) {
+                return false;
+            }
+            return jq.parent().hasClass('ui-float-label');
+        },
+
+        /**
+         * Handles floating label CSS if wrapped in a floating label.
+         * @private
+         * @param {JQuery | undefined} element the to add the CSS classes to
+         * @param {JQuery | undefined} input the input to check if filled
+         * @param {boolean | undefined} hasFloatLabel true if this is wrapped in a floating label
+         */
+        updateFloatLabel: function(element, input, hasFloatLabel) {
+            if (!element || !input || !hasFloatLabel) {
+                return;
+            }
+            if (input.val() !== '' || element.find('.ui-chips-token').length !== 0) {
+                element.addClass('ui-inputwrapper-filled');
+            }
+            else {
+                element.removeClass('ui-inputwrapper-filled');
+            }
         }
     };
 

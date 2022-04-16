@@ -54,7 +54,8 @@ public abstract class TooltipBase extends UIOutput implements Widget {
         position,
         delegate,
         my,
-        at;
+        at,
+        autoHide;
 
         private String toString;
 
@@ -238,5 +239,13 @@ public abstract class TooltipBase extends UIOutput implements Widget {
 
     public void setAt(String at) {
         getStateHelper().put(PropertyKeys.at, at);
+    }
+
+    public boolean isAutoHide() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoHide, true);
+    }
+
+    public void setAutoHide(boolean autoHide) {
+        getStateHelper().put(PropertyKeys.autoHide, autoHide);
     }
 }

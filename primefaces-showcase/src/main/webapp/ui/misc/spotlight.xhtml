@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script type="text/javascript">
+        <script>
             //<![CDATA[
             function handleForm(xhr, status, args) {
                 if (args.validationFailed)
@@ -52,7 +52,7 @@
                     </h:panelGrid>
 
                     <p:commandButton value="Save" icon="pi pi-check" action="#{spotlightView.save}" update="growl grid"
-                                     oncomplete="handleForm(xhr, status, args)" styleClass="p-mt-3"/>
+                                     oncomplete="handleForm(xhr, status, args)" styleClass="mt-3"/>
                 </p:panel>
 
                 <p:spotlight target="pnl" widgetVar="spot"/>

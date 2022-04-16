@@ -55,6 +55,7 @@ public abstract class Password extends InputText {
      */
     public void hideFeedback() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
     }
 
 }

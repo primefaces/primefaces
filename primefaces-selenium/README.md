@@ -61,6 +61,7 @@ Currently, only the following components are implemented (partially):
 
 - AccordionPanel
 - AutoComplete
+- BlockUI
 - Calendar
 - CascadeSelect
 - Chips
@@ -80,6 +81,7 @@ Currently, only the following components are implemented (partially):
 - InputText
 - InputTextarea
 - Messages
+- Menubar
 - OutputLabel
 - OverlayPanel
 - Panel

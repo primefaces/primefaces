@@ -21,33 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.filter;
+package org.primefaces.selenium.component;
 
-import java.io.IOException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.base.AbstractComponent;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+/**
+ * Component wrapper for the PrimeFaces {@code p:radioButton}.
+ */
+public abstract class RadioButton extends AbstractComponent {
 
-public class CharacterEncodingFilter implements Filter {
+    @FindBy(css = ".ui-radiobutton-box")
+    private WebElement box;
 
-    @Override
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
-        chain.doFilter(req, resp);
+    public boolean isSelected() {
+        return PrimeSelenium.hasCssClass(box, "ui-state-active");
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
+    public void select() {
+        box.click();
     }
 
-    @Override
-    public void destroy() {
-
-    }
 }

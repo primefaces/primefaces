@@ -33,10 +33,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.component.menu.Menu;
+import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
@@ -205,24 +208,33 @@ public class AccordionPanelRenderer extends CoreRenderer {
             boolean repeating, boolean rtl) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = tab.getClientId(context);
+        Menu optionsMenu = tab.getOptionsMenu();
 
-        String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
-        headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
-        headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
-        String iconClass = active
-                           ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
-                           : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
-        String contentClass = active
-                              ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
-                              : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+        String headerStyleClass = getStyleClassBuilder(context)
+            .add(active, AccordionPanel.ACTIVE_TAB_HEADER_CLASS, AccordionPanel.TAB_HEADER_CLASS)
+            .add(tab.isDisabled(), "ui-state-disabled")
+            .add(tab.getTitleStyleClass())
+            .build();
+
+        String iconStyleClass = getStyleClassBuilder(context)
+            .add(active, AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS)
+            .add(!active && rtl, AccordionPanel.TAB_HEADER_ICON_RTL_CLASS)
+            .add(!active && !rtl, AccordionPanel.TAB_HEADER_ICON_CLASS)
+            .build();
+
+        String contentStyleClass = getStyleClassBuilder(context)
+            .add(active, AccordionPanel.ACTIVE_TAB_CONTENT_CLASS, AccordionPanel.INACTIVE_TAB_CONTENT_CLASS)
+            .build();
+
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();
 
         //header container
         writer.startElement("div", null);
-        writer.writeAttribute("id", tab.getClientId(context) + "_header", null);
-        writer.writeAttribute("class", headerClass, null);
+        writer.writeAttribute("id", clientId + "_header", null);
+        writer.writeAttribute("class", headerStyleClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
@@ -237,7 +249,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
+        writer.writeAttribute("class", iconStyleClass, null);
         writer.endElement("span");
 
         if (ComponentUtils.shouldRenderFacet(titleFacet)) {
@@ -250,12 +262,27 @@ public class AccordionPanelRenderer extends CoreRenderer {
             writer.write("&nbsp;");
         }
 
+        //options menu trigger
+        if (optionsMenu != null) {
+            encodeIcon(context, tab, "ui-icon-gear", clientId + "_menu", tab.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU));
+        }
+
+        //actions
+        UIComponent actionsFacet = tab.getFacet("actions");
+        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
+            writer.writeAttribute("onclick", "event.stopPropagation()", null);
+            actionsFacet.encodeAll(context);
+            writer.endElement("div");
+        }
+
         writer.endElement("div");
 
         //content
         writer.startElement("div", null);
-        writer.writeAttribute("id", tab.getClientId(context), null);
-        writer.writeAttribute("class", contentClass, null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", contentStyleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
 
@@ -274,6 +301,16 @@ public class AccordionPanelRenderer extends CoreRenderer {
             tab.encodeAll(context);
         }
 
+        //options menu
+        if (optionsMenu != null) {
+            optionsMenu.setOverlay(true);
+            optionsMenu.setTrigger("@(#" + ComponentUtils.escapeSelector(clientId) + "_menu)");
+            optionsMenu.setMy("left top");
+            optionsMenu.setAt("left bottom");
+
+            optionsMenu.encodeAll(context);
+        }
+
         writer.endElement("div");
     }
 
@@ -286,4 +323,31 @@ public class AccordionPanelRenderer extends CoreRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+
+    protected void encodeIcon(FacesContext context, Tab tab, String iconClass, String id, String title, String ariaLabel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("a", null);
+        if (id != null) {
+            writer.writeAttribute("id", id, null);
+        }
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
+        if (title != null) {
+            writer.writeAttribute("title", title, null);
+        }
+
+        if (ariaLabel != null) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+
+        writer.writeAttribute("onclick", "event.stopPropagation()", null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon " + iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
+    }
+
 }

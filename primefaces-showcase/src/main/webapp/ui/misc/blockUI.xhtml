@@ -19,7 +19,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:panel id="pnl" header="New User">
                     <h:panelGrid columns="3" cellpadding="7">
                         <h:outputLabel for="firstname" value="Firstname: *"/>
@@ -33,10 +33,10 @@
                         <p:message for="lastname"/>
                     </h:panelGrid>
 
-                    <p:commandButton id="saveBtn" value="Save" icon="pi pi-check" action="#{blockUIView.save}" update="growl" styleClass="p-mt-3" />
+                    <p:commandButton id="saveBtn" value="Save" icon="pi pi-check" action="#{blockUIView.save}" update="growl" styleClass="mt-3" />
                 </p:panel>
 
-                <p:blockUI block="pnl" trigger="saveBtn"/>
+                <p:blockUI block="pnl" trigger="saveBtn" widgetVar="buiBasic"/>
 
                 <h5>Custom Content</h5>
                 <p:dataTable id="dataTable" var="customer" value="#{blockUIView.customers}"
@@ -74,7 +74,7 @@
                     </p:column>
                 </p:dataTable>
 
-                <p:blockUI block="dataTable" trigger="dataTable">
+                <p:blockUI block="dataTable" trigger="dataTable" widgetVar="buiDatatable">
                     <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
                 </p:blockUI>
 
@@ -100,8 +100,8 @@
                     </p:tab>
                 </p:accordionPanel>
 
-                <p:commandButton id="pnlBtn" value="Block Panel" type="button" onclick="PF('bui').show()" styleClass="p-mt-5 p-mr-2" />
-                <p:commandButton id="pnlBtn2" value="Unblock Panel" type="button" onclick="PF('bui').hide()" styleClass="p-mt-5 ui-button-outlined" />
+                <p:commandButton id="pnlBtn" value="Block Panel" type="button" onclick="PF('bui').show()" styleClass="mt-5 mr-2" />
+                <p:commandButton id="pnlBtn2" value="Unblock Panel" type="button" onclick="PF('bui').hide()" styleClass="mt-5 ui-button-outlined" />
 
                 <p:blockUI block="accordion" widgetVar="bui"/>
 

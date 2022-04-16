@@ -24,6 +24,7 @@
 package org.primefaces.component.rating;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,7 +32,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
@@ -47,9 +47,12 @@ public class RatingRenderer extends InputRenderer {
         String clientId = rating.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if (!LangUtils.isEmpty(submittedValue)) {
+        if (LangUtils.isNotEmpty(submittedValue)) {
             int submittedStars = Integer.parseInt(submittedValue);
-            if (submittedStars < 1 || submittedStars > rating.getStars()) {
+            if (submittedStars == 0) {
+                submittedValue = null;
+            }
+            else if (submittedStars < 1 || submittedStars > rating.getStars()) {
                 return;
             }
         }
@@ -138,22 +141,17 @@ public class RatingRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
-        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("type", "range", null);
+        writer.writeAttribute("min", "0", null);
+        writer.writeAttribute("max", rating.getStars(), null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (rating.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
-        }
-        if (value != null) {
-            writer.writeAttribute("value", value, null);
-        }
-
+        writer.writeAttribute("value", Objects.toString(value, "0"), null);
         //for keyboard accessibility and ScreenReader
         writer.writeAttribute("tabindex", rating.getTabindex(), null);
-        writer.writeAttribute("role", "slider", null);
-        writer.writeAttribute("aria-valuemin", "1", null);
-        writer.writeAttribute("aria-valuemax", rating.getStars(), null);
-        writer.writeAttribute("aria-valuenow", value, null);
+
+        if (rating.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         writer.endElement("input");
 

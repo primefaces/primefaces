@@ -27,15 +27,15 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.Map.Entry;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
@@ -194,6 +194,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("numberOfMonths", datePicker.getNumberOfMonths(), 1)
             .attr("view", datePicker.getView(), null)
             .attr("autoDetectDisplay", datePicker.isAutoDetectDisplay(), true)
+            .attr("responsiveBreakpoint", datePicker.getResponsiveBreakpoint(), DatePicker.RESPONSIVE_BREAKPOINT_SMALL)
             .attr("touchUI", datePicker.isTouchUI(), false)
             .attr("showWeek", datePicker.isShowWeek(), false)
             .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datePicker, datePicker.getAppendTo(),
@@ -313,8 +314,17 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
                     for (int i = 0; i < rangeStr.size(); i++) {
                         range.add(super.getConvertedValue(context, component, rangeStr.get(i)));
                     }
+                    // #8351 adjust end date to end of day
+                    Object end = range.get(1);
+                    boolean isDate = end instanceof Date;
+                    if (end instanceof LocalDateTime || isDate) {
+                        LocalDateTime endDate = isDate
+                                ? CalendarUtils.convertDate2LocalDateTime((Date) end)
+                                : (LocalDateTime) end;
+                        endDate = endDate.plusDays(1).minus(1, ChronoUnit.NANOS);
+                        range.set(1, isDate ? CalendarUtils.convertLocalDateTime2Date(endDate) : endDate);
+                    }
                 }
-
                 return range;
             default:
                 return super.getConvertedValue(context, component, value);

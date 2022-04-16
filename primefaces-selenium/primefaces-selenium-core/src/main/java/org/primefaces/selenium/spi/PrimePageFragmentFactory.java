@@ -77,10 +77,10 @@ public class PrimePageFragmentFactory {
             };
         }
 
-        return create(fragment, element, el);
+        return create(fragment, el);
     }
 
-    public static <T extends WebElement> T create(Class<T> fragment, WebElement element, ElementLocator el) {
+    public static <T extends WebElement> T create(Class<T> fragment, ElementLocator el) {
         try {
             T proxy = proxy(fragment,
                     InvocationHandlerAdapter.of((Object p, Method method, Object[] args) -> {
