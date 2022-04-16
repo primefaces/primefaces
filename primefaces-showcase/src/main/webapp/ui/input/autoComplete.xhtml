@@ -57,8 +57,7 @@
                     <div class="field col-12 md:col-4">
                         <p:outputLabel value="DropDown" for="@next"/>
                         <p:autoComplete id="dd" dropdown="true" value="#{autoCompleteView.txt6}"
-                                    completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"
-                                    inlineAjaxStatus="true"/>
+                                    completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
                     </div>
 
                     <div class="field col-12 md:col-4">
@@ -90,8 +89,7 @@
                         <p:autoComplete id="pojo" value="#{autoCompleteView.country1}"
                                         completeMethod="#{autoCompleteView.completeCountry}"
                                         var="country" itemLabel="#{country.name}" itemValue="#{country}"
-                                        converter="#{countryConverter}" forceSelection="true" scrollHeight="250"
-                                        inlineAjaxStatus="true"/>
+                                        converter="#{countryConverter}" forceSelection="true" scrollHeight="250"/>
                     </div>
 
                     <div class="field col-12 md:col-4">
@@ -101,8 +99,7 @@
                                         converter="#{countryConverter}"
                                         completeEndpoint="#{request.contextPath}/rest/country/autocomplete"
                                         forceSelection="true" emptyMessage="sorry, no suggestions"
-                                        moreText="more items available" scrollHeight="250"
-                                        inlineAjaxStatus="true"/>
+                                        moreText="more items available" scrollHeight="250"/>
                     </div>
 
                     <div class="field col-12 md:col-4">

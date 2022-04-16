@@ -1006,10 +1006,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     setQuerying: function(state) {
         if (state === true) {
-            this.jq.addClass('ui-state-loading');
-            if (this.cfg.inlineAjaxStatus) {
-                this.jq.append('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
-            }
+            this.jq.addClass('ui-state-loading')
+                    .append('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
         }
         else {
             this.jq.removeClass('ui-state-loading')
