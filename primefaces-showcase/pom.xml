@@ -223,25 +223,26 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>nl.geodienstencentrum.maven</groupId>
-                <artifactId>sass-maven-plugin</artifactId>
-                <version>3.7.2</version>
+                <groupId>io.github.cleydyr</groupId>
+                <artifactId>dart-sass-maven-plugin</artifactId>
+                <version>0.1.1</version>
                 <executions>
                     <execution>
+                        <id>generate-css-using-sass</id>
                         <phase>generate-resources</phase>
                         <goals>
-                            <goal>update-stylesheets</goal>
+                            <goal>compile-sass</goal>
                         </goals>
+                        <configuration>
+                            <inputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</inputFolder>
+                            <outputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</outputFolder>
+                            <update>true</update>
+                            <noSourceMap>true</noSourceMap>
+                            <style>COMPRESSED</style>
+                            <quiet>false</quiet>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <sassSourceDirectory>${basedir}/src/main/webapp/resources/showcase/css</sassSourceDirectory>
-                    <destination>${basedir}/src/main/webapp/resources/showcase/css</destination>
-                    <sassOptions>
-                        <always_update>true</always_update>
-                        <sourcemap>:none</sourcemap>
-                    </sassOptions>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
