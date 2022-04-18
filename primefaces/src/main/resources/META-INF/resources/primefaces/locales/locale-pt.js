@@ -109,7 +109,7 @@ PrimeFaces.locales['pt_PT'] = {
         'javax.validation.constraints.Size.message': 'o tamanho deve estar entre {0} e {1}'
     }
 };
-PrimeFaces.locales['pt'] = PrimeFaces.locales['pt-PT'];
+PrimeFaces.locales['pt'] = PrimeFaces.locales['pt_PT'];
 
 /** Portuguese - Brazilian */
 PrimeFaces.locales['pt_BR'] = {
