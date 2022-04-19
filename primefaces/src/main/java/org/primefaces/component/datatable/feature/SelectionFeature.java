@@ -93,9 +93,9 @@ public class SelectionFeature implements DataTableFeature {
 
     public void decodeSelectionRowKeys(FacesContext context, DataTable table) {
         Set<String> rowKeys = null;
-        ValueExpression selectionByVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
-        if (selectionByVE != null) {
-            Object selection = selectionByVE.getValue(context.getELContext());
+        ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
+        if (selectionVE != null) {
+            Object selection = selectionVE.getValue(context.getELContext());
 
             if (selection != null) {
                 rowKeys = new HashSet<>();
