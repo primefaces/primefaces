@@ -533,6 +533,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .collect(Collectors.joining(","));
     }
 
+    default Object getFieldValue(FacesContext context, UIColumn column) {
+        Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
+        return value;
+    }
+
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
         Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
         UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;

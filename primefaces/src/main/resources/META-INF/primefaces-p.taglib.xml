@@ -49,6 +49,17 @@
     </function>
 
     <function>
+        <function-name>dynamicColumnValue</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.Object getDynamicColumnValue(javax.faces.component.UIComponent)</function-signature>
+    </function>
+    <function>
+        <function-name>dynamicColumnValueAsString</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.String getDynamicColumnValueAsString(javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>ifGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>boolean ifGranted(java.lang.String)</function-signature>

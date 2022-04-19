@@ -566,4 +566,22 @@ public class ComponentUtils {
 
         return false;
     }
+
+    public static Object getDynamicColumnValue(UIComponent component) {
+        org.primefaces.component.api.UIColumn column =
+                ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
+        UITable table =
+                ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
+
+        return table.getFieldValue(FacesContext.getCurrentInstance(), column);
+    }
+
+    public static String getDynamicColumnValueAsString(UIComponent component) {
+        org.primefaces.component.api.UIColumn column =
+                ComponentTraversalUtils.closest(org.primefaces.component.api.UIColumn.class, component);
+        UITable table =
+                ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
+
+        return table.getConvertedFieldValue(FacesContext.getCurrentInstance(), column);
+    }
 }
