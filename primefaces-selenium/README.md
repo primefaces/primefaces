@@ -28,7 +28,7 @@ You can also manage it by yourself via `webdriver.adapter`.
 
 ## Getting Started
 
-PrimeFaces-Selenium comes with with the right Selenium version as transitive dependency. So don't include your own version of Selenium or better check the version, which is used by PrimeFaces-Selenium.
+PrimeFaces-Selenium comes with the right Selenium version as transitive dependency. So don't include your own version of Selenium or better check the version, which is used by PrimeFaces-Selenium.
 
 PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`), or use a remote adress (`deployment.baseUrl`).
 Both can be set configured by providing a `/primefaces-selenium/config.properties`.
