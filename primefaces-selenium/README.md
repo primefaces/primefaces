@@ -28,7 +28,7 @@ You can also manage it by yourself via `webdriver.adapter`.
 
 ## Getting Started
 
-!> PrimeFaces-Selenium comes with with the right Selenium version as transitive dependency. So don't include your own versuin of Selenium or better check the version, which is used by PrimeFaces-Selenium.
+** NOTE: ** PrimeFaces-Selenium comes with with the right Selenium version as transitive dependency. So don't include your own versuin of Selenium or better check the version, which is used by PrimeFaces-Selenium.
 
 PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`), or use a remote adress (`deployment.baseUrl`).
 Both can be set configured by providing a `/primefaces-selenium/config.properties`.
@@ -47,7 +47,7 @@ webdriver.browser = chrome
 
 A sample `DeploymentAdapter` for Tomcat can be found here: [Tomcat Adapter](https://github.com/primefaces/primefaces/blob/master/primefaces-integration-tests/src/test/java/org/primefaces/integrationtests/TomcatDeploymentAdapter.java)
 
-This needs to be placed in the web project, you would like to deploy and can be configured by:
+This needs to be placed in the web project you would like to deploy. It can be configured via:
 
 ```properties
 deployment.baseUrl = http://127.0.0.1/myapp/
