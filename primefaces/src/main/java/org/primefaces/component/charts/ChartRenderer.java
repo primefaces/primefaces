@@ -191,7 +191,7 @@ public class ChartRenderer extends CoreRenderer {
                 }
 
                 if (rScales.getGridLines() != null) {
-                    writeJsonAttribute(scaleAttrs, "gridLines", rScales.getGridLines().encode());
+                    writeJsonAttribute(scaleAttrs, "grid", rScales.getGridLines().encode());
                 }
 
                 if (rScales.getPointLabels() != null) {

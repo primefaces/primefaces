@@ -45,12 +45,12 @@ public class AxesGridLines implements Serializable {
     private boolean drawBorder = true;
     private boolean drawOnChartArea = true;
     private boolean drawTicks = true;
-    private Number tickMarkLength;
+    private Number tickLength;
     private Number zeroLineWidth;
     private String zeroLineColor;
     private List<Number> zeroLineBorderDash;
     private Number zeroLineBorderDashOffset;
-    private boolean offsetGridLines;
+    private boolean offset;
 
     /**
      * Gets the display
@@ -199,21 +199,21 @@ public class AxesGridLines implements Serializable {
     }
 
     /**
-     * Gets the tickMarkLength
+     * Gets the tickLength
      *
-     * @return tickMarkLength
+     * @return tickLength
      */
-    public Number getTickMarkLength() {
-        return tickMarkLength;
+    public Number getTickLength() {
+        return tickLength;
     }
 
     /**
-     * Sets the tickMarkLength
+     * Sets the tickLength
      *
-     * @param tickMarkLength Length in pixels that the grid lines will draw into the axis area.
+     * @param tickLength Length in pixels that the grid lines will draw into the axis area.
      */
-    public void setTickMarkLength(Number tickMarkLength) {
-        this.tickMarkLength = tickMarkLength;
+    public void setTickLength(Number tickLength) {
+        this.tickLength = tickLength;
     }
 
     /**
@@ -293,8 +293,8 @@ public class AxesGridLines implements Serializable {
      *
      * @return offsetGridLines
      */
-    public boolean isOffsetGridLines() {
-        return offsetGridLines;
+    public boolean isOffset() {
+        return offset;
     }
 
     /**
@@ -303,8 +303,8 @@ public class AxesGridLines implements Serializable {
      * @param offsetGridLines If true, grid lines will be shifted to be between labels.
      * This is set to true in the bar chart by default.
      */
-    public void setOffsetGridLines(boolean offsetGridLines) {
-        this.offsetGridLines = offsetGridLines;
+    public void setOffset(boolean offset) {
+        this.offset = offset;
     }
 
     /**
@@ -325,12 +325,12 @@ public class AxesGridLines implements Serializable {
             ChartUtils.writeDataValue(fsw, "drawBorder", this.drawBorder, true);
             ChartUtils.writeDataValue(fsw, "drawOnChartArea", this.drawOnChartArea, true);
             ChartUtils.writeDataValue(fsw, "drawTicks", this.drawTicks, true);
-            ChartUtils.writeDataValue(fsw, "tickMarkLength", this.tickMarkLength, true);
+            ChartUtils.writeDataValue(fsw, "tickLength", this.tickLength, true);
             ChartUtils.writeDataValue(fsw, "zeroLineWidth", this.zeroLineWidth, true);
             ChartUtils.writeDataValue(fsw, "zeroLineColor", this.zeroLineColor, true);
             ChartUtils.writeDataValue(fsw, "zeroLineBorderDash", this.zeroLineBorderDash, true);
             ChartUtils.writeDataValue(fsw, "zeroLineBorderDashOffset", this.zeroLineBorderDashOffset, true);
-            ChartUtils.writeDataValue(fsw, "offsetGridLines", this.offsetGridLines, true);
+            ChartUtils.writeDataValue(fsw, "offset", this.offset, true);
 
             fsw.write("}");
 
