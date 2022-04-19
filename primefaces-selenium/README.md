@@ -5,8 +5,7 @@
 PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. Heavily inspired by Arquillian Graphene.  
 It also supports JUnit5 parallel test execution to speed up tests.
 
-PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`),
-or use a remote adress (`deployment.baseUrl`).
+PrimeFaces-Selenium provides a hook-in to either startup a local server, or use a remote adress.
 
 It also manage and download the Selenium WebDriver. Currently supported: `firefox`, `chrome` and `safari`  
 You can also manage it by yourself via `webdriver.adapter`.
