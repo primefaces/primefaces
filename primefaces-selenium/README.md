@@ -26,10 +26,36 @@ You can also manage it by yourself via `webdriver.adapter`.
 </dependency>
 ```
 
-## Configuration
+## Getting Started
 
-PrimeFaces-Selenium can be configuredy by providing a `/primefaces-selenium/config.properties`.
+!> PrimeFaces-Selenium comes with with the right Selenium version as transitive dependency. So don't include your own versuin of Selenium or better check the version, which is used by PrimeFaces-Selenium.
+
+PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`), or use a remote adress (`deployment.baseUrl`).
+Both can be set configured by providing a `/primefaces-selenium/config.properties`.
+
+### Remote Adress
+
+Testing a remote application can be configured via:
+
+```properties
+deployment.adapter = org.primefaces.integrationtests.TomcatDeploymentAdapter
+
+webdriver.browser = chrome
+```
+
+### Local Deployment
+
 A sample `DeploymentAdapter` for Tomcat can be found here: [Tomcat Adapter](https://github.com/primefaces/primefaces/blob/master/primefaces-integration-tests/src/test/java/org/primefaces/integrationtests/TomcatDeploymentAdapter.java)
+
+This needs to be placed in the web project, you would like to deploy and can be configured by:
+
+```properties
+deployment.baseUrl = http://127.0.0.1/myapp/
+
+webdriver.browser = chrome
+```
+
+### Configuration
 
 Properties:
 |       property name      |   type  | default |                 description                 |
