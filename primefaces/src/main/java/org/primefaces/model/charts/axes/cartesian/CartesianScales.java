@@ -29,7 +29,7 @@ import java.util.List;
 import org.primefaces.model.charts.axes.AxesScale;
 
 /**
- * Used to provide scales option has cartesian type
+ * Used to provide scales option has Cartesian type
  */
 public class CartesianScales extends AxesScale {
 

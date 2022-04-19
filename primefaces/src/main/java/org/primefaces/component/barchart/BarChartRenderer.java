@@ -87,14 +87,6 @@ public class BarChartRenderer extends ChartRenderer {
             writer.write(",\"maxBarThickness\":" + barOptions.getMaxBarThickness());
         }
 
-        if (barOptions.isOffsetGridLines()) {
-            writer.write(",\"gridLines\":{");
-
-            writer.write("\"offsetGridLines\":" + barOptions.isOffsetGridLines());
-
-            writer.write("}");
-        }
-
         encodeScales(context, type, barOptions.getScales(), true);
         encodeElements(context, barOptions.getElements(), true);
         encodeAnimation(context, barOptions.getAnimation(), true);

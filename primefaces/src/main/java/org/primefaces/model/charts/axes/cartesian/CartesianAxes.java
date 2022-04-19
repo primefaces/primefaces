@@ -41,7 +41,7 @@ public abstract class CartesianAxes implements Serializable {
     private String position;
     private boolean offset;
     private String id;
-    private AxesGridLines gridLines;
+    private AxesGridLines grid;
     private CartesianScaleTitle title;
     private boolean stacked;
     private boolean reverse;
@@ -106,12 +106,12 @@ public abstract class CartesianAxes implements Serializable {
     }
 
     /**
-     * Gets the gridLines
+     * Gets the grid
      *
-     * @return gridLines
+     * @return grid
      */
-    public AxesGridLines getGridLines() {
-        return gridLines;
+    public AxesGridLines getGrid() {
+        return grid;
     }
 
     /**
@@ -119,8 +119,8 @@ public abstract class CartesianAxes implements Serializable {
      *
      * @param gridLines the {@link AxesGridLines} object
      */
-    public void setGridLines(AxesGridLines gridLines) {
-        this.gridLines = gridLines;
+    public void setGrid(AxesGridLines grid) {
+        this.grid = grid;
     }
 
     /**
@@ -269,8 +269,8 @@ public abstract class CartesianAxes implements Serializable {
             ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
 
 
-            if (this.gridLines != null) {
-                fsw.write(",\"gridLines\":" + this.gridLines.encode());
+            if (this.grid != null) {
+                fsw.write(",\"grid\":" + this.grid.encode());
             }
 
             if (this.title != null) {
