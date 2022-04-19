@@ -38,7 +38,7 @@ Both can be set configured by providing a `/primefaces-selenium/config.propertie
 Testing a remote application can be configured via:
 
 ```properties
-deployment.adapter = org.primefaces.integrationtests.TomcatDeploymentAdapter
+deployment.baseUrl = http://127.0.0.1/myapp/
 
 webdriver.browser = chrome
 ```
@@ -50,7 +50,7 @@ A sample `DeploymentAdapter` for Tomcat can be found here: [Tomcat Adapter](http
 This needs to be placed in the web project you would like to deploy. It can be configured via:
 
 ```properties
-deployment.baseUrl = http://127.0.0.1/myapp/
+deployment.adapter = org.primefaces.integrationtests.TomcatDeploymentAdapter
 
 webdriver.browser = chrome
 ```
