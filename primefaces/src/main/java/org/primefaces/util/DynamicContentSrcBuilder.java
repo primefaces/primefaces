@@ -23,17 +23,13 @@
  */
 package org.primefaces.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Map;
-import java.util.function.Consumer;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
@@ -61,7 +57,7 @@ public class DynamicContentSrcBuilder {
 
         if (String.class.isAssignableFrom(type)) {
             String src = ResourceUtils.getResourceURL(context, (String) value.get());
-            return encodeResourceURL(context, src, cache);
+            return ResourceUtils.encodeResourceURL(context, src, cache);
         }
         else if (StreamedContent.class.isAssignableFrom(type)) {
             if (stream) {
@@ -71,9 +67,9 @@ public class DynamicContentSrcBuilder {
             else {
                 StreamedContent streamedContent = (StreamedContent) value.get();
                 if (streamedContent.getWriter() != null) {
-                    return buildBase64(context, streamedContent.getWriter(), streamedContent.getContentType());
+                    return ResourceUtils.toBase64(context, streamedContent.getWriter(), streamedContent.getContentType());
                 }
-                return buildBase64(context, streamedContent.getStream().get(), streamedContent.getContentType());
+                return ResourceUtils.toBase64(context, streamedContent.getStream().get(), streamedContent.getContentType());
             }
         }
         else if (byte[].class.isAssignableFrom(type)) {
@@ -82,7 +78,7 @@ public class DynamicContentSrcBuilder {
                 return buildStreaming(context, component, extractedVE, cache);
             }
             else {
-                return buildBase64(context, (byte[]) value.get());
+                return ResourceUtils.toBase64(context, (byte[]) value.get());
             }
         }
         else if (InputStream.class.isAssignableFrom(type)) {
@@ -91,7 +87,7 @@ public class DynamicContentSrcBuilder {
                 return buildStreaming(context, component, extractedVE, cache);
             }
             else {
-                return buildBase64(context, (InputStream) value.get());
+                return ResourceUtils.toBase64(context, (InputStream) value.get());
             }
         }
 
@@ -147,75 +143,11 @@ public class DynamicContentSrcBuilder {
                 }
             }
 
-            return encodeResourceURL(context, builder.toString(), cache);
+            return ResourceUtils.encodeResourceURL(context, builder.toString(), cache);
         }
         catch (UnsupportedEncodingException ex) {
             throw new FacesException(ex);
         }
-    }
-
-    public static String buildBase64(FacesContext context, InputStream is) {
-        return buildBase64(context, toByteArray(is), null);
-    }
-
-    public static String buildBase64(FacesContext context, Consumer<OutputStream> writer, String contentType) {
-        return buildBase64(context, toByteArray(writer), contentType);
-    }
-
-    public static String buildBase64(FacesContext context, InputStream is, String contentType) {
-        return buildBase64(context, toByteArray(is), contentType);
-    }
-
-    public static String buildBase64(FacesContext context, byte[] bytes) {
-        return buildBase64(context, bytes, null);
-    }
-
-    public static String buildBase64(FacesContext context, byte[] bytes, String contentType) {
-        String base64 = Base64.getEncoder().withoutPadding().encodeToString(bytes);
-        if (contentType == null) {
-            // try to guess content type from magic numbers
-            if (base64.startsWith("R0lGOD")) {
-                contentType = "image/gif";
-            }
-            else if (base64.startsWith("iVBORw")) {
-                contentType = "image/png";
-            }
-            else if (base64.startsWith("/9j/")) {
-                contentType = "image/jpeg";
-            }
-        }
-        return "data:" + contentType + ";base64," + base64;
-    }
-
-    protected static String encodeResourceURL(FacesContext context, String src, boolean cache) {
-        return context.getExternalContext().encodeResourceURL(ResourceUtils.appendCacheBuster(src, cache));
-    }
-
-    protected static byte[] toByteArray(InputStream is) {
-        try {
-            try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
-                int nRead;
-                byte[] data = new byte[16384];
-
-                while ((nRead = is.read(data, 0, data.length)) != -1) {
-                    buffer.write(data, 0, nRead);
-                }
-
-                buffer.flush();
-
-                return buffer.toByteArray();
-            }
-        }
-        catch (Exception e) {
-            throw new FacesException("Could not read InputStream to byte[]", e);
-        }
-    }
-
-    protected static byte[] toByteArray(Consumer<OutputStream> os) {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        os.accept(buffer);
-
-        return buffer.toByteArray();
     }
 
     protected static String md5(String input) {
