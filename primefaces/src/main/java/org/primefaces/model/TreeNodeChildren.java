@@ -67,6 +67,16 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
             throw new IndexOutOfBoundsException();
         }
 
+        // check if the movement is on the same list
+        if (node.getParent() != null && node.getParent().getChildren() == this) {
+
+            // check if the movement is downwards then correct the index
+            int removedIndex = super.indexOf(node);
+            if (removedIndex > -1 && index > removedIndex) {
+                index--;
+            }
+        }
+
         eraseParent(node);
         super.add(index, node);
         node.setParent(parent);
