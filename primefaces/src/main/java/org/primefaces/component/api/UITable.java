@@ -442,7 +442,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 String columnKey = columnState.substring(0, seperatorIndex);
                 boolean visible = Boolean.parseBoolean(columnState.substring(seperatorIndex + 1));
 
-                ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                ColumnMeta meta = columMeta.computeIfAbsent(columnKey, ColumnMeta::new);
                 meta.setVisible(visible);
             }
         }
@@ -481,7 +481,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     String columnKey = columnState.substring(0, seperatorIndex);
                     String width = columnState.substring(seperatorIndex + 1);
 
-                    ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                    ColumnMeta meta = columMeta.computeIfAbsent(columnKey, ColumnMeta::new);
                     meta.setWidth(width);
                 }
             }
@@ -515,7 +515,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 continue;
             }
 
-            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, ColumnMeta::new);
             meta.setDisplayPriority(i);
         }
 

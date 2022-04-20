@@ -83,7 +83,7 @@ public class GraphicImageRenderer extends CoreRenderer {
         }
         else {
             return DynamicContentSrcBuilder.build(context, image, image.getValueExpression(GraphicImage.PropertyKeys.value.name()),
-                    new Lazy<>(() -> image.getValue()), image.isCache(), image.isStream());
+                    new Lazy<>(image::getValue), image.isCache(), image.isStream());
         }
     }
 }

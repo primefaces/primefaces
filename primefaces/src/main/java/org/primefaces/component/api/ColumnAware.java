@@ -354,7 +354,7 @@ public interface ColumnAware {
     default String getOrderedColumnKeys() {
         return getColumns()
                 .stream()
-                .map(e -> e.getColumnKey())
+                .map(UIColumn::getColumnKey)
                 .collect(Collectors.joining(","));
     }
 }

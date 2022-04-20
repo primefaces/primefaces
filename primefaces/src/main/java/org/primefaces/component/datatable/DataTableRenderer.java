@@ -1719,9 +1719,8 @@ public class DataTableRenderer extends DataRenderer {
             }
 
             headerLabel.set(null);
-            table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                headerLabel.set(getHeaderLabel(context, column));
-            });
+            table.invokeOnColumn(sortMeta.getColumnKey(), (column) ->
+                    headerLabel.set(getHeaderLabel(context, column)));
             headers.put(sortMeta, headerLabel.get());
         }
 

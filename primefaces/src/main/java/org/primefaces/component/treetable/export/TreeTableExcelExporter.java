@@ -230,9 +230,8 @@ public class TreeTableExcelExporter extends TreeTableExporter {
 
         applyColumnAlignments(column, cell);
 
-        exportColumn(context, table, column, components, true, (s) -> {
-            updateCell(cell, Objects.toString(s, Constants.EMPTY_STRING));
-        });
+        exportColumn(context, table, column, components, true, (s) ->
+                updateCell(cell, Objects.toString(s, Constants.EMPTY_STRING)));
     }
 
     protected boolean addColumnGroup(TreeTable table, Sheet sheet, TreeTableExporter.ColumnType columnType) {

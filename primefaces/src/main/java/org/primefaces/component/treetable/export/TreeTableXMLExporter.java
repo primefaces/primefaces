@@ -139,9 +139,8 @@ public class TreeTableXMLExporter extends TreeTableExporter {
 
         writer.append("\t\t<" + tag + ">");
 
-        exportColumn(context, table, column, components, false, (s) -> {
-            writer.append(EscapeUtils.forXml(Objects.toString(s, Constants.EMPTY_STRING)));
-        });
+        exportColumn(context, table, column, components, false, (s) ->
+                writer.append(EscapeUtils.forXml(Objects.toString(s, Constants.EMPTY_STRING))));
 
         writer.append("</" + tag + ">\n");
     }

@@ -77,7 +77,7 @@ public class NativeFileUploadDecoder extends AbstractFileUploadDecoder<HttpServl
     public String getUploadDirectory(HttpServletRequest request) {
         // Java 8 does not provide streams support for Enumeration out of the box
         return Collections.list(request.getAttributeNames()).stream()
-                .map(a -> request.getAttribute(a))
+                .map(request::getAttribute)
                 .filter(MultipartConfigElement.class::isInstance)
                 .map(MultipartConfigElement.class::cast)
                 .findFirst()

@@ -50,7 +50,7 @@ public class MediaRenderer extends CoreRenderer {
         try {
             src = DynamicContentSrcBuilder.build(context, media,
                     media.getValueExpression(Media.PropertyKeys.value.name()),
-                    new Lazy<>(() -> media.getValue()), media.isCache(), true);
+                    new Lazy<>(media::getValue), media.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);

@@ -121,9 +121,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
 
         for (ColumnMeta meta : visibleColumnMetadata) {
             String metaColumnKey = meta.getColumnKey();
-            table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), column -> {
-                exportcolumns.add(column);
-            });
+            table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), exportcolumns::add);
         }
 
         exportableColumns.put(table, exportcolumns);

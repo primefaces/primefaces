@@ -192,9 +192,8 @@ public class DataTableCSVExporter extends DataTableExporter {
 
         writer.append(csvOptions.getQuoteChar());
 
-        exportColumn(context, table, column, components, false, (s) -> {
-            writer.append(escapeQuotes(Objects.toString(s, Constants.EMPTY_STRING)));
-        });
+        exportColumn(context, table, column, components, false, (s) ->
+                writer.append(escapeQuotes(Objects.toString(s, Constants.EMPTY_STRING))));
 
         writer.append(csvOptions.getQuoteChar());
     }

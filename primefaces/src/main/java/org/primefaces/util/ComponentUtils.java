@@ -304,12 +304,8 @@ public class ComponentUtils {
                         params = new LinkedHashMap<>(5);
                     }
 
-                    List<String> paramValues = params.get(uiParam.getName());
-                    if (paramValues == null) {
-                        paramValues = new ArrayList<>(2);
-                        params.put(uiParam.getName(), paramValues);
-                    }
-
+                    List<String> paramValues = params.computeIfAbsent(uiParam.getName(), k ->
+                            new ArrayList<>(2));
                     paramValues.add(String.valueOf(uiParam.getValue()));
                 }
             }

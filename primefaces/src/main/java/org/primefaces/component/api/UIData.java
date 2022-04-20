@@ -89,7 +89,7 @@ public class UIData extends javax.faces.component.UIData {
             // if not set by xhtml, we need to check the type of the value binding
             Class<?> type = ELUtils.getType(getFacesContext(),
                     getValueExpression("value"),
-                    () -> getValue());
+                    this::getValue);
             if (type == null) {
                 LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
                         + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "

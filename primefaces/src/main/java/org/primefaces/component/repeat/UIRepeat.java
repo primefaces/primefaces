@@ -238,7 +238,7 @@ public class UIRepeat extends UINamingContainer {
                 } else {
                     int b = (begin == null) ? 0 : begin;
                     int e = end;
-                    int d = (b < e) ? 1 : (b > e) ? -1 : 0;
+                    int d = Integer.compare(e, b);
                     int s = Math.abs(e - b) + 1;
                     Integer[] array = new Integer[s];
 

@@ -47,7 +47,7 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         String clientId = getSubmitParam(context, selectOne);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
+        String submittedValue = params.getOrDefault(clientId, "");
         List<String> validSubmittedValues = validateSubmittedValues(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
         selectOne.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
                 ? submittedValue

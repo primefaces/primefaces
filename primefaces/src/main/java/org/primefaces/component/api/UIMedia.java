@@ -47,7 +47,7 @@ public abstract class UIMedia extends UIComponentBase {
     public String resolveSource(FacesContext context, UIMedia media) throws IOException {
         try {
             return DynamicContentSrcBuilder.build(context, media, media.getValueExpression(PropertyKeys.value.name()),
-                    new Lazy<>(() -> getValue()), media.isCache(), true);
+                    new Lazy<>(this::getValue), media.isCache(), true);
         }
         catch (Exception ex) {
             throw new IOException(ex);

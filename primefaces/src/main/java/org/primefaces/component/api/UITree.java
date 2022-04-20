@@ -842,7 +842,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         FacesContext facesContext = context.getFacesContext();
         boolean visitNodes = !ComponentUtils.isSkipIteration(context, facesContext);
-        Lazy<TreeNode> root = new Lazy<>(() -> getValue());
+        Lazy<TreeNode> root = new Lazy<>(this::getValue);
 
         String oldRowKey = getRowKey();
         if (visitNodes) {

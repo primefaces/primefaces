@@ -81,16 +81,12 @@ public class CompositeUtils {
 
                     final UIComponent child = childs.get(0);
 
-                    composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
-
-                        @Override
-                        public void invokeContextCallback(FacesContext context, UIComponent target) {
-                            if (isComposite(child)) {
-                                invokeOnDeepestEditableValueHolder(context, child, callback);
-                            }
-                            else {
-                                callback.invokeContextCallback(context, child);
-                            }
+                    composite.invokeOnComponent(context, composite.getClientId(context), (context1, target1) -> {
+                        if (isComposite(child)) {
+                            invokeOnDeepestEditableValueHolder(context1, child, callback);
+                        }
+                        else {
+                            callback.invokeContextCallback(context1, child);
                         }
                     });
                 }
