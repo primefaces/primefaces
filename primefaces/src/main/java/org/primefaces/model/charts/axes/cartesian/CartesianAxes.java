@@ -115,9 +115,9 @@ public abstract class CartesianAxes implements Serializable {
     }
 
     /**
-     * Sets the gridLines
+     * Sets the grid
      *
-     * @param gridLines the {@link AxesGridLines} object
+     * @param grid the {@link AxesGridLines} object
      */
     public void setGrid(AxesGridLines grid) {
         this.grid = grid;
