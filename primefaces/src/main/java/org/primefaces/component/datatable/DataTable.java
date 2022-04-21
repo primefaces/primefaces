@@ -1046,6 +1046,16 @@ public class DataTable extends DataTableBase {
     }
 
     public void updateSelectionWithMVS(Set<String> rowKeys) {
+        // we have 3 states:
+        // 1) multi-view state
+        // 2) view state
+        // 3) request state
+        // in general multi-view state should only be restored on the initial request to a view
+        // and then transfered into view state
+        // this means that restoring MVS is NOT required on a postback actually
+        if (getFacesContext().isPostback()) {
+            return;
+        }
         SelectionFeature.getInstance().decodeSelection(getFacesContext(), this, rowKeys);
     }
 

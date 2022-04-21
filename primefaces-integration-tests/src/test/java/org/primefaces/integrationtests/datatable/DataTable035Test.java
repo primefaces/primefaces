@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -37,7 +36,6 @@ public class DataTable035Test extends AbstractDataTableTest {
 
     @Test
     @DisplayName("DataTable: Manually assign selection doesnt show")
-    @Disabled
     public void test(Page page) throws InterruptedException {
 
         // trigger selection on row1
