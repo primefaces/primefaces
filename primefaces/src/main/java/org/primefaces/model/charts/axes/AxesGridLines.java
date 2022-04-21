@@ -289,18 +289,18 @@ public class AxesGridLines implements Serializable {
     }
 
     /**
-     * Gets the offsetGridLines
+     * Gets the offset
      *
-     * @return offsetGridLines
+     * @return offset
      */
     public boolean isOffset() {
         return offset;
     }
 
     /**
-     * Sets the offsetGridLines
+     * Sets the offset
      *
-     * @param offsetGridLines If true, grid lines will be shifted to be between labels.
+     * @param offset If true, grid lines will be shifted to be between labels.
      * This is set to true in the bar chart by default.
      */
     public void setOffset(boolean offset) {

@@ -147,6 +147,7 @@
                 <configuration>
                     <sourcepath>${basedir}/src/main/java;</sourcepath>
                     <doclint>none</doclint>
+                    <excludePackageNames>org.primefaces.shaded.*</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
