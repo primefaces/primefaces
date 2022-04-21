@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -44,7 +43,6 @@ public class DataTable036Test extends AbstractDataTableTest {
     @Test
     @Order(1)
     @DisplayName("DataTable: MultiViewState - selection with non-lazy-mode")
-    @Disabled
     public void multiViewStateSelection(PageNonLazy page, OtherPage otherPage) {
         testImplementationMultiViewStateSelection(page, otherPage, () -> languages);
     }
@@ -52,7 +50,6 @@ public class DataTable036Test extends AbstractDataTableTest {
     @Test
     @Order(2)
     @DisplayName("DataTable: MultiViewState - selection with lazy-mode")
-    @Disabled
     public void multiViewStateSelection(PageLazy page, OtherPage otherPage) {
         testImplementationMultiViewStateSelection(page, otherPage, model::getLangs);
     }
