@@ -233,16 +233,16 @@
                         <goals>
                             <goal>compile-sass</goal>
                         </goals>
-                        <configuration>
-                            <inputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</inputFolder>
-                            <outputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</outputFolder>
-                            <update>true</update>
-                            <noSourceMap>true</noSourceMap>
-                            <style>COMPRESSED</style>
-                            <quiet>false</quiet>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <inputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</inputFolder>
+                    <outputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</outputFolder>
+                    <update>true</update>
+                    <noSourceMap>true</noSourceMap>
+                    <style>COMPRESSED</style>
+                    <quiet>false</quiet>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
