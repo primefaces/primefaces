@@ -77,8 +77,7 @@ separate error page. Following example shows the exception in a dialog on the sa
 </p:dialog>
 ```
 Ideal location for `p:ajaxExceptionHandler` component is the facelets template so that it gets
-included in every page. Refer to component documentation of `p:ajaxExceptionHandler` for the
-available attributes.
+included in every page. [Refer to component documentation for the available attributes](/components/ajaxexceptionhandler.md)
 
 ## Render Response Exceptions
 To support exception handling in the `RENDER_RESPONSE` phase, it's required to set the
