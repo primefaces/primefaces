@@ -9,14 +9,10 @@ requests easily.
 
 ```xml
 <application>
-    <el-resolver>
-        org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver
-    </el-resolver>
+    <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
 </application>
 <factory>
-    <exception-handler-factory>
-    org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory
-    </exception-handler-factory>
+    <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
 </factory>
 ```
 
