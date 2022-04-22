@@ -1,11 +1,11 @@
 # Error Handling
 
-PrimeFaces provides a built-in exception handler to take care of exceptions in ajax and non-ajax
+PrimeFaces provides a built-in exception handler to take care of exceptions in AJAX and AJAX-ajax
 requests easily.
 
 ## Configuration
 
-ExceptionHandler and an ElResolver configured is required in faces configuration file.
+`ExceptionHandler` and an `ELResolver` configured is required via `faces-config.xml`:
 
 ```xml
 <application>
@@ -23,9 +23,9 @@ ExceptionHandler and an ElResolver configured is required in faces configuration
 ## Error Pages
 
 ExceptionHandler is integrated with error-page mechanism of Servlet API. At application startup,
-PrimeFaces parses the error pages and uses this information to find the appropriate page to redirect
-to based on the exception type. Here is an example web.xml configuration with a generic page for
-exceptions and a special page for ViewExpiredException type.
+PrimeFaces parses the error pages and uses this information to find the appropriate page to redirect,
+ based on the exception type. Here is an example web.xml configuration with a generic page for
+exceptions and a special page for `ViewExpiredException` type.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -48,8 +48,8 @@ exceptions and a special page for ViewExpiredException type.
 
 ## Exception Information
 
-In the error page, information about the exception is provided via the pfExceptionHandler EL
-keyword. Here is the list of exposed properties.
+In the error page, information about the exception is provided via the `pfExceptionHandler` EL keyword.
+Here is the list of exposed properties:
 
 - **exception**: Throwable instance.
 - **type**: Type of the exception.
@@ -85,12 +85,12 @@ included in every page. Refer to component documentation of p:ajaxExceptionHandl
 available attributes.
 
 ## Render Response Exceptions
-To support exception handling in the _RENDER_RESPONSE_ phase, it's required to set the
-_javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
+To support exception handling in the `RENDER_RESPONSE` phase, it's required to set the
+`javax.faces.FACELETS_BUFFER_SIZE` parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
 
 ## Exception Logging
-Per default all exceptions are logged in all _ProjectStages_ -  we just skip logging ViewExpiredExceptions in _Production_.
+Per default all exceptions are logged in all `ProjectStages` -  we just skip logging `ViewExpiredExceptions `in `Production`.
 You can also configure ignores via:
 
 ```xml
