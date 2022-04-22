@@ -80,8 +80,8 @@ separate error page. Following example shows the exception in a dialog on the sa
     <p:button onclick="document.location.href = document.location.href;" value="Reload!"/>
 </p:dialog>
 ```
-Ideal location for p:ajaxExceptionHandler component is the facelets template so that it gets
-included in every page. Refer to component documentation of p:ajaxExceptionHandler for the
+Ideal location for `p:ajaxExceptionHandler` component is the facelets template so that it gets
+included in every page. Refer to component documentation of `p:ajaxExceptionHandler` for the
 available attributes.
 
 ## Render Response Exceptions
