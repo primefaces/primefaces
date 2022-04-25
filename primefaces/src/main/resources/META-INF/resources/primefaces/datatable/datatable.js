@@ -5015,9 +5015,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.headers && !this.hasColGroup()) {
             for(var i = 0; i < this.headers.length; i++) {
                 var header = this.headers.eq(i),
-                    column = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
+                    index = header.index(),
+                    column = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (index + 1) + ')');
 
-                column.data('ci', (header.index() + 1));
+                column.data('ci', index);
             }
         }
  
