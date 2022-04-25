@@ -115,6 +115,7 @@ Currently, only the following components are implemented (partially):
 - Schedule
 - SelectBooleanCheckbox
 - SelectBooleanButton
+- SelectCheckboxMenu
 - SelectManyCheckbox
 - SelectManyMenu
 - SelectOneButton

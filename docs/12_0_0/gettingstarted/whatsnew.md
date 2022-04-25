@@ -42,4 +42,4 @@ Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../
 * Switched from Selenium 3.x to Selenium 4.x
   * Most adaptions are done by PrimeFaces Selenium behind the scenes.
   * For usecases where you directly interact with Selenium without PrimeFaces Selenium abstraction look into https://www.selenium.dev/documentation/webdriver/getting_started/upgrade_to_selenium_4/ for details.
-  * New Components `MenuBar` and `BlockUI`
+  * New Components `MenuBar`, `BlockUI`, `SelectCheckboxMenu`
