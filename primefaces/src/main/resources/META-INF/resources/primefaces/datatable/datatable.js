@@ -5008,6 +5008,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     groupRows: function() {
         var rows = this.tbody.children('tr');
+
+        // see #8027
+        // remember the original column index
+        // columns are removed because of grouping and mapping to the header isnt possible anymore in #updateColumnsView
+        if(this.headers && !this.hasColGroup()) {
+            for(var i = 0; i < this.headers.length; i++) {
+                var header = this.headers.eq(i),
+                    column = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
+
+                column.data('ci', (header.index() + 1));
+            }
+        }
+ 
         for(var i = 0; i < this.cfg.groupColumnIndexes.length; i++) {
             this.groupRow(this.cfg.groupColumnIndexes[i], rows);
         }
@@ -5028,6 +5041,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var row = rows.eq(i);
             var column = row.children('td').eq(colIndex);
             var columnData = column.text();
+
             if(rowGroupCellData != columnData) {
                 groupStartIndex = i;
                 rowGroupCellData = columnData;
@@ -5244,15 +5258,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         // update the visibility of columns but ignore expanded rows and GitHub #7255 grouped headers
         if(this.headers && !this.hasColGroup()) {
-            for(var i = 0; i < this.headers.length; i++) {
-                var header = this.headers.eq(i),
-                    col = this.tbody.find('> tr:not(.ui-expanded-row-content) > td:nth-child(' + (header.index() + 1) + ')');
+            var rows = this.tbody.find('> tr:not(.ui-expanded-row-content)');
+            for(var i = 0; i < rows.length; i++) {
+                var row = rows.eq(i);
+                var columns = row.find('td');
+                
+                for(var j = 0; j < columns.length; j++) {
+                    var column = columns.eq(j);
+                    var columnIndex = column.data('ci') || j;
 
-                if(header.hasClass('ui-helper-hidden')) {
-                    col.addClass('ui-helper-hidden');
-                }
-                else {
-                    col.removeClass('ui-helper-hidden');
+                    var header = this.headers.eq(columnIndex);
+                    if(header.hasClass('ui-helper-hidden')) {
+                        column.addClass('ui-helper-hidden');
+                    }
+                    else {
+                        column.removeClass('ui-helper-hidden');
+                    }
                 }
             }
         }
