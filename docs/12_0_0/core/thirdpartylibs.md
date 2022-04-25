@@ -34,7 +34,7 @@ are many other third party libraries and plugins used to support features.
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |
-| [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.29.1 | https://github.com/moment/moment |
+| [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.29.3 | https://github.com/moment/moment |
 | [moment-timezone.js](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.33 | https://github.com/moment/moment-timezone |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
