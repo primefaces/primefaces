@@ -789,6 +789,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.alignPanel();
         }
 
+        if(this.cfg.forceSelection) {
+            this.currentItems = [];
+        }
+
         if(this.items.length > 0) {
             var firstItem = this.items.eq(0);
 
@@ -815,7 +819,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if(this.cfg.forceSelection) {
-                this.currentItems = [];
                 this.items.each(function(i, item) {
                     $this.currentItems.push($(item).attr('data-item-label'));
                 });
