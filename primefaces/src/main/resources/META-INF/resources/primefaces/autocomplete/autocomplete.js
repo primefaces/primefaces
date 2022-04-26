@@ -789,6 +789,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.alignPanel();
         }
 
+	// #8717 always clear list before trying to fill it
         if(this.cfg.forceSelection) {
             this.currentItems = [];
         }
