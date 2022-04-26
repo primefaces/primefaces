@@ -476,9 +476,11 @@ Widget: _PrimeFaces.widget.SimpleFileUpload_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 show() | - | void | Shows file chooser dialog.
+clear() | - | void | Clears the currently selected file.
 
 Widget: _PrimeFaces.widget.FileUpload_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 show() | - | void | Shows file(s) chooser dialog.
+clear() | - | void | Clears the currently selected file(s).

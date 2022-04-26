@@ -209,6 +209,18 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Clears the currently selected file.
+     */
+    clear: function() {
+        if (this.input) {
+            this.input.val('');
+        }
+        if (this.display) {
+            this.display.text('');
+        }
+    },
+
+    /**
      * Uploads all selected files via AJAX.
      * @private
      */
@@ -294,11 +306,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 PrimeFaces.debug('Response completed.');
-
-                if ($this.display) {
-                    $this.display.text('');
-                }
-                $this.input.val('');
+                $this.clear();
 
                 if($this.cfg.global) {
                     $(document).trigger('pfAjaxComplete', [xhr, this]);
