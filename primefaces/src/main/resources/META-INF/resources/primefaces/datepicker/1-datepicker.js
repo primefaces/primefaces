@@ -231,7 +231,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     return pastedValue;
                 }
             };
-            var pattern = new RegExp("m|d|y|h|s", 'i');
+            var pattern = /[mdyhs]/i;
             var isAlias = pattern.test(this.cfg.mask);
             if (isAlias) {
                 maskCfg.alias = 'datetime';
