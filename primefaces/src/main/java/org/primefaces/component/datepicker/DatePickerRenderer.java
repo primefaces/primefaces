@@ -30,6 +30,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Map.Entry;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -262,9 +263,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         String mask = datePicker.getMask();
         if (mask != null && !"false".equals(mask)) {
-            String patternTemplate = datePicker.calculatePattern();
-            String maskTemplate = ("true".equals(mask)) ? datePicker.convertPattern(patternTemplate) : mask;
-            wb.attr("mask", maskTemplate)
+            wb.attr("mask", resolveMask(datePicker, mask))
                 .attr("maskSlotChar", datePicker.getMaskSlotChar(), "_")
                 .attr("maskAutoClear", datePicker.isMaskAutoClear(), true);
         }
@@ -272,6 +271,21 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         encodeClientBehaviors(context, datePicker);
 
         wb.finish();
+    }
+
+    protected String resolveMask(DatePicker datePicker, String mask) {
+        if (!"true".equals(mask)) {
+            return mask;
+        }
+        String patternMask = datePicker.convertPattern(datePicker.calculatePattern());
+        switch (datePicker.getSelectionMode()) {
+            case "multiple":
+                throw new FacesException("Mask is not supported on selectionMode multiple");
+            case "range":
+                return patternMask + " " + datePicker.getRangeSeparator() + " " + patternMask;
+            default:
+                return patternMask;
+        }
     }
 
     protected void encodeScriptDateStyleClasses(WidgetBuilder wb, DatePicker datePicker) throws IOException {
