@@ -57,12 +57,12 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         this.raphael = Raphael(this.id, this.cfg.width, this.cfg.height);
         this.nodes = [];
 
-        if(this.cfg.model) {
+        if (this.cfg.model) {
             //root
             this.root = this.createNode(this.cfg.centerX, this.cfg.centerY, this.cfg.model);
 
             //children
-            if(this.cfg.model.children) {
+            if (this.cfg.model.children) {
                 this.createSubNodes(this.root);
             }
         }
@@ -80,17 +80,17 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      */
     createNode: function(x, y, model) {
         var node = this.raphael.ellipse(x, y, 40, 25).attr('opacity', 0)
-                            .data('model', model)
-                            .data('connections', [])
-                            .data('widget', this.cfg.widgetVar);
+            .data('model', model)
+            .data('connections', [])
+            .data('widget', this.cfg.widgetVar);
 
         var label = model.label,
-        nodeWidth = node.getBBox().width,
-        title = null;
+            nodeWidth = node.getBBox().width,
+            title = null;
 
         var text = this.raphael.text(x, y, label).attr('opacity', 0);
 
-        if(nodeWidth <= text.getBBox().width) {
+        if (nodeWidth <= text.getBBox().width) {
             title = label;
             label = label.substring(0, 12);
             text.attr('text', label + '...');
@@ -100,36 +100,36 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         node.data('text', text);
 
         //node options
-        if(model.fill) {
-            node.attr({fill: '#' + model.fill});
+        if (model.fill) {
+            node.attr({ fill: '#' + model.fill });
         }
 
         //title
-        if(title) {
+        if (title) {
             node.data('title', title);
 
-            node.on("mouseover", this.mouseoverNode);
-            node.on("mouseout", this.mouseoutNode);
+            node.mouseover(this.mouseoverNode);
+            node.mouseout(this.mouseoutNode);
 
-            text.on("mouseover", this.mouseoverText);
-            text.on("mouseout", this.mouseoutText);
+            text.mouseover(this.mouseoverText);
+            text.mouseout(this.mouseoutText);
         }
 
         //show
-        node.animate({opacity:1}, this.cfg.effectSpeed);
-        text.animate({opacity:1}, this.cfg.effectSpeed);
+        node.animate({ opacity: 1 }, this.cfg.effectSpeed);
+        text.animate({ opacity: 1 }, this.cfg.effectSpeed);
 
         //make draggable
         node.drag(this.nodeDrag, this.nodeDragStart, this.nodeDragEnd);
         text.drag(this.textDrag, this.textDragStart, this.textDragEnd);
 
         //events
-        if(model.selectable) {
+        if (model.selectable) {
             node.click(this.clickNode);
             text.click(this.clickNodeText);
 
-            node.attr({cursor:'pointer'});
-            text.attr({cursor:'pointer'});
+            node.attr({ cursor: 'pointer' });
+            text.attr({ cursor: 'pointer' });
         }
 
         //add to nodes
@@ -167,7 +167,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      */
     mouseoverText: function() {
         var node = this.data('node'),
-        _self = PF(node.data('widget'));
+            _self = PF(node.data('widget'));
 
         _self.showTooltip(node);
     },
@@ -179,7 +179,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      */
     mouseoutText: function() {
         var node = this.data('node'),
-        _self = PF(node.data('widget'));
+            _self = PF(node.data('widget'));
 
         _self.hideTooltip(node);
     },
@@ -191,18 +191,18 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     showTooltip: function(node) {
         var title = node.data('title');
 
-        if(title) {
+        if (title) {
             var _self = PF(node.data('widget')),
-            offset = _self.jq.offset();
+                offset = _self.jq.offset();
 
             _self.tooltip.text(title)
-                        .css(
-                            {
-                                'left': (offset.left + node.attr('cx') + 20) + 'px',
-                                'top': (offset.top + node.attr('cy') + 10)  + 'px',
-                                'z-index': PrimeFaces.nextZindex()
-                            })
-                        .show();
+                .css(
+                    {
+                        'left': (offset.left + node.attr('cx') + 20) + 'px',
+                        'top': (offset.top + node.attr('cy') + 10) + 'px',
+                        'z-index': PrimeFaces.nextZindex()
+                    })
+                .show();
         }
 
 
@@ -215,7 +215,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     hideTooltip: function(node) {
         var title = node.data('title');
 
-        if(title) {
+        if (title) {
             var _self = PF(node.data('widget'));
 
             _self.tooltip.hide();
@@ -228,11 +228,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      */
     centerNode: function(node) {
         var _self = this,
-        text = node.data('text');
+            text = node.data('text');
 
-        text.animate({x: this.cfg.centerX, y: this.cfg.centerY}, this.cfg.effectSpeed, '<>');
+        text.animate({ x: this.cfg.centerX, y: this.cfg.centerY }, this.cfg.effectSpeed, '<>');
 
-        node.animate({cx: this.cfg.centerX, cy: this.cfg.centerY}, this.cfg.effectSpeed, '<>',
+        node.animate({ cx: this.cfg.centerX, cy: this.cfg.centerY }, this.cfg.effectSpeed, '<>',
             function() {
                 _self.createSubNodes(node);
             });
@@ -240,8 +240,8 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         //remove event handlers
         node.unclick(this.clickNode);
         text.unclick(this.clickNodeText);
-        node.attr({cursor:'default'});
-        text.attr({cursor:'default'});
+        node.attr({ cursor: 'default' });
+        text.attr({ cursor: 'default' });
     },
 
     /**
@@ -252,22 +252,22 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     createSubNodes: function(node) {
         var nodeModel = node.data('model');
 
-        if(nodeModel.children) {
+        if (nodeModel.children) {
             var size = nodeModel.children.length,
-            radius = 150,
-            capacity = parseInt((radius*2) / 25),
-            angleFactor = (360 / Math.min(size, capacity)),
-            capacityCounter = 0;
+                radius = 150,
+                capacity = parseInt((radius * 2) / 25),
+                angleFactor = (360 / Math.min(size, capacity)),
+                capacityCounter = 0;
 
             //children
-            for(var i = 0 ; i < size; i++) {
+            for (var i = 0; i < size; i++) {
                 var childModel = nodeModel.children[i];
                 capacityCounter++;
 
                 //coordinates
                 var angle = ((angleFactor * (i + 1)) / 180) * Math.PI,
-                x = node.attr('cx') + radius * Math.cos(angle),
-                y = node.attr('cy') + radius * Math.sin(angle);
+                    x = node.attr('cx') + radius * Math.cos(angle),
+                    y = node.attr('cy') + radius * Math.sin(angle);
 
                 var childNode = this.createNode(x, y, childModel);
 
@@ -277,10 +277,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                 childNode.data('connections').push(connection);
 
                 //new ring
-                if(capacityCounter === capacity) {
+                if (capacityCounter === capacity) {
                     radius = radius + 125;
-                    capacity = parseInt((radius*2) / 25);
-                    angleFactor = (360 / Math.min(capacity, (size - (i + 1) )));
+                    capacity = parseInt((radius * 2) / 25);
+                    angleFactor = (360 / Math.min(capacity, (size - (i + 1))));
                     capacityCounter = 0;
                 }
             }
@@ -288,7 +288,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
         //parent
         var parentModel = nodeModel.parent;
-        if(parentModel) {
+        if (parentModel) {
             parentModel.selectable = true;
 
             var parentNode = this.createNode(60, 40, parentModel);
@@ -307,15 +307,15 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      * @param {import("raphael").RaphaelElement} node The node that received the click.
      */
     handleNodeClick: function(node) {
-        if(node.dragged) {
+        if (node.dragged) {
             node.dragged = false;
             return;
         }
 
         var _self = this,
-        clickTimeout = node.data('clicktimeout');
+            clickTimeout = node.data('clicktimeout');
 
-        if(clickTimeout) {
+        if (clickTimeout) {
             clearTimeout(clickTimeout);
             node.removeData('clicktimeout');
 
@@ -348,7 +348,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      */
     clickNodeText: function() {
         var node = this.data('node'),
-        _self = PF(node.data('widget'));
+            _self = PF(node.data('widget'));
 
         _self.handleNodeClick(node);
     },
@@ -359,12 +359,12 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     handleDblclickNode: function(node) {
-        if(this.hasBehavior('dblselect')) {
+        if (this.hasBehavior('dblselect')) {
             var key = node.data('model').key;
 
             var ext = {
                 params: [
-                    {name: this.id + '_nodeKey', value: key}
+                    { name: this.id + '_nodeKey', value: key }
                 ]
             };
 
@@ -378,14 +378,14 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      */
     expandNode: function(node) {
         var $this = this,
-        key = node.data('model').key,
-        ext = {
-            update: this.id,
-            params: [
-                {name: this.id + '_nodeKey', value: key}
-            ],
-            onsuccess: function(responseXML, status, xhr) {
-                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+            key = node.data('model').key,
+            ext = {
+                update: this.id,
+                params: [
+                    { name: this.id + '_nodeKey', value: key }
+                ],
+                onsuccess: function(responseXML, status, xhr) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
                             var nodeModel = JSON.parse(content);
@@ -396,11 +396,11 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                             node.data('connections', []);
 
                             //remove other nodes
-                            for(var j = 0; j < this.nodes.length; j++) {
+                            for (var j = 0; j < this.nodes.length; j++) {
                                 var otherNode = this.nodes[j],
-                                nodeKey = otherNode.data('model').key;
+                                    nodeKey = otherNode.data('model').key;
 
-                                if(nodeKey !== key) {
+                                if (nodeKey !== key) {
                                     this.removeNode(otherNode);
                                 }
                             }
@@ -412,9 +412,9 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                         }
                     });
 
-                return true;
-            }
-        };
+                    return true;
+                }
+            };
 
         this.callBehavior('select', ext);
     },
@@ -429,7 +429,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
         //connections
         var connections = node.data('connections');
-        for(var i = 0; i < connections.length; i++) {
+        for (var i = 0; i < connections.length; i++) {
             connections[i].line.remove();
         }
 
@@ -437,7 +437,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         node.removeData();
 
         //ellipse
-        node.animate({opacity:0}, this.cfg.effectSpeed, null, function() {
+        node.animate({ opacity: 0 }, this.cfg.effectSpeed, null, function() {
             this.remove();
         });
     },
@@ -447,7 +447,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @this {import("raphael").RaphaelElement}
      */
-    nodeDragStart: function () {
+    nodeDragStart: function() {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
     },
@@ -461,10 +461,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      */
     nodeDrag: function(dx, dy) {
         //update location
-        this.attr({cx: this.ox + dx, cy: this.oy + dy});
+        this.attr({ cx: this.ox + dx, cy: this.oy + dy });
 
         //drag text
-        this.data('text').attr({x: this.attr('cx'), y: this.attr('cy')});
+        this.data('text').attr({ x: this.attr('cx'), y: this.attr('cy') });
 
         //update connections
         var _self = PF(this.data('widget'));
@@ -479,7 +479,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @this {import("raphael").RaphaelElement}
      */
-    nodeDragEnd: function () {
+    nodeDragEnd: function() {
     },
 
     /**
@@ -487,7 +487,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @this {import("raphael").RaphaelElement}
      */
-    textDragStart: function () {
+    textDragStart: function() {
         this.ox = this.attr("x");
         this.oy = this.attr("y");
     },
@@ -503,10 +503,10 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         var node = this.data('node');
 
         //update location
-        this.attr({x: this.ox + dx, y: this.oy + dy});
+        this.attr({ x: this.ox + dx, y: this.oy + dy });
 
         //drag node
-        node.attr({cx: this.attr('x'), cy: this.attr('y')});
+        node.attr({ cx: this.attr('x'), cy: this.attr('y') });
 
         //update connections
         var _self = PF(node.data('widget'));
@@ -521,7 +521,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @this {import("raphael").RaphaelElement}
      */
-    textDragEnd: function () {
+    textDragEnd: function() {
     },
 
     /**
@@ -532,14 +532,14 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
     updateConnections: function(node) {
         var connections = node.data('connections');
 
-        for(var i = 0; i < connections.length; i++) {
+        for (var i = 0; i < connections.length; i++) {
             this.raphael.connection(connections[i]);
         }
     }
 });
 
 // Documented in mindmap.d.ts
-Raphael.fn.connection = function (obj1, obj2, line, bg, effectSpeed) {
+Raphael.fn.connection = function(obj1, obj2, line, bg, effectSpeed) {
     if (obj1.line && obj1.from && obj1.to) {
         line = obj1;
         obj1 = line.from;
@@ -547,14 +547,14 @@ Raphael.fn.connection = function (obj1, obj2, line, bg, effectSpeed) {
     }
     var bb1 = obj1.getBBox(),
         bb2 = obj2.getBBox(),
-        p = [{x: bb1.x + bb1.width / 2, y: bb1.y - 1},
-        {x: bb1.x + bb1.width / 2, y: bb1.y + bb1.height + 1},
-        {x: bb1.x - 1, y: bb1.y + bb1.height / 2},
-        {x: bb1.x + bb1.width + 1, y: bb1.y + bb1.height / 2},
-        {x: bb2.x + bb2.width / 2, y: bb2.y - 1},
-        {x: bb2.x + bb2.width / 2, y: bb2.y + bb2.height + 1},
-        {x: bb2.x - 1, y: bb2.y + bb2.height / 2},
-        {x: bb2.x + bb2.width + 1, y: bb2.y + bb2.height / 2}],
+        p = [{ x: bb1.x + bb1.width / 2, y: bb1.y - 1 },
+        { x: bb1.x + bb1.width / 2, y: bb1.y + bb1.height + 1 },
+        { x: bb1.x - 1, y: bb1.y + bb1.height / 2 },
+        { x: bb1.x + bb1.width + 1, y: bb1.y + bb1.height / 2 },
+        { x: bb2.x + bb2.width / 2, y: bb2.y - 1 },
+        { x: bb2.x + bb2.width / 2, y: bb2.y + bb2.height + 1 },
+        { x: bb2.x - 1, y: bb2.y + bb2.height / 2 },
+        { x: bb2.x + bb2.width + 1, y: bb2.y + bb2.height / 2 }],
         d = {}, dis = [];
     for (var i = 0; i < 4; i++) {
         for (var j = 4; j < 8; j++) {
@@ -583,15 +583,15 @@ Raphael.fn.connection = function (obj1, obj2, line, bg, effectSpeed) {
         y3 = [0, 0, 0, 0, y1 + dy, y1 - dy, y4, y4][res[1]].toFixed(3);
     var path = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
     if (line && line.line) {
-        line.bg && line.bg.attr({path: path});
-        line.line.attr({path: path});
+        line.bg && line.bg.attr({ path: path });
+        line.line.attr({ path: path });
     } else {
         var color = typeof line == "string" ? line : "#000",
-        path = this.path(path).attr({stroke: color, fill: "none"}).attr('opacity', 0).animate({opacity:1}, effectSpeed);
+            path = this.path(path).attr({ stroke: color, fill: "none" }).attr('opacity', 0).animate({ opacity: 1 }, effectSpeed);
         path.toBack();
 
         return {
-            bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
+            bg: bg && bg.split && this.path(path).attr({ stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3 }),
             line: path,
             from: obj1,
             to: obj2
