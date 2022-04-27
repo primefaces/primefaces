@@ -49,6 +49,7 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
         styleClass,
         draggable,
         resizable,
+        selectable,
         showHeader,
         leftHeaderTemplate,
         centerHeaderTemplate,
@@ -174,6 +175,14 @@ public abstract class ScheduleBase extends UIComponentBase implements Widget, RT
 
     public void setResizable(boolean resizable) {
         getStateHelper().put(PropertyKeys.resizable, resizable);
+    }
+
+    public boolean isSelectable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectable, false);
+    }
+
+    public void setSelectable(boolean selectable) {
+        getStateHelper().put(PropertyKeys.selectable, selectable);
     }
 
     public boolean isShowHeader() {

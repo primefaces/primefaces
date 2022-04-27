@@ -22256,6 +22256,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <name>selectable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <description>Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".</description>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[Specifies visibility of header content. Default is true.]]>
             </description>
