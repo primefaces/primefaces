@@ -52,30 +52,30 @@
                 </p:selectOneRadio>
 
                 <h5>Custom Layout (Facet)</h5>
-                <p:selectOneRadio id="customRadio" value="#{radioView.color}" label="Color">
+                <p:selectOneRadio id="customRadio" value="#{radioView.color}">
                     <f:selectItem itemLabel="Red" itemValue="Red"/>
                     <f:selectItem itemLabel="Green" itemValue="Green"/>
                     <f:selectItem itemLabel="Blue" itemValue="Blue"/>
 
                     <f:facet name="custom">
-                        <div class="field-radiobutton" role="radio">
+                        <span class="field-radiobutton" role="radio">
                             <p:radioButton id="facet1" for="customRadio" itemIndex="0"/>
                             <p:outputLabel for="facet1">
                                 <span class="legend" style="background:red"/> Red
                             </p:outputLabel>
-                        </div>
-                        <div class="field-radiobutton" role="radio">
+                        </span>
+                        <span class="field-radiobutton" role="radio">
                             <p:radioButton id="facet2" for="customRadio" itemIndex="1"/>
                             <p:outputLabel for="facet2">
                                 <span class="legend" style="background:green"/> Green
                             </p:outputLabel>
-                        </div>
-                        <div class="field-radiobutton" role="radio">
+                        </span>
+                        <span class="field-radiobutton" role="radio">
                             <p:radioButton id="facet3" for="customRadio" itemIndex="2"/>
                             <p:outputLabel for="facet3">
                                 <span class="legend" style="background:blue"/> Blue
                             </p:outputLabel>
-                        </div>
+                        </span>
                     </f:facet>
                 </p:selectOneRadio>
 
