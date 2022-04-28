@@ -373,7 +373,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("span", null);
+        writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
@@ -398,7 +398,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         writer.endElement("input");
 
-        writer.endElement("span");
+        writer.endElement("div");
     }
 
     protected void encodeOptionLabel(FacesContext context, SelectOneRadio radio, String containerClientId, SelectItem option,
