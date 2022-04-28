@@ -32,6 +32,9 @@
                         <p:selectBooleanCheckbox value="#{scheduleJava8View.draggable}" itemLabel="draggable events">
                             <p:ajax update="schedule"/>
                         </p:selectBooleanCheckbox>
+                        <p:selectBooleanCheckbox value="#{scheduleJava8View.selectable}" itemLabel="range selection">
+                            <p:ajax update="schedule"/>
+                        </p:selectBooleanCheckbox>
                         <p:selectBooleanCheckbox value="#{scheduleJava8View.showWeekends}" itemLabel="show weekends">
                             <p:ajax update="schedule"/>
                         </p:selectBooleanCheckbox>
@@ -229,6 +232,7 @@
                             initialDate="#{scheduleJava8View.initialDate}"
                             aspectRatio="#{scheduleJava8View.aspectRatio}"
                             resizable="#{scheduleJava8View.resizable}"
+                            selectable="#{scheduleJava8View.selectable}"
                             draggable="#{scheduleJava8View.draggable}" showHeader="#{scheduleJava8View.showHeader}"
                             slotLabelFormat="#{scheduleJava8View.slotLabelFormat}"
                             showWeekNumbers="#{scheduleJava8View.showWeekNumbers}"
@@ -248,6 +252,7 @@
                             oncomplete="PF('eventDialog').show();"/>
                     <p:ajax event="eventMove" listener="#{scheduleJava8View.onEventMove}" update="messages"/>
                     <p:ajax event="eventResize" listener="#{scheduleJava8View.onEventResize}" update="messages"/>
+                    <p:ajax event="rangeSelect" listener="#{scheduleJava8View.onRangeSelect}" update="messages"/>
                     <p:ajax event="viewChange" listener="#{scheduleJava8View.onViewChange}" update="view"/>
 
                 </p:schedule>

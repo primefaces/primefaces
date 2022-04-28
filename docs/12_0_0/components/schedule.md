@@ -20,34 +20,33 @@ Renderer Class | org.primefaces.component.schedule.ScheduleRenderer
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 id | null | String | Unique identifier of the component
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-widgetVar | null | String | Name of the client side widget.
-value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
-locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
-dir | ltr | String | Defines direction of schedule. Valid values are "ltr" (default) and "rtl".
 allDaySlot | true | Boolean | Determines if all-day slot will be displayed in timeGridWeek or timeGridDay views
 aspectRatio | null | Float | Ratio of calendar width to height, higher the value shorter the height is
+binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 centerHeaderTemplate | title | String | Content of center of header.
 clientTimeZone | local | String | Defines how to interpret the dates at browser. Valid values are "local", "UTC" and ids like "America/Chicago". (see https://fullcalendar.io/docs/timeZone)
 columnFormat | null | String | Deprecated, use columnHeaderFormat instead. Format for column headers.
 columnHeaderFormat | null | String | Format for column headers. (eg `timeGridWeek: {weekday: 'narrow'}` or `timeGridWeek: {weekday: 'short'}, timeGridDay: {day: 'numeric'}`) see: https://fullcalendar.io/docs/v4/columnHeaderFormat
+dir | ltr | String | Defines direction of schedule. Valid values are "ltr" (default) and "rtl".
 displayEventEnd | null | String | Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.
 draggable | true | Boolean | When true, events are draggable.
 extender | null | String | Name of JavaScript function to extend the options of the underlying FullCalendar plugin.
 height | null | String | Sets the height of the entire calendar, including header and footer. By default, this option is unset and the calendar’s height is calculated by aspectRatio. If "auto" is specified, the view’s contents will assume a natural height and no scrollbars will be used.
 initialDate | null | java.time.LocalDate | The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date
 leftHeaderTemplate | prev, next, today | String | Content of left side of header.
+locale | null | Object | Locale for localization, can be String or a java.util.Locale instance
 maxTime | null | String | Maximum time to display in a day view.
 minTime | null | String | Minimum time to display in a day view.
 nextDayThreshold | 09:00:00 | String | When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is `09:00:00`.
 noOpener | true | Boolean | Whether for URL events access to the opener window from the target site should be prevented (phishing protection), default value is true.
+rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 resizable | true | Boolean | When true, events are resizable.
 rightHeaderTemplate | dayGridMonth, timeGridWeek, timeGridDay | String | Content of right side of header.
 scrollTime | 06:00:00 | String | Determines how far down the scroll pane is initially scrolled down.
+selectable | false | Boolean | Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".
 showHeader | true | Boolean | Specifies visibility of header content.
-showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 showWeekNumbers | false | Boolean | Display week numbers in schedule.
+showWeekends | true | Boolean | Specifies inclusion Saturday/Sunday columns in any of the views
 slotDuration | 00:30:00 | String | The frequency for displaying time slots.
 slotEventOverlap | true | Boolean | If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.
 slotLabelFormat | null | String | Determines the text that will be displayed within a time slot. The default English value will produce times that look like 5pm and 5:30pm. (see https://momentjs.com/docs/#/displaying/)
@@ -58,9 +57,11 @@ timeFormat | null | String | Determines the time-text that will be displayed on 
 timeZone | null | Object | String or a java.time.ZoneId instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault().
 tooltip | false | Boolean | Displays description of events on a tooltip.
 urlTarget | _blank | String | Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".
+value | null | Object | An org.primefaces.model.ScheduleModel instance representing the backed model
 view | dayGridMonth | String | The view type to use, possible values are 'dayGridMonth', 'dayGridWeek', 'dayGridDay', 'timeGridWeek', 'timeGridDay', 'listYear' , 'listMonth', 'listWeek', 'listDay'.
 weekNumberCalculation | local | String | The method for calculating week numbers that are displayed. Valid values are "local"(default), "ISO" and "custom".
-weekNumberCalculator | null | String | Client side function to use in custom `weekNumberCalculation`. This must be a JavaScript expression that results in an integer week number. You can use the local variable `date`, which points to the `Date` object for which the week number is to be determined. To illustrate, if you were to specify `date.getFullYear()`, the year would be shown instead of the actual week number.  
+weekNumberCalculator | null | String | Client side function to use in custom `weekNumberCalculation`. This must be a JavaScript expression that results in an integer week number. You can use the local variable `date`, which points to the `Date` object for which the week number is to be determined. To illustrate, if you were to specify `date.getFullYear()`, the year would be shown instead of the actual week number. 
+widgetVar | null | String | Name of the client side widget. 
 
 ## Getting started with Schedule
 Schedule needs to be backed by an _org.primefaces.model.ScheduleModel_ instance, a schedule
@@ -123,8 +124,9 @@ Schedule provides various ajax behavior events to respond user actions.
 dateSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is selected.
 dateDblSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is double click selected.
 eventSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is selected.
-eventMove | org.primefaces.event.ScheduleEntryMoveEvent | When an event is moved.
-eventResize | org.primefaces.event.ScheduleEntryResizeEvent | When an event is resized.
+eventMove | org.primefaces.event.schedule.ScheduleEntryMoveEvent | When an event is moved.
+eventResize | org.primefaces.event.schedule.ScheduleEntryResizeEvent | When an event is resized.
+rangeSelect | org.primefaces.event.schedule.ScheduleRangeEvent  | When a date range is selected when selectable=true.
 viewChange | org.primefaces.event.SelectEvent<String> | When a view is changed.
 
 ## Ajax Updates
