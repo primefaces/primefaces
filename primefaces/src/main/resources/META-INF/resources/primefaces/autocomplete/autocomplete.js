@@ -1054,7 +1054,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     hide: function() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
-            $this.isDynamicLoaded = false;
+            if (!$this.cfg.completeEndpoint) {
+               $this.isDynamicLoaded = false;
+            }
 
             this.transition.hide({
                 onExit: function() {
