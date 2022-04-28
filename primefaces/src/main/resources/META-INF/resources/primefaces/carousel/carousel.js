@@ -86,7 +86,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.totalIndicators = this.getTotalIndicators();
         this.isCircular = this.itemsCount !== 0 && this.circular && this.itemsCount >= this.numVisible;
         this.isVertical = this.cfg.orientation === 'vertical';
-        this.isAutoplay = this.cfg.autoplayInterval && this.allowAutoplay;
+        this.isAutoplay = this.totalIndicators && this.cfg.autoplayInterval && this.allowAutoplay;
 
         this.renderDeferred();
     },
@@ -666,7 +666,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
      * @return {number} total number of the indicators.
      */
     getTotalIndicators: function() {
-        return this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.numVisible) / this.numScroll) + 1 : 0;
+        var totalIndicators = this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.numVisible) / this.numScroll) + 1 : 0;
+        return totalIndicators <= 0 ? 0 : totalIndicators;
     },
 
     /**
