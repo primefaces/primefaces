@@ -661,13 +661,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Retrieves the total number of the indicators.
+     * Retrieves the total number of the indicators floor to 0 so it can't be negative.
      * @private
      * @return {number} total number of the indicators.
      */
     getTotalIndicators: function() {
-        var totalIndicators = this.itemsCount !== 0 ? Math.ceil((this.itemsCount - this.numVisible) / this.numScroll) + 1 : 0;
-        return totalIndicators <= 0 ? 0 : totalIndicators;
+        return Math.max(Math.ceil((this.itemsCount - this.numVisible) / this.numScroll) + 1, 0);
     },
 
     /**
