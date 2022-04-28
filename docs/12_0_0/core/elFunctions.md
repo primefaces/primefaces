@@ -35,7 +35,7 @@ NOTE: this example passes "cc" as component to start the search. To start from r
     <p:dialog id="dlg" widgetVar="dlg">
         //contents
     </p:dialog>
-    <p:commandButton type="button" value="Show" onclick="PF('#{p:resolveWidgetVar(‘dlg’, cc)}').show()" />
+    <p:commandButton type="button" value="Show" onclick="PF(`#{p:resolveWidgetVar('dlg', cc)}`).show()" />
 </cc:implementation>
 ```
 
