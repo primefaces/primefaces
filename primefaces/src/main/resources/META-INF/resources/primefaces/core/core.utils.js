@@ -256,6 +256,15 @@ if (!PrimeFaces.utils) {
                 || $(document.body).children("[id='" + modalId + "']").length === 1;
         },
 
+        /**
+         * Is this scrollable parent a type that should be bound to the window element.
+         *
+         * @param {JQuery | undefined | null} jq An element to check if should be bound to window scroll. 
+         * @return {boolean} true this this JQ should be bound to the window scroll event
+         */
+        isScrollParentWindow: function(jq) {
+            return jq && (jq.is('body') || jq.is('html') || jq[0].nodeType === 9); // nodeType 9 is for document element;
+        },
 
         /**
          * Registers a callback on the document that is invoked when the user clicks on an element outside the overlay
@@ -376,7 +385,7 @@ if (!PrimeFaces.utils) {
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
+            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
@@ -440,6 +449,14 @@ if (!PrimeFaces.utils) {
                 return element['parentNode'] == null ? parents : getParents(element.parentNode, parents.concat([element.parentNode]));
             };
 
+            var addScrollableParent = function(node) {
+                if (PrimeFaces.utils.isScrollParentWindow($(node))) {
+                    scrollableParents.push(window);
+                } else {
+                    scrollableParents.push(node);
+                }
+            };
+
             if (element) {
                 var parents = getParents(element, []);
                 var overflowRegex = /(auto|scroll)/;
@@ -457,15 +474,20 @@ if (!PrimeFaces.utils) {
                             var selector = selectors[j];
                             var el = parent.querySelector(selector);
                             if (el && overflowCheck(el)) {
-                                scrollableParents.push(el);
+                                addScrollableParent(el);
                             }
                         }
                     }
 
                     if (parent.nodeType !== 9 && overflowCheck(parent)) {
-                        scrollableParents.push(parent);
+                        addScrollableParent(parent);
                     }
                 }
+            }
+
+            // if no parents make it the window
+            if (scrollableParents.length === 0) {
+                scrollableParents.push(window);
             }
 
             return scrollableParents;
@@ -478,7 +500,7 @@ if (!PrimeFaces.utils) {
          */
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
+            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
