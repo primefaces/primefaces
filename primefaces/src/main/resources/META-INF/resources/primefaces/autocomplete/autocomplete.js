@@ -51,6 +51,7 @@
  * @prop {boolean} [querying] Whether an AJAX request for the autocompletion items is currently in progress.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {number} requestId Tracking number to make sure search requests match up in query mode
  * @prop {JQuery} status The DOM element for the autocomplete status ARIA element.
  * @prop {boolean} suppressInput Whether key input events should be ignored currently.
  * @prop {number} [timeout] Timeout ID for the timer used to clear the autocompletion cache in regular
@@ -912,6 +913,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var options;
 
         if (!this.cfg.completeEndpoint) {
+            this.requestId = this.requestId + 1 || 1;
+            var currentRequestId = this.requestId;
             options = {
                 source: this.id,
                 process: this.id,
@@ -921,6 +924,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function (content) {
+                            // #8725 ensure its the same request when slow server
+                            if (this.requestId !== currentRequestId) {
+                                return;
+                            }
                             if (this.cfg.dynamic && !this.isDynamicLoaded) {
                                 this.panel = $(content);
                                 this.appendPanel();
@@ -946,7 +953,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 },
                 oncomplete: function () {
                     $this.setQuerying(false);
-                    $this.isDynamicLoaded = true;
+                    $this.isDynamicLoaded = $this.requestId === currentRequestId;
                 }
             };
 
@@ -1047,6 +1054,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     hide: function() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
+            if (this.cfg.dynamic && this.cfg.queryMode === 'server') {
+               this.isDynamicLoaded = false;
+            }
 
             this.transition.hide({
                 onExit: function() {

@@ -65,6 +65,10 @@ public abstract class AutoComplete extends AbstractInputComponent {
         return panel;
     }
 
+    public WebElement getDropDownButton() {
+        return findElement(By.className("ui-autocomplete-dropdown"));
+    }
+
     public String getValue() {
         return getInput().getAttribute("value");
     }
