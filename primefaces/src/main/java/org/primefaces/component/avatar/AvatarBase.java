@@ -37,6 +37,7 @@ public abstract class AvatarBase extends UIComponentBase {
         size,
         shape,
         dynamicColor,
+        title,
         style,
         styleClass,
         gravatar,
@@ -93,6 +94,14 @@ public abstract class AvatarBase extends UIComponentBase {
 
     public void setDynamicColor(boolean dynamicColor) {
         getStateHelper().put(AvatarBase.PropertyKeys.dynamicColor, dynamicColor);
+    }
+
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
     public String getStyle() {
