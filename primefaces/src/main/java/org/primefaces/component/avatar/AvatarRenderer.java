@@ -75,7 +75,7 @@ public class AvatarRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        if (title != null) {
+        if (!LangUtils.isEmpty(title)) {
             writer.writeAttribute("title", title, null);
         }
 

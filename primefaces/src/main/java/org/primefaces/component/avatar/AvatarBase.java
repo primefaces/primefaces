@@ -97,7 +97,7 @@ public abstract class AvatarBase extends UIComponentBase {
     }
 
     public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, getLabel());
     }
 
     public void setTitle(String title) {
