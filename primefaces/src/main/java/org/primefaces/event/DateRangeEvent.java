@@ -21,21 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.event.timeline;
+package org.primefaces.event;
 
 import java.time.LocalDateTime;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-import org.primefaces.event.DateRangeEvent;
-
-public class TimelineRangeEvent extends DateRangeEvent {
+public class DateRangeEvent extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    public TimelineRangeEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate) {
-        super(component, behavior, startDate, endDate);
+    private final LocalDateTime startDate;
+
+    private final LocalDateTime endDate;
+
+    public DateRangeEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate) {
+        super(component, behavior);
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
 }

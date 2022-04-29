@@ -26,7 +26,7 @@ package org.primefaces.integrationtests.timeline;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

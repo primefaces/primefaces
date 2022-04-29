@@ -228,6 +228,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("weekends", schedule.isShowWeekends(), true)
                 .attr("eventStartEditable", schedule.isDraggable())
                 .attr("eventDurationEditable", schedule.isResizable())
+                .attr("selectable", schedule.isSelectable(), false)
                 .attr("slotLabelInterval", schedule.getSlotLabelInterval(), null)
                 .attr("eventTimeFormat", schedule.getTimeFormat(), null) //https://momentjs.com/docs/#/displaying/
                 .attr("weekNumbers", isShowWeekNumbers, false)

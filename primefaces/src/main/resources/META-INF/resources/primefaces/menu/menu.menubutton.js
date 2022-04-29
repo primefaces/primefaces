@@ -206,17 +206,29 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             }
         });
 
-        if (this.cfg.disableOnAjax !== false) {
-            $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-                if ($this.isXhrSource(settings)) {
+        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            if ($this.isXhrSource(settings)) {
+                $this.button.toggleClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
                 }
-            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-                if ($this.isXhrSource(settings)) {
+                var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
+                var uiIcon = $this.button.find('.ui-icon');
+                if (uiIcon.length) {
+                    var prefix = 'ui-button-icon-';
+                    loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
+                }
+                $this.button.prepend(loadIcon);
+            }
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            if ($this.isXhrSource(settings)) {
+                $this.button.toggleClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false) {
                     $this.enable();
                 }
-            });
-        }
+                $this.button.find('.ui-icon-loading').remove();
+            }
+        });
 
         //aria
         this.button.attr('role', 'button').attr('aria-disabled', this.cfg.disabled);

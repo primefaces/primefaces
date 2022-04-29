@@ -25,12 +25,15 @@ This page contains a list of big features. Please check the GitHub issues for al
 * MenuButton
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by its menu items.
+  * Added Ajax load indicator (spinner) within the button during Ajax requests triggered by its menu items.
 * Printer: added `configuration` attribute for passing custom JSON options to PrintJS.
+* Schedule: added `selectable` property and `rangeSelect` AJAX event
 * SelectOneRadio: improved accessibility of custom layout via `custom` facet.
 * Spinner: added `modifyValueOnWheel` to increment or decrement the element value with the mouse wheel.
 * SplitButton
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
+  * Added Ajax load indicator (spinner) within the button during Ajax requests triggered by it.
 * TabView: added `ui-state-error` class to tabs that contain invalid inputs.
 * Tree: added `filterFunction` attribute for custom filtering.
 * Tooltip: added `autoHide` attribute when set to false will keep the tooltip showing while focused.

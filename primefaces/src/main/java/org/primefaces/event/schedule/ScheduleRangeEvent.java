@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.event.timeline;
+package org.primefaces.event.schedule;
 
 import java.time.LocalDateTime;
 
@@ -30,11 +30,11 @@ import javax.faces.component.behavior.Behavior;
 
 import org.primefaces.event.DateRangeEvent;
 
-public class TimelineRangeEvent extends DateRangeEvent {
+public class ScheduleRangeEvent extends DateRangeEvent {
 
     private static final long serialVersionUID = 1L;
 
-    public TimelineRangeEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate) {
+    public ScheduleRangeEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate) {
         super(component, behavior, startDate, endDate);
     }
 

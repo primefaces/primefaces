@@ -21,11 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.event;
+package org.primefaces.event.schedule;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.ScheduleEvent;
 
 import java.time.Duration;
