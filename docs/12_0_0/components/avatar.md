@@ -24,6 +24,7 @@ Avatar represents people using icons, labels and images.
 | icon | null | String | Defines the icon to display.
 | size | null | String | Size of the element, valid options are "large" and "xlarge".
 | shape | square | String | Shape of the element, valid options are "square" and "circle".
+| title | null | String | Advisory tooltip information.
 | style | null | String | Style of the avatar.
 | styleClass | null | String | StyleClass of the avatar.
 | dynamicColor | false | Boolean | Dynamically assign contrasting foreground and background colors based on the label.
