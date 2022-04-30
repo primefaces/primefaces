@@ -89,13 +89,22 @@ function customFilter(itemLabel, filterValue) {
     //return true to accept and false to reject
 }
 ```
+
 ## Ajax Behavior Events
-In addition to common DOM events like change, selectCheckboxMenu provides _toggleSelect_ event.
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `change`  
+**Available Events:** `change, itemUnselect, toggleSelect`  
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
 toggleSelect | org.primefaces.event.ToggleSelectEvent | When toggle all checkbox changes.
 itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed via the close-icon.
+
+```xhtml
+<p:ajax event="change" listener="#{bean.handlechange}" update="msgs" />
+```
 
 ## Client Side API
 Widget: _PrimeFaces.widget.SelectCheckBoxMenu_
