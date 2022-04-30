@@ -12,6 +12,8 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @prop {string} cfg.onIcon Icon to display when button is selected.
+ * @prop {string} cfg.offIcon Icon to display when button is unselected.
  */
 PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
 
@@ -67,12 +69,10 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('change.toggleSwitch', function(e) {
             if($this.isChecked()) {
-                $this.input.prop('checked', true).attr('aria-checked', true);
-                $this.jq.addClass('ui-toggleswitch-checked');
+                $this.check(true);
             }
             else {
-                $this.input.prop('checked', false).attr('aria-checked', false);
-                $this.jq.removeClass('ui-toggleswitch-checked');
+                $this.uncheck(true);
             }
         });
     },
@@ -97,18 +97,32 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Turns this switch on if it is not already turned on.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    check: function() {
-        this.input.prop('checked', true).attr('aria-checked', true).trigger('change');
+    check: function(silent) {
+        this.input.prop('checked', true).attr('aria-checked', true);
+        if (!silent) {
+            this.input.trigger('change');
+        }
         this.jq.addClass('ui-toggleswitch-checked');
+        if (this.cfg.onIcon) {
+            this.slider.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
+        }
     },
 
     /**
      * Turns this switch off if it is not already turned of.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    uncheck: function() {
-        this.input.prop('checked', false).attr('aria-checked', false).trigger('change');
+    uncheck: function(silent) {
+        this.input.prop('checked', false).attr('aria-checked', false);
+        if (!silent) {
+            this.input.trigger('change');
+        }
         this.jq.removeClass('ui-toggleswitch-checked');
+        if (this.cfg.offIcon) {
+            this.slider.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);
+        }
     },
 
     /**

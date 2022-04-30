@@ -22717,7 +22717,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[The icon representing the "On" position.]]>
             </description>
             <name>onIcon</name>
             <required>false</required>
@@ -22725,7 +22725,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[The icon representing the "Off" position.]]>
             </description>
             <name>offIcon</name>
             <required>false</required>
@@ -28998,6 +28998,22 @@
                 <![CDATA[Client side callback to execute when component loses focus.]]>
             </description>
             <name>onblur</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The icon representing the "On" position.]]>
+            </description>
+            <name>onIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The icon representing the "Off" position.]]>
+            </description>
+            <name>offIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

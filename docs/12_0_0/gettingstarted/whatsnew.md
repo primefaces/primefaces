@@ -36,6 +36,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Added Ajax load indicator (spinner) within the button during Ajax requests triggered by it.
 * TabView: added `ui-state-error` class to tabs that contain invalid inputs.
 * Tree: added `filterFunction` attribute for custom filtering.
+* ToggleSwitch: added `onIcon` and `offIcon` attributes
 * Tooltip: added `autoHide` attribute when set to false will keep the tooltip showing while focused.
 * OverlayPanel: added `autoHide` attribute when set to false will keep the overlay showing while focused.
 

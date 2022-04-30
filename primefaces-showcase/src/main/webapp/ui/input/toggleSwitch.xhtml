@@ -23,9 +23,12 @@
 
                 <h5 class="mt-0">Basic</h5>
                 <p:toggleSwitch value="#{selectBooleanView.value1}"/>
+                
+                <h5>Icon</h5>
+                <p:toggleSwitch value="#{selectBooleanView.value2}" onIcon="pi pi-check" offIcon="pi pi-times" />
 
                 <h5>Remote</h5>
-                <p:toggleSwitch value="#{selectBooleanView.value2}">
+                <p:toggleSwitch value="#{selectBooleanView.value3}">
                     <p:ajax listener="#{selectBooleanView.addMessage}" update="msg"/>
                 </p:toggleSwitch>
             </h:form>
