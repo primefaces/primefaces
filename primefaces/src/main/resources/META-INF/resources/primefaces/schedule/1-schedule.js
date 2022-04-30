@@ -136,7 +136,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.cfg.options.dateClick = function(dateClickInfo) {
-            var currentDate = PrimeFaces.toISOString(dateClickInfo.date);
+            var currentDate = dateClickInfo.date.toISOString();
             var ext = {
                 params: [{
                     name: $this.id + '_selectedDate',
@@ -223,6 +223,21 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
+        if (this.cfg.options.selectable) {
+            this.cfg.options.select = function(selectionInfo) {
+                if ($this.hasBehavior('rangeSelect')) {
+                    var ext = {
+                        params: [
+                            { name: $this.id + '_startDate', value: selectionInfo.start.toISOString() },
+                            { name: $this.id + '_endDate', value: selectionInfo.end.toISOString() }
+                        ]
+                    };
+
+                    $this.callBehavior('rangeSelect', ext);
+                }
+            };
+        };
+
         if(this.cfg.tooltip) {
             this.cfg.options.eventMouseEnter = function(mouseEnterInfo) {
                 if(mouseEnterInfo.event.extendedProps.description) {
@@ -284,8 +299,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 formId: $this.getParentFormId(),
                 params: [
                     {name: $this.id + '_event', value: true},
-                    {name: $this.id + '_start', value: PrimeFaces.toISOString(fetchInfo.start)},
-                    {name: $this.id + '_end', value:  PrimeFaces.toISOString(fetchInfo.end)}
+                    {name: $this.id + '_start', value: fetchInfo.start.toISOString()},
+                    {name: $this.id + '_end', value:  fetchInfo.end.toISOString()}
                 ],
                 onsuccess: function(responseXML, status, xhr) {
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

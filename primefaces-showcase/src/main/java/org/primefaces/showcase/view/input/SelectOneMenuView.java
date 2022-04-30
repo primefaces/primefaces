@@ -23,8 +23,10 @@
  */
 package org.primefaces.showcase.view.input;
 
-import org.primefaces.showcase.domain.Country;
-import org.primefaces.showcase.service.CountryService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -32,10 +34,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
 
 @Named
 @RequestScoped
@@ -59,6 +60,8 @@ public class SelectOneMenuView {
 
     private String longItemLabel;
     private String labeled;
+
+    private String icon = "flag";
 
     @Inject
     private CountryService service;
@@ -202,6 +205,14 @@ public class SelectOneMenuView {
 
     public void setLabeled(String labeled) {
         this.labeled = labeled;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public void setService(CountryService service) {

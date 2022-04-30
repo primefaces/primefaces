@@ -31,10 +31,17 @@ public class MenuCategory implements Serializable {
 
     private final String label;
     private List<MenuItem> menuItems;
+    private boolean custom;
 
     public MenuCategory(String label, List<MenuItem> menuItems) {
         this.label = label;
         this.menuItems = menuItems;
+    }
+
+    public MenuCategory(String label, List<MenuItem> menuItems, boolean custom) {
+        this.label = label;
+        this.menuItems = menuItems;
+        this.custom = custom;
     }
 
     public String getLabel() {
@@ -43,6 +50,10 @@ public class MenuCategory implements Serializable {
 
     public List<MenuItem> getMenuItems() {
         return menuItems;
+    }
+
+    public boolean getCustom() {
+        return custom;
     }
 
     @Override

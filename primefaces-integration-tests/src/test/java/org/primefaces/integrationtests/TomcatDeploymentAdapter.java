@@ -38,11 +38,9 @@ import org.apache.catalina.Context;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
-
 public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
     private Tomcat tomcat;
-
     private Path tempDir;
 
     @Override
@@ -52,7 +50,7 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         tomcat = new Tomcat();
         tomcat.setBaseDir(tempDir.toString());
         tomcat.setPort(createRandomPort());
-        
+
         tomcat.getHost().setAppBase(".");
 
         Context context = tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());

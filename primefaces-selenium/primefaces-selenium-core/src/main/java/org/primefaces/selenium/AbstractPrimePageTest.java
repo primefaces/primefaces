@@ -244,7 +244,7 @@ public abstract class AbstractPrimePageTest {
     }
 
     private boolean isConsoleSupported() {
-        // Firefox does not support https://github.com/mozilla/geckodriver/issues/284
+        // Firefox does not yet support https://github.com/mozilla/geckodriver/issues/284 - may change in 2022
         // Safari does not support https://github.com/SeleniumHQ/selenium/issues/7580
         return !PrimeSelenium.isFirefox() && !PrimeSelenium.isSafari();
     }
@@ -255,6 +255,10 @@ public abstract class AbstractPrimePageTest {
 
     protected <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
         return PrimeSelenium.goTo(pageClass);
+    }
+
+    protected void goTo(String partialUrl) {
+        PrimeSelenium.goTo(partialUrl);
     }
 
     protected WebDriver getWebDriver() {

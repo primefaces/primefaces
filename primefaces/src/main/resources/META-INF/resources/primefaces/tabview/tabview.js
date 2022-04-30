@@ -170,6 +170,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
                         if(!element.hasClass('ui-state-disabled') && index !== $this.cfg.selected) {
                             $this.select(index);
+                            element.trigger('focus.tabview');
                         }
                     }
 
@@ -239,6 +240,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindSwipeEvents();
         this.bindKeyEvents();
+        this.bindRefreshListener();
     },
 
     /**
@@ -330,6 +332,24 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
         }
+    },
+
+    /**
+     * Binds refresh listener to update error highlighting on component udpate.
+     * @private
+     */
+    bindRefreshListener: function() {
+        this.addRefreshListener(function() {
+            $(this.jqId + '>ul>li').each(function() {
+                var tabId = $('a', this).attr('href').slice(1);
+                tabId = PrimeFaces.escapeClientId(tabId);
+                if ($(tabId + ' .ui-state-error').length > 0) {
+                    $(this).addClass('ui-state-error');
+                } else {
+                    $(this).removeClass('ui-state-error');
+                }
+            });
+        });
     },
 
     /**

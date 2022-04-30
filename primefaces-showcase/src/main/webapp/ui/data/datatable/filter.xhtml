@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .ui-filter-column .ui-column-customfilter .custom-filter {
                 width: 100%;
                 box-sizing: border-box;
@@ -35,17 +35,19 @@
                     globalFilterOnly="#{dtFilterView.globalFilterOnly}">
 
                     <f:facet name="header">
-                        <div class="p-d-flex p-ai-center p-jc-between">
+                        <div class="flex align-items-center justify-content-between">
                             <span>List of Customers</span>
                             <div>
-                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:10rem" placeholder="Enter keyword" />
-                            <p:commandButton value="Global Filter Only" update="@form" action="#{dtFilterView.toggleGlobalFilter()}"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('customersTable').filter()" style="width:10rem"
+                                         placeholder="Enter keyword" />
+                            <p:commandButton value="Global Filter Only" update="@form" styleClass="ml-2"
+                                             action="#{dtFilterView.toggleGlobalFilter()}"/>
                             </div>
                         </div>
 
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains">
                         <h:outputText value="#{customer.name}" />
                     </p:column>
 
@@ -57,7 +59,7 @@
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                         sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.representatives}" />
                             </p:selectOneMenu>
@@ -76,7 +78,7 @@
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="ui-custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.customerStatus}" />
                             </p:selectOneMenu>
@@ -85,7 +87,12 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column headerText="Activity" sortBy="#{customer.activity}">
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt">
+                        <f:facet name="filter">
+                            <p:inputText onkeyup="PF('customersTable').filter()" styleClass="ui-column-filter">
+                                <f:converter converterId="javax.faces.Integer" />
+                            </p:inputText>
+                        </f:facet>
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 
@@ -128,13 +135,13 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter"/>
                         </f:facet>
                     </p:column>
 
                     <p:column field="status" headerText="Status" filterMatchMode="exact">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="ui-custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.customerStatus}" />
                             </p:selectOneMenu>
@@ -143,7 +150,12 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column headerText="Activity" sortBy="#{customer.activity}">
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}">
+                        <f:facet name="filter">
+                            <p:inputText onkeyup="PF('customersTable2').filter()" styleClass="ui-column-filter">
+                                <f:converter converterId="javax.faces.Integer" />
+                            </p:inputText>
+                        </f:facet>
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
                 </p:dataTable>
@@ -158,7 +170,7 @@
                              globalFilterFunction="#{dtFilterView.globalFilterFunction}">
 
                     <f:facet name="header">
-                        <div class="p-d-flex p-jc-end">
+                        <div class="flex justify-content-end">
                             <p:inputText id="globalFilter" onkeyup="PF('customersTable3').filter()" style="width:300px"
                                          placeholder="Search all fields using global function" />
                         </div>

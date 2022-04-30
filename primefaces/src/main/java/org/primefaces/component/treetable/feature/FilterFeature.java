@@ -44,6 +44,7 @@ import org.primefaces.component.treetable.TreeTableState;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 public class FilterFeature implements TreeTableFeature {
@@ -136,11 +137,13 @@ public class FilterFeature implements TreeTableFeature {
         tt.setRowKey(root, null);
 
         //Metadata for callback
-        if (tt.isPaginator()) {
-            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredValue.getChildCount());
-        }
-        if (tt.getSelectedRowKeysAsString() != null) {
-            PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
+        if (ComponentUtils.isRequestSource(tt, context)) {
+            if (tt.isPaginator()) {
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredValue.getChildCount());
+            }
+            if (tt.getSelectedRowKeysAsString() != null) {
+                PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
+            }
         }
     }
 

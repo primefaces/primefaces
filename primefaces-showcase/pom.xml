@@ -17,14 +17,24 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <owb.version>2.0.23</owb.version>
-        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
+        <owb.version>2.0.26</owb.version>
+        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
         <mojarra.version>2.3.17</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <resteasy.version>5.0.1.Final</resteasy.version>
-        <jetty.version>9.4.44.v20210927</jetty.version>
+        <resteasy.version>5.0.3.Final</resteasy.version>
+        <jetty.version>9.4.46.v20220331</jetty.version>
+        <jsf.project.stage>Production</jsf.project.stage>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>primefaces</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>https://repository.primefaces.org</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -107,7 +117,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.36</version>
         </dependency>
 
         <!-- GraphicImage -->
@@ -130,13 +140,14 @@
         <dependency>
             <groupId>net.sf.barcode4j</groupId>
             <artifactId>barcode4j-light</artifactId>
+            <version>2.1</version>
         </dependency>
 
         <!-- Cache -->
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.9.7</version>
+            <version>3.9.9</version>
         </dependency>
 
         <!-- HTML sanitizer for the textEditor -->
@@ -159,15 +170,15 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
         </dependency>
 
         <!-- JAXB required for JDK9+ -->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.5</version>
+            <version>2.3.6</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -212,24 +223,25 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>nl.geodienstencentrum.maven</groupId>
-                <artifactId>sass-maven-plugin</artifactId>
-                <version>3.7.2</version>
+                <groupId>io.github.cleydyr</groupId>
+                <artifactId>dart-sass-maven-plugin</artifactId>
+                <version>0.2.0</version>
                 <executions>
                     <execution>
+                        <id>generate-css-using-sass</id>
                         <phase>generate-resources</phase>
                         <goals>
-                            <goal>update-stylesheets</goal>
+                            <goal>compile-sass</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <sassSourceDirectory>${basedir}/src/main/webapp/resources/showcase/css</sassSourceDirectory>
-                    <destination>${basedir}/src/main/webapp/resources/showcase/css</destination>
-                    <sassOptions>
-                        <always_update>true</always_update>
-                        <sourcemap>:none</sourcemap>
-                    </sassOptions>
+                    <inputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</inputFolder>
+                    <outputFolder>${basedir}/src/main/webapp/resources/showcase/css/layout</outputFolder>
+                    <update>true</update>
+                    <noSourceMap>true</noSourceMap>
+                    <style>COMPRESSED</style>
+                    <quiet>false</quiet>
                 </configuration>
             </plugin>
             <plugin>
@@ -273,7 +285,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.4.3</version>
+                <version>3.5.1</version>
             </extension>
         </extensions>
     </build>
@@ -289,6 +301,17 @@
                     <filter>${basedir}/src/main/resources/filters/ee.properties</filter>
                 </filters>
             </build>
+        </profile>
+        <profile>
+            <id>localhost</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
+            <properties>
+                <jsf.project.stage>Development</jsf.project.stage>
+            </properties>
         </profile>
 
         <profile>
@@ -308,6 +331,11 @@
         </profile>
         <profile>
             <id>myfaces-2.3</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
@@ -351,6 +379,11 @@
 
         <profile>
             <id>non-ee</id>
+            <activation>
+                <property>
+                    <name>dev</name>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.hibernate.validator</groupId>

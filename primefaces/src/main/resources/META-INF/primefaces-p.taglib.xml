@@ -49,6 +49,17 @@
     </function>
 
     <function>
+        <function-name>dynamicColumnValue</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.Object getDynamicColumnValue(javax.faces.component.UIComponent)</function-signature>
+    </function>
+    <function>
+        <function-name>dynamicColumnValueAsString</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.String getDynamicColumnValueAsString(javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>ifGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>boolean ifGranted(java.lang.String)</function-signature>
@@ -164,6 +175,24 @@
         <attribute>
             <description>When enabled, only selection would be exported.</description>
             <name>selectionOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>When enabled, only visible data would be exported.</description>
+            <name>visibleOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>When enabled, the header will be exported. Default is true</description>
+            <name>exportHeader</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>When enabled, the footer will be exported. Default is true.</description>
+            <name>exportFooter</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -375,8 +404,8 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Title of the Print window (default to page title).</description>
-            <name>title</name>
+            <description>Optional JSON configuration values to completely control jQuery.print.</description>
+            <name>configuration</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -705,6 +734,14 @@
                 <![CDATA[Name of collection iterator to use in dynamic number of tabs.]]>
             </description>
             <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the exported request scoped variable for the status of the iteration.]]>
+            </description>
+            <name>varStatus</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -1864,9 +1901,25 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[REST-endpoint for fetching autocomplete-suggestions. (instead of completeMethod)]]>
+                <![CDATA[REST-endpoint for fetching autocomplete-suggestions (instead of completeMethod).]]>
             </description>
             <name>completeEndpoint</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[LazyDataModel for fetching autocomplete-suggestions (instead of completeMethod).]]>
+            </description>
+            <name>lazyModel</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Field of lazyModel to apply query to using `MatchMode.CONTAINS`]]>
+            </description>
+            <name>lazyField</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -2238,6 +2291,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[MenuModel instance to create menus programmatically.]]>
             </description>
             <name>model</name>
@@ -2281,6 +2342,14 @@
                 <![CDATA[Boolean flag indicating whether the last item should be disabled. Default is false.]]>
             </description>
             <name>lastItemDisabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Used to produce an Advanced SEO structure on the page. Default is false.]]>
+            </description>
+            <name>seo</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -3690,7 +3759,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Theme of the captcha. Default is light.]]>
+                <![CDATA[Theme of the captcha either 'light', 'dark', or 'auto'. Default is auto.]]>
             </description>
             <name>theme</name>
             <required>false</required>
@@ -3799,6 +3868,14 @@
                 <![CDATA[Name of the iterator variable used to refer each data.]]>
             </description>
             <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the exported request scoped variable for the status of the iteration.]]>
+            </description>
+            <name>varStatus</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -6214,6 +6291,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button. Default is 'true'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6280,6 +6365,14 @@
             <name>immediate</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -6650,6 +6743,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the link will be disabled during Ajax requests triggered by the link. Default is 'true'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -6815,7 +6916,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[In responsive mode, dialog adjusts itself based on screen width.]]>
+                <![CDATA[In responsive mode the dialog adjusts itself based on screen width, browser resizing, and scrolling of the document.]]>
             </description>
             <name>responsive</name>
             <required>false</required>
@@ -8168,7 +8269,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add and checkbox.]]>
+                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add none.]]>
             </description>
             <name>rowSelectMode</name>
             <required>false</required>
@@ -12888,6 +12989,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when the input gets focus. Default is true.]]>
+            </description>
+            <name>showMaskOnFocus</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when hovering the mouse. Default is true.]]>
+            </description>
+            <name>showMaskOnHover</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -13053,7 +13170,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Maximum number of characters that may be entered in this field.]]>
+                <![CDATA[DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.]]>
             </description>
             <name>maxlength</name>
             <required>false</required>
@@ -17174,6 +17291,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'true'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -18933,6 +19058,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide overlay when hovering over overlay content when using custom show/hide events, default is true.]]>
+            </description>
+            <name>autoHide</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Event to show the overlay panel, default is "click".]]>
             </description>
             <name>showEvent</name>
@@ -20653,7 +20786,7 @@
             </description>
             <name>interval</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.Object</type>
         </attribute>
         <attribute>
             <description>
@@ -22121,6 +22254,12 @@
             <name>resizable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>selectable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <description>Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".</description>
         </attribute>
         <attribute>
             <description>
@@ -24765,6 +24904,14 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -26151,6 +26298,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to increment or decrement the element value with the mouse wheel, default is true.]]>
+            </description>
+            <name>modifyValueOnWheel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -26638,6 +26793,14 @@
                 <![CDATA[If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown.]]>
             </description>
             <name>ignoreComponentNotFound</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'true'.]]>
+            </description>
+            <name>disableOnAjax</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -27298,6 +27461,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Title attribute for menu element on tab header.]]>
+            </description>
+            <name>menuTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -27493,6 +27664,14 @@
                 <![CDATA[Name of collection iterator to use in dynamic number of tabs.]]>
             </description>
             <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the exported request scoped variable for the status of the iteration.]]>
+            </description>
+            <name>varStatus</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -29094,6 +29273,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to hide tooltip when hovering over tooltip content, default is true.]]>
+            </description>
+            <name>autoHide</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Tooltip position follows pointer on mousemove, default is false]]>
             </description>
             <name>trackMouse</name>
@@ -29470,6 +29657,14 @@
             <name>filterMode</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Custom implementation to filter TreeNodes against a constraint.]]>
+            </description>
+            <name>filterFunction</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
         </attribute>
     </tag>
     <tag>
@@ -31995,6 +32190,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[This is the breakpoint in pixels when to automatically switch to optimized interface if autoDetectDisplay=true. Default is 576.]]>
+            </description>
+            <name>responsiveBreakpoint</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[When enabled, calendar overlay is displayed as optimized for touch devices. Default is false.]]>
             </description>
             <name>touchUI</name>
@@ -32235,6 +32438,14 @@
             <name>dynamicColor</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

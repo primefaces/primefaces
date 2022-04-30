@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.view.button;
 
+import java.util.concurrent.TimeUnit;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -98,6 +99,21 @@ public class ButtonView {
 
     public void delete() {
         addMessage("Data deleted");
+    }
+
+    public String sleepAndSave() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+        return save();
+    }
+
+    public void sleepAndUpdate() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+        update();
+    }
+
+    public void sleepAndDelete() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+        delete();
     }
 
     public void buttonAction() {

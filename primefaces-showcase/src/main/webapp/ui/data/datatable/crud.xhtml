@@ -116,15 +116,15 @@
                             <p:graphicImage name="images/product/#{crudView.selectedProduct.image}" library="demo"
                                             styleClass="product-image"
                                             rendered="#{not empty crudView.selectedProduct.image}"/>
-                            <div class="p-field">
+                            <div class="field">
                                 <p:outputLabel for="name">Name</p:outputLabel>
                                 <p:inputText id="name" value="#{crudView.selectedProduct.name}" required="true"/>
                             </div>
-                            <div class="p-field">
+                            <div class="field">
                                 <p:outputLabel for="description">Description</p:outputLabel>
                                 <p:inputTextarea id="description" value="#{crudView.selectedProduct.description}"/>
                             </div>
-                            <div class="p-field">
+                            <div class="field">
                                 <p:outputLabel for="category">Category</p:outputLabel>
                                 <p:selectOneRadio id="category" value="#{crudView.selectedProduct.category}"
                                                   layout="responsive" columns="2">
@@ -134,14 +134,14 @@
                                     <f:selectItem itemLabel="Fitness" itemValue="Fitness"/>
                                 </p:selectOneRadio>
                             </div>
-                            <div class="p-formgrid p-grid">
-                                <div class="p-field p-col">
+                            <div class="formgrid grid">
+                                <div class="field col">
                                     <p:outputLabel for="price">Price</p:outputLabel>
                                     <p:inputNumber id="price" value="#{crudView.selectedProduct.price}"
                                                    symbol=" USD" symbolPosition="s"
                                                    decimalSeparator="." thousandSeparator=","/>
                                 </div>
-                                <div class="p-field p-col">
+                                <div class="field col">
                                     <p:outputLabel for="quantity">Quantity</p:outputLabel>
                                     <p:spinner id="quantity" min="0" value="#{crudView.selectedProduct.quantity}"/>
                                 </div>

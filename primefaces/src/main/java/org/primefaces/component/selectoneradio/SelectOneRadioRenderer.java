@@ -37,13 +37,8 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
-import org.primefaces.component.radiobutton.RadioButton;
 import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SelectOneRadioRenderer extends SelectOneRenderer {
 
@@ -65,26 +60,14 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String layout = radio.getLayout();
-        if (layout == null) {
-            layout = "lineDirection";
+        if (LangUtils.isEmpty(layout)) {
+            layout = ComponentUtils.shouldRenderFacet(radio.getFacet("custom")) ? "custom" : "lineDirection";
         }
         boolean custom = "custom".equals(layout);
 
         if (custom) {
-            String style = radio.getStyle();
-            String styleClass = radio.getStyleClass();
-            String defaultStyleClass = "ui-helper-hidden";
-            styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-            writer.startElement("span", radio);
-            writer.writeAttribute("id", radio.getClientId(context), "id");
-            writer.writeAttribute("class", styleClass, "styleClass");
-            if (style != null) {
-                writer.writeAttribute("style", style, "style");
-            }
             encodeCustomLayout(context, radio);
-            writer.endElement("span");
         }
         else if ("responsive".equals(layout)) {
             encodeResponsiveLayout(context, radio);
@@ -96,12 +79,17 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
         String layout = radio.getLayout();
-        boolean custom = layout != null && "custom".equals(layout);
+        if (LangUtils.isEmpty(layout) && ComponentUtils.shouldRenderFacet(radio.getFacet("custom"))) {
+            layout = "custom";
+        }
+        boolean custom = "custom".equals(layout);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneRadio", radio)
                 .attr("custom", custom, false)
-                .attr("unselectable", radio.isUnselectable()).finish();
+                .attr("unselectable", radio.isUnselectable())
+                .attr("readonly", radio.isReadonly(), false)
+                .finish();
     }
 
     protected void encodeResponsiveLayout(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -109,13 +97,19 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
-        String styleClass = radio.getStyleClass();
-        String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS : SelectOneRadio.STYLE_CLASS;
-        defaultStyleClass = defaultStyleClass + " ui-grid ui-grid-responsive";
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-grid ui-grid-responsive")
+                .add(radio.getStyleClass())
+                .add(radio.isPlain(), SelectOneRadio.NATIVE_STYLE_CLASS, SelectOneRadio.STYLE_CLASS)
+                .build();
+        String labelledBy = radio.getLabel();
 
         writer.startElement("div", radio);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("role", "radiogroup", null);
+        if (labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, "label");
+        }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
@@ -144,6 +138,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                writer.writeAttribute("role", "radio", null);
+                writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("div");
 
@@ -171,13 +167,18 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
-        String styleClass = radio.getStyleClass();
-        String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS : SelectOneRadio.STYLE_CLASS;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(radio.getStyleClass())
+                .add(radio.isPlain(), SelectOneRadio.NATIVE_STYLE_CLASS, SelectOneRadio.STYLE_CLASS)
+                .build();
+        String labelledBy = radio.getLabel();
 
         writer.startElement("table", radio);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("role", "presentation", null);
+        writer.writeAttribute("role", "radiogroup", null);
+        if (labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, "label");
+        }
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
@@ -207,6 +208,46 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeCustomLayout(FacesContext context, SelectOneRadio radio) throws IOException {
+        UIComponent customFacet = radio.getFacet("custom");
+        if (ComponentUtils.shouldRenderFacet(customFacet)) {
+            ResponseWriter writer = context.getResponseWriter();
+            String style = radio.getStyle();
+            String styleClass = getStyleClassBuilder(context)
+                    .add(radio.getStyleClass())
+                    .add(SelectOneRadio.STYLE_CLASS)
+                    .build();
+            String labelledBy = radio.getLabel();
+            writer.startElement("span", radio);
+            writer.writeAttribute("id", radio.getClientId(context), "id");
+            writer.writeAttribute("role", "radiogroup", null);
+            if (labelledBy != null) {
+                writer.writeAttribute("aria-labelledby", labelledBy, "label");
+            }
+            if (style != null) {
+                writer.writeAttribute("style", style, "style");
+            }
+            if (styleClass != null) {
+                writer.writeAttribute("class", styleClass, "styleClass");
+            }
+
+            encodeCustomLayoutHelper(context, radio, false);
+            customFacet.encodeAll(context);
+
+            writer.endElement("span");
+        }
+        else {
+            encodeCustomLayoutHelper(context, radio, true);
+        }
+    }
+
+    protected void encodeCustomLayoutHelper(FacesContext context, SelectOneRadio radio, boolean addId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", radio);
+        if (addId) {
+            writer.writeAttribute("id", radio.getClientId(context), "id");
+        }
+        writer.writeAttribute("class", "ui-helper-hidden", null);
+
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
@@ -220,6 +261,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
             encodeOptionInput(context, radio, id, name, selected, disabled, itemValueAsString);
         }
+
+        writer.endElement("span");
     }
 
     protected void encodeLineLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
@@ -236,6 +279,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("td", null);
+            writer.writeAttribute("role", "radio", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
         }
@@ -255,6 +300,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("tr", null);
+            writer.writeAttribute("role", "radio", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
             writer.startElement("td", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
@@ -286,6 +333,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 }
 
                 writer.startElement("td", null);
+                writer.writeAttribute("role", "radio", null);
+                writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("td");
                 idx++;
@@ -299,10 +348,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         else {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
-    }
-
-    protected void encodeResponsiveItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
-
     }
 
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name,
@@ -406,10 +451,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         return LangUtils.isBlank(itemStrValue)
                 ? LangUtils.isBlank(currentValue)
                 : itemStrValue.equals(currentValue);
-    }
-
-    protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {
-
     }
 
     @Override

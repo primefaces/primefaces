@@ -24,6 +24,7 @@ Carousel is a content slider featuring various customization options.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | value | null | Object | A value expression that refers to a collection.
 | var | null | String | Name of the request scoped iterator.
+| varStatus     | null    | String     | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
 | page | null | Integer | Index of the first item.
 | numVisible | 1 | Integer | Number of items per page.
 | numScroll | 1 | Integer | Number of items to scroll.

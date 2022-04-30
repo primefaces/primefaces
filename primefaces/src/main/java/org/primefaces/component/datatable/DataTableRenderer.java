@@ -24,13 +24,10 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -105,6 +102,10 @@ public class DataTableRenderer extends DataRenderer {
 
         encodeMarkup(context, table);
         encodeScript(context, table);
+
+        if (table.isPaginator() && table.getRows() == 0) {
+            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: " + table.getClientId());
+        }
     }
 
     protected void preRender(FacesContext context, DataTable table) {
@@ -272,7 +273,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
         boolean resizable = table.isResizableColumns();
-        String style = table.getStyle();
+        String style = Objects.toString(table.getStyle(), Constants.EMPTY_STRING);
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
         boolean hasFrozenColumns = (frozenColumns != 0);
@@ -1226,7 +1227,7 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean selectionEnabled = table.isSelectionEnabled();
+        boolean selectionEnabled = table.isSelectionEnabled() && !table.isDisabledSelection();
         boolean rowExpansionAvailable = table.getRowExpansion() != null;
         String rowKey = null;
         List<UIColumn> columns = table.getColumns();
@@ -1237,15 +1238,14 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         //Preselection
-        boolean selected = table.getSelectedRowKeys().contains(rowKey);
-        boolean disabled = table.isDisabledSelection();
+        boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
-                .add(selected && !disabled, "ui-state-highlight")
+                .add(selectionEnabled, DataTable.SELECTABLE_ROW_CLASS)
+                .add(selected, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
                 .add(expanded, DataTable.EXPANDED_ROW_CLASS)
@@ -1269,13 +1269,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, selected, disabled, rowIndex);
+                encodeCell(context, table, column, selected, selectionEnabled, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, false, disabled, rowIndex);
+                encodeCell(context, table, dynamicColumn, false, selectionEnabled, rowIndex);
             }
         }
 
@@ -1289,7 +1289,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeCell(FacesContext context, DataTable table, UIColumn column, boolean selected,
-            boolean disabled, int rowIndex) throws IOException {
+            boolean rowSelectionEnabled, int rowIndex) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -1302,7 +1302,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean selectionEnabled = column.getSelectionMode() != null;
+        boolean columnSelectionEnabled = column.getSelectionMode() != null;
         boolean isGroupedColumn = column.isGroupRow();
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
@@ -1310,7 +1310,7 @@ public class DataTableRenderer extends DataRenderer {
         String style = column.getStyle();
 
         String styleClass = getStyleClassBuilder(context)
-                .add(selectionEnabled, DataTable.SELECTION_COLUMN_CLASS)
+                .add(columnSelectionEnabled, DataTable.SELECTION_COLUMN_CLASS)
                 .add(isGroupedColumn, DataTable.GROUPED_COLUMN_CLASS)
                 .add(editorEnabled && editor.isDisabled(), DataTable.CELL_EDITOR_DISABLED_CLASS)
                 .add(editorEnabled && !editor.isDisabled(), DataTable.EDITABLE_COLUMN_CLASS)
@@ -1342,8 +1342,8 @@ public class DataTableRenderer extends DataRenderer {
             renderDynamicPassThruAttributes(context, component);
         }
 
-        if (selectionEnabled) {
-            encodeColumnSelection(context, table, column, selected, disabled);
+        if (columnSelectionEnabled) {
+            encodeColumnSelection(context, table, column, selected, rowSelectionEnabled);
         }
 
         if (hasColumnDefaultRendering(table, column)) {
@@ -1527,16 +1527,16 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean disabled)
+    protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean rowSelectionEnabled)
             throws IOException {
 
         String selectionMode = column.getSelectionMode();
 
         if ("single".equalsIgnoreCase(selectionMode)) {
-            encodeRadio(context, table, selected, disabled);
+            encodeRadio(context, table, selected, !rowSelectionEnabled);
         }
         else if ("multiple".equalsIgnoreCase(selectionMode)) {
-            encodeCheckbox(context, table, selected, disabled, HTML.CHECKBOX_CLASS, false);
+            encodeCheckbox(context, table, selected, !rowSelectionEnabled, HTML.CHECKBOX_CLASS, false);
         }
         else {
             throw new FacesException("Invalid column selection mode:" + selectionMode);
@@ -1671,9 +1671,9 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<String> options = getSortableHeadersText(context, table);
+        Map<SortMeta, String> headers = getSortableColumnHeaders(context, table);
 
-        if (!options.isEmpty()) {
+        if (!headers.isEmpty()) {
             String reflowId = table.getContainerClientId(context) + "_reflowDD";
 
             writer.startElement("label", null);
@@ -1689,15 +1689,17 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-reflow-dropdown ui-state-default", null);
             writer.writeAttribute("autocomplete", "off", null);
 
-            for (int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
-                for (int order = 0; order < 2; order++) {
-                    String orderVal = (order == 0)
+            for (Map.Entry<SortMeta, String> header : headers.entrySet()) {
+                for (int sortOrder = 0; sortOrder < 2; sortOrder++) {
+                    String sortOrderLabel = (sortOrder == 0)
                                       ? MessageFactory.getMessage(DataTable.SORT_ASC)
                                       : MessageFactory.getMessage(DataTable.SORT_DESC);
 
                     writer.startElement("option", null);
-                    writer.writeAttribute("value", headerIndex + "_" + order, null);
-                    writer.writeText(options.get(headerIndex) + " " + orderVal, null);
+                    writer.writeAttribute("value", header.getKey().getColumnKey() + "_" + sortOrder, null);
+                    writer.writeAttribute("data-columnkey", header.getKey().getColumnKey(), null);
+                    writer.writeAttribute("data-sortorder", sortOrder, null);
+                    writer.writeText(header.getValue() + " " + sortOrderLabel, null);
                     writer.endElement("option");
                 }
             }
@@ -1706,18 +1708,24 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
-        return table.getSortByAsMap().values().stream()
-                .filter(s -> !s.isHeaderRow())
-                .map(sortMeta -> {
-                    AtomicReference<String> headerLabel = new AtomicReference<>(null);
-                    table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                        headerLabel.set(getHeaderLabel(context, column));
-                    });
-                    return headerLabel.get();
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+    protected Map<SortMeta, String> getSortableColumnHeaders(FacesContext context, DataTable table) {
+        AtomicReference<String> headerLabel = new AtomicReference<>(null);
+
+        Map<String, SortMeta> sortByAsMap = table.getSortByAsMap();
+        Map<SortMeta, String> headers = new LinkedHashMap<>(sortByAsMap.size());
+        for (SortMeta sortMeta : sortByAsMap.values()) {
+            if (sortMeta.isHeaderRow()) {
+                continue;
+            }
+
+            headerLabel.set(null);
+            table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
+                headerLabel.set(getHeaderLabel(context, column));
+            });
+            headers.put(sortMeta, headerLabel.get());
+        }
+
+        return headers;
     }
 
     protected boolean hasColumnDefaultRendering(DataTable table, UIColumn column) {

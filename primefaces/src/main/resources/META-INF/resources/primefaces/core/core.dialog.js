@@ -217,6 +217,21 @@ if (!PrimeFaces.dialog) {
                         sourceFrames: sourceFrames,
                         sourceComponentId: cfg.sourceComponentId,
                         sourceWidgetVar: cfg.sourceWidgetVar,
+                        onShow: function() {
+                            if (cfg.options.onShow) {
+                                var onShowFunction = '(function(ext){' + cfg.options.onShow + '})';
+                                if (PrimeFaces.csp.NONCE_VALUE) {
+                                    onShowCallback = PrimeFaces.csp.evalResult(onShowFunction);
+                                }
+                                else {
+                                    onShowCallback = rootWindow.eval(onShowFunction);
+                                }
+                                
+                                if (onShowCallback) {
+                                    onShowCallback.call(this);
+                                }
+                            }
+                        },
                         onHide: function() {
                             var $dialogWidget = this,
                             dialogFrame = this.content.children('iframe');

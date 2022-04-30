@@ -54,7 +54,7 @@ public class TreeTable002Test extends AbstractTreeTableTest {
         treeSorted.getChildren().get(0).setExpanded(true);
 
         // Assert - predefined sort (column 1 asc, column 2 desc)
-        WebElement eltSortName= treeTable.getHeader().getCell(0).getWebElement();
+        WebElement eltSortName = treeTable.getHeader().getCell(0).getWebElement();
         WebElement eltSortSize = treeTable.getHeader().getCell(1).getWebElement();
         assertHeaderSorted(eltSortName, "ASC", 1);
         assertHeaderSorted(eltSortSize, "DESC", 2);
@@ -89,6 +89,7 @@ public class TreeTable002Test extends AbstractTreeTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:treetable")
         TreeTable treeTable;
 

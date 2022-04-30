@@ -25,6 +25,7 @@ package org.primefaces.component.autocomplete;
 
 import java.util.*;
 import javax.el.MethodExpression;
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,6 +35,11 @@ import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.MatchMode;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -72,6 +78,8 @@ public class AutoComplete extends AutoCompleteBase {
     protected static final Collection<String> EVENT_NAMES = LangUtils.concat(AbstractPrimeHtmlInputText.EVENT_NAMES, UNOBSTRUSIVE_EVENT_NAMES);
 
     private Object suggestions;
+
+    private Integer suggestionsCount;
 
     @Override
     public Collection<String> getEventNames() {
@@ -135,18 +143,52 @@ public class AutoComplete extends AutoCompleteBase {
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);
 
-        FacesContext facesContext = getFacesContext();
-        MethodExpression me = getCompleteMethod();
-
-        if (me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
-            suggestions = me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
-
-            if (suggestions == null) {
-                suggestions = isServerQueryMode() ? new ArrayList() : new HashMap<String, List<String>>();
-            }
-
-            facesContext.renderResponse();
+        if (!(event instanceof org.primefaces.event.AutoCompleteEvent)) {
+            return;
         }
+
+        String query = ((org.primefaces.event.AutoCompleteEvent) event).getQuery();
+        LazyDataModel lazyModel = getLazyModel();
+        if (lazyModel != null) {
+            String field = getLazyField();
+            if (LangUtils.isEmpty(field)) {
+                throw new FacesException("lazyField is required with lazyModel");
+            }
+            Map<String, FilterMeta> searchFilter = new HashMap<>();
+            searchFilter.put(field,
+                    FilterMeta.builder()
+                            .field(field)
+                            .filterValue(query)
+                            .matchMode(MatchMode.CONTAINS)
+                            .build());
+            Map<String, SortMeta> sortBy = new HashMap<>();
+            sortBy.put(field,
+                    SortMeta.builder()
+                            .field(field)
+                            .order(SortOrder.ASCENDING)
+                            .build());
+            suggestions = lazyModel.load(0, getMaxResults(), sortBy, searchFilter);
+            suggestionsCount = lazyModel.count(searchFilter);
+        }
+        else {
+            FacesContext facesContext = getFacesContext();
+            MethodExpression me = getCompleteMethod();
+
+            if (me != null) {
+                suggestions = me.invoke(facesContext.getELContext(), new Object[]{query});
+
+                if (suggestions == null) {
+                    suggestions = isServerQueryMode() ? Collections.emptyList() : Collections.emptyMap();
+                }
+
+                facesContext.renderResponse();
+            }
+        }
+    }
+
+    protected boolean hasMoreSuggestions() {
+        int count = suggestionsCount != null ? suggestionsCount : ((List) getSuggestions()).size();
+        return count > getMaxResults();
     }
 
     public List<Column> getColums() {
@@ -202,6 +244,7 @@ public class AutoComplete extends AutoCompleteBase {
     public Object saveState(FacesContext context) {
         // reset component for MyFaces view pooling
         suggestions = null;
+        suggestionsCount = null;
 
         return super.saveState(context);
     }

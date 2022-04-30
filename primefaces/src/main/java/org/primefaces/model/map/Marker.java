@@ -43,6 +43,8 @@ public class Marker extends Overlay {
 
     private String title;
 
+    private MarkerLabel label;
+
     private boolean visible = true;
 
     private Animation animation;
@@ -155,5 +157,13 @@ public class Marker extends Overlay {
 
     public void setAnimation(Animation animation) {
         this.animation = animation;
+    }
+
+    public MarkerLabel getLabel() {
+        return label;
+    }
+
+    public void setLabel(MarkerLabel label) {
+        this.label = label;
     }
 }

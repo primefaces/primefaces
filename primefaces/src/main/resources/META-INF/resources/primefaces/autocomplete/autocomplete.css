@@ -45,6 +45,10 @@
     text-align:left;
 }
 
+.ui-autocomplete-panel .ui-autocomplete-items:empty {
+    padding: 0;
+}
+
 .ui-autocomplete-panel .ui-autocomplete-table {
     border-collapse:collapse;
     width: 100%;
@@ -159,4 +163,18 @@
 /* fluid */
 .ui-fluid .ui-autocomplete-multiple-container {
     width: 100%;
+}
+
+/* loading */
+.ui-autocomplete .ui-icon-loading {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    right: 4px;
+    top: 50%;
+    margin-top: -0.5rem;
+}
+
+.ui-autocomplete .ui-button + .ui-autocomplete-status + .ui-icon-loading {
+    right: calc(2.4em + 4px);
 }

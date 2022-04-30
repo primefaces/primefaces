@@ -14,19 +14,26 @@
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/commandlink"/>
+    <ui:param name="widgetLink" value="CommandLink"/>
 
     <ui:define name="implementation">
         <div class="card">
             <h:form>
                 <p:growl id="growl" life="2000"/>
 
-                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" style="margin-right:20px;">
-                    <h:outputText value="Ajax Post"/>
-                </p:commandLink>
+                <h5 class="mt-0">Basic</h5>
+                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" class="mr-4"
+                               value="Ajax Post"/>
 
-                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" style="margin-right:20px;" ajax="false">
-                    <h:outputText value="Regular Post"/>
-                </p:commandLink>
+                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" class="mr-4" ajax="false"
+                               value="Regular Post"/>
+
+                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" disabled="true"
+                               value="Disabled"/>
+
+                <h5>Disable on Ajax</h5>
+                <p:commandLink id="disableOnAjax" action="#{buttonBasicView.sleep()}" value="Sleep"/>
+
             </h:form>
         </div>
     </ui:define>

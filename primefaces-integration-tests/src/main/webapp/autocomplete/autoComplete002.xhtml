@@ -16,11 +16,19 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:autoComplete id="autocomplete" value="#{autoComplete002.driver}" converter="generatedDriverConverter"
+            <p:autoComplete id="autocomplete" 
+                            value="#{autoComplete002.driver}" 
+                            converter="generatedDriverConverter"
                             completeEndpoint="#{request.contextPath}/api/generateddriver/autocomplete"
-                            var="driver" itemLabel="#{driver.name}" itemValue="#{driver}"
-                            forceSelection="true" autoSelection="true" minQueryLength="1" queryDelay="10"
-                            emptyMessage="no driver found" moreText="search stopped after 10 drivers" />
+                            var="driver" 
+                            itemLabel="#{driver.name}" 
+                            itemValue="#{driver}"
+                            forceSelection="true" 
+                            autoSelection="true" 
+                            minQueryLength="1" 
+                            queryDelay="10"
+                            emptyMessage="no driver found" 
+                            moreText="search stopped after 10 drivers" />
 
             <p:commandButton id="button" update="@form" value="Submit" actionListener="#{autoComplete002.submit}"/>
         </h:form>

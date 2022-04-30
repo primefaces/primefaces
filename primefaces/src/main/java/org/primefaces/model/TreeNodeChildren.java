@@ -67,6 +67,16 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
             throw new IndexOutOfBoundsException();
         }
 
+        // check if the movement is on the same list
+        if (node.getParent() != null && node.getParent().getChildren() == this) {
+
+            // check if the movement is downwards then correct the index
+            int removedIndex = super.indexOf(node);
+            if (removedIndex > -1 && index > removedIndex) {
+                index--;
+            }
+        }
+
         eraseParent(node);
         super.add(index, node);
         node.setParent(parent);
@@ -124,34 +134,6 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
 
     @Override
     public TreeNode set(int index, TreeNode node) {
-        if (node == null) {
-            throw new NullPointerException();
-        }
-        if (index < 0 || index >= size()) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (!parent.equals(node.getParent())) {
-            eraseParent(node);
-        }
-
-        TreeNode previous = get(index);
-        super.set(index, node);
-        previous.setParent(null);
-        node.setParent(parent);
-        updateRowKeys(parent, node, index);
-        return previous;
-    }
-
-    /**
-     * Optimized set implementation to be used in sorting
-     *
-     * @param index index of the element to replace
-     * @param node node to be stored at the specified position
-     * @return the node previously at the specified position
-     */
-    @Override
-    public TreeNode setSibling(int index, TreeNode node) {
         if (node == null) {
             throw new NullPointerException();
         }

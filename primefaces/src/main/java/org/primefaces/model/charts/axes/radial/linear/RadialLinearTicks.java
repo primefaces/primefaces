@@ -44,8 +44,6 @@ public class RadialLinearTicks extends AxesTicks {
     private Number max;
     private Number maxTicksLimit;
     private Number stepSize;
-    private Number suggestedMax;
-    private Number suggestedMin;
     private boolean showLabelBackdrop = true;
 
     /**
@@ -193,42 +191,6 @@ public class RadialLinearTicks extends AxesTicks {
     }
 
     /**
-     * Gets the suggestedMax
-     *
-     * @return suggestedMax
-     */
-    public Number getSuggestedMax() {
-        return suggestedMax;
-    }
-
-    /**
-     * Sets the suggestedMax
-     *
-     * @param suggestedMax Adjustment used when calculating the maximum data value.
-     */
-    public void setSuggestedMax(Number suggestedMax) {
-        this.suggestedMax = suggestedMax;
-    }
-
-    /**
-     * Gets the suggestedMin
-     *
-     * @return suggestedMin
-     */
-    public Number getSuggestedMin() {
-        return suggestedMin;
-    }
-
-    /**
-     * Sets the suggestedMin
-     *
-     * @param suggestedMin Adjustment used when calculating the minimum data value.
-     */
-    public void setSuggestedMin(Number suggestedMin) {
-        this.suggestedMin = suggestedMin;
-    }
-
-    /**
      * Gets the showLabelBackdrop
      *
      * @return showLabelBackdrop
@@ -266,8 +228,6 @@ public class RadialLinearTicks extends AxesTicks {
             ChartUtils.writeDataValue(fsw, "max", this.max, true);
             ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
             ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
-            ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
-            ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
             ChartUtils.writeDataValue(fsw, "showLabelBackdrop", this.showLabelBackdrop, true);
 
             fsw.write("}");

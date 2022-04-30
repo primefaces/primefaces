@@ -67,6 +67,7 @@ public class TabView002Test extends AbstractPrimePageTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:tabview")
         TabView tabView;
 

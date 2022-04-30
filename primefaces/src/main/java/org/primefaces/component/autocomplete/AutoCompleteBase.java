@@ -27,6 +27,7 @@ import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.MessageFactory;
 
 public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
@@ -82,7 +83,9 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         queryMode,
         dropdownTabindex,
         dropdownAriaLabel,
-        completeEndpoint
+        completeEndpoint,
+        lazyModel,
+        lazyField
     }
 
     public AutoCompleteBase() {
@@ -444,5 +447,21 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setCompleteEndpoint(String completeEndpoint) {
         getStateHelper().put(PropertyKeys.completeEndpoint, completeEndpoint);
+    }
+
+    public LazyDataModel getLazyModel() {
+        return (LazyDataModel) getStateHelper().eval(PropertyKeys.lazyModel, null);
+    }
+
+    public void setLazyModel(LazyDataModel lazyModel) {
+        getStateHelper().put(PropertyKeys.lazyModel, lazyModel);
+    }
+
+    public String getLazyField() {
+        return (String) getStateHelper().eval(PropertyKeys.lazyField, null);
+    }
+
+    public void setLazyField(String lazyField) {
+        getStateHelper().put(PropertyKeys.lazyField, lazyField);
     }
 }

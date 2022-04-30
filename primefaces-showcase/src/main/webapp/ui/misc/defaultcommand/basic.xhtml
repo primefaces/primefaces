@@ -24,7 +24,7 @@
                     <p:autoUpdate/>
                 </p:growl>
 
-                <h:panelGrid columns="2" cellpadding="7" styleClass="p-mb-3">
+                <h:panelGrid columns="2" cellpadding="7" styleClass="mb-3">
                     <h:outputLabel for="btnSelect" value="Default Button:"/>
                     <p:selectOneMenu id="btnSelect" value="#{defaultCommandView.btn}" onchange="$('#form').submit()">
                         <f:selectItems value="#{defaultCommandView.buttons}"/>
@@ -34,8 +34,8 @@
                     <p:inputText id="name" value="#{defaultCommandView.text}"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Button1" id="btn1" action="#{defaultCommandView.btn1Submit}" ajax="false" styleClass="p-mr-2" />
-                <p:commandButton value="Button2" id="btn2" action="#{defaultCommandView.btn2Submit}" styleClass="p-mr-2" />
+                <p:commandButton value="Button1" id="btn1" action="#{defaultCommandView.btn1Submit}" ajax="false" styleClass="mr-2" />
+                <p:commandButton value="Button2" id="btn2" action="#{defaultCommandView.btn2Submit}" styleClass="mr-2" />
                 <h:commandButton value="Button3" id="btn3" action="#{defaultCommandView.btn3Submit}"/>
 
                 <p:defaultCommand target="#{defaultCommandView.btn}"/>

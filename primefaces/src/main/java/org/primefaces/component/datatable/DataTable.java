@@ -32,6 +32,8 @@ import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.DataModel;
@@ -255,7 +257,6 @@ public class DataTable extends DataTableBase {
             UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child instanceof Column)) {
                 String selectionMode = ((Column) child).getSelectionMode();
-
                 if (selectionMode != null) {
                     return selectionMode;
                 }
@@ -482,12 +483,13 @@ public class DataTable extends DataTableBase {
 
             if (isClientCacheRequest(context)) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
+                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + rows;
             }
 
             List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), filterBy);
             lazyModel.setPageSize(rows);
-            lazyModel.setWrappedData(data);
+            // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
+            lazyModel.setWrappedData(data == null ? Collections.emptyList() : data);
 
             //Update paginator/livescroller for callback
             if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
@@ -808,7 +810,19 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
+    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
+        if (getFacesContext().isPostback() && !ComponentUtils.isSkipIteration(context, context.getFacesContext())) {
+            loadLazyDataIfRequired();
+        }
+        return super.visitRows(context, callback, visitRows);
+    }
+
+    @Override
     protected void processChildren(FacesContext context, PhaseId phaseId) {
+        if (getFacesContext().isPostback()) {
+            loadLazyDataIfRequired();
+        }
+
         int first = getFirst();
         int rows = getRows();
         int rowCount = getRowCount();
@@ -854,7 +868,7 @@ public class DataTable extends DataTableBase {
                     else if (child instanceof RowExpansion) {
                         Object rowData = getRowData();
                         String rowKey = getRowKey(rowData);
-                        if (getExpandedRowKeys().contains(rowKey)) {
+                        if (getExpandedRowKeys().contains(rowKey) || isExpandedRow()) {
                             process(context, child, phaseId);
                         }
                     }
@@ -1019,7 +1033,7 @@ public class DataTable extends DataTableBase {
                 updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
-            if (isSelectionEnabled()) {
+            if (isSelectionEnabled() && ts.getSelectedRowKeys() != null) {
                 updateSelectionWithMVS(ts.getSelectedRowKeys());
             }
 
@@ -1032,6 +1046,16 @@ public class DataTable extends DataTableBase {
     }
 
     public void updateSelectionWithMVS(Set<String> rowKeys) {
+        // we have 3 states:
+        // 1) multi-view state
+        // 2) view state
+        // 3) request state
+        // in general multi-view state should only be restored on the initial request to a view
+        // and then transfered into view state
+        // this means that restoring MVS is NOT required on a postback actually
+        if (getFacesContext().isPostback()) {
+            return;
+        }
         SelectionFeature.getInstance().decodeSelection(getFacesContext(), this, rowKeys);
     }
 
@@ -1120,6 +1144,7 @@ public class DataTable extends DataTableBase {
      * Recalculates filteredValue after adding, updating or removing rows to/from a filtered DataTable.
      * NOTE: this is only supported for non-lazy DataTables, eg bound to a java.util.List.
      */
+    @Override
     public void filterAndSort() {
         if (isLazy()) {
             return;
@@ -1134,5 +1159,51 @@ public class DataTable extends DataTableBase {
 
         FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this);
         SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
+    }
+
+    public void selectRow(String rowKey) {
+        getSelectedRowKeys().add(rowKey);
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(true);
+            if (mvs.getSelectedRowKeys() == null) {
+                mvs.setSelectedRowKeys(new HashSet<>());
+            }
+            mvs.getSelectedRowKeys().add(rowKey);
+        }
+    }
+
+    public void unselectRow(String rowKey) {
+        if (getSelectedRowKeys().contains(rowKey)) {
+            getSelectedRowKeys().remove(rowKey);
+        }
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(false);
+            if (mvs != null && mvs.getSelectedRowKeys() != null && mvs.getSelectedRowKeys().contains(rowKey)) {
+                mvs.getSelectedRowKeys().remove(rowKey);
+            }
+        }
+    }
+
+    public void expandRow(String rowKey) {
+        getExpandedRowKeys().add(rowKey);
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(true);
+            if (mvs.getExpandedRowKeys() == null) {
+                mvs.setExpandedRowKeys(new HashSet<>());
+            }
+            mvs.getExpandedRowKeys().add(rowKey);
+        }
+    }
+
+    public void collapseRow(String rowKey) {
+        if (getExpandedRowKeys().contains(rowKey)) {
+            getExpandedRowKeys().remove(rowKey);
+        }
+        if (isMultiViewState()) {
+            DataTableState mvs = getMultiViewState(false);
+            if (mvs != null && mvs.getExpandedRowKeys() != null && mvs.getExpandedRowKeys().contains(rowKey)) {
+                mvs.getExpandedRowKeys().remove(rowKey);
+            }
+        }
     }
 }

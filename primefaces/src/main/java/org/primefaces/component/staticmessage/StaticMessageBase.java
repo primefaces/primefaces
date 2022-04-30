@@ -50,7 +50,7 @@ public abstract class StaticMessageBase extends UIComponentBase {
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {

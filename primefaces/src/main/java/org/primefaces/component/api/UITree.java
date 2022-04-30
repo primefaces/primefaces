@@ -186,7 +186,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isRequired() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.required, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.required, false);
     }
 
     public void setRequired(boolean _required) {
@@ -202,7 +202,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isSkipChildren() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
     }
 
     public void setSkipChildren(boolean _skipChildren) {
@@ -210,7 +210,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public boolean isShowUnselectableCheckbox() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
     }
 
     public void setShowUnselectableCheckbox(boolean _showUnselectableCheckbox) {
@@ -636,7 +636,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         processColumnChildren(context, phaseId, root, rowKey);
 
         //process child nodes if node is expanded or node itself is the root
-        if (shouldVisitNode(treeNode)) {
+        if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
@@ -991,7 +991,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         //visit child nodes if node is expanded or node itself is the root
-        if (shouldVisitNode(treeNode)) {
+        if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;

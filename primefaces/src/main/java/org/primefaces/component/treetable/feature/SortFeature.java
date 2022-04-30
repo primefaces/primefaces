@@ -38,6 +38,7 @@ import java.util.stream.IntStream;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
+import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements TreeTableFeature {
 
@@ -109,11 +110,11 @@ public class SortFeature implements TreeTableFeature {
         renderer.encodeTbody(context, table, table.getValue(), true);
 
         String selectedRowKeys = table.getSelectedRowKeysAsString();
-        if (selectedRowKeys != null) {
+        if (selectedRowKeys != null && ComponentUtils.isRequestSource(table, context)) {
             PrimeFaces.current().ajax().addCallbackParam("selection", selectedRowKeys);
         }
 
-        if (table.isPaginator()) {
+        if (table.isPaginator() && ComponentUtils.isRequestSource(table, context)) {
             PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
         }
 
@@ -185,7 +186,7 @@ public class SortFeature implements TreeTableFeature {
             });
 
             for (int i = 0; i < childrenArray.length; i++) {
-                children.setSibling(i, (TreeNode) childrenArray[i]);
+                children.set(i, (TreeNode) childrenArray[i]);
             }
             for (int i = 0; i < children.size(); i++) {
                 sortNode(table, sortBy, comparisonResult, children.get(i), context, var, locale, collator);

@@ -76,11 +76,11 @@ DataTable displays data in tabular format.
 | rowHover                  | false              | Boolean          | Adds hover effect to rows, default is false. Hover is always on when selection is enabled.
 | rowIndexVar               | null               | String           | Name of iterator to refer each row index.
 | rowKey                    | null               | String           | Unique identifier of a row. Must be defined when using selection together with non-lazy datasource (eg value-attribute bound to a instance of `java.util.List`).
-| rowSelectMode             | new                | String           | Defines row selection mode for multiple selection. Valid values are "new", "add" and "checkbox".
+| rowSelectMode             | new                | String           | Defines row selection mode. Valid values are "new", "add" and "none".
 | rowSelector               | null               | String           | Client side check if rowclick triggered row click event not a clickable element in row content.
 | rowStatePreserved         | false              | Boolean          | Keeps state of its children on a per-row basis. Default is false.
 | rowStyleClass             | null               | String           | Style class for each row.
-| rows                      | null               | Integer          | Number of rows to display per page.
+| rows                      | 0                  | Integer          | Number of rows to display per page.
 | rowsPerPageLabel          | null               | String           | Label for the rowsPerPage dropdown.
 | rowsPerPageTemplate       | null               | String           | Template of the rowsPerPage dropdown.
 | saveOnCellBlur            | true               | Boolean          | Saves the changes in cell editing on blur, when set to false changes are discarded.
@@ -331,6 +331,15 @@ When a custom component is used as a filter facet, filtering needs to be called 
 preferred event such as `onchange="PF('carsTable').filter()"`. Also defining a converter might be
 necessary if the value of the filter facet is not defined.
 
+Please make sure that the filter is using the **same type as the column field** if you are using comparable
+filter match modes (like greater than). For example, if the column field is an integer, and you would like to
+add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
+(see example below).
+
+In case you want to filter `LocalDateTime` or `Date` values, use the converter tag
+`<f:convertDateTime type="localDateTime"/>` or `<f:convertDateTime type="date"/>` as child of the filtering `DatePicker`
+component.
+
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
 
@@ -381,16 +390,23 @@ _filterMatchMode_ defines which built-in filtering algorithm would be used per c
 for this attribute are;
 
 - **startsWith** : Checks if column value starts with the filter value.
+- **notStartsWith** : Checks if column value does not start with the filter value.
 - **endsWith** : Checks if column value ends with the filter value.
+- **notEndsWith** : Checks if column value does not end with the filter value.
 - **contains** : Checks if column value contains the filter value.
-- **exact** : Checks if string representations of column value and filter value are same.
+- **notContains** : Checks if column value does not contain the filter value.
+- **exact** : Checks if string representations of column value and filter value are the same.
+- **notExact** : Checks if string representations of column value and filter value are not the same.
 - **lt** : Checks if column value is less than the filter value.
 - **lte** : Checks if column value is less than or equals the filter value.
 - **gt** : Checks if column value is greater than the filter value.
 - **gte** : Checks if column value is greater than or equals the filter value.
 - **equals** : Checks if column value equals the filter value.
+- **notEquals** : Checks if column value does not equal the filter value.
 - **in** : Checks if column value is in the collection of the filter value.
-- **range** : Checks if column value is within a provided range `(p:datePicker offers this functionality)`
+- **notIn** : Checks if column value is not in the collection of the filter value.
+- **between** : Checks if column value is within a provided range (`p:datePicker` offers this functionality).
+- **notBetween** : Checks if column value is not within a provided range (`p:datePicker` offers this functionality).
 
 In case the built-in methods do not suffice, custom filtering can be implemented using
 filterFunction approach.
@@ -520,10 +536,10 @@ DataTable will also provide a selectAll checkbox at column header.
 </p:dataTable>
 ```
 
-**Tip**: Use rowSelectMode option to customize the default behavior on row click of a multiple
+**Tip**: Use rowSelectMode option to customize the default behavior on row click of a
 selection enabled datatable. Default value is "new" that clears previous selections, "add" mode
 keeps previous selections same as selecting a row with mouse click when metakey is on and
-"checkbox" mode allows row selection with checkboxes only.
+"none" completely disables selection when clicking on the row itself.
 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected
@@ -696,7 +712,7 @@ useful to deal with huge data, in this case data is fetched on-demand. Set _virt
 option and provide LazyDataModel;
 
 ```xhtml
-<p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollHeight="150" virtual="true">
+<p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollHeight="150" virtualScroll="true">
     <p:column />
     //columns
 </p:dataTable>
@@ -1104,6 +1120,17 @@ Widget: _PrimeFaces.widget.DataTable_
 | selectAllRowsOnPage() | - | void | Select all rows on current page.
 | unselectAllRowsOnPage() | - | void | Unselect all rows on current page.
 | addRow() | - | void | Fetches the last row from the backend and inserts a row instead of updating the table itself.
+
+
+## Server Side API
+Class: _org.primefaces.component.datatable.DataTable_
+
+| Method |  Return Type | Description |
+| --- | --- | --- |
+| selectRow(String rowKey) | void | Selects a row
+| unselectRow(String rowKey) | void | Unselects a row
+| expandRow(String rowKey) | void | Expands a row
+| collapseRow(String rowKey) | void | Collapse a row
 
 ## Skinning
 DataTable resides in a main container element which _style_ and _styleClass_ options apply. As skinning

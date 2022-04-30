@@ -64,7 +64,7 @@ public class DataView extends DataViewBase {
     public static final String LIST_LAYOUT_CONTAINER_CLASS = "ui-dataview-list-container";
     public static final String ROW_CLASS = "ui-dataview-row";
     public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row ui-g";
-    public static final String FLEX_GRID_LAYOUT_ROW_CLASS = "ui-dataview-row p-grid";
+    public static final String FLEX_GRID_LAYOUT_ROW_CLASS = "ui-dataview-row grid";
     public static final String GRID_LAYOUT_COLUMN_CLASS = "ui-dataview-column";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -158,7 +158,7 @@ public class DataView extends DataViewBase {
             lazyModel.setWrappedData(data);
 
             //Update paginator
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator() ) {
+            if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator()) {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }

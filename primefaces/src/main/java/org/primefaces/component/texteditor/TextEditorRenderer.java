@@ -83,9 +83,7 @@ public class TextEditorRenderer extends InputRenderer {
         UIComponent toolbar = editor.getFacet("toolbar");
 
         String style = editor.getStyle();
-        String styleClass = editor.getStyleClass();
-        styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
-        styleClass = !editor.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
+        String styleClass = createStyleClass(editor, TextEditor.EDITOR_CLASS);
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);
@@ -93,6 +91,9 @@ public class TextEditorRenderer extends InputRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
+
+        renderARIARequired(context, editor);
+        renderARIAInvalid(context, editor);
 
         if (editor.isToolbarVisible() && ComponentUtils.shouldRenderFacet(toolbar)) {
             writer.startElement("div", editor);

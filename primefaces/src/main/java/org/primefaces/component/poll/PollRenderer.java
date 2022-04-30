@@ -68,11 +68,8 @@ public class PollRenderer extends CoreRenderer {
         Object interval = poll.getInterval();
 
         long convertedInterval;
-        if (interval instanceof Integer) {
-            convertedInterval = (Integer) interval;
-        }
-        else if (interval instanceof Long) {
-            convertedInterval = (Long) interval;
+        if (interval instanceof Number) {
+            convertedInterval = ((Number) interval).longValue();
         }
         else if (interval instanceof Duration) {
             convertedInterval = ((Duration) interval).getSeconds();

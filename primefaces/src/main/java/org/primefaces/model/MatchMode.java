@@ -55,14 +55,7 @@ public enum MatchMode {
     BETWEEN("between"),
     NOT_BETWEEN("notBetween"),
 
-    GLOBAL("global"),
-
-    /**
-     * Please use {@link MatchMode#BETWEEN}
-     * @deprecated
-     */
-    @Deprecated
-    RANGE("range");
+    GLOBAL("global");
 
     private final String operator;
 

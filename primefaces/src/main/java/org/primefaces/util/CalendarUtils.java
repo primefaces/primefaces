@@ -573,9 +573,11 @@ public class CalendarUtils {
             return null;
         }
 
-        Instant instant = Instant.parse(isoDateString);
-        ZonedDateTime utc = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
-        return utc.withZoneSameLocal(zoneId).toLocalDateTime();
+        ZonedDateTime zonedDateTimeUtc = ZonedDateTime.parse(isoDateString);
+        ZonedDateTime zonedDateTimeTargetZone = zonedDateTimeUtc.withZoneSameInstant(zoneId);
+        LocalDateTime localDateTime = zonedDateTimeTargetZone.toLocalDateTime();
+
+        return localDateTime;
     }
 
     /**

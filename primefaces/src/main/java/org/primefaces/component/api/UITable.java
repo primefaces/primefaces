@@ -61,7 +61,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
-        Map<String, FilterMeta> filterBy = new HashMap<>();
+        Map<String, FilterMeta> filterBy = new LinkedHashMap<>();
         AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
@@ -178,6 +178,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }
+        setFilterByAsMap(filterBy);
 
         return f != null;
     }
@@ -273,7 +274,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setGlobalFilterOnly(boolean globalFilterOnly);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortBy = new HashMap<>();
+        Map<String, SortMeta> sortBy = new LinkedHashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
@@ -386,6 +387,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (s != null) {
             sortBy.put(s.getColumnKey(), s);
         }
+        setSortByAsMap(sortBy);
 
         return s != null;
     }
@@ -531,6 +533,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .collect(Collectors.joining(","));
     }
 
+    default Object getFieldValue(FacesContext context, UIColumn column) {
+        Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
+        return value;
+    }
+
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
         Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
         UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
@@ -610,5 +617,21 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         catch (Exception e) {
             throw new FacesException(e);
         }
+    }
+
+    /**
+     * Recalculates filteredValue after adding, updating or removing object to/from a filtered UITable.
+     */
+    void filterAndSort();
+
+    /**
+     * Resets all column related state after adding/removing/moving columns.
+     */
+    default void resetColumns() {
+        resetDynamicColumns();
+        setColumns(null);
+        setSortByAsMap(null);
+        setFilterByAsMap(null);
+        setColumnMeta(null);
     }
 }

@@ -33,36 +33,36 @@ public class CheckboxTreeNodeTest {
     private TreeNode<?> root;
 
     @SuppressWarnings("unused")
-	@BeforeEach
+    @BeforeEach
     public void initModel() {
         root = new CheckboxTreeNode("Files", null);
 
-		TreeNode documents = new CheckboxTreeNode("Documents", root);
-		TreeNode pictures = new CheckboxTreeNode("Pictures", root);
-		TreeNode movies = new CheckboxTreeNode("Movies", root);
+        TreeNode documents = new CheckboxTreeNode("Documents", root);
+        TreeNode pictures = new CheckboxTreeNode("Pictures", root);
+        TreeNode movies = new CheckboxTreeNode("Movies", root);
 
-		TreeNode work = new CheckboxTreeNode("Work", documents);
-		TreeNode primefaces = new CheckboxTreeNode("PrimeFaces", documents);
+        TreeNode work = new CheckboxTreeNode("Work", documents);
+        TreeNode primefaces = new CheckboxTreeNode("PrimeFaces", documents);
 
-		//Documents
-		TreeNode expenses = new CheckboxTreeNode("document", "Expenses", work);
-		TreeNode resume = new CheckboxTreeNode("document", "Resume", work);
-		TreeNode refdoc = new CheckboxTreeNode("document", "Refdoc", primefaces);
+        //Documents
+        TreeNode expenses = new CheckboxTreeNode("document", "Expenses", work);
+        TreeNode resume = new CheckboxTreeNode("document", "Resume", work);
+        TreeNode refdoc = new CheckboxTreeNode("document", "Refdoc", primefaces);
 
-		//Pictures
-		TreeNode barca = new CheckboxTreeNode("picture", "Barcelona.jpg", pictures);
-		TreeNode primelogo = new CheckboxTreeNode("picture", "Logo.jpg", pictures);
-		TreeNode optimus = new CheckboxTreeNode("picture", "OptimusPrime.jpg", pictures);
+        //Pictures
+        TreeNode barca = new CheckboxTreeNode("picture", "Barcelona.jpg", pictures);
+        TreeNode primelogo = new CheckboxTreeNode("picture", "Logo.jpg", pictures);
+        TreeNode optimus = new CheckboxTreeNode("picture", "OptimusPrime.jpg", pictures);
 
-		//Movies
-		TreeNode pacino = new CheckboxTreeNode("Al Pacino", movies);
-		TreeNode deniro = new CheckboxTreeNode("Robert De Niro", movies);
+        //Movies
+        TreeNode pacino = new CheckboxTreeNode("Al Pacino", movies);
+        TreeNode deniro = new CheckboxTreeNode("Robert De Niro", movies);
 
-		TreeNode scarface = new CheckboxTreeNode("mp3", "Scarface", pacino);
-		TreeNode carlitosWay = new CheckboxTreeNode("mp3", "Carlito's Way", pacino);
+        TreeNode scarface = new CheckboxTreeNode("mp3", "Scarface", pacino);
+        TreeNode carlitosWay = new CheckboxTreeNode("mp3", "Carlito's Way", pacino);
 
-		TreeNode goodfellas = new CheckboxTreeNode("mp3", "Goodfellas", deniro);
-		TreeNode untouchables = new CheckboxTreeNode("mp3", "Untouchables", deniro);
+        TreeNode goodfellas = new CheckboxTreeNode("mp3", "Goodfellas", deniro);
+        TreeNode untouchables = new CheckboxTreeNode("mp3", "Untouchables", deniro);
     }
 
     @Test
@@ -167,6 +167,5 @@ public class CheckboxTreeNodeTest {
         assertTrue(work.isSelected());
         assertFalse(work.isPartialSelected());
     }
-
 
 }

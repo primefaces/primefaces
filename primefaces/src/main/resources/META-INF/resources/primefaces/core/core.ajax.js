@@ -149,6 +149,32 @@ if (!PrimeFaces.ajax) {
             },
 
             /**
+             * Get source ID from settings.
+             *
+             * @param {JQuery.AjaxSettings} settings containing source ID.
+             * @return {string} The source ID from settings or `null` if settings does not contain a source.
+             */
+            getSourceId: function(settings) {
+                if (settings && settings.source) {
+                    return typeof settings.source === 'string' ? settings.source : settings.source.name;
+                }
+                return null;
+            },
+
+            /**
+             * Checks whether the component ID from the provided widget equals the source ID from the provided
+             * settings.
+             *
+             * @param {PrimeFaces.widget.BaseWidget} widget of the component to check for being the source.
+             * @param {JQuery.AjaxSettings} settings containing source ID.
+             * @returns {boolean} `true` if the component ID from the provided widget equals the source ID from the
+             * provided settings.
+             */
+            isXhrSource: function(widget, settings) {
+                return widget.id === PrimeFaces.ajax.Utils.getSourceId(settings);
+            },
+
+            /**
              * Updates the main hidden input element for each form.
              * @param {string} name Name of the hidden form input element, usually the same as the form.
              * @param {string} value Value to set on the hidden input element.
@@ -252,7 +278,13 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    var target = $(PrimeFaces.escapeClientId(id));
+                    if (target.length === 0) {
+                        PrimeFaces.warn("DOM element with id '" + id + "' cant be found; skip update...");
+                    }
+                    else {
+                        target.replaceWith(content);
+                    }
                 }
             }
         },
@@ -1261,15 +1293,13 @@ if (!PrimeFaces.ajax) {
                     var widgetVar = PrimeFaces.detachedWidgets[i];
 
                     var widget = PF(widgetVar);
-                    if (widget) {
-                        if (widget.isDetached() === true) {
-                            PrimeFaces.widgets[widgetVar] = null;
-                            widget.destroy();
+                    if (widget && widget.isDetached() === true) {
+                        widget.destroy();
 
-                            try {
-                                delete widget;
-                            } catch (e) {}
-                        }
+                        try {
+                            delete PrimeFaces.widgets[widgetVar];
+                            delete widget;
+                        } catch (e) { }
                     }
                 }
 

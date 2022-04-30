@@ -121,7 +121,7 @@ public class DataTable009Test extends AbstractDataTableTest {
         page.firstAppearedFilter.select("1995");
 
         // Assert
-        validateFirstAppeared(dataTable, page.firstAppearedFilter,"1995");
+        validateFirstAppeared(dataTable, page.firstAppearedFilter, "1995");
         Assertions.assertEquals("FilterValue for firstAppeared", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("1995", page.messages.getMessage(0).getDetail());
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(1).getSummary());
@@ -132,7 +132,7 @@ public class DataTable009Test extends AbstractDataTableTest {
         page.buttonReportFilteredProgLanguages.click();
 
         // Assert
-        validateFirstAppeared(dataTable, page.firstAppearedFilter,"1995");
+        validateFirstAppeared(dataTable, page.firstAppearedFilter, "1995");
         Assertions.assertEquals("FilteredValue(s)", page.messages.getMessage(0).getSummary());
         Assertions.assertEquals("Java,JavaScript", page.messages.getMessage(0).getDetail());
 
@@ -165,19 +165,17 @@ public class DataTable009Test extends AbstractDataTableTest {
 
         // Assert
         Assertions.assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
-        firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
         Assertions.assertEquals("2020", firstAppeared.getSelectedLabel());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
-
 
     private void validateFirstAppeared(DataTable dataTable, SelectOneMenu firstAppearedFilter, String firstAppearedExpected) {
         Assertions.assertEquals(firstAppearedExpected, firstAppearedFilter.getSelectedLabel());
 
         int rowNumber = 0;
         for (Row row : dataTable.getRows()) {
-        	Assertions.assertNotNull(row);
+            Assertions.assertNotNull(row);
             SelectOneMenu firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:" + rowNumber + ":firstAppeared"));
             Assertions.assertEquals(firstAppearedExpected, firstAppeared.getSelectedLabel());
             rowNumber++;
@@ -191,6 +189,7 @@ public class DataTable009Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:msgs")
         Messages messages;
 

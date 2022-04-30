@@ -389,10 +389,13 @@ public class DataTableExcelExporter extends DataTableExporter {
 
     public void exportTable(FacesContext context, UIComponent component, Sheet sheet, ExportConfiguration exportConfiguration) {
         DataTable table = (DataTable) component;
-        addTableFacets(context, table, sheet, DataTableExporter.ColumnType.HEADER);
-        boolean headerGroup = addColumnGroup(table, sheet, DataTableExporter.ColumnType.HEADER);
-        if (!headerGroup) {
-            addColumnFacets(table, sheet, DataTableExporter.ColumnType.HEADER);
+
+        if (exportConfiguration.isExportHeader()) {
+            addTableFacets(context, table, sheet, DataTableExporter.ColumnType.HEADER);
+            boolean headerGroup = addColumnGroup(table, sheet, DataTableExporter.ColumnType.HEADER);
+            if (!headerGroup) {
+                addColumnFacets(table, sheet, DataTableExporter.ColumnType.HEADER);
+            }
         }
 
         if (exportConfiguration.isPageOnly()) {
@@ -405,11 +408,13 @@ public class DataTableExcelExporter extends DataTableExporter {
             exportAll(context, table, sheet);
         }
 
-        addColumnGroup(table, sheet, DataTableExporter.ColumnType.FOOTER);
-        if (table.hasFooterColumn()) {
-            addColumnFacets(table, sheet, DataTableExporter.ColumnType.FOOTER);
+        if (exportConfiguration.isExportFooter()) {
+            addColumnGroup(table, sheet, DataTableExporter.ColumnType.FOOTER);
+            if (table.hasFooterColumn()) {
+                addColumnFacets(table, sheet, DataTableExporter.ColumnType.FOOTER);
+            }
+            addTableFacets(context, table, sheet, DataTableExporter.ColumnType.FOOTER);
         }
-        addTableFacets(context, table, sheet, DataTableExporter.ColumnType.FOOTER);
 
         table.setRowIndex(-1);
     }
@@ -528,10 +533,6 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected Cell applyColumnAlignments(UIColumn column, Cell cell) {
-        if (cell.getCellStyle() != null) {
-            // don't apply style if cell already has one
-            return cell;
-        }
         String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
         if (LangUtils.containsIgnoreCase(styles, "right")) {
             cell.setCellStyle(cellStyleRightAlign);

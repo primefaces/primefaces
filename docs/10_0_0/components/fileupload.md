@@ -242,6 +242,24 @@ from the `onupload` callback will not send the files.
 <p:fileUpload listener="#{fileBean.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
 ```
 
+## Validate Files Before Adding
+You can add a client side callback, if you want to use a custom function to approve a file before adding using `onAdd`.
+For example only add a file if its named exactly `primefaces.pdf`.
+
+```javascript
+function onAddFile(file, callback) {
+   if (file.name === "primefaces.pdf") {
+       // this callback adds the file to the list
+       callback.call(this, file);
+   }
+}
+```
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" onAdd="onAddFile(file, callback);"/>
+```
+
+
 ## File Filters
 Users can be restricted to only select the file types you’ve configured, example below demonstrates
 how to accept images only.

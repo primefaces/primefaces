@@ -35,6 +35,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
 | dropdown | false | Boolean | Enables dropdown mode when set true.
+| dropdownMode | blank | String | Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.

@@ -93,9 +93,9 @@ public class SelectionFeature implements DataTableFeature {
 
     public void decodeSelectionRowKeys(FacesContext context, DataTable table) {
         Set<String> rowKeys = null;
-        ValueExpression selectionByVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
-        if (selectionByVE != null) {
-            Object selection = selectionByVE.getValue(context.getELContext());
+        ValueExpression selectionVE = table.getValueExpression(DataTableBase.PropertyKeys.selection.name());
+        if (selectionVE != null) {
+            Object selection = selectionVE.getValue(context.getELContext());
 
             if (selection != null) {
                 rowKeys = new HashSet<>();
@@ -137,11 +137,17 @@ public class SelectionFeature implements DataTableFeature {
             if (o != null) {
                 Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
                 String var = table.getVar();
+
+                List<Object> selectionTmp = Collections.emptyList();
                 Set<String> rowKeysTmp = Collections.emptySet();
                 if (isSelectable(table, var, requestMap, o)) {
-                    rowKeysTmp = Collections.singleton(rowKey);
+                    selectionTmp = new ArrayList(1);
+                    selectionTmp.add(o);
+                    rowKeysTmp = new HashSet(1);
+                    rowKeysTmp.add(rowKey);
                 }
-                setSelection(context, table, false, Collections.singletonList(o), rowKeysTmp);
+
+                setSelection(context, table, false, selectionTmp, rowKeysTmp);
             }
             else {
                 setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());

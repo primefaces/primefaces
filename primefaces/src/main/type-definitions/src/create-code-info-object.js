@@ -88,7 +88,7 @@ function createMethodCodeInfoFromTags(severitySettings, method, additionalTempla
                         name: tag.name,
                         required: !tag.optional,
                         rest: rest,
-                        typedef: rest ? type.substr(3) : type,
+                        typedef: rest ? type.slice(3) : type,
                     };
                 }
             }

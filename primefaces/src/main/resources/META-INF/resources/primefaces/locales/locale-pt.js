@@ -62,11 +62,11 @@ PrimeFaces.locales['pt_PT'] = {
         'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Erro de validação: o valor é maior que o máximo permitido de \'{0}\'',
         'javax.faces.validator.LongRangeValidator.MINIMUM': '{1}: Erro de validação: O valor é menor que o mínimo permitido de \'{0}\'',
         'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Erro de validação: O atributo especificado não está entre os valores esperados de {0} e {1}.',
-        'javax.faces.validator.LongRangeValidator.TYPE={0}': 'Erro de validação: O valor não é do tipo correto.',
+        'javax.faces.validator.LongRangeValidator.TYPE': '{0}: Erro de validação: O valor não é do tipo correto.',
         'javax.faces.validator.DoubleRangeValidator.MAXIMUM': '{1}: Erro de validação: o valor é maior que o máximo permitido de \'{0}\'',
         'javax.faces.validator.DoubleRangeValidator.MINIMUM': '{1}: Erro de validação: o valor é menor que o mínimo permitido de \'{0}\'',
         'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE': '{2}: Erro de validação: o atributo especificado não está entre os valores esperados de {0} e {1}',
-        'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Erro de validação: O valor não é do tipo correto',
+        'javax.faces.validator.DoubleRangeValidator.TYPE': '{0}: Erro de validação: O valor não é do tipo correto',
         'javax.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' deve ser um número contendo um ou mais dígitos.',
         'javax.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' deve ser um número entre 1.4E-45 e 3.4028235E38 Exemplo: {1}',
         'javax.faces.converter.DateTimeConverter.DATE': '{2}: \'{0}\' não pode ser convertido para uma data.',
@@ -109,7 +109,7 @@ PrimeFaces.locales['pt_PT'] = {
         'javax.validation.constraints.Size.message': 'o tamanho deve estar entre {0} e {1}'
     }
 };
-PrimeFaces.locales['pt'] = PrimeFaces.locales['pt-PT'];
+PrimeFaces.locales['pt'] = PrimeFaces.locales['pt_PT'];
 
 /** Portuguese - Brazilian */
 PrimeFaces.locales['pt_BR'] = {
@@ -174,11 +174,11 @@ PrimeFaces.locales['pt_BR'] = {
         'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Erro de validação: o valor é maior que o máximo permitido de \'{0}\'.',
         'javax.faces.validator.LongRangeValidator.MINIMUM': '{1}: Erro de validação: O valor é menor que o mínimo permitido de \'{0}\'.',
         'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Erro de validação: O atributo especificado não está entre os valores esperados de {0} e {1}.',
-        'javax.faces.validator.LongRangeValidator.TYPE={0}': 'Erro de validação: O valor não é do tipo correto.',
+        'javax.faces.validator.LongRangeValidator.TYPE': '{0}: Erro de validação: O valor não é do tipo correto.',
         'javax.faces.validator.DoubleRangeValidator.MAXIMUM': '{1}: Erro de validação: o valor é maior que o máximo permitido de \'{0}\'.',
         'javax.faces.validator.DoubleRangeValidator.MINIMUM': '{1}: Erro de validação: o valor é menor que o mínimo permitido de \'{0}\'.',
         'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE': '{2}: Erro de validação: o atributo especificado não está entre os valores esperados de {0} e {1}.',
-        'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Erro de validação: O valor não é do tipo correto.',
+        'javax.faces.validator.DoubleRangeValidator.TYPE': '{0}: Erro de validação: O valor não é do tipo correto.',
         'javax.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' deve ser um número contendo um ou mais dígitos.',
         'javax.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' deve ser um número entre 1.4E-45 e 3.4028235E38 Exemplo: {1}.',
         'javax.faces.converter.DateTimeConverter.DATE': '{2}: \'{0}\' não pode ser convertido para uma data.',

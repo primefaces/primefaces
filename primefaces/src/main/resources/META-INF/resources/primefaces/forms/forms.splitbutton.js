@@ -54,18 +54,16 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.button = $(this.jqId + '_button');
         this.menuButton = $(this.jqId + '_menuButton');
-        this.menuId = this.jqId + "_menu";
+        this.menuId = this.jqId + '_menu';
         this.menu = $(this.menuId);
         this.menuitemContainer = this.menu.find('.ui-menu-list');
         this.menuitems = this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
         this.cfg.disabled = this.button.is(':disabled');
 
-        if(!this.cfg.disabled) {
-            this.bindEvents();
+        this.bindEvents();
 
-            PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
-            this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
-        }
+        PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
+        this.transition = PrimeFaces.utils.registerCSSTransition(this.menu, 'ui-connected-overlay');
 
         //pfs metadata
         this.button.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -78,7 +76,31 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) {
+        this.menuButton.off('click.splitbutton');
+        this.menuitems.off('mouseover.splitbutton mouseout.splitbutton click.splitbutton');
+        this.menuButton.on('keydown.splitbutton keyup.splitbutton');
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+
         this._super(cfg);
+    },
+
+    /**
+     * Disables this button so that the user cannot press the button anymore.
+     */
+    disable: function() {
+        this.cfg.disabled = true;
+        this.hide();
+        PrimeFaces.utils.disableButton(this.button);
+        PrimeFaces.utils.disableButton(this.menuButton);
+    },
+
+    /**
+     * Enables this button so that the user can press the button.
+     */
+    enable: function() {
+        this.cfg.disabled = false;
+        PrimeFaces.utils.enableButton(this.button);
+        PrimeFaces.utils.enableButton(this.menuButton);
     },
 
     /**
@@ -94,29 +116,32 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.button.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         // toggle menu
-        this.menuButton.on("click", function() {
-            if($this.menu.is(':hidden'))
+        this.menuButton.on('click.splitbutton', function() {
+            if(!$this.cfg.disabled && $this.menu.is(':hidden'))
                 $this.show();
             else
                 $this.hide();
         });
 
         //menuitem visuals
-        this.menuitems.on("mouseover", function(e) {
+        this.menuitems.on('mouseover.splitbutton', function(e) {
             var menuitem = $(this),
             menuitemLink = menuitem.children('.ui-menuitem-link');
 
             if(!menuitemLink.hasClass('ui-state-disabled')) {
                 menuitem.addClass('ui-state-hover');
             }
-        }).on("mouseout", function(e) {
+        }).on('mouseout.splitbutton', function(e) {
             $(this).removeClass('ui-state-hover');
-        }).on("click", function() {
+        }).on('click.splitbutton', function() {
             $this.hide();
         });
 
         //keyboard support
-        this.menuButton.on("keydown", function(e) {
+        this.menuButton.on('keydown.splitbutton', function(e) {
+            if ($this.cfg.disabled) {
+                return;
+            }
             var keyCode = $.ui.keyCode;
 
             switch(e.which) {
@@ -139,12 +164,36 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                     $this.handleEscapeKey();
                 break;
             }
-        }).on("keyup", function(e) {
+        }).on('keyup.splitbutton', function(e) {
             var keyCode = $.ui.keyCode;
             if (e.which === keyCode.SPACE) {
                 e.preventDefault(); // Keep menu open in Firefox #7614
             }
         });
+
+        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            if ($this.isXhrSource(settings)) {
+                $this.button.toggleClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false) {
+                    $this.disable();
+                }
+                var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
+                var uiIcon = $this.button.find('.ui-icon');
+                if (uiIcon.length) {
+                    var prefix = 'ui-button-icon-';
+                    loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
+                }
+                $this.button.prepend(loadIcon);
+            }
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            if ($this.isXhrSource(settings)) {
+                $this.button.toggleClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false) {
+                    $this.enable();
+                }
+                $this.button.find('.ui-icon-loading').remove();
+            }
+        });        
 
         if(this.cfg.filter) {
             this.setupFilterMatcher();
@@ -153,6 +202,25 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.bindFilterEvents();
         }
+    },
+
+    /**
+     * Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
+     *
+     * @param {JQuery.AjaxSettings} settings containing source ID.
+     * @returns {boolean} `true` if the ID of the button, or one if its menu items equals the source ID from the
+     * provided settings.
+     * @private
+     */
+    isXhrSource: function(settings) {
+        var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
+        if (sourceId === null) {
+            return false;
+        }
+        if (this.id === sourceId) {
+            return true;
+        }
+        return this.menuitems.find('[id="' + sourceId + '"]').length;
     },
 
     /**
@@ -465,6 +533,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     show: function() {
+        if(this.cfg.disabled) {
+           return;
+        }
         var $this = this;
 
         if (this.transition) {

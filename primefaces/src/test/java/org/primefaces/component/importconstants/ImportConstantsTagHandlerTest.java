@@ -39,21 +39,34 @@ public class ImportConstantsTagHandlerTest {
         Assertions.assertEquals("i", constants.get("I"));
         Assertions.assertEquals("h2override", constants.get("H2"));
     }
-    
+
     class MyConstants extends MyConstants2 {
+
         public static final String H1 = "h1";
         public static final String H2 = "h2override";
+
+        private MyConstants() {
+        }
     }
-    
+
     class MyConstants2 extends MyConstants3 {
+
         public static final String H2 = "h2";
+
+        private MyConstants2() {
+        }
     }
-    
+
     class MyConstants3 implements MyInterface {
+
         public static final String H3 = "h3";
+
+        private MyConstants3() {
+        }
     }
-    
+
     interface MyInterface {
+
         public static final String I = "i";
     }
 }

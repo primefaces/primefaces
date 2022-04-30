@@ -35,6 +35,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.HTML;
 import org.primefaces.util.Lazy;
+import org.primefaces.util.ResourceUtils;
 
 public class GraphicImageRenderer extends CoreRenderer {
 
@@ -65,16 +66,19 @@ public class GraphicImageRenderer extends CoreRenderer {
         String name = image.getName();
 
         if (name != null) {
-            String libName = image.getLibrary();
+            String library = image.getLibrary();
             ResourceHandler handler = context.getApplication().getResourceHandler();
-            Resource res = handler.createResource(name, libName);
-
-            if (res == null) {
+            Resource resource = handler.createResource(name, library);
+            if (resource == null) {
                 return "RES_NOT_FOUND";
             }
-            else {
-                String requestPath = res.getRequestPath();
+
+            if (image.isStream()) {
+                String requestPath = resource.getRequestPath();
                 return context.getExternalContext().encodeResourceURL(requestPath);
+            }
+            else {
+                return ResourceUtils.toBase64(context, resource);
             }
         }
         else {

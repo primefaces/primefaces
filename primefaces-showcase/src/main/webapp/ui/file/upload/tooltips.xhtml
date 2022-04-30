@@ -11,7 +11,7 @@
 
     <ui:define name="description">
         Tooltips can be attached to each one of FileUpload buttons in advanced mode using
-        <p:link href="https://primefaces.github.io/primefaces/10_0_0/#/core/searchexpression?id=primefaces-selectors-pfs">PrimeFaces Selectors</p:link>.
+        <p:link href="https://primefaces.github.io/primefaces/12_0_0/#/core/searchexpression?id=primefaces-selectors-pfs">PrimeFaces Selectors</p:link>.
         Moreover, you can use plain html browser native titles as well.
     </ui:define>
 
@@ -22,7 +22,7 @@
         <div class="card">
             <h:form id="formId">
 
-                <p:fileUpload id="uploader1" mode="advanced" styleClass="p-d-block p-mb-5"/>
+                <p:fileUpload id="uploader1" mode="advanced" styleClass="block mb-5"/>
 
                 <p:outputPanel id="tooltipsPanel">
 
@@ -46,16 +46,16 @@
 
               
 
-                <p:fileUpload id="uploader2" mode="advanced" styleClass="p-d-block p-mb-5"
+                <p:fileUpload id="uploader2" mode="advanced" styleClass="block mb-5"
                               chooseButtonTitle="Choose button tooltip"
                               uploadButtonTitle="Upload button tooltip"
                               cancelButtonTitle="Cancel button tooltip"/>
               
-                <p:fileUpload id="uploader3" mode="simple" skinSimple="true" styleClass="p-d-block p-mb-5"
+                <p:fileUpload id="uploader3" mode="simple" skinSimple="true" styleClass="block mb-5"
                               title="my custom title"/>
 
          
-                <p:fileUpload id="uploader4" mode="simple" styleClass="p-d-block p-mb-5"
+                <p:fileUpload id="uploader4" mode="simple" styleClass="block mb-5"
                               title="my custom title"/>
 
             </h:form>

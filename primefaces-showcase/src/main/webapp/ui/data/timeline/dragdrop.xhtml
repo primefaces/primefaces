@@ -6,7 +6,7 @@
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .ui-datalist-item .ui-draggable:hover {
                 background: var(--surface-c);
             }
@@ -45,7 +45,7 @@
 
                 <div style="float: left; width: 130px;">
                     <p:dataList id="eventsList" value="#{dndTimelineView.events}" var="event" itemType="circle">
-                        <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-p-2">
+                        <p:outputPanel id="eventBox" style="z-index:9999; cursor:move;" styleClass="p-2">
                             #{event.name}
                         </p:outputPanel>
 

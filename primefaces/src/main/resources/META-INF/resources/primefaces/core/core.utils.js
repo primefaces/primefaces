@@ -157,7 +157,8 @@ if (!PrimeFaces.utils) {
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
             var $document = $(document);
             $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
-                if ($(event.target).zIndex() < zIndex) {
+                var target = $(event.target);
+                if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
@@ -198,7 +199,7 @@ if (!PrimeFaces.utils) {
                         }
                     }
                 }
-                else if(!target.is(document.body) && (target.zIndex() < zIndex)) {
+                else if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
@@ -255,6 +256,15 @@ if (!PrimeFaces.utils) {
                 || $(document.body).children("[id='" + modalId + "']").length === 1;
         },
 
+        /**
+         * Is this scrollable parent a type that should be bound to the window element.
+         *
+         * @param {JQuery | undefined | null} jq An element to check if should be bound to window scroll. 
+         * @return {boolean} true this this JQ should be bound to the window scroll event
+         */
+        isScrollParentWindow: function(jq) {
+            return jq && (jq.is('body') || jq.is('html') || jq[0].nodeType === 9); // nodeType 9 is for document element;
+        },
 
         /**
          * Registers a callback on the document that is invoked when the user clicks on an element outside the overlay
@@ -292,27 +302,6 @@ if (!PrimeFaces.utils) {
                         }
                     }
                 }
-
-
-                // this checks were moved to the used components
-
-                // do nothing when the clicked element is a child of the overlay
-                /*
-                if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
-                    return;
-                }
-                */
-
-                // OLD WAY: do nothing when the clicked element is a child of the overlay
-                /*
-                var offset = overlay.offset();
-                if (e.pageX < offset.left
-                        || e.pageX > offset.left + overlay.width()
-                        || e.pageY < offset.top
-                        || e.pageY > offset.top + overlay.height()) {
-                    hideCallback();
-                }
-                */
 
                 hideCallback(e, $eventTarget);
             });
@@ -396,7 +385,7 @@ if (!PrimeFaces.utils) {
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
+            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
@@ -460,6 +449,14 @@ if (!PrimeFaces.utils) {
                 return element['parentNode'] == null ? parents : getParents(element.parentNode, parents.concat([element.parentNode]));
             };
 
+            var addScrollableParent = function(node) {
+                if (PrimeFaces.utils.isScrollParentWindow($(node))) {
+                    scrollableParents.push(window);
+                } else {
+                    scrollableParents.push(node);
+                }
+            };
+
             if (element) {
                 var parents = getParents(element, []);
                 var overflowRegex = /(auto|scroll)/;
@@ -477,15 +474,20 @@ if (!PrimeFaces.utils) {
                             var selector = selectors[j];
                             var el = parent.querySelector(selector);
                             if (el && overflowCheck(el)) {
-                                scrollableParents.push(el);
+                                addScrollableParent(el);
                             }
                         }
                     }
 
                     if (parent.nodeType !== 9 && overflowCheck(parent)) {
-                        scrollableParents.push(parent);
+                        addScrollableParent(parent);
                     }
                 }
+            }
+
+            // if no parents make it the window
+            if (scrollableParents.length === 0) {
+                scrollableParents.push(window);
             }
 
             return scrollableParents;
@@ -498,7 +500,7 @@ if (!PrimeFaces.utils) {
          */
         unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
-            if (scrollParent.is('body') || scrollParent.is('html') || scrollParent[0].nodeType === 9) { // nodeType 9 is for document element
+            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
@@ -659,7 +661,9 @@ if (!PrimeFaces.utils) {
          */
         enableButton: function(jq) {
             if (jq) {
-                jq.removeClass('ui-state-disabled').removeAttr('disabled');
+                jq.removeClass('ui-state-disabled')
+                  .prop( "disabled", false)
+                  .removeAttr('aria-disabled');
             }
         },
 
@@ -672,7 +676,8 @@ if (!PrimeFaces.utils) {
             if (jq) {
                 jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
                   .addClass('ui-state-disabled')
-                  .attr('disabled', 'disabled');
+                  .attr('disabled', 'disabled')
+                  .attr('aria-disabled', 'true');
             }
         },
 
@@ -840,6 +845,53 @@ if (!PrimeFaces.utils) {
             }
 
             return undefined;
+        },
+
+        /**
+         * When configuring numeric value like 'showDelay' and the user wants '0' we can't treat 0 as Falsey 
+         * so we make the value 0.  Otherwise Falsey returns the default value.
+         *
+         * @param {number|undefined} value the original value
+         * @param {number} defaultValue the required default value if value is not set
+         * @return {number} the calculated value
+         */
+        defaultNumeric: function(value, defaultValue) {
+            if (value === 0) {
+                return 0;
+            }
+            return value || defaultValue;
+        },
+
+        /**
+         * Is this component wrapped in a float label?
+         *
+         * @param {JQuery | undefined | null} jq An element to check if wrapped in float label. 
+         * @return {boolean} true this this JQ has a float label parent
+         */
+        hasFloatLabel: function(jq) {
+            if (!jq || !jq.parent()) {
+                return false;
+            }
+            return jq.parent().hasClass('ui-float-label');
+        },
+
+        /**
+         * Handles floating label CSS if wrapped in a floating label.
+         * @private
+         * @param {JQuery | undefined} element the to add the CSS classes to
+         * @param {JQuery | undefined} input the input to check if filled
+         * @param {boolean | undefined} hasFloatLabel true if this is wrapped in a floating label
+         */
+        updateFloatLabel: function(element, input, hasFloatLabel) {
+            if (!element || !input || !hasFloatLabel) {
+                return;
+            }
+            if (input.val() !== '' || element.find('.ui-chips-token').length !== 0) {
+                element.addClass('ui-inputwrapper-filled');
+            }
+            else {
+                element.removeClass('ui-inputwrapper-filled');
+            }
         }
     };
 

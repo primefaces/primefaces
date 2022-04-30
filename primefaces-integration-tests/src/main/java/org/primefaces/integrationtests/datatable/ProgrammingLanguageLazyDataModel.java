@@ -38,7 +38,7 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     private static final long serialVersionUID = -3415081263308946252L;
 
-    private final List<ProgrammingLanguage> langs;
+    protected List<ProgrammingLanguage> langs;
 
     public ProgrammingLanguageLazyDataModel() {
         langs = new ArrayList<>();

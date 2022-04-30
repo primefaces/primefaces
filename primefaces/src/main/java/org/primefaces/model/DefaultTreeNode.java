@@ -159,6 +159,9 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
 
     @Override
     public int getChildCount() {
+        if (children == null) {
+            return 0;
+        }
         return children.size();
     }
 

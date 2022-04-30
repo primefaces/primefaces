@@ -39,6 +39,7 @@ import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
 
@@ -60,9 +61,8 @@ public class FilterFeature implements DataTableFeature {
             .put(MatchMode.IN, new InFilterConstraint())
             .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
             .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.RANGE, new RangeFilterConstraint())
-            .put(MatchMode.BETWEEN, new RangeFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new RangeFilterConstraint()))
+            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
+            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
             .build();
 
     private static final FilterFeature INSTANCE = new FilterFeature();
@@ -209,7 +209,7 @@ public class FilterFeature implements DataTableFeature {
         }
 
         //Metadata for callback
-        if (table.isPaginator() || table.isVirtualScroll()) {
+        if ((table.isPaginator() || table.isVirtualScroll()) && ComponentUtils.isRequestSource(table, context)) {
             PrimeFaces.current().ajax().addCallbackParam("totalRecords", filtered.size());
         }
 

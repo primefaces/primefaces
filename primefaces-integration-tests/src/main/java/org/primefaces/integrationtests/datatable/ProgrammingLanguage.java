@@ -38,8 +38,16 @@ public class ProgrammingLanguage implements Serializable {
     private String name;
     private Integer firstAppeared;
     private ProgrammingLanguageType type;
+    private boolean selectable;
 
-    enum ProgrammingLanguageType {
+    public ProgrammingLanguage(Integer id, String name, Integer firstAppeared, ProgrammingLanguageType type) {
+        this.id = id;
+        this.name = name;
+        this.firstAppeared = firstAppeared;
+        this.type = type;
+    }
+
+    public enum ProgrammingLanguageType {
         COMPILED,
         INTERPRETED
     }

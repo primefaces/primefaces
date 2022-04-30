@@ -39,7 +39,7 @@ import org.primefaces.selenium.component.DatePicker;
 
 public class DatePicker009Test extends AbstractDatePickerTest {
 
-    private final List<String> MONTHS = Arrays.asList(new String[] {
+    private static final List<String> MONTHS = Arrays.asList(new String[] {
         "January", "February", "March", "April", "May", "June", "July",
         "August", "September", "October", "November", "December"
     });

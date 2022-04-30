@@ -34,8 +34,6 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;

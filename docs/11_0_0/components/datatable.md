@@ -331,6 +331,11 @@ When a custom component is used as a filter facet, filtering needs to be called 
 preferred event such as `onchange="PF('carsTable').filter()"`. Also defining a converter might be
 necessary if the value of the filter facet is not defined.
 
+Please make sure that the filter is using the **same type as the column field** if you are using comparable
+filter match modes (like greater than). For example, if the column field is an integer, and you would like to
+add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
+(see example below).
+
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
 
@@ -696,7 +701,7 @@ useful to deal with huge data, in this case data is fetched on-demand. Set _virt
 option and provide LazyDataModel;
 
 ```xhtml
-<p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollHeight="150" virtual="true">
+<p:dataTable var="car" value="#{bean.data}" scrollable="true" scrollHeight="150" virtualScroll="true">
     <p:column />
     //columns
 </p:dataTable>

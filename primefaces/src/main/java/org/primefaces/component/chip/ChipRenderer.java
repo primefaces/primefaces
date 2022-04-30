@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.chip;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import java.io.IOException;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ChipRenderer extends CoreRenderer {
 
@@ -94,7 +94,7 @@ public class ChipRenderer extends CoreRenderer {
         if (chip.getLabel() != null) {
             writer.startElement("div", chip);
             writer.writeAttribute("class", Chip.TEXT_CLASS, null);
-            writer.write(chip.getLabel());
+            writer.writeText(chip.getLabel(), "label");
             writer.endElement("div");
         }
 

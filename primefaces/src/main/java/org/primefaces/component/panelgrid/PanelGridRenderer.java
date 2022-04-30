@@ -359,7 +359,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
             int colMod = i % columns;
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (!columnClass.contains("p-md-") && !columnClass.contains("p-col-")) {
+            if (!columnClass.contains("md-") && !columnClass.contains("col-")) {
                 columnClass = columnClass + " " + GridLayoutUtils.getFlexColumnClass(columns);
             }
 

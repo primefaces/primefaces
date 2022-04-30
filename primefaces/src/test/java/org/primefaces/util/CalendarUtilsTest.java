@@ -54,7 +54,6 @@ public class CalendarUtilsTest {
     private ExternalContext externalContext;
     private ELContext elContext;
 
-
     @BeforeEach
     public void setup() {
         datePicker = mock(DatePicker.class);
@@ -89,7 +88,7 @@ public class CalendarUtilsTest {
         LocalDate localDate = LocalDate.of(2019, 7, 23);
         setupValues(localDate, Locale.ENGLISH);
 
-        String value = CalendarUtils.getValueAsString (context, datePicker);
+        String value = CalendarUtils.getValueAsString(context, datePicker);
         assertEquals("7/23/2019", value);
     }
 
@@ -98,7 +97,7 @@ public class CalendarUtilsTest {
         LocalDate localDate = LocalDate.of(2019, 7, 23);
         setupValues(localDate, Locale.GERMAN);
 
-        String value = CalendarUtils.getValueAsString (context, datePicker);
+        String value = CalendarUtils.getValueAsString(context, datePicker);
         assertEquals("23.07.2019", value);
     }
 
@@ -109,7 +108,7 @@ public class CalendarUtilsTest {
         Date date = cal.getTime();
         setupValues(date, Locale.ENGLISH);
 
-        String value = CalendarUtils.getValueAsString (context, datePicker);
+        String value = CalendarUtils.getValueAsString(context, datePicker);
         assertEquals("7/23/2019", value);
     }
 
@@ -120,7 +119,7 @@ public class CalendarUtilsTest {
         Date date = cal.getTime();
         setupValues(date, Locale.GERMAN);
 
-        String value = CalendarUtils.getValueAsString (context, datePicker);
+        String value = CalendarUtils.getValueAsString(context, datePicker);
         assertEquals("23.07.2019", value);
     }
 

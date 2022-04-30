@@ -21,7 +21,7 @@
             <h:form>
                 <p:growl id="messages" showDetail="true"/>
 
-                <h5>Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:menuButton value="Options">
                     <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false" update="messages" icon="pi pi-save"/>
                     <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
@@ -31,12 +31,19 @@
                 </p:menuButton>
 
                 <h5>Button style</h5>
-                <p:menuButton value="Options" buttonStyleClass="ui-button-outlined" buttonStyle="box-shadow: 0 0 10px">
+                <p:menuButton value="Options" buttonStyleClass="ui-button-outlined" buttonStyle="border-radius: 0 1rem">
                     <p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}" ajax="false" update="messages" icon="pi pi-save"/>
                     <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
                     <p:menuitem value="Delete" action="#{menuView.delete}" update="messages" icon="pi pi-times"/>
                     <p:divider/>
                     <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+                </p:menuButton>
+
+                <h5>Ajax Disabling and Status Icon</h5>
+                <p:menuButton value="Options">
+                    <p:menuitem value="Save" action="#{menuView.sleepAndSave}" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
                 </p:menuButton>
             </h:form>
         </div>

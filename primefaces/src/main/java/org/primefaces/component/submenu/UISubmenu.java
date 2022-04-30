@@ -24,6 +24,8 @@
 package org.primefaces.component.submenu;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import org.primefaces.model.menu.MenuElement;
 
 
 public class UISubmenu extends UISubmenuBase {
@@ -31,8 +33,11 @@ public class UISubmenu extends UISubmenuBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.UISubmenu";
 
     @Override
-    public List getElements() {
-        return getChildren();
+    public List<MenuElement> getElements() {
+        return getChildren().stream()
+                    .filter(MenuElement.class::isInstance)
+                    .map(MenuElement.class::cast)
+                    .collect(Collectors.toList());
     }
 
     @Override

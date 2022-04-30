@@ -37,7 +37,7 @@ import javax.faces.context.ExternalContext;
 
 public class ExternalContextMock extends ExternalContext {
 
-    public Map<String, Object> applicationMap = new HashMap<String, Object>();
+    private Map<String, Object> applicationMap = new HashMap<String, Object>();
 
     @Override
     public void dispatch(String path) throws IOException {

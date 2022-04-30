@@ -28,9 +28,10 @@ import javax.faces.component.html.HtmlCommandLink;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 
 
-public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Confirmable, PrimeClientBehaviorHolder {
+public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSource, Widget, Confirmable, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,6 +39,7 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
 
     public enum PropertyKeys {
 
+        widgetVar,
         ajax,
         async,
         process,
@@ -56,7 +58,8 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
         partialSubmitFilter,
         form,
         ariaLabel,
-        ignoreComponentNotFound
+        ignoreComponentNotFound,
+        disableOnAjax
     }
 
     public CommandLinkBase() {
@@ -66,6 +69,14 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isAjax() {
@@ -229,10 +240,18 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
 
     @Override
     public boolean isIgnoreComponentNotFound() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreComponentNotFound, false);
     }
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    public boolean isDisableOnAjax() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
+    }
+
+    public void setDisableOnAjax(boolean disableOnAjax) {
+        getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
     }
 }

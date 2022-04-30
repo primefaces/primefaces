@@ -63,7 +63,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByName("Java");
         assertRows(dataTable, langsFiltered);
 
-        for (int cnt=0; cnt<3; cnt++) {
+        for (int cnt = 0; cnt < 3; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
             page.buttonAdd.click();
@@ -90,7 +90,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
         assertRows(dataTable, langsFiltered);
 
-        for (int cnt=0; cnt<2; cnt++) {
+        for (int cnt = 0; cnt < 2; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
             WebElement removeButton = dataTable.getRow(0).getCell(3).getWebElement().findElement(By.className("ui-button"));
@@ -118,7 +118,7 @@ public class DataTable021Test extends AbstractDataTableTest {
         List<ProgrammingLanguage> langsFiltered = filterByNameContains("Script");
         assertRows(dataTable, langsFiltered);
 
-        for (int cnt=0; cnt<2; cnt++) {
+        for (int cnt = 0; cnt < 2; cnt++) {
             // Act
             int rows = dataTable.getRows().size();
             WebElement removeButton = dataTable.getRow(0).getCell(4).getWebElement().findElement(By.className("ui-button"));
@@ -185,7 +185,6 @@ public class DataTable021Test extends AbstractDataTableTest {
 
         assertNoJavascriptErrors();
     }
-
 
     @Test
     @Order(7)
@@ -346,6 +345,7 @@ public class DataTable021Test extends AbstractDataTableTest {
     }
 
     public static class Page extends AbstractPrimePage {
+
         @FindBy(id = "form:datatable")
         DataTable dataTable;
 

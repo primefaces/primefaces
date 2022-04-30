@@ -478,6 +478,24 @@ input[type=text]::-ms-clear {
     right: .5em;
 }
 
+/* button loading */
+.ui-state-loading.ui-button-text-only .ui-icon-loading + .ui-button-text {
+    opacity: 0;
+}
+
+.ui-state-loading.ui-button-text-only .ui-icon-loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1rem;
+    height: 1rem;
+    margin: -0.5rem;
+}
+
+.ui-state-loading .ui-icon:not(.ui-icon-loading) {
+    display: none;
+}
+
 /*button sets*/
 .ui-buttonset .ui-button {
     margin-left: 0;
@@ -740,6 +758,10 @@ button.ui-button::-moz-focus-inner {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.ui-splitbuttonmenu .ui-divider-horizontal {
+    width: auto;
 }
 
 /** IE Hacks **/

@@ -7,7 +7,7 @@
 <h:head>
     <title>Level 1</title>
     <h:outputStylesheet name="css/primeflex.css" library="showcase"/>
-    <style type="text/css">
+    <style>
         html {
             font-size: 14px;
         }
@@ -20,7 +20,7 @@
 
             <p class="ui-widget" style="margin-top: 0">You are at Level 1.</p>
 
-            <p:panel header="Value from flash" rendered="#{dfLevel1View.valueFromFlash != null}" styleClass="p-mb-3">
+            <p:panel header="Value from flash" rendered="#{dfLevel1View.valueFromFlash != null}" styleClass="mb-3">
                 <p:outputLabel value="#{dfLevel1View.valueFromFlash}" />
             </p:panel>
 

@@ -24,8 +24,8 @@
 
         .menu-category {
             display: block;
-            color: var(--text-color-secondary);
-            font-weight: 600;
+            color: var(--text-color);
+            font-weight: 700;
             user-select: none;
             padding: 1.5rem 0 1rem 0;
             font-size: 0.857rem;
@@ -64,6 +64,7 @@
 
                 &.router-link-active {
                     font-weight: 700;
+                    color: var(--primary-color);
                 }
 
                 .ui-tag {
@@ -90,6 +91,32 @@
                         padding: .475rem .5rem .475rem 2rem;
                     }
                 }
+            }
+        }
+        
+        .menu-image {
+            &.menu-banner {
+                a {
+                    padding: 0;
+
+                    &:hover {
+                        background-color: transparent;
+
+                        img {
+                            background-color: var(--surface-c);
+                        }
+                    }
+
+                    &:focus {
+                        box-shadow: none;
+                    }
+                }
+            }
+
+            padding: 0 0 1rem 0;
+
+            img {
+                width: 100%;
             }
         }
     }
