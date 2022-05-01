@@ -200,7 +200,8 @@ public class Schedule001Test extends AbstractPrimePageTest {
         String eventTime = todaysEvents.get(0).findElement(By.className("fc-event-time")).getText();
         String eventTitle = todaysEvents.get(0).findElement(By.className("fc-event-title")).getText();
 
-        ScheduleEvent referenceEvent = schedule001.getEventModel().getEvents().get(1);
+        int eventid = LocalDateTime.now().getDayOfMonth() > 1 ? 1 : 0;
+        ScheduleEvent referenceEvent = schedule001.getEventModel().getEvents().get(eventid);
         Assertions.assertEquals(referenceEvent.getTitle(), eventTitle);
         Assertions.assertEquals(referenceEvent.getStartDate().getHour() + " Uhr", eventTime);
 
