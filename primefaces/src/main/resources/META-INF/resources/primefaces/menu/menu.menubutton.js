@@ -9,7 +9,7 @@
  * @prop {string} menuId Client ID of the menu overlay panel.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {number} [timeoutId] Timeout ID used for the animation when the menu is shown.
- * @prop {number} [ajaxCount] number of concurrent active Ajax requests.
+ * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
  *
  * @interface {PrimeFaces.widget.MenuButtonCfg} cfg The configuration for the {@link  MenuButton| MenuButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
