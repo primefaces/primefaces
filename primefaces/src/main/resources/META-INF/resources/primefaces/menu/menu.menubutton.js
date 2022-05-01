@@ -9,6 +9,7 @@
  * @prop {string} menuId Client ID of the menu overlay panel.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {number} [timeoutId] Timeout ID used for the animation when the menu is shown.
+ * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
  *
  * @interface {PrimeFaces.widget.MenuButtonCfg} cfg The configuration for the {@link  MenuButton| MenuButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -206,8 +207,13 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             }
         });
 
+        $this.ajaxCount = 0;
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             if ($this.isXhrSource(settings)) {
+                $this.ajaxCount++;
+                if ($this.ajaxCount > 1) {
+                    return;
+                }
                 $this.button.toggleClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
@@ -222,6 +228,10 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if ($this.isXhrSource(settings)) {
+                $this.ajaxCount--;
+                if ($this.ajaxCount > 0) {
+                    return;
+                }
                 $this.button.toggleClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.enable();

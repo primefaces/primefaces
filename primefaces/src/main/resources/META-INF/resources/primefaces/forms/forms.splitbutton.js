@@ -29,6 +29,7 @@
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
  *
  * @interface {PrimeFaces.widget.SplitButtonCfg} cfg The configuration for the {@link  SplitButton| SplitButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -171,8 +172,13 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
+        $this.ajaxCount = 0;
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             if ($this.isXhrSource(settings)) {
+                $this.ajaxCount++;
+                if ($this.ajaxCount > 1) {
+                    return;
+                }
                 $this.button.toggleClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
@@ -187,6 +193,10 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if ($this.isXhrSource(settings)) {
+                $this.ajaxCount--;
+                if ($this.ajaxCount > 0) {
+                    return;
+                }
                 $this.button.toggleClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.enable();
