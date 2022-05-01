@@ -2,6 +2,8 @@
  * __PrimeFaces CommandLink Widget__
  * 
  * CommandLink is an extended version of standard commandLink with AJAX and theming.
+ *
+ * @prop {number} [ajaxCount] number of concurrent active Ajax requests.
  * 
  * @interface {PrimeFaces.widget.CommandLinkCfg} cfg The configuration for the {@link  CommandLink| CommandLink widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -39,7 +41,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     bindTriggers: function() {
         var $this = this;
-
+        $this.ajaxCount = 0;
         this.jq.on('click.commandlink', function(e, xhr, settings) {
             if ($this.jq.hasClass('ui-state-disabled')) {
                 e.preventDefault();
@@ -48,11 +50,19 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
 
         if (this.cfg.disableOnAjax !== false) {
             $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+                $this.ajaxCount++;
+                if ($this.ajaxCount > 1) {
+                    return;
+                }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.jq.toggleClass('ui-state-loading');
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+                $this.ajaxCount--;
+                if ($this.ajaxCount > 0) {
+                    return;
+                }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.jq.toggleClass('ui-state-loading');
                     $this.enable();
