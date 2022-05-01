@@ -3,7 +3,7 @@
  * 
  * CommandLink is an extended version of standard commandLink with AJAX and theming.
  *
- * @prop {number} [ajaxCount] number of concurrent active Ajax requests.
+ * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
  * 
  * @interface {PrimeFaces.widget.CommandLinkCfg} cfg The configuration for the {@link  CommandLink| CommandLink widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
