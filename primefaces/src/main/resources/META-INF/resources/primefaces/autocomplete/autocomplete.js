@@ -1009,15 +1009,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     setQuerying: function(state) {
-        if (state === true) {
+        if (state && !this.querying) {
             this.jq.addClass('ui-state-loading')
                     .append('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
         }
-        else {
+        else if (!state && this.querying) {
             this.jq.removeClass('ui-state-loading')
                     .find('.ui-icon-loading').remove();
         }
-        this.querying = state === true;
+        this.querying = state;
     },
 
     /**
