@@ -85,7 +85,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             this.scrollTbody.removeAttr('tabindex');
         }
 
-        this.fixColumnWidths();
+        if (!this.cfg.reflow) {
+            this.fixColumnWidths();
+        }
 
         if(this.cfg.scrollWidth) {
             if(this.percentageScrollWidth)

@@ -1385,7 +1385,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        this.fixColumnWidths();
+        if (!this.cfg.reflow) {
+            this.fixColumnWidths();
+        }
 
         if(this.cfg.scrollWidth) {
             if(this.percentageScrollWidth)
