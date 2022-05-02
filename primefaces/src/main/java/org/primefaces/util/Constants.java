@@ -54,6 +54,7 @@ public class Constants {
         public static final String FLEX = "primefaces.FLEX";
         public static final String PRIME_ICONS = "primefaces.PRIME_ICONS";
         public static final String CLIENT_SIDE_LOCALISATION = "primefaces.CLIENT_SIDE_LOCALISATION";
+        public static final String HIDE_RESOURCE_VERSION = "primefaces.HIDE_RESOURCE_VERSION";
 
         private ContextParams() {
 

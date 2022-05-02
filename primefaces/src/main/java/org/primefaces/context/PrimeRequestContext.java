@@ -65,6 +65,7 @@ public class PrimeRequestContext {
     private Boolean touchable;
     private Boolean secure;
     private Boolean flex;
+    private Boolean hideResourceVersion;
 
     public PrimeRequestContext(FacesContext context) {
         this.context = context;
@@ -304,6 +305,14 @@ public class PrimeRequestContext {
         }
 
         return flex;
+    }
+
+    public boolean isHideResourceVersion() {
+        if (hideResourceVersion == null) {
+            hideResourceVersion = evalBooleanExpression(Constants.ContextParams.HIDE_RESOURCE_VERSION, false);
+        }
+
+        return hideResourceVersion;
     }
 
     private boolean evalBooleanExpression(String param, boolean defaultValueIfNull) {

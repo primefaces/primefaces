@@ -27,6 +27,7 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceWrapper;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
 /**
  * {@link ResourceWrapper} which appends the version of PrimeFaces to the URL.
@@ -40,7 +41,10 @@ public class PrimeResource extends ResourceWrapper {
     public PrimeResource(final Resource resource) {
         super();
         wrapped = resource;
-        version = "&v=" + PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().getBuildVersion();
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion() ? "" :
+                "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
     }
 
     @Override
