@@ -147,7 +147,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         });
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             if (this.isVertical) {
-                this.itemsContainer.swipe({
+                this.itemsContent.swipe({
                     swipeUp:function(e) {
                         $this.navBackward(e);
                     },
@@ -157,9 +157,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                     excludedElements: PrimeFaces.utils.excludedSwipeElements()
                 });
             }
-
             else {
-                this.itemsContainer.swipe({
+                this.itemsContent.swipe({
                     swipeLeft:function(e) {
                         $this.navBackward(e);
                     },
