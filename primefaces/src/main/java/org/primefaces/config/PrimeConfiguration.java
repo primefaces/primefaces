@@ -56,7 +56,7 @@ public class PrimeConfiguration {
     private final boolean moveScriptsToBottom;
     private boolean csp;
     private String cspPolicy;
-    private String cspReportEndpoint;
+    private String cspReportPolicy;
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
@@ -132,7 +132,7 @@ public class PrimeConfiguration {
                 break;
             case "reportOnly":
                 csp = Boolean.TRUE;
-                cspReportEndpoint = externalContext.getInitParameter(Constants.ContextParams.CSP_REPORT_ONLY_POLICY);
+                cspReportPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_REPORT_ONLY_POLICY);
                 break;
             default:
                 csp = Boolean.FALSE;
@@ -266,8 +266,8 @@ public class PrimeConfiguration {
         return cspPolicy;
     }
 
-    public String getCspReportEndpoint() {
-        return cspReportEndpoint;
+    public String getCspReportPolicy() {
+        return cspReportPolicy;
     }
 
     public String[] getExceptionTypesToIgnoreInLogging() {
