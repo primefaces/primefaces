@@ -260,7 +260,7 @@ if (!PrimeFaces.ajax) {
                     var ajaxUtils = PrimeFaces.ajax.Utils;
 
                     // reset PrimeFaces JS state because the view is completely replaced with a new one
-                    window.PrimeFaces = null;
+                    window.PrimeFaces.resetState();
 
                     ajaxUtils.updateHead(content);
                     ajaxUtils.updateBody(content);

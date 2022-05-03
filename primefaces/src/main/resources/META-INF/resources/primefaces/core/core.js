@@ -1134,6 +1134,15 @@
         },
 
         /**
+         * Reset any state variables on update="@all".
+         */
+        resetState: function() {
+            PrimeFaces.zindex = 1000;
+            PrimeFaces.detachedWidgets = [];
+            PrimeFaces.widgets = {};
+        },
+
+        /**
          * Logs the current PrimeFaces and jQuery version to console.
          */
         version: function() {
