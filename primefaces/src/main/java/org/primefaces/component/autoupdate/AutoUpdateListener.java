@@ -23,8 +23,11 @@
  */
 package org.primefaces.component.autoupdate;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.el.ValueExpression;
 
 import javax.faces.component.UIComponent;
@@ -72,10 +75,19 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         FacesContext context = FacesContext.getCurrentInstance();
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 
-        Map<String, String> infos = getOrCreateAutoUpdateComponentInfos(context);
+        Map<String, List<String>> infos = getOrCreateAutoUpdateComponentInfos(context);
         if (disabled == null || !((boolean) disabled.getValue(context.getELContext()))) {
             if (!infos.containsKey(clientId)) {
-                infos.put(clientId, on);
+                if (on == null) {
+                    infos.put(clientId, null);
+                }
+                else {
+                    List<String> onList = Arrays.stream(on.trim().split(","))
+                            .map(String::trim)
+                            .filter(s -> s != null && !s.isEmpty())
+                            .collect(Collectors.toList());
+                    infos.put(clientId, onList);
+                }
             }
         }
         else {
@@ -83,8 +95,8 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         }
     }
 
-    public static Map<String, String> getOrCreateAutoUpdateComponentInfos(FacesContext context) {
-        Map<String, String> infos = getAutoUpdateComponentInfos(context);
+    public static Map<String, List<String>> getOrCreateAutoUpdateComponentInfos(FacesContext context) {
+        Map<String, List<String>> infos = getAutoUpdateComponentInfos(context);
         if (infos == null) {
             infos = new HashMap<>();
             context.getViewRoot().getAttributes().put(COMPONENT_CLIENT_IDS, infos);
@@ -92,8 +104,8 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         return infos;
     }
 
-    public static Map<String, String> getAutoUpdateComponentInfos(FacesContext context) {
-        return (Map<String, String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
+    public static Map<String, List<String>> getAutoUpdateComponentInfos(FacesContext context) {
+        return (Map<String, List<String>>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
     }
 
     public static void subscribe(UIComponent component) {

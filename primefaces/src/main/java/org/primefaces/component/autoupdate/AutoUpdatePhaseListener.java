@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.autoupdate;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -39,26 +40,40 @@ public class AutoUpdatePhaseListener implements PhaseListener {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void afterPhase(PhaseEvent event) {
+    public void afterPhase(PhaseEvent phaseEvent) {
 
     }
 
     @Override
-    public void beforePhase(PhaseEvent event) {
-        FacesContext context = event.getFacesContext();
+    public void beforePhase(PhaseEvent phaseEvent) {
+        FacesContext context = phaseEvent.getFacesContext();
         if (!context.isPostback() || PrimeRequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
             return;
         }
 
-        Map<String, String> infos = AutoUpdateListener.getAutoUpdateComponentInfos(context);
+        Map<String, List<String>> infos = AutoUpdateListener.getAutoUpdateComponentInfos(context);
         if (infos != null && !infos.isEmpty()) {
-            for (Map.Entry<String, String> entries : infos.entrySet()) {
+            for (Map.Entry<String, List<String>> entries : infos.entrySet()) {
                 String clientId = entries.getKey();
-                String on = entries.getValue();
+                List<String> events = entries.getValue();
 
-                if (on != null) {
+                // observer events defined?
+                if (events != null && !events.isEmpty()) {
                     String update = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_UPDATE_PARAM);
-                    if (LangUtils.isBlank(update) || !update.contains("@obs(" + on + ")")) {
+
+                    // empty update param == no event/observer will be updated this request -> skip
+                    if (LangUtils.isBlank(update)) {
+                        continue;
+                    }
+
+                    // if observers are defined on p:autoUpdate, at least one of the events must be updated in the current request
+                    boolean anyObserverUpdated = false;
+                    for (String event : events) {
+                        if (update.contains("@obs(" + event + ")")) {
+                            anyObserverUpdated = true;
+                        }
+                    }
+                    if (!anyObserverUpdated) {
                         continue;
                     }
                 }
