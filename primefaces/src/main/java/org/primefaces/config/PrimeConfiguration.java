@@ -56,6 +56,7 @@ public class PrimeConfiguration {
     private final boolean moveScriptsToBottom;
     private boolean csp;
     private String cspPolicy;
+    private String cspReportEndpoint;
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
@@ -123,10 +124,19 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = Boolean.parseBoolean(value);
 
-        value = externalContext.getInitParameter(Constants.ContextParams.CSP);
-        csp = Boolean.parseBoolean(value);
-        if (csp) {
-            cspPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_POLICY);
+        value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
+        switch (value) {
+            case "true":
+                csp = Boolean.TRUE;
+                cspPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_POLICY);
+                break;
+            case "reportOnly":
+                csp = Boolean.TRUE;
+                cspReportEndpoint = externalContext.getInitParameter(Constants.ContextParams.CSP_REPORT_ONLY_POLICY);
+                break;
+            default:
+                csp = Boolean.FALSE;
+                break;
         }
 
         value = externalContext.getInitParameter(Constants.ContextParams.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING);
@@ -254,6 +264,10 @@ public class PrimeConfiguration {
 
     public String getCspPolicy() {
         return cspPolicy;
+    }
+
+    public String getCspReportEndpoint() {
+        return cspReportEndpoint;
     }
 
     public String[] getExceptionTypesToIgnoreInLogging() {

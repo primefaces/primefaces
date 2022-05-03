@@ -42,12 +42,15 @@ public class CspPhaseListener implements PhaseListener {
 
     private Lazy<Boolean> enabled;
     private Lazy<String> customPolicy;
+    private Lazy<String> reportEndpoint;
 
     public CspPhaseListener() {
         enabled = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp());
         customPolicy = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspPolicy());
+        reportEndpoint = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspReportEndpoint());
     }
 
     @Override
@@ -67,7 +70,16 @@ public class CspPhaseListener implements PhaseListener {
         CspState state = PrimeFacesContext.getCspState(context);
 
         String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
-        externalContext.addResponseHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
+        policy += " 'nonce-" + state.getNonce() + "';";
+
+        if (LangUtils.isNotBlank(reportEndpoint.get())) {
+            // current browser compatibility
+            policy += " report-uri " + reportEndpoint.get() + ";";
+            externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
+        }
+        else {
+            externalContext.addResponseHeader("Content-Security-Policy", policy);
+        }
 
         String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');};";
         PrimeFaces.current().executeInitScript(init);
