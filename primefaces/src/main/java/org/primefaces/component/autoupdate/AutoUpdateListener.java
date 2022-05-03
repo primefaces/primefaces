@@ -27,16 +27,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import javax.el.ValueExpression;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ComponentSystemEventListener;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.*;
+
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.LangUtils;
 
 /**
@@ -82,11 +79,8 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
                     infos.put(clientId, null);
                 }
                 else {
-                    List<String> onList = Arrays.stream(on.trim().split(","))
-                            .map(String::trim)
-                            .filter(s -> s != null && !s.isEmpty())
-                            .collect(Collectors.toList());
-                    infos.put(clientId, onList);
+                    String[] onList = SearchExpressionFacade.split(context, on, SearchExpressionFacade.EXPRESSION_SEPARATORS);
+                    infos.put(clientId, Arrays.asList(onList));
                 }
             }
         }
