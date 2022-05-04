@@ -69,14 +69,13 @@ public class CspPhaseListener implements PhaseListener {
 
         CspState state = PrimeFacesContext.getCspState(context);
 
-        String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
-        policy += " 'nonce-" + state.getNonce() + "';";
-
         if (LangUtils.isNotBlank(reportOnlyPolicy.get())) {
-            policy += " " + reportOnlyPolicy.get() + ";";
+            String policy = "script-src 'self' 'nonce-" + state.getNonce() + "'; " + reportOnlyPolicy.get() + ";";
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
         else {
+            String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
+            policy += " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy", policy);
         }
 
