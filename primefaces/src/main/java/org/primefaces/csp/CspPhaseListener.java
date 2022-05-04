@@ -72,7 +72,6 @@ public class CspPhaseListener implements PhaseListener {
         String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
 
         if (LangUtils.isNotBlank(reportOnlyPolicy.get())) {
-            // current browser compatibility
             policy += " " + reportOnlyPolicy.get() + ";";
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
