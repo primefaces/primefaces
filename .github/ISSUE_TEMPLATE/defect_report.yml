@@ -6,12 +6,11 @@ body:
   - type: markdown
     attributes:
       # yamllint disable rule:line-length
-      value: "
-        ## This is the issue tracker of the PrimeFaces community edition
+      value: |
+        <h2>This is the issue tracker of the PrimeFaces community edition</h2>
         There is **no guarantee in receiving an immediate response** when you create an issue here!<br/>
         PrimeFaces PRO will guarantee response within 1 business day.<br/>
-        For more information please read [Community <> Elite <> Pro](https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro).<br/>
-        "
+        For more information please read [Community <> Elite <> Pro](https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro).
       # yamllint enable rule:line-length
   - type: textarea
     id: description
@@ -25,7 +24,7 @@ body:
     attributes:
       label: Reproducer
       # yamllint disable rule:line-length
-      description: "
+      description: |
         You'll have better chance to receive an answer and a solution if you add a GitHub link or zip file of your reproducer. Clone https://github.com/primefaces/primefaces-test.git to create one.
 
         **NOTE:** Use the latest `master-SNAPSHOT` in your reproducer.
@@ -38,7 +37,6 @@ body:
           4. See error
 
         We encourage you provide a reproducer. If you are unable to, at least provide us with a sample XHTML and bean.
-        "
       # yamllint enable rule:line-length
     validations:
       required: false
@@ -71,7 +69,7 @@ body:
       label: Theme
       description: Theme you are using. e.g. Saga, Arya, etc.
     validations:
-      required: true
+      required: false
   - type: dropdown
     id: jsf-implementation
     attributes:
