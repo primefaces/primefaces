@@ -8,9 +8,9 @@ body:
       # yamllint disable rule:line-length
       value: |
         <h2>This is the issue tracker of the PrimeFaces community edition</h2>
-        There is **no guarantee in receiving an immediate response** when you create an issue here!<br/>
+        There is <strong>no guarantee in receiving an immediate response</strong> when you create an issue here!<br/>
         PrimeFaces PRO will guarantee response within 1 business day.<br/>
-        For more information please read [Community <> Elite <> Pro](https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro).
+        For more information please read <a href="https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro">Community <> Elite <> Pro</a>.
       # yamllint enable rule:line-length
   - type: textarea
     id: description
