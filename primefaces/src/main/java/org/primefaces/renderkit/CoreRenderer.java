@@ -836,6 +836,19 @@ public abstract class CoreRenderer extends Renderer {
         writer.endElement("div");
     }
 
+    /**
+     * GitHub #7763 Renders an in memory UIComponent and updates its ID with an index.
+     * For example id="form:test" becomes id="form:test:0".
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the {@link UIComponent} to render.
+     * @param index the index number to append to the ID
+     * @throws IOException if any IO error occurs
+     */
+    protected void encodeIndexedId(FacesContext context, UIComponent component, int index) throws IOException {
+        ComponentUtils.encodeIndexedId(context, component, index);
+    }
+
     protected boolean endsWithLenghtUnit(String val) {
         return val.endsWith("px") || val.endsWith("%") // most common first
                 || val.endsWith("cm") || val.endsWith("mm") || val.endsWith("in")

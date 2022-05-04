@@ -476,7 +476,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                         writer.writeAttribute("class", styleClass, null);
                     }
 
-                    renderChildren(context, column);
+                    encodeIndexedId(context, column, i);
                     writer.endElement("td");
                 }
             }
