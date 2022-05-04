@@ -20,7 +20,8 @@ CSP is disabled by default and a global parameter is required to turn it on.
 </context-param>
 ```
 
-In large web applications you might decide to report CSP violations only as a start instead of directly forcing them. Browsers will report CSP violations to a user-defined HTTP endpoint then.
+In large web applications you might decide to report CSP violations only as a start instead of directly forcing them. 
+Browsers will report CSP violations to a user-defined HTTP endpoint using `report-uri` directive.
 
 ```xml
 <context-param>
@@ -29,7 +30,7 @@ In large web applications you might decide to report CSP violations only as a st
 </context-param>
 <context-param>
     <param-name>primefaces.CSP_REPORT_ONLY_POLICY</param-name>
-    <param-value>/csp-reporting</param-value>
+    <param-value>report-uri /my-csp-reports</param-value>
 </context-param>
 ```
 
