@@ -67,7 +67,8 @@ body:
     id: theme
     attributes:
       label: Theme
-      description: Theme you are using. e.g. Saga, Arya, etc.
+      description: Theme you are using
+      placeholder: e.g. Saga, Arya, etc
     validations:
       required: false
   - type: dropdown
@@ -91,4 +92,4 @@ body:
     attributes:
       label: Browser(s)
       description: Is the issue only occures in specific browsers (or versions), mention them here.
-      placeholder: eg. Chrome 100.0.4896.127 (Official Build) (arm64) macOS
+      placeholder: e.g. Chrome 100.0.4896.127 (Official Build) (arm64) macOS
