@@ -67,7 +67,7 @@ body:
     id: theme
     attributes:
       label: Theme
-      description: Theme you are using
+      description: Theme you are using.
       placeholder: e.g. Saga, Arya, etc
     validations:
       required: false
