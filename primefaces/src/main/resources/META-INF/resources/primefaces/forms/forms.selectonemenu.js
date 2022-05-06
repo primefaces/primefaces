@@ -1335,6 +1335,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');
         if(firstVisibleItem.length) {
             this.highlightItem(firstVisibleItem);
+            PrimeFaces.scrollInView(this.itemsWrapper, firstVisibleItem);
         }
 
         if(this.itemsContainer.height() < this.cfg.initialHeight) {
