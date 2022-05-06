@@ -972,7 +972,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     onRowClick: function(event, node) {
         if($(event.target).is('td,span:not(.ui-c)')) {
             var selected = node.hasClass('ui-state-highlight'),
-            metaKey = event.metaKey||event.ctrlKey,
+            metaKey = event.metaKey||event.ctrlKey||PrimeFaces.env.isTouchable(this.cfg),
             shiftKey = event.shiftKey;
 
             if(this.isCheckboxSelection()) {
