@@ -2385,7 +2385,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if($(event.target).is(this.rowSelectorForRowClick)) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
-            metaKey = event.metaKey||event.ctrlKey,
+            metaKey = event.metaKey||event.ctrlKey||PrimeFaces.env.isTouchable(this.cfg),
             shiftKey = event.shiftKey;
 
             this.assignFocusedRow(row);
