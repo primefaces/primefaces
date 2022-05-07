@@ -450,6 +450,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             };
 
             this.cfg.paginate.call(this, newState);
+            this.rppSelect.val('*');
         }
         else {
             var first = this.cfg.rows * this.cfg.page;
