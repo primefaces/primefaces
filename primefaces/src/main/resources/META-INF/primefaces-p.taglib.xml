@@ -11248,6 +11248,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[One or more strings separated by commas, indicating possible image sources for the user agent to use.]]>
+            </description>
+            <name>srcset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[One or more strings separated by commas, indicating a set of source sizes.]]>
+            </description>
+            <name>sizes</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Style of the image.]]>
             </description>
             <name>style</name>

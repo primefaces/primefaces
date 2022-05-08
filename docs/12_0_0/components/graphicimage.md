@@ -35,6 +35,8 @@ dir | null | String | Direction of the text displayed
 lang | null | String | Language code
 ismap | false | Boolean | Specifies to use a server-side image map
 usemap | null | String | Name of the client side map
+sizes | null | String | One or more strings separated by commas, indicating a set of source sizes.
+srcset | null | String | One or more strings separated by commas, indicating possible image sources for the user agent to use.
 style | null | String | Style of the image
 styleClass | null | String | Style class of the image
 onclick | null | String | onclick DOM event handler

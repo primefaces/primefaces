@@ -82,6 +82,8 @@ public class HTML {
         "lang",
         "ismap",
         "usemap",
+        "srcset",
+        "sizes",
         "style"
     );
 
