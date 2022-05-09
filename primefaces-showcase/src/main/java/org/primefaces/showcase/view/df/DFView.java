@@ -56,6 +56,13 @@ public class DFView {
         PrimeFaces.current().dialog().openDynamic("viewProducts", options, null);
     }
 
+    public void viewProductsLargerThanViewport() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("fitViewport", true);
+        PrimeFaces.current().dialog().openDynamic("viewProductsLargerThanViewport", options, null);
+    }
+
     public void chooseProduct() {
         Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
