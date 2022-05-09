@@ -37,7 +37,9 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
         cache,
         name,
         library,
-        stream
+        stream,
+        srcset,
+        sizes
     }
 
     public GraphicImageBase() {
@@ -81,4 +83,19 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
         getStateHelper().put(PropertyKeys.stream, stream);
     }
 
+    public void setSrcset(String srcset) {
+        getStateHelper().put(PropertyKeys.srcset, srcset);
+    }
+
+    public String getSrcset() {
+        return (String) getStateHelper().eval(PropertyKeys.srcset, null);
+    }
+
+    public void setSizes(String sizes) {
+        getStateHelper().put(PropertyKeys.sizes, sizes);
+    }
+
+    public String getSizes() {
+        return (String) getStateHelper().eval(PropertyKeys.sizes, null);
+    }
 }
