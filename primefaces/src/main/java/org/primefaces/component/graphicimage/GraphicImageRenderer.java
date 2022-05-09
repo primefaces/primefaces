@@ -40,6 +40,11 @@ import org.primefaces.util.ResourceUtils;
 public class GraphicImageRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         GraphicImage image = (GraphicImage) component;
@@ -57,7 +62,7 @@ public class GraphicImageRenderer extends CoreRenderer {
             writer.writeAttribute("class", image.getStyleClass(), "styleClass");
         }
 
-        renderPassThruAttributes(context, image, HTML.IMG_ATTRS);
+        renderDomEvents(context, image, HTML.IMG_ATTRS);
 
         writer.endElement("img");
     }
