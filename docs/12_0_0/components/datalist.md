@@ -22,31 +22,31 @@ DataList presents a collection of data in list layout with several display types
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
-| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-| value | null | Object | Data to display.
-| var | null | String | Name of the request-scoped variable used to refer each data.
-| rows | null | Integer | Number of rows to display per page.
-| first | 0 | Integer | Index of the first row to be displayed
-| type | unordered | String | Type of the list, valid values are "unordered", "ordered", "definition" and "none".
-| itemType | null | String | Specifies the list item type.
-| widgetVar | null | String | Name of the client side widget.
-| paginator | false | Boolean |  Enables pagination.
-| paginatorTemplate | null | String | Template of the paginator.
-| rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
 | currentPageReportTemplate | null | String | Template of the currentPageReport UI.
+| emptyMessage | No records found. | String | Text to display when there is no data to display.
+| first | 0 | Integer | Index of the first row to be displayed
+| itemStyleClass | null | String | Style class of an item in list.
+| itemType | null | String | Specifies the list item type.
+| lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
+| multiViewState | false | Boolean | Whether to keep list state across views, defaults to false.
 | pageLinks | 10 | Integer | Maximum number of page links to display.
-| paginatorPosition | both | String | Position of the paginator.
+| paginator | false | Boolean |  Enables pagination.
 | paginatorAlwaysVisible | true | Boolean | Defines if paginator should be hidden if total data count is less than number of rows per page.
+| paginatorPosition | both | String | Position of the paginator.
+| paginatorTemplate | null | String | Template of the paginator.
+| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| rowIndexVar | null | String | Name of the iterator to refer each row index.
+| rows | null | Integer | Number of rows to display per page.
+| rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
 | style | null | String | Inline style of the main container.
 | styleClass | null | String | Style class of the main container.
-| rowIndexVar | null | String | Name of the iterator to refer each row index.
-| varStatus | null | String | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
-| lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
-| emptyMessage | No records found. | String | Text to display when there is no data to display.
-| itemStyleClass | null | String | Style class of an item in list.
-| multiViewState | false | Boolean | Whether to keep list state across views, defaults to false.
 | touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| type | unordered | String | Type of the list, valid values are "unordered", "ordered", "definition" and "none".
+| value | null | Object | Data to display.
+| var | null | String | Name of the request-scoped variable used to refer each data.
+| varStatus | null | String | Name of the exported request scoped variable to represent state of the iteration same as in ui:repeat varStatus.
+| widgetVar | null | String | Name of the client side widget.
 
 ## Getting started with the DataList
 Since DataList is a data iteration component, it renders it’s children for each data represented with
