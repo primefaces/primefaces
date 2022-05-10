@@ -8808,6 +8808,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Text to display when there is no data to display.]]>
+            </description>
+            <name>emptyMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
             </description>
             <name>flex</name>
