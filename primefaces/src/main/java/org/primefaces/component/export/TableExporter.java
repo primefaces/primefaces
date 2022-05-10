@@ -27,13 +27,11 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.UITable;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.Constants;
@@ -121,7 +119,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
 
         for (ColumnMeta meta : visibleColumnMetadata) {
             String metaColumnKey = meta.getColumnKey();
-            table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), column -> {
+            table.invokeOnColumn(metaColumnKey, -1, column -> {
                 exportcolumns.add(column);
             });
         }
