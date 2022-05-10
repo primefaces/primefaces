@@ -316,7 +316,7 @@ Sample-useage within AutoComplete. Note `completeEndpoint`-attribute.
 ```
 
 ## LazyDataModel
-You might have a `LazyDataModels` in your project which is almost suitable to serve as an `AutoComplete` suggestions
+You might have a `LazyDataModel` in your project which is almost suitable to serve as an `AutoComplete` suggestions
 provider. It can be used with `AutoComplete` by using the `lazyModel` in combination with the `lazyField` attribute.
 The query string will be applied on the provided `lazyField` property using `MatchMode.CONTAINS`.
 
