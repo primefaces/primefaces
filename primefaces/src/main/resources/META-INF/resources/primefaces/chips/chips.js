@@ -148,13 +148,13 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     var duplicateFound = false;
                     this.hinput.children('option').each(function() {
                         if (this.value === escapedValue) {
-                            $this.refocus(refocus);
                             duplicateFound = true;
                             return false; // breaks
                         }
                     });
                     if (duplicateFound) {
-                        return;
+                        $this.refocus(refocus);
+                        continue;
                     }
                 }
 
