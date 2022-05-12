@@ -91,7 +91,7 @@ public class CardRenderer extends CoreRenderer {
 
         //subtitle
         String subtitle = card.getSubtitle();
-        if (LangUtils.isNotBlank(title)) {
+        if (LangUtils.isNotBlank(subtitle)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
             writer.writeText(subtitle, null);
