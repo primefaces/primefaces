@@ -91,5 +91,5 @@ body:
     id: browsers
     attributes:
       label: Browser(s)
-      description: Is the issue only occures in specific browsers (or versions), mention them here.
+      description: If the issue only occures in specific browsers (or versions), mention them here.
       placeholder: e.g. Chrome 100.0.4896.127 (Official Build) (arm64) macOS
