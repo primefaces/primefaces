@@ -87,12 +87,8 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt">
-                        <f:facet name="filter">
-                            <p:inputText onkeyup="PF('customersTable').filter()" styleClass="ui-column-filter">
-                                <f:converter converterId="javax.faces.Integer" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
+                              converter="javax.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 
@@ -150,12 +146,8 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}">
-                        <f:facet name="filter">
-                            <p:inputText onkeyup="PF('customersTable2').filter()" styleClass="ui-column-filter">
-                                <f:converter converterId="javax.faces.Integer" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}"
+                              converter="javax.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
                 </p:dataTable>

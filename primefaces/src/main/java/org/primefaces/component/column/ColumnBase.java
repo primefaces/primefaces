@@ -23,7 +23,10 @@
  */
 package org.primefaces.component.column;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIColumn;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.menu.MenuColumn;
@@ -40,6 +43,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         ariaHeaderText,
         caseSensitiveSort,
         colspan,
+        converter,
         displayPriority,
         draggable,
         exportFooterValue,
@@ -78,6 +82,8 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         visible,
         width
     }
+
+    private Converter<?> converter;
 
     public ColumnBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -194,6 +200,33 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setColspan(int colspan) {
         getStateHelper().put(PropertyKeys.colspan, colspan);
+    }
+
+    public Object getConverter() {
+        if (converter != null) {
+            return converter;
+        }
+        return getStateHelper().eval(PropertyKeys.converter);
+    }
+
+    public Converter getConverterObject() {
+        return (Converter) getConverter();
+    }
+
+    public void setConverter(Object converter) {
+        clearInitialState();
+        if (converter == null) {
+            this.converter = null;
+        }
+        else if (converter instanceof Converter) {
+            this.converter = (Converter) converter;
+        }
+        else if (converter instanceof String) {
+            this.converter = FacesContext.getCurrentInstance().getApplication().createConverter((String) converter);
+        }
+        else {
+            throw new FacesException("Unsupported type " + converter.getClass());
+        }
     }
 
     @Override
@@ -448,4 +481,10 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        converter = null;
+        return super.saveState(context);
+    }
 }

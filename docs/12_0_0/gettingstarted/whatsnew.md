@@ -13,7 +13,8 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Added `lazyModel` attribute for fetching autocomplete-suggestions (instead of completeMethod).
   * Added Ajax load indicator (spinner) within the component while the component is querying.
 * BreadCrumb: added `seo` attribute for creating JSON Link Data for better SEO.
-* CommandButton:
+* Column: added `converter` attribute which is applied on filter values and default field cell values.
+* CommandButton
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it.
   * Added Ajax load indicator (spinner) within the button during Ajax requests triggered by it.
 * CommandLink
