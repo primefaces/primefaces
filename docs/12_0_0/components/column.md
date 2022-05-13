@@ -22,7 +22,7 @@ treetable and more.
 | ariaHeaderText | null | String | Label to read by screen readers, when not specified headerText is used.
 | caseSensitiveSort         | false              | Boolean          | Case sensitivity for sorting, insensitive by default.
 | colspan | 1 | Integer | Defines the number of columns the column spans.
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
+| converter | null | Converter/String | An EL expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 | displayPriority           | 0                  | Integer          | Defines the display priority, in which order the columns should be displayed. Lower values have more priority.
 | draggable | true | Boolean | Defines if column is draggable if draggableColumns is set. Default true.
 | exportable | true | Boolean | Defines if the column should be exported by dataexporter.

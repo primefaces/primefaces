@@ -45,6 +45,7 @@ import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.*;
+import org.primefaces.component.column.ColumnBase;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
@@ -136,15 +137,24 @@ public class ComponentUtils {
      * Finds appropriate converter for a given value holder
      *
      * @param context   FacesContext instance
-     * @param component ValueHolder instance to look converter for
+     * @param component Component instance to look up converter for
      * @return          Converter
      */
     public static Converter getConverter(FacesContext context, UIComponent component) {
+        Converter converter;
+
+        if (component instanceof ColumnBase) {
+            converter = toConverter(context, ((ColumnBase) component).getConverter());
+            if (converter != null) {
+                return converter;
+            }
+        }
+
         if (!(component instanceof ValueHolder)) {
             return null;
         }
 
-        Converter converter = ((ValueHolder) component).getConverter();
+        converter = ((ValueHolder) component).getConverter();
         if (converter != null) {
             return converter;
         }
@@ -174,7 +184,10 @@ public class ComponentUtils {
 
     public static String getConvertedAsString(FacesContext context, UIComponent component, Object value) {
         if (value != null) {
-            Converter converter = getConverter(context, value.getClass());
+            Converter converter = getConverter(context, component);
+            if (converter == null) {
+                converter = getConverter(context, value.getClass());
+            }
             if (converter != null) {
                 return converter.getAsString(context, component, value);
             }
@@ -192,6 +205,19 @@ public class ComponentUtils {
         }
 
         return context.getApplication().createConverter(forClass);
+    }
+
+    public static Converter toConverter(FacesContext context, Object object) {
+        if (object == null) {
+            return null;
+        }
+        if (object instanceof Converter) {
+            return (Converter) object;
+        }
+        if (object instanceof String) {
+            return context.getApplication().createConverter((String) object);
+        }
+        throw new FacesException("Unsupported type " + object.getClass());
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
