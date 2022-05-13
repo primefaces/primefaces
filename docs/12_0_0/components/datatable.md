@@ -333,8 +333,8 @@ necessary if the value of the filter facet is not defined.
 
 Please make sure that the filter is using the **same type as the column field** if you are using comparable
 filter match modes (like greater than). For example, if the column field is an integer, and you would like to
-add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
-(see example below).
+add a greater than filter, make sure to convert the filter to integer as well. Do so by using the column's `converter`
+attribute or adding a `f:converter` to the filter input (see example below).
 
 In case you want to filter `LocalDateTime` or `Date` values, use the converter tag
 `<f:convertDateTime type="localDateTime"/>` or `<f:convertDateTime type="date"/>` as child of the filtering `DatePicker`
