@@ -45,7 +45,6 @@ import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.*;
-import org.primefaces.component.column.ColumnBase;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
@@ -137,24 +136,15 @@ public class ComponentUtils {
      * Finds appropriate converter for a given value holder
      *
      * @param context   FacesContext instance
-     * @param component Component instance to look up converter for
+     * @param component ValueHolder instance to look up converter for
      * @return          Converter
      */
     public static Converter getConverter(FacesContext context, UIComponent component) {
-        Converter converter;
-
-        if (component instanceof ColumnBase) {
-            converter = toConverter(context, ((ColumnBase) component).getConverter());
-            if (converter != null) {
-                return converter;
-            }
-        }
-
         if (!(component instanceof ValueHolder)) {
             return null;
         }
 
-        converter = ((ValueHolder) component).getConverter();
+        Converter converter = ((ValueHolder) component).getConverter();
         if (converter != null) {
             return converter;
         }
@@ -169,27 +159,34 @@ public class ComponentUtils {
     }
 
     public static Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
-        String submittedValue = Objects.toString(value, null);
-        if (LangUtils.isBlank(submittedValue)) {
-            submittedValue = null;
-        }
+        return getConvertedValue(context, component, getConverter(context, component), value);
+    }
 
-        Converter<?> converter = getConverter(context, component);
-        if (converter != null) {
-            return converter.getAsObject(context, component, submittedValue);
+    public static Object getConvertedValue(FacesContext context, UIComponent component, Object converter, Object value) {
+        Converter converterObject = toConverter(context, converter);
+        if (converterObject != null) {
+            String submittedValue = Objects.toString(value, null);
+            if (LangUtils.isBlank(submittedValue)) {
+                submittedValue = null;
+            }
+            return converterObject.getAsObject(context, component, submittedValue);
         }
 
         return value;
     }
 
     public static String getConvertedAsString(FacesContext context, UIComponent component, Object value) {
+        return getConvertedAsString(context, component, null, value);
+    }
+
+    public static String getConvertedAsString(FacesContext context, UIComponent component, Object converter, Object value) {
         if (value != null) {
-            Converter converter = getConverter(context, component);
-            if (converter == null) {
-                converter = getConverter(context, value.getClass());
+            Converter converterObject = toConverter(context, converter);
+            if (converterObject == null) {
+                converterObject = getConverter(context, value.getClass());
             }
-            if (converter != null) {
-                return converter.getAsString(context, component, value);
+            if (converterObject != null) {
+                return converterObject.getAsString(context, component, value);
             }
         }
 

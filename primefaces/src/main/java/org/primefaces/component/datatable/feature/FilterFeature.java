@@ -195,8 +195,10 @@ public class FilterFeature implements DataTableFeature {
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
                 if (filterValue instanceof String && column instanceof ColumnBase) {
+                    ColumnBase columnBase = (ColumnBase) column;
                     try {
-                        filterValue = ComponentUtils.getConvertedValue(context, (ColumnBase) column, filterValue);
+                        filterValue = ComponentUtils.getConvertedValue(
+                                context, columnBase, columnBase.getConverter(), filterValue);
                     }
                     catch (Exception ex) {
                         filterValue = null;
