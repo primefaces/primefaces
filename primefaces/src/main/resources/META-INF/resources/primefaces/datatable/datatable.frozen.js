@@ -51,6 +51,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.scrollBodyTable = this.cfg.virtualScroll ? this.scrollBody.children('div').children('table') : this.scrollBody.children('table');
         this.scrollThead = this.thead.eq(1);
         this.scrollTbody = this.tbody.eq(1);
+        this.scrollTfoot = this.tfoot.eq(1);
         this.scrollFooterTable = this.scrollFooterBox.children('table');
         this.scrollFooterCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
         this.frozenHeader = this.frozenContainer.children('.ui-datatable-scrollable-header');
@@ -58,6 +59,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.frozenBodyTable = this.cfg.virtualScroll ? this.frozenBody.children('div').children('table') : this.frozenBody.children('table');
         this.frozenThead = this.thead.eq(0);
         this.frozenTbody = this.tbody.eq(0);
+        this.frozenTfoot = this.tfoot.eq(0);
         this.frozenFooter = this.frozenContainer.children('.ui-datatable-scrollable-footer');
         this.frozenFooterTable = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table');
         this.frozenFooterCols = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
@@ -105,6 +107,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.cloneHead();
+        this.fixRowHeights();
 
         if(this.cfg.liveScroll) {
             this.clearScrollState();
@@ -179,6 +182,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
+			$this.fixRowHeights();
             if ($this.percentageScrollHeight) {
                 $this.adjustScrollHeight();
             }
@@ -875,5 +879,55 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         scrollRows.children('td.ui-duplicated-column').remove();
         frozenRows.children('td.ui-duplicated-column').remove();
-    }
+    },
+
+    /**
+     * Adjusts the height of the body and foot rows to fit the current settings.
+     */
+    fixRowHeights = function() {
+		// body rows
+		this._fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
+		// foot rows
+		var frozenFootRows = this.frozenTfoot.children();
+		if (frozenFootRows.length > 0) {
+			this._fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
+			var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
+			if (scrollBarHeight > 0) {
+				var browser = PrimeFaces.env.browser;
+	            if (browser.webkit === true || browser.mozilla === true) {
+	                this.frozenBody.append('<div style="height:' + scrollBarHeight + 'px"></div>');
+	            } else {
+	                this.frozenBodyTable.css('margin-bottom', scrollBarHeight);
+	            }
+			}
+		}
+	},
+
+	/**
+     * Adjusts the height of the given rows to fit the current settings.
+     * @protected
+     * @param {JQuery} scrollRows The scrollable rows to adjust.
+     * @param {JQuery} frozenRows The frozen rows to adjust.
+     */
+	_fixRowHeights = function(scrollRows, frozenRows) {
+        for (i = 0; i < frozenRows.length; i++) {
+            var scrollableRow = scrollRows.eq(i);
+            var frozenRow = frozenRows.eq(i);
+            
+            scrollableRow.css("height", "");
+            frozenRow.css("height", "");
+            
+            var scrollableRowHeight = scrollableRow.height();
+            var frozenRowHeight = frozenRow.height();
+            
+            if (scrollableRowHeight == frozenRowHeight) {
+				continue;
+			}
+			if (scrollableRowHeight > frozenRowHeight) {
+				frozenRow.css("height", scrollableRowHeight);
+			} else {
+				scrollableRow.css("height", frozenRowHeight);
+			}
+        }
+	}
 });
