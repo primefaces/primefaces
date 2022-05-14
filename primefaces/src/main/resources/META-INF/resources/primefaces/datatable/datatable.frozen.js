@@ -884,7 +884,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     /**
      * Adjusts the height of the body and foot rows to fit the current settings.
      */
-    fixRowHeights = function() {
+    fixRowHeights: function() {
 		// body rows
 		this._fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
 		// foot rows
@@ -909,7 +909,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} scrollRows The scrollable rows to adjust.
      * @param {JQuery} frozenRows The frozen rows to adjust.
      */
-	_fixRowHeights = function(scrollRows, frozenRows) {
+	_fixRowHeights: function(scrollRows, frozenRows) {
         for (i = 0; i < frozenRows.length; i++) {
             var scrollableRow = scrollRows.eq(i);
             var frozenRow = frozenRows.eq(i);
