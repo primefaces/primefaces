@@ -370,8 +370,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.postUpdateData();
+        this.fixRowHeights();
     },
-
+    
     /**
      * Clones the given row and returns it
      * @param {JQuery} original DOM element of the original row.
@@ -887,11 +888,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * Adjusts the height of the body and foot rows to fit the current settings.
      */
     fixRowHeights: function() {
-		// head rows
 		this._fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
-		// body rows
 		this._fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
-		// foot rows
 		var frozenFootRows = this.frozenTfoot.children();
 		if (frozenFootRows.length > 0) {
 			this._fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
@@ -914,24 +912,26 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} frozenRows The frozen rows to adjust.
      */
 	_fixRowHeights: function(scrollRows, frozenRows) {
-        for (i = 0; i < frozenRows.length; i++) {
-            var scrollableRow = scrollRows.eq(i);
-            var frozenRow = frozenRows.eq(i);
+		frozenRows.each(function(index) {
+			var frozenRow = $(this);
+			var scrollRow = scrollRows.eq(index);
             
-            scrollableRow.css("height", "");
-            frozenRow.css("height", "");
+            frozenRow.css('height', '');
+            scrollRow.css('height', '');
             
-            var scrollableRowHeight = scrollableRow.height();
-            var frozenRowHeight = frozenRow.height();
+            var scrollRowHeight = scrollRow.innerHeight();
+            var frozenRowHeight = frozenRow.innerHeight();
             
-            if (scrollableRowHeight == frozenRowHeight) {
-				continue;
+            if (scrollRowHeight == frozenRowHeight) {
+				return;
 			}
-			if (scrollableRowHeight > frozenRowHeight) {
-				frozenRow.css("height", scrollableRowHeight);
-			} else {
-				scrollableRow.css("height", frozenRowHeight);
-			}
-        }
+			var height = scrollRowHeight > frozenRowHeight ? scrollRowHeight : frozenRowHeight;
+			// compensation for decimal fractions
+			height += 1;
+			
+            frozenRow.innerHeight(height);
+            scrollRow.innerHeight(height);
+		});
 	}
+	
 });
