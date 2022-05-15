@@ -13,6 +13,7 @@
  * @prop {JQuery} frozenLayout The DOM element for the frozen layout container.
  * @prop {JQuery} frozenTbody The DOM element for the header TBODY.
  * @prop {JQuery} frozenTheadClone The DOM element for the clone of the frozen THEAD.
+ * @prop {JQuery} frozenTfoot The DOM element for the header TFOOT.
  * @prop {JQuery} scrollBodyTable The DOM element for the TABLE of the scrollable body.
  * @prop {JQuery} scrollContainer The DOM element for the container of the scrollable body.
  * @prop {undefined} scrollColgroup Always `undefined` and not used.
@@ -23,6 +24,7 @@
  * @prop {JQuery} scrollLayout The DOM element for the scrollable layout container.
  * @prop {JQuery} scrollThead The DOM element for the scrollable THEAD.
  * @prop {JQuery} scrollTheadClone The DOM element for the clone of the scrollable THEAD.
+ * @prop {JQuery} scrollTfoot The DOM element for the scrollable TFOOT.
  *
  * @interface {PrimeFaces.widget.FrozenDataTableCfg} cfg The configuration for the {@link  FrozenDataTable| FrozenDataTable widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
