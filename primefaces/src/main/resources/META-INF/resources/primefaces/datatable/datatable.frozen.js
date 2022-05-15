@@ -887,6 +887,8 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * Adjusts the height of the body and foot rows to fit the current settings.
      */
     fixRowHeights: function() {
+		// head rows
+		this._fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
 		// body rows
 		this._fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
 		// foot rows
