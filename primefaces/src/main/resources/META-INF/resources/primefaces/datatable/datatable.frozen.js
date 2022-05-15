@@ -184,13 +184,18 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
-			$this.fixRowHeights();
-            if ($this.percentageScrollHeight) {
-                $this.adjustScrollHeight();
+			if ($this.resizeTimeout) {
+                clearTimeout($this.resizeTimeout);
             }
-            if ($this.percentageScrollWidth) {
-                $this.adjustScrollWidth();
-            }
+		    $this.resizeTimeout = setTimeout(function() {
+				$this.fixRowHeights();
+				if ($this.percentageScrollHeight) {
+                	$this.adjustScrollHeight();
+	            }
+	            if ($this.percentageScrollWidth) {
+	                $this.adjustScrollWidth();
+	            }
+			}, 150);
         });
     },
 
