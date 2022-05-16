@@ -927,7 +927,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             var scrollRowHeight = scrollRow.innerHeight();
             var frozenRowHeight = frozenRow.innerHeight();
 
-            if (scrollRowHeight == frozenRowHeight) {
+            if (scrollRowHeight === frozenRowHeight) {
                 return;
             }
             var height = scrollRowHeight > frozenRowHeight ? scrollRowHeight : frozenRowHeight;
