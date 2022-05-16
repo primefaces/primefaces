@@ -893,50 +893,50 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * Adjusts the height of the body and foot rows to fit the current settings.
      */
     fixRowHeights: function() {
-		this._fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
-		this._fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
-		var frozenFootRows = this.frozenTfoot.children();
-		if (frozenFootRows.length > 0) {
-			this._fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
-			var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
-			if (scrollBarHeight > 0) {
-				var browser = PrimeFaces.env.browser;
-	            if (browser.webkit === true || browser.mozilla === true) {
-	                this.frozenBody.append('<div style="height:' + scrollBarHeight + 'px"></div>');
-	            } else {
-	                this.frozenBodyTable.css('margin-bottom', scrollBarHeight);
-	            }
-			}
-		}
-	},
+        this._fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
+        this._fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
+        var frozenFootRows = this.frozenTfoot.children();
+        if (frozenFootRows.length > 0) {
+            this._fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
+            var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
+            if (scrollBarHeight > 0) {
+                var browser = PrimeFaces.env.browser;
+                if (browser.webkit === true || browser.mozilla === true) {
+                    this.frozenBody.append('<div style="height:' + scrollBarHeight + 'px"></div>');
+                } else {
+                    this.frozenBodyTable.css('margin-bottom', scrollBarHeight);
+                }
+            }
+        }
+    },
 
-	/**
+    /**
      * Adjusts the height of the given rows to fit the current settings.
      * @protected
      * @param {JQuery} scrollRows The scrollable rows to adjust.
      * @param {JQuery} frozenRows The frozen rows to adjust.
      */
-	_fixRowHeights: function(scrollRows, frozenRows) {
-		frozenRows.each(function(index) {
-			var frozenRow = $(this);
-			var scrollRow = scrollRows.eq(index);
-            
+    _fixRowHeights: function(scrollRows, frozenRows) {
+        frozenRows.each(function(index) {
+            var frozenRow = $(this);
+            var scrollRow = scrollRows.eq(index);
+
             frozenRow.css('height', '');
             scrollRow.css('height', '');
-            
+
             var scrollRowHeight = scrollRow.innerHeight();
             var frozenRowHeight = frozenRow.innerHeight();
-            
+
             if (scrollRowHeight == frozenRowHeight) {
-				return;
-			}
-			var height = scrollRowHeight > frozenRowHeight ? scrollRowHeight : frozenRowHeight;
-			// compensation for decimal fractions
-			height += 1;
-			
+                return;
+            }
+            var height = scrollRowHeight > frozenRowHeight ? scrollRowHeight : frozenRowHeight;
+            // compensation for decimal fractions
+            height += 1;
+
             frozenRow.innerHeight(height);
             scrollRow.innerHeight(height);
-		});
-	}
+        });
+    }
 	
 });
