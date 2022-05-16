@@ -109,7 +109,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.cloneHead();
-        this.fixRowHeights();
+        this.fixRowHeightsAll();
 
         if(this.cfg.liveScroll) {
             this.clearScrollState();
@@ -188,7 +188,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 clearTimeout($this.resizeTimeout);
             }
             $this.resizeTimeout = setTimeout(function() {
-                $this.fixRowHeights();
+                $this.fixRowHeightsAll();
                 if ($this.percentageScrollHeight) {
                     $this.adjustScrollHeight();
                 }
@@ -375,7 +375,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.postUpdateData();
-        this.fixRowHeights();
+        this.fixRowHeightsAll();
     },
     
     /**
@@ -890,14 +890,14 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     /**
-     * Adjusts the height of the body and foot rows to fit the current settings.
+     * Adjusts the height of all rows to fit the current settings.
      */
-    fixRowHeights: function() {
-        this._fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
-        this._fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
+    fixRowHeightsAll: function() {
+        this.fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
+        this.fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
         var frozenFootRows = this.frozenTfoot.children();
         if (frozenFootRows.length > 0) {
-            this._fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
+            this.fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
             var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
             if (scrollBarHeight > 0) {
                 var browser = PrimeFaces.env.browser;
@@ -916,7 +916,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
      * @param {JQuery} scrollRows The scrollable rows to adjust.
      * @param {JQuery} frozenRows The frozen rows to adjust.
      */
-    _fixRowHeights: function(scrollRows, frozenRows) {
+    fixRowHeights: function(scrollRows, frozenRows) {
         frozenRows.each(function(index) {
             var frozenRow = $(this);
             var scrollRow = scrollRows.eq(index);
