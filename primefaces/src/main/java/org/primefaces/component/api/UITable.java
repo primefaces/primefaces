@@ -37,6 +37,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.column.ColumnBase;
 
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -541,7 +542,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
         Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
         UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
-        return ComponentUtils.getConvertedAsString(context, component, value);
+        Object converter = column instanceof ColumnBase ? ((ColumnBase) column).getConverter() : null;
+        return ComponentUtils.getConvertedAsString(context, component, converter, value);
     }
 
     default boolean isFilteringCurrentlyActive() {

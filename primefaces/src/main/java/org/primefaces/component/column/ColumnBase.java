@@ -40,6 +40,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         ariaHeaderText,
         caseSensitiveSort,
         colspan,
+        converter,
         displayPriority,
         draggable,
         exportFooterValue,
@@ -194,6 +195,14 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setColspan(int colspan) {
         getStateHelper().put(PropertyKeys.colspan, colspan);
+    }
+
+    public Object getConverter() {
+        return getStateHelper().eval(PropertyKeys.converter, null);
+    }
+
+    public void setConverter(Object converter) {
+        getStateHelper().put(PropertyKeys.converter, converter);
     }
 
     @Override

@@ -39,6 +39,7 @@ import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.primefaces.component.column.ColumnBase;
 import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
@@ -193,6 +194,16 @@ public class FilterFeature implements DataTableFeature {
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
+                if (filterValue instanceof String && column instanceof ColumnBase) {
+                    ColumnBase columnBase = (ColumnBase) column;
+                    try {
+                        filterValue = ComponentUtils.getConvertedValue(
+                                context, columnBase, columnBase.getConverter(), filterValue);
+                    }
+                    catch (Exception ex) {
+                        filterValue = null;
+                    }
+                }
 
                 localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
                 return localMatch.get();

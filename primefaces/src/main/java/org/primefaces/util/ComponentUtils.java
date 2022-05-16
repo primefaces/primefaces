@@ -136,7 +136,7 @@ public class ComponentUtils {
      * Finds appropriate converter for a given value holder
      *
      * @param context   FacesContext instance
-     * @param component ValueHolder instance to look converter for
+     * @param component ValueHolder instance to look up converter for
      * @return          Converter
      */
     public static Converter getConverter(FacesContext context, UIComponent component) {
@@ -159,24 +159,34 @@ public class ComponentUtils {
     }
 
     public static Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
-        String submittedValue = Objects.toString(value, null);
-        if (LangUtils.isBlank(submittedValue)) {
-            submittedValue = null;
-        }
+        return getConvertedValue(context, component, getConverter(context, component), value);
+    }
 
-        Converter<?> converter = getConverter(context, component);
-        if (converter != null) {
-            return converter.getAsObject(context, component, submittedValue);
+    public static Object getConvertedValue(FacesContext context, UIComponent component, Object converter, Object value) {
+        Converter converterObject = toConverter(context, converter);
+        if (converterObject != null) {
+            String submittedValue = Objects.toString(value, null);
+            if (LangUtils.isBlank(submittedValue)) {
+                submittedValue = null;
+            }
+            return converterObject.getAsObject(context, component, submittedValue);
         }
 
         return value;
     }
 
     public static String getConvertedAsString(FacesContext context, UIComponent component, Object value) {
+        return getConvertedAsString(context, component, null, value);
+    }
+
+    public static String getConvertedAsString(FacesContext context, UIComponent component, Object converter, Object value) {
         if (value != null) {
-            Converter converter = getConverter(context, value.getClass());
-            if (converter != null) {
-                return converter.getAsString(context, component, value);
+            Converter converterObject = toConverter(context, converter);
+            if (converterObject == null) {
+                converterObject = getConverter(context, value.getClass());
+            }
+            if (converterObject != null) {
+                return converterObject.getAsString(context, component, value);
             }
         }
 
@@ -192,6 +202,19 @@ public class ComponentUtils {
         }
 
         return context.getApplication().createConverter(forClass);
+    }
+
+    public static Converter toConverter(FacesContext context, Object object) {
+        if (object == null) {
+            return null;
+        }
+        if (object instanceof Converter) {
+            return (Converter) object;
+        }
+        if (object instanceof String) {
+            return context.getApplication().createConverter((String) object);
+        }
+        throw new FacesException("Unsupported type " + object.getClass());
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {
