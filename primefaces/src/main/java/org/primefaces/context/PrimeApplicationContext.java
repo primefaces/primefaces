@@ -161,11 +161,17 @@ public class PrimeApplicationContext {
     private void resolveFileTypeDetector() {
         ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
 
+        // collect all first to avoid concurrency issues #8797
+        List<FileTypeDetector> detectors = new ArrayList<>();
+        for (FileTypeDetector detector : loader) {
+            detectors.add(detector);
+        }
+
         fileTypeDetector = new FileTypeDetector() {
 
             @Override
             public String probeContentType(Path path) throws IOException {
-                for (FileTypeDetector detector: loader) {
+                for (FileTypeDetector detector : detectors) {
                     String result = detector.probeContentType(path);
                     if (result != null) {
                         return result;
