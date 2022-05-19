@@ -129,7 +129,7 @@ public class SelectionFeature implements DataTableFeature {
         }
 
         if (rowKeys.isEmpty()) {
-            setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());
+            setSelection(context, table, false, new ArrayList<>(), new HashSet<>());
         }
         else {
             String rowKey = rowKeys.iterator().next();
@@ -150,14 +150,14 @@ public class SelectionFeature implements DataTableFeature {
                 setSelection(context, table, false, selectionTmp, rowKeysTmp);
             }
             else {
-                setSelection(context, table, false, Collections.emptyList(), Collections.emptySet());
+                setSelection(context, table, false, new ArrayList<>(), new HashSet<>());
             }
         }
     }
 
     protected void decodeMultipleSelection(FacesContext context, DataTable table, Set<String> rowKeys) {
         if (rowKeys.isEmpty()) {
-            setSelection(context, table, true, Collections.emptyList(), Collections.emptySet());
+            setSelection(context, table, true, new ArrayList<>(), new HashSet<>());
         }
         else {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -239,7 +239,7 @@ public class SelectionFeature implements DataTableFeature {
             if (multiple) {
                 selection = isArray
                         ? Array.newInstance(clazz.getComponentType(), 0)
-                        : Collections.emptyList();
+                        : new ArrayList<>();
             }
             else {
                 selection = null;
