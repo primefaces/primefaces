@@ -371,7 +371,7 @@ that selection must be enabled in tree component for context menu integration.
 ```
 
 ## Skinning
-Tree resides in a container element which _style_ and _styleClass_ options apply. Following is the list of
+Tree resides in a container element which `style` and `styleClass` options apply. Following is the list of
 structural style classes;
 
 | Class | Applies |
@@ -388,3 +388,4 @@ structural style classes;
 
 As skinning style classes are global, see the main theming section for more information.
 
+To remove border and padding add `ui-noborder` style class to the component using the `styleClass` attribute.
