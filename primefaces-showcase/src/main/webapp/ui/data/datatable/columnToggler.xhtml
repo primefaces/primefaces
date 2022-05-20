@@ -17,7 +17,21 @@
     <ui:param name="widgetLink" value="DataTable-1"/>
 
     <ui:define name="implementation">
+    <h:form>
         <div class="card">
+        <div class="flex justify-content-between">
+           <div>
+           </div>
+           <div>
+              <p:commandButton value="XLSX" styleClass="mr-2 mb-2" >
+                  <p:dataExporter type="xlsxstream" target="products" fileName="visible" visibleOnly="true"/>
+              </p:commandButton>
+
+              <p:commandButton value="PDF" styleClass="mr-2 mb-2" >
+                  <p:dataExporter type="pdf" target="products" fileName="visible" visibleOnly="true"/>
+              </p:commandButton>
+           </div>
+        </div>
             <p:dataTable id="products" var="product" value="#{dtBasicView.products}">
                 <f:facet name="header">
                     <div class="flex justify-content-between align-items-center">
@@ -25,7 +39,9 @@
 
                         <div>
                             <p:commandButton id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
-                            <p:columnToggler datasource="products" trigger="toggler"/>
+                            <p:columnToggler datasource="products" trigger="toggler">
+                                <p:ajax />
+                            </p:columnToggler>
                         </div>
                     </div>
                 </f:facet>
@@ -42,7 +58,7 @@
                     <h:outputText value="#{product.category}" />
                 </p:column>
 
-                <p:column headerText="Quantity">
+                <p:column headerText="Quantity" visible="false">
                     <h:outputText value="#{product.quantity}" />
                 </p:column>
 
@@ -53,6 +69,7 @@
                 </p:column>
             </p:dataTable>
         </div>
+        </h:form>
     </ui:define>
 
 </ui:composition>
