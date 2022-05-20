@@ -31,8 +31,9 @@
             </div>
 
             <div class="card">
-                <h5>Ajax</h5>
-                <p:tree value="#{treeBasicView.root}" var="node" dynamic="true" orientation="horizontal">
+                <h5>Ajax and No Border</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" dynamic="true" orientation="horizontal"
+                         styleClass="ui-noborder">
                     <p:treeNode>
                         <h:outputText value="#{node}"/>
                     </p:treeNode>
