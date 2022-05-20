@@ -223,7 +223,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * Aligns this menu as specified in its widget configuration (property `pos`).
      */
     align: function() {
-        this.jq.css({left:'', top:'', 'transform-origin': 'center top'}).position(this.cfg.pos);
+        this.jq.css({left:'0', top:'0', 'transform-origin': 'center top'}).position(this.cfg.pos);
     }
 });
 
