@@ -25,11 +25,15 @@ package org.primefaces.component.lightbox;
 
 import javax.faces.application.ResourceDependency;
 
+/**
+ * @deprecated please use Galleria component
+ */
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
+@Deprecated
 public class LightBox extends LightBoxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.LightBox";
