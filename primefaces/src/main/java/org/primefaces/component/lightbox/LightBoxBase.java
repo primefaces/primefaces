@@ -27,6 +27,10 @@ import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
 
+/**
+ * @deprecated please use Galleria component
+ */
+@Deprecated
 public abstract class LightBoxBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

@@ -33,6 +33,10 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
+/**
+ * @deprecated please use Galleria component
+ */
+@Deprecated
 public class LightBoxRenderer extends CoreRenderer {
 
     @Override
