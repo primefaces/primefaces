@@ -554,7 +554,6 @@
                     <resourcesSets>
                         <resourcesSet>
                             <includes>
-                                <include>charts/**</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
                                 <include>contentflow/**</include>
