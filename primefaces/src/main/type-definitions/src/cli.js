@@ -43,9 +43,9 @@ const DefaultCliArgs = {
  * @return {Promise<Set<string>>} List of files to be excluded from the type
  * declaration file. Mainly third-party libraries we do not want to document.
  */
-async function readBlacklist() {
-    const blacklist = await readFileUtf8(Paths.BlacklistPath);
-    const lines = splitLines(blacklist, {
+async function readBlocklist() {
+    const blocklist = await readFileUtf8(Paths.BlocklistPath);
+    const lines = splitLines(blocklist, {
         excludeEmptyLines: true,
         trimLines: true,
     });
@@ -66,7 +66,7 @@ async function readBlacklist() {
  * @return {AsyncIterable<Component>} List of widgets.
  */
 async function* listComponents(componentPath) {
-    const blacklist = await readBlacklist();
+    const blocklist = await readBlocklist();
     const componentDirs = await readDir(componentPath);
     for (const componentDir of componentDirs.filter(x => x.isDirectory())) {
         const componentFiles = await readDir(resolvePath(componentPath, componentDir.name));
@@ -80,7 +80,7 @@ async function* listComponents(componentPath) {
             files: componentFiles
                 .filter(x => x.isFile())
                 .filter(x => extname(x.name) === ".js")
-                .filter(x => !blacklist.has(`${componentDir.name}/${x.name}`))
+                .filter(x => !blocklist.has(`${componentDir.name}/${x.name}`))
                 .map(x => x.name),
         }
     }

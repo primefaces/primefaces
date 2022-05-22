@@ -47,7 +47,7 @@ script-src 'self' 'nonce-XYZ123456'
 
 ## Custom Policy
 We cannot know every Javascript usage on every PrimeFaces website. You may have custom code in your
-application that you need to allow other CSP directives such as `unsafe-inline` or whitelist a website
+application that you need to allow other CSP directives such as `unsafe-inline` or allowlist a website
 such as `https://www.google-analytics.com`.  By using the `primefaces.CSP_POLICY` context parameter you
 can override the default policy. NOTE: If you use anything custom the `script-src` must be the last 
 thing in CSP_POLICY because we add the NONCE on the end of this policy.
