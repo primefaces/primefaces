@@ -25,12 +25,13 @@ package org.primefaces.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.xmlbeans.impl.common.XMLChar;
 import org.owasp.encoder.Encode;
 
 /**
  * <p>Utility methods contained herein must be used strictly for the appropriate context, e.g. HTML, HTML attribute, JS string.</p>
- * <p>Method calls are delegated to safe and well-tried whitelisting encoders from owasp-java-encoding.</p>
+ * <p>Method calls are delegated to safe and well-tried allowlist encoders from owasp-java-encoding.</p>
  */
 public class EscapeUtils {
 
