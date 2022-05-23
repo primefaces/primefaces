@@ -214,7 +214,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 if ($this.ajaxCount > 1) {
                     return;
                 }
-                $this.button.toggleClass('ui-state-loading');
+                $this.button.addClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
                 }
@@ -232,7 +232,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                 if ($this.ajaxCount > 0) {
                     return;
                 }
-                $this.button.toggleClass('ui-state-loading');
+                $this.button.removeClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.enable();
                 }

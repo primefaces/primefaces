@@ -55,7 +55,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                    $this.jq.toggleClass('ui-state-loading');
+                    $this.jq.addClass('ui-state-loading');
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
@@ -64,7 +64,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                    $this.jq.toggleClass('ui-state-loading');
+                    $this.jq.removeClass('ui-state-loading');
                     $this.enable();
                 }
             });
