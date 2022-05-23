@@ -144,7 +144,7 @@
          * @param {string} [target] The target attribute to use on the form during the submit process.
          */
         submit : function(formId, target) {
-            var form = PrimeFaces.getForm(parent);
+            var form = PrimeFaces.getForm(formId);
             var prevTarget;
 
             if (target) {
