@@ -56,7 +56,7 @@ const Names = {
 
 const Paths = {
     AggregateTestDir: resolve(join(__dirname, "..", "specs", "aggregate")),
-    BlacklistPath: resolve(join(__dirname, "..", "blacklist.txt")),
+    BlocklistPath: resolve(join(__dirname, "..", "blocklist.txt")),
     ComponentsTestDir: resolve(join(__dirname, "..", "specs", "components")),
     ComponentsMainDir: resolve(join(__dirname, "..", "..", "resources", "META-INF", "resources", "primefaces")),
     CoreJsfDeclarationFile: resolve(join(__dirname, "..", "core-jsf.d.ts")),

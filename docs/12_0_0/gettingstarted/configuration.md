@@ -17,7 +17,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | CLIENT_SIDE_LOCALISATION | false | Adds `"locales/locale-" + locale.getLanguage() + ".js"` automatically for your locale. |
 | COOKIES_SAME_SITE |  | Defines the sameSite value for all cookies, which will be added by PrimeFaces. Currently this is only supported for cookies added on the clientside as Servlet API doesn't support it yet. |
 | CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks. Values `true`, `false` and `reportOnly` |
-| CSP_POLICY | null | Custom CSP Policy that allows you to whitelist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
+| CSP_POLICY | null | Custom CSP Policy that allows you to allowlist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
 | CSP_REPORT_ONLY_POLICY | null | When CSP is `reportOnly` this can be a directive for report only back to a URI endpoint like `report-uri /csp-violation-report-endpoint/`. |
 | DIR | ltr | Defines orientation; 'ltr' or 'rtl' for right-to-left support. |
 | EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |
