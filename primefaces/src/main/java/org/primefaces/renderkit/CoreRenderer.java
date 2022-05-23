@@ -493,7 +493,15 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
                                          Map<String, List<String>> parameters, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
-        String formId = form.getClientId(context);
+
+        String submitId;
+        if (form == null) {
+            submitId = component.getClientId(context);
+        }
+        else {
+            submitId = form.getClientId(context);
+        }
+
         Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
@@ -514,7 +522,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //append params
         if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+            request.append("PrimeFaces.addSubmitParam('").append(submitId).append("',{");
 
             request.append(
                     params.entrySet().stream()
@@ -527,7 +535,7 @@ public abstract class CoreRenderer extends Renderer {
 
         if (submit) {
             Object target = component.getAttributes().get("target");
-            request.append(".submit('").append(formId).append("'");
+            request.append(".submit('").append(submitId).append("'");
 
             if (target != null) {
                 request.append(",'").append(target).append("'");

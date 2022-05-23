@@ -103,6 +103,22 @@
         },
 
         /**
+         * Gets the form by id or the closest form if the id is not a form itself.
+         * @param {string} id ID of the component to get the closest form.
+         * @return {JQuery} the form or NULL if no form found
+         */
+        getForm: function(id) {
+            var form = $(this.escapeClientId(id));
+            if (!form.is('form')) {
+                form = form.closest('form');
+            }
+            if (!form) {
+                PrimeFaces.error('Form element could not be found.');
+            }
+            return form;
+        },
+
+        /**
          * Adds hidden input elements to the given form. For each key-value pair, a new hidden input element is created
          * with the given value and the key used as the name.
          * @param {string} parent The ID of a FORM element.
@@ -110,7 +126,7 @@
          * @return {typeof PrimeFaces} This object for chaining.
          */
         addSubmitParam : function(parent, params) {
-            var form = $(this.escapeClientId(parent));
+            var form = PrimeFaces.getForm(parent);
 
             for(var key in params) {
                 form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"></input>");
@@ -128,7 +144,7 @@
          * @param {string} [target] The target attribute to use on the form during the submit process.
          */
         submit : function(formId, target) {
-            var form = $(this.escapeClientId(formId));
+            var form = PrimeFaces.getForm(parent);
             var prevTarget;
 
             if (target) {
