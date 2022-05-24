@@ -84,7 +84,6 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                 LOGGER.log(Level.FINE, "Menu '" + menuClientId
                             + "' should be inside a form or should reference a form via its form attribute."
                             + " We will try to find a fallback form on the client side.");
-                
             }
 
             String command;

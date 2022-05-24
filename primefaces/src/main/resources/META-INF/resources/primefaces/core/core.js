@@ -110,7 +110,7 @@
          * @return {JQuery} the form or NULL if no form found
          */
         getClosestForm: function(id) {
-            var form = $(this.escapeClientId(id));
+            var form = $(PrimeFaces.escapeClientId(id));
             if (!form.is('form')) {
                 form = form.closest('form');
             }
