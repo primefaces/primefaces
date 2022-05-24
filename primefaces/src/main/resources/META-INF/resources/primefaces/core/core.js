@@ -104,16 +104,18 @@
 
         /**
          * Gets the form by id or the closest form if the id is not a form itself.
-         * @param {string} id ID of the component to get the closest form.
+         * In AJAX we also have a fallback for the first form in DOM, this should not be used here.
+         *
+         * @param {string} id ID of the component to get the closest form or if its a form itself
          * @return {JQuery} the form or NULL if no form found
          */
-        getForm: function(id) {
+        getClosestForm: function(id) {
             var form = $(this.escapeClientId(id));
             if (!form.is('form')) {
                 form = form.closest('form');
             }
             if (!form) {
-                PrimeFaces.error('Form element could not be found.');
+                PrimeFaces.error('Form element could not be found for id: ' + id);
             }
             return form;
         },
@@ -126,7 +128,7 @@
          * @return {typeof PrimeFaces} This object for chaining.
          */
         addSubmitParam : function(parent, params) {
-            var form = PrimeFaces.getForm(parent);
+            var form = PrimeFaces.getClosestForm(parent);
 
             for(var key in params) {
                 form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"></input>");
@@ -144,7 +146,7 @@
          * @param {string} [target] The target attribute to use on the form during the submit process.
          */
         submit : function(formId, target) {
-            var form = PrimeFaces.getForm(formId);
+            var form = PrimeFaces.getClosestForm(formId);
             var prevTarget;
 
             if (target) {
