@@ -90,7 +90,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             DynamicContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
                 LOGGER.log(Level.WARNING,
-                        "No dynamic resource handler registered for: {0}. Do you miss a dependency?",
+                        "No dynamic resource handler registered for: [{0}]. Are you missing a dependency?",
                         new Object[]{handlerType});
                 super.handleResourceRequest(context);
             }
