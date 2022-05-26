@@ -7,12 +7,12 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Dependency | GroupId | ArtifactId | Version | Type | Description |
 | --- | --- | --- | --- | --- | --- |
 | JSF runtime | | |  2.0, 2.1, 2.2, 2.3, 3.0, 4.0 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
-| Libre OpenPDF | com.github.librepdf | openpdf | 1.3.26 | Optional | DataExporter (PDF) |
-| Apache POI | org.apache.poi | poi | 5.1.0 | Optional | DataExporter (Excel or XML) |
+| Libre OpenPDF | com.github.librepdf | openpdf | 1.3.28 | Optional | DataExporter (PDF) |
+| Apache POI | org.apache.poi | poi | 5.2.2 | Optional | DataExporter (Excel or XML) |
 | Rome | com.rometools | rome | 1.15.0 | Optional | FeedReader |
 | Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.4 | Optional | FileUpload |
 | barcode4j-light | net.sf.barcode4j | barcode4j-light | 2.1 | Optional | Barcode |
-| qrcodegen | io.nayuki | qrcodegen | 1.6.0 | Optional | QR Code support for Barcode |
+| qrcodegen | io.nayuki | qrcodegen | 1.8.0 | Optional | QR Code support for Barcode |
 | owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20211018.2 | Optional | TextEditor |
 
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
