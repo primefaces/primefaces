@@ -501,8 +501,8 @@
     </tag>
 
     <tag>
-        <description>Repeat is an alternative to the standard ui:repeat component, that fix the compatibility with Mojarra. There are no additonal features and
-            usage is same as ui:repeat.
+        <description>Repeat is an alternative to the standard ui:repeat component, that fix the compatibility with Mojarra. There are no additional features and
+            usage is same as ui:repeat. Do not use with Apache MyFaces. Upgrade to Mojarra 2.3.18, 3.0.3 or 4.0+ if possible.
         </description>
         <tag-name>repeat</tag-name>
         <component>
