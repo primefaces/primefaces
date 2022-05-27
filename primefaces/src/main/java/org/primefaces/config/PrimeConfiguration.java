@@ -55,6 +55,7 @@ public class PrimeConfiguration {
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
     private boolean csp;
+    private boolean policyProvided;
     private String cspPolicy;
     private String cspReportOnlyPolicy;
     private String[] exceptionTypesToIgnoreInLogging;
@@ -133,6 +134,10 @@ public class PrimeConfiguration {
             case "reportOnly":
                 csp = Boolean.TRUE;
                 cspReportOnlyPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_REPORT_ONLY_POLICY);
+                break;
+            case "policyProvided":
+                csp = Boolean.TRUE;
+                policyProvided = Boolean.TRUE;
                 break;
             default:
                 csp = Boolean.FALSE;
@@ -260,6 +265,10 @@ public class PrimeConfiguration {
 
     public boolean isCsp() {
         return csp;
+    }
+
+    public boolean isPolicyProvided() {
+        return policyProvided;
     }
 
     public String getCspPolicy() {
