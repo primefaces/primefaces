@@ -62,7 +62,7 @@ public class CspPhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (Boolean.FALSE.equals(enabled.get()) || Boolean.FALSE.equals(policyProvided.get())) {
+        if (Boolean.FALSE.equals(enabled.get()) || Boolean.TRUE.equals(policyProvided.get())) {
             return;
         }
 
