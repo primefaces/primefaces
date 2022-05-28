@@ -24,6 +24,8 @@
 package org.primefaces.component.commandbutton;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -40,6 +42,8 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class CommandButtonRenderer extends CoreRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(CommandButtonRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -150,7 +154,9 @@ public class CommandButtonRenderer extends CoreRenderer {
         else {
             UIForm form = ComponentTraversalUtils.closestForm(context, button);
             if (form == null) {
-                throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
+                LOGGER.log(Level.FINE, "CommandButton '" + clientId
+                            + "' should be inside a form or should reference a form via its form attribute."
+                            + " We will try to find a fallback form on the client side.");
             }
 
             request = buildNonAjaxRequest(context, button, form, null, false);
