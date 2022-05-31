@@ -42,10 +42,6 @@ Primefaces. Using `policyProvided` will make the code CSP complient while not se
     <param-name>primefaces.CSP</param-name>
     <param-value>policyProvided</param-value>
 </context-param>
-<context-param>
-    <param-name>primefaces.CSP_REPORT_ONLY_POLICY</param-name>
-    <param-value>report-uri /my-csp-reports</param-value>
-</context-param>
 ```
 
 ## Policy
