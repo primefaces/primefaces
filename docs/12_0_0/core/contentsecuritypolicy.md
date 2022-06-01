@@ -34,7 +34,7 @@ Browsers will report CSP violations to a user-defined HTTP endpoint using `repor
 </context-param>
 ```
 
-When using Primefaces in a component (like portlets for intance), the platform hosting the component might need to
+When using PrimeFaces in a component (like portlets for instance), the platform hosting the component might need to
 manage the CSP headers and nonce on scripts. For instance in a CMS where different kinds of components can be used
 and all need to have the same nonce. In these cases the option `policyProvided` can be used. This will make
 Primefaces CSP compliant, while not setting the CSP Header and add the nonce to javascripts.
