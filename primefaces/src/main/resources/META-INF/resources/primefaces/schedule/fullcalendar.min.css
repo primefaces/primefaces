@@ -1457,3 +1457,9 @@ A VERTICAL event
 body .fc a {
     color: inherit;
 }
+
+.ui-tooltip:not([role]) {
+    background: var(--surface-a, '#fff');
+    padding: 5px;
+    font-size: .85em;
+}
