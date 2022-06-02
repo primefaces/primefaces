@@ -512,7 +512,7 @@
                         return this.isDateEquals(this.value[0], dateMeta);
                 }
                 else {
-                    return (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear());
+                    return this.isDate(this.value) && this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear();
                 }
             }
 
