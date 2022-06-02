@@ -39,7 +39,7 @@ public class Download001Test extends AbstractPrimePageTest {
     public void testDownloadTextFile(Page page) {
 
         // Act
-        page.downloadTxt.click();
+        page.downloadTxt.clickUnguarded();
         // TODO Is there a way to assert download worked correctly?
     }
 
