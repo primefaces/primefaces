@@ -52,4 +52,10 @@ public abstract class CommandButton extends AbstractComponent {
 
         button.click();
     }
+
+    public void clickUnguarded() {
+        WebElement button = getRoot();
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+        button.click();
+    }
 }
