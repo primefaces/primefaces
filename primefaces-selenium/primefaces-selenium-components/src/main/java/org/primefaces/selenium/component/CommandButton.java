@@ -52,4 +52,13 @@ public abstract class CommandButton extends AbstractComponent {
 
         button.click();
     }
+
+    /**
+     * #8840 Some scenario's with ajax="false" like in a download you may not want to guard the click.
+     */
+    public void clickUnguarded() {
+        WebElement button = getRoot();
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+        button.click();
+    }
 }

@@ -52,4 +52,13 @@ public abstract class CommandLink extends Link {
 
         link.click();
     }
+
+    /**
+     * #8840 Some scenario's with ajax="false" like in a download you may not want to guard the click.
+     */
+    public void clickUnguarded() {
+        WebElement link = getRoot();
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        link.click();
+    }
 }
