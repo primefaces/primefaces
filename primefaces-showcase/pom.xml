@@ -17,7 +17,7 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <owb.version>2.0.26</owb.version>
+        <owb.version>2.0.27</owb.version>
         <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
         <mojarra.version>2.3.17</mojarra.version>
         <myfaces.version>2.3.9</myfaces.version>
