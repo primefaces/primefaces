@@ -1,7 +1,7 @@
 name: Defect report
 description: Create a report to help us improve PrimeFaces
 title: "Component: Title"
-labels: "defect,:bangbang needs triage"
+labels: "defect,:bangbang: needs-triage"
 body:
   - type: markdown
     attributes:
