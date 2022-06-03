@@ -1,7 +1,7 @@
 name: Feature request
 description: Suggest an idea for PrimeFaces
 title: "Component: Title"
-labels: "new feature"
+labels: "new feature,:bangbang: needs-triage"
 body:
   - type: textarea
     id: description
