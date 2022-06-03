@@ -137,6 +137,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
 
+        // float label
+        this.bindFloatLabel();
+
         // see #7602
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.focusInput.attr('readonly', true);
@@ -330,9 +333,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         //key bindings
         this.bindKeyEvents();
-        
-        //float label
-        this.bindFloatLabel();
 
         //filter
         if(this.cfg.filter) {
