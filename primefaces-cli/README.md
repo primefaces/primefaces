@@ -36,7 +36,7 @@ This BETA has many fixes found while converting a PrimeNG project using the CLI.
 To read about the changes: https://github.com/primefaces/primefaces/issues/8314
 
 
-## PrimeFlex 2 --> PrimeFlex 3 migration
+## PrimeFlex 2 → PrimeFlex 3 migration
 
 This tool replaces PrimeFlex 2 - CSS - classes in your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.
 
@@ -56,7 +56,7 @@ Look at https://www.primefaces.org/primeflex/ for additional information.
 
 You manually have to remove PrimeFlex 2 - CSS - file from your project and add PrimeFlex 3 - CSS - file.
 
-## Grid CSS --> PrimeFlex 2 migration
+## Grid CSS → PrimeFlex 2 migration
 
 This tool replaces legacy Grid CSS classes (e.g. ui-g, see https://www.primefaces.org/showcase-v8/ui/panel/grid.xhtml) with PrimeFlex 2 - CSS - classes (e.g. p-grid, see https://github.com/primefaces/primeflex/tree/2.0.0).
 
