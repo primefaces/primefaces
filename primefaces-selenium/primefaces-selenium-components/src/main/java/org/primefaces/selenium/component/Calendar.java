@@ -125,25 +125,24 @@ public abstract class Calendar extends AbstractInputComponent {
         else {
             String formattedDate = millisAsFormattedDate(millis);
             // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
-            WebElement input = getInput();
 
             // select everything
             selectAllText();
 
             // overwrite value
             if (isViewChangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(formattedDate);
+                PrimeSelenium.guardAjax(getInput()).sendKeys(formattedDate);
             }
             else {
-                input.sendKeys(formattedDate);
+                getInput().sendKeys(formattedDate);
             }
 
             // force change event
             if (isOnchangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
+                PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
             }
             else {
-                input.sendKeys(Keys.TAB);
+                getInput().sendKeys(Keys.TAB);
             }
         }
     }
