@@ -107,6 +107,10 @@ public class AutoCompleteView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Empty message selected"));
     }
 
+    public void onMoreTextSelect() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("More text selected"));
+    }
+
     public String getTxt1() {
         return txt1;
     }
