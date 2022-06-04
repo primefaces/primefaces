@@ -14,7 +14,7 @@
 			<h:outputText value="Date:"/>
 			<p:calendar id="calendar" yearRange="c-5:c+5" showOn="button" navigator="true" value="#{updateForm001.date}">
 			  <p:ajax event="dateSelect" process="@this" update="@form" listener="#{updateForm001.dateSelect}"/>
-			  <p:ajax event="change" execute="@this" update="@form" listener="#{updateForm001.dateSelect}"/>
+			  <p:ajax event="change" process="@this" update="@form" listener="#{updateForm001.dateSelect}"/>
 			</p:calendar>
 			<br />
 
