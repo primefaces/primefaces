@@ -15,8 +15,8 @@
             <p:messages id="msgs" showDetail="true"/>
 
             <p:datePicker id="datepicker" value="#{datePicker008.localDate}" pattern="MM/dd/yyyy">
-                <p:ajax event="dateSelect" process="@this" listener="#{datePicker008.select}" update="msgs"/>
-                <p:ajax event="change" process="@this" listener="#{datePicker008.select}" update="msgs"/>
+                <p:ajax event="dateSelect" process="@this" listener="#{datePicker008.select}" update="@form"/>
+                <p:ajax event="change" process="@this" listener="#{datePicker008.select}" update="@form"/>
                 <p:ajax event="viewChange" process="@none"/>
                 <p:ajax event="close" process="@this"/>
             </p:datePicker>

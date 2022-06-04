@@ -21,43 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component;
+package org.primefaces.integrationtests.calendar;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
-import org.openqa.selenium.Keys;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractInputComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
-/**
- * Component wrapper for the PrimeFaces {@code p:inputText}.
- */
-public abstract class InputText extends AbstractInputComponent {
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 
-    public String getValue() {
-        return getInput().getAttribute("value");
+import lombok.Data;
+
+@Named
+@ViewScoped
+@Data
+public class Calendar001 implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private LocalDate localDate;
+
+    @PostConstruct
+    public void init() {
+        localDate = LocalDate.now();
     }
 
-    public void setValue(Serializable value) {
-        boolean ajaxified = isOnchangeAjaxified();
-        String oldValue = getValue();
-        if (oldValue != null && oldValue.length() > 0) {
-            if (ajaxified) {
-                PrimeSelenium.guardAjax(getInput()).clear();
-            }
-            else {
-                getInput().clear();
-            }
+    public void select() {
+        String message = "";
+        if (localDate != null) {
+            message = localDate.toString();
         }
-
-        ComponentUtils.sendKeys(getInput(), value.toString());
-
-        if (ajaxified) {
-            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
-        }
-        else {
-            getInput().sendKeys(Keys.TAB);
-        }
+        TestUtils.addMessage("Date", message);
     }
 }
