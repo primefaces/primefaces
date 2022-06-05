@@ -53,10 +53,6 @@ public class UpdateForm001 implements Serializable {
     private String text4;
     private String longtext1;
 
-    public void dateSelect(SelectEvent<LocalDate> event) {
-        // Do nothing
-    }
-
     public void dateSelect(AjaxBehaviorEvent event) {
         // Do nothing
     }
