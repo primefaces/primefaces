@@ -30,8 +30,6 @@ import java.util.Date;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.faces.event.AjaxBehaviorEvent;
-import org.primefaces.event.SelectEvent;
-import java.time.LocalDate;
 
 import lombok.Data;
 
