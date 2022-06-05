@@ -14,7 +14,7 @@
         <h:form id="form">
             <p:messages id="msgs" showDetail="true"/>
             
-            <p:calendar id="datepicker" showOn="both" navigator="true" value="#{calendar001.localDate}">
+            <p:calendar id="datepicker" yearRange="c-5:c+5" showOn="button" navigator="true" value="#{calendar001.localDate}">
                 <p:ajax event="dateSelect" process="@this" listener="#{calendar001.select}" update="@form"/>
                 <p:ajax event="change" process="@this" listener="#{calendar001.select}" update="@form"/>
             </p:calendar>
