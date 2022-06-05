@@ -42,7 +42,7 @@ public class UpdateForm001Test extends AbstractPrimePageTest {
         // Act
         page.calendar.setDate(System.currentTimeMillis());
         // Test other calendar API
-        page.calendar.setValue(System.currentTimeMillis());
+        // TODO: page.calendar.setValue(System.currentTimeMillis());
         page.inputnumber0.setValue(0);
         page.inputtext1.setValue("Text 1");
         page.inputnumber1.setValue(1);
