@@ -163,7 +163,7 @@ public abstract class Calendar extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void setDate(long epoch) {
-        PrimeSelenium.executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
     }
 
     /**
