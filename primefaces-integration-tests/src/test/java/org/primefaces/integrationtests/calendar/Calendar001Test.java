@@ -48,14 +48,16 @@ public class Calendar001Test extends AbstractPrimePageTest {
         // Arrange
         Calendar datePicker = page.datePicker;
         Assertions.assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
-        LocalDate value = LocalDate.of(1985, 7, 4);
+        LocalDate value1 = LocalDate.of(2015, 10, 30);
+        LocalDate value2 = LocalDate.of(1985, 7, 4);
 
         // Act
-        datePicker.setValue(value);
+        datePicker.setDate(value1.atStartOfDay());
+        datePicker.setValue(value2);
 
         // Assert
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(value, newValue);
+        Assertions.assertEquals(value2, newValue);
         assertMessage(page, "1985-07-04");
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
