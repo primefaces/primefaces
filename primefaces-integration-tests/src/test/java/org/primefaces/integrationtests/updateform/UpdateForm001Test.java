@@ -40,9 +40,7 @@ public class UpdateForm001Test extends AbstractPrimePageTest {
     public void testUpdateForm(Page page) {
 
         // Act
-        page.calendar.setDate(System.currentTimeMillis());
-        // Test other calendar API
-        // TODO: page.calendar.setValue(System.currentTimeMillis());
+        page.calendar.setValue(System.currentTimeMillis());
         page.inputnumber0.setValue(0);
         page.inputtext1.setValue("Text 1");
         page.inputnumber1.setValue(1);
@@ -56,7 +54,7 @@ public class UpdateForm001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-//        Assertions.assertNotNull(page.calendar.getValue());
+        Assertions.assertNotNull(page.calendar.getValue());
         Assertions.assertEquals("0.00", page.inputnumber0.getWidgetValue());
         Assertions.assertEquals("Text 1", page.inputtext1.getValue());
         Assertions.assertEquals("1.00", page.inputnumber1.getWidgetValue());
