@@ -21,29 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.menu;
+package org.primefaces.integrationtests.menubar;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
+import lombok.Data;
+
 @Named
 @ViewScoped
-public class MenuView implements Serializable {
+@Data
+public class MenuBar002 implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5366641524856531279L;
 
     private MenuModel model;
 
@@ -60,23 +59,24 @@ public class MenuView implements Serializable {
                 .value("Save (Non-Ajax)")
                 .icon("pi pi-save")
                 .ajax(false)
-                .command("#{menuView.save}")
-                .update("messages")
+                .command("#{menuBar002.save}")
+                .update("msgs")
                 .build();
         firstSubmenu.getElements().add(item);
 
         item = DefaultMenuItem.builder()
                 .value("Update")
                 .icon("pi pi-refresh")
-                .command("#{menuView.update}")
-                .update("messages")
+                .command("#{menuBar002.update}")
+                .update("msgs")
                 .build();
         firstSubmenu.getElements().add(item);
 
         item = DefaultMenuItem.builder()
                 .value("Delete")
                 .icon("pi pi-times")
-                .command("#{menuView.delete}")
+                .command("#{menuBar002.delete}")
+                .update("msgs")
                 .build();
         firstSubmenu.getElements().add(item);
 
@@ -97,52 +97,23 @@ public class MenuView implements Serializable {
         item = DefaultMenuItem.builder()
                 .value("Internal")
                 .icon("pi pi-upload")
-                .command("#{menuView.redirect}")
+                .command("#{menuBar002.redirect}")
                 .build();
         secondSubmenu.getElements().add(item);
 
         model.getElements().add(secondSubmenu);
     }
 
-    public MenuModel getModel() {
-        return model;
-    }
-
-    public void redirect() throws IOException {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath());
-    }
-
     public void save() {
-        addMessage("Save", "Data saved");
+        TestUtils.addMessage("Save", "Data saved");
     }
 
     public void update() {
-        addMessage("Update", "Data updated");
+        TestUtils.addMessage("Update", "Data updated");
     }
 
     public void delete() {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Delete", "Data deleted");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        TestUtils.addMessage("Delete", "Data deleted");
     }
 
-    public void sleepAndSave() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
-        save();
-    }
-
-    public void sleepAndUpdate() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
-        update();
-    }
-
-    public void sleepAndDelete() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
-        delete();
-    }
-
-    public void addMessage(String summary, String detail) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
 }
