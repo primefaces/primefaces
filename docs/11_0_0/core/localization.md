@@ -9,7 +9,7 @@ Server localization is handled by include a custom `Messages.properties` file fo
 in the location such as `\org\primefaces\Messages.properties` of your JAR or WAR file.  For example for a German translation
 of this file you would include a default `Messages_de.properties` file.
 
-Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/primefaces/primefaces/tree/master/src/main/resources/org/primefaces)
+Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/primefaces/primefaces/tree/master/primefaces/src/main/resources/org/primefaces)
 
 ### Default Messages.properties
 
@@ -70,7 +70,7 @@ This is handled with a client side API called PrimeFaces Locales. A client side 
 a JavaScript object with various settings, en_US is the default locale provided out of the box. 
 In case you need to support another locale, settings should be extended with the new information.
 
-Source code scripts: [GitHub Client Locale Javascript Files](https://github.com/primefaces/primefaces/tree/master/src/main/resources/META-INF/resources/primefaces/locales)
+Source code scripts: [GitHub Client Locale Javascript Files](https://github.com/primefaces/primefaces/tree/master/primefaces/src/main/resources/META-INF/resources/primefaces/locales)
 
 ### Manual Locale Loading
 If you know the locale you want added to your page and want to include one of the built in locales from PrimeFaces

@@ -23,8 +23,8 @@
  */
 package org.primefaces.selenium.internal;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.logging.Level;
+
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -37,6 +37,8 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.primefaces.selenium.spi.WebDriverAdapter;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
@@ -91,7 +93,7 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 chromeOptions.setHeadless(config.isWebdriverHeadless());
-                chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+                chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
                 return new ChromeDriver(chromeOptions);
             case "safari":
                 SafariOptions safariOptions = new SafariOptions();

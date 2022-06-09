@@ -21,43 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component;
+package org.primefaces.integrationtests.updateform;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
-import org.openqa.selenium.Keys;
-import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.base.AbstractInputComponent;
-import org.primefaces.selenium.component.base.ComponentUtils;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import javax.faces.event.AjaxBehaviorEvent;
 
-/**
- * Component wrapper for the PrimeFaces {@code p:inputText}.
- */
-public abstract class InputText extends AbstractInputComponent {
+import lombok.Data;
 
-    public String getValue() {
-        return getInput().getAttribute("value");
+@Named
+@ViewScoped
+@Data
+public class UpdateForm001 implements Serializable {
+
+    private static final long serialVersionUID = -7518159955779385834L;
+    private Date date;
+    private BigDecimal number0;
+    private BigDecimal number1;
+    private BigDecimal number2;
+    private BigDecimal number3;
+    private BigDecimal number4;
+    private String text1;
+    private String text2;
+    private String text3;
+    private String text4;
+    private String longtext1;
+
+    public void dateSelect(AjaxBehaviorEvent event) {
+        // Do nothing
     }
 
-    public void setValue(Serializable value) {
-        boolean ajaxified = isOnchangeAjaxified();
-        String oldValue = getValue();
-        if (oldValue != null && oldValue.length() > 0) {
-            if (ajaxified) {
-                PrimeSelenium.guardAjax(getInput()).clear();
-            }
-            else {
-                getInput().clear();
-            }
-        }
-
-        ComponentUtils.sendKeys(getInput(), value.toString());
-
-        if (ajaxified) {
-            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
-        }
-        else {
-            getInput().sendKeys(Keys.TAB);
-        }
-    }
 }

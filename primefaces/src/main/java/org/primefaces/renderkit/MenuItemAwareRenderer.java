@@ -25,8 +25,9 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehavior;
@@ -50,6 +51,7 @@ import org.primefaces.util.HTML;
 
 public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
+    private static final Logger LOGGER = Logger.getLogger(MenuItemAwareRenderer.class.getName());
     private static final String SEPARATOR = "_";
 
     @Override
@@ -75,15 +77,17 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         //POST
         else {
             writer.writeAttribute("href", "#", null);
+            String menuClientId = source.getClientId(context);
 
             UIForm form = ComponentTraversalUtils.closestForm(context, source);
             if (form == null) {
-                throw new FacesException("MenuItem must be inside a form element");
+                LOGGER.log(Level.FINE, "Menu '" + menuClientId
+                            + "' should be inside a form or should reference a form via its form attribute."
+                            + " We will try to find a fallback form on the client side.");
             }
 
             String command;
             if (menuitem.isDynamic()) {
-                String menuClientId = source.getClientId(context);
                 Map<String, List<String>> params = menuitem.getParams();
                 if (params == null) {
                     params = new LinkedHashMap<>();

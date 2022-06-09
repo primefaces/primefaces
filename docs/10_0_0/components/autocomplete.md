@@ -162,8 +162,8 @@ public class Player {
 ```
 ## Limiting the Results
 Number of results shown can be limited, by default there is no limit. When the suggestions exceed
-the number of results, a text defined by _moreText_ is displayed to indicate this case. There is no
-default action when the moreText is clicked, you need to use _moreText_ ajax behavior event to handle
+the number of results, a text defined by `moreText` is displayed to indicate this case. There is no
+default action when the moreText is clicked, you need to use `moreTextSelect` ajax behavior event to handle
 more results.
 
 ``` xhtml

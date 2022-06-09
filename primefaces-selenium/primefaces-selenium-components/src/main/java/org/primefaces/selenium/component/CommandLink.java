@@ -23,7 +23,9 @@
  */
 package org.primefaces.selenium.component;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.html.Link;
 
@@ -34,16 +36,29 @@ public abstract class CommandLink extends Link {
 
     @Override
     public void click() {
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
+        WebElement link = getRoot();
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(link));
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
 
-        if (isAjaxified("onclick")) {
-            PrimeSelenium.guardAjax(getRoot()).click();
+        if (link.getAttribute("data-pfconfirmcommand") != null) {
+            // Confirm Dialog/Popup we don't want to guard for AJAX
         }
-        else if ("_blank".equals(getRoot().getAttribute("target"))) {
-            getRoot().click();
+        else if (isAjaxified("onclick")) {
+            link = PrimeSelenium.guardAjax(link);
         }
-        else {
-            PrimeSelenium.guardHttp(getRoot()).click();
+        else if ("_blank".equals(link.getAttribute("target"))) {
+            link = PrimeSelenium.guardHttp(link);
         }
+
+        link.click();
+    }
+
+    /**
+     * #8840 Some scenario's with ajax="false" like in a download you may not want to guard the click.
+     */
+    public void clickUnguarded() {
+        WebElement link = getRoot();
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        link.click();
     }
 }

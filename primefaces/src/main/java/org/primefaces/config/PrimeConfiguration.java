@@ -157,7 +157,10 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.MARK_INPUT_AS_INVALID_ON_ERROR_MSG);
         markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
 
-        cookiesSameSite = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+        if (environment.isAtLeastJsf40()) {
+            value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+            cookiesSameSite = (value == null) ? "Strict" : value;
+        }
 
         cookiesSecure = true;
         if (environment.isAtLeastServlet30() && externalContext.getContext() instanceof ServletContext) {
