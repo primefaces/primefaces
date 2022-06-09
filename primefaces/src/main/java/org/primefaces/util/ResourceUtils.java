@@ -23,11 +23,7 @@
  */
 package org.primefaces.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -41,6 +37,7 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
 public class ResourceUtils {
@@ -172,15 +169,18 @@ public class ResourceUtils {
      */
     public static void addResponseCookie(FacesContext context, String name, String value, Map<String, Object> properties) {
         if (properties == null) {
-            properties = new HashMap<>(2);
+            properties = new HashMap<>(3);
         }
 
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
+        PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
 
-        if (requestContext.isSecure() && requestContext.getApplicationContext().getConfig().isCookiesSecure()) {
+        if (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) {
             properties.put("secure", true);
-            // SameSite hopefully supported in Servlet 5.0
-            // properties.put("sameSite", requestContext.getApplicationContext().getConfig().getCookiesSameSite());
+
+            if (applicationContext.getEnvironment().isAtLeastJsf40()) {
+                properties.put("SameSite", applicationContext.getConfig().getCookiesSameSite());
+            }
         }
 
         context.getExternalContext().addResponseCookie(name, value, properties);

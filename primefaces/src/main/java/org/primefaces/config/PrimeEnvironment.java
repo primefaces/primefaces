@@ -23,15 +23,16 @@
  */
 package org.primefaces.config;
 
-import org.primefaces.util.LangUtils;
-
-import javax.faces.context.FacesContext;
-import javax.validation.Validation;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.faces.context.FacesContext;
+import javax.validation.Validation;
+
+import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
 
@@ -41,6 +42,7 @@ public class PrimeEnvironment {
 
     private final boolean atLeastEl22;
 
+    private final boolean atLeastJsf40;
     private final boolean atLeastJsf23;
     private final boolean atLeastJsf22;
     private final boolean atLeastJsf21;
@@ -58,6 +60,7 @@ public class PrimeEnvironment {
     public PrimeEnvironment(FacesContext context) {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
+        atLeastJsf40 = LangUtils.tryToLoadClassForName("jakarta.faces.lifecycle.ClientWindowScoped") != null;
         atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
         atLeastJsf22 = LangUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
         atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
@@ -126,6 +129,10 @@ public class PrimeEnvironment {
 
     public boolean isAtLeastEl22() {
         return atLeastEl22;
+    }
+
+    public boolean isAtLeastJsf40() {
+        return atLeastJsf40;
     }
 
     public boolean isAtLeastJsf23() {
