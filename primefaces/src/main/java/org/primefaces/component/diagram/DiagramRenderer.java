@@ -226,7 +226,7 @@ public class DiagramRenderer extends CoreRenderer {
         }
 
         int maxConnections = model.getMaxConnections();
-        if (maxConnections != 1) {
+        if (maxConnections != 0) {
             wb.append(",maxConnections:").append(maxConnections);
         }
     }
