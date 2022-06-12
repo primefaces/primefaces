@@ -811,14 +811,16 @@
          */
         scrollTo: function(id) {
             var offset = $(PrimeFaces.escapeClientId(id)).offset();
-
-            $('html,body').animate({
-                scrollTop:offset.top
-                ,
-                scrollLeft:offset.left
-            },{
-                easing: 'easeInCirc'
-            },1000);
+            var scrollBehavior = 'scroll-behavior';
+            var target = $('html,body');
+            var sbValue = target.css(scrollBehavior);
+            target.css(scrollBehavior, 'auto');
+            target.animate(
+                    { scrollTop: offset.top, scrollLeft: offset.left },
+                    1000,
+                    'easeInCirc',
+                    function(){ target.css(scrollBehavior, sbValue) }
+            );
         },
 
         /**
