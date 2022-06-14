@@ -306,7 +306,8 @@ public class CalendarUtils {
             if (isGoodConverter(converter, value)) {
                 try {
                     return converter.getAsString(context, calendar, value);
-                } catch (ConverterException ex) {
+                }
+                catch (ConverterException ex) {
                     addBadConverter(converter, value);
                 }
             }
@@ -356,16 +357,16 @@ public class CalendarUtils {
     }
 
     private static void addBadConverter(Converter converter, Object value) {
-      Set<Class<? extends Converter>> converters = BAD_CONVERTERS.computeIfAbsent(value.getClass(), cl -> new HashSet<Class<? extends Converter>>());
-      converters.add(converter.getClass());
+        Set<Class<? extends Converter>> converters = BAD_CONVERTERS.computeIfAbsent(value.getClass(), cl -> new HashSet<Class<? extends Converter>>());
+        converters.add(converter.getClass());
     }
 
     private static boolean isGoodConverter(Converter converter, Object value) {
-      Set<Class<? extends Converter>> converters = BAD_CONVERTERS.get(value.getClass());
-      if (converters == null) {
-        return true;
-      }
-      return ! converters.contains(converter.getClass());
+        Set<Class<? extends Converter>> converters = BAD_CONVERTERS.get(value.getClass());
+        if (converters == null) {
+            return true;
+        }
+        return !converters.contains(converter.getClass());
     }
 
     /**
