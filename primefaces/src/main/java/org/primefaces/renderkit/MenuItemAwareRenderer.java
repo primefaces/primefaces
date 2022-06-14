@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -41,10 +42,7 @@ import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.*;
 import org.primefaces.component.divider.Divider;
 import org.primefaces.event.MenuActionEvent;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuGroup;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.*;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
@@ -52,7 +50,6 @@ import org.primefaces.util.HTML;
 public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
     private static final Logger LOGGER = Logger.getLogger(MenuItemAwareRenderer.class.getName());
-    private static final String SEPARATOR = "_";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -92,8 +89,8 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                 if (params == null) {
                     params = new LinkedHashMap<>();
                 }
-                List<String> idParams = Collections.singletonList(menuitem.getId());
-                params.put(menuClientId + "_menuid", idParams);
+
+                params.put(menuClientId + "_menuid", Collections.singletonList(menuitem.getId()));
 
                 command = menuitem.isAjax()
                         ? buildAjaxRequest(context, source, (AjaxSource) menuitem, form, params)
@@ -199,17 +196,21 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         }
     }
 
-    protected MenuItem findMenuitem(List<MenuElement> elements, String id) {
+    protected MenuItem findMenuItemById(List<MenuElement> elements, String id) {
         if (elements == null || elements.isEmpty()) {
             return null;
         }
         for (int i = 0; i < elements.size(); i++) {
             MenuElement element = elements.get(i);
-            if (Objects.equals(element.getId(), id)) {
+            String menuId = element.getId();
+            if (menuId != null) {
+                menuId = menuId.split(Pattern.quote(BaseMenuModel.COORDINATES_SEPARATOR))[0];
+            }
+            if (Objects.equals(menuId, id)) {
                 return (MenuItem) element;
             }
             if (element instanceof MenuGroup) {
-                MenuItem result = findMenuitem(((MenuGroup) element).getElements(), id);
+                MenuItem result = findMenuItemById(((MenuGroup) element).getElements(), id);
                 if (result != null) {
                     return result;
                 }
@@ -218,10 +219,38 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         return null;
     }
 
+    protected MenuItem findMenuItemByCoordinates(List<MenuElement> elements, String coords) {
+        if (elements == null || elements.isEmpty()) {
+            return null;
+        }
+
+        String[] paths = coords.split(BaseMenuModel.ID_SEPARATOR);
+        if (paths.length == 0) {
+            return null;
+        }
+
+        int childIndex = Integer.parseInt(paths[0]);
+        if (childIndex >= elements.size()) {
+            return null;
+        }
+
+        MenuElement childElement = elements.get(childIndex);
+
+        if (paths.length == 1) {
+            return (MenuItem) childElement;
+        }
+        else {
+            String relativeIndex = coords.substring(coords.indexOf(BaseMenuModel.ID_SEPARATOR) + 1);
+            return findMenuItemByCoordinates(((MenuGroup) childElement).getElements(), relativeIndex);
+        }
+    }
+
     /**
-     * Decode menu item not present in JSF tree but added using model attribute
-     * @param context
-     * @param component
+     * Decode menu item not present in JSF tree but added using model attribute.
+     * ID is in format UUID|COORDS.
+     *
+     * @param context the FacesContext
+     * @param component the menu component
      * @return true if a menu item has been decoded, otherwise false
      */
     protected boolean decodeDynamicMenuItem(FacesContext context, UIComponent component) {
@@ -229,27 +258,38 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String menuid = params.get(clientId + "_menuid");
-        if (menuid != null) {
-            MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
-            // skip removed/disabled menu items
-            if (menuitem != null && !menuitem.isDisabled()) {
-                MenuActionEvent event = new MenuActionEvent(component, menuitem);
-
-                if (menuitem.isImmediate()) {
-                    event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-                }
-                else {
-                    event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-                }
-
-                component.queueEvent(event);
-            }
-            else {
-                // not sure about SplitButtonRenderer
-                return false;
-            }
+        if (menuid == null) {
+            return false;
         }
 
-        return menuid != null;
+        // split the UUID|COORDINATES by |
+        String[] ids = menuid.split(Pattern.quote(BaseMenuModel.COORDINATES_SEPARATOR));
+        if (ids.length == 0) {
+            return false;
+        }
+        String uuid = ids[0];
+        String coordinates = ids.length == 2 ? ids[1] : null;
+
+        MenuItem menuitem = findMenuItemById(((MenuItemAware) component).getElements(), uuid);
+        if (menuitem == null && coordinates != null) {
+            // #8867 fallback to old PF logic for RequestScoped
+            menuitem = findMenuItemByCoordinates(((MenuItemAware) component).getElements(), coordinates);
+        }
+
+        // skip removed/disabled menu items
+        if (menuitem != null && !menuitem.isDisabled()) {
+            MenuActionEvent event = new MenuActionEvent(component, menuitem);
+
+            if (menuitem.isImmediate()) {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+
+            component.queueEvent(event);
+        }
+
+        return true;
     }
 }
