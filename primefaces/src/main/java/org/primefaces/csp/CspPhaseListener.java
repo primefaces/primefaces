@@ -41,18 +41,20 @@ public class CspPhaseListener implements PhaseListener {
     private static final long serialVersionUID = 1L;
 
     private Lazy<Boolean> enabled;
+    private Lazy<Boolean> policyProvided;
     private Lazy<String> customPolicy;
     private Lazy<String> reportOnlyPolicy;
 
     public CspPhaseListener() {
         enabled = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp());
+        policyProvided = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isPolicyProvided());
         customPolicy = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspPolicy());
         reportOnlyPolicy = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspReportOnlyPolicy());
     }
-
     @Override
     public void afterPhase(PhaseEvent event) {
 
@@ -60,7 +62,7 @@ public class CspPhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (Boolean.FALSE.equals(enabled.get())) {
+        if (Boolean.FALSE.equals(enabled.get()) || Boolean.TRUE.equals(policyProvided.get())) {
             return;
         }
 

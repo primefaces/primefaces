@@ -16,7 +16,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | CLIENT_SIDE_VALIDATION | false | Enables/disables global client side validation . |
 | CLIENT_SIDE_LOCALISATION | false | Adds `"locales/locale-" + locale.getLanguage() + ".js"` automatically for your locale. |
 | COOKIES_SAME_SITE | Strict | Defines the SameSite value for all cookies, which will be added by PrimeFaces. Only supported in Faces 4.0 or higher. |
-| CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks. Values `true`, `false` and `reportOnly` |
+| CSP | false | Enable Content Security Policy to prevent cross-site scripting (XSS), clickjacking and other code injection attacks. Values `true`, `false`, `reportOnly` and `policyProvided` |
 | CSP_POLICY | null | Custom CSP Policy that allows you to allowlist sites that you need JavaScript from such as `script-src 'self' https: *.googleapis.com` |
 | CSP_REPORT_ONLY_POLICY | null | When CSP is `reportOnly` this can be a directive for report only back to a URI endpoint like `report-uri /csp-violation-report-endpoint/`. |
 | DIR | ltr | Defines orientation; 'ltr' or 'rtl' for right-to-left support. |
