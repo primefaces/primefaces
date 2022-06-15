@@ -29677,7 +29677,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Method providing suggestions.]]>
+                <![CDATA[Method returning whether the dragged node(s) can be dropped on the dropped node.]]>
             </description>
             <name>onDrop</name>
             <required>false</required>
