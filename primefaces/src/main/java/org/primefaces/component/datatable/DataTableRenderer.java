@@ -1227,7 +1227,7 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean selectionEnabled = table.isSelectionEnabled() && !table.isDisabledSelection();
+        boolean selectionEnabled = table.isSelectionEnabled();
         boolean rowExpansionAvailable = table.getRowExpansion() != null;
         String rowKey = null;
         List<UIColumn> columns = table.getColumns();
@@ -1239,12 +1239,13 @@ public class DataTableRenderer extends DataRenderer {
 
         //Preselection
         boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
+        boolean disabled = table.isDisabledSelection();
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled, DataTable.SELECTABLE_ROW_CLASS)
+                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
                 .add(selected, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
