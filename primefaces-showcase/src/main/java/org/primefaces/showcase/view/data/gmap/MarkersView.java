@@ -32,6 +32,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import org.primefaces.model.map.Point;
+import org.primefaces.model.map.Symbol;
 
 @Named
 @RequestScoped
@@ -43,17 +45,22 @@ public class MarkersView implements Serializable {
     public void init() {
         simpleModel = new DefaultMapModel();
 
-        //Shared coordinates
-        LatLng coord1 = new LatLng(36.879466, 30.667648);
-        LatLng coord2 = new LatLng(36.883707, 30.689216);
-        LatLng coord3 = new LatLng(36.879703, 30.706707);
-        LatLng coord4 = new LatLng(36.885233, 30.702323);
+        simpleModel.addOverlay(new Marker(new LatLng(36.879466, 30.667648), "Konyaalti"));
+        simpleModel.addOverlay(new Marker(new LatLng(36.883707, 30.689216), "Ataturk Parki"));
+        simpleModel.addOverlay(new Marker(new LatLng(36.879703, 30.706707), "Karaalioglu Parki"));
 
-        //Basic marker
-        simpleModel.addOverlay(new Marker(coord1, "Konyaalti"));
-        simpleModel.addOverlay(new Marker(coord2, "Ataturk Parki"));
-        simpleModel.addOverlay(new Marker(coord3, "Karaalioglu Parki"));
-        simpleModel.addOverlay(new Marker(coord4, "Kaleici"));
+        Marker marker = new Marker(new LatLng(36.885233, 30.702323), "Kaleici");
+        Symbol symbol = new Symbol(
+                "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945"
+              + " 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75"
+              + " 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906"
+              + " 2.039-4.945t4.945-2.039z");
+        symbol.setFillColor("#fff");
+        symbol.setFillOpacity(.7);
+        symbol.setScale(2.0);
+        symbol.setAnchor(new Point(15.0, 30.0));
+        marker.setIcon(symbol);
+        simpleModel.addOverlay(marker);
     }
 
     public MapModel getSimpleModel() {

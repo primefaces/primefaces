@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
@@ -206,7 +207,8 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",title:\"" + EscapeUtils.forJavaScript(marker.getTitle()) + "\"");
         }
         if (marker.getIcon() != null) {
-            writer.write(",icon:'" + marker.getIcon() + "'");
+            writer.write(",icon:");
+            encodeIcon(context, marker.getIcon());
         }
         if (marker.getShadow() != null) {
             writer.write(",shadow:'" + marker.getShadow() + "'");
@@ -231,6 +233,46 @@ public class GMapRenderer extends CoreRenderer {
         }
 
         writer.write("})");
+    }
+
+    protected void encodeIcon(FacesContext context, Object icon) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        if (icon instanceof String) {
+            writer.write("'" + icon + "'");
+            return;
+        }
+        if (!(icon instanceof Symbol)) {
+            throw new FacesException("Icon must be String or Symbol");
+        }
+        Symbol symbol = (Symbol) icon;
+
+        writer.write("{path:'" + symbol.getPath() + "'");
+        if (symbol.getAnchor() != null) {
+            writer.write(",anchor:new google.maps.Point(" + symbol.getAnchor().getX()
+                    + "," + symbol.getAnchor().getY() + ")");
+        }
+        if (symbol.getFillColor() != null) {
+            writer.write(",fillColor:'" + symbol.getFillColor() + "'");
+        }
+        if (symbol.getFillOpacity() != null) {
+            writer.write(",fillOpacity:" + symbol.getFillOpacity());
+        }
+        if (symbol.getRotation() != null) {
+            writer.write(",rotation:" + symbol.getRotation());
+        }
+        if (symbol.getScale() != null) {
+            writer.write(",scale:" + symbol.getScale());
+        }
+        if (symbol.getStrokeColor() != null) {
+            writer.write(",strokeColor:" + symbol.getStrokeColor());
+        }
+        if (symbol.getStrokeOpacity() != null) {
+            writer.write(",strokeOpacity:" + symbol.getStrokeOpacity());
+        }
+        if (symbol.getStrokeWeight() != null) {
+            writer.write(",strokeWeight:" + symbol.getStrokeWeight());
+        }
+        writer.write("}");
     }
 
     protected void encodePolylines(FacesContext context, GMap map) throws IOException {

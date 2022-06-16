@@ -22,6 +22,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
 * Exporter: added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output.
 * FileUpload: added `clear()` widget method in SkinSimple mode to clear out selected file.
+* GMap: added `Symbol` which can be used as marker icon.
 * InputMask: added new options for `showMaskOnFocus` and `showMaskOnHover` to give better control over mask.
 * MenuButton
   * Now can be enabled and disabled by its widget.
