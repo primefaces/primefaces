@@ -29,18 +29,18 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 import org.primefaces.model.map.Marker;
 
-public class MarkerDragEvent extends AbstractAjaxBehaviorEvent {
+public class MarkerDragEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Marker marker;
+    private Marker<T> marker;
 
-    public MarkerDragEvent(UIComponent component, Behavior behavior, Marker marker) {
+    public MarkerDragEvent(UIComponent component, Behavior behavior, Marker<T> marker) {
         super(component, behavior);
         this.marker = marker;
     }
 
-    public Marker getMarker() {
+    public Marker<T> getMarker() {
         return marker;
     }
 }

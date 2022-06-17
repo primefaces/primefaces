@@ -39,17 +39,17 @@ import java.io.Serializable;
 @RequestScoped
 public class AddMarkersView implements Serializable {
 
-    private MapModel emptyModel;
+    private MapModel<Object> emptyModel;
     private String title;
     private double lat;
     private double lng;
 
     @PostConstruct
     public void init() {
-        emptyModel = new DefaultMapModel();
+        emptyModel = new DefaultMapModel<>();
     }
 
-    public MapModel getEmptyModel() {
+    public MapModel<Object> getEmptyModel() {
         return emptyModel;
     }
 
@@ -78,9 +78,10 @@ public class AddMarkersView implements Serializable {
     }
 
     public void addMarker() {
-        Marker marker = new Marker(new LatLng(lat, lng), title);
+        Marker<Object> marker = new Marker<>(new LatLng(lat, lng), title);
         emptyModel.addOverlay(marker);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
     }
 }
