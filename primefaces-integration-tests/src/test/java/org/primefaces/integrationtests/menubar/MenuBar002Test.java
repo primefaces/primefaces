@@ -83,7 +83,7 @@ public class MenuBar002Test extends AbstractPrimePageTest {
         System.out.println("MenuBar Config = " + cfg);
         Assertions.assertTrue(cfg.has("toggleEvent"));
         Assertions.assertTrue(cfg.has("autoDisplay"));
-        Assertions.assertEquals("hover", cfg.getString("toggleEvent"));
+        Assertions.assertEquals("click", cfg.getString("toggleEvent"));
     }
 
     public static class Page extends AbstractPrimePage {
