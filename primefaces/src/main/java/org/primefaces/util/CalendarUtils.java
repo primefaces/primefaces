@@ -63,7 +63,7 @@ public class CalendarUtils {
 
     private static final PatternConverter PATTERN_CONVERTER = new DateTimePatternConverter();
 
-    private static final Map<Class<?>, Set<Class<? extends Converter>>> BAD_CONVERTERS = new HashMap<>();
+    private static final String INVALID_CONVERTERS = CalendarUtils.class.getName() + ".invalidConverters";
 
     private CalendarUtils() {
     }
@@ -303,12 +303,12 @@ public class CalendarUtils {
         //first ask the converter
         Converter converter = calendar.getConverter();
         if (converter != null) {
-            if (isGoodConverter(converter, value)) {
+            if (isValidConverter(context, converter, value)) {
                 try {
                     return converter.getAsString(context, calendar, value);
                 }
                 catch (ConverterException ex) {
-                    addBadConverter(converter, value);
+                    addInvalidConverter(context, converter, value);
                 }
             }
         }
@@ -356,17 +356,25 @@ public class CalendarUtils {
         }
     }
 
-    private static void addBadConverter(Converter converter, Object value) {
-        Set<Class<? extends Converter>> converters = BAD_CONVERTERS.computeIfAbsent(value.getClass(), cl -> new HashSet<Class<? extends Converter>>());
+    private static void addInvalidConverter(FacesContext context, Converter converter, Object value) {
+        Set<Class<? extends Converter>> converters = getInvalidConverters(context)
+            .computeIfAbsent(value.getClass(), cl -> new HashSet<Class<? extends Converter>>());
         converters.add(converter.getClass());
     }
 
-    private static boolean isGoodConverter(Converter converter, Object value) {
-        Set<Class<? extends Converter>> converters = BAD_CONVERTERS.get(value.getClass());
+    private static boolean isValidConverter(FacesContext context, Converter converter, Object value) {
+        Set<Class<? extends Converter>> converters = getInvalidConverters(context).get(value.getClass());
         if (converters == null) {
             return true;
         }
         return !converters.contains(converter.getClass());
+    }
+
+    private static  Map<Class<?>, Set<Class<? extends Converter>>> getInvalidConverters(FacesContext context) {
+        return (Map<Class<?>, Set<Class<? extends Converter>>>) context
+            .getExternalContext()
+            .getApplicationMap()
+            .computeIfAbsent(INVALID_CONVERTERS, key -> new HashMap<>());
     }
 
     /**
