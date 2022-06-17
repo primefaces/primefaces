@@ -25,14 +25,25 @@ package org.primefaces.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.faces.FacesException;
@@ -51,6 +62,8 @@ public class CalendarUtils {
     private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
     private static final PatternConverter PATTERN_CONVERTER = new DateTimePatternConverter();
+
+    private static final String INVALID_CONVERTERS = CalendarUtils.class.getName() + ".invalidConverters";
 
     private CalendarUtils() {
     }
@@ -290,16 +303,13 @@ public class CalendarUtils {
         //first ask the converter
         Converter converter = calendar.getConverter();
         if (converter != null) {
-            if (converter instanceof javax.faces.convert.DateTimeConverter) {
-                javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
-                String dateType = nativeConverter.getType();
-                // only run converter if type for dates match
-                if (value.getClass().getSimpleName().equalsIgnoreCase(dateType)) {
+            if (isValidConverter(context, converter, value)) {
+                try {
                     return converter.getAsString(context, calendar, value);
                 }
-            }
-            else {
-                return converter.getAsString(context, calendar, value);
+                catch (ConverterException ex) {
+                    addInvalidConverter(context, converter, value);
+                }
             }
         }
 
@@ -344,6 +354,27 @@ public class CalendarUtils {
 
             throw new FacesException("Value could be either String, LocalDate, LocalDateTime, LocalTime, YearMonth or java.util.Date (deprecated)");
         }
+    }
+
+    private static void addInvalidConverter(FacesContext context, Converter converter, Object value) {
+        Set<Class<? extends Converter>> converters = getInvalidConverters(context)
+            .computeIfAbsent(value.getClass(), cl -> new HashSet<Class<? extends Converter>>());
+        converters.add(converter.getClass());
+    }
+
+    private static boolean isValidConverter(FacesContext context, Converter converter, Object value) {
+        Set<Class<? extends Converter>> converters = getInvalidConverters(context).get(value.getClass());
+        if (converters == null) {
+            return true;
+        }
+        return !converters.contains(converter.getClass());
+    }
+
+    private static  Map<Class<?>, Set<Class<? extends Converter>>> getInvalidConverters(FacesContext context) {
+        return (Map<Class<?>, Set<Class<? extends Converter>>>) context
+            .getExternalContext()
+            .getApplicationMap()
+            .computeIfAbsent(INVALID_CONVERTERS, key -> new HashMap<>());
     }
 
     /**
