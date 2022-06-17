@@ -40,13 +40,11 @@ import java.io.Serializable;
 @ViewScoped
 public class DraggableMarkersView implements Serializable {
 
-    private MapModel draggableModel;
-
-    private Marker marker;
+    private MapModel<Long> draggableModel;
 
     @PostConstruct
     public void init() {
-        draggableModel = new DefaultMapModel();
+        draggableModel = new DefaultMapModel<>();
 
         //Shared coordinates
         LatLng coord1 = new LatLng(36.879466, 30.667648);
@@ -55,26 +53,26 @@ public class DraggableMarkersView implements Serializable {
         LatLng coord4 = new LatLng(36.885233, 30.702323);
 
         //Draggable
-        draggableModel.addOverlay(new Marker(coord1, "Konyaalti"));
-        draggableModel.addOverlay(new Marker(coord2, "Ataturk Parki"));
-        draggableModel.addOverlay(new Marker(coord3, "Karaalioglu Parki"));
-        draggableModel.addOverlay(new Marker(coord4, "Kaleici"));
+        draggableModel.addOverlay(new Marker<>(coord1, "Konyaalti", 1L));
+        draggableModel.addOverlay(new Marker<>(coord2, "Ataturk Parki", 2L));
+        draggableModel.addOverlay(new Marker<>(coord3, "Karaalioglu Parki", 3L));
+        draggableModel.addOverlay(new Marker<>(coord4, "Kaleici", 4L));
 
-        for (Marker premarker : draggableModel.getMarkers()) {
+        for (Marker<Long> premarker : draggableModel.getMarkers()) {
             premarker.setDraggable(true);
         }
     }
 
-    public MapModel getDraggableModel() {
+    public MapModel<Long> getDraggableModel() {
         return draggableModel;
     }
 
-    public void onMarkerDrag(MarkerDragEvent event) {
-        marker = event.getMarker();
+    public void onMarkerDrag(MarkerDragEvent<Long> event) {
+        Marker<Long> marker = event.getMarker();
 
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Marker Dragged",
+                        "Marker " + marker.getData() + " Dragged",
                         "Lat:" + marker.getLatlng().getLat() + ", Lng:" + marker.getLatlng().getLng()));
     }
 }

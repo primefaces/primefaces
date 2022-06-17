@@ -68,14 +68,14 @@ public class Marker<T> extends Overlay<T> {
         this.title = title;
     }
 
-    public Marker(LatLng latlng, String title, T data, String icon) {
+    public Marker(LatLng latlng, String title, T data, Object icon) {
         super(data);
         this.latlng = latlng;
         this.title = title;
         this.icon = icon;
     }
 
-    public Marker(LatLng latlng, String title, T data, String icon, String shadow) {
+    public Marker(LatLng latlng, String title, T data, Object icon, String shadow) {
         super(data);
         this.latlng = latlng;
         this.title = title;
