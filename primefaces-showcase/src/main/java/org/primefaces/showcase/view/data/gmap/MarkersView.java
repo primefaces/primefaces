@@ -47,9 +47,12 @@ public class MarkersView implements Serializable {
 
         simpleModel.addOverlay(new Marker(new LatLng(36.879466, 30.667648), "Konyaalti"));
         simpleModel.addOverlay(new Marker(new LatLng(36.883707, 30.689216), "Ataturk Parki"));
-        simpleModel.addOverlay(new Marker(new LatLng(36.879703, 30.706707), "Karaalioglu Parki"));
 
-        Marker marker = new Marker(new LatLng(36.885233, 30.702323), "Kaleici");
+        Marker marker3 = new Marker(new LatLng(36.879703, 30.706707), "Karaalioglu Parki");
+        marker3.setIcon("https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png");
+        simpleModel.addOverlay(marker3);
+
+        Marker marker4 = new Marker(new LatLng(36.885233, 30.702323), "Kaleici");
         Symbol symbol = new Symbol(
                 "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945"
               + " 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75"
@@ -59,8 +62,8 @@ public class MarkersView implements Serializable {
         symbol.setFillOpacity(.7);
         symbol.setScale(2.0);
         symbol.setAnchor(new Point(15.0, 30.0));
-        marker.setIcon(symbol);
-        simpleModel.addOverlay(marker);
+        marker4.setIcon(symbol);
+        simpleModel.addOverlay(marker4);
     }
 
     public MapModel getSimpleModel() {

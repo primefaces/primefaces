@@ -239,13 +239,17 @@ public class GMapRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         if (icon instanceof String) {
             writer.write("'" + icon + "'");
-            return;
         }
-        if (!(icon instanceof Symbol)) {
-            throw new FacesException("Icon must be String or Symbol");
+        else if (icon instanceof Symbol) {
+            encodeIcon(context, (Symbol) icon);
         }
-        Symbol symbol = (Symbol) icon;
+        else {
+            throw new FacesException("GMap marker icon must be String or Symbol");
+        }
+    }
 
+    protected void encodeIcon(FacesContext context, Symbol symbol) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         writer.write("{path:'" + symbol.getPath() + "'");
         if (symbol.getAnchor() != null) {
             writer.write(",anchor:new google.maps.Point(" + symbol.getAnchor().getX()
@@ -264,7 +268,7 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",scale:" + symbol.getScale());
         }
         if (symbol.getStrokeColor() != null) {
-            writer.write(",strokeColor:" + symbol.getStrokeColor());
+            writer.write(",strokeColor:'" + symbol.getStrokeColor() + "'");
         }
         if (symbol.getStrokeOpacity() != null) {
             writer.write(",strokeOpacity:" + symbol.getStrokeOpacity());

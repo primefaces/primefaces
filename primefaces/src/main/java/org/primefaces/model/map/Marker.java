@@ -35,6 +35,10 @@ public class Marker extends Overlay {
 
     private boolean flat;
 
+    /**
+     * Either a URL (as {@link String}) pointing to an image file or {@link Symbol} to display instead of the default
+     * Google Maps pushpin icon.
+     */
     private Object icon;
 
     private LatLng latlng;
