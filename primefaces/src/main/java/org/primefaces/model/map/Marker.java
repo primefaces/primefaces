@@ -35,7 +35,11 @@ public class Marker extends Overlay {
 
     private boolean flat;
 
-    private String icon;
+    /**
+     * Either a URL (as {@link String}) pointing to an image file or {@link Symbol} to display instead of the default
+     * Google Maps pushpin icon.
+     */
+    private Object icon;
 
     private LatLng latlng;
 
@@ -119,11 +123,11 @@ public class Marker extends Overlay {
         this.flat = flat;
     }
 
-    public String getIcon() {
+    public Object getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(Object icon) {
         this.icon = icon;
     }
 
