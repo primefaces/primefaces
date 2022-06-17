@@ -170,6 +170,8 @@ public class TreeTableRenderer extends DataRenderer {
                 .attr("scrollWidth", tt.getScrollWidth(), null)
                 .attr("nativeElements", tt.isNativeElements(), false)
                 .attr("expandMode", tt.getExpandMode(), "children")
+                .attr("propagateSelectionUp", tt.isPropagateSelectionUp(), true)
+                .attr("propagateSelectionDown", tt.isPropagateSelectionDown(), true)
                 .attr("disabledTextSelection", tt.isDisabledTextSelection(), true);
 
         if (tt.isStickyHeader()) {
