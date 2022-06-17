@@ -25,13 +25,13 @@ package org.primefaces.model.map;
 
 import java.io.Serializable;
 
-public class Overlay implements Serializable {
+public class Overlay<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String id;
 
-    private Object data;
+    private T data;
 
     private int zindex = Integer.MIN_VALUE;
 
@@ -39,7 +39,7 @@ public class Overlay implements Serializable {
 
     }
 
-    public Overlay(Object data) {
+    public Overlay(T data) {
         this.data = data;
     }
 
@@ -51,11 +51,11 @@ public class Overlay implements Serializable {
         this.id = id;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 

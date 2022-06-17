@@ -23,7 +23,7 @@
  */
 package org.primefaces.model.map;
 
-public class Rectangle extends Overlay {
+public class Rectangle<T> extends Overlay<T> {
 
     private static final long serialVersionUID = 1L;
 

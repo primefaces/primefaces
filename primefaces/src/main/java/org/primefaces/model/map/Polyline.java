@@ -26,7 +26,7 @@ package org.primefaces.model.map;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Polyline extends Overlay {
+public class Polyline<T> extends Overlay<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +48,7 @@ public class Polyline extends Overlay {
         this.paths = paths;
     }
 
-    public Polyline(List<LatLng> paths, Object data) {
+    public Polyline(List<LatLng> paths, T data) {
         super(data);
         this.paths = paths;
     }

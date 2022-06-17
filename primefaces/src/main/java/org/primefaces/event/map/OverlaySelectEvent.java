@@ -29,18 +29,18 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 import org.primefaces.model.map.Overlay;
 
-public class OverlaySelectEvent extends AbstractAjaxBehaviorEvent {
+public class OverlaySelectEvent<T> extends AbstractAjaxBehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private Overlay overlay;
+    private Overlay<T> overlay;
 
-    public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay overlay) {
+    public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay<T> overlay) {
         super(component, behavior);
         this.overlay = overlay;
     }
 
-    public Overlay getOverlay() {
+    public Overlay<T> getOverlay() {
         return overlay;
     }
 }

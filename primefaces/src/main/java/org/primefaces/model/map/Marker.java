@@ -23,7 +23,7 @@
  */
 package org.primefaces.model.map;
 
-public class Marker extends Overlay {
+public class Marker<T> extends Overlay<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -58,20 +58,20 @@ public class Marker extends Overlay {
         this.title = title;
     }
 
-    public Marker(LatLng latlng, String title, Object data) {
+    public Marker(LatLng latlng, String title, T data) {
         super(data);
         this.latlng = latlng;
         this.title = title;
     }
 
-    public Marker(LatLng latlng, String title, Object data, String icon) {
+    public Marker(LatLng latlng, String title, T data, String icon) {
         super(data);
         this.latlng = latlng;
         this.title = title;
         this.icon = icon;
     }
 
-    public Marker(LatLng latlng, String title, Object data, String icon, String shadow) {
+    public Marker(LatLng latlng, String title, T data, String icon, String shadow) {
         super(data);
         this.latlng = latlng;
         this.title = title;
