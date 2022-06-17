@@ -33,6 +33,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import lombok.Data;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 @Named
 @ViewScoped
@@ -50,6 +51,10 @@ public class DatePicker014 implements Serializable {
     @PostConstruct
     public void init() {
         dateTime = new OwnDateTime(2021, 1, 10, 1, 16, 04);
+    }
+
+    public void submit() {
+        TestUtils.addMessage("Date", dateTime.toString());
     }
 
     public static final class OwnDateTime implements Serializable {

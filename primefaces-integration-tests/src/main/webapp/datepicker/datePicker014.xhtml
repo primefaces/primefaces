@@ -12,14 +12,14 @@
     <h:body>
 
         <h:form id="form">
-            <p:messages/>
+            <p:messages id="msgs" showDetail="true"/>
 
             <p:datePicker id="datepicker" value="#{datePicker014.dateTime}"
                           pattern="yyyy-MM-dd HH:mm:ss" showTime="true">
                 <f:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss" binding="#{datePicker014.converter}"/>
             </p:datePicker>
 
-            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="button" value="Submit" update="@form" action="#{datePicker014.submit()}"/>
         </h:form>
 
     </h:body>

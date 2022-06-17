@@ -34,13 +34,14 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
+import org.primefaces.selenium.component.Messages;
 
 public class DatePicker014Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: f:convertDateTime with own converter")
-    public void testFConvertDateTimeVsInternal(Page page) {
+    public void testOwnConverterBasic(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDateTime expected = LocalDateTime.of(2021, 1, 10, 1, 16, 04);
@@ -56,7 +57,32 @@ public class DatePicker014Test extends AbstractDatePickerTest {
         Assertions.assertEquals(expected, datePicker.getValue());
     }
 
+    @Test
+    @Order(2)
+    @DisplayName("DatePicker: f:convertDateTime with own converter; modify date on client")
+    public void testOwnConverterModify(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datePicker;
+        LocalDateTime expected = LocalDateTime.of(2021, 1, 10, 1, 16, 04);
+
+        // Assert
+        Assertions.assertEquals(expected, datePicker.getValue());
+
+        // Act
+        LocalDateTime newDateTime = LocalDateTime.of(2022, 6, 17, 20, 0, 0);
+        page.datePicker.setDate(newDateTime);
+        page.button.click();
+
+        // Assert
+        assertNoJavascriptErrors();
+        Assertions.assertEquals(newDateTime, datePicker.getValue());
+        Assertions.assertEquals("2022-6-17 20:0:0", page.messages.getMessage(0).getDetail());
+    }
+
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
         @FindBy(id = "form:datepicker")
         DatePicker datePicker;
 
