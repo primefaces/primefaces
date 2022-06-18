@@ -34,6 +34,10 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.util.MapBuilder;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 @ResourceDependency(library = "primefaces", name = "charts/charts.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")

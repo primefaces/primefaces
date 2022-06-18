@@ -23,8 +23,15 @@
  */
 package org.primefaces.model.chart;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class CartesianChartModel extends ChartModel {
 
     private static final long serialVersionUID = 1L;

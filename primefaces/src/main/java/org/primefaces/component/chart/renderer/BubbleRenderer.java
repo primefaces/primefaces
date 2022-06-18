@@ -34,6 +34,10 @@ import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BubbleChartModel;
 import org.primefaces.model.chart.BubbleChartSeries;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class BubbleRenderer extends CartesianPlotRenderer {
 
     @Override

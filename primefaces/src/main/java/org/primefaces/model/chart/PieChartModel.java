@@ -26,6 +26,10 @@ package org.primefaces.model.chart;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class PieChartModel extends ChartModel {
 
     private static final long serialVersionUID = 1L;

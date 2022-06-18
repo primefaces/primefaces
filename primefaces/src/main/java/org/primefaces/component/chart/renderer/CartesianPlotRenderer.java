@@ -23,18 +23,23 @@
  */
 package org.primefaces.component.chart.renderer;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.util.EscapeUtils;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public abstract class CartesianPlotRenderer extends BasePlotRenderer {
 
     @Override

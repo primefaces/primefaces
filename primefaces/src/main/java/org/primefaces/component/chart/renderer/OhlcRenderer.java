@@ -34,6 +34,10 @@ import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.OhlcChartModel;
 import org.primefaces.model.chart.OhlcChartSeries;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class OhlcRenderer extends CartesianPlotRenderer {
 
     @Override
