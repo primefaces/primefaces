@@ -23,14 +23,18 @@
  */
 package org.primefaces.model.chart;
 
-import org.primefaces.util.EscapeUtils;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.primefaces.util.EscapeUtils;
+
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class ChartSeries implements Serializable {
 
     private static final long serialVersionUID = 1L;

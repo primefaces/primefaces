@@ -29,6 +29,10 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public abstract class ChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

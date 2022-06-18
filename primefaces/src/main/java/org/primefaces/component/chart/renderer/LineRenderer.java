@@ -34,6 +34,10 @@ import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class LineRenderer extends CartesianPlotRenderer {
 
     @Override

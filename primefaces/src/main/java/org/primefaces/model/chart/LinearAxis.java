@@ -23,6 +23,10 @@
  */
 package org.primefaces.model.chart;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class LinearAxis extends Axis {
 
     private static final long serialVersionUID = 1L;

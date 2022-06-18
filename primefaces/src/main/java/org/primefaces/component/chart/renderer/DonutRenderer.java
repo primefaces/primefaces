@@ -34,6 +34,10 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.DonutChartModel;
 
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class DonutRenderer extends BasePlotRenderer {
 
     @Override

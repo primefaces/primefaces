@@ -25,6 +25,11 @@ package org.primefaces.model.chart;
 
 import java.util.*;
 
+
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class BarChartModel extends CartesianChartModel {
 
     private static final long serialVersionUID = 1L;
