@@ -1315,13 +1315,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 var group = groups.eq(g);
 
                 if(g === (groups.length - 1)) {
-                    if(group.nextAll().filter(':visible').length === 0)
+                    if(group.nextAll().filter('.ui-selectonemenu-item-group-children:visible').length === 0)
                         hide.push(group);
                     else
                         show.push(group);
                 }
                 else {
-                    if(group.nextUntil('.ui-selectonemenu-item-group').filter(':visible').length === 0)
+                    if(group.nextUntil('.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0)
                         hide.push(group);
                     else
                         show.push(group);
