@@ -38,12 +38,8 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 import java.util.TimeZone;
 
 import javax.faces.FacesException;
@@ -62,8 +58,6 @@ public class CalendarUtils {
     private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
     private static final PatternConverter PATTERN_CONVERTER = new DateTimePatternConverter();
-
-    private static final String INVALID_CONVERTERS = CalendarUtils.class.getName() + ".invalidConverters";
 
     private CalendarUtils() {
     }
@@ -302,15 +296,9 @@ public class CalendarUtils {
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         //first ask the converter
         Converter converter = calendar.getConverter();
+        // always use the user-applied converter first
         if (converter != null) {
-            if (isValidConverter(context, converter, value)) {
-                try {
-                    return converter.getAsString(context, calendar, value);
-                }
-                catch (ConverterException ex) {
-                    addInvalidConverter(context, converter, value);
-                }
-            }
+            return converter.getAsString(context, calendar, value);
         }
 
         if (value instanceof String) {
@@ -354,27 +342,6 @@ public class CalendarUtils {
 
             throw new FacesException("Value could be either String, LocalDate, LocalDateTime, LocalTime, YearMonth or java.util.Date (deprecated)");
         }
-    }
-
-    private static void addInvalidConverter(FacesContext context, Converter converter, Object value) {
-        Set<Class<? extends Converter>> converters = getInvalidConverters(context)
-            .computeIfAbsent(value.getClass(), cl -> new HashSet<Class<? extends Converter>>());
-        converters.add(converter.getClass());
-    }
-
-    private static boolean isValidConverter(FacesContext context, Converter converter, Object value) {
-        Set<Class<? extends Converter>> converters = getInvalidConverters(context).get(value.getClass());
-        if (converters == null) {
-            return true;
-        }
-        return !converters.contains(converter.getClass());
-    }
-
-    private static  Map<Class<?>, Set<Class<? extends Converter>>> getInvalidConverters(FacesContext context) {
-        return (Map<Class<?>, Set<Class<? extends Converter>>>) context
-            .getExternalContext()
-            .getApplicationMap()
-            .computeIfAbsent(INVALID_CONVERTERS, key -> new HashMap<>());
     }
 
     /**
