@@ -1,4 +1,4 @@
-/*! http://keith-wood.name/signature.html
+/* http://keith-wood.name/signature.html
 	Signature plugin for jQuery UI v1.2.0.
 	Requires excanvas.js in IE.
 	Written by Keith Wood (wood.keith{at}optusnet.com.au) April 2012.

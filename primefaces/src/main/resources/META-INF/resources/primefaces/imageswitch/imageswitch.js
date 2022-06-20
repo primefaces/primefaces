@@ -1,4 +1,4 @@
-/*!
+/*
  * jQuery Cycle Plugin (with Transition Definitions)
  * Examples and documentation at: http://jquery.malsup.com/cycle/
  * Copyright (c) 2007-2010 M. Alsup
@@ -918,7 +918,7 @@ $.fn.cycle.defaults = {
 })(jQuery);
 
 
-/*!
+/*
  * jQuery Cycle Plugin Transition Definitions
  * This script is a plugin for the jQuery Cycle Plugin
  * Examples and documentation at: http://malsup.com/jquery/cycle/

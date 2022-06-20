@@ -1,4 +1,4 @@
-/*!
+/*
  * dist/jquery.inputmask.min
  * https://github.com/RobinHerbots/Inputmask
  * Copyright (c) 2010 - 2022 Robin Herbots
