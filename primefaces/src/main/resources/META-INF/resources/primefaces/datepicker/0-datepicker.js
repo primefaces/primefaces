@@ -186,7 +186,7 @@
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
 
-            if (this.options.timeOnly && viewDateDefaultsToNow) {
+            if (viewDateDefaultsToNow) {
                 if (this.options.minDate) {
                     if (this.viewDate < this.options.minDate) {
                         this.viewDate = new Date(this.options.minDate.getTime());
