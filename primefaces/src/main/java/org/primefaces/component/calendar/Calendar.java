@@ -45,10 +45,10 @@ import org.primefaces.util.Constants;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
-@ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "inputmask/inputmask.js")
-@ResourceDependency(library = "primefaces", name = "components.js")
+@ResourceDependency(library = "primefaces", name = "calendar/calendar.css")
+@ResourceDependency(library = "primefaces", name = "calendar/calendar.js")
 public class Calendar extends CalendarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Calendar";
