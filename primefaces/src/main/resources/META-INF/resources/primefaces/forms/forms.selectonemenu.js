@@ -1297,10 +1297,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     hide.push(item);
                 }
                 else {
-                    if(this.filterMatcher(itemLabel, filterValue))
+                    if(this.filterMatcher(itemLabel, filterValue)) {
                         show.push(item);
-                    else
+                    }
+                    else if(!item.is('.ui-selectonemenu-item-group-children')){
                         hide.push(item);
+                    }
+                    else {
+                        itemLabel = this.cfg.caseSensitive ? option.parent().attr('label') : option.parent().attr('label').toLowerCase();
+                        if (this.filterMatcher(itemLabel, filterValue)) {
+                            show.push(item);
+                        }
+                        else {
+                            hide.push(item);
+                        }
+                    }
                 }
             }
 
