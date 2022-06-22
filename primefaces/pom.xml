@@ -554,6 +554,7 @@
                     <resourcesSets>
                         <resourcesSet>
                             <includes>
+                                <include>calendar/**</include>
                                 <include>charts/**</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
@@ -577,6 +578,7 @@
                                 <include>keyfilter/**</include>
                                 <include>knob/**</include>
                                 <include>lifecycle/**</include>
+                                <include>lightbox/**</include>
                                 <include>log/**</include>
                                 <include>mindmap/**</include>
                                 <include>organigram/**</include>
@@ -649,7 +651,6 @@
                                 <include>grid/grid.css</include>
                                 <include>growl/growl.css</include>
                                 <include>inplace/inplace.css</include>
-                                <include>lightbox/lightbox.css</include>
                                 <include>menu/menu.css</include>
                                 <include>messages/messages.css</include>
                                 <include>notificationbar/notificationbar.css</include>
@@ -717,7 +718,6 @@
                                 <include>accordion/accordion.js</include>
                                 <include>autocomplete/autocomplete.js</include>
                                 <include>blockui/blockui.js</include>
-                                <include>calendar/calendar.js</include>
                                 <include>carousel/carousel.js</include>
                                 <include>confirmpopup/confirmpopup.js</include>
                                 <include>columntoggler/columntoggler.js</include>
@@ -755,7 +755,6 @@
                                 <include>forms/forms.multiselectlistbox.js</include>
                                 <include>growl/growl.js</include>
                                 <include>inplace/inplace.js</include>
-                                <include>lightbox/lightbox.js</include>
                                 <include>menu/menu.base.js</include>
                                 <include>menu/menu.breadcrumb.js</include>
                                 <include>menu/menu.tieredmenu.js</include>
@@ -811,7 +810,6 @@
                         <resourcesSet>
                             <includes>
                                 <include>jquery/jquery.ui.js</include>
-                                <include>jquery/jquery.ui.timepicker.js</include>
                                 <include>jquery/jquery.caretposition.js</include>
                                 <include>jquery/jquery.autosize.js</include>
                                 <include>jquery/jquery.mousewheel.js</include>
