@@ -36,6 +36,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
   * Added Ajax load indicator (spinner) within the button during Ajax requests triggered by it.
+* TabMenu: added `orientation` (of the tab items relative to where you want to put the content) attribute.
 * TabView: added `ui-state-error` class to tabs that contain invalid inputs.
 * Tree: added `filterFunction` attribute for custom filtering.
 * ToggleSwitch: added `onIcon` and `offIcon` attributes

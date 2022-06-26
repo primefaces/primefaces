@@ -52,8 +52,11 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         TabMenu menu = (TabMenu) component;
         String clientId = menu.getClientId(context);
-        String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
+        String styleClass = getStyleClassBuilder(context)
+                .add(TabMenu.CONTAINER_CLASS)
+                .add("ui-tabs-" + menu.getOrientation())
+                .add(menu.getStyleClass())
+                .build();
         int activeIndex = menu.getActiveIndex();
         List<?> elements = menu.getElements();
 

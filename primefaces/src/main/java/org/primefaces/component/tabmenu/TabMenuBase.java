@@ -38,7 +38,8 @@ public abstract class TabMenuBase extends AbstractMenu implements Widget {
         model,
         style,
         styleClass,
-        activeIndex
+        activeIndex,
+        orientation
     }
 
     public TabMenuBase() {
@@ -89,5 +90,13 @@ public abstract class TabMenuBase extends AbstractMenu implements Widget {
 
     public void setActiveIndex(int activeIndex) {
         getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
+    }
+
+    public String getOrientation() {
+        return (String) getStateHelper().eval(PropertyKeys.orientation, "top");
+    }
+
+    public void setOrientation(String orientation) {
+        getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 }

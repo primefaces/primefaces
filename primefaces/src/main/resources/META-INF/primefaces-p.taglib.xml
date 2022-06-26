@@ -27576,6 +27576,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Orientation of the tab items relative to where you want to put the content, valid values are "top" (default), "left", "right" and "bottom".]]>
+            </description>
+            <name>orientation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -27718,7 +27726,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Orientation of the tab headers, valid values are "top" and "bottom".]]>
+                <![CDATA[Orientation of the tab headers, valid values are "top" (default), "left", "right" and "bottom".]]>
             </description>
             <name>orientation</name>
             <required>false</required>

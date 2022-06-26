@@ -39,23 +39,8 @@
         </div>
 
         <div class="card">
-            <h5 class="mt-0">Vertical</h5>
-            <style>
-                body .ui-tabmenu.vertical .ui-tabmenu-nav {
-                    flex-direction: column;
-                }
-                body .ui-tabmenu.vertical .ui-tabmenu-nav .ui-tabmenuitem {
-                    border-bottom: 0;
-                    border-right: 2px solid var(--surface-d);
-                }
-                body .ui-tabmenu.vertical .ui-tabmenu-nav .ui-tabmenuitem.ui-state-hover {
-                    border-right-color: var(--text-color-secondary);
-                }
-                body .ui-tabmenu.vertical .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
-                    border-right-color: var(--primary-color);
-                }
-            </style>
-            <p:tabMenu activeIndex="#{param.i}" style="width:15rem" styleClass="vertical">
+            <h5 class="mt-0">Orientation Left</h5>
+            <p:tabMenu activeIndex="#{param.i}" style="width:15rem" orientation="left">
                 <p:menuitem value="Home" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-home">
                     <f:param name="i" value="0"/>
                 </p:menuitem>
