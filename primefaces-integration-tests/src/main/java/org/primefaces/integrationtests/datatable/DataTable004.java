@@ -48,6 +48,8 @@ public class DataTable004 implements Serializable {
     @Inject
     private ProgrammingLanguageService service;
 
+    private boolean partialDisabledSelection = false;
+
     @PostConstruct
     public void init() {
         progLanguages = service.getLangs();
@@ -73,5 +75,12 @@ public class DataTable004 implements Serializable {
         else {
             TestUtils.addMessage("NO ProgrammingLanguage selected", "");
         }
+    }
+
+    public boolean isSelectionDisabled(ProgrammingLanguage lang) {
+        if (isPartialDisabledSelection() && (lang.getId() % 2) == 0) {
+            return true;
+        }
+        return false;
     }
 }
