@@ -47,15 +47,6 @@ public class Chips004Test extends AbstractPrimePageTest {
     @DisplayName("Chips: GitHub #1895/#6691: Chips allow pasting of delimited list")
     @Tag("SafariExclude") // can't get copy and paste working on Safari
     public void testClipboardPaste(Page page) {
-        if (PrimeSelenium.isChrome()) {
-            /*
-             * Chrome 98 - bug
-             * https://bugs.chromium.org/p/chromedriver/issues/detail?id=3999
-             * Re-enable with Chrome 99!
-             */
-            return;
-        }
-
         // Arrange
         Chips chips = page.chips;
         InputText clipboard = page.clipboard;
