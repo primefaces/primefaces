@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.file;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
@@ -31,7 +32,7 @@ import javax.faces.context.FacesContext;
 /**
  * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
  */
-public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<UploadedFiles>, StateHolder {
+public class UploadedFilesWrapper extends UploadedFiles implements FacesWrapper<UploadedFiles>, StateHolder, Serializable {
 
     private UploadedFiles wrapped;
 

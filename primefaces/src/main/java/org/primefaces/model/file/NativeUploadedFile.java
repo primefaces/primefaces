@@ -39,7 +39,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
     private static final String CONTENT_DISPOSITION_FILENAME_ATTR = "filename";
 
-    private Part part;
+    private transient Part part;
     private String filename;
     private byte[] cachedContent;
     private Long sizeLimit;

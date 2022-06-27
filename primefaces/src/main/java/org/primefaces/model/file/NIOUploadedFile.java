@@ -29,11 +29,12 @@ import org.primefaces.util.FileUploadUtils;
 import javax.faces.FacesException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class NIOUploadedFile implements UploadedFile {
+public class NIOUploadedFile implements UploadedFile, Serializable {
 
     private Path file;
     private String filename;

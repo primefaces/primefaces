@@ -40,7 +40,7 @@ public class CommonsUploadedFile implements UploadedFile, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private FileItem fileItem;
+    private transient FileItem fileItem;
     private Long sizeLimit;
 
     public CommonsUploadedFile() {
