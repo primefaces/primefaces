@@ -57,6 +57,35 @@
                     <f:param name="i" value="4"/>
                 </p:menuitem>
             </p:tabMenu>
+            <style>
+                body .ui-tabmenu:is(.ui-tabs-left, .ui-tabs-right) .ui-tabmenu-nav {
+                    flex-direction: column;
+                }
+                body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-width: 0;
+                    border-style: solid;
+                    border-color: var(--surface-d);
+                    border-bottom-width: 2px;
+                }
+                body .ui-tabmenu:not(.ui-tabs-top) .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-bottom-width: 0;
+                }
+                body .ui-tabmenu.ui-tabs-left .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-right-width: 2px;
+                }
+                body .ui-tabmenu.ui-tabs-right .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-left-width: 2px;
+                }
+                body .ui-tabmenu.ui-tabs-bottom .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-top-width: 2px;
+                }
+                body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-hover {
+                    border-color: var(--text-color-secondary);
+                }
+                body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
+                    border-color: var(--primary-color);
+                }
+            </style>
         </div>
     </ui:define>
 
