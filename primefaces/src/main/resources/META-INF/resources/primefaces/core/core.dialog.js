@@ -220,19 +220,25 @@ if (!PrimeFaces.dialog) {
                         onShow: function() {
                             if (cfg.options.onShow) {
                                 var onShowFunction = '(function(ext){' + cfg.options.onShow + '})';
-                                if (PrimeFaces.csp.NONCE_VALUE) {
-                                    onShowCallback = PrimeFaces.csp.evalResult(onShowFunction);
-                                }
-                                else {
-                                    onShowCallback = rootWindow.eval(onShowFunction);
-                                }
-                                
+                                var onShowCallback = PrimeFaces.csp.NONCE_VALUE
+                                    ? PrimeFaces.csp.evalResult(onShowFunction)
+                                    : rootWindow.eval(onShowFunction);
                                 if (onShowCallback) {
                                     onShowCallback.call(this);
                                 }
                             }
                         },
                         onHide: function() {
+                            if (cfg.options.onHide) {
+                                var onHideFunction = '(function(ext){' + cfg.options.onHide + '})';
+                                var onHideCallback = PrimeFaces.csp.NONCE_VALUE
+                                    ? PrimeFaces.csp.evalResult(onHideFunction)
+                                    : rootWindow.eval(onHideFunction);
+                                if (onHideCallback) {
+                                    onHideCallback.call(this);
+                                }
+                            }
+
                             var $dialogWidget = this,
                             dialogFrame = this.content.children('iframe');
 
