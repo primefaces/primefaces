@@ -32,6 +32,10 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
+/**
+ * @deprecated please use Carousel component
+ */
+@Deprecated
 public class RingRenderer extends CoreRenderer {
 
     @Override

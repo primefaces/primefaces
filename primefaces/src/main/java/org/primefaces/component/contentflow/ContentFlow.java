@@ -25,6 +25,10 @@ package org.primefaces.component.contentflow;
 
 import javax.faces.application.ResourceDependency;
 
+/**
+ * @deprecated please use Carousel component
+ */
+@Deprecated
 @ResourceDependency(library = "primefaces", name = "contentflow/contentflow.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")

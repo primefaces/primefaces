@@ -26,6 +26,10 @@ package org.primefaces.component.ring;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
 
+/**
+ * @deprecated please use Carousel component
+ */
+@Deprecated
 public abstract class RingBase extends UIData implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
