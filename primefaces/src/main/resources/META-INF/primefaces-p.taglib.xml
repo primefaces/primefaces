@@ -131,25 +131,25 @@
             org.primefaces.component.export.DataExporterTagHandler
         </handler-class>
         <attribute>
-            <description>Server side id of the datatable whose data would be exported.</description>
+            <description>Search expression to resolve one or multiple datatables.</description>
             <name>target</name>
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Export type: "xls","pdf","csv", "xml".</description>
+            <description>Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml"</description>
             <name>type</name>
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Filename of the generated export file, defaults to datatable server side id.</description>
+            <description>Filename of the generated export file, defaults to datatable id.</description>
             <name>fileName</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Exports only current page instead of whole dataset.</description>
+            <description>Exports only current page instead of whole dataset</description>
             <name>pageOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
@@ -197,13 +197,13 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>Exports the header and cell content according to the option.</description>
+            <description>Options object to customize document.</description>
             <name>options</name>
             <required>false</required>
-            <type>java.lang.Object</type>
+            <type>org.primefaces.component.export.ExporterOptions</type>
         </attribute>
         <attribute>
-            <description>Custom exporter to be used instead of built-in exporters.</description>
+            <description>Custom org.primefaces.component.export.Exporter to be used instead of built-in exporters.</description>
             <name>exporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
