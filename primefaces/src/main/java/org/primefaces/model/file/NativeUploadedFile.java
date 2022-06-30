@@ -23,7 +23,6 @@
  */
 package org.primefaces.model.file;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
@@ -101,7 +100,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     @Override
     public void write(String filePath) throws Exception {
         SafeFile file = new SafeFile(filePath);
-        String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(file.getPath()));
+        String validFileName = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
         part.write(validFileName);
     }
 
