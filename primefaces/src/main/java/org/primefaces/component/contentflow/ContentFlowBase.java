@@ -27,6 +27,10 @@ import javax.faces.component.UIPanel;
 
 import org.primefaces.component.api.Widget;
 
+/**
+ * @deprecated please use Carousel component
+ */
+@Deprecated
 public abstract class ContentFlowBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

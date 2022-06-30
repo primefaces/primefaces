@@ -25,6 +25,10 @@ package org.primefaces.component.ring;
 
 import javax.faces.application.ResourceDependency;
 
+/**
+ * @deprecated please use Carousel component
+ */
+@Deprecated
 @ResourceDependency(library = "primefaces", name = "ring/ring.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
