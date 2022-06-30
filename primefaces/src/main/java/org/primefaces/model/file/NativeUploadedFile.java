@@ -100,8 +100,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     @Override
     public void write(String filePath) throws Exception {
         SafeFile file = new SafeFile(filePath);
-        String validFileName = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
-        part.write(validFileName);
+        String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
+        part.write(new SafeFile(validFilePath, filename).getCanonicalPath());
     }
 
     @Override
