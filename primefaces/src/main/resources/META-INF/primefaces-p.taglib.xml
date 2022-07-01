@@ -131,7 +131,7 @@
             org.primefaces.component.export.DataExporterTagHandler
         </handler-class>
         <attribute>
-            <description>Search expression to resolve one or multiple datatables.</description>
+            <description>Search expression to resolve one or multiple target components.</description>
             <name>target</name>
             <required>true</required>
             <type>java.lang.String</type>
@@ -143,13 +143,13 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Filename of the generated export file, defaults to datatable id.</description>
+            <description>Filename of the generated export file, defaults to target component id.</description>
             <name>fileName</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Exports only current page instead of whole dataset</description>
+            <description>Exports only current page instead of whole dataset.</description>
             <name>pageOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
