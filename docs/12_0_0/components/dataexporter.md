@@ -16,9 +16,9 @@ such as excel, pdf, csv and xml.
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
 type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml"
-target | null | String | Search expression to resolve one or multiple datatables.
-fileName | null | String | Filename of the generated export file, defaults to datatable id.
-pageOnly | false | Boolean | Exports only current page instead of whole dataset
+target | null | String | Search expression to resolve one or multiple target components.
+fileName | null | String | Filename of the generated export file, defaults to target component id.
+pageOnly | false | Boolean | Exports only current page instead of whole dataset.
 preProcessor | null | MethodExpr | PreProcessor for the exported document.
 postProcessor | null | MethodExpr | PostProcessor for the exported document.
 encoding | UTF-8 | String | Character encoding to use
