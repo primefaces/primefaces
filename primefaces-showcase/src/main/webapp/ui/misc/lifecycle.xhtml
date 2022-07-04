@@ -21,9 +21,9 @@
         <div class="card">
             <h:form>
                 <div class="mb-5">
-                    <p:commandButton value="Dummy Ajax Request" update="@none" styleClass="mr-2" />
+                    <p:commandButton value="Dummy Ajax Request" update="@none" process="@form" styleClass="mr-2" />
                     <h:commandButton value="Dummy Ajax Request">
-                        <f:ajax render="@none"/>
+                        <f:ajax render="@none" execute="@form" />
                     </h:commandButton>
                 </div>
 
