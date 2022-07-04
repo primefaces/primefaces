@@ -45,6 +45,9 @@ This page contains a list of big features. Please check the GitHub issues for al
 * OverlayPanel: added `autoHide` attribute when set to false will keep the overlay showing while focused.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
+Or check the list of 300+ issues closed for
+[12.0.0-RC1](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0-RC1)
+and [12.0.0](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0).
 
 ### PrimeFaces Selenium 
 
