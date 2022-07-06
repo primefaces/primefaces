@@ -218,16 +218,16 @@ public class CurrencyValidator implements Serializable {
 
     /**
      * <p>
-     * Returns a <code>String</code> representing the pattern for this currency.
+     * Returns a <code>String</code> representing the Excel pattern for this currency.
      * </p>
      *
      * @param locale The locale a <code>NumberFormat</code> is required for, system default if null.
-     * @return The <code>String</code> pattern.
+     * @return The <code>String</code> pattern for using in Excel format.
      */
-    public String getPattern(Locale locale) {
+    public String getExcelPattern(Locale locale) {
         DecimalFormat format = getFormat(locale);
         String pattern = format.toLocalizedPattern();
-        pattern =  pattern.replace(CURRENCY_SYMBOL_STR, format.getDecimalFormatSymbols().getCurrencySymbol());
+        pattern =  pattern.replace(CURRENCY_SYMBOL_STR, "\"" + format.getDecimalFormatSymbols().getCurrencySymbol() + "\"");
         String[] patterns = pattern.split(";");
         return patterns[0];
     }

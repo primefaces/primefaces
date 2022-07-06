@@ -132,11 +132,11 @@ public class CurrencyValidatorTest {
      * Test Patterns
      */
     @Test
-    public void testPatterns() {
+    public void testExcelPatterns() {
         CurrencyValidator validator = CurrencyValidator.getInstance();
 
-        assertEquals(usDollar + "#,##0.00", validator.getPattern(Locale.US), "US");
-        assertEquals(ukPound + "#,##0.00", validator.getPattern(Locale.UK), "UK");
+        assertEquals("\"" + usDollar + "\"" + "#,##0.00", validator.getExcelPattern(Locale.US), "US");
+        assertEquals("\"" + ukPound + "\"" +  "#,##0.00", validator.getExcelPattern(Locale.UK), "UK");
     }
 
     /**
