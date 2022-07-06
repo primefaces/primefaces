@@ -137,6 +137,7 @@ public class CurrencyValidatorTest {
 
         assertEquals("\"" + usDollar + "\"" + "#,##0.00", validator.getExcelPattern(Locale.US), "US");
         assertEquals("\"" + ukPound + "\"" +  "#,##0.00", validator.getExcelPattern(Locale.UK), "UK");
+        assertEquals("\"US$\"#,##0.00", validator.getExcelPattern(new Locale("es", "US")), "Custom");
     }
 
     /**
