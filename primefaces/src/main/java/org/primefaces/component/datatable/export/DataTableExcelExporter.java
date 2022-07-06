@@ -448,7 +448,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             currencyStyle = wb.createCellStyle();
             currencyStyle.setFont(font);
             currencyStyle.setAlignment(HorizontalAlignment.RIGHT);
-            String pattern = CurrencyValidator.getInstance().getPattern(locale);
+            String pattern = CurrencyValidator.getInstance().getExcelPattern(locale);
             short currencyPattern = wb.getCreationHelper().createDataFormat().getFormat(pattern);
             currencyStyle.setDataFormat(currencyPattern);
             applyCellOptions(wb, options, currencyStyle);
