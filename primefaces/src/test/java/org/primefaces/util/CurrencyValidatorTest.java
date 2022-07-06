@@ -42,12 +42,15 @@ public class CurrencyValidatorTest {
     private static String ukPound;
     private static String brazilReal;
     private static Locale brazil = new Locale("pt", "BR");
+    public static final Locale customLocale = new Locale("es", "US");
+    public static String customLocaleCurrencySymbol;
 
     @BeforeAll
     protected static void setUp() throws Exception {
         usDollar = (new DecimalFormatSymbols(Locale.US)).getCurrencySymbol();
         ukPound = (new DecimalFormatSymbols(Locale.UK)).getCurrencySymbol();
         brazilReal = (new DecimalFormatSymbols(brazil)).getCurrencySymbol();
+        customLocaleCurrencySymbol = (new DecimalFormatSymbols(customLocale)).getCurrencySymbol();
     }
 
     private static int getVersion() {
@@ -137,7 +140,7 @@ public class CurrencyValidatorTest {
 
         assertEquals("\"" + usDollar + "\"" + "#,##0.00", validator.getExcelPattern(Locale.US), "US");
         assertEquals("\"" + ukPound + "\"" +  "#,##0.00", validator.getExcelPattern(Locale.UK), "UK");
-        assertEquals("\"US$\"#,##0.00", validator.getExcelPattern(new Locale("es", "US")), "Custom");
+        assertEquals("\"" + customLocaleCurrencySymbol + "\"#,##0.00", validator.getExcelPattern(customLocale), "Custom");
     }
 
     /**
