@@ -25,6 +25,7 @@ package org.primefaces.component.datatable.export;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,6 +61,7 @@ public class DataTableExcelExporter extends DataTableExporter {
     private CellStyle currencyStyle;
     private boolean stronglyTypedCells;
     private Locale locale;
+    private DecimalFormat decimalFormat;
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
@@ -91,6 +93,12 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
         if (stronglyTypedCells) {
             locale = LocaleUtils.getCurrentLocale(context);
+            if (options != null && options.getDecimalFormat() != null) {
+                decimalFormat = options.getDecimalFormat();
+            }
+            else {
+                decimalFormat = (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
+            }
         }
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
@@ -346,7 +354,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             }
 
             if (!printed) {
-                Number currency = CurrencyValidator.getInstance().validate(value, locale);
+                Number currency = CurrencyValidator.getInstance().validate(value, decimalFormat);
                 if (currency != null) {
                     cell.setCellValue(currency.doubleValue());
                     cell.setCellStyle(currencyStyle);
@@ -448,7 +456,7 @@ public class DataTableExcelExporter extends DataTableExporter {
             currencyStyle = wb.createCellStyle();
             currencyStyle.setFont(font);
             currencyStyle.setAlignment(HorizontalAlignment.RIGHT);
-            String pattern = CurrencyValidator.getInstance().getExcelPattern(locale);
+            String pattern = CurrencyValidator.getInstance().getExcelPattern(decimalFormat);
             short currencyPattern = wb.getCreationHelper().createDataFormat().getFormat(pattern);
             currencyStyle.setDataFormat(currencyPattern);
             applyCellOptions(wb, options, currencyStyle);

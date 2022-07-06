@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.*;
-import java.util.Locale;
 
 /**
  * <p>
@@ -70,11 +69,11 @@ public class CurrencyValidator implements Serializable {
      * Validate/convert a <code>BigDecimal</code> using the specified <code>Locale</code>.
      *
      * @param value The value validation is being performed on.
-     * @param locale The locale to use for the number format, system default if null.
+     * @param format The format to use for the number format, system default if null.
      * @return The parsed <code>BigDecimal</code> if valid or <code>null</code> if invalid.
      */
-    public BigDecimal validate(String value, Locale locale) {
-        return (BigDecimal) parse(value, locale);
+    public BigDecimal validate(String value, DecimalFormat format) {
+        return (BigDecimal) parse(value, format);
     }
 
     /**
@@ -102,8 +101,8 @@ public class CurrencyValidator implements Serializable {
         }
 
         // Initial parse of the value
-        Object parsedValue = parseFormat(value, formatter);
-        if (parsedValue != null || !(formatter instanceof DecimalFormat)) {
+        Number parsedValue = parseFormat(value, formatter);
+        if (parsedValue != null) {
             return parsedValue;
         }
 
@@ -116,8 +115,9 @@ public class CurrencyValidator implements Serializable {
                     buffer.append(pattern.charAt(i));
                 }
             }
-            formatter.applyPattern(buffer.toString());
-            parsedValue = parseFormat(value, formatter);
+            DecimalFormat copyFormatter = (DecimalFormat) formatter.clone();
+            copyFormatter.applyPattern(buffer.toString());
+            parsedValue = parseFormat(value, copyFormatter);
         }
         return parsedValue;
     }
@@ -131,7 +131,7 @@ public class CurrencyValidator implements Serializable {
      * @param formatter The Format to parse the value with.
      * @return The parsed value if valid or <code>null</code> if invalid.
      */
-    protected Object parseFormat(String value, DecimalFormat formatter) {
+    protected Number parseFormat(String value, DecimalFormat formatter) {
         ParsePosition pos = new ParsePosition(0);
         Number parsedValue = formatter.parse(value, pos);
         if (pos.getErrorIndex() > -1) {
@@ -161,9 +161,9 @@ public class CurrencyValidator implements Serializable {
      * @return The parsed <code>Number</code> converted to a <code>BigDecimal</code>.
      */
     protected BigDecimal processParsedValue(Number value, DecimalFormat formatter) {
-        BigDecimal decimal = null;
+        BigDecimal decimal;
         if (value instanceof Long) {
-            decimal = BigDecimal.valueOf(((Long) value).longValue());
+            decimal = BigDecimal.valueOf((Long) value);
         }
         else {
             decimal = new BigDecimal(value.toString());
@@ -183,7 +183,7 @@ public class CurrencyValidator implements Serializable {
      * </p>
      *
      * @param format The <code>NumberFormat</code> to determine the multiplier of.
-     * @return The multiplying factor for the format..
+     * @return The multiplying factor for the format.
      */
     protected int determineScale(NumberFormat format) {
         int minimumFraction = format.getMinimumFractionDigits();
@@ -206,49 +206,17 @@ public class CurrencyValidator implements Serializable {
 
     /**
      * <p>
-     * Returns a <code>NumberFormat</code> for the specified Locale.
-     * </p>
-     *
-     * @param locale The locale a <code>NumberFormat</code> is required for, system default if null.
-     * @return The <code>NumberFormat</code> to created.
-     */
-    public DecimalFormat getFormat(Locale locale) {
-        return (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
-    }
-
-    /**
-     * <p>
      * Returns a <code>String</code> representing the Excel pattern for this currency.
      * </p>
      *
-     * @param locale The locale a <code>NumberFormat</code> is required for, system default if null.
+     * @param format The format a <code>NumberFormat</code> is required for.
      * @return The <code>String</code> pattern for using in Excel format.
      */
-    public String getExcelPattern(Locale locale) {
-        DecimalFormat format = getFormat(locale);
+    public String getExcelPattern(DecimalFormat format) {
         String pattern = format.toLocalizedPattern();
         pattern =  pattern.replace(CURRENCY_SYMBOL_STR, "\"" + format.getDecimalFormatSymbols().getCurrencySymbol() + "\"");
         String[] patterns = pattern.split(";");
         return patterns[0];
-    }
-
-    /**
-     * <p>
-     * Parse the value using the specified pattern.
-     * </p>
-     *
-     * @param value The value validation is being performed on.
-     * @param locale The locale to use for the date format, system default if null.
-     * @return The parsed value if valid or <code>null</code> if invalid.
-     */
-    protected Object parse(String value, Locale locale) {
-        value = (value == null ? null : value.trim());
-        if (value == null || value.isEmpty()) {
-            return null;
-        }
-        DecimalFormat formatter = getFormat(locale);
-        return parse(value, formatter);
-
     }
 
 }
