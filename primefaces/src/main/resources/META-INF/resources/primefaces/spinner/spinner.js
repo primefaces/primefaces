@@ -147,16 +147,15 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     $this.format();
                 break;
 
-                case keyCode.BACKSPACE:
-                case keyCode.DELETE:
-                case keyCode.LEFT:
-                case keyCode.RIGHT:
-                case keyCode.TAB:
-                    return;
-
                 default:
                     //do nothing
                 break;
+            }
+
+            // #8958 allow TAB, F1, F12 etc
+            var isPrintableKey = e.key.length === 1 || e.key === 'Unidentified';
+            if (!isPrintableKey) {
+                return;
             }
 
             /* Github #1964 do not allow minus */
