@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.export;
 
+import java.text.DecimalFormat;
+
 public class ExcelOptions implements ExporterOptions {
 
     private String facetFontStyle;
@@ -44,6 +46,8 @@ public class ExcelOptions implements ExporterOptions {
     private boolean autoSizeColumn = true;
 
     private boolean stronglyTypedCells = true;
+
+    private DecimalFormat decimalFormat;
 
     public ExcelOptions() {
     }
@@ -156,5 +160,13 @@ public class ExcelOptions implements ExporterOptions {
 
     public void setStronglyTypedCells(boolean stronglyTypedCells) {
         this.stronglyTypedCells = stronglyTypedCells;
+    }
+
+    public DecimalFormat getDecimalFormat() {
+        return decimalFormat;
+    }
+
+    public void setDecimalFormat(DecimalFormat decimalFormat) {
+        this.decimalFormat = decimalFormat;
     }
 }

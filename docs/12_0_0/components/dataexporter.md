@@ -340,7 +340,9 @@ public class CustomizedDocumentsView implements Serializable {
         excelOpt.setCellFontColor("#00ff00");
         excelOpt.setCellFontSize("8");
         excelOpt.setStronglyTypedCells(true);
+        excelOpt.setDecimalFormat(DecimalFormat.getCurrencyInstance(new Locale("es", "US")));
     }
+
     public ExcelOptions getExcelOpt() {
         return excelOpt;
     }

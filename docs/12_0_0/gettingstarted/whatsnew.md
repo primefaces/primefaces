@@ -20,7 +20,9 @@ This page contains a list of big features. Please check the GitHub issues for al
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
-* Exporter: added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output.
+* DataExporter:
+  * Added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output. 
+  * ExcelOptions: Added new property `decimalFormat` in order to use a custom java.text.DecimalFormat for formatting currency in Excel export. If null, defaults to decimal format of current Locale.
 * FileUpload: added `clear()` widget method in SkinSimple mode to clear out selected file.
 * GMap
   * Added `Symbol` which can be used as marker icon.
