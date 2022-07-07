@@ -199,6 +199,10 @@ if (!PrimeFaces.utils) {
                         }
                     }
                 }
+                else if (event.ctrlKey) { 
+                    // #8965 allow cut, copy, paste
+                    return;
+                }
                 else if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
