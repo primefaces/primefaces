@@ -23,21 +23,15 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.awt.Color;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
@@ -49,19 +43,12 @@ import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.util.*;
+import org.primefaces.util.ExcelStylesManager;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
-    protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
     protected Workbook wb;
-    private CellStyle cellStyleRightAlign;
-    private CellStyle cellStyleCenterAlign;
-    private CellStyle cellStyleLeftAlign;
-    private CellStyle facetStyle;
-    private CellStyle currencyStyle;
-    private boolean stronglyTypedCells;
-    private Locale locale;
-    private DecimalFormat decimalFormat;
+    private ExcelStylesManager stylesManager;
 
     @Override
     protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
@@ -85,21 +72,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
-        if (options == null) {
-            stronglyTypedCells = true;
-        }
-        else {
-            stronglyTypedCells = options.isStronglyTypedCells();
-        }
-        if (stronglyTypedCells) {
-            locale = LocaleUtils.getCurrentLocale(context);
-            if (options != null && options.getDecimalFormat() != null) {
-                decimalFormat = options.getDecimalFormat();
-            }
-            else {
-                decimalFormat = (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
-            }
-        }
+        stylesManager = new ExcelStylesManager(wb, LocaleUtils.getCurrentLocale(context), options);
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
         exportTable(context, table, sheet, exportConfiguration);
@@ -226,8 +199,8 @@ public class DataTableExcelExporter extends DataTableExporter {
 
     protected void addColumnValue(Row row, int col, String text) {
         Cell cell = row.createCell(col);
-        cell.setCellValue(createRichTextString(text));
-        cell.setCellStyle(facetStyle);
+        cell.setCellValue(stylesManager.createRichTextString(text));
+        cell.setCellStyle(stylesManager.getFacetStyle());
     }
 
     protected void addColumnValue(DataTable table, Row row, List<UIComponent> components, UIColumn column) {
@@ -235,9 +208,8 @@ public class DataTableExcelExporter extends DataTableExporter {
         Cell cell = row.createCell(cellIndex);
         FacesContext context = FacesContext.getCurrentInstance();
 
-        applyColumnAlignments(column, cell);
-
-        exportColumn(context, table, column, components, true, (s) -> updateCell(cell, s));
+        exportColumn(context, table, column, components, true,
+                (value) -> stylesManager.updateCell(column, cell, Objects.toString(value, Constants.EMPTY_STRING)));
     }
 
     protected boolean addColumnGroup(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
@@ -333,46 +305,6 @@ public class DataTableExcelExporter extends DataTableExporter {
         return col;
     }
 
-    /**
-     * If ExcelOptions.isStronglyTypedCells = true then for cells check:
-     * <pre>
-     * Numeric - String that are all numbers make them a numeric cell
-     * Currency - Convert to currency cell so math can be done in Excel
-     * String - fallback to just a normal string cell
-     * </pre>
-     * Possible future enhancement of Date cells as well.
-     *
-     * @param cell the cell to operate on
-     * @param value the String value to put in the cell
-     */
-    protected void updateCell(Cell cell, String value) {
-        boolean printed = false;
-        if (stronglyTypedCells) {
-            if (LangUtils.isNumeric(value)) {
-                cell.setCellValue(Double.parseDouble(value));
-                printed = true;
-            }
-
-            if (!printed) {
-                Number currency = CurrencyValidator.getInstance().validate(value, decimalFormat);
-                if (currency != null) {
-                    cell.setCellValue(currency.doubleValue());
-                    cell.setCellStyle(currencyStyle);
-                    printed = true;
-                }
-            }
-        }
-
-        // fall back to just printing the string value
-        if (!printed) {
-            cell.setCellValue(createRichTextString(value));
-        }
-    }
-
-    protected RichTextString createRichTextString(String value) {
-        return new HSSFRichTextString(value);
-    }
-
     protected Workbook createWorkBook() {
         return new HSSFWorkbook();
     }
@@ -428,130 +360,10 @@ public class DataTableExcelExporter extends DataTableExporter {
     }
 
     protected void applyOptions(Workbook wb, DataTable table, Sheet sheet, ExporterOptions options) {
-        Font font = getFont(wb, options);
-
-        facetStyle = wb.createCellStyle();
-        facetStyle.setFont(font);
-        facetStyle.setAlignment(HorizontalAlignment.CENTER);
-        facetStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-        facetStyle.setWrapText(true);
-        applyFacetOptions(wb, options, facetStyle);
-
-        cellStyleLeftAlign = wb.createCellStyle();
-        cellStyleLeftAlign.setFont(font);
-        cellStyleLeftAlign.setAlignment(HorizontalAlignment.LEFT);
-        applyCellOptions(wb, options, cellStyleLeftAlign);
-
-        cellStyleCenterAlign = wb.createCellStyle();
-        cellStyleCenterAlign.setFont(font);
-        cellStyleCenterAlign.setAlignment(HorizontalAlignment.CENTER);
-        applyCellOptions(wb, options, cellStyleCenterAlign);
-
-        cellStyleRightAlign = wb.createCellStyle();
-        cellStyleRightAlign.setFont(font);
-        cellStyleRightAlign.setAlignment(HorizontalAlignment.RIGHT);
-        applyCellOptions(wb, options, cellStyleRightAlign);
-
-        if (stronglyTypedCells) {
-            currencyStyle = wb.createCellStyle();
-            currencyStyle.setFont(font);
-            currencyStyle.setAlignment(HorizontalAlignment.RIGHT);
-            String pattern = CurrencyValidator.getInstance().getExcelPattern(decimalFormat);
-            short currencyPattern = wb.getCreationHelper().createDataFormat().getFormat(pattern);
-            currencyStyle.setDataFormat(currencyPattern);
-            applyCellOptions(wb, options, currencyStyle);
-        }
-
         PrintSetup printSetup = sheet.getPrintSetup();
         printSetup.setLandscape(true);
         printSetup.setPaperSize(PrintSetup.A4_PAPERSIZE);
         sheet.setPrintGridlines(true);
-    }
-
-    protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
-        Font facetFont = getFont(wb, options);
-
-        if (options != null) {
-            String facetFontStyle = options.getFacetFontStyle();
-            if (facetFontStyle != null) {
-                if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
-                    facetFont.setBold(true);
-                }
-                if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
-                    facetFont.setItalic(true);
-                }
-            }
-
-            HSSFPalette palette = ((HSSFWorkbook) wb).getCustomPalette();
-            Color color = null;
-
-            String facetBackground = options.getFacetBgColor();
-            if (facetBackground != null) {
-                color = Color.decode(facetBackground);
-                HSSFColor backgroundColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-                facetStyle.setFillForegroundColor(backgroundColor.getIndex());
-                facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            }
-
-            String facetFontColor = options.getFacetFontColor();
-            if (facetFontColor != null) {
-                color = Color.decode(facetFontColor);
-                HSSFColor facetColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-                facetFont.setColor(facetColor.getIndex());
-            }
-
-            String facetFontSize = options.getFacetFontSize();
-            if (facetFontSize != null) {
-                facetFont.setFontHeightInPoints(Short.valueOf(facetFontSize));
-            }
-        }
-
-        facetStyle.setFont(facetFont);
-    }
-
-    protected void applyCellOptions(Workbook wb, ExporterOptions options, CellStyle cellStyle) {
-        Font cellFont = getFont(wb, options);
-
-        if (options != null) {
-            String cellFontColor = options.getCellFontColor();
-            if (cellFontColor != null) {
-                HSSFPalette palette = ((HSSFWorkbook) wb).getCustomPalette();
-                Color color = Color.decode(cellFontColor);
-                HSSFColor cellColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-                cellFont.setColor(cellColor.getIndex());
-            }
-
-            String cellFontSize = options.getCellFontSize();
-            if (cellFontSize != null) {
-                cellFont.setFontHeightInPoints(Short.valueOf(cellFontSize));
-            }
-
-            String cellFontStyle = options.getCellFontStyle();
-            if (cellFontStyle != null) {
-                if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
-                    cellFont.setBold(true);
-                }
-                if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
-                    cellFont.setItalic(true);
-                }
-            }
-        }
-
-        cellStyle.setFont(cellFont);
-    }
-
-    protected Cell applyColumnAlignments(UIColumn column, Cell cell) {
-        String[] styles = new String[] {column.getStyle(), column.getStyleClass()};
-        if (LangUtils.containsIgnoreCase(styles, "right")) {
-            cell.setCellStyle(cellStyleRightAlign);
-        }
-        else  if (LangUtils.containsIgnoreCase(styles, "center")) {
-            cell.setCellStyle(cellStyleCenterAlign);
-        }
-        else {
-            cell.setCellStyle(cellStyleLeftAlign);
-        }
-        return cell;
     }
 
     public String getSheetName(FacesContext context, UIComponent table) {
@@ -574,18 +386,5 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         return null;
-    }
-
-    public Font getFont(Workbook wb, ExporterOptions options) {
-        Font font = wb.createFont();
-
-        if (options != null) {
-            String fontName = LangUtils.isBlank(options.getFontName()) ? DEFAULT_FONT : options.getFontName();
-            font.setFontName(fontName);
-        }
-        else {
-            font.setFontName(DEFAULT_FONT);
-        }
-        return font;
     }
 }
