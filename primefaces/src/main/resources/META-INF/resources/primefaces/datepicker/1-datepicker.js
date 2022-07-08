@@ -26,6 +26,7 @@
  * date picker instance.
  *
  * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
+ * @prop {JQuery} triggerButton The DOM element for the trigger button if using showIcon.
  * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
  * @prop {JQuery} [panel] The DOM element for the panel with the datepicker.
  * @prop {boolean} refocusInput Whether focus should be put on the input again.
@@ -136,20 +137,20 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
-            var triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true);
+            this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
+            this.triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true);
 
             var title = this.jqEl.attr('title');
             if(title) {
-                triggerButton.attr('title', title);
+                this.triggerButton.attr('title', title);
             }
 
             var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
             if(buttonIndex) {
-                triggerButton.attr('tabindex', buttonIndex);
+                this.triggerButton.attr('tabindex', buttonIndex);
             }
 
-            PrimeFaces.skinButton(triggerButton);
+            PrimeFaces.skinButton(this.triggerButton);
         }
 
         //mark target and descendants of target as a trigger for a PrimeFaces overlay
@@ -500,6 +501,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.jq.data().primeDatePicker.options.disabled = false;
         this.updatePanel();
         PrimeFaces.utils.enableInputWidget(this.input);
+        PrimeFaces.utils.enableButton(this.triggerButton);
     },
 
     /**
@@ -510,6 +512,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.jq.data().primeDatePicker.options.disabled = true;
         this.updatePanel();
         PrimeFaces.utils.disableInputWidget(this.input);
+        PrimeFaces.utils.disableButton(this.triggerButton);
     }
 
 });
