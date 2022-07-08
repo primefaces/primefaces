@@ -23,6 +23,7 @@
  */
 package org.primefaces.showcase.view.data.tree;
 
+import java.util.Collections;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -42,6 +43,10 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     @Override
     public List<TreeNode<FileInfo>> getChildren() {
+        if (isLeaf()) {
+            return Collections.emptyList();
+        }
+
         lazyLoad();
 
         return super.getChildren();
@@ -49,6 +54,10 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     @Override
     public int getChildCount() {
+        if (isLeaf()) {
+            return 0;
+        }
+
         lazyLoad();
 
         return super.getChildCount();
