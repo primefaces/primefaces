@@ -30,6 +30,7 @@ import org.primefaces.model.TreeNode;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.primefaces.model.TreeNodeChildren;
 
 public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
@@ -77,6 +78,39 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
             List<LazyLoadingTreeNode> childNodes = loadFunction.apply(parentId).stream()
                     .map(f -> new LazyLoadingTreeNode(f, loadFunction)).collect(Collectors.toList());
             super.getChildren().addAll(childNodes);
+        }
+    }
+
+    @Override
+    protected List<TreeNode<FileInfo>> initChildren() {
+        return new LazyLoadingTreeNodeChildren(this);
+    }
+
+    public static class LazyLoadingTreeNodeChildren extends TreeNodeChildren<FileInfo> {
+
+        public LazyLoadingTreeNodeChildren(LazyLoadingTreeNode parent) {
+            super(parent);
+        }
+
+        @Override
+        protected void updateRowKeys(TreeNode<?> node) {
+            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+                super.updateRowKeys(node);
+            }
+        }
+
+        @Override
+        protected void updateRowKeys(int index, TreeNode<?> node) {
+            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+                super.updateRowKeys(index, node);
+            }
+        }
+
+        @Override
+        protected void updateRowKeys(TreeNode<?> node, TreeNode<?> childNode, int i) {
+            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+                super.updateRowKeys(node, childNode, i);
+            }
         }
     }
 }
