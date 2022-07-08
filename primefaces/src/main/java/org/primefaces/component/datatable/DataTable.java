@@ -197,6 +197,7 @@ public class DataTable extends DataTableBase {
         visibleColumnsAsMap,
         resizableColumnsAsMap,
         selectedRowKeys,
+        selectAll,
         expandedRowKeys,
         columnMeta,
         width;
@@ -658,6 +659,14 @@ public class DataTable extends DataTableBase {
 
     public String getSelectedRowKeysAsString() {
         return String.join(",", getSelectedRowKeys());
+    }
+
+    public boolean isSelectAll() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectAll, () -> false);
+    }
+
+    public void setSelectAll(boolean selectAll) {
+        getStateHelper().put(InternalPropertyKeys.selectAll, selectAll);
     }
 
     public SummaryRow getSummaryRow() {

@@ -61,6 +61,10 @@ public class SelectionFeature implements DataTableFeature {
 
         if (LangUtils.isNotBlank(selection)) {
             rowKeys = LangUtils.newLinkedHashSet(selection.split(","));
+            table.setSelectAll(ALL_SELECTOR.equals(selection));
+        }
+        else {
+            table.setSelectAll(false);
         }
 
         if (isFiltered) {

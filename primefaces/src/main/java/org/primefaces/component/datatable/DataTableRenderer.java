@@ -696,7 +696,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode)) {
-            encodeCheckbox(context, table, false, false, HTML.CHECKBOX_ALL_CLASS, true);
+            encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
         writer.endElement("th");
