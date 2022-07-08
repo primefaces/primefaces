@@ -1135,7 +1135,7 @@
         },
 
         renderTriggerButton: function () {
-            this.triggerButton = $('<button type="button" class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="-1">' +
+            this.triggerButton = $('<button type="button" class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
                 '<span class="ui-button-icon-left ' + this.options.icon + '"></span>' +
                 '<span class="ui-button-text">ui-button</span>' +
                 '</button>');
