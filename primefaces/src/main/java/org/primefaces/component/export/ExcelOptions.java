@@ -47,7 +47,8 @@ public class ExcelOptions implements ExporterOptions {
 
     private boolean stronglyTypedCells = true;
 
-    private DecimalFormat decimalFormat;
+    private DecimalFormat numberFormat;
+    private DecimalFormat currencyFormat;
 
     public ExcelOptions() {
     }
@@ -162,11 +163,19 @@ public class ExcelOptions implements ExporterOptions {
         this.stronglyTypedCells = stronglyTypedCells;
     }
 
-    public DecimalFormat getDecimalFormat() {
-        return decimalFormat;
+    public DecimalFormat getNumberFormat() {
+        return numberFormat;
     }
 
-    public void setDecimalFormat(DecimalFormat decimalFormat) {
-        this.decimalFormat = decimalFormat;
+    public void setNumberFormat(DecimalFormat numberFormat) {
+        this.numberFormat = numberFormat;
+    }
+
+    public DecimalFormat getCurrencyFormat() {
+        return currencyFormat;
+    }
+
+    public void setCurrencyFormat(DecimalFormat currencyFormat) {
+        this.currencyFormat = currencyFormat;
     }
 }

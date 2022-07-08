@@ -28,6 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -47,6 +48,7 @@ import org.primefaces.component.export.ExcelOptions;
 
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class ExcelStylesManager {
@@ -59,7 +61,7 @@ public class ExcelStylesManager {
     //internal
     private final boolean hssf;
     private final boolean stronglyTypedCells;
-    private final DecimalFormat decimalFormat;
+    private final DecimalFormat numberFormat, currencyFormat;
     private CellStyle facetStyle;
     private CellStyle defaultCellStyle;
     private CellStyle numberStyle;
@@ -72,7 +74,8 @@ public class ExcelStylesManager {
         //internal vars
         this.hssf = wb instanceof HSSFWorkbook;
         this.stronglyTypedCells = options == null || options.isStronglyTypedCells();
-        this.decimalFormat = getDecimalFormat();
+        this.numberFormat = getNumberFormat();
+        this.currencyFormat = getCurrencyFormat();
     }
 
     /**
@@ -111,18 +114,26 @@ public class ExcelStylesManager {
     }
 
     private boolean applyNumberStyleIfApropiate(Cell cell, String value) {
+        Number number;
         if (LangUtils.isNumeric(value)) {
-            cell.setCellValue(Double.parseDouble(value));
-            cell.setCellStyle(getNumberStyle());
-            return true;
+            number = Double.parseDouble(value);
         }
         else {
+            number = BigDecimalValidator.getInstance().validate(value, numberFormat);
+        }
+
+        if (number == null) {
             return false;
+        }
+        else {
+            cell.setCellValue(number.doubleValue());
+            cell.setCellStyle(getNumberStyle());
+            return true;
         }
     }
 
     private boolean applyCurrencyStyleIfApropiate(Cell cell, String value) {
-        Number currency = CurrencyValidator.getInstance().validate(value, decimalFormat);
+        Number currency = CurrencyValidator.getInstance().validate(value, currencyFormat);
         if (currency == null) {
             return false;
         }
@@ -193,16 +204,19 @@ public class ExcelStylesManager {
 
     private CellStyle createNumberStyle() {
         CellStyle style = createDefaultCellStyle();
+        String format = getNumberExcelFormat();
+        short currencyFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        style.setDataFormat(currencyFormat);
         style.setAlignment(HorizontalAlignment.RIGHT);
-        applyCellOptions(style);
         return style;
     }
 
     private CellStyle createCurrencyStyle() {
-        CellStyle style = createNumberStyle();
-        String pattern = CurrencyValidator.getInstance().getExcelPattern(decimalFormat);
-        short currencyPattern = wb.getCreationHelper().createDataFormat().getFormat(pattern);
-        style.setDataFormat(currencyPattern);
+        CellStyle style = createDefaultCellStyle();
+        String format = getCurrencyExcelFormat();
+        short currencyFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        style.setDataFormat(currencyFormat);
+        style.setAlignment(HorizontalAlignment.RIGHT);
         return style;
     }
 
@@ -367,9 +381,58 @@ public class ExcelStylesManager {
         }
     }
 
-    private DecimalFormat getDecimalFormat() {
-        if (options != null && options.getDecimalFormat() != null) {
-            return options.getDecimalFormat();
+    protected String getCurrencyExcelFormat() {
+        String pattern = currencyFormat.toLocalizedPattern();
+        String[] patterns = pattern.split(";");
+        return toExcelPattern(patterns[0], currencyFormat.getDecimalFormatSymbols());
+    }
+
+    protected String getNumberExcelFormat() {
+        if (options == null || options.getNumberFormat() == null) {
+            return BuiltinFormats.getBuiltinFormat(0);
+        }
+        else {
+            return toExcelPattern(numberFormat.toLocalizedPattern(), numberFormat.getDecimalFormatSymbols());
+        }
+    }
+
+    private String toExcelPattern(String pattern, DecimalFormatSymbols symbols) {
+
+        StringBuilder buffer = new StringBuilder(pattern.length());
+        for (int i = 0; i < pattern.length(); i++) {
+            char character = pattern.charAt(i);
+            if (character == symbols.getDecimalSeparator()) {
+                buffer.append(".");
+            }
+            else if (character == symbols.getGroupingSeparator()) {
+                buffer.append(",");
+            }
+            else if (character == symbols.getPatternSeparator()) {
+                buffer.append(";");
+            }
+            else if (character == CurrencyValidator.CURRENCY_SYMBOL) {
+                buffer.append("\"").append(symbols.getCurrencySymbol()).append("\"");
+            }
+            else {
+                buffer.append(character);
+            }
+        }
+
+        return buffer.toString();
+    }
+
+    private DecimalFormat getNumberFormat() {
+        if (options != null && options.getNumberFormat() != null) {
+            return options.getNumberFormat();
+        }
+        else {
+            return (DecimalFormat) DecimalFormat.getInstance(locale);
+        }
+    }
+
+    private DecimalFormat getCurrencyFormat() {
+        if (options != null && options.getCurrencyFormat() != null) {
+            return options.getCurrencyFormat();
         }
         else {
             return (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
