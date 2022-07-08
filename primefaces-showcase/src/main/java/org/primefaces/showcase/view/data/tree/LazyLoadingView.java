@@ -43,7 +43,7 @@ public class LazyLoadingView implements Serializable {
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        FileInfo path = new FileInfo(context.getExternalContext().getRealPath("/"));
+        FileInfo path = new FileInfo(context.getExternalContext().getRealPath("/"), true);
         root = new LazyLoadingTreeNode(path, (folder) -> listFiles(folder));
     }
 
@@ -55,7 +55,7 @@ public class LazyLoadingView implements Serializable {
 
         List<FileInfo> result = new ArrayList<>();
         for (File file : files) {
-            result.add(new FileInfo(file.getAbsolutePath()));
+            result.add(new FileInfo(file.getAbsolutePath(), file.isDirectory()));
         }
         return result;
     }

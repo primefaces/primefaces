@@ -56,9 +56,7 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     @Override
     public boolean isLeaf() {
-        lazyLoad();
-
-        return super.isLeaf();
+        return !getData().isDirectory();
     }
 
     private void lazyLoad() {

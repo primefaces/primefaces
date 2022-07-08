@@ -30,8 +30,9 @@ public class FileInfo implements Serializable {
 
     private String path;
     private String name;
+    private boolean directory;
 
-    public FileInfo(String path) {
+    public FileInfo(String path, boolean directory) {
         this.path = path;
         if (this.path.equals(File.separator)) {
             this.name = this.path;
@@ -40,6 +41,7 @@ public class FileInfo implements Serializable {
             String[] parts = path.split(File.separator.equals("\\") ? "\\\\" : File.separator);
             this.name = parts[parts.length - 1];
         }
+        this.directory = directory;
     }
 
     public String getPath() {
@@ -48,6 +50,10 @@ public class FileInfo implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isDirectory() {
+        return directory;
     }
 
     @Override
