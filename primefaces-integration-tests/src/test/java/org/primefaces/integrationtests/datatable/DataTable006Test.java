@@ -239,7 +239,7 @@ public class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelectAllCheckbox(dataTable, false);
+        assertSelectAllCheckbox(dataTable, true);
         assertSelections(page.messages, "1,2,3,4,5");
 
         // Act - unselect one row
@@ -275,7 +275,7 @@ public class DataTable006Test extends AbstractDataTableTest {
         page.submit.click();
 
         // Assert
-        assertSelectAllCheckbox(dataTable, false);
+        assertSelectAllCheckbox(dataTable, true);
         assertSelections(page.messages,
                 "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,"
                         + "2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3");
