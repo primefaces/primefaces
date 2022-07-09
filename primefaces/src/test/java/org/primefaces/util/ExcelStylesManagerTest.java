@@ -57,20 +57,20 @@ public class ExcelStylesManagerTest {
 
     @ParameterizedTest
     @MethodSource("testLocales")
-    public void testNumberExcelFormatWithLocaleOnly(Locale locale) {
+    public void testFormattedDecimalExcelFormatWithLocaleOnly(Locale locale) {
         ExcelStylesManager sut = new ExcelStylesManager(null, locale, null);
 
-        assertEquals("General", sut.getNumberExcelFormat(), locale.toString());
+        assertEquals("#,##0.###", sut.getFormattedDecimalExcelFormat(), locale.toString());
     }
 
     @ParameterizedTest
     @MethodSource("testNumberDecimalFormats")
-    public void testNumberExcelFormatWithCustomFormat(DecimalFormat numberFormat, String expectedFormat) {
+    public void testDecimalExcelFormatWithCustomFormat(DecimalFormat numberFormat, String expectedFormat) {
         ExcelOptions options = new ExcelOptions();
         options.setNumberFormat(numberFormat);
         ExcelStylesManager sut = new ExcelStylesManager(null, Locale.getDefault(), options);
 
-        assertEquals(expectedFormat, sut.getNumberExcelFormat(), "custom currency format");
+        assertEquals(expectedFormat, sut.getFormattedDecimalExcelFormat(), "custom currency format");
     }
 
     @ParameterizedTest
@@ -88,7 +88,6 @@ public class ExcelStylesManagerTest {
         ExcelOptions options = new ExcelOptions();
         options.setCurrencyFormat(currencyFormat);
         ExcelStylesManager sut = new ExcelStylesManager(null, Locale.getDefault(), options);
-        DecimalFormatSymbols symbols = currencyFormat.getDecimalFormatSymbols();
 
         assertEquals(expectedFormat, sut.getCurrencyExcelFormat(), "custom currency format");
     }

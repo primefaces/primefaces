@@ -47,6 +47,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.export.ExcelOptions;
 
 import java.awt.*;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -64,7 +65,7 @@ public class ExcelStylesManager {
     private final DecimalFormat numberFormat, currencyFormat;
     private CellStyle facetStyle;
     private CellStyle defaultCellStyle;
-    private CellStyle numberStyle;
+    private CellStyle generalNumberStyle, formattedDecimalStyle, formattedIntegerStyle;
     private CellStyle currencyStyle;
 
     public ExcelStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
@@ -114,21 +115,26 @@ public class ExcelStylesManager {
     }
 
     private boolean applyNumberStyleIfApropiate(Cell cell, String value) {
-        Number number;
         if (LangUtils.isNumeric(value)) {
-            number = Double.parseDouble(value);
-        }
-        else {
-            number = BigDecimalValidator.getInstance().validate(value, numberFormat);
-        }
-
-        if (number == null) {
-            return false;
-        }
-        else {
-            cell.setCellValue(number.doubleValue());
-            cell.setCellStyle(getNumberStyle());
+            double number = Double.parseDouble(value);
+            cell.setCellValue(number);
+            cell.setCellStyle(getGeneralNumberStyle());
             return true;
+        }
+        else {
+            BigDecimal number = BigDecimalValidator.getInstance().validate(value, numberFormat);
+            if (number != null) {
+                cell.setCellValue(number.doubleValue());
+                boolean hasDecimals = number.stripTrailingZeros().scale() > 0;
+                if (hasDecimals) {
+                    cell.setCellStyle(getFormattedDecimalStyle());
+                }
+                else {
+                    cell.setCellStyle(getFormattedIntegerStyle());
+                }
+                return true;
+            }
+            return false;
         }
     }
 
@@ -171,11 +177,25 @@ public class ExcelStylesManager {
         return defaultCellStyle;
     }
 
-    private CellStyle getNumberStyle() {
-        if (numberStyle == null) {
-            numberStyle = createNumberStyle();
+    private CellStyle getGeneralNumberStyle() {
+        if (generalNumberStyle == null) {
+            generalNumberStyle = createGeneralNumberStyle();
         }
-        return numberStyle;
+        return generalNumberStyle;
+    }
+
+    private CellStyle getFormattedIntegerStyle() {
+        if (formattedIntegerStyle == null) {
+            formattedIntegerStyle = createFormattedIntegerStyle();
+        }
+        return formattedIntegerStyle;
+    }
+
+    private CellStyle getFormattedDecimalStyle() {
+        if (formattedDecimalStyle == null) {
+            formattedDecimalStyle = createFormattedDecimalStyle();
+        }
+        return formattedDecimalStyle;
     }
 
     private CellStyle getCurrencyStyle() {
@@ -202,12 +222,25 @@ public class ExcelStylesManager {
         return style;
     }
 
-    private CellStyle createNumberStyle() {
+    private CellStyle createGeneralNumberStyle() {
         CellStyle style = createDefaultCellStyle();
-        String format = getNumberExcelFormat();
+        style.setAlignment(HorizontalAlignment.RIGHT);
+        return style;
+    }
+
+    private CellStyle createFormattedIntegerStyle() {
+        CellStyle style = createGeneralNumberStyle();
+        String format = getFormattedIntegerExcelFormat();
         short currencyFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
         style.setDataFormat(currencyFormat);
-        style.setAlignment(HorizontalAlignment.RIGHT);
+        return style;
+    }
+
+    private CellStyle createFormattedDecimalStyle() {
+        CellStyle style = createGeneralNumberStyle();
+        String format = getFormattedDecimalExcelFormat();
+        short currencyFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        style.setDataFormat(currencyFormat);
         return style;
     }
 
@@ -387,9 +420,18 @@ public class ExcelStylesManager {
         return toExcelPattern(patterns[0], currencyFormat.getDecimalFormatSymbols());
     }
 
-    protected String getNumberExcelFormat() {
+    protected String getFormattedIntegerExcelFormat() {
         if (options == null || options.getNumberFormat() == null) {
-            return BuiltinFormats.getBuiltinFormat(0);
+            return BuiltinFormats.getBuiltinFormat(3);
+        }
+        else {
+            return toExcelPattern(numberFormat.toLocalizedPattern(), numberFormat.getDecimalFormatSymbols());
+        }
+    }
+
+    protected String getFormattedDecimalExcelFormat() {
+        if (options == null || options.getNumberFormat() == null) {
+            return "#,##0.###";
         }
         else {
             return toExcelPattern(numberFormat.toLocalizedPattern(), numberFormat.getDecimalFormatSymbols());
