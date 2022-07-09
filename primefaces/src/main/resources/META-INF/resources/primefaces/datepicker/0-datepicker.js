@@ -1341,7 +1341,7 @@
 
         renderTitleMonthElement: function (month, index) {
             if (this.options.monthNavigator && this.options.view !== 'month' && index === 0) {
-                return '<select class="ui-datepicker-month">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort, month) + '</select>';
+                return '<select class="ui-datepicker-month">' + this.renderTitleOptions(this.options.locale.monthNamesShort, month) + '</select>';
             }
             else {
                 return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>' + '&#xa0;';
@@ -1351,40 +1351,26 @@
         renderTitleYearElement: function (year, index) {
             if (this.options.yearNavigator && index === 0) {
                 this.updateYearNavigator();
-                var yearOptions = [],
-                    years = this.options.yearRange.split(':'),
+                var years = this.options.yearRange.split(':'),
                     yearStart = parseInt(years[0], 10),
                     yearEnd = parseInt(years[1], 10);
 
-                for (var i = yearStart; i <= yearEnd; i++) {
-                    yearOptions.push(i);
-                }
-
-                return '<select class="ui-datepicker-year">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
+                return '<input class="ui-datepicker-year" type="number" min="' + yearStart +
+                        '" max="' + yearEnd + '" step="1" value="' + year + '"/>';
             }
             else {
                 return '<span class="ui-datepicker-year">' + year + '</span>';
             }
         },
 
-        renderTitleOptions: function (name, options, current) {
+        renderTitleOptions: function (options, current) {
             var _options = '',
                 minDate = this.options.minDate,
                 maxDate = this.options.maxDate;
 
             for (var i = 0; i < options.length; i++) {
-                switch(name) {
-                    case 'month':
-                        if ((!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
-                            _options += '<option value="' + i + '"' + (i === current ? ' selected' : '') + '>' + this.escapeHTML(options[i]) + '</option>';
-                        }
-                        break;
-                    case 'year':
-                        var option = options[i];
-                        if (!(minDate && minDate.getFullYear() > option) && !(maxDate && maxDate.getFullYear() < option)) {
-                            _options += '<option value="' +  option + '"' + (option === current ? ' selected' : '') + '>' +  option + '</option>';
-                        }
-                        break;
+                if ((!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
+                    _options += '<option value="' + i + '"' + (i === current ? ' selected' : '') + '>' + this.escapeHTML(options[i]) + '</option>';
                 }
             }
 
@@ -1701,9 +1687,9 @@
             this.panel.off('click.datePicker-navForward', navForwardSelector).on('click.datePicker-navForward', navForwardSelector, null, this.navForward.bind($this));
 
             var monthNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-month',
-                yearNavigatorSelector = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
+                yearNavigator = '.ui-datepicker-header > .ui-datepicker-title > .ui-datepicker-year';
             this.panel.off('change.datePicker-monthNav', monthNavigatorSelector).on('change.datePicker-monthNav', monthNavigatorSelector, null, this.onMonthDropdownChange.bind($this));
-            this.panel.off('change.datePicker-yearNav', yearNavigatorSelector).on('change.datePicker-yearNav', yearNavigatorSelector, null, this.onYearDropdownChange.bind($this));
+            this.panel.off('change.datePicker-yearNav', yearNavigator).on('change.datePicker-yearNav', yearNavigator, null, this.onYearChange.bind($this));
 
             var monthViewMonthSelector = '.ui-monthpicker > .ui-monthpicker-month';
             this.panel.off('change.datePicker-monthViewMonth', monthViewMonthSelector).on('click.datePicker-monthViewMonth', monthViewMonthSelector, null, function (e) {
@@ -1878,7 +1864,7 @@
             this.updateViewDate(event, newViewDate);
         },
 
-        onYearDropdownChange: function (event) {
+        onYearChange: function (event) {
             var newViewDate = new Date(this.viewDate.getTime());
             newViewDate.setFullYear(parseInt(event.target.value, 10));
 
