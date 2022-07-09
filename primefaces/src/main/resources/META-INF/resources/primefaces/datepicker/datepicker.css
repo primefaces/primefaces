@@ -113,3 +113,12 @@
 .p-datepicker-panel .ui-datepicker-buttonbar .ui-g-6 {
     text-align: center;
 }
+
+input.ui-datepicker-year {
+    -moz-appearance: auto !important;
+}
+
+input.ui-datepicker-year::-webkit-outer-spin-button,
+input.ui-datepicker-year::-webkit-inner-spin-button {
+    -webkit-appearance: auto !important;
+}

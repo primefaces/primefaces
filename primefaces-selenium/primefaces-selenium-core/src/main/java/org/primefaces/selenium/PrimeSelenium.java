@@ -465,31 +465,53 @@ public final class PrimeSelenium {
      * @see <a href="https://stackoverflow.com/a/64067604/502366">Safari Hack</a>
      */
     public static void clearInput(WebElement input, boolean isAjaxified) {
+        replaceInput(input, "", isAjaxified);
+    }
+
+    /**
+     * Replaces the input field of text.
+     *
+     * @param input the WebElement input to replace the input of
+     * @param value the value to replace the input value with
+     * @param isAjaxified true if using AJAX
+     */
+    public static void replaceInput(WebElement input, String value, boolean isAjaxified) {
+        replaceInput(input, value, isAjaxified, 0);
+    }
+
+    /**
+     * Replaces the input field of text.
+     *
+     * @param input the WebElement input to replace the input of
+     * @param value the value to replace the input value with
+     * @param isAjaxified true if using AJAX
+     * @param delayInMilliseconds how long to delay before expecting an AJAX event
+     */
+    public static void replaceInput(WebElement input, String value, boolean isAjaxified, int delayInMilliseconds) {
         if (PrimeSelenium.isSafari()) {
             // Safari hack https://stackoverflow.com/a/64067604/502366
             String inputText = input.getAttribute("value");
             if (inputText != null && inputText.length() > 0) {
-                CharSequence[] clearText = new CharSequence[inputText.length()];
-                for (int i = 0; i < inputText.length(); i++) {
-                    clearText[i] = Keys.BACK_SPACE;
-                }
+                StringBuilder keys = new StringBuilder();
+                keys.append(Keys.BACK_SPACE, 0, inputText.length() - 1);
+                keys.append(value);
                 if (isAjaxified) {
-                    guardAjax(input).sendKeys(clearText);
+                    guardAjax(input, delayInMilliseconds).sendKeys(keys);
                 }
                 else {
-                    input.sendKeys(clearText);
+                    input.sendKeys(keys);
                 }
             }
         }
         else {
-            // CTRL+A then BACKSPACE
+            // CTRL+A then value
             Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
             input.sendKeys(Keys.chord(command, "a"));
             if (isAjaxified) {
-                guardAjax(input).sendKeys(Keys.BACK_SPACE);
+                guardAjax(input, delayInMilliseconds).sendKeys(value);
             }
             else {
-                input.sendKeys(Keys.BACK_SPACE);
+                input.sendKeys(value);
             }
         }
     }

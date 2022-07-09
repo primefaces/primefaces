@@ -287,7 +287,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Select a month from the drodown.
+     * Select a month from the dropdown.
      *
      * @param month the month to select
      */
@@ -297,21 +297,16 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Open the year select dropdown.
-     */
-    public void toggleYearDropdown() {
-        WebElement yearDropDown = showPanel().findElement(By.cssSelector("select.ui-datepicker-year"));
-        yearDropDown.click();
-    }
-
-    /**
-     * Select a year from the drodown.
+     * Navigate to a year.
      *
-     * @param year the year to select
+     * @param year the year to navigate to
      */
-    public void selectYearDropdown(int year) {
-        Select yearDropDown = new Select(showPanel().findElement(By.cssSelector("select.ui-datepicker-year")));
-        yearDropDown.selectByValue(Integer.toString(year));
+    public void navigateYear(int year) {
+        PrimeSelenium.replaceInput(
+                showPanel().findElement(By.cssSelector("input.ui-datepicker-year")),
+                String.valueOf(year),
+                true,
+                100);
     }
 
 }

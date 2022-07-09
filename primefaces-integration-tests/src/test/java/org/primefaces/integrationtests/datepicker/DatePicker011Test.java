@@ -293,7 +293,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         }
 
         // Act - 7th next year via year drop down
-        datePicker.selectYearDropdown(LocalDate.now().getYear() + 1);
+        datePicker.navigateYear(LocalDate.now().getYear() + 1);
 
         // Assert
         PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
