@@ -134,18 +134,6 @@ public class CurrencyValidatorTest {
     }
 
     /**
-     * Test Patterns
-     */
-    @Test
-    public void testExcelPatterns() {
-        CurrencyValidator validator = CurrencyValidator.getInstance();
-
-        assertEquals("\"" + usDollar + "\"" + "#,##0.00", validator.getExcelPattern(us), "US");
-        assertEquals("\"" + ukPound + "\"" +  "#,##0.00", validator.getExcelPattern(uk), "UK");
-        assertEquals("\"" + customCurrencySymbol + "\"#,##0.00", validator.getExcelPattern(custom), "Custom");
-    }
-
-    /**
      * Test Infinity is not parsed
      */
     @Test
