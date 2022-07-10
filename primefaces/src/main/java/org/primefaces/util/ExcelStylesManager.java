@@ -285,8 +285,8 @@ public class ExcelStylesManager {
         if (facetBackground != null) {
             color = Color.decode(facetBackground);
             HSSFColor backgroundColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
-            facetStyle.setFillForegroundColor(backgroundColor.getIndex());
-            facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            style.setFillForegroundColor(backgroundColor.getIndex());
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         }
 
         String facetFontColor = options.getFacetFontColor();
@@ -317,8 +317,8 @@ public class ExcelStylesManager {
         String facetBackground = options.getFacetBgColor();
         if (facetBackground != null) {
             XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground), new DefaultIndexedColorMap());
-            ((XSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor);
-            facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            ((XSSFCellStyle) style).setFillForegroundColor(backgroundColor);
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         }
 
         String facetFontColor = options.getFacetFontColor();
