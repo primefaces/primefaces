@@ -23,34 +23,22 @@
  */
 package org.primefaces.util;
 
+import java.awt.Color;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.BuiltinFormats;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellUtil;
-import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.*;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.export.ExcelOptions;
-
-import java.awt.*;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 public class ExcelStylesManager {
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
@@ -62,10 +50,13 @@ public class ExcelStylesManager {
     //internal
     private final boolean hssf;
     private final boolean stronglyTypedCells;
-    private final DecimalFormat numberFormat, currencyFormat;
+    private final DecimalFormat numberFormat;
+    private final DecimalFormat currencyFormat;
     private CellStyle facetStyle;
     private CellStyle defaultCellStyle;
-    private CellStyle generalNumberStyle, formattedDecimalStyle, formattedIntegerStyle;
+    private CellStyle generalNumberStyle;
+    private CellStyle formattedDecimalStyle;
+    private CellStyle formattedIntegerStyle;
     private CellStyle currencyStyle;
 
     public ExcelStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
@@ -231,24 +222,24 @@ public class ExcelStylesManager {
     private CellStyle createFormattedIntegerStyle() {
         CellStyle style = createGeneralNumberStyle();
         String format = getFormattedIntegerExcelFormat();
-        short currencyFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
-        style.setDataFormat(currencyFormat);
+        short dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        style.setDataFormat(dataFormat);
         return style;
     }
 
     private CellStyle createFormattedDecimalStyle() {
         CellStyle style = createGeneralNumberStyle();
         String format = getFormattedDecimalExcelFormat();
-        short currencyFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
-        style.setDataFormat(currencyFormat);
+        short dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        style.setDataFormat(dataFormat);
         return style;
     }
 
     private CellStyle createCurrencyStyle() {
         CellStyle style = createDefaultCellStyle();
         String format = getCurrencyExcelFormat();
-        short currencyFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
-        style.setDataFormat(currencyFormat);
+        short dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        style.setDataFormat(dataFormat);
         style.setAlignment(HorizontalAlignment.RIGHT);
         return style;
     }
