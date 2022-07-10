@@ -100,10 +100,10 @@ public class ExcelStylesManager {
     private void updateCell(Cell cell, String value) {
         boolean printed = false;
         if (stronglyTypedCells) {
-            printed = setNumberValueIfApropiate(cell, value);
+            printed = setNumberValueIfAppropiate(cell, value);
 
             if (!printed) {
-                printed = setCurrencyValueIfApropiate(cell, value);
+                printed = setCurrencyValueIfAppropiate(cell, value);
             }
         }
 
@@ -114,7 +114,7 @@ public class ExcelStylesManager {
         }
     }
 
-    private boolean setNumberValueIfApropiate(Cell cell, String value) {
+    private boolean setNumberValueIfAppropiate(Cell cell, String value) {
         if (LangUtils.isNumeric(value)) {
             double number = Double.parseDouble(value);
             cell.setCellValue(number);
@@ -138,7 +138,7 @@ public class ExcelStylesManager {
         }
     }
 
-    private boolean setCurrencyValueIfApropiate(Cell cell, String value) {
+    private boolean setCurrencyValueIfAppropiate(Cell cell, String value) {
         Number currency = CurrencyValidator.getInstance().validate(value, currencyFormat);
         if (currency == null) {
             return false;
