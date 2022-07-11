@@ -53,8 +53,6 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
-
 public class ComponentUtils {
 
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
@@ -641,7 +639,7 @@ public class ComponentUtils {
     public static String encodeHtml(UIComponent component, FacesContext context) {
         ResponseWriter originalWriter = context.getResponseWriter();
         FastStringWriter output = new FastStringWriter();
-        context.setResponseWriter(getRenderKit(context).createResponseWriter(output, "text/html", "UTF-8"));
+        context.setResponseWriter(originalWriter.cloneWithWriter(output));
 
         try {
             component.encodeAll(context);
@@ -650,9 +648,7 @@ public class ComponentUtils {
             throw new UncheckedIOException(e);
         }
         finally {
-            if (originalWriter != null) {
-                context.setResponseWriter(originalWriter);
-            }
+            context.setResponseWriter(originalWriter);
         }
 
         return output.toString();

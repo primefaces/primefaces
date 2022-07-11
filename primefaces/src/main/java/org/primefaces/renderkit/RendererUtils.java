@@ -24,15 +24,8 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
-import javax.faces.FactoryFinder;
-import javax.faces.application.Application;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.RenderKit;
-import javax.faces.render.RenderKitFactory;
-
 import org.primefaces.util.HTML;
 
 public class RendererUtils {
@@ -75,48 +68,6 @@ public class RendererUtils {
         writer.endElement("div");
 
         writer.endElement("div");
-    }
-
-    /**
-     * Duplicate code from OmniFaces project under apache license:
-     * <a href="https://github.com/omnifaces/omnifaces/blob/master/license.txt">https://github.com/omnifaces/omnifaces/blob/master/license.txt</a>
-     *
-     * Returns the {@link RenderKit} associated with the "current" view ID or view handler.
-     * <p>
-     * The current view ID is the view ID that's set for the view root that's associated with the current faces context.
-     * Or if there is none, then the current view handler will be assumed, which is the view handler that's associated
-     * with the requested view.
-     *
-     * @return The {@link RenderKit} associated with the "current" view ID or view handler.
-     * @throws NullPointerException When faces context is unavailable.
-     * @see <a href="https://github.com/omnifaces/omnifaces">Omnifaces</a>
-     */
-    public static RenderKit getRenderKit(FacesContext context) {
-        String renderKitId = null;
-        UIViewRoot view = context.getViewRoot();
-
-        if (view != null) {
-            renderKitId = view.getRenderKitId();
-        }
-
-        if (renderKitId == null) {
-            Application application = context.getApplication();
-            ViewHandler viewHandler = application.getViewHandler();
-
-            if (viewHandler != null) {
-                renderKitId = viewHandler.calculateRenderKitId(context);
-            }
-
-            if (renderKitId == null) {
-                renderKitId = application.getDefaultRenderKitId();
-
-                if (renderKitId == null) {
-                    renderKitId = RenderKitFactory.HTML_BASIC_RENDER_KIT;
-                }
-            }
-        }
-
-        return ((RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY)).getRenderKit(context, renderKitId);
     }
 
 }
