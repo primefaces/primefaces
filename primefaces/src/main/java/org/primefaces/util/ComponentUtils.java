@@ -103,8 +103,8 @@ public class ComponentUtils {
 
             ValueHolder valueHolder = (ValueHolder) component;
             if (value == UNDEFINED_VALUE) {
-                if (valueHolder instanceof HtmlOutputFormat) {
-                    value = encodeComponent((HtmlOutputFormat) valueHolder, context);
+                if (component instanceof HtmlOutputFormat) {
+                    value = encodeComponent(component, context);
                 }
                 else {
                     value = valueHolder.getValue();
