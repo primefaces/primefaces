@@ -104,7 +104,7 @@ public class ComponentUtils {
             ValueHolder valueHolder = (ValueHolder) component;
             if (value == UNDEFINED_VALUE) {
                 if (valueHolder instanceof HtmlOutputFormat) {
-                    value = encodeHtml((HtmlOutputFormat) valueHolder, context);
+                    value = encodeComponent((HtmlOutputFormat) valueHolder, context);
                 }
                 else {
                     value = valueHolder.getValue();
@@ -618,24 +618,13 @@ public class ComponentUtils {
     }
 
     /**
-     * Modified version from OmniFaces project under apache license:
-     * <a href="https://github.com/omnifaces/omnifaces/blob/master/license.txt">https://github.com/omnifaces/omnifaces/blob/master/license.txt</a>
-     *
-     * Encodes the given component locally as HTML. The same managed beans as in the provided
-     * faces context will be available as well, including request scoped ones. But, depending on the nature of the
-     * provided component, the state of the faces context may be affected because the attributes of the context,
-     * request, view, session and application scope could be (in)directly manipulated during the encode. This may or may
-     * not have the desired effect. If the given view does not have any component resources, JSF forms, dynamically
-     * added components, component event listeners, then it should mostly be safe.
-     * In other words, use this at most for "simple templates" only, e.g. a HTML based mail template, which usually
-     * already doesn't have a HTML head nor body.
+     * Encodes the given component locally as HTML.
      * @param component The component to capture HTML output for.
      * @param context The current FacesContext.
      * @return The encoded HTML output of the given component.
      * @throws UncheckedIOException Whenever something fails at I/O level. This would be quite unexpected as it happens locally.
-     * @see <a href="https://github.com/omnifaces/omnifaces">Omnifaces</a>
      */
-    public static String encodeHtml(UIComponent component, FacesContext context) {
+    public static String encodeComponent(UIComponent component, FacesContext context) {
         ResponseWriter originalWriter = context.getResponseWriter();
         FastStringWriter output = new FastStringWriter();
         context.setResponseWriter(originalWriter.cloneWithWriter(output));
