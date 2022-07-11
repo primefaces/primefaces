@@ -25,7 +25,6 @@ package org.primefaces.util;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -621,7 +620,7 @@ public class ComponentUtils {
     }
 
     /**
-     * Duplicate code from OmniFaces project under apache license:
+     * Modified version from OmniFaces project under apache license:
      * <a href="https://github.com/omnifaces/omnifaces/blob/master/license.txt">https://github.com/omnifaces/omnifaces/blob/master/license.txt</a>
      *
      * Encodes the given component locally as HTML, with UTF-8 character encoding, independently from the current view.
@@ -641,7 +640,7 @@ public class ComponentUtils {
      */
     public static String encodeHtml(UIComponent component, FacesContext context) {
         ResponseWriter originalWriter = context.getResponseWriter();
-        StringWriter output = new StringWriter();
+        FastStringWriter output = new FastStringWriter();
         context.setResponseWriter(getRenderKit(context).createResponseWriter(output, "text/html", "UTF-8"));
 
         try {
