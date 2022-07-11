@@ -621,8 +621,7 @@ public class ComponentUtils {
      * Modified version from OmniFaces project under apache license:
      * <a href="https://github.com/omnifaces/omnifaces/blob/master/license.txt">https://github.com/omnifaces/omnifaces/blob/master/license.txt</a>
      *
-     * Encodes the given component locally as HTML, with UTF-8 character encoding, independently from the current view.
-     * The current implementation, however, uses the current faces context. The same managed beans as in the current
+     * Encodes the given component locally as HTML. The same managed beans as in the provided
      * faces context will be available as well, including request scoped ones. But, depending on the nature of the
      * provided component, the state of the faces context may be affected because the attributes of the context,
      * request, view, session and application scope could be (in)directly manipulated during the encode. This may or may
