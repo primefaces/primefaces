@@ -53,6 +53,8 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
+
 public class ComponentUtils {
 
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
@@ -625,9 +627,15 @@ public class ComponentUtils {
      * @throws UncheckedIOException Whenever something fails at I/O level. This would be quite unexpected as it happens locally.
      */
     public static String encodeComponent(UIComponent component, FacesContext context) {
-        ResponseWriter originalWriter = context.getResponseWriter();
         FastStringWriter output = new FastStringWriter();
-        context.setResponseWriter(originalWriter.cloneWithWriter(output));
+        ResponseWriter originalWriter = context.getResponseWriter();
+
+        if (originalWriter != null) {
+            context.setResponseWriter(originalWriter.cloneWithWriter(output));
+        }
+        else {
+            context.setResponseWriter(getRenderKit(context).createResponseWriter(output, "text/html", "UTF-8"));
+        }
 
         try {
             component.encodeAll(context);
