@@ -150,5 +150,5 @@ http://api.jquery.com/category/selectors/
 
 Search expression has some limitations. In the issue links below, these situations are tried to be clearly stated.
 
-https://github.com/primefaces/primefaces/issues/8905
+https://github.com/primefaces/primefaces/issues/8905 <br />
 https://github.com/primefaces/primefaces/issues/8990
