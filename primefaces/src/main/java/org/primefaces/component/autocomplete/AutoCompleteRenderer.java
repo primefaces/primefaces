@@ -174,7 +174,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
 
         if (ac.isDropdown()) {
-            encodeDropDown(context, ac);
+            encodeDropDown(context, ac, clientId);
         }
 
         if (!ac.isDynamic()) {
@@ -295,7 +295,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.endElement("select");
     }
 
-    protected void encodeDropDown(FacesContext context, AutoComplete ac) throws IOException {
+    protected void encodeDropDown(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String dropdownClass = AutoComplete.DROPDOWN_CLASS;
         boolean disabled = ac.isDisabled() || ac.isReadonly();
@@ -304,6 +304,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         }
 
         writer.startElement("button", ac);
+        writer.writeAttribute("id", clientId + "_button", null);
         writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
         if (LangUtils.isNotBlank(ac.getDropdownAriaLabel())) {
@@ -462,7 +463,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.endElement("ul");
 
         if (ac.isDropdown()) {
-            encodeDropDown(context, ac);
+            encodeDropDown(context, ac, clientId);
         }
 
         if (!ac.isDynamic()) {
