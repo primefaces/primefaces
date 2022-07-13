@@ -27,6 +27,7 @@ style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the component.
 activeIndex | 0 | Integer | Index of the active tab.
 widgetVar | null | String | Name of the client side widget.
+orientation | top | String | Orientation of the tab items relative to where you want to put the content, valid values are "top" (default), "left", "right" and "bottom".
 
 ## Getting started with TabMenu
 TabMenu requires menuitems as children components, each menuitem is rendered as a tab. Just like

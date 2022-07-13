@@ -18,6 +18,7 @@
 
     <ui:define name="implementation">
         <div class="card">
+            <h5 class="mt-0">Basic</h5>
             <p:tabMenu activeIndex="#{param.i}">
                 <p:menuitem value="Home" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-home">
                     <f:param name="i" value="0"/>
@@ -35,6 +36,56 @@
                     <f:param name="i" value="4"/>
                 </p:menuitem>
             </p:tabMenu>
+        </div>
+
+        <div class="card">
+            <h5 class="mt-0">Orientation Left</h5>
+            <p:tabMenu activeIndex="#{param.i}" style="width:15rem" orientation="left">
+                <p:menuitem value="Home" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-home">
+                    <f:param name="i" value="0"/>
+                </p:menuitem>
+                <p:menuitem value="Calendar" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-calendar">
+                    <f:param name="i" value="1"/>
+                </p:menuitem>
+                <p:menuitem value="Edit" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-pencil">
+                    <f:param name="i" value="2"/>
+                </p:menuitem>
+                <p:menuitem value="Documentation" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-file">
+                    <f:param name="i" value="3"/>
+                </p:menuitem>
+                <p:menuitem value="Settings" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-cog">
+                    <f:param name="i" value="4"/>
+                </p:menuitem>
+            </p:tabMenu>
+            <style>
+                body .ui-tabmenu:is(.ui-tabs-left, .ui-tabs-right) .ui-tabmenu-nav {
+                    flex-direction: column;
+                }
+                body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-width: 0;
+                    border-style: solid;
+                    border-color: var(--surface-d);
+                    border-bottom-width: 2px;
+                }
+                body .ui-tabmenu:not(.ui-tabs-top) .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-bottom-width: 0;
+                }
+                body .ui-tabmenu.ui-tabs-left .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-right-width: 2px;
+                }
+                body .ui-tabmenu.ui-tabs-right .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-left-width: 2px;
+                }
+                body .ui-tabmenu.ui-tabs-bottom .ui-tabmenu-nav .ui-tabmenuitem {
+                    border-top-width: 2px;
+                }
+                body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-hover {
+                    border-color: var(--text-color-secondary);
+                }
+                body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
+                    border-color: var(--primary-color);
+                }
+            </style>
         </div>
     </ui:define>
 
