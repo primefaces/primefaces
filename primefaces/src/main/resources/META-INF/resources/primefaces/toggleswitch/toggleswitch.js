@@ -7,6 +7,7 @@
  *
  * @prop {JQuery} input The DOM element for the hidden input field storing the value of this switch.
  * @prop {JQuery} slider The DOM element for the slider.
+ * @prop {JQuery} handler The DOM element for the handler.
  *
  * @interface {PrimeFaces.widget.ToggleSwitchCfg} cfg The configuration for the {@link  ToggleSwitch| ToggleSwitch widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -26,6 +27,7 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.slider = this.jq.children('.ui-toggleswitch-slider');
+        this.handler = this.slider.children('.ui-toggleswitch-handler');
         this.input = $(this.jqId + '_input');
 
         if(!this.input.is(':disabled')) {
@@ -106,7 +108,7 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         }
         this.jq.addClass('ui-toggleswitch-checked');
         if (this.cfg.onIcon) {
-            this.slider.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
+            this.handler.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
         }
     },
 
@@ -121,7 +123,7 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         }
         this.jq.removeClass('ui-toggleswitch-checked');
         if (this.cfg.offIcon) {
-            this.slider.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);
+            this.handler.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);
         }
     },
 

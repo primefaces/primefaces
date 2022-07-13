@@ -93,7 +93,12 @@ public class ToggleSwitchRenderer extends InputRenderer {
         String icon = checked ? toggleSwitch.getOnIcon() : toggleSwitch.getOffIcon();
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS + " " + Objects.toString(icon, ""), null);
+        writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", ToggleSwitch.HANDLER_CLASS + " " + Objects.toString(icon, ""), null);
+        writer.endElement("span");
+
         writer.endElement("div");
     }
 

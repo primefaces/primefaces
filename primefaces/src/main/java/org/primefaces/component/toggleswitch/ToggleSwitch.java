@@ -43,6 +43,7 @@ public class ToggleSwitch extends ToggleSwitchBase {
 
     public static final String CONTAINER_CLASS = "ui-toggleswitch ui-widget";
     public static final String SLIDER_CLASS = "ui-toggleswitch-slider";
+    public static final String HANDLER_CLASS = "ui-toggleswitch-handler";
     public static final String CHECKED_CLASS = "ui-toggleswitch-checked";
 
     private static final String DEFAULT_EVENT = "change";
