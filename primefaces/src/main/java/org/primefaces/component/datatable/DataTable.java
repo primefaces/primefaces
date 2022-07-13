@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
@@ -326,6 +327,34 @@ public class DataTable extends DataTableBase {
                 FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
                 wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 super.queueEvent(wrappedEvent);
+            }
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+
+        // GitHub #8992: Must set mutate the filter value
+        Map<String, FilterMeta> filterBy = getFilterByAsMap();
+        ELContext elContext = context.getELContext();
+        for (FilterMeta filter : filterBy.values()) {
+            UIColumn column = findColumn(filter.getColumnKey());
+            if (column == null) {
+                continue;
+            }
+            ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
+            if (columnFilterValueVE == null) {
+                continue;
+            }
+            if (column.isDynamic()) {
+                DynamicColumn dynamicColumn = (DynamicColumn) column;
+                dynamicColumn.applyStatelessModel();
+                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                dynamicColumn.cleanStatelessModel();
+            }
+            else {
+                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
             }
         }
     }
