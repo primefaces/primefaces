@@ -156,8 +156,10 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeSingleMarkup(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
+        boolean isDropdown = ac.isDropdown();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
+        styleClass = isDropdown ? styleClass + " " + AutoComplete.DROPDOWN_SYLE_CLASS : styleClass;
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -173,7 +175,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             encodeHiddenInput(context, ac, clientId);
         }
 
-        if (ac.isDropdown()) {
+        if (isDropdown) {
             encodeDropDown(context, ac, clientId);
         }
 
@@ -375,12 +377,14 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         List<String> stringValues = new ArrayList<>();
         boolean disabled = ac.isDisabled();
+        boolean isDropdown = ac.isDropdown();
         String title = ac.getTitle();
 
         String style = ac.getStyle();
         String styleClass = ac.getStyleClass();
         styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
-        String listClass = ac.isDropdown() ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
+        styleClass = isDropdown ? styleClass + " " + AutoComplete.DROPDOWN_SYLE_CLASS : styleClass;
+        String listClass = isDropdown ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         listClass = createStyleClass(ac, null, listClass);
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
