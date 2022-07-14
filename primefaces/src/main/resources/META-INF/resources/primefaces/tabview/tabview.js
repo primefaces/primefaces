@@ -575,6 +575,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      */
     loadDynamicTab: function(newPanel) {
         var $this = this,
+        tabIndex = newPanel.data('index'),
         options = {
             source: this.id,
             process: this.id,
@@ -582,21 +583,22 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             params: [
                 {name: this.id + '_contentLoad', value: true},
                 {name: this.id + '_newTab', value: newPanel.attr('id')},
-                {name: this.id + '_tabindex', value: newPanel.data('index')}
+                {name: this.id + '_tabindex', value: tabIndex}
             ],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            // hide first
-                            // otherwise it will already be displayed after replacing the content with .html()
+                            // #8994 get new tab reference in case AJAX update removed the old one from DOM
+                            var updatedTab = $this.panelContainer.children().eq(tabIndex);
                             if($this.cfg.effect) {
-                                newPanel.hide();
+                                // hide first, otherwise it will be displayed after replacing the content with .html()
+                                updatedTab.hide();
                             }
-                            newPanel.html(content);
+                            updatedTab.html(content);
 
                             if($this.cfg.cache) {
-                                $this.markAsLoaded(newPanel);
+                                $this.markAsLoaded(updatedTab);
                             }
                         }
                     });
@@ -604,7 +606,9 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function() {
-                $this.show(newPanel);
+                // #8994 get new tab reference in case AJAX update removed the old one from DOM
+                var updatedTab = $this.panelContainer.children().eq(tabIndex);
+                $this.show(updatedTab);
             }
         };
 
