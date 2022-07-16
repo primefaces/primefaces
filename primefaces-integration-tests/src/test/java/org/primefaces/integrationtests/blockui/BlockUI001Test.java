@@ -73,7 +73,8 @@ public class BlockUI001Test extends AbstractPrimePageTest {
 
         // Act
         blockUI.hide();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getWebDriver().findElement(By.className("ui-blockui")))); // fix unreliable test
+        PrimeSelenium.waitGui()
+                .until(PrimeExpectedConditions.invisibleAndAnimationComplete(getWebDriver().findElement(By.className("ui-blockui"))));
 
         // Assert
         assertClickable(page.panel1);
