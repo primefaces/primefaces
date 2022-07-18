@@ -46,7 +46,7 @@ if (!PrimeFaces.env) {
             this.touch = 'ontouchstart' in window || window.navigator.msMaxTouchPoints || PrimeFaces.env.mobile;
             this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent) || (/mac/i.test(window.navigator.userAgent) && PrimeFaces.env.touch);
             this.preferredColorSchemeDark = PrimeFaces.env.evaluateMediaQuery('(prefers-color-scheme: dark)');
-            this.preferredColorSchemeLight = !this.preferredModeDark;
+            this.preferredColorSchemeLight = !this.preferredColorSchemeDark;
         },
 
         /**
