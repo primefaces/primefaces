@@ -77,7 +77,10 @@ public abstract class BlockUI extends AbstractComponent {
      */
     public void show() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
+        List<WebElement> overlays = getOverlays();
+        if (overlays.size() > 0) {
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(overlays.get(0)));
+        }
     }
 
     /**
@@ -85,7 +88,10 @@ public abstract class BlockUI extends AbstractComponent {
      */
     public void hide() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
+        List<WebElement> overlays = getOverlays();
+        if (overlays.size() > 0) {
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(overlays.get(0)));
+        }
     }
 
 }
