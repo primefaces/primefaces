@@ -28,12 +28,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.BlockUI;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Panel;
@@ -73,8 +70,6 @@ public class BlockUI001Test extends AbstractPrimePageTest {
 
         // Act
         blockUI.hide();
-        PrimeSelenium.waitGui()
-                .until(PrimeExpectedConditions.invisibleAndAnimationComplete(getWebDriver().findElement(By.className("ui-blockui"))));
 
         // Assert
         assertClickable(page.panel1);
