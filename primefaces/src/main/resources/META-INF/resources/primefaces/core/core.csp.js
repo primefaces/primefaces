@@ -68,6 +68,11 @@ if (!PrimeFaces.csp) {
                     }
                 };
 
+                // #9002 body onload rewrite as window onload
+                if (event === 'onload' && element instanceof HTMLBodyElement) {
+                    element = window;
+                }
+
                 $(element).off(jqEvent).on(jqEvent, jsWrapper);
 
                 //Collect some basic information about registered AJAXified event listeners
