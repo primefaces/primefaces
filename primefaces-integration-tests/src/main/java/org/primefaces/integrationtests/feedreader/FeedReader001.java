@@ -36,7 +36,8 @@ import lombok.Data;
 public class FeedReader001 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
-    private String valid = "https://www.nasa.gov/rss/dyn/breaking_news.rss";
+    // private String valid = "https://www.nasa.gov/rss/dyn/breaking_news.rss";
+    private String valid = "https://www.jpl.nasa.gov/feeds/news";
     private String invalid = "https://google.com/google.rss";
     private String current = valid;
 
