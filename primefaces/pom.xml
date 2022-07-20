@@ -1195,23 +1195,6 @@
             <properties>
                 <minify.disabled>false</minify.disabled>
             </properties>
-            <build>
-                <plugins>
-                    <!-- Write docs and *.d.ts file to the current documentation directory docs/jsdocs -->
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>generate-type-declaration</id>
-                            </execution>
-                            <execution>
-                                <id>publish-to-npm</id>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 
