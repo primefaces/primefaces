@@ -29,7 +29,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Roundabout](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#roundabout) | 2.4.2 | http://fredhq.com/projects/roundabout |
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
 | jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
-| [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.1 | https://github.com/jquery/jquery-ui |
+| [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.2 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.6.0 | https://jquery.com/ |
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |
