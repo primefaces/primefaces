@@ -109,13 +109,16 @@ public class ExcelStylesManager {
         BigDecimal bigDecimal = BigDecimalValidator.getInstance().validate(value, numberFormat);
         if (bigDecimal != null) {
             cell.setCellValue(bigDecimal.doubleValue());
-            boolean hasDecimals = bigDecimal.stripTrailingZeros().scale() > 0;
-            if (hasDecimals) {
-                cell.setCellStyle(getFormattedDecimalStyle());
+            boolean withoutThousandSeparator = value.indexOf(numberFormat.getDecimalFormatSymbols().getGroupingSeparator()) == -1;
+            CellStyle style;
+            if (withoutThousandSeparator) {
+                style = getGeneralNumberStyle();
             }
             else {
-                cell.setCellStyle(getFormattedIntegerStyle());
+                boolean hasDecimals = bigDecimal.stripTrailingZeros().scale() > 0;
+                style = hasDecimals ? getFormattedDecimalStyle() : getFormattedIntegerStyle();
             }
+            cell.setCellStyle(style);
             return true;
         }
         else if (LangUtils.isNumeric(value)) {
