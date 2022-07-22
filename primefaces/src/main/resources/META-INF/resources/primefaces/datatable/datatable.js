@@ -3250,7 +3250,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
                                 return;
 
-                            if($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length)
+                            if($.datepicker && ($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length))
                                 return;
 
                             if($this.cfg.saveOnCellBlur)
