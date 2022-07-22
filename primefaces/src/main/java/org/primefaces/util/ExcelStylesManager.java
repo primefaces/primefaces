@@ -106,27 +106,28 @@ public class ExcelStylesManager {
     }
 
     private boolean setNumberValueIfAppropiate(Cell cell, String value) {
-        if (LangUtils.isNumeric(value)) {
+        BigDecimal bigDecimal = BigDecimalValidator.getInstance().validate(value, numberFormat);
+        if (bigDecimal != null) {
+            cell.setCellValue(bigDecimal.doubleValue());
+            boolean withoutThousandSeparator = value.indexOf(numberFormat.getDecimalFormatSymbols().getGroupingSeparator()) == -1;
+            CellStyle style;
+            if (withoutThousandSeparator) {
+                style = getGeneralNumberStyle();
+            }
+            else {
+                boolean hasDecimals = bigDecimal.stripTrailingZeros().scale() > 0;
+                style = hasDecimals ? getFormattedDecimalStyle() : getFormattedIntegerStyle();
+            }
+            cell.setCellStyle(style);
+            return true;
+        }
+        else if (LangUtils.isNumeric(value)) {
             double number = Double.parseDouble(value);
             cell.setCellValue(number);
             cell.setCellStyle(getGeneralNumberStyle());
             return true;
         }
-        else {
-            BigDecimal number = BigDecimalValidator.getInstance().validate(value, numberFormat);
-            if (number != null) {
-                cell.setCellValue(number.doubleValue());
-                boolean hasDecimals = number.stripTrailingZeros().scale() > 0;
-                if (hasDecimals) {
-                    cell.setCellStyle(getFormattedDecimalStyle());
-                }
-                else {
-                    cell.setCellStyle(getFormattedIntegerStyle());
-                }
-                return true;
-            }
-            return false;
-        }
+        return false;
     }
 
     private boolean setCurrencyValueIfAppropiate(Cell cell, String value) {
