@@ -851,7 +851,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindRowHover(this.rowSelector);
 
-        this.jq.off('click.dataTable mousedown.dataTable', this.rowSelector).on('mousedown.dataTable', this.rowSelector, null, function(e) {
+        this.tbody.off('click.dataTable mousedown.dataTable', this.rowSelector).on('mousedown.dataTable', this.rowSelector, null, function(e) {
             $this.mousedownOnRow = true;
         })
         .on('click.dataTable', this.rowSelector, null, function(e) {
@@ -985,7 +985,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindRowHover: function(rowSelector) {
         var $this = this;
-        this.jq.off('mouseenter.dataTable mouseleave.dataTable', rowSelector)
+        this.tbody.off('mouseenter.dataTable mouseleave.dataTable', rowSelector)
             .on('mouseenter.dataTable', rowSelector, null, function() {
                 if (!$this.ignoreRowHoverEvent) {
                     $(this).addClass('ui-state-hover');
@@ -999,7 +999,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if (this.cfg.groupColumnIndexes) {
             var columnSelector = rowSelector + ' > td';
-            this.jq.off('mouseenter.dataTable mouseleave.dataTable', columnSelector)
+            this.tbody.off('mouseenter.dataTable mouseleave.dataTable', columnSelector)
                 .on('mouseenter.dataTable', columnSelector, null, function() {
                     var row = $(this).parent();
                     if ($(this).hasClass('ui-grouped-column')) {
