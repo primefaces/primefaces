@@ -1100,7 +1100,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.toggleCheckAll();
             });
 
-            this.tbody.off('click.dataTable', checkboxSelector).on('click.dataTable', checkboxSelector, null, function(e) {
+            this.jq.off('click.dataTable', checkboxSelector).on('click.dataTable', checkboxSelector, null, function(e) {
                 var checkbox = $(this);
 
                 if(checkbox.prop('checked'))
@@ -1144,7 +1144,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             });
 
-            this.tbody.off('mouseenter.dataTable mouseleave.dataTable click.dataTable', checkboxSelector)
+            this.jq.off('mouseenter.dataTable mouseleave.dataTable click.dataTable', checkboxSelector)
                         .on('mouseenter.dataTable', checkboxSelector, null, function() {
                             $(this).addClass('ui-state-hover');
                         })
@@ -2842,7 +2842,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     toggleCheckAll: function() {
         var shouldCheckAll = true;
         if(this.cfg.nativeElements) {
-            var checkboxes = this.tbody.find('tr.ui-datatable-selectable > td.ui-selection-column > :checkbox:visible'),
+            var checkboxes = this.jq.find('tr.ui-datatable-selectable > td.ui-selection-column > :checkbox:visible'),
             checked = this.checkAllToggler.prop('checked'),
             $this = this;
 
@@ -2861,7 +2861,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         else {
-            var checkboxes = this.tbody.find('tr.ui-datatable-selectable > td.ui-selection-column > div.ui-chkbox > div.ui-chkbox-box:visible'),
+            var checkboxes = this.jq.find('tr.ui-datatable-selectable > td.ui-selection-column > div.ui-chkbox > div.ui-chkbox-box:visible'),
             checked = this.checkAllToggler.attr('aria-checked') === "true";
             $this = this;
 
