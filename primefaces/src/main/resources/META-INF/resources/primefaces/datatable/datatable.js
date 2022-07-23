@@ -2769,7 +2769,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * irrespective of whether they are on the currently shown page.
      */
     unselectAllRows: function() {
-        var selectedRows = this.tbody.find('tr.ui-state-highlight'),
+        var selectedRows = this.jq.find('tr.ui-state-highlight'),
         checkboxSelectionEnabled = this.isCheckboxSelectionEnabled(),
         radioSelectionEnabled = this.isRadioSelectionEnabled();
 
