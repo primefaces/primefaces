@@ -97,6 +97,12 @@ public class AppMenu {
         primeIconsMenuItems.add(new MenuItem("Icons v5.0", "/icons"));
         menuCategories.add(new MenuCategory("PrimeIcons", primeIconsMenuItems));
         //PRIMEICONS CATEGORY END
+        
+        //UIKIT CATEGORY START
+        List<MenuItem> uiKitMenuItems = new ArrayList<>();
+        uiKitMenuItems.add(new MenuItem("Figma", "/uikit"));
+        menuCategories.add(new MenuCategory("UKIT", uiKitMenuItems));
+        //UIKIT CATEGORY END
 
         //AJAX FRAMEWORK CATEGORY START
         List<MenuItem> ajaxFrameworkMenuItems = new ArrayList<>();
