@@ -644,7 +644,9 @@ public class ComponentUtils {
             throw new UncheckedIOException(e);
         }
         finally {
-            context.setResponseWriter(originalWriter);
+            if (originalWriter != null) {
+                context.setResponseWriter(originalWriter);
+            }
         }
 
         return output.toString();
