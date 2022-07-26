@@ -101,7 +101,7 @@ public class AppMenu {
         //UIKIT CATEGORY START
         List<MenuItem> uiKitMenuItems = new ArrayList<>();
         uiKitMenuItems.add(new MenuItem("Figma", "/uikit"));
-        menuCategories.add(new MenuCategory("UKIT", uiKitMenuItems));
+        menuCategories.add(new MenuCategory("UI KIT", uiKitMenuItems));
         //UIKIT CATEGORY END
 
         //AJAX FRAMEWORK CATEGORY START
