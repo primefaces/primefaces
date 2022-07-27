@@ -298,7 +298,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable rootCause) {
         AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(rootCause);
 
-        context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
+        context.getViewRoot().visitTree(VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED), visitCallback);
 
         Map<String, AjaxExceptionHandler> handlers = visitCallback.getHandlers();
 
