@@ -100,7 +100,7 @@ public class AppMenu {
         
         //UIKIT CATEGORY START
         List<MenuItem> uiKitMenuItems = new ArrayList<>();
-        uiKitMenuItems.add(new MenuItem("Figma", "/uikit"));
+        uiKitMenuItems.add(new MenuItem("Figma", "/uikit", "New"));
         menuCategories.add(new MenuCategory("UI KIT", uiKitMenuItems));
         //UIKIT CATEGORY END
 
