@@ -416,7 +416,7 @@ public class DateTimePatternConverterTest {
     }
 
     @BeforeEach
-    private void setup() {
+    public void setup() {
         this.converter = new DateTimePatternConverter();
     }
 
