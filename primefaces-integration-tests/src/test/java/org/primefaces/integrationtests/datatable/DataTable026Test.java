@@ -281,6 +281,7 @@ public class DataTable026Test extends AbstractDataTableTest {
         page.roleFilter.deselect(Employee.Role.FINANCE.toString(), true);
         page.roleFilter.deselect(Employee.Role.HR.toString(), true);
         page.roleFilter.deselect(Employee.Role.QS.toString(), true);
+        page.roleFilter.select(Employee.Role.DEVELOPER.toString(), true);
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()

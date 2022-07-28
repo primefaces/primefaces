@@ -768,9 +768,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            if (filterValue != null) {
-                ((ValueHolder) filterFacet).setValue(filterValue);
-            }
+            ((ValueHolder) filterFacet).setValue(filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
