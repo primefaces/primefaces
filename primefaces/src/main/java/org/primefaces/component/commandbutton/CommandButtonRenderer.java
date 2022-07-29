@@ -173,7 +173,8 @@ public class CommandButtonRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("CommandButton", button)
-            .attr("disableOnAjax", button.isDisableOnAjax(), true);
+            .attr("disableOnAjax", button.isDisableOnAjax(), true)
+            .attr("disabled", button.isDisabled(), false);
 
         encodeClientBehaviors(context, button);
 

@@ -68,7 +68,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 $this.jq.removeClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false) {
+                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabled) {
                     $this.enable();
                 }
                 $this.jq.find('.ui-icon-loading').remove();
