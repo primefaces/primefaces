@@ -10,21 +10,21 @@
 
 <h:body>
     <h:form>
-        <p:growl>
+        <p:messages>
             <p:autoUpdate />
-        </p:growl>
+        </p:messages>
 
         <div class="formgrid grid">
             <div class="field col-12 md:col-6">
                 <p:outputLabel for="@next">Firstname</p:outputLabel>
-                <p:inputText id="firstname" value="#{dfResponsiveView.firstname}" />
+                <p:inputText id="firstname" value="#{dfResponsiveView.firstname}" styleClass="w-full" />
             </div>
             <div class="field col-12 md:col-6">
                 <p:outputLabel for="@next">Lastname</p:outputLabel>
-                <p:inputText id="lastname" value="#{dfResponsiveView.lastname}" />
+                <p:inputText id="lastname" value="#{dfResponsiveView.lastname}" styleClass="w-full" />
             </div>
             <div class="field col-12">
-                <p:selectBooleanCheckbox label="show more" value="#{dfResponsiveView.showMore}">
+                <p:selectBooleanCheckbox itemLabel="show more" value="#{dfResponsiveView.showMore}">
                     <p:ajax update="@form" process="@form" />
                 </p:selectBooleanCheckbox>
             </div>
@@ -32,15 +32,15 @@
         <p:outputPanel styleClass="formgrid grid" rendered="#{dfResponsiveView.showMore}">
             <div class="field col-12">
                 <p:outputLabel for="@next">Street</p:outputLabel>
-                <p:inputText id="street" value="#{dfResponsiveView.street}" />
+                <p:inputText id="street" value="#{dfResponsiveView.street}" styleClass="w-full" />
             </div>
             <div class="field col-12 md:col-4">
                 <p:outputLabel for="@next">Zip-Code</p:outputLabel>
-                <p:inputText id="zip" value="#{dfResponsiveView.zip}" />
+                <p:inputText id="zip" value="#{dfResponsiveView.zip}" styleClass="w-full" />
             </div>
             <div class="field col-12 md:col-8">
                 <p:outputLabel for="@next">City</p:outputLabel>
-                <p:inputText id="city" value="#{dfResponsiveView.city}" />
+                <p:inputText id="city" value="#{dfResponsiveView.city}" styleClass="w-full" />
             </div>
         </p:outputPanel>
         <div>

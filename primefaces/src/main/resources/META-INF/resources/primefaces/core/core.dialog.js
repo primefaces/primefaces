@@ -307,15 +307,6 @@ if (!PrimeFaces.dialog) {
                 rootWindow.PF(dialogWidgetVar).show();
             })
             .attr('src', frameURL);
-
-            $(dialogFrame[0].contentWindow).on('resize', function() {
-                // dialog-content (iframe) is grown / shrunken -> resize outer div (only if resizeable=false?)
-
-                // https://stackoverflow.com/questions/27846057/iframe-does-not-trigger-resize-event
-                console.log('iframe-window was resized (core.dialog.js)');
-
-                // TODO: resize dialog
-            });
         },
 
         /**

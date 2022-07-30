@@ -403,17 +403,24 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             e.preventDefault();
         });
 
-        if(this.cfg.hasIframe) {
-            console.log('configure iframe-resize-event');
+        if(this.cfg.hasIframe && !this.cfg.resizable) {
+            // TODO: add some config-flag like resizeobserver
 
-            $(this.content.children('iframe')[0].contentWindow).on('resize', function() {
-                // dialog-content (iframe) is grown / shrunken -> resize outer div (only if resizeable=false?)
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
+            var resizeObserver = new ResizeObserver((entries) => {
+                var iframe = this.content.children('iframe')[0];
+                // console.log('ResizeObserver (dialog.js): ' + iframe.contentWindow.document.body.scrollHeight);
+                // for (let entry of entries) {
+                //     console.log('ResizeObserver (dialog.js) - entry-height: ' + entry.contentRect.height);
+                // }
 
-                // https://stackoverflow.com/questions/27846057/iframe-does-not-trigger-resize-event
-                console.log('iframe-window was resized (dialog.js)');
-
-                // TODO: resize dialog
+                // code similar to core.dialog.js - "adjust height"
+                var frameBody = iframe.contentWindow.document.body;
+                var frameBodyStyle = window.getComputedStyle(frameBody);
+                frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
+                $(iframe).css('height', String(frameHeight));
             });
+            resizeObserver.observe(this.content.children('iframe')[0].contentWindow.document.body);
         }
 
         if(this.cfg.closeOnEscape) {
