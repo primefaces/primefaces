@@ -65,7 +65,9 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                     $this.jq.removeClass('ui-state-loading');
-                    $this.enable();
+                    if (!$this.cfg.disabledAttr) {
+                        $this.enable();
+                    }
                 }
             });
         }

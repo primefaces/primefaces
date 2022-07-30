@@ -155,7 +155,8 @@ public class CommandLinkRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, CommandLink link) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("CommandLink", link)
-                .attr("disableOnAjax", link.isDisableOnAjax(), true);
+                .attr("disableOnAjax", link.isDisableOnAjax(), true)
+                .attr("disabledAttr", link.isDisabled(), false);
 
         encodeClientBehaviors(context, link);
 
