@@ -40,8 +40,11 @@ public class DFResponsiveView implements Serializable {
     private String street;
     private String zip;
     private String city;
+    private String notice;
 
     private boolean showMore = false;
+
+    private boolean showEvenMore = false;
 
     public String getFirstname() {
         return firstname;
@@ -89,6 +92,22 @@ public class DFResponsiveView implements Serializable {
 
     public void setShowMore(boolean showMore) {
         this.showMore = showMore;
+    }
+
+    public boolean isShowEvenMore() {
+        return showEvenMore;
+    }
+
+    public void setShowEvenMore(boolean showEvenMore) {
+        this.showEvenMore = showEvenMore;
+    }
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
     }
 
     public void showMessage() {

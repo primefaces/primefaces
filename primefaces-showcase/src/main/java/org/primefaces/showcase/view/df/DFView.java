@@ -32,64 +32,63 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import java.util.HashMap;
-import java.util.Map;
 
 @Named("dfView")
 @RequestScoped
 public class DFView {
 
     public void viewProducts() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("resizable", false);
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .resizable(false)
+                .build();
+
         PrimeFaces.current().dialog().openDynamic("viewProducts", options, null);
     }
 
     public void viewProductsCustomized() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("width", 640);
-        options.put("height", 340);
-        options.put("contentWidth", "100%");
-        options.put("contentHeight", "100%");
-        options.put("headerElement", "customheader");
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .modal(true)
+                .width("640")
+                .height("340")
+                .contentHeight("100%")
+                .contentWidth("100%")
+                .headerElement("customheader")
+                .build();
 
         PrimeFaces.current().dialog().openDynamic("viewProducts", options, null);
     }
 
     public void viewResponsive() {
-        Map<String, Object> options = DialogFrameworkOptions.builder()
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
                 .modal(true)
+                .fitViewport(true)
+                .responsive(true)
                 .width("900px")
-//                .height("auto")
                 .contentWidth("100%")
+                .styleClass("max-w-screen")
+                .iframeStyleClass("max-w-screen")
                 .resizable(false)
-//                .contentHeight("100%")
-                .build()
-                .toMap();
-
-        options.put("modal", true);
-        options.put("fitViewport", true);
-        options.put("responsive", true);
-//        options.put("contentWidth", "900");
-        options.put("styleClass", "max-w-screen");
-        options.put("iframeStyleClass", "max-w-screen");
+                .build();
 
         PrimeFaces.current().dialog().openDynamic("viewResponsive", options, null);
     }
 
     public void viewProductsLargerThanViewport() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("fitViewport", true);
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .modal(true)
+                .fitViewport(true)
+                .build();
+
         PrimeFaces.current().dialog().openDynamic("viewProductsLargerThanViewport", options, null);
     }
 
     public void chooseProduct() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("resizable", false);
-        options.put("draggable", false);
-        options.put("modal", true);
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .resizable(false)
+                .draggable(false)
+                .modal(false)
+                .build();
+
         PrimeFaces.current().dialog().openDynamic("selectProduct", options, null);
     }
 

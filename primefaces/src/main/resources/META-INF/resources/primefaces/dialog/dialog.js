@@ -417,8 +417,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 // code similar to core.dialog.js - "adjust height"
                 var frameBody = iframe.contentWindow.document.body;
                 var frameBodyStyle = window.getComputedStyle(frameBody);
+
+                // TODO: some height-calculation-issue with p:messages
+
                 frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
                 $(iframe).css('height', String(frameHeight));
+
+                // TODO: center dialog again?
             });
             resizeObserver.observe(this.content.children('iframe')[0].contentWindow.document.body);
         }

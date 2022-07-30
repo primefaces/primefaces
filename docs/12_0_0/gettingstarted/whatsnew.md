@@ -47,6 +47,9 @@ This page contains a list of big features. Please check the GitHub issues for al
 * ToggleSwitch: added `onIcon` and `offIcon` attributes
 * Tooltip: added `autoHide` attribute when set to false will keep the tooltip showing while focused.
 * OverlayPanel: added `autoHide` attribute when set to false will keep the overlay showing while focused.
+* Dialog Framework
+  * Improved responsive dialogs including Showcase-example.
+  * DialogFrameworkOptions including Builder as convenient way to create dialog-options.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
 Or check the list of 300+ issues closed for

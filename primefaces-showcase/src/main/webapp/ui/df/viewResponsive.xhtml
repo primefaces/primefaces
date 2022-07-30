@@ -42,6 +42,17 @@
                 <p:outputLabel for="@next">City</p:outputLabel>
                 <p:inputText id="city" value="#{dfResponsiveView.city}" styleClass="w-full" />
             </div>
+            <div class="field col-12">
+                <p:selectBooleanCheckbox itemLabel="show even more" value="#{dfResponsiveView.showEvenMore}">
+                    <p:ajax update="@form" process="@form" />
+                </p:selectBooleanCheckbox>
+            </div>
+        </p:outputPanel>
+        <p:outputPanel styleClass="formgrid grid" rendered="#{dfResponsiveView.showEvenMore}">
+            <div class="field col-12">
+                <p:outputLabel for="@next">Notice</p:outputLabel>
+                <p:inputTextarea id="notice" value="#{dfResponsiveView.street}" styleClass="w-full" rows="100" cols="80" />
+            </div>
         </p:outputPanel>
         <div>
             <p:commandButton value="show message" action="#{dfResponsiveView.showMessage()}" styleClass="mr-2" />
