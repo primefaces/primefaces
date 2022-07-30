@@ -209,8 +209,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
                     .nativeAttr("filterFunction", button.getFilterFunction(), null);
         }
 
-        wb.attr("disableOnAjax", button.isDisableOnAjax(), true);
-        wb.finish();
+        wb.attr("disableOnAjax", button.isDisableOnAjax(), true)
+            .attr("disabledAttr", button.isDisabled(), false)
+            .finish();
     }
 
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {

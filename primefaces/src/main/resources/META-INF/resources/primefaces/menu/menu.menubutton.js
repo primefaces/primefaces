@@ -233,7 +233,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                     return;
                 }
                 $this.button.removeClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false) {
+                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabledAttr) {
                     $this.enable();
                 }
                 $this.button.find('.ui-icon-loading').remove();
