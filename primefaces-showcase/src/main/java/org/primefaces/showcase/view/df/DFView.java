@@ -25,6 +25,7 @@ package org.primefaces.showcase.view.df;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.showcase.domain.Product;
 
 import javax.enterprise.context.RequestScoped;
@@ -54,6 +55,25 @@ public class DFView {
         options.put("headerElement", "customheader");
 
         PrimeFaces.current().dialog().openDynamic("viewProducts", options, null);
+    }
+
+    public void viewResponsive() {
+        Map<String, Object> options = DialogFrameworkOptions.builder()
+                .modal(true)
+                .width("900px")
+                .contentWidth("100%")
+                .contentHeight("100%")
+                .build()
+                .toMap();
+
+        options.put("modal", true);
+        options.put("fitViewport", true);
+        options.put("responsive", true);
+//        options.put("contentWidth", "900");
+        options.put("styleClass", "max-w-screen");
+        options.put("iframeStyleClass", "max-w-screen");
+
+        PrimeFaces.current().dialog().openDynamic("viewResponsive", options, null);
     }
 
     public void viewProductsLargerThanViewport() {

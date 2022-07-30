@@ -178,8 +178,9 @@ if (!PrimeFaces.dialog) {
                 titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
             }
 
+            var iframeStyleClass = cfg.options.iframeStyleClass||'';
             dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
-                    '<iframe style="border:0 none" frameborder="0"></iframe>' +
+                    '<iframe class="' + iframeStyleClass + '" style="border:0 none" frameborder="0"></iframe>' +
                     '</div>');
 
             dialogDOM.appendTo(rootWindow.document.body);
@@ -292,18 +293,33 @@ if (!PrimeFaces.dialog) {
                 var frameHeight = null;
                 if(cfg.options.contentHeight) {
                     frameHeight = cfg.options.contentHeight;
+
+                    console.log('df-iframe-height (from options): ' + String(frameHeight));
+
+                    $frame.css('height', String(frameHeight));
+
+                    // fix #1290 - dialogs are not centered vertically
+                    dialogFrame.data('initialized', true);
+                    rootWindow.PF(dialogWidgetVar).show();
                 }
                 else {
-                    var frameBody = $frame.get(0).contentWindow.document.body;
-                    var frameBodyStyle = window.getComputedStyle(frameBody);
-                    frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
+                    // TODO: do this a bit delayed after the iframe is loaded and layouted
+                    // TODO: is there some kind of event instead of the timeout-trick?
+
+                    setTimeout(function() {
+                        var frameBody = $frame.get(0).contentWindow.document.body;
+                        var frameBodyStyle = window.getComputedStyle(frameBody);
+                        frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
+
+                        $frame.css('height', String(frameHeight));
+                        console.log('df-iframe-height (calculated): ' + String(frameHeight));
+
+                        // fix #1290 - dialogs are not centered vertically
+                        dialogFrame.data('initialized', true);
+                        rootWindow.PF(dialogWidgetVar).show();
+                        console.log('df-show');
+                    }, 100);
                 }
-
-                $frame.css('height', String(frameHeight));
-
-                // fix #1290 - dialogs are not centered vertically
-                dialogFrame.data('initialized', true);
-                rootWindow.PF(dialogWidgetVar).show();
             })
             .attr('src', frameURL);
         },

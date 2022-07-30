@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Responsive Dialog</title>
+    <h:outputStylesheet name="css/primeflex3.css" library="showcase"/><!-- latest primeflex -->
+</h:head>
+
+<h:body>
+    <div class="formgrid grid">
+        <div class="field col-12 md:col-6">
+            <p:outputLabel for="@next">Firstname</p:outputLabel>
+            <p:inputText id="firstname" styleClass="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+            <p:outputLabel for="@next">Lastname</p:outputLabel>
+            <p:inputText id="lastname" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+        </div>
+    </div>
+</h:body>
+
+</html>

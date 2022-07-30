@@ -28,6 +28,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
@@ -225,6 +226,17 @@ public class PrimeFaces {
          */
         public void openDynamic(String outcome) {
             getFacesContext().getAttributes().put(Constants.DialogFramework.OUTCOME, outcome);
+        }
+
+        /**
+         * Opens a view in a dynamic dialog.
+         *
+         * @param outcome the logical outcome used to resolve the navigation case.
+         * @param options configuration options for the dialog.
+         * @param params parameters to send to the view displayed in the dynamic dialog.
+         */
+        public void openDynamic(String outcome, DialogFrameworkOptions options, Map<String, List<String>> params) {
+            openDynamic(outcome, options.toMap(), params);
         }
 
         /**
