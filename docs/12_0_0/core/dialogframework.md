@@ -9,23 +9,23 @@ Usage is quite simple, PrimeFaces.current().dialog() has _openDynamic_ and _clos
 
 ```java
 /**
- * Open a view in dialog.
- * @param outcome The logical outcome used to resolve a navigation case.
- */
+* Open a view in dialog.
+* @param outcome The logical outcome used to resolve a navigation case.
+*/
 public abstract void openDynamic(String outcome);
 
 /**
- * Open a view in dialog.
- * @param outcome The logical outcome used to resolve a navigation case.
- * @param options Configuration options for the dialog.
- * @param params Parameters to send to the view displayed in a dialog.
- */
+* Open a view in dialog.
+* @param outcome The logical outcome used to resolve a navigation case.
+* @param options Configuration options for the dialog.
+* @param params Parameters to send to the view displayed in a dialog.
+*/
 public abstract void openDynamic(String outcome, Map<String,Object> options, Map<String,List<String>> params);
 
 /**
- * Close a dialog.
- * @param data Optional data to pass back to a dialogReturn event.
- */
+* Close a dialog.
+* @param data Optional data to pass back to a dialogReturn event.
+*/
 public abstract void closeDynamic(Object data);
 ```
 
@@ -53,15 +53,15 @@ Simplest use case of DF is opening an xhtml view like _cars.xhtml_ in a dialog;
 ```xhtml
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Cars</title>
-</h:head>
-<h:body>
-    <p:dataTable var="car" value="#{tableBean.cars}">
-        //columns
-    </p:dataTable>
-</h:body>
+xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cars</title>
+    </h:head>
+    <h:body>
+        <p:dataTable var="car" value="#{tableBean.cars}">
+            //columns
+        </p:dataTable>
+    </h:body>
 </html>
 ```
 On the host page, call _PrimeFaces.current().dialog().openDynamic("viewname");_
@@ -72,8 +72,8 @@ On the host page, call _PrimeFaces.current().dialog().openDynamic("viewname");_
 
 ```java
 public void view() {
-        PrimeFaces.current().dialog().openDynamic("viewCars");
-        }
+    PrimeFaces.current().dialog().openDynamic("viewCars");
+}
 ```
 
 Once the response is received from the request caused by command button a dialog would be generated with the contents of viewCars.xhtml.
@@ -93,7 +93,6 @@ public void view() {
         .draggable(false)
         .modal(false)
         .build();
-
     PrimeFaces.current().dialog().openDynamic("viewCars", options, null);
 }
 ```
@@ -147,9 +146,9 @@ Parent page
 
 ```java
 public void editCar(Car car) {
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("car", car);
-        PrimeFaces.current().dialog().openDynamic("editCarDlg");
-        }
+    FacesContext.getCurrentInstance().getExternalContext().getFlash().put("car", car);
+    PrimeFaces.current().dialog().openDynamic("editCarDlg");
+}
 ```
 
 Java-code within dialog framework - viewbean (eg part of init-method, annotated with @PostConstruct)
@@ -157,8 +156,8 @@ Java-code within dialog framework - viewbean (eg part of init-method, annotated 
 ```java
 @PostConstruct
 public void init(){
-        Car car = (Car) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("car");
-        }
+    Car car = (Car) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("car");
+}
 ```
 
 Internally `org.primefaces.application.DialogKeepFlashPhaseListener` provided by PrimeFaces keeps the Flash during opening the dialog.
@@ -170,25 +169,25 @@ The trigger component needs to have _dialogReturn_ ajax behavior event to hook-i
 ```xhtml
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Cars</title>
-</h:head>
-<h:body>
-    <p:dataTable var="car" value="#{tableBean.cars}">
-        //columns
-        <p:column headerText="Select">
-            <p:commandButton icon="ui-icon-search" action="#{tableBean.selectCarFromDialog(car)}" />
-        </p:column>
-    </p:dataTable>
-</h:body>
+    xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cars</title>
+    </h:head>
+    <h:body>
+        <p:dataTable var="car" value="#{tableBean.cars}">
+            //columns
+            <p:column headerText="Select">
+                <p:commandButton icon="ui-icon-search" action="#{tableBean.selectCarFromDialog(car)}" />
+            </p:column>
+        </p:dataTable>
+    </h:body>
 </html>
 ```
 
 ```java
 public void selectCarFromDialog(Car car) {
-        PrimeFaces.current().dialog().closeDynamic(car);
-        }
+    PrimeFaces.current().dialog().closeDynamic(car);
+}
 ```
 
 At host page, the button that triggered the dialog should have _dialogReturn_ event.
@@ -201,12 +200,12 @@ At host page, the button that triggered the dialog should have _dialogReturn_ ev
 
 ```java
 public void view() {
-        PrimeFaces.current().dialog().openDynamic("viewCars");
-        }
+    PrimeFaces.current().dialog().openDynamic("viewCars");
+}
 
 public void handleReturn(SelectEvent<Car> event) {
-        Car car = event.getObject();
-        }
+    Car car = event.getObject();
+}
 ```
 ## Remarks on Dialog Framework
 
@@ -221,9 +220,9 @@ shortcut;
 
 ```java
 /**
- * Displays a message in a dialog.
- * @param message FacesMessage to be displayed.
- */
+* Displays a message in a dialog.
+* @param message FacesMessage to be displayed.
+*/
 public abstract void showMessageInDialog(FacesMessage message);
 ```
 
@@ -235,7 +234,7 @@ Using this shortcut it is just one line to implement the same functionality;
 
 ```java
 public void save() {
-        //business logic
-        PrimeFaces.current().dialog().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity."););
-        }
+    //business logic
+    PrimeFaces.current().dialog().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity."););
+}
 ```
