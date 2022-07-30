@@ -5,20 +5,49 @@
 
 <h:head>
     <title>Responsive Dialog</title>
-    <h:outputStylesheet name="css/primeflex3.css" library="showcase"/><!-- latest primeflex -->
+    <h:outputStylesheet name="css/primeflex3.css" library="showcase"/>
 </h:head>
 
 <h:body>
-    <div class="formgrid grid">
-        <div class="field col-12 md:col-6">
-            <p:outputLabel for="@next">Firstname</p:outputLabel>
-            <p:inputText id="firstname" styleClass="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+    <h:form>
+        <p:growl>
+            <p:autoUpdate />
+        </p:growl>
+
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-6">
+                <p:outputLabel for="@next">Firstname</p:outputLabel>
+                <p:inputText id="firstname" value="#{dfResponsiveView.firstname}" />
+            </div>
+            <div class="field col-12 md:col-6">
+                <p:outputLabel for="@next">Lastname</p:outputLabel>
+                <p:inputText id="lastname" value="#{dfResponsiveView.lastname}" />
+            </div>
+            <div class="field col-12">
+                <p:selectBooleanCheckbox label="show more" value="#{dfResponsiveView.showMore}">
+                    <p:ajax update="@form" process="@form" />
+                </p:selectBooleanCheckbox>
+            </div>
         </div>
-        <div class="field col-12 md:col-6">
-            <p:outputLabel for="@next">Lastname</p:outputLabel>
-            <p:inputText id="lastname" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+        <p:outputPanel styleClass="formgrid grid" rendered="#{dfResponsiveView.showMore}">
+            <div class="field col-12">
+                <p:outputLabel for="@next">Street</p:outputLabel>
+                <p:inputText id="street" value="#{dfResponsiveView.street}" />
+            </div>
+            <div class="field col-12 md:col-4">
+                <p:outputLabel for="@next">Zip-Code</p:outputLabel>
+                <p:inputText id="zip" value="#{dfResponsiveView.zip}" />
+            </div>
+            <div class="field col-12 md:col-8">
+                <p:outputLabel for="@next">City</p:outputLabel>
+                <p:inputText id="city" value="#{dfResponsiveView.city}" />
+            </div>
+        </p:outputPanel>
+        <div>
+            <p:commandButton value="show message" action="#{dfResponsiveView.showMessage()}" styleClass="mr-2" />
+            <p:commandButton value="close" action="#{dfResponsiveView.closeDialog()}" />
         </div>
-    </div>
+    </h:form>
 </h:body>
 
 </html>

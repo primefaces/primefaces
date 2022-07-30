@@ -61,8 +61,10 @@ public class DFView {
         Map<String, Object> options = DialogFrameworkOptions.builder()
                 .modal(true)
                 .width("900px")
+//                .height("auto")
                 .contentWidth("100%")
-                .contentHeight("100%")
+                .resizable(false)
+//                .contentHeight("100%")
                 .build()
                 .toMap();
 

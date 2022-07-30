@@ -293,35 +293,29 @@ if (!PrimeFaces.dialog) {
                 var frameHeight = null;
                 if(cfg.options.contentHeight) {
                     frameHeight = cfg.options.contentHeight;
-
-                    console.log('df-iframe-height (from options): ' + String(frameHeight));
-
-                    $frame.css('height', String(frameHeight));
-
-                    // fix #1290 - dialogs are not centered vertically
-                    dialogFrame.data('initialized', true);
-                    rootWindow.PF(dialogWidgetVar).show();
                 }
                 else {
-                    // TODO: do this a bit delayed after the iframe is loaded and layouted
-                    // TODO: is there some kind of event instead of the timeout-trick?
-
-                    setTimeout(function() {
-                        var frameBody = $frame.get(0).contentWindow.document.body;
-                        var frameBodyStyle = window.getComputedStyle(frameBody);
-                        frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
-
-                        $frame.css('height', String(frameHeight));
-                        console.log('df-iframe-height (calculated): ' + String(frameHeight));
-
-                        // fix #1290 - dialogs are not centered vertically
-                        dialogFrame.data('initialized', true);
-                        rootWindow.PF(dialogWidgetVar).show();
-                        console.log('df-show');
-                    }, 100);
+                    var frameBody = $frame.get(0).contentWindow.document.body;
+                    var frameBodyStyle = window.getComputedStyle(frameBody);
+                    frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
                 }
+
+                $frame.css('height', String(frameHeight));
+
+                // fix #1290 - dialogs are not centered vertically
+                dialogFrame.data('initialized', true);
+                rootWindow.PF(dialogWidgetVar).show();
             })
             .attr('src', frameURL);
+
+            $(dialogFrame[0].contentWindow).on('resize', function() {
+                // dialog-content (iframe) is grown / shrunken -> resize outer div (only if resizeable=false?)
+
+                // https://stackoverflow.com/questions/27846057/iframe-does-not-trigger-resize-event
+                console.log('iframe-window was resized (core.dialog.js)');
+
+                // TODO: resize dialog
+            });
         },
 
         /**

@@ -34,10 +34,10 @@ public class DialogFrameworkOptions {
     private boolean modal = false;
     private boolean resizable = true;
     private boolean draggable = true;
-    private String width = "auto";
-    private String height = "auto";
-    private String contentWidth = "640";
-    private String contentHeight = "auto";
+    private String width;
+    private String height;
+    private String contentWidth;
+    private String contentHeight;
 
     public String getWidgetVar() {
         return widgetVar;
