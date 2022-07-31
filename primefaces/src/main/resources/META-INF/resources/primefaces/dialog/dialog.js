@@ -421,7 +421,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
                 $(iframe).css('height', String(frameHeight));
 
-                // TODO: center dialog again?
+                // re-center dialog (add an additional option? or only when part´s of the dialog are outside the window?)
+                this.initPosition();
             });
             resizeObserver.observe(this.content.children('iframe')[0].contentWindow.document.body);
         }
