@@ -132,6 +132,7 @@ Here is the full list of configuration options:
 | blockScroll | false | Boolean | Whether to block scrolling of the document when dialog is modal. |
 | styleClass | null| String | One or more CSS classes for the dialog. |
 | iframeStyleClass | null | String | One or more CSS classes for the iframe within the dialog. |
+| resizeObserver | false | Boolean |Use ResizeObserver to automatically adjust dialog-height after e.g. AJAX-updates. Resizeable must be set to false to use this option. (Known limitation: Dialog does not automatically resize yet when resizing the browser-window.) | 
 
 ## Data Communication
 

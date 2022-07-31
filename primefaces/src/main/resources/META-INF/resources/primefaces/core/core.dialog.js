@@ -272,7 +272,8 @@ if (!PrimeFaces.dialog) {
                         responsive: cfg.options.responsive,
                         closeOnEscape: cfg.options.closeOnEscape,
                         focus: cfg.options.focus,
-                        fitViewport: cfg.options.fitViewport
+                        fitViewport: cfg.options.fitViewport,
+                        resizeObserver: cfg.options.resizeObserver
                     });
                 }
 

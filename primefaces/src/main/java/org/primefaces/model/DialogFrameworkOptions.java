@@ -58,6 +58,7 @@ public class DialogFrameworkOptions {
     private boolean blockScroll = false;
     private String styleClass;
     private String iframeStyleClass;
+    private boolean resizeObserver = false;
 
     public String getWidgetVar() {
         return widgetVar;
@@ -291,7 +292,13 @@ public class DialogFrameworkOptions {
         this.iframeStyleClass = iframeStyleClass;
     }
 
-    // TODO: https://primefaces.github.io/primefaces/12_0_0/#/core/dialogframework
+    public boolean isResizeObserver() {
+        return resizeObserver;
+    }
+
+    public void setResizeObserver(boolean resizeObserver) {
+        this.resizeObserver = resizeObserver;
+    }
 
     public Map<String, Object> toMap() {
         Map<String, Object> opts = new HashMap<>();
@@ -359,6 +366,7 @@ public class DialogFrameworkOptions {
         if (LangUtils.isNotBlank(iframeStyleClass)) {
             opts.put("iframeStyleClass", iframeStyleClass);
         }
+        opts.put("resizeObserver", resizeObserver);
 
         return opts;
     }
@@ -658,6 +666,17 @@ public class DialogFrameworkOptions {
          */
         public DialogFrameworkOptions.Builder iframeStyleClass(String iframeStyleClass) {
             options.setIframeStyleClass(iframeStyleClass);
+            return this;
+        }
+
+        /**
+         * Use ResizeObserver to automatically adjust dialog-height after e.g. AJAX-updates.
+         * Resizeable must be set to false to use this option.
+         * @param resizeObserver
+         * @return
+         */
+        public DialogFrameworkOptions.Builder resizeObserver(boolean resizeObserver) {
+            options.setResizeObserver(resizeObserver);
             return this;
         }
 

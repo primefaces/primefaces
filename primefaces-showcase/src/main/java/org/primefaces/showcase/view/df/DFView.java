@@ -65,9 +65,10 @@ public class DFView {
                 .responsive(true)
                 .width("900px")
                 .contentWidth("100%")
+                .resizeObserver(true)
+                .resizable(false)
                 .styleClass("max-w-screen")
                 .iframeStyleClass("max-w-screen")
-                .resizable(false)
                 .build();
 
         PrimeFaces.current().dialog().openDynamic("viewResponsive", options, null);

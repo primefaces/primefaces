@@ -403,9 +403,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             e.preventDefault();
         });
 
-        if(this.cfg.hasIframe && !this.cfg.resizable) {
-            // TODO: add some config-flag like resizeobserver
-
+        if(this.cfg.hasIframe && !this.cfg.resizable && this.cfg.resizeObserver) {
             // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
             var resizeObserver = new ResizeObserver((entries) => {
                 var iframe = this.content.children('iframe')[0];
