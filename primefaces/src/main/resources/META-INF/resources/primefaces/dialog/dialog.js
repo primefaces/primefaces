@@ -64,6 +64,7 @@
  * of height. When this is set to `true`, automatically adjust the height to fit the dialog within the viewport.
  * @prop {number} cfg.height The height of the dialog in pixels.
  * @prop {string} cfg.hideEffect Effect to use when hiding the dialog.
+ * @prop {string} cfg.iframeStyleClass One or more CSS classes for the iframe within the dialog.
  * @prop {string} cfg.iframeTitle The title of the iframe with the dialog.
  * @prop {boolean} cfg.maximizable Whether the dialog is maximizable.
  * @prop {number} cfg.minHeight The minimum height of the dialog in pixels.
@@ -76,6 +77,8 @@
  * @prop {PrimeFaces.widget.Dialog.OnShowCallback} cfg.onShow Client-side callback to invoke when the dialog is opened.
  * @prop {string} cfg.position Defines where the dialog should be displayed
  * @prop {boolean} cfg.resizable Whether the dialog can be resized by the user.
+ * @prop {boolean} cfg.resizeObserver Use ResizeObserver to automatically adjust dialog-height after e.g. AJAX-updates. Resizeable must be set to false to use this option. (Known limitation: Dialog does not automatically resize yet when resizing the browser-window.)
+ * @prop {boolean} cfg.resizeObserverCenter Can be used together with resizeObserver = true. Centers the dialog again after it was resized to ensure the whole dialog is visible onscreen.
  * @prop {boolean} cfg.responsive Whether the dialog is responsive. In responsive mode, the dialog adjusts itself based
  * on the screen width.
  * @prop {string} cfg.showEffect Effect to use when showing the dialog
@@ -407,22 +410,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
             var resizeObserver = new ResizeObserver((entries) => {
                 var iframe = this.content.children('iframe')[0];
-                // console.log('ResizeObserver (dialog.js): ' + iframe.contentWindow.document.body.scrollHeight);
-                // for (let entry of entries) {
-                //     console.log('ResizeObserver (dialog.js) - entry-height: ' + entry.contentRect.height);
-                // }
+                var frameHeight = $(iframe.contentWindow.document.body).outerHeight(true) + 8; // 8 because of weird p:messages - sizing issue
+                $(iframe).height(frameHeight);
 
-                // code similar to core.dialog.js - "adjust height"
-                var frameBody = iframe.contentWindow.document.body;
-                var frameBodyStyle = window.getComputedStyle(frameBody);
-
-                // TODO: some height-calculation-issue with p:messages
-
-                frameHeight = frameBody.scrollHeight + parseFloat(frameBodyStyle.marginTop) + parseFloat(frameBodyStyle.marginBottom);
-                $(iframe).css('height', String(frameHeight));
-
-                // re-center dialog (add an additional option? or only when part´s of the dialog are outside the window?)
-                this.initPosition();
+                if (this.cfg.resizeObserverCenter) {
+                    // further improvement possible - maybe only center the dialog again if parts of the dialog are outside the window
+                    this.initPosition();
+                }
             });
             resizeObserver.observe(this.content.children('iframe')[0].contentWindow.document.body);
         }

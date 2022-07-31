@@ -59,6 +59,7 @@ public class DialogFrameworkOptions {
     private String styleClass;
     private String iframeStyleClass;
     private boolean resizeObserver = false;
+    private boolean resizeObserverCenter = false;
 
     public String getWidgetVar() {
         return widgetVar;
@@ -300,6 +301,14 @@ public class DialogFrameworkOptions {
         this.resizeObserver = resizeObserver;
     }
 
+    public boolean isResizeObserverCenter() {
+        return resizeObserverCenter;
+    }
+
+    public void setResizeObserverCenter(boolean resizeObserverCenter) {
+        this.resizeObserverCenter = resizeObserverCenter;
+    }
+
     public Map<String, Object> toMap() {
         Map<String, Object> opts = new HashMap<>();
 
@@ -367,6 +376,7 @@ public class DialogFrameworkOptions {
             opts.put("iframeStyleClass", iframeStyleClass);
         }
         opts.put("resizeObserver", resizeObserver);
+        opts.put("resizeObserverCenter", resizeObserverCenter);
 
         return opts;
     }
@@ -671,12 +681,23 @@ public class DialogFrameworkOptions {
 
         /**
          * Use ResizeObserver to automatically adjust dialog-height after e.g. AJAX-updates.
-         * Resizeable must be set to false to use this option.
+         * Resizeable must be set false to use this option.
          * @param resizeObserver
          * @return
          */
         public DialogFrameworkOptions.Builder resizeObserver(boolean resizeObserver) {
             options.setResizeObserver(resizeObserver);
+            return this;
+        }
+
+        /**
+         * Can be used together with resizeObserver = true.
+         * Centers the dialog again after it was resized to ensure the whole dialog is visible onscreen.
+         * @param resizeObserverCenter
+         * @return
+         */
+        public DialogFrameworkOptions.Builder resizeObserverCenter(boolean resizeObserverCenter) {
+            options.setResizeObserverCenter(resizeObserverCenter);
             return this;
         }
 

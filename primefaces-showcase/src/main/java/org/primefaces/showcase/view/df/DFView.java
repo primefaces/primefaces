@@ -66,6 +66,7 @@ public class DFView {
                 .width("900px")
                 .contentWidth("100%")
                 .resizeObserver(true)
+                .resizeObserverCenter(true)
                 .resizable(false)
                 .styleClass("max-w-screen")
                 .iframeStyleClass("max-w-screen")
