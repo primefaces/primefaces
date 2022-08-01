@@ -178,8 +178,9 @@ if (!PrimeFaces.dialog) {
                 titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
             }
 
+            var iframeStyleClass = cfg.options.iframeStyleClass||'';
             dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
-                    '<iframe style="border:0 none" frameborder="0"></iframe>' +
+                    '<iframe class="' + iframeStyleClass + '" style="border:0 none" frameborder="0"></iframe>' +
                     '</div>');
 
             dialogDOM.appendTo(rootWindow.document.body);
@@ -271,7 +272,9 @@ if (!PrimeFaces.dialog) {
                         responsive: cfg.options.responsive,
                         closeOnEscape: cfg.options.closeOnEscape,
                         focus: cfg.options.focus,
-                        fitViewport: cfg.options.fitViewport
+                        fitViewport: cfg.options.fitViewport,
+                        resizeObserver: cfg.options.resizeObserver,
+                        resizeObserverCenter: cfg.options.resizeObserverCenter
                     });
                 }
 

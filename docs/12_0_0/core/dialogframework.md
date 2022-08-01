@@ -1,10 +1,10 @@
 # Dialog Framework
 
-Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated dynamically on runtime. 
+Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated dynamically on runtime.
 This is quite different to regular usage of dialogs with declarative p:dialog components as DF is based on a programmatic API where dialogs are created and destroyed at
 runtime.
 
-Note that DF and the declarative approach are two different ways and both can even be used together. 
+Note that DF and the declarative approach are two different ways and both can even be used together.
 Usage is quite simple, PrimeFaces.current().dialog() has _openDynamic_ and _closeDynamic_ methods;
 
 ```java
@@ -76,7 +76,7 @@ public void view() {
 }
 ```
 
-Once the response is received from the request caused by command button a dialog would be generated with the contents of viewCars.xhtml. 
+Once the response is received from the request caused by command button a dialog would be generated with the contents of viewCars.xhtml.
 Title of the dialog is retrieved from the title element of the viewCars, in this case, Cars.
 
 ## Dialog Configuration
@@ -88,11 +88,11 @@ along with parameters to send to the dialog content.
 ```
 ```java
 public void view() {
-    Map<String,Object> options = new HashMap<String, Object>();
-    options.put("modal", true);
-    options.put("draggable", false);
-    options.put("resizable", false);
-    options.put("contentHeight", 320);
+    DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+        .resizable(false)
+        .draggable(false)
+        .modal(false)
+        .build();
     PrimeFaces.current().dialog().openDynamic("viewCars", options, null);
 }
 ```
@@ -130,7 +130,10 @@ Here is the full list of configuration options:
 | onShow | null | String | Client side callback to execute when dialog is displayed. |
 | onHide | null | String | Client side callback to execute when dialog is hidden. |
 | blockScroll | false | Boolean | Whether to block scrolling of the document when dialog is modal. |
-
+| styleClass | null| String | One or more CSS classes for the dialog. |
+| iframeStyleClass | null | String | One or more CSS classes for the iframe within the dialog. |
+| resizeObserver | false | Boolean |Use ResizeObserver to automatically adjust dialog-height after e.g. AJAX-updates. Resizeable must be set to false to use this option. | 
+| resizeObserverCenter | false | Boolean |Can be used together with resizeObserver = true. Centers the dialog again after it was resized to ensure the whole dialog is visible onscreen. |
 
 ## Data Communication
 
