@@ -343,7 +343,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             $(this.jqId + '>ul>li').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
-                if ($(tabId + ' .ui-state-error').length > 0) {
+                if ($(tabId + ' .ui-state-error').length > 0 || $(tabId + ' .ui-message-error-detail').length > 0) {
                     $(this).addClass('ui-state-error');
                 } else {
                     $(this).removeClass('ui-state-error');
