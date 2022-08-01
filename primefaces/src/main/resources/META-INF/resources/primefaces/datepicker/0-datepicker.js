@@ -1911,6 +1911,11 @@
                     newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
 
+                // previous (check first day of month at 00:00:00)
+                newViewDate.setHours(0);
+                newViewDate.setMinutes(0);
+                newViewDate.setSeconds(0);
+
                 // #5967 check if month can be navigated to by checking last day in month
                 var testDate = new Date(newViewDate.getTime()),
                     minDate = this.options.minDate;
@@ -1969,6 +1974,11 @@
                 else {
                     newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
                 }
+
+                // next (check last day of month)
+                newViewDate.setHours(0);
+                newViewDate.setMinutes(0);
+                newViewDate.setSeconds(0);
 
                 // #5967 check if month can be navigated to by checking first day next month
                 var maxDate = this.options.maxDate;
