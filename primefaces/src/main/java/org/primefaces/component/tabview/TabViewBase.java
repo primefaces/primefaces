@@ -52,7 +52,8 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         scrollable,
         tabindex,
         touchable,
-        multiViewState
+        multiViewState,
+        focusOnError
     }
 
     public TabViewBase() {
@@ -175,6 +176,14 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
 
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+    public boolean isFocusOnError() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnError, false);
+    }
+
+    public void setFocusOnError(boolean focusOnError) {
+        getStateHelper().put(PropertyKeys.focusOnError, focusOnError);
     }
 
     @Override

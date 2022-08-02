@@ -43,6 +43,7 @@ TabView is a container component to group content in tabs.
 | tabindex       | 0       | String     | Position of the element in the tabbing order.
 | touchable      | false   | Boolean    | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | multiViewState | false   | Boolean    | Whether to keep TabView state across views, defaults to false.
+| focusOnError   | false   | Boolean    | Whether to focus the first tab that contains an error after form submission.
 
 ## Getting started with the TabView
 TabView requires one more child tab components to display. Titles can also be defined by using
