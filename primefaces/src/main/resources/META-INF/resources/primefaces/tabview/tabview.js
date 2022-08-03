@@ -59,6 +59,7 @@
  * @prop {number} cfg.selected The currently selected tab.
  * @prop {number} cfg.tabindex Position of the element in the tabbing order.
  * @prop {boolean} cfg.multiViewState Whether to keep TabView state across views.
+ * @prop {boolean} cfg.focusOnError Whether to focus the first tab that has an error associated to it.
  */
 PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -339,16 +340,24 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindRefreshListener: function() {
+        var $this = this;
+        var focusIndex = -1;
         this.addRefreshListener(function() {
             $(this.jqId + '>ul>li').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
                 if ($(tabId + ' .ui-state-error').length > 0 || $(tabId + ' .ui-message-error-detail').length > 0) {
                     $(this).addClass('ui-state-error');
+                    if (focusIndex < 0) {
+                        focusIndex = $(this).data('index');
+                    }
                 } else {
                     $(this).removeClass('ui-state-error');
                 }
             });
+            if ($this.cfg.focusOnError && focusIndex >= 0) {
+               setTimeout(function () {$this.select(focusIndex, true)}, 10);
+            }
         });
     },
 
