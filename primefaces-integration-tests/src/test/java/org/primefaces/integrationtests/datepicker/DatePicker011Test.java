@@ -27,11 +27,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -314,6 +310,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         switch (behaviour) {
             case viewChange:
             case dateSelect:
+            case close:
                 assertMessage(messages, behaviour);
                 break;
             default:
@@ -322,6 +319,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         }
 
         // Act - 9th select 5th of current month
+        datePicker.showPanel();
         WebElement link = datePicker.getPanel().findElement(By.linkText("5"));
         switch (behaviour) {
             case viewChange:
@@ -444,11 +442,9 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
-            case dateSelect:
                 assertMessage(messages, behaviour);
                 break;
             default:
-                assertEmptyMessages(messages);
                 break;
         }
 

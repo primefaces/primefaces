@@ -2743,6 +2743,7 @@
             if (this.options.onClearButtonClick) {
                 this.options.onClearButtonClick.call(this, event);
             }
+            this.hideOverlay();
         },
 
         escapeHTML: function(value) {
