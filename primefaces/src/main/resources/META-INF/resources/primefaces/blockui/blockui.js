@@ -227,12 +227,12 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             // set the size and position to match the target
             var height = currentTarget.height(),
                 width = currentTarget.width(),
-                position = currentTarget.position();
+                offset = currentTarget.offset();
             var sizeAndPosition = {
                 'height': height + 'px',
                 'width': width + 'px',
-                'left': position.left + 'px',
-                'top': position.top + 'px'
+                'left': offset.left + 'px',
+                'top': offset.top + 'px'
             };
             currentBlocker.css(sizeAndPosition);
 
