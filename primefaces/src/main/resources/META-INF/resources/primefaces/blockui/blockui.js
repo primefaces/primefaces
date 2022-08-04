@@ -17,6 +17,7 @@
  * @prop {string} cfg.block Search expression for block targets.
  * @prop {string} cfg.styleClass Style class of the component.
  * @prop {string} cfg.triggers Search expression of the components to bind.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  */
 PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
@@ -42,6 +43,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.blocked) {
             this.show();
         }
+
+        this.bindResizer();
     },
 
     /**
@@ -76,6 +79,23 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Sets up the global resize listener on the document.
+     * @private
+     */
+    bindResizer: function() {
+       var $this = this;
+       this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_resize', this.target, function() {
+            var isVisible = $this.isBlocking();
+            $this.content.remove();
+            $this.blocker.remove();
+            $this.render();
+            if (isVisible) {
+                $this.show();
+            }
+       });
+    },
+
+   /**
      * Sets up the global event listeners on the document.
      * @private
      */
