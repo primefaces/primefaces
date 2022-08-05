@@ -257,7 +257,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             currentBlocker.css(sizeAndPosition);
 
             // append the blocker to the document 
-            $(document.body).append(currentBlocker).append(currentContent);
+            $(document.body).append(currentBlocker);
+            currentBlocker.append(currentContent);
         }
 
         // assign all matching blockers to widget
