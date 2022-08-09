@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -281,7 +282,9 @@ public class DataTable026Test extends AbstractDataTableTest {
         page.roleFilter.deselect(Employee.Role.FINANCE.toString(), true);
         page.roleFilter.deselect(Employee.Role.HR.toString(), true);
         page.roleFilter.deselect(Employee.Role.QS.toString(), true);
-        page.roleFilter.select(Employee.Role.DEVELOPER.toString(), true);
+        // make window large enough so roleFilter is within viewport and we can use withGuardAjax for the next action
+        getWebDriver().manage().window().setSize(new Dimension(2560, 1440));
+        page.roleFilter.select(Employee.Role.DEVELOPER.toString(), true, true);
 
         // Assert
         List<Employee> employeesFiltered = employees.stream()
