@@ -111,6 +111,7 @@
         _create: function () {
             this.container = this.element;
             this.inputfield = this.element.children('input');
+            this.inputfield.addClass('hasDatepicker'); // needed for ui-float-label
 
             this._setInitValues();
             this._render();
