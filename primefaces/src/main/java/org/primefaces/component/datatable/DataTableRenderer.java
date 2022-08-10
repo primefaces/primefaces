@@ -1658,12 +1658,28 @@ public class DataTableRenderer extends DataRenderer {
         table.setRowIndex(currentRowIndex);
         Object currentGroupByData = groupByVE.getValue(eLContext);
 
-        table.setRowIndex(currentRowIndex + step);
-        if (!table.isRowAvailable()) {
-            return false;
-        }
+        int nextRowIndex = currentRowIndex + step;
 
-        Object nextGroupByData = groupByVE.getValue(eLContext);
+        Object nextGroupByData;
+
+        // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
+        // 1) get the rowData manually for the next row
+        // 2) put it into request-scope
+        // 3) invoke the groupBy ValueExpression
+        if (table.isLazy()) {
+            Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+            nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> {
+                return groupByVE.getValue(eLContext);
+            });
+        }
+        else {
+            table.setRowIndex(nextRowIndex);
+            if (!table.isRowAvailable()) {
+                return false;
+            }
+
+            nextGroupByData = groupByVE.getValue(eLContext);
+        }
 
         return Objects.equals(nextGroupByData, currentGroupByData);
     }

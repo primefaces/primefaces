@@ -634,22 +634,10 @@ public class DataTable extends DataTableBase {
             if (!hasRowKeyVe) {
                 throw new UnsupportedOperationException("DataTable#rowKey must be defined for component " + getClientId(getFacesContext()));
             }
-            else {
-                Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-                String var = getVar();
-                boolean containsVar = requestMap.containsKey(var);
-                if (!containsVar) {
-                    requestMap.put(var, object);
-                }
 
-                String rowKey = getRowKey();
-
-                if (!containsVar) {
-                    requestMap.remove(var);
-                }
-
-                return rowKey;
-            }
+            return ComponentUtils.executeInRequestScope(getFacesContext(), getVar(), object, () -> {
+                return getRowKey();
+            });
         }
     }
 
@@ -1243,5 +1231,12 @@ public class DataTable extends DataTableBase {
                 mvs.getExpandedRowKeys().remove(rowKey);
             }
         }
+    }
+
+    public LazyDataModel<?> getLazyDataModel() {
+        if (isLazy()) {
+            return (LazyDataModel<?>) getDataModel();
+        }
+        return null;
     }
 }

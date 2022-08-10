@@ -107,6 +107,14 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
+    public T getRowData(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        List<T> loaded = load(rowIndex, rowIndex + 1, sortBy, filterBy);
+        if (loaded == null || loaded.isEmpty()) {
+            return null;
+        }
+        return loaded.get(0);
+    }
+
     /**
      * Recalculates <code>first</code>, see #1921.
      * Also see: {@link org.primefaces.component.api.UIPageableData#calculateFirst()}

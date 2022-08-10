@@ -654,4 +654,21 @@ public class ComponentUtils {
 
         return output.toString();
     }
+
+    public static <T> T executeInRequestScope(FacesContext context, String var, Object value, Supplier<T> callback) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        Object oldValue = requestMap.remove(var);
+        try {
+            requestMap.put(var, value);
+
+            return callback.get();
+        }
+        finally {
+            requestMap.remove(var);
+            if (oldValue != null) {
+                requestMap.put(var, oldValue);
+            }
+        }
+    }
 }
