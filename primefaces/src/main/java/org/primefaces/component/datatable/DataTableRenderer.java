@@ -1153,7 +1153,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         SummaryRow summaryRow = table.getSummaryRow();
         HeaderRow headerRow = table.getHeaderRow();
-        ELContext eLContext = context.getELContext();
+        ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
@@ -1169,7 +1169,7 @@ public class DataTableRenderer extends DataRenderer {
 
             table.setRowIndex(i);
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), eLContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
                 table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
@@ -1177,7 +1177,7 @@ public class DataTableRenderer extends DataRenderer {
             table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), eLContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
                 table.setRowIndex(i);
                 encodeSummaryRow(context, summaryRow, sort);
             }
@@ -1653,10 +1653,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
-                                    ELContext eLContext) {
+                                    ELContext elContext) {
 
         table.setRowIndex(currentRowIndex);
-        Object currentGroupByData = groupByVE.getValue(eLContext);
+        Object currentGroupByData = groupByVE.getValue(elContext);
 
         int nextRowIndex = currentRowIndex + step;
 
@@ -1669,7 +1669,7 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isLazy()) {
             Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
             nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> {
-                return groupByVE.getValue(eLContext);
+                return groupByVE.getValue(elContext);
             });
         }
         else {
@@ -1678,7 +1678,7 @@ public class DataTableRenderer extends DataRenderer {
                 return false;
             }
 
-            nextGroupByData = groupByVE.getValue(eLContext);
+            nextGroupByData = groupByVE.getValue(elContext);
         }
 
         return Objects.equals(nextGroupByData, currentGroupByData);
