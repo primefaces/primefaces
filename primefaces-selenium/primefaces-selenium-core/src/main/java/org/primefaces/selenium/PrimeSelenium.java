@@ -572,7 +572,7 @@ public final class PrimeSelenium {
 
         if (webDriver instanceof WebDriverDecorator) {
             WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = driver.getDecoratedDriver().getOriginal();
+            webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
         }
 
         if (webDriver instanceof WebStorage) {
@@ -592,7 +592,7 @@ public final class PrimeSelenium {
 
         if (webDriver instanceof WebDriverDecorator) {
             WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = driver.getDecoratedDriver().getOriginal();
+            webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
         }
 
         if (webDriver instanceof HasCapabilities) {
