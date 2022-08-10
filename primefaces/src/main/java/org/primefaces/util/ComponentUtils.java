@@ -60,6 +60,9 @@ public class ComponentUtils {
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
             EnumSet.of(VisitHint.SKIP_UNRENDERED));
 
+    public static final Set<VisitHint> VISIT_HINTS_SKIP_ITERATION = Collections.unmodifiableSet(
+            EnumSet.of(VisitHint.SKIP_ITERATION));
+
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
     // marker for a undefined value when a null check is not reliable enough
