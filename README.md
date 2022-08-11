@@ -112,6 +112,7 @@ For a full list of the available downloads, please visit the [download page](htt
 ***
 
 ```xml
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
