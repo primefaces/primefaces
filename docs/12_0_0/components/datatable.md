@@ -111,6 +111,7 @@ DataTable displays data in tabular format.
 | widgetVar                 | null               | String           | Name of the client side widget.
 | touchable                 | false              | Boolean          | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
+| showSelectAll             | true               | Boolean          | Whether to show the select all checkbox inside the column's header.
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.

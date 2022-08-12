@@ -109,7 +109,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         showGridlines,
         size,
         widgetVar,
-        partialUpdate
+        partialUpdate,
+        showSelectAll
     }
 
     public DataTableBase() {
@@ -699,5 +700,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setPartialUpdate(boolean partialUpdate) {
         getStateHelper().put(PropertyKeys.partialUpdate, partialUpdate);
+    }
+
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
     }
 }

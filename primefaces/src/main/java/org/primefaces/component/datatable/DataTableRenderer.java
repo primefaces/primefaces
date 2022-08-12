@@ -695,7 +695,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode)) {
+        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
             encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 

@@ -8597,6 +8597,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to show the select all checkbox inside the column's header.]]>
+            </description>
+            <name>showSelectAll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
