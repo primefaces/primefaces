@@ -32053,6 +32053,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Only display valid dates within the min/max range. Default is true.]]>
+            </description>
+            <name>showMinMaxRange</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether to display dates in other months (non-selectable) at the start or end of the current month.
                 To make these days selectable use the selectOtherMonths option. Default is false.]]>
             </description>
