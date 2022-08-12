@@ -191,7 +191,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             radio.removeClass('ui-state-focus');
         })
         .on('keydown.selectOneRadio', function(e) {
-            if (this.cfg.readonly) {
+            if ($this.cfg.readonly) {
                 return;
             }
 
