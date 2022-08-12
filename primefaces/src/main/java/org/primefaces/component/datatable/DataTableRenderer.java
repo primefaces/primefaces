@@ -1668,6 +1668,10 @@ public class DataTableRenderer extends DataRenderer {
         // 3) invoke the groupBy ValueExpression
         if (table.isLazy()) {
             Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+            if (nextRowData == null) {
+                return false;
+            }
+
             nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> {
                 return groupByVE.getValue(elContext);
             });
