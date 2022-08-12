@@ -86,6 +86,7 @@
             minDate: null,
             maxDate: null,
             maxDateCount: null,
+            showMinMaxRange: true,
             showOtherMonths: false,
             selectOtherMonths: false,
             showButtonBar: false,
@@ -1922,7 +1923,7 @@
                     minDate = this.options.minDate;
                 testDate.setMonth(testDate.getMonth()+1);
                 testDate.setHours(-1);
-                if (minDate && minDate > testDate) {
+                if (this.options.showMinMaxRange && minDate && minDate > testDate) {
                     this.setNavigationState(newViewDate);
                     event.preventDefault();
                     event.stopPropagation();
@@ -1983,7 +1984,7 @@
 
                 // #5967 check if month can be navigated to by checking first day next month
                 var maxDate = this.options.maxDate;
-                if (maxDate && maxDate < newViewDate) {
+                if (this.options.showMinMaxRange && maxDate && maxDate < newViewDate) {
                     this.setNavigationState(newViewDate);
                     event.preventDefault();
                     event.stopPropagation();
@@ -2038,7 +2039,7 @@
                 minDate = this.options.minDate;
             testDate.setMonth(testDate.getMonth()+1);
             testDate.setHours(-1);
-            if (minDate && minDate > testDate) {
+            if (this.options.showMinMaxRange && minDate && minDate > testDate) {
                 navPrev.addClass('ui-state-disabled');
             } else {
                 navPrev.removeClass('ui-state-disabled');
@@ -2046,7 +2047,7 @@
 
             // next
             var maxDate = this.options.maxDate;
-            if (maxDate && maxDate < newViewDate) {
+            if (this.options.showMinMaxRange && maxDate && maxDate < newViewDate) {
                 navNext.addClass('ui-state-disabled');
             } else {
                 navNext.removeClass('ui-state-disabled');

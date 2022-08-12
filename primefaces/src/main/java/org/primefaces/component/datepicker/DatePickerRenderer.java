@@ -30,8 +30,8 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Map.Entry;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -188,6 +188,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("monthNavigator", datePicker.isMonthNavigator(), false)
             .attr("yearNavigator", datePicker.isYearNavigator(), false)
             .attr("showButtonBar", datePicker.isShowButtonBar(), false)
+            .attr("showMinMaxRange", datePicker.isShowMinMaxRange(), true)
             .attr("panelStyleClass", datePicker.getPanelStyleClass(), null)
             .attr("panelStyle", datePicker.getPanelStyle(), null)
             .attr("keepInvalid", datePicker.isKeepInvalid(), false)

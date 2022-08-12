@@ -98,6 +98,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         timeInput,
         showWeek,
         weekCalculator,
+        showMinMaxRange,
         model
     }
 
@@ -481,6 +482,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public int getResponsiveBreakpoint() {
         return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, RESPONSIVE_BREAKPOINT_SMALL);
+    }
+
+    public boolean isShowMinMaxRange() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMinMaxRange, true);
+    }
+
+    public void setShowMinMaxRange(boolean showMinMaxRange) {
+        getStateHelper().put(PropertyKeys.showMinMaxRange, showMinMaxRange);
     }
 
     @Override
