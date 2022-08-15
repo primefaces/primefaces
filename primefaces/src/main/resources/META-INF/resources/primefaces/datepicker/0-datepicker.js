@@ -1797,8 +1797,15 @@
             if (this.options.onBlur) {
                 this.options.onBlur.call(this, event);
             }
+            
+            // TODO: The following code block will be rearranged according to PrimeNG/React/Vue library in future versions.
+            if (!this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') { 
+                var viewMonth = this.viewDate.getMonth();
+                viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
+                this.viewDate.setMonth(viewMonth);
+            }
 
-            this.inputfield.val(this.getValueToRender());
+            !this.options.keepInvalid && this.inputfield.val(this.getValueToRender());
 
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
@@ -1844,8 +1851,11 @@
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
+                //invalid date
+                const value = this.options.keepInvalid ? rawValue : null;
+
                 if (!this.options.mask) {
-                    this.updateModel(event, rawValue, false);
+                    this.updateModel(event, value, false);
                 }
             }
 
