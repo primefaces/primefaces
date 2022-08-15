@@ -1851,11 +1851,11 @@
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
-                //invalid date
-                const value = this.options.keepInvalid ? rawValue : null;
+                //invalid date - TODO: Update according to PrimeNG/React/Vue library in future versions.
+                // var value = this.options.keepInvalid ? rawValue : null;
 
                 if (!this.options.mask) {
-                    this.updateModel(event, value, false);
+                    this.updateModel(event, rawValue, false);
                 }
             }
 
