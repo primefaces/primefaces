@@ -36,3 +36,29 @@
     -ms-transform: translateX(1.250em);
     transform: translateX(1.250em);
 }
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler {
+    position: relative;
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span {
+    position: absolute;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: opacity,transform;
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span + span {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+.ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span + span {
+    opacity: 1;
+    transform: rotate(0deg);
+}

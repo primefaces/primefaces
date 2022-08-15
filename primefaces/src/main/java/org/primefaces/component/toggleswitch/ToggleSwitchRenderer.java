@@ -24,7 +24,6 @@
 package org.primefaces.component.toggleswitch;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,6 +32,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ToggleSwitchRenderer extends InputRenderer {
@@ -67,12 +67,13 @@ public class ToggleSwitchRenderer extends InputRenderer {
         boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, toggleSwitch));
         boolean disabled = toggleSwitch.isDisabled();
         String style = toggleSwitch.getStyle();
-        String styleClass = toggleSwitch.getStyleClass();
-        styleClass = (styleClass == null) ? ToggleSwitch.CONTAINER_CLASS : ToggleSwitch.CONTAINER_CLASS + " " + styleClass;
-        styleClass = (checked) ? styleClass + " " + ToggleSwitch.CHECKED_CLASS : styleClass;
-        if (disabled) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(ToggleSwitch.CONTAINER_CLASS)
+                .add(toggleSwitch.getStyleClass())
+                .add(checked, ToggleSwitch.CHECKED_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .add(toggleSwitch.getOffIcon() != null, "ui-toggleswitch-dual-icon")
+                .build();
 
         writer.startElement("div", toggleSwitch);
         writer.writeAttribute("id", clientId, "id");
@@ -90,13 +91,27 @@ public class ToggleSwitchRenderer extends InputRenderer {
 
     protected void encodeSlider(FacesContext context, ToggleSwitch toggleSwitch, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = checked ? toggleSwitch.getOnIcon() : toggleSwitch.getOffIcon();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", ToggleSwitch.HANDLER_CLASS + " " + Objects.toString(icon, ""), null);
+        writer.writeAttribute("class", ToggleSwitch.HANDLER_CLASS, null);
+
+        // on icon
+        if (LangUtils.isNotEmpty(toggleSwitch.getOnIcon())) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", toggleSwitch.getOnIcon(), null);
+            writer.endElement("span");
+        }
+
+        // off icon
+        if (LangUtils.isNotEmpty(toggleSwitch.getOffIcon())) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", toggleSwitch.getOffIcon(), null);
+            writer.endElement("span");
+        }
+
         writer.endElement("span");
 
         writer.endElement("div");
@@ -135,10 +150,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, ToggleSwitch toggleSwitch) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("ToggleSwitch", toggleSwitch)
-          .attr("onIcon", toggleSwitch.getOnIcon(), null)
-          .attr("offIcon", toggleSwitch.getOffIcon(), null)
-            .finish();
+        wb.init("ToggleSwitch", toggleSwitch).finish();
     }
 
     protected boolean isChecked(String value) {

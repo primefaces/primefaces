@@ -13,8 +13,6 @@
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
- * @prop {string} cfg.onIcon Icon to display when button is selected.
- * @prop {string} cfg.offIcon Icon to display when button is unselected.
  */
 PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
 
@@ -107,9 +105,6 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
             this.input.trigger('change');
         }
         this.jq.addClass('ui-toggleswitch-checked');
-        if (this.cfg.onIcon) {
-            this.handler.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
-        }
     },
 
     /**
@@ -122,9 +117,6 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
             this.input.trigger('change');
         }
         this.jq.removeClass('ui-toggleswitch-checked');
-        if (this.cfg.offIcon) {
-            this.handler.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);
-        }
     },
 
     /**
