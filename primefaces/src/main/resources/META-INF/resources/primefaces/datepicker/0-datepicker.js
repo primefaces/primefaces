@@ -1377,13 +1377,13 @@
             for (var i = 0; i < options.length; i++) {
                 switch(name) {
                     case 'month':
-                        if ((!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
+                        if (!this.options.showMinMaxRange || (!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
                             _options += '<option value="' + i + '"' + (i === current ? ' selected' : '') + '>' + this.escapeHTML(options[i]) + '</option>';
                         }
                         break;
                     case 'year':
                         var option = options[i];
-                        if (!(minDate && minDate.getFullYear() > option) && !(maxDate && maxDate.getFullYear() < option)) {
+                        if (!this.options.showMinMaxRange || (!(minDate && minDate.getFullYear() > option) && !(maxDate && maxDate.getFullYear() < option))) {
                             _options += '<option value="' +  option + '"' + (option === current ? ' selected' : '') + '>' +  option + '</option>';
                         }
                         break;
@@ -2782,7 +2782,7 @@
 
             this.viewDate = value;
 
-            if (this.options.monthNavigator && this.options.view !== 'month') {
+            if (this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') {
                 var viewMonth = this.viewDate.getMonth();
                 viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
                 this.viewDate.setMonth(viewMonth);
