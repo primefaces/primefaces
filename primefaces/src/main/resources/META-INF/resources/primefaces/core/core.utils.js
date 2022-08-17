@@ -896,6 +896,20 @@ if (!PrimeFaces.utils) {
             else {
                 element.removeClass('ui-inputwrapper-filled');
             }
+        },
+
+        /**
+         * Decode escaped XML into regular string.
+         *
+         * @param {string | undefined} input the input to check if filled
+         * @return {string | undefined} either the original string or escaped XML
+         */
+        decodeXml: function(input) {
+            if (/&amp;|&quot;|&#39;|'&lt;|&gt;/.test(input)) {
+                var doc = new DOMParser().parseFromString(input, "text/html");
+                return doc.documentElement.textContent;
+            }
+            return input;
         }
     };
 
