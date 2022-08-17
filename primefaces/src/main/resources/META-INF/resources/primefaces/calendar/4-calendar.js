@@ -261,10 +261,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         if (this.cfg.mask) {
+            var isAutoClear = (this.cfg.maskAutoClear === undefined) ? true : this.cfg.maskAutoClear;
             var maskCfg = {
                 placeholder: this.cfg.maskSlotChar||'_',
-                clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
-                clearIncomplete: this.cfg.maskAutoClear||true,
+                clearMaskOnLostFocus: isAutoClear,
+                clearIncomplete: isAutoClear,
                 autoUnmask: false
             };
             var pattern = new RegExp("m|d|y|h|s", 'i');
