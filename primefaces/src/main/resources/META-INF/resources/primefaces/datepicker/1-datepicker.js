@@ -219,10 +219,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
         var $this = this;
         if (this.cfg.mask) {
+            var isAutoClear = (this.cfg.maskAutoClear === undefined) ? true : this.cfg.maskAutoClear;
             var maskCfg = {
                 placeholder: this.cfg.maskSlotChar||'_',
-                clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
-                clearIncomplete: this.cfg.maskAutoClear||true,
+                clearMaskOnLostFocus: isAutoClear,
+                clearIncomplete: isAutoClear,
                 autoUnmask: false,
                 showMaskOnHover: false,
                 onBeforePaste: function (pastedValue, opts) {
