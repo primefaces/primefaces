@@ -108,6 +108,7 @@ public class CalendarRenderer extends BaseCalendarRenderer {
                 .attr("readonly", calendar.isReadonly(), false)
                 .attr("yearRange", calendar.getYearRange(), null)
                 .attr("focusOnSelect", calendar.isFocusOnSelect(), false)
+                .attr("shortYearCutoff", calendar.getShortYearCutoff(), null)
                 .attr("touchable", ComponentUtils.isTouchable(context, calendar),  true);
 
         if (calendar.isNavigator()) {

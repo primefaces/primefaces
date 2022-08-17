@@ -134,6 +134,7 @@ ajax selection and more.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
 | widgetVar | null | String | Name of the client side widget.
 | yearRange | null | String | Year range for the navigator, default "c-10:c+10"
+| shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
 
 ## Getting Started with Calendar
 Value of the calendar should be a java.time.LocalDate.

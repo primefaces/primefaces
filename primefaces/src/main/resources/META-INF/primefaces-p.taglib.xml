@@ -3650,6 +3650,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The cutoff year for determining the century for a date. Default is "+10".]]>
+            </description>
+            <name>shortYearCutoff</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
