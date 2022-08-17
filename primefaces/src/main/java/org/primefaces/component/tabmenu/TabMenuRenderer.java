@@ -91,19 +91,16 @@ public class TabMenuRenderer extends BaseMenuRenderer {
     protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String containerStyle = item.getContainerStyle();
-        String containerStyleClass = item.getContainerStyleClass();
-        String containerClass = active ? TabMenu.ACTIVE_TAB_HEADER_CLASS : TabMenu.INACTIVE_TAB_HEADER_CLASS;
-        if (item.getIcon() != null) {
-            containerClass += " ui-tabmenuitem-hasicon";
-        }
-
-        if (containerStyleClass != null) {
-            containerClass = containerClass + " " + containerStyleClass;
-        }
+        String containerStyleClass = getStyleClassBuilder(context)
+                .add(item.getContainerStyleClass())
+                .add(active, TabMenu.ACTIVE_TAB_HEADER_CLASS, TabMenu.INACTIVE_TAB_HEADER_CLASS)
+                .add(item.isDisabled(), "ui-state-disabled", "ui-state-default")
+                .add(item.getIcon() != null, "ui-tabmenuitem-hasicon")
+                .build();
 
         //header container
         writer.startElement("li", null);
-        writer.writeAttribute("class", containerClass, null);
+        writer.writeAttribute("class", containerStyleClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
         writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
@@ -112,7 +109,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", containerStyle, null);
         }
 
-        encodeMenuItem(context, menu, item, "-1");
+        encodeMenuItem(context, menu, item);
 
         writer.endElement("li");
     }
