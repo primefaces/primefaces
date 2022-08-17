@@ -90,6 +90,22 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.behaviors) {
                 PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors);
             }
+            
+            // get the current attached events if using CSP
+            var events = this.input[0] ? $._data(this.input[0], "events") : null;
+        
+            // use DOM if non-CSP and JQ event if CSP
+            var originalOnchange = this.input.prop('onchange');
+            if (!originalOnchange && events && events.change) {
+                originalOnchange = events.change[0].handler;
+            }
+            this.input.prop('onchange', null).off('change');
+
+            this.cfg.onChange = function(event) {
+                if (originalOnchange) {
+                    originalOnchange.call(this, event);
+                }
+            };
 
             this.cfg.onBeforeShow = function() {
                 if($this.refocusInput) {
