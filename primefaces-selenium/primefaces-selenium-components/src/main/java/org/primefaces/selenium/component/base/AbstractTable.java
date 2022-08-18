@@ -40,7 +40,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
 
     @Override
     public List<WebElement> getRowsWebElement() {
-        return findElement(By.tagName("table")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
+        return findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
     }
 
     public abstract T getRow(int index);
