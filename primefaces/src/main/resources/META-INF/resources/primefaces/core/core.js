@@ -635,12 +635,19 @@
                 //ajax update
                 if(widget && (widget.constructor === this.widget[widgetName])) {
                     widget.refresh(cfg);
+                    if (cfg.postRefresh) {
+                        cfg.postRefresh.call(widget, widget);
+                    }
                 }
                 //page init
                 else {
-                    this.widgets[widgetVar] = new this.widget[widgetName](cfg);
+		    var newWidget = new this.widget[widgetName](cfg);
+                    this.widgets[widgetVar] = newWidget;
                     if(this.settings.legacyWidgetNamespace) {
-                        window[widgetVar] = this.widgets[widgetVar];
+                        window[widgetVar] = newWidget;
+                    }
+                    if (cfg.postConstruct) {
+                       cfg.postConstruct.call(newWidget, newWidget);
                     }
                 }
             }
