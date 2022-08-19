@@ -7,7 +7,7 @@ body:
     attributes:
       # yamllint disable rule:line-length
       value: |
-        <h2>This is the issue tracker of the PrimeFaces community edition</h2>
+        <h2>This is the issue tracker of the PrimeFaces (JSF / Java) community edition</h2>
         There is <strong>no guarantee in receiving an immediate response</strong> when you create an issue here!<br/>
         PrimeFaces PRO will guarantee response within 1 business day.<br/>
         For more information please read <a href="https://github.com/primefaces/primefaces/blob/master/README.md#community--elite--pro">Community <> Elite <> Pro</a>.
@@ -80,13 +80,21 @@ body:
         - Mojarra
         - MyFaces
         - All
+    validations:
+      required: true
   - type: input
     id: jsf-version
     attributes:
       label: JSF version
       placeholder: x.x
     validations:
-      required: false
+      required: true
+  - type: input
+    id: java-version
+    attributes:
+      label: Java version
+    validations:
+      required: true
   - type: input
     id: browsers
     attributes:
