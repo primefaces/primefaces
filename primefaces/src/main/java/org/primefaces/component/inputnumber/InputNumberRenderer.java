@@ -186,7 +186,7 @@ public class InputNumberRenderer extends InputRenderer {
         String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
         String inputMode = inputNumber.getInputmode();
         if (inputMode == null) {
-            String decimalPlaces = getDecimalPlaces(inputNumber, inputNumber.getValue());
+            String decimalPlaces = getDecimalPlaces(context, inputNumber, inputNumber.getValue());
             inputMode = "0".equals(decimalPlaces) ? "numeric" : "decimal";
             inputNumber.setInputmode(inputMode);
         }
@@ -237,7 +237,7 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("negativePositiveSignPlacement", inputNumber.getSignPosition(), null)
             .attr("minimumValue", getMinimum(inputNumber, value))
             .attr("maximumValue", getMaximum(inputNumber, value))
-            .attr("decimalPlaces", getDecimalPlaces(inputNumber, value))
+            .attr("decimalPlaces", getDecimalPlaces(context, inputNumber, value))
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
@@ -345,21 +345,24 @@ public class InputNumberRenderer extends InputRenderer {
     }
 
     /**
-     * Determines the number of decimal places to use.  If this is an Integer type number then default to 0
+     * Determines the number of decimal places to use.
+     * First sees if a value is set and return that.
+     * Else, if this is an integer type number then default to 0
      * decimal places if none was declared else default to 2.
+     * @param context the Faces context
      * @param inputNumber the component
      * @param value the value of the input number
      * @return the number of decimal places to use
      */
-    private String getDecimalPlaces(InputNumber inputNumber, Object value) {
-        String defaultDecimalPlaces = "2";
-        if (isIntegral(value)) {
-            defaultDecimalPlaces = "0";
+    private String getDecimalPlaces(FacesContext context, InputNumber inputNumber, Object value) {
+        if (inputNumber.getDecimalPlaces() != null) {
+            return inputNumber.getDecimalPlaces();
         }
-        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
-                ? defaultDecimalPlaces
-                : inputNumber.getDecimalPlaces();
-        return decimalPlaces;
+        if ((value != null && isIntegral(value))
+                || (value == null && isIntegral(context, inputNumber))) {
+            return "0";
+        }
+        return "2";
     }
 
     /**
@@ -391,7 +394,24 @@ public class InputNumberRenderer extends InputRenderer {
     }
 
     private boolean isIntegral(Object value) {
-        return value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger || value instanceof Byte;
+        return value instanceof Long
+                || value instanceof Integer
+                || value instanceof Short
+                || value instanceof BigInteger
+                || value instanceof Byte;
+    }
+
+    private boolean isIntegral(FacesContext context, InputNumber inputNumber) {
+        ValueExpression valueExpression = inputNumber.getValueExpression("value");
+        if (valueExpression == null) {
+            return false;
+        }
+        Class<?> type = valueExpression.getType(context.getELContext());
+        return type.isAssignableFrom(Long.class)
+                || type.isAssignableFrom(Integer.class)
+                || type.isAssignableFrom(Short.class)
+                || type.isAssignableFrom(BigInteger.class)
+                || type.isAssignableFrom(Byte.class);
     }
 
 }
