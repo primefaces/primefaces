@@ -116,7 +116,7 @@ public class InputNumber004Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertEquals("", inputNumber.getValue());
 
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0.0000001", "999999");
+        assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
     }
 
     @Test
