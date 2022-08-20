@@ -116,8 +116,7 @@ public class InputNumber004Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertEquals("", inputNumber.getValue());
 
-        // NOTE: because its now NULL the default decimal places is set back to 2 because its no longer an Integer
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999");
+        assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
     }
 
     @Test
