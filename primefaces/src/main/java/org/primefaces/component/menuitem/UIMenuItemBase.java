@@ -74,7 +74,8 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         form,
         escape,
         rel,
-        ignoreComponentNotFound
+        ignoreComponentNotFound,
+        badge
     }
 
     public UIMenuItemBase() {
@@ -396,5 +397,13 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    public Object getBadge() {
+        return getStateHelper().eval(PropertyKeys.badge, null);
+    }
+
+    public void setBadge(Object badge) {
+        getStateHelper().put(PropertyKeys.badge, badge);
     }
 }

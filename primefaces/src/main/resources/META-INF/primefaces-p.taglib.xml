@@ -17680,6 +17680,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Badge value (String) or BadgeModel instance of the badge to render for this menuitem. Default value is null.]]>
+            </description>
+            <name>badge</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
     </tag>
     <tag>
         <description>
