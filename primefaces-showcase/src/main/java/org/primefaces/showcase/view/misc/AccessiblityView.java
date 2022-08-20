@@ -42,8 +42,22 @@ public class AccessiblityView {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("some action was executed"));
     }
 
+    public void someOtherAction() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("some other action was executed"));
+    }
+
     public String getHtmlFragmentButton() {
         return "<h:commandButton value=\"Click\" action=\"#{accessiblityView.someAction()}\">";
+    }
+
+    public String getHtmlFragmentDivAsButton() {
+        return "<p:remoteCommand name=\"rc\" update=\"@form\" action=\"#{accessiblityView.someOtherAction()}\"/>\n" +
+                "<div class=\"fancy-button\" onclick=\"rc()\">Click</div>";
+    }
+
+    public String getHtmlFragmentDivAsButtonImproved() {
+        return "<p:remoteCommand name=\"rc\" update=\"@form\" action=\"#{accessiblityView.someOtherAction()}\"/>\n" +
+                "<div class=\"fancy-button\" onclick=\"rc()\" onkeydown=\"rc()\" tabindex=\"0\">Click</div>";
     }
 
 }

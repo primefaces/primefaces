@@ -48,7 +48,7 @@
                 HTML is based on an accessible foundation, form controls can be used by keyboard by default and semantic HTML is easier to be processed by a screen reader.</p>
 
             <h5>WCAG</h5>
-            <p><a href="https://www.w3.org/WAI/standards-guidelines/wcag/" alt="WCAG Website">WCAG</a> refers to <strong>Web Content Accessibility Guideline</strong>, a standard managed by the WAI (Web Accessibility Initiative) of W3C (World Wide Web Consortium).
+            <p><a href="https://www.w3.org/WAI/standards-guidelines/wcag/">WCAG</a> refers to <strong>Web Content Accessibility Guideline</strong>, a standard managed by the WAI (Web Accessibility Initiative) of W3C (World Wide Web Consortium).
                 WCAG consists of recommendations for making the web content more accessible. PrimeVue components aim high level of WCAG compliancy in the near future.</p>
 
             <p>Various countries around the globe have governmental policies regarding web accessibility as well. Most well known of these are <a href="https://www.section508.gov/manage/laws-and-policies/">Section 508</a> in the US and <a href="https://digital-strategy.ec.europa.eu/en/policies/web-accessibility">Web Accessibility Directive</a> of the European Union.</p>
@@ -57,81 +57,78 @@
             <p>Native form elements should be preferred instead of elements that are meant for other purposes like presentation. As an example, button below is
                 rendered as a form control by the browser, can receive focus via tabbing and can be used with space key as well to trigger.
             </p>
-            <!--
-            <h:form>
+            <h:form rendered="false">
                 <p:messages />
-                <h:commandButton value="Click" action="#{accessiblityView.someAction()}">
+                <h:commandButton value="Click Button" action="#{accessiblityView.someAction()}">
                     <f:ajax execute="@form" render="@form" />
                 </h:commandButton>
+                <br/>
+                <p:remoteCommand name="rc" update="@form" action="#{accessiblityView.someOtherAction()}"/>
+                <div class="fancy-button" onclick="rc()">Click div</div>
+                <div class="fancy-button" onclick="rc()" onkeydown="rc()" tabindex="0">Click div improved</div>
             </h:form>
-            -->
             <pre><code class="language-xml">
-                <h:outputText value="#{accessiblityView.htmlFragmentButton}" escape="true" />
+                <h:outputText value="#{accessiblityView.htmlFragmentButton}" />
             </code></pre>
 
             <p>On the other hand, a fancy css based button using a div has no keyboard or screen reader support.</p>
             <pre><code class="language-xml">
-&lt;div class="fancy-button" @click="onButtonClick(event)"&gt;Click&lt;/div&gt;
-
-</code></pre>
+                <h:outputText value="#{accessiblityView.htmlFragmentDivAsButton}" />
+            </code></pre>
 
             <p><i>tabindex</i> is required to make a div element accessible in addition to use a keydown to bring the keyboard support back. To avoid the overload and implementing
                 functionality that is already provided by the browser, native form controls should be preferred.</p>
             <pre><code class="language-xml">
-&lt;div class="fancy-button" @click="onClick(event)" @keydown="onKeyDown(event)" tabindex="0"&gt;Click&lt;/div&gt;
-
-</code></pre>
+                <h:outputText value="#{accessiblityView.htmlFragmentDivAsButtonImproved}" />
+            </code></pre>
 
             <h5>Relations</h5>
             <p>Form components must be related to another element that describes what the form element is used for. This is usually achieved with the <i>label</i> element.</p>
             <pre><code class="language-xml">
-&lt;label for="myinput"&gt;Username:&lt;/label&gt;
-&lt;input id="myinput" type="text" name="username" /&gt;
-
-</code></pre>
+                &lt;label for="myinput"&gt;Username:&lt;/label&gt;
+                &lt;input id="myinput" type="text" name="username" /&gt;
+            </code></pre>
 
             <h5>Semantic HTML</h5>
             <p>HTML offers various element to organize content on a web page that screen readers are aware of. Preferring Semantic HTML for good semantics provide out of the box support
                 for reader which is not possible when regular <i>div</i> elements with classes are used. Consider the following example that do not mean too much for readers.
             </p>
             <pre><code class="language-xml">
-&lt;div class="header"&gt;
-&lt;div class="header-text"&gt;Header&lt;/div&gt;
-&lt;/div&gt;
+                &lt;div class="header"&gt;
+                &lt;div class="header-text"&gt;Header&lt;/div&gt;
+                &lt;/div&gt;
 
-&lt;div class="nav"&gt;&lt;/div&gt;
+                &lt;div class="nav"&gt;&lt;/div&gt;
 
-&lt;div class="main"&gt;
-&lt;div class="content"&gt;
-&lt;/div&gt;
+                &lt;div class="main"&gt;
+                &lt;div class="content"&gt;
+                &lt;/div&gt;
 
-&lt;div class="sidebar"&gt;
-&lt;/div&gt;
-&lt;/div&gt;
+                &lt;div class="sidebar"&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;
 
-&lt;div class="footer"&gt;
-&lt;/div&gt;
-
-</code></pre>
+                &lt;div class="footer"&gt;
+                &lt;/div&gt;
+            </code></pre>
 
             <p>Same layout can be achieved using the semantic elements with screen reader support built-in.</p>
             <pre><code class="language-xml">
-&lt;header&gt;
-&lt;h1&gt;Header&lt;/h1&gt;
-&lt;/header&gt;
+                &lt;header&gt;
+                &lt;h1&gt;Header&lt;/h1&gt;
+                &lt;/header&gt;
 
-&lt;nav&gt;&lt;/nav&gt;
+                &lt;nav&gt;&lt;/nav&gt;
 
-&lt;main&gt;
-&lt;article&gt;&lt;/article&gt;
+                &lt;main&gt;
+                &lt;article&gt;&lt;/article&gt;
 
-&lt;aside&gt;&lt;/aside&gt;
-&lt;/main&gt;
+                &lt;aside&gt;&lt;/aside&gt;
+                &lt;/main&gt;
 
-&lt;footer&gt;
-&lt;/footer&gt;
-
-</code></pre>
+                &lt;footer&gt;
+                &lt;/footer&gt;
+            </code></pre>
 
             <h5>WAI-ARIA</h5>
             <p>ARIA refers to "Accessible Rich Internet Applications" is a suite to fill the gap where semantic HTML is inadequate. These cases
@@ -144,43 +141,39 @@
 
             <p>Consider the following case of a native checkbox. It has built-in keyboard and screen reader support.</p>
             <pre><code class="language-xml">
-&lt;input type="checkbox" value="Prime" name="ui" checked&gt;
-
-</code></pre>
+                &lt;input type="checkbox" value="Prime" name="ui" checked&gt;
+            </code></pre>
 
             <p>A fancy checkbox with css animations might look more appealing but accessibility might be lacking. Checkbox below
                 may display a checked font icon with animations however it is not tabbable, cannot be checked with space key and cannot be read by a reader.
             </p>
             <pre><code class="language-xml">
-&lt;div class="fancy-checkbox"&gt;
-&lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
-&lt;/div&gt;
-
-</code></pre>
+                &lt;div class="fancy-checkbox"&gt;
+                &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
+                &lt;/div&gt;
+            </code></pre>
 
             <p>One alternative is using ARIA roles for readers and use javascript for keyboard support. Notice the usage of <i>aria-labelledby</i> as a replacement of the <i>label</i> tag with for.</p>
             <pre><code class="language-xml">
-&lt;span id="chk-label"&gt;Remember Me&lt;/span&gt;
-&lt;div class="fancy-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="chk-label"
-@click="toggle" @keydown="onKeyDown(event)"&gt;
-&lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
-&lt;/div&gt;
-
-</code></pre>
+                &lt;span id="chk-label"&gt;Remember Me&lt;/span&gt;
+                &lt;div class="fancy-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="chk-label"
+                @click="toggle" @keydown="onKeyDown(event)"&gt;
+                &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
+                &lt;/div&gt;
+            </code></pre>
 
             <p>However the best practice is combining semantic HTML for accessibility while keeping the design for UX. This approach
                 involves hiding a native checkbox for accessibility and using javascript events to update its state. Notice the usage of <i>p-sr-only</i>
                 that hides the elements from the user but not from the screen reader.
             </p>
             <pre><code class="language-xml">
-&lt;label for="chkbox"&gt;Remember Me&lt;/label&gt;
-&lt;div class="fancy-checkbox" @click="toggle"&gt;
-&lt;input class="p-sr-only" type="checkbox" id="chkbox" @focus="updateParentVisuals" @blur="updateParentVisuals"
-    @keydown="onKeyDown(event)"&gt;
-&lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
-&lt;/div&gt;
-
-</code></pre>
+                &lt;label for="chkbox"&gt;Remember Me&lt;/label&gt;
+                &lt;div class="fancy-checkbox" @click="toggle"&gt;
+                &lt;input class="p-sr-only" type="checkbox" id="chkbox" @focus="updateParentVisuals" @blur="updateParentVisuals"
+                    @keydown="onKeyDown(event)"&gt;
+                &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
+                &lt;/div&gt;
+            </code></pre>
 
             <p>A working sample is the PrimeVue checkbox that is tabbable, keyboard accessible and is compliant with a screen reader. Instead of ARIA
                 roles it relies on a hidden native checkbox.
