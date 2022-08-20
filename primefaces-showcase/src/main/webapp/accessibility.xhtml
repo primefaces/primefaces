@@ -10,7 +10,7 @@
         </div>
 
         <div class="content-section documentation">
-            <p class="line-height-3 bg-indigo-600 text-white p-3 text-lg" style="border-radius:10px">Accessibility is a major concern of the Prime UI libraries and PrimeFaces is no exception. <a href="https://www.primetek.com.tr" class="text-white">PrimeTek</a> teams have initiated a significant process to review and enhance the accessibility features of the components. This guide
+            <p class="line-height-3 bg-indigo-600 text-white p-3 text-lg" style="border-radius:10px">Accessibility is a major concern of the Prime UI libraries and PrimeFaces is no exception. <a href="https://www.primetek.com.tr" class="text-white" target="_blank">PrimeTek</a> teams have initiated a significant process to review and enhance the accessibility features of the components. This guide
                 documents the foundation of the general guidelines that PrimeFaces will follow and each component documentation will have a separate <b>Accessibility</b> section that states the keyboard support, screen reader compatibility, the implementation details along
                 with tips to achieve WCAG compliancy. This work has been initiated in Q2 2022 and planned to be completed with PrimeFaces 13.0.0 in Q1 2013. PrimeVue acts as the reference implementation which then will be ported to PrimeFaces, PrimeNG and PrimeReact.
             </p>
@@ -48,10 +48,10 @@
                 HTML is based on an accessible foundation, form controls can be used by keyboard by default and semantic HTML is easier to be processed by a screen reader.</p>
 
             <h5>WCAG</h5>
-            <p><a href="https://www.w3.org/WAI/standards-guidelines/wcag/">WCAG</a> refers to <strong>Web Content Accessibility Guideline</strong>, a standard managed by the WAI (Web Accessibility Initiative) of W3C (World Wide Web Consortium).
+            <p><a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank">WCAG</a> refers to <strong>Web Content Accessibility Guideline</strong>, a standard managed by the WAI (Web Accessibility Initiative) of W3C (World Wide Web Consortium).
                 WCAG consists of recommendations for making the web content more accessible. PrimeFaces components aim high level of WCAG compliancy in the near future.</p>
 
-            <p>Various countries around the globe have governmental policies regarding web accessibility as well. Most well known of these are <a href="https://www.section508.gov/manage/laws-and-policies/">Section 508</a> in the US and <a href="https://digital-strategy.ec.europa.eu/en/policies/web-accessibility">Web Accessibility Directive</a> of the European Union.</p>
+            <p>Various countries around the globe have governmental policies regarding web accessibility as well. Most well known of these are <a href="https://www.section508.gov/manage/laws-and-policies/" target="_blank">Section 508</a> in the US and <a href="https://digital-strategy.ec.europa.eu/en/policies/web-accessibility" target="_blank">Web Accessibility Directive</a> of the European Union.</p>
 
             <h5>Form Controls</h5>
             <p>Native form elements should be preferred instead of elements that are meant for other purposes like presentation. As an example, button below is
@@ -146,10 +146,11 @@
 
             <p>A fancy checkbox with css animations might look more appealing but accessibility might be lacking. Checkbox below
                 may display a checked font icon with animations however it is not tabbable, cannot be checked with space key and cannot be read by a reader.
+                (The following 3 examples are based on <a href="https://vuejs.org/" target="_blank">Vue.js</a>, but should give quite a good idea of the challenge we are facing.)
             </p>
             <pre><code class="language-xml">
                 &lt;div class="fancy-checkbox"&gt;
-                &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
+                    &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
                 &lt;/div&gt;
             </code></pre>
 
@@ -158,7 +159,7 @@
                 &lt;span id="chk-label"&gt;Remember Me&lt;/span&gt;
                 &lt;div class="fancy-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="chk-label"
                 @click="toggle" @keydown="onKeyDown(event)"&gt;
-                &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
+                    &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
                 &lt;/div&gt;
             </code></pre>
 
@@ -169,9 +170,9 @@
             <pre><code class="language-xml">
                 &lt;label for="chkbox"&gt;Remember Me&lt;/label&gt;
                 &lt;div class="fancy-checkbox" @click="toggle"&gt;
-                &lt;input class="p-sr-only" type="checkbox" id="chkbox" @focus="updateParentVisuals" @blur="updateParentVisuals"
-                    @keydown="onKeyDown(event)"&gt;
-                &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
+                    &lt;input class="p-sr-only" type="checkbox" id="chkbox" @focus="updateParentVisuals" @blur="updateParentVisuals"
+                        @keydown="onKeyDown(event)"&gt;
+                    &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
                 &lt;/div&gt;
             </code></pre>
 
