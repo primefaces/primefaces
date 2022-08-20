@@ -49,7 +49,7 @@
 
             <h5>WCAG</h5>
             <p><a href="https://www.w3.org/WAI/standards-guidelines/wcag/">WCAG</a> refers to <strong>Web Content Accessibility Guideline</strong>, a standard managed by the WAI (Web Accessibility Initiative) of W3C (World Wide Web Consortium).
-                WCAG consists of recommendations for making the web content more accessible. PrimeVue components aim high level of WCAG compliancy in the near future.</p>
+                WCAG consists of recommendations for making the web content more accessible. PrimeFaces components aim high level of WCAG compliancy in the near future.</p>
 
             <p>Various countries around the globe have governmental policies regarding web accessibility as well. Most well known of these are <a href="https://www.section508.gov/manage/laws-and-policies/">Section 508</a> in the US and <a href="https://digital-strategy.ec.europa.eu/en/policies/web-accessibility">Web Accessibility Directive</a> of the European Union.</p>
 
@@ -95,17 +95,17 @@
             </p>
             <pre><code class="language-xml">
                 &lt;div class="header"&gt;
-                &lt;div class="header-text"&gt;Header&lt;/div&gt;
+                    &lt;div class="header-text"&gt;Header&lt;/div&gt;
                 &lt;/div&gt;
 
                 &lt;div class="nav"&gt;&lt;/div&gt;
 
                 &lt;div class="main"&gt;
-                &lt;div class="content"&gt;
-                &lt;/div&gt;
+                    &lt;div class="content"&gt;
+                    &lt;/div&gt;
 
-                &lt;div class="sidebar"&gt;
-                &lt;/div&gt;
+                    &lt;div class="sidebar"&gt;
+                    &lt;/div&gt;
                 &lt;/div&gt;
 
                 &lt;div class="footer"&gt;
@@ -115,15 +115,15 @@
             <p>Same layout can be achieved using the semantic elements with screen reader support built-in.</p>
             <pre><code class="language-xml">
                 &lt;header&gt;
-                &lt;h1&gt;Header&lt;/h1&gt;
+                    &lt;h1&gt;Header&lt;/h1&gt;
                 &lt;/header&gt;
 
                 &lt;nav&gt;&lt;/nav&gt;
 
                 &lt;main&gt;
-                &lt;article&gt;&lt;/article&gt;
+                    &lt;article&gt;&lt;/article&gt;
 
-                &lt;aside&gt;&lt;/aside&gt;
+                    &lt;aside&gt;&lt;/aside&gt;
                 &lt;/main&gt;
 
                 &lt;footer&gt;
@@ -133,7 +133,7 @@
             <h5>WAI-ARIA</h5>
             <p>ARIA refers to "Accessible Rich Internet Applications" is a suite to fill the gap where semantic HTML is inadequate. These cases
                 are mainly related to rich UI components/widgets. Although browser support for rich UI components such as a datepicker or colorpicker has been improved over the past years
-                many web developers still utilize UI components derived from standard HTML elements created by them or by other projects like PrimeVue. These
+                many web developers still utilize UI components derived from standard HTML elements created by them or by other projects like PrimeFaces. These
                 types of components must provide keyboard and screen reader support, the latter case is where the WAI-ARIA is utilized.
             </p>
             <p>ARIA consists of roles, properties and attributes. <b>Roles</b> define what the element is mainly used for e.g. <i>checkbox</i>, <i>dialog</i>, <i>tablist</i> whereas
@@ -175,16 +175,15 @@
                 &lt;/div&gt;
             </code></pre>
 
-            <p>A working sample is the PrimeVue checkbox that is tabbable, keyboard accessible and is compliant with a screen reader. Instead of ARIA
+            <p>A working sample is the PrimeFaces checkbox that is tabbable, keyboard accessible and is compliant with a screen reader. Instead of ARIA
                 roles it relies on a hidden native checkbox.
             </p>
 
             <div class="flex align-items-center">
-                <label for="binary" class="mr-2">Remember Me</label>
-                TODO: checkbox
-                <!--
-                <Checkbox id="binary" binary v-model="checked" />
-                -->
+                <h:form>
+                    <p:outputLabel for="@next" class="mr-2" value="Remember Me" />
+                    <p:selectBooleanCheckbox id="binary" value="#{accessiblityView.binary}" />
+                </h:form>
             </div>
 
             <h5>Colors</h5>

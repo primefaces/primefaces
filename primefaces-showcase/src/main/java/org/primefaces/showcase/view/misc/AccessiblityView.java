@@ -33,6 +33,8 @@ import javax.inject.Named;
 @RequestScoped
 public class AccessiblityView {
 
+    private boolean binary;
+
     @PostConstruct
     public void init() {
 
@@ -58,6 +60,14 @@ public class AccessiblityView {
     public String getHtmlFragmentDivAsButtonImproved() {
         return "<p:remoteCommand name=\"rc\" update=\"@form\" action=\"#{accessiblityView.someOtherAction()}\"/>\n" +
                 "<div class=\"fancy-button\" onclick=\"rc()\" onkeydown=\"rc()\" tabindex=\"0\">Click</div>";
+    }
+
+    public boolean isBinary() {
+        return binary;
+    }
+
+    public void setBinary(boolean binary) {
+        this.binary = binary;
     }
 
 }
