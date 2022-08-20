@@ -1686,6 +1686,7 @@
                 this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
+                    .on('change.datePicker', this.onInputChange.bind($this))
                     .on('keydown.datePicker', this.onInputKeyDown.bind($this))
                     .on('input.datePicker', this.onUserInput.bind($this))
                     .on('click.datePicker', this.onInputClick.bind($this));
@@ -1797,7 +1798,12 @@
             if (this.options.onBlur) {
                 this.options.onBlur.call(this, event);
             }
-            
+
+            this.inputfield.removeClass('ui-state-focus');
+            this.container.removeClass('ui-inputwrapper-focus');
+        },
+        
+        onInputChange: function(event) {
             // TODO: The following code block will be rearranged according to PrimeNG/React/Vue library in future versions.
             if (!this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') { 
                 var viewMonth = this.viewDate.getMonth();
@@ -1806,9 +1812,10 @@
             }
 
             !this.options.keepInvalid && this.inputfield.val(this.getValueToRender());
-
-            this.inputfield.removeClass('ui-state-focus');
-            this.container.removeClass('ui-inputwrapper-focus');
+            
+            if (this.options.onChange) {
+                this.options.onChange.call(this, event);
+            }
         },
 
         onInputKeyDown: function (event) {

@@ -95,6 +95,7 @@
  * @prop {boolean} cfg.timeInput Allows direct input in time field.
  * @prop {boolean} cfg.timeOnly Shows only timepicker without date.
  * @prop {string} cfg.yearRange Year range for the navigator, default is `c-10:c+10`.
+ * @prop {string} cfg.shortYearCutoff The cutoff year for determining the century for a date. Default is `+10`.
  */
 PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
@@ -261,10 +262,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         if (this.cfg.mask) {
+            var isAutoClear = (this.cfg.maskAutoClear === undefined) ? true : this.cfg.maskAutoClear;
             var maskCfg = {
                 placeholder: this.cfg.maskSlotChar||'_',
-                clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
-                clearIncomplete: this.cfg.maskAutoClear||true,
+                clearMaskOnLostFocus: isAutoClear,
+                clearIncomplete: isAutoClear,
                 autoUnmask: false
             };
             var pattern = new RegExp("m|d|y|h|s", 'i');

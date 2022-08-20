@@ -147,8 +147,15 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         //center position of content
         for (var i = 0; i < this.target.length; i++) {
-            var blocker = $(this.blocker[i]),
+            var currentTarget = $(this.target[i]),
+                blocker = $(this.blocker[i]),
                 content = $(this.content[i]);
+        
+            // configure the target positioning
+            var position = currentTarget.css("position");
+            if (position !== "fixed" && position !== "absolute") {
+                currentTarget.css('position', 'relative');
+            }
 
             content.css({
                 'left': ((blocker.width() - content.outerWidth()) / 2) + 'px',
@@ -184,18 +191,30 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if (!this.isBlocking()) {
             return;
         }
+        var $this = this;
         var animated = this.cfg.animate;
+        var hasContent = this.hasContent();
+        var callback = function() {
+            if (!hasContent) {
+                resetPositionCallback();
+            }
+        };
+        var resetPositionCallback = function() {
+            for (var i = 0; i < $this.target.length; i++) {
+                $($this.target[i]).css('position', '');
+            }
+        };
 
         if (animated)
-            this.blocker.fadeOut(duration);
+            this.blocker.fadeOut(duration, callback);
         else
-            this.blocker.hide(duration);
+            this.blocker.hide(duration, callback);
 
-        if (this.hasContent()) {
+        if (hasContent) {
             if (animated)
-                this.content.fadeOut(duration);
+                this.content.fadeOut(duration, resetPositionCallback);
             else
-                this.content.hide(duration);
+                this.content.hide(duration, resetPositionCallback);
         }
 
         this.target.attr('aria-busy', false);
@@ -235,11 +254,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             currentBlocker.attr('data-bui-overlay', widgetId);
             currentContent.attr('data-bui-content', widgetId);
 
-            // configure the target positioning
-            var position = currentTarget.css("position");
-            if (position !== "fixed" && position !== "absolute") {
-                currentTarget.css('position', 'relative');
-            }
 
             // ARIA 
             currentTarget.attr('aria-busy', this.cfg.blocked);

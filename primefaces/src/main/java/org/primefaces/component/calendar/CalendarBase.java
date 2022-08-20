@@ -76,7 +76,8 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
         defaultHour,
         defaultMinute,
         defaultSecond,
-        defaultMillisec
+        defaultMillisec,
+        shortYearCutoff
     }
 
     public CalendarBase() {
@@ -415,6 +416,14 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
 
     public void setDefaultMillisec(int defaultMillisec) {
         getStateHelper().put(PropertyKeys.defaultMillisec, defaultMillisec);
+    }
+
+    public String getShortYearCutoff() {
+        return (String) getStateHelper().eval(PropertyKeys.shortYearCutoff, null);
+    }
+
+    public void setShortYearCutoff(String shortYearCutoff) {
+        getStateHelper().put(PropertyKeys.shortYearCutoff, shortYearCutoff);
     }
 
     @Override
