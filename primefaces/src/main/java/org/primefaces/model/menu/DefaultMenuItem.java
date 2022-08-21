@@ -80,6 +80,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean escape = true;
     private String rel;
     private boolean ignoreComponentNotFound;
+    private Object badge;
 
     /**
      * Creates a new menu item without value.
@@ -534,6 +535,14 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.ignoreComponentNotFound = ignoreComponentNotFound;
     }
 
+    public Object getBadge() {
+        return badge;
+    }
+
+    public void setBadge(Object badge) {
+        this.badge = badge;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -753,6 +762,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
         public Builder ignoreComponentNotFound(boolean ignoreComponentNotFound) {
             menuItem.setIgnoreComponentNotFound(ignoreComponentNotFound);
+            return this;
+        }
+
+        public Builder badge(Object badge) {
+            menuItem.setBadge(badge);
             return this;
         }
 

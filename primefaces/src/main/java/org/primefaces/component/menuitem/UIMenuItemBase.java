@@ -399,6 +399,7 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
     }
 
+    @Override
     public Object getBadge() {
         return getStateHelper().eval(PropertyKeys.badge, null);
     }
