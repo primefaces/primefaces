@@ -28,32 +28,32 @@
                 content is readable by the readers. Popular readers are <a href="https://www.nvaccess.org" target="_blank">NVDA</a>, <a href="https://www.freedomscientific.com/Products/software/JAWS/" target="_blank">JAWS</a> and <a href="https://www.chromevox.com" target="_blank">ChromeVox</a>.
             </p>
 
-            <h6>Hearing Impairments</h6>
+            <h4>Hearing Impairments</h4>
             <p>Deafness or hearing loss refers to the inability to hear sounds totally or partially. People with hearing impairments use assistive devices however
                 it may not be enough when interacting with a web page. Common implementation is providing textual alternatives, transcripts and captions for content with audio.
             </p>
 
-            <h6>Mobility Impairments</h6>
+            <h4>Mobility Impairments</h4>
             <p>People with mobility impairments have disabilities related to movement due to loss of a limb, paralysis or other varying reasons. Assistive technologies like
                 a head pointer is a device to interact with a screen whereas keyboard or a trackpad remain as solutions for people who are not able to utilize a mouse.
             </p>
 
-            <h6>Cognitive Impairments</h6>
+            <h4>Cognitive Impairments</h4>
             <p>Cognitive impairments have a wider range that includes people with learning disabilities, depression and dyslexia. A well designed content also leads
                 to better user experience for people without disabilities so designing for cognitive impairments result in better design for any user.
             </p>
 
-            <h3>Web Content</h3>
+            <h2>Web Content</h2>
             <p>Correct page structure with the aid of assistive technologies are the core ingridients for an accessible web content.
                 HTML is based on an accessible foundation, form controls can be used by keyboard by default and semantic HTML is easier to be processed by a screen reader.</p>
 
-            <h5>WCAG</h5>
+            <h3>WCAG</h3>
             <p><a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank">WCAG</a> refers to <strong>Web Content Accessibility Guideline</strong>, a standard managed by the WAI (Web Accessibility Initiative) of W3C (World Wide Web Consortium).
                 WCAG consists of recommendations for making the web content more accessible. PrimeFaces components aim high level of WCAG compliancy in the near future.</p>
 
             <p>Various countries around the globe have governmental policies regarding web accessibility as well. Most well known of these are <a href="https://www.section508.gov/manage/laws-and-policies/" target="_blank">Section 508</a> in the US and <a href="https://digital-strategy.ec.europa.eu/en/policies/web-accessibility" target="_blank">Web Accessibility Directive</a> of the European Union.</p>
 
-            <h5>Form Controls</h5>
+            <h3>Form Controls</h3>
             <p>Native form elements should be preferred instead of elements that are meant for other purposes like presentation. As an example, button below is
                 rendered as a form control by the browser, can receive focus via tabbing and can be used with space key as well to trigger.
             </p>
@@ -76,20 +76,20 @@
                 <h:outputText value="#{accessiblityView.htmlFragmentDivAsButton}" />
             </code></pre>
 
-            <p><i>tabindex</i> is required to make a div element accessible in addition to use a keydown to bring the keyboard support back. To avoid the overload and implementing
+            <p><code>tabindex</code> is required to make a div element accessible in addition to use a keydown to bring the keyboard support back. To avoid the overload and implementing
                 functionality that is already provided by the browser, native form controls should be preferred.</p>
             <pre><code class="language-xml">
                 <h:outputText value="#{accessiblityView.htmlFragmentDivAsButtonImproved}" />
             </code></pre>
 
-            <h5>Relations</h5>
+            <h3>Relations</h3>
             <p>Form components must be related to another element that describes what the form element is used for. This is usually achieved with the <i>label</i> element.</p>
             <pre><code class="language-xml">
                 &lt;label for="myinput"&gt;Username:&lt;/label&gt;
                 &lt;input id="myinput" type="text" name="username" /&gt;
             </code></pre>
 
-            <h5>Semantic HTML</h5>
+            <h3>Semantic HTML</h3>
             <p>HTML offers various element to organize content on a web page that screen readers are aware of. Preferring Semantic HTML for good semantics provide out of the box support
                 for reader which is not possible when regular <i>div</i> elements with classes are used. Consider the following example that do not mean too much for readers.
             </p>
@@ -130,7 +130,7 @@
                 &lt;/footer&gt;
             </code></pre>
 
-            <h5>WAI-ARIA</h5>
+            <h3>WAI-ARIA</h3>
             <p>ARIA refers to "Accessible Rich Internet Applications" is a suite to fill the gap where semantic HTML is inadequate. These cases
                 are mainly related to rich UI components/widgets. Although browser support for rich UI components such as a datepicker or colorpicker has been improved over the past years
                 many web developers still utilize UI components derived from standard HTML elements created by them or by other projects like PrimeFaces. These
@@ -164,7 +164,7 @@
             </code></pre>
 
             <p>However the best practice is combining semantic HTML for accessibility while keeping the design for UX. This approach
-                involves hiding a native checkbox for accessibility and using javascript events to update its state. Notice the usage of <i>p-sr-only</i>
+                involves hiding a native checkbox for accessibility and using javascript events to update its state. Notice the usage of <code>p-sr-only</code>
                 that hides the elements from the user but not from the screen reader.
             </p>
             <pre><code class="language-xml">
@@ -187,11 +187,11 @@
                 </h:form>
             </div>
 
-            <h5>Colors</h5>
+            <h3>Colors</h3>
             <p>Colors on a web page should aim a contrast ratio of at least <strong>4.5:1</strong> and consider a selection of colors that do not
                 cause vibration.</p>
 
-            <h6>Good Contrast</h6>
+            <h4>Good Contrast</h4>
             <p>Color contrast between the background and the foreground content should be sufficient enough to ensure readability. Example below displays two cases with good and bad samples.</p>
 
             <div class="flex">
@@ -203,7 +203,7 @@
                 </div>
             </div>
 
-            <h6>Vibration</h6>
+            <h4>Vibration</h4>
             <p>Color vibration is leads to an illusion of motion due to choosing colors that have low visibility against each other. Color combinations
                 need to be picked with caution to avoid vibration.
             </p>
@@ -214,17 +214,17 @@
                 </div>
             </div>
 
-            <h6>Dark Mode</h6>
+            <h4>Dark Mode</h4>
             <p>Highly saturated colors should be avoided when used within a dark design scheme as they cause eye strain. Instead desaturated colors should be preferred.</p>
 
             <div class="flex">
                 <div class="h-8rem w-8rem flex flex-column justify-content-center align-items-center mr-5 font-bold bg-gray-900" style="border-radius:10px">
                     <span class="text-indigo-500">Indigo 500</span>
-                    <i class="text-indigo-500 pi pi-times-circle mt-3 text-xl"></i>
+                    <span class="text-indigo-500 pi pi-times-circle mt-3 text-xl"></span>
                 </div>
                 <div class="h-8rem w-8rem flex flex-column justify-content-center align-items-center mr-5 font-bold bg-gray-900" style="border-radius:10px">
                     <span class="text-indigo-200">Indigo 200</span>
-                    <i class="text-indigo-200 pi pi-check-circle mt-3 text-xl"></i>
+                    <span class="text-indigo-200 pi pi-check-circle mt-3 text-xl"></span>
                 </div>
             </div>
         </div>
