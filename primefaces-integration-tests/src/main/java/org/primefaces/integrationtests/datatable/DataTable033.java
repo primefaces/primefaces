@@ -160,7 +160,6 @@ public class DataTable033 implements Serializable {
         }
     }
 
-    @Named
     @ApplicationScoped
     public static class CustomerService {
 
