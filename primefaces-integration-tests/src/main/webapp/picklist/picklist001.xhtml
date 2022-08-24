@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form" style="width: 1000px">
+            <h5 style="margin-top: 0">Basic PickList</h5>
+            <p:pickList id="standardPickList" value="#{pickList001.standardPickList}" var="driver"
+                    itemValue="#{driver}" itemLabel="#{driver.name}" showSourceControls="true"
+                    showTargetControls="true"
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
+                    converter="#{realDriverConverter}" responsive="true"/>
+            
+            <h5 style="margin-top: 40px">Check PickList</h5>
+            <p:pickList id="checkPickList" value="#{pickList001.checkPickList}" var="driver"
+                    itemValue="#{driver}" itemLabel="#{driver.name}" showSourceControls="true"
+                    showTargetControls="true" showCheckbox="true"
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
+                    converter="#{realDriverConverter}" responsive="true" />
+            
+            <h5 style="margin-top: 40px">Instant PickList</h5>     
+            <p:pickList id="instantPickList" value="#{pickList001.instantPickList}" var="driver"
+                    itemValue="#{driver}" itemLabel="#{driver.name}" transferOnCheckboxClick="true"
+                    showCheckbox="true" showSourceControls="false" showTargetControls="false"
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
+                    converter="#{realDriverConverter}" responsive="true" />
+
+            <p:commandButton id="btnSubmit" update="@form" value="Submit" style="margin-top: 10px"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
