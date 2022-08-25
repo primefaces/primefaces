@@ -401,11 +401,17 @@ public class InputNumberRenderer extends InputRenderer {
                     || value instanceof BigInteger
                     || value instanceof Byte;
         }
+
         ValueExpression valueExpression = inputNumber.getValueExpression("value");
         if (valueExpression == null) {
             return false;
         }
+
         Class<?> type = valueExpression.getType(context.getELContext());
+        if (type == null) {
+            return false;
+        }
+
         return type.isAssignableFrom(Long.class)
                 || type.isAssignableFrom(Integer.class)
                 || type.isAssignableFrom(Short.class)
