@@ -179,14 +179,14 @@ public class DialogRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.FOOTER_CLASS, null);
 
-        writer.startElement("span", null);
+        writer.startElement("div", null);
         if (ComponentUtils.shouldRenderFacet(footerFacet)) {
             footerFacet.encodeAll(context);
         }
         else if (footer != null) {
             writer.writeText(footer, null);
         }
-        writer.endElement("span");
+        writer.endElement("div");
 
         writer.endElement("div");
 
