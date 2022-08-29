@@ -169,7 +169,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             return;
         }
 
-        boolean responseResetted = false;
+        boolean isResponseReset = false;
 
         //mojarra workaround to avoid invalid partial output due to open tags
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
@@ -193,7 +193,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 externalContext.responseReset();
                 externalContext.setResponseCharacterEncoding(characterEncoding);
 
-                responseResetted = true;
+                isResponseReset = true;
             }
         }
 
@@ -211,7 +211,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         // redirect if no AjaxExceptionHandler available
         if (handlerComponent == null) {
-            handleRedirect(context, rootCause, info, responseResetted);
+            handleRedirect(context, rootCause, info, isResponseReset);
         }
         // handle custom update / onexception callback
         else {
@@ -352,7 +352,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         return rootCause;
     }
 
-    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean responseResetted) throws IOException {
+    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean isResponseReset) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
@@ -362,7 +362,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         String url = constructRedirectUrl(context, errorPage);
 
         // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
-        if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {
+        if (isResponseReset && context.getPartialViewContext().isAjaxRequest()) {
             PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
