@@ -142,6 +142,7 @@
         return html;
     };
     
+    $.datepicker._base_updateDatepicker = $.datepicker._updateDatepicker;
     $.datepicker._updateDatepicker = function (inst) {
 
         // don't popup the datepicker if there is another instance already opened
