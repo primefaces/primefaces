@@ -32,9 +32,6 @@ import org.primefaces.component.layout.Layout;
 
 public class DemoApplication extends ApplicationWrapper {
 
-    private static final Set<String> BLOCKLISTED_COMPONENT_TYPES = Collections
-            .unmodifiableSet(new HashSet<>(Arrays.asList(Layout.COMPONENT_TYPE)));
-
     private final Application wrapped;
 
     public DemoApplication(Application wrapped) {
@@ -48,17 +45,11 @@ public class DemoApplication extends ApplicationWrapper {
 
     @Override
     public UIComponent createComponent(FacesContext context, String componentType, String rendererType) {
-        // prevent certain components from being used
-        if (BLOCKLISTED_COMPONENT_TYPES.contains(componentType)) {
-            throw new IllegalArgumentException(
-                    componentType + " is deprecated and you should not be using this component.");
-        }
-
-        final UIComponent component = super.createComponent(context, componentType, rendererType);
+        UIComponent component = super.createComponent(context, componentType, rendererType);
 
         // set a global date pattern by default
         if (component instanceof UICalendar) {
-            final UICalendar calendar = (UICalendar) component;
+            UICalendar calendar = (UICalendar) component;
             calendar.setPattern("dd-MMM-yyyy");
         }
 
