@@ -38,7 +38,7 @@ import org.primefaces.selenium.component.TabView;
 public class TabView004Test extends AbstractPrimePageTest {
 
     @Test
-    @DisplayName("TabView: Tab#loaded should be resetted when rendering TabView again, otherwise select components are resettet")
+    @DisplayName("TabView: Tab#loaded should be reset when rendering TabView again, otherwise select components are reset")
     public void testDynamic(Page page) {
         page.tabView.toggleTab(1);
 
