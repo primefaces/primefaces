@@ -491,8 +491,11 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyDataIfRequired() {
-        if (isLazy() && ((LazyDataModel) getValue()).getWrappedData() == null) {
-            loadLazyData();
+        if (isLazy()) {
+            DataModel model = getDataModel();
+            if (model instanceof LazyDataModel && ((LazyDataModel) model).getWrappedData() == null) {
+                loadLazyData();
+            }
         }
     }
 
