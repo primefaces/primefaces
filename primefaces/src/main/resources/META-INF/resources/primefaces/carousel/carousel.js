@@ -149,10 +149,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             if (this.isVertical) {
                 this.itemsContent.swipe({
                     swipeUp:function(e) {
-                        $this.navBackward(e);
+                        $this.navForward(e);
                     },
                     swipeDown: function(e) {
-                        $this.navForward(e);
+                        $this.navBackward(e);
                     },
                     excludedElements: PrimeFaces.utils.excludedSwipeElements()
                 });
@@ -160,10 +160,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 this.itemsContent.swipe({
                     swipeLeft:function(e) {
-                        $this.navBackward(e);
+                        $this.navForward(e);
                     },
                     swipeRight: function(e) {
-                        $this.navForward(e);
+                        $this.navBackward(e);
                     },
                     excludedElements: PrimeFaces.utils.excludedSwipeElements()
                 });
