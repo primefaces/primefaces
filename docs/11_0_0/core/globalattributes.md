@@ -28,7 +28,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.layout.Layout;
 
 public class DemoApplication extends ApplicationWrapper {
 
