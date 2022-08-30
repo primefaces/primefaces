@@ -162,9 +162,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         highlightedItem = this.items.eq(this.options.index(selectedOption));
 
         //disable options
-        this.options.filter(':disabled').each(function() {
-            $this.items.eq($(this).index()).addClass('ui-state-disabled');
-        });
+        $this.items.filter('[disabled]').addClass('ui-state-disabled');
 
         //activate selected
         if(this.cfg.editable) {
