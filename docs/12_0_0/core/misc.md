@@ -48,13 +48,13 @@ However it does not set no-cache headers for JSF views, which can be enabled wit
 
 ### Cache Busting Resource Handler
 
-Currently you can disable appending the version number to every URL by changing the `web.xml` parameter `primefaces.RESOURCE_VERSION`. 
+Currently you can disable appending the version number to every URL by changing the `web.xml` parameter `primefaces.HIDE_RESOURCE_VERSION`. 
 It can be argued whether putting the version number on the URL is a security risk or not, but this property disables it:
 
 ```xml
 <context-param>
-    <param-name>primefaces.RESOURCE_VERSION</param-name>
-    <param-value>false</param-value>
+    <param-name>primefaces.HIDE_RESOURCE_VERSION</param-name>
+    <param-value>true</param-value>
 </context-param>
 ```
 
