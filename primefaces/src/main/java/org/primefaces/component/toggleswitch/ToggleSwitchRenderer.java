@@ -65,13 +65,11 @@ public class ToggleSwitchRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = toggleSwitch.getClientId(context);
         boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, toggleSwitch));
-        boolean disabled = toggleSwitch.isDisabled();
         String style = toggleSwitch.getStyle();
+        String defaultStyleClass = createStyleClass(toggleSwitch, ToggleSwitch.CONTAINER_CLASS);
         String styleClass = getStyleClassBuilder(context)
-                .add(ToggleSwitch.CONTAINER_CLASS)
-                .add(toggleSwitch.getStyleClass())
+                .add(defaultStyleClass)
                 .add(checked, ToggleSwitch.CHECKED_CLASS)
-                .add(disabled, "ui-state-disabled")
                 .add(toggleSwitch.getOffIcon() != null, "ui-toggleswitch-dual-icon")
                 .build();
 
