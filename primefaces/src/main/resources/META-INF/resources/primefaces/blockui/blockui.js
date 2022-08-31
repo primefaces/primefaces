@@ -85,12 +85,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     bindResizer: function() {
         var $this = this;
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_resize', this.target, function() {
-            var isVisible = $this.isBlocking();
-            $this.content.remove();
-            $this.blocker.remove();
-            $this.render();
-            if (isVisible) {
-                $this.show();
+            $this.alignOverlay();
+        });
+
+        // subscribe to all DOM update events so we can resize even if another DOM element changed
+        $(document).on('pfAjaxUpdated', function(e, xhr, settings) {
+            if (!$this.cfg.blocked) {
+                $this.alignOverlay();
             }
         });
     },
@@ -106,10 +107,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
                 $this.show();
-            }
-        }).on('pfAjaxUpdated.' + this.id, function(e, xhr, settings) {
-            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
-                $this.alignOverlay();
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
