@@ -113,7 +113,9 @@ public class ScheduleRenderer extends CoreRenderer {
                 }
                 jsonObject.put("title", event.getTitle());
                 jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
-                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
+                if (event.getEndDate() != null) {
+                    jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
+                }
                 jsonObject.put("allDay", event.isAllDay());
                 if (event.isDraggable() != null) {
                     jsonObject.put("startEditable", event.isDraggable());
