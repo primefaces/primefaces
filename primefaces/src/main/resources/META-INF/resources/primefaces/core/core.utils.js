@@ -387,9 +387,12 @@ if (!PrimeFaces.utils) {
          * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-
-            var scrollParent = widget.getJQ().scrollParent();
-            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
+            var scrollParent;
+            var widgetJq = widget.getJQ();
+            if (widgetJq && typeof widgetJq.scrollParent === 'function') {
+                scrollParent = widgetJq.scrollParent();
+            }
+            if (!scrollParent || PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
