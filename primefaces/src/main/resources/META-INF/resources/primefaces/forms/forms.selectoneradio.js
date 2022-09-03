@@ -46,7 +46,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             //labels
             var base = this.facet ? this.inputs : this.outputs;
             for(var i=0; i < base.length; i++) {
-                this.labels = this.labels.add('label[for="' + 
+                this.labels = this.labels.add('label[for="' +
                     (this.facet ? base.eq(i).attr('id') : base.eq(i).prev().find('.ui-radio-clone').attr('id')) + '"]');
             }
 

@@ -52,7 +52,7 @@ public class SelectOneRadio003Test extends AbstractPrimePageTest {
         Assertions.assertTrue(page.opt3.isSelected());
 
         // Act
-        page.labe4.click();
+        page.label4.click();
         page.submit.click();
 
         // Assert
@@ -73,13 +73,13 @@ public class SelectOneRadio003Test extends AbstractPrimePageTest {
         RadioButton opt4;
 
         @FindBy(id = "form:label1")
-        OutputLabel labe1;
+        OutputLabel label1;
         @FindBy(id = "form:label2")
-        OutputLabel labe2;
+        OutputLabel label2;
         @FindBy(id = "form:label3")
-        OutputLabel labe3;
+        OutputLabel label3;
         @FindBy(id = "form:label4")
-        OutputLabel labe4;
+        OutputLabel label4;
 
         @FindBy(id = "form:submit")
         CommandButton submit;
