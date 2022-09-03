@@ -65,13 +65,13 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.2.3</version>
+            <version>5.3.0</version>
         </dependency>
 
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.12.13</version>
+            <version>1.12.14</version>
         </dependency>
     </dependencies>
 </project>

@@ -491,8 +491,11 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyDataIfRequired() {
-        if (isLazy() && ((LazyDataModel) getValue()).getWrappedData() == null) {
-            loadLazyData();
+        if (isLazy()) {
+            DataModel model = getDataModel();
+            if (model instanceof LazyDataModel && ((LazyDataModel) model).getWrappedData() == null) {
+                loadLazyData();
+            }
         }
     }
 
@@ -1000,7 +1003,7 @@ public class DataTable extends DataTableBase {
     @Override
     public Object saveState(FacesContext context) {
         // reset value when filtering is enabled
-        // filtering stores the filtered values the value property, so it needs to be resetted; see #7336
+        // filtering stores the filtered values the value property, so it needs to be reset; see #7336
         if (isFilteringEnabled()) {
             setValue(null);
         }

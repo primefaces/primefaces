@@ -52,6 +52,10 @@ public class Lazy<T> implements Serializable, Supplier<T> {
         this.value = value;
     }
 
+    public synchronized void reset() {
+        this.value = (T) NOT_INITIALIZED;
+    }
+
     public T get() {
         T result = value;
 

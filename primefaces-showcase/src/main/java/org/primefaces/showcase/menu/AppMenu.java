@@ -78,6 +78,12 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
+        //ACCESSIBILITY CATEGORY START
+        List<MenuItem> uiAccessibilityMenuItems = new ArrayList<>();
+        uiAccessibilityMenuItems.add(new MenuItem("Overview", "/accessibility"));
+        menuCategories.add(new MenuCategory("Accessiblity", uiAccessibilityMenuItems));
+        //ACCESSIBILITY CATEGORY END
+
         //PRIMEBLOCKS CATEGORY START
         List<MenuItem> primeBlocksMenuItems = new ArrayList<>();
         primeBlocksMenuItems.add(new MenuItem("PrimeBlocks", "https://www.primefaces.org/primeblocks-jsf", null, "showcase/images/menu/banner-primeblocks.png"));
