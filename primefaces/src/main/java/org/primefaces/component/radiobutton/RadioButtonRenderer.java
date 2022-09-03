@@ -51,7 +51,7 @@ public class RadioButtonRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, RadioButton radio, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String masterClientId = selectOneRadio.getClientId(context);
-        String inputId = selectOneRadio.getRadioButtonId(context);
+        String inputId = selectOneRadio.getRadioButtonId(context, radio.getItemIndex());
         String clientId = radio.getClientId(context);
         boolean disabled = radio.isDisabled() || selectOneRadio.isDisabled();
 
