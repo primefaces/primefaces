@@ -109,7 +109,7 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
-| touchable                 | false              | Boolean          | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable                 | null              | Boolean           | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
 | showSelectAll             | true               | Boolean          | Whether to show the select all checkbox inside the column's header.
 

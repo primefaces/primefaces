@@ -41,7 +41,7 @@ DataList presents a collection of data in list layout with several display types
 | rowsPerPageTemplate | null | String | Template of the rowsPerPage dropdown.
 | style | null | String | Inline style of the main container.
 | styleClass | null | String | Style class of the main container.
-| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | type | unordered | String | Type of the list, valid values are "unordered", "ordered", "definition" and "none".
 | value | null | Object | Data to display.
 | var | null | String | Name of the request-scoped variable used to refer each data.

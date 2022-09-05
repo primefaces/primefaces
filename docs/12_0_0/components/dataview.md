@@ -45,7 +45,7 @@ rowsPerPageLabel | null | String | Label of the rows per page dropdown
 rowsPerPageTemplate | {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} | String | Template of the rowsPerPage dropdown.
 style | null | String | Inline style of the dataview (main container).
 styleClass | null | String | Style class of the dataview (main container).
-touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 value | null | Object | Data to display.
 var | null | String | Name of the request-scoped variable used torefer each data.
 widgetVar | null | String | Name of the client side widget.

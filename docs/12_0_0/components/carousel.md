@@ -41,7 +41,7 @@ Carousel is a content slider featuring various customization options.
 | indicatorsContentStyleClass | null | String | Style class of the paginator items.
 | headerText | null | String | Label for header.
 | footerText | null | String | Label for footer.
-| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 
 ## Getting Started
 Carousel requires a collection of items as its `value` along with a visual template to render each item.
