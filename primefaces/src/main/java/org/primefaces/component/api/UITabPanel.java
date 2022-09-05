@@ -915,7 +915,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (!isRepeating()) {
             // interpret unloaded tab as SKIP_UNRENDERED
             // otherwise we visit them now and they get "partly" loaded; see #9168
-            if (context.getHints().contains(VisitHint.SKIP_UNRENDERED) && isDynamic()) {                
+            if (context.getHints().contains(VisitHint.SKIP_UNRENDERED) && isDynamic()) {
                 try {
                     pushComponentToEL(context.getFacesContext(), this);
 
@@ -941,7 +941,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                 return false;
             }
-            else {            
+            else {
                 return super.visitTree(context, callback);
             }
         }
