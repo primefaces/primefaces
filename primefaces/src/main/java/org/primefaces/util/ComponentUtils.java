@@ -269,7 +269,11 @@ public class ComponentUtils {
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        return component.isTouchable() || PrimeRequestContext.getCurrentInstance(context).isTouchable();
+        Boolean local = component.isTouchable();
+        if (local != null) {
+            return local;
+        }
+        return PrimeRequestContext.getCurrentInstance(context).isTouchable();
     }
 
     public static boolean isFlex(FacesContext context, FlexAware component) {
