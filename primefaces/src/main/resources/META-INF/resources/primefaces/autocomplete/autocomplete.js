@@ -1241,7 +1241,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             itemValue = item.attr('data-token-value');
         }
 
-        var foundItem = this.multiItemContainer.children("li.ui-autocomplete-token[data-token-value='"+itemValue+"']");
+        var foundItem = this.multiItemContainer.children("li.ui-autocomplete-token[data-token-value='" + $.escapeSelector(itemValue) + "']");
         if(!foundItem.length) {
             return;
         }
