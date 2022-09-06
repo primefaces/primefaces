@@ -26,6 +26,7 @@ This page contains a list of big features. Please check the GitHub issues for al
   * ExcelOptions: Added new property `currencyFormat` in order to use a custom java.text.DecimalFormat for formatting currency in Excel export. If null, defaults to decimal format of current Locale.
 * DatePicker: added `showMinMaxRange` attribute to only display valid dates within the min/max range.
 * FileUpload: added `clear()` widget method in SkinSimple mode to clear out selected file.
+* Galleria: added `hide()` widget method to hide content on fullscreen mode.
 * GMap
   * Added `Symbol` which can be used as marker icon.
   * Models and events now have generically typed data instead of `Object`.
