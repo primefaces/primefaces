@@ -26,6 +26,7 @@ package org.primefaces.showcase.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -135,6 +136,12 @@ public class ProductService {
         for (Product original : originals) {
             results.add(original.clone());
         }
+
+        // make sure to have unique codes
+        for (Product product : results) {
+            product.setCode(UUID.randomUUID().toString().replace("-", "").substring(0, 8));
+        }
+
         return results;
     }
 }

@@ -95,6 +95,7 @@ public class CrudView implements Serializable {
 
     public void deleteProduct() {
         this.products.remove(this.selectedProduct);
+        this.selectedProducts.remove(this.selectedProduct);
         this.selectedProduct = null;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Removed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");

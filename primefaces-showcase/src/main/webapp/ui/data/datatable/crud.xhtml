@@ -46,11 +46,10 @@
                     rowKey="#{product.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
                     <f:facet name="header">
                         <div class="products-table-header">
-                            <span style="font-weight: bold">PRODUCTS</span> <span
-                                class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i> <p:inputText
-                                    id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search" />
+                            <span style="font-weight: bold">PRODUCTS</span>
+                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search" />
                             </span>
-
                         </div>
                     </f:facet>
 
@@ -94,8 +93,9 @@
                             <f:setPropertyActionListener value="#{product}" target="#{crudView.selectedProduct}" />
                             <p:resetInput target=":dialogs:manage-product-content" />
                         </p:commandButton>
-                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-                            oncomplete="PF('deleteProductDialog').show()">
+                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                         process="@this"
+                                         oncomplete="PF('deleteProductDialog').show()">
                             <f:setPropertyActionListener value="#{product}" target="#{crudView.selectedProduct}" />
                         </p:commandButton>
                     </p:column>
@@ -153,7 +153,8 @@
                 <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
                     message="Delete the product?" header="Confirm" severity="warn">
                     <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProduct}"
-                        process="@this" oncomplete="PF('deleteProductDialog').hide()" />
+                        process="@this" update=":form:delete-products-button"
+                        oncomplete="PF('deleteProductDialog').hide()" />
                     <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                         onclick="PF('deleteProductDialog').hide()" />
                 </p:confirmDialog>
