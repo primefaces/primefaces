@@ -419,6 +419,12 @@
             <handler-class>org.primefaces.behavior.confirm.ConfirmBehaviorHandler</handler-class>
         </behavior>
         <attribute>
+            <description>Source of the confirmation component. Valid values are the clientId of the source component and "this".</description>
+            <name>source</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description>Type of the confirmation component.</description>
             <name>type</name>
             <required>false</required>

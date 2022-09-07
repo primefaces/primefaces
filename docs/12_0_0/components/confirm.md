@@ -13,6 +13,7 @@ Confirm is a behavior element used to integrate with global confirm dialog/popup
 
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
+| source | dialog | String | Source of confirm dialog/popup. Valid values are the clientId of the source component and "this".
 | type | dialog | String | Type of confirm dialog/popup.
 | header | null | String | Header of confirm dialog.
 | message | null | String | Message to display in confirm dialog/popup.
