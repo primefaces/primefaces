@@ -58,6 +58,24 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(2)
+    @DisplayName("SelectOneMenu: itemEscaped")
+    public void testItemEscaped(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+
+        // Act
+        selectOneMenu.toggleDropdown();
+
+        // Assert
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        Assertions.assertEquals("Wii U", options.get(4).getText());
+        Assertions.assertEquals("Nintendo Switch", options.get(5).getText());
+
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
