@@ -103,7 +103,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
             if (column.isExportable()) {
                 String columnKey = column.getColumnKey();
                 ColumnMeta currentMeta = allColumnMeta.get(columnKey);
-                if (!visibleColumnsOnly || (visibleColumnsOnly && currentMeta != null && currentMeta.getVisible())) {
+                if (!visibleColumnsOnly || (visibleColumnsOnly && (currentMeta == null || currentMeta.getVisible()))) {
                     int displayPriority = column.getDisplayPriority();
                     ColumnMeta metaCopy = new ColumnMeta(columnKey);
                     metaCopy.setDisplayPriority(displayPriority);
