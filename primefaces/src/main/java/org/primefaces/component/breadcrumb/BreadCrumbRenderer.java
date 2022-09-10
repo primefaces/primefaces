@@ -28,9 +28,11 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -66,7 +68,9 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
-            ((MenuItem) menuElements.get(0)).setStyleClass("ui-breadcrumb-home-icon ui-icon ui-icon-home");
+            String icon = breadCrumb.getHomeIcon();
+            String iconStyleClass = "ui-breadcrumb-home-icon " + icon;
+            ((MenuItem) menuElements.get(0)).setStyleClass(iconStyleClass);
         }
 
         writer.startElement(wrapper, null);
