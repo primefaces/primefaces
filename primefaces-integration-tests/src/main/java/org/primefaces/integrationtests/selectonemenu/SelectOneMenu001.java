@@ -50,15 +50,24 @@ public class SelectOneMenu001 implements Serializable {
 
     private int value;
 
+    private int value2;
+
     @PostConstruct
     public void init() {
         drivers = driverService.getDrivers();
         value = 1;
+        value2 = 1;
     }
 
-    public void onAjax() {
+    public void onAjaxItemSelect() {
         // pause for 1 second to verify AJAX guards are working properly
         TestUtils.wait(1000);
+
+        TestUtils.addMessage("Driver-ID (itemSelect)", Integer.valueOf(value).toString());
+    }
+
+    public void onAjaxChange() {
+        TestUtils.addMessage("Driver-ID (change)", Integer.valueOf(value2).toString());
     }
 
 }
