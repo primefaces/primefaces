@@ -32083,6 +32083,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Whether to format the month. Default is true.]]>
+            </description>
+            <name>autoMonthFormat</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether to display dates in other months (non-selectable) at the start or end of the current month.
                 To make these days selectable use the selectOtherMonths option. Default is false.]]>
             </description>

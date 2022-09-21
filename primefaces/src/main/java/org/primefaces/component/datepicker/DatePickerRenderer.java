@@ -189,6 +189,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("yearNavigator", datePicker.isYearNavigator(), false)
             .attr("showButtonBar", datePicker.isShowButtonBar(), false)
             .attr("showMinMaxRange", datePicker.isShowMinMaxRange(), true)
+            .attr("autoMonthFormat", datePicker.isAutoMonthFormat(), true)
             .attr("panelStyleClass", datePicker.getPanelStyleClass(), null)
             .attr("panelStyle", datePicker.getPanelStyle(), null)
             .attr("keepInvalid", datePicker.isKeepInvalid(), false)

@@ -89,6 +89,7 @@
             showMinMaxRange: true,
             showOtherMonths: false,
             selectOtherMonths: false,
+            autoMonthFormat: true,
             showButtonBar: false,
             todayButtonStyleClass: 'ui-priority-secondary',
             clearButtonStyleClass: 'ui-priority-secondary',
@@ -1805,7 +1806,7 @@
         
         onInputChange: function(event) {
             // TODO: The following code block will be rearranged according to PrimeNG/React/Vue library in future versions.
-            if (!this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') { 
+            if (this.options.autoMonthFormat && !this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') { 
                 var viewMonth = this.viewDate.getMonth();
                 viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
                 this.viewDate.setMonth(viewMonth);
@@ -2799,7 +2800,7 @@
 
             this.viewDate = value;
 
-            if (this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') {
+            if (this.options.autoMonthFormat && this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') {
                 var viewMonth = this.viewDate.getMonth();
                 viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
                 this.viewDate.setMonth(viewMonth);

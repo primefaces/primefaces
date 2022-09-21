@@ -99,6 +99,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         showWeek,
         weekCalculator,
         showMinMaxRange,
+        autoMonthFormat,
         model
     }
 
@@ -490,6 +491,14 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setShowMinMaxRange(boolean showMinMaxRange) {
         getStateHelper().put(PropertyKeys.showMinMaxRange, showMinMaxRange);
+    }
+
+    public boolean isAutoMonthFormat() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoMonthFormat, true);
+    }
+
+    public void setAutoMonthFormat(boolean autoMonthFormat) {
+        getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
     }
 
     @Override

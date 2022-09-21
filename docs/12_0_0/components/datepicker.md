@@ -113,6 +113,8 @@ ajax selection and more.
 | showButtonBar | false | Boolean | Whether to display buttons at the footer.
 | showIcon | false | String | Whether to show an icon to display the picker in an overlay
 | showOnFocus | true | Boolean | Whether to show the popup when input receives focus.
+| showMinMaxRange | true | Boolean | Only display valid dates within the min/max range.
+| autoMonthFormat | true | Boolean | Whether to format the month. Default is true.
 | showOtherMonths | false | Boolean | Displays days belonging to other months.
 | showSeconds | false | Boolean | Whether to show the seconds in time picker. Default is false.
 | showTime | false * | Boolean | Specifies if the timepicker should be displayed.  (* Defaults to true, when value is bound to java.time.LocalDateTime)
