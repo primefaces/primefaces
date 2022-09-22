@@ -35,9 +35,13 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.PDFOptions;
 import org.primefaces.component.export.PDFOrientationType;
@@ -49,6 +53,8 @@ import com.lowagie.text.*;
 @Named
 @RequestScoped
 public class CustomizedDocumentsView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<Product> products;
 
@@ -117,16 +123,16 @@ public class CustomizedDocumentsView implements Serializable {
     }
 
     public void postProcessXLS(Object document) {
-        HSSFWorkbook wb = (HSSFWorkbook) document;
-        HSSFSheet sheet = wb.getSheetAt(0);
-        HSSFRow header = sheet.getRow(0);
+        SXSSFWorkbook wb = (SXSSFWorkbook) document;
+        SXSSFSheet sheet = wb.getSheetAt(0);
+        SXSSFRow header = sheet.getRow(0);
 
-        HSSFCellStyle cellStyle = wb.createCellStyle();
+        CellStyle cellStyle = wb.createCellStyle();
         cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-            HSSFCell cell = header.getCell(i);
+            SXSSFCell cell = header.getCell(i);
 
             cell.setCellStyle(cellStyle);
         }
