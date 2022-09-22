@@ -175,7 +175,7 @@ public class DatePicker extends DatePickerBase {
                     Comparable endDate = (Comparable) rangeValues.get(1);
                     validationResult = validateValueInternal(context, endDate);
 
-                    if (isValid() && startDate.compareTo(endDate) > -1) {
+                    if (isValid() && startDate.compareTo(endDate) > 0) {
                         setValid(false);
                         validationResult = ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL;
                     }
