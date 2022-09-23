@@ -42,6 +42,7 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
     public enum PropertyKeys {
         widgetVar,
         page,
+        paginator,
         circular,
         autoplayInterval,
         numVisible,
@@ -213,5 +214,13 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
 
     public void setOnPageChange(String onPageChange) {
         getStateHelper().put(PropertyKeys.onPageChange, onPageChange);
+    }
+
+    public boolean isPaginator() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.paginator, true);
+    }
+
+    public void setPaginator(boolean paginator) {
+        getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 }

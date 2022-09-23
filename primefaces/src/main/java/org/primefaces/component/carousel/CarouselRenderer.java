@@ -64,6 +64,7 @@ public class CarouselRenderer extends CoreRenderer {
                 .attr("numScroll", carousel.getNumScroll(), 1)
                 .attr("orientation", carousel.getOrientation(), "horizontal")
                 .attr("touchable", ComponentUtils.isTouchable(context, carousel), true)
+                .attr("paginator", carousel.isPaginator(), true)
                 .callback("onPageChange", "function(pageValue)", carousel.getOnPageChange());
 
         if (responsiveOptions != null) {
