@@ -41,7 +41,7 @@ import org.primefaces.util.SharedStringBuilder;
 
 public class AvatarRenderer extends CoreRenderer {
 
-    private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]");
+    private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]", Pattern.UNICODE_CHARACTER_CLASS);
     private static final String GRAVATAR_URL = "https://www.gravatar.com/avatar/";
     private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 
