@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11, 17, 18]
+        java: [8, 11, 17, 19]
         jsfimpl: [ 'mojarra-2.3', 'myfaces-2.3']
 
     steps:
