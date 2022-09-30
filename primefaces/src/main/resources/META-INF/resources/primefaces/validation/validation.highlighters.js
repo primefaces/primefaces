@@ -187,6 +187,18 @@ if (window.PrimeFaces) {
                 }
 
             },
+            
+            'toggleswitch': {
+
+                highlight: function(element) {
+                    element.parent().next().addClass('ui-state-error');
+                },
+
+                unhighlight: function(element) {
+                    element.parent().next().removeClass('ui-state-error');
+                }
+
+            },
 
             'inputnumber': {
 
