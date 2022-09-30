@@ -7,3 +7,7 @@
 .kbw-signature-disabled {
 	opacity: 0.35;
 }
+
+body .ui-inputfield.kbw-signature {
+    padding: 0;
+}
