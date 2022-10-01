@@ -65,11 +65,13 @@ public class ToggleSwitchRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = toggleSwitch.getClientId(context);
         boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, toggleSwitch));
+        boolean disabled = toggleSwitch.isDisabled();
         String style = toggleSwitch.getStyle();
-        String defaultStyleClass = createStyleClass(toggleSwitch, ToggleSwitch.CONTAINER_CLASS);
         String styleClass = getStyleClassBuilder(context)
-                .add(defaultStyleClass)
+                .add(ToggleSwitch.CONTAINER_CLASS)
+                .add(toggleSwitch.getStyleClass())
                 .add(checked, ToggleSwitch.CHECKED_CLASS)
+                .add(disabled, "ui-state-disabled")
                 .add(toggleSwitch.getOffIcon() != null, "ui-toggleswitch-dual-icon")
                 .build();
 
@@ -90,8 +92,13 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected void encodeSlider(FacesContext context, ToggleSwitch toggleSwitch, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        String styleClass = getStyleClassBuilder(context)
+                    .add(ToggleSwitch.SLIDER_CLASS)
+                    .add(!toggleSwitch.isValid(), "ui-state-error")
+                    .build();
+
         writer.startElement("div", null);
-        writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", ToggleSwitch.HANDLER_CLASS, null);
@@ -154,6 +161,11 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected boolean isChecked(String value) {
         return value != null
                 && ("on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value));
+    }
+
+    @Override
+    public String getHighlighter() {
+        return "toggleswitch";
     }
 }
 
