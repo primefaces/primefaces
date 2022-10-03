@@ -31,7 +31,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
-    init: function (cfg) {
+    init: function(cfg) {
         this._super(cfg);
         this.input = $(this.jqId + '_input');
         this.hiddenInput = $(this.jqId + '_hinput');
@@ -66,7 +66,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             this.autonumeric.rawValueOnFocus = this.valueToRender;
         }
 
-        this.copyValueToHiddenInput();
+        this.setValueToHiddenInput(this.getValue());
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -89,15 +89,15 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         if (!originalOnkeyup && events && events.keyup) {
             originalOnkeyup = events.keyup[0].handler;
         }
-        this.input.prop('onkeyup', null).off('keyup').on('keyup.inputnumber', function (e) {
+        this.input.prop('onkeyup', null).off('keyup').on('keyup.inputnumber', function(e) {
 
             var oldValue;
 
             var keyCode = e.which;
             if (keyCode === 8 || keyCode === 13 || keyCode === 32
-                    || (keyCode >= 46 && keyCode <= 90)
-                    || (keyCode >= 96 && keyCode <= 111)
-                    || (keyCode >= 186 && keyCode <= 222)) {
+                || (keyCode >= 46 && keyCode <= 90)
+                || (keyCode >= 96 && keyCode <= 111)
+                || (keyCode >= 186 && keyCode <= 222)) {
 
                 oldValue = $this.copyValueToHiddenInput();
             }
@@ -115,7 +115,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         if (!originalOnchange && events && events.change) {
             originalOnchange = events.change[0].handler;
         }
-        this.input.prop('onchange', null).off('change').on('change.inputnumber', function (e) {
+        this.input.prop('onchange', null).off('change').on('change.inputnumber', function(e) {
 
             var oldValue = $this.copyValueToHiddenInput();
             if (originalOnchange && originalOnchange.call(this, e) === false) {
@@ -129,7 +129,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         if (!originalOnkeydown && events && events.keydown) {
             originalOnkeydown = events.keydown[0].handler;
         }
-        this.input.prop('onkeydown', null).off('keydown').on('keydown.inputnumber', function (e) {
+        this.input.prop('onkeydown', null).off('keydown').on('keydown.inputnumber', function(e) {
 
             var oldValue = $this.copyValueToHiddenInput();
             if (originalOnkeydown && originalOnkeydown.call(this, e) === false) {
@@ -152,14 +152,14 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             var element = AutoNumeric.getAutoNumericElement(this);
             if (element && this.value && this.value.length > 0) {
                 var newValue = this.value.trim();
-                if($this.cfg.digitGroupSeparator) {
+                if ($this.cfg.digitGroupSeparator) {
                     newValue = newValue.replaceAll($this.cfg.digitGroupSeparator, '');
                 }
                 element.set(newValue, null, true);
 
                 // GitHub #8610: reset the raw values so we don't fire change event if 1.0 == 1.00
                 if (Number(element.rawValue) === Number(element.rawValueOnFocus)) {
-                   element.rawValueOnFocus = element.rawValue;
+                    element.rawValueOnFocus = element.rawValue;
                 }
             }
             $this.copyValueToHiddenInput();
@@ -194,7 +194,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Enables this input field, so that the user can enter data.
      */
-    enable: function () {
+    enable: function() {
         PrimeFaces.utils.enableInputWidget(this.input);
         PrimeFaces.utils.enableInputWidget(this.hiddenInput);
         this.disabled = false;
@@ -203,7 +203,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Enables this input field, so that the user cannot enter data.
      */
-    disable: function () {
+    disable: function() {
         PrimeFaces.utils.disableInputWidget(this.input);
         PrimeFaces.utils.disableInputWidget(this.hiddenInput);
         this.disabled = true;
@@ -214,7 +214,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      * @param {number | string} value The new value to set. If a number, it will be formatted appropriately. If the
      * empty string, resets the value. Any other string is parsed into a number and then the number is set.
      */
-    setValue: function (value) {
+    setValue: function(value) {
         this.autonumeric.set(value);
         var cleanVal = this.getValue();
         this.hiddenInput.attr('value', cleanVal);
@@ -225,7 +225,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
      * @return {string} The current value of this input number widget, in its string representation according to the
      * configured format.
      */
-    getValue: function () {
+    getValue: function() {
         var val = this.autonumeric.getNumericString();
         if (this.autonumeric.getSettings().allowDecimalPadding && val && parseInt(this.cfg.decimalPlaces, 10) > 0) {
             var decimalPlacesToPad;
