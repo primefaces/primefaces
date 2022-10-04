@@ -39,7 +39,6 @@ public class PanelGridFacetRowRenderer extends CoreRenderer implements HelperRow
 
         writer.startElement("tr", row);
         writer.writeAttribute("class", "ui-widget-header", null);
-        writer.writeAttribute("role", "row", null);
         renderDynamicPassThruAttributes(context, row);
         renderChildren(context, row);
         writer.endElement("tr");

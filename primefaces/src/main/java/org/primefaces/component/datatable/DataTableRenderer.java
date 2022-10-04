@@ -660,7 +660,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
-        writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
         if (component != null) {
@@ -1013,7 +1012,6 @@ public class DataTableRenderer extends DataRenderer {
                         String rowStyle = headerRow.getStyle();
 
                         writer.startElement("tr", null);
-                        writer.writeAttribute("role", "row", null);
                         if (rowClass != null) {
                             writer.writeAttribute("class", rowClass, null);
                         }
@@ -1051,7 +1049,6 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             writer.startElement("tr", null);
-            writer.writeAttribute("role", "row", null);
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
@@ -1256,7 +1253,6 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("data-rk", rowKey, null);
         }
         writer.writeAttribute("class", rowStyleClass, null);
-        writer.writeAttribute("role", "row", null);
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
