@@ -147,7 +147,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
 
-                if ($this.cfg.auto && files.length > 0) {
+                if ($this.cfg.auto) {
                     $this.upload();
                 }
             } else {

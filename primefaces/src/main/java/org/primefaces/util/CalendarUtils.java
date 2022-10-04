@@ -25,22 +25,11 @@ package org.primefaces.util;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -92,7 +81,7 @@ public class CalendarUtils {
         }
 
         if (value instanceof Date) {
-            return convertDate2LocalDate((Date) value);
+            return convertDate2LocalDate((Date) value, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -156,7 +145,7 @@ public class CalendarUtils {
         }
 
         if (value instanceof Date) {
-            return convertDate2LocalTime((Date) value);
+            return convertDate2LocalTime((Date) value, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -469,10 +458,6 @@ public class CalendarUtils {
                 return date.toInstant().atZone(zoneId);
             }
         }
-    }
-
-    public static LocalDate convertDate2LocalDate(Date date) {
-        return convertDate2LocalDate(date, ZoneId.systemDefault());
     }
 
     public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
