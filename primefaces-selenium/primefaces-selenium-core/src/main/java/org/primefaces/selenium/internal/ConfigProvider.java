@@ -186,6 +186,10 @@ public class ConfigProvider {
         return timeoutAjax;
     }
 
+    public void setTimeoutAjax(int timeoutAjax) {
+        this.timeoutAjax = timeoutAjax;
+    }
+
     public int getTimeoutHttp() {
         return timeoutHttp;
     }

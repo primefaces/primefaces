@@ -24,12 +24,15 @@
 package org.primefaces.integrationtests.fileupload;
 
 import java.io.File;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
+import org.primefaces.selenium.internal.ConfigProvider;
 
 /**
  * Tests basic auto single file upload.
@@ -92,13 +95,15 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file3.csv");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        int timeoutAjaxOrig = ConfigProvider.getInstance().getTimeoutAjax();
+        ConfigProvider.getInstance().setTimeoutAjax(1);
+        Assertions.assertThrows(TimeoutException.class, () -> fileUpload.setValue(file));
+        ConfigProvider.getInstance().setTimeoutAjax(timeoutAjaxOrig);
+
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
 
         // Assert
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
@@ -115,13 +120,15 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file1.png");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        int timeoutAjaxOrig = ConfigProvider.getInstance().getTimeoutAjax();
+        ConfigProvider.getInstance().setTimeoutAjax(1);
+        Assertions.assertThrows(TimeoutException.class, () -> fileUpload.setValue(file));
+        ConfigProvider.getInstance().setTimeoutAjax(timeoutAjaxOrig);
+
+        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
 
         // Assert
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
