@@ -40,7 +40,6 @@ public class PanelGridBodyRowRenderer extends CoreRenderer implements HelperRowR
 
         writer.startElement("tr", row);
         writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
-        writer.writeAttribute("role", "row", null);
         renderDynamicPassThruAttributes(context, row);
         renderChildren(context, row);
         writer.endElement("tr");

@@ -415,7 +415,6 @@ public class TreeTableRenderer extends DataRenderer {
                         String rowStyle = headerRow.getStyle();
 
                         writer.startElement("tr", null);
-                        writer.writeAttribute("role", "row", null);
                         if (rowClass != null) {
                             writer.writeAttribute("class", rowClass, null);
                         }
@@ -453,7 +452,6 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else {
             writer.startElement("tr", null);
-            writer.writeAttribute("role", "row", null);
 
             List<UIColumn> columns = tt.getColumns();
             for (int i = 0; i < columns.size(); i++) {
@@ -560,7 +558,6 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("tr", null);
         writer.writeAttribute("id", tt.getClientId(context) + "_node_" + rowKey, null);
         writer.writeAttribute("class", rowStyleClass, null);
-        writer.writeAttribute("role", "row", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(treeNode.isExpanded()), null);
         writer.writeAttribute("data-rk", rowKey, null);
 
@@ -720,7 +717,6 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
-        writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
