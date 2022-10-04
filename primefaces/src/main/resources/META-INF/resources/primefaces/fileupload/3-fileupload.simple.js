@@ -134,12 +134,17 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                 } else {
                     // If everything is ok, format the message and display it
-                    var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
+                    if (files.length > 0) {
+                        var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
 
-                    if (files.length > 1) {
-                            toDisplay = toDisplay + " + " + (files.length - 1);
+                        if (files.length > 1) {
+                                toDisplay = toDisplay + " + " + (files.length - 1);
+                        }
+                        $this.display.text(toDisplay);
+                    } 
+                    else {
+                        $this.display.text('');
                     }
-                    $this.display.text(toDisplay);
                 }
 
                 if ($this.cfg.auto) {
