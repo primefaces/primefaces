@@ -17,11 +17,13 @@ You can also manage it by yourself via `webdriver.adapter`.
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-core</artifactId>
     <version>11.0.0</version>
+    <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-components</artifactId>
     <version>11.0.0</version>
+    <scope>test</scope>
 </dependency>
 ```
 
