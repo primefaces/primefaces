@@ -37,7 +37,7 @@ What does that mean?
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
-12.0.0-RC3| [primefaces-12.0.0-RC3.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0-RC3/primefaces-12.0.0-RC3.jar)  | [primefaces-12.0.0-RC3-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0-RC3/primefaces-12.0.0-RC3-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
+12.0.0| [primefaces-12.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [primefaces-12.0.0sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
 11.0.0| [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
 10.0.0| [primefaces-10.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0.jar)  | [primefaces-10.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/10.0.0/primefaces-10.0.0-sources.jar) | 2.0 - 3.0 | 1.8 - ? | [10.0.0 Documentation](https://primefaces.github.io/primefaces/10_0_0/#/)
 
@@ -70,14 +70,14 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>11.0.0</version>
+      <version>12.0.0</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>11.0.0</version>
+      <version>12.0.0</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
