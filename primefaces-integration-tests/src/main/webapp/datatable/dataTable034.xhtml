@@ -22,7 +22,7 @@
 
                 <p:column headerText="Name">
                     <p:inputText id="name" value="#{lang.name}">
-                        <p:ajax process="datatable @this" update="@form" />
+                        <p:ajax process="@this" update="@form" />
                     </p:inputText>
                 </p:column>
 

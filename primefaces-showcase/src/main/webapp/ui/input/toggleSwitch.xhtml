@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -21,11 +21,14 @@
             <h:form>
                 <p:growl id="msg"/>
 
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:toggleSwitch value="#{selectBooleanView.value1}"/>
+                
+                <h5>Icon</h5>
+                <p:toggleSwitch value="#{selectBooleanView.value2}" onIcon="pi pi-check" offIcon="pi pi-times" />
 
                 <h5>Remote</h5>
-                <p:toggleSwitch value="#{selectBooleanView.value2}">
+                <p:toggleSwitch value="#{selectBooleanView.value3}">
                     <p:ajax listener="#{selectBooleanView.addMessage}" update="msg"/>
                 </p:toggleSwitch>
             </h:form>

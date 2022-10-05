@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,14 @@
  */
 package org.primefaces.showcase.view.data.tree;
 
+import java.util.Collections;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.primefaces.model.TreeNodeChildren;
 
 public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
@@ -42,6 +44,10 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     @Override
     public List<TreeNode<FileInfo>> getChildren() {
+        if (isLeaf()) {
+            return Collections.emptyList();
+        }
+
         lazyLoad();
 
         return super.getChildren();
@@ -49,6 +55,10 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     @Override
     public int getChildCount() {
+        if (isLeaf()) {
+            return 0;
+        }
+
         lazyLoad();
 
         return super.getChildCount();
@@ -56,9 +66,7 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     @Override
     public boolean isLeaf() {
-        lazyLoad();
-
-        return super.isLeaf();
+        return !getData().isDirectory();
     }
 
     private void lazyLoad() {
@@ -70,6 +78,39 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
             List<LazyLoadingTreeNode> childNodes = loadFunction.apply(parentId).stream()
                     .map(f -> new LazyLoadingTreeNode(f, loadFunction)).collect(Collectors.toList());
             super.getChildren().addAll(childNodes);
+        }
+    }
+
+    @Override
+    protected List<TreeNode<FileInfo>> initChildren() {
+        return new LazyLoadingTreeNodeChildren(this);
+    }
+
+    public static class LazyLoadingTreeNodeChildren extends TreeNodeChildren<FileInfo> {
+
+        public LazyLoadingTreeNodeChildren(LazyLoadingTreeNode parent) {
+            super(parent);
+        }
+
+        @Override
+        protected void updateRowKeys(TreeNode<?> node) {
+            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+                super.updateRowKeys(node);
+            }
+        }
+
+        @Override
+        protected void updateRowKeys(int index, TreeNode<?> node) {
+            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+                super.updateRowKeys(index, node);
+            }
+        }
+
+        @Override
+        protected void updateRowKeys(TreeNode<?> node, TreeNode<?> childNode, int i) {
+            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+                super.updateRowKeys(node, childNode, i);
+            }
         }
     }
 }

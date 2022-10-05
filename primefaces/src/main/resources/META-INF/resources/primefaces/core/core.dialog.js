@@ -178,8 +178,9 @@ if (!PrimeFaces.dialog) {
                 titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
             }
 
+            var iframeStyleClass = cfg.options.iframeStyleClass||'';
             dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
-                    '<iframe style="border:0 none" frameborder="0"></iframe>' +
+                    '<iframe class="' + iframeStyleClass + '" style="border:0 none" frameborder="0"></iframe>' +
                     '</div>');
 
             dialogDOM.appendTo(rootWindow.document.body);
@@ -217,7 +218,28 @@ if (!PrimeFaces.dialog) {
                         sourceFrames: sourceFrames,
                         sourceComponentId: cfg.sourceComponentId,
                         sourceWidgetVar: cfg.sourceWidgetVar,
+                        onShow: function() {
+                            if (cfg.options.onShow) {
+                                var onShowFunction = '(function(ext){' + cfg.options.onShow + '})';
+                                var onShowCallback = PrimeFaces.csp.NONCE_VALUE
+                                    ? PrimeFaces.csp.evalResult(onShowFunction)
+                                    : rootWindow.eval(onShowFunction);
+                                if (onShowCallback) {
+                                    onShowCallback.call(this);
+                                }
+                            }
+                        },
                         onHide: function() {
+                            if (cfg.options.onHide) {
+                                var onHideFunction = '(function(ext){' + cfg.options.onHide + '})';
+                                var onHideCallback = PrimeFaces.csp.NONCE_VALUE
+                                    ? PrimeFaces.csp.evalResult(onHideFunction)
+                                    : rootWindow.eval(onHideFunction);
+                                if (onHideCallback) {
+                                    onHideCallback.call(this);
+                                }
+                            }
+
                             var $dialogWidget = this,
                             dialogFrame = this.content.children('iframe');
 
@@ -249,7 +271,10 @@ if (!PrimeFaces.dialog) {
                         headerElement: cfg.options.headerElement,
                         responsive: cfg.options.responsive,
                         closeOnEscape: cfg.options.closeOnEscape,
-                        focus: cfg.options.focus
+                        focus: cfg.options.focus,
+                        fitViewport: cfg.options.fitViewport,
+                        resizeObserver: cfg.options.resizeObserver,
+                        resizeObserverCenter: cfg.options.resizeObserverCenter
                     });
                 }
 

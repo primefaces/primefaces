@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>12.0.0-SNAPSHOT</version>
+        <version>13.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -29,14 +29,14 @@
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
-        <hibernate-validator.version>6.2.2.Final</hibernate-validator.version>
-        <lombok.version>1.18.22</lombok.version>
-        <myfaces.version>2.3.9</myfaces.version>
+        <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
+        <lombok.version>1.18.24</lombok.version>
+        <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.58</tomcat.version>
-        <resteasy.version>5.0.2.Final</resteasy.version>
-        <owb.version>2.0.26</owb.version>
-        <jetty.version>9.4.45.v20220203</jetty.version>
+        <tomcat.version>9.0.67</tomcat.version>
+        <resteasy.version>5.0.4.Final</resteasy.version>
+        <owb.version>2.0.27</owb.version>
+        <jetty.version>9.4.49.v20220914</jetty.version>
     </properties>
 
     <dependencies>
@@ -186,11 +186,17 @@
             <artifactId>commons-fileupload</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
+            <version>2.0.3</version>
             <scope>test</scope>
         </dependency>
 
@@ -346,7 +352,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -426,16 +432,13 @@
             <id>firefox</id>
             <properties>
                 <webdriver.browser>firefox</webdriver.browser>
+                <excludedGroups>FirefoxExclude</excludedGroups>
             </properties>
         </profile>
         <profile>
             <id>safari</id>
             <properties>
                 <webdriver.browser>safari</webdriver.browser>
-                <!-- optionally only run tests with specific @Tag -->
-                <!--
-                <groups>SafariBasic</groups>
-                -->
                 <excludedGroups>SafariExclude</excludedGroups>
                 <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
             </properties>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,10 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -105,6 +102,10 @@ public class DataTableRenderer extends DataRenderer {
 
         encodeMarkup(context, table);
         encodeScript(context, table);
+
+        if (table.isPaginator() && table.getRows() == 0) {
+            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: " + table.getClientId());
+        }
     }
 
     protected void preRender(FacesContext context, DataTable table) {
@@ -272,7 +273,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
         boolean resizable = table.isResizableColumns();
-        String style = table.getStyle();
+        String style = Objects.toString(table.getStyle(), Constants.EMPTY_STRING);
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
         boolean hasFrozenColumns = (frozenColumns != 0);
@@ -659,7 +660,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
-        writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
         if (component != null) {
@@ -694,8 +694,8 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode)) {
-            encodeCheckbox(context, table, false, false, HTML.CHECKBOX_ALL_CLASS, true);
+        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
+            encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
         writer.endElement("th");
@@ -767,9 +767,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            if (filterValue != null) {
-                ((ValueHolder) filterFacet).setValue(filterValue);
-            }
+            ((ValueHolder) filterFacet).setValue(filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
@@ -1014,7 +1012,6 @@ public class DataTableRenderer extends DataRenderer {
                         String rowStyle = headerRow.getStyle();
 
                         writer.startElement("tr", null);
-                        writer.writeAttribute("role", "row", null);
                         if (rowClass != null) {
                             writer.writeAttribute("class", rowClass, null);
                         }
@@ -1052,7 +1049,6 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             writer.startElement("tr", null);
-            writer.writeAttribute("role", "row", null);
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
@@ -1154,7 +1150,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         SummaryRow summaryRow = table.getSummaryRow();
         HeaderRow headerRow = table.getHeaderRow();
-        ELContext eLContext = context.getELContext();
+        ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
@@ -1170,7 +1166,7 @@ public class DataTableRenderer extends DataRenderer {
 
             table.setRowIndex(i);
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), eLContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
                 table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
@@ -1178,7 +1174,7 @@ public class DataTableRenderer extends DataRenderer {
             table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), eLContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
                 table.setRowIndex(i);
                 encodeSummaryRow(context, summaryRow, sort);
             }
@@ -1226,7 +1222,7 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean selectionEnabled = table.isSelectionEnabled() && !table.isDisabledSelection();
+        boolean selectionEnabled = table.isSelectionEnabled();
         boolean rowExpansionAvailable = table.getRowExpansion() != null;
         String rowKey = null;
         List<UIColumn> columns = table.getColumns();
@@ -1238,12 +1234,13 @@ public class DataTableRenderer extends DataRenderer {
 
         //Preselection
         boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
+        boolean disabled = table.isDisabledSelection();
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled, DataTable.SELECTABLE_ROW_CLASS)
+                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
                 .add(selected, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
@@ -1256,7 +1253,6 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("data-rk", rowKey, null);
         }
         writer.writeAttribute("class", rowStyleClass, null);
-        writer.writeAttribute("role", "row", null);
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
@@ -1653,26 +1649,46 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
-                                    ELContext eLContext) {
+                                    ELContext elContext) {
 
         table.setRowIndex(currentRowIndex);
-        Object currentGroupByData = groupByVE.getValue(eLContext);
+        Object currentGroupByData = groupByVE.getValue(elContext);
 
-        table.setRowIndex(currentRowIndex + step);
-        if (!table.isRowAvailable()) {
-            return false;
+        int nextRowIndex = currentRowIndex + step;
+
+        Object nextGroupByData;
+
+        // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
+        // 1) get the rowData manually for the next row
+        // 2) put it into request-scope
+        // 3) invoke the groupBy ValueExpression
+        if (table.isLazy()) {
+            Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+            if (nextRowData == null) {
+                return false;
+            }
+
+            nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> {
+                return groupByVE.getValue(elContext);
+            });
         }
+        else {
+            table.setRowIndex(nextRowIndex);
+            if (!table.isRowAvailable()) {
+                return false;
+            }
 
-        Object nextGroupByData = groupByVE.getValue(eLContext);
+            nextGroupByData = groupByVE.getValue(elContext);
+        }
 
         return Objects.equals(nextGroupByData, currentGroupByData);
     }
 
     protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<String> options = getSortableHeadersText(context, table);
+        Map<SortMeta, String> headers = getSortableColumnHeaders(context, table);
 
-        if (!options.isEmpty()) {
+        if (!headers.isEmpty()) {
             String reflowId = table.getContainerClientId(context) + "_reflowDD";
 
             writer.startElement("label", null);
@@ -1688,15 +1704,17 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-reflow-dropdown ui-state-default", null);
             writer.writeAttribute("autocomplete", "off", null);
 
-            for (int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
-                for (int order = 0; order < 2; order++) {
-                    String orderVal = (order == 0)
+            for (Map.Entry<SortMeta, String> header : headers.entrySet()) {
+                for (int sortOrder = 0; sortOrder < 2; sortOrder++) {
+                    String sortOrderLabel = (sortOrder == 0)
                                       ? MessageFactory.getMessage(DataTable.SORT_ASC)
                                       : MessageFactory.getMessage(DataTable.SORT_DESC);
 
                     writer.startElement("option", null);
-                    writer.writeAttribute("value", headerIndex + "_" + order, null);
-                    writer.writeText(options.get(headerIndex) + " " + orderVal, null);
+                    writer.writeAttribute("value", header.getKey().getColumnKey() + "_" + sortOrder, null);
+                    writer.writeAttribute("data-columnkey", header.getKey().getColumnKey(), null);
+                    writer.writeAttribute("data-sortorder", sortOrder, null);
+                    writer.writeText(header.getValue() + " " + sortOrderLabel, null);
                     writer.endElement("option");
                 }
             }
@@ -1705,18 +1723,24 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected List<String> getSortableHeadersText(FacesContext context, DataTable table) {
-        return table.getSortByAsMap().values().stream()
-                .filter(s -> !s.isHeaderRow())
-                .map(sortMeta -> {
-                    AtomicReference<String> headerLabel = new AtomicReference<>(null);
-                    table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
-                        headerLabel.set(getHeaderLabel(context, column));
-                    });
-                    return headerLabel.get();
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+    protected Map<SortMeta, String> getSortableColumnHeaders(FacesContext context, DataTable table) {
+        AtomicReference<String> headerLabel = new AtomicReference<>(null);
+
+        Map<String, SortMeta> sortByAsMap = table.getSortByAsMap();
+        Map<SortMeta, String> headers = new LinkedHashMap<>(sortByAsMap.size());
+        for (SortMeta sortMeta : sortByAsMap.values()) {
+            if (sortMeta.isHeaderRow()) {
+                continue;
+            }
+
+            headerLabel.set(null);
+            table.invokeOnColumn(sortMeta.getColumnKey(), (column) -> {
+                headerLabel.set(getHeaderLabel(context, column));
+            });
+            headers.put(sortMeta, headerLabel.get());
+        }
+
+        return headers;
     }
 
     protected boolean hasColumnDefaultRendering(DataTable table, UIColumn column) {

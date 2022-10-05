@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -85,14 +85,6 @@ public class BarChartRenderer extends ChartRenderer {
 
         if (barOptions.getMaxBarThickness() != null) {
             writer.write(",\"maxBarThickness\":" + barOptions.getMaxBarThickness());
-        }
-
-        if (barOptions.isOffsetGridLines()) {
-            writer.write(",\"gridLines\":{");
-
-            writer.write("\"offsetGridLines\":" + barOptions.isOffsetGridLines());
-
-            writer.write("}");
         }
 
         encodeScales(context, type, barOptions.getScales(), true);

@@ -23,4 +23,4 @@ AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.
 | type | null | String | Exception type to handle. |
 
 ## Getting Started with AjaxExceptionHandler
-Find the detailed information about this component at ExceptionHandler section at Utilities chapter.
+Find the detailed information about this component at [ExceptionHandler](core/errorhandling.md) section.

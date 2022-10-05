@@ -336,14 +336,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
         tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
 
-        var rowHeader = thead.children('tr'),
+        var rowSelector = 'tr:not(.ui-expanded-row-content)';
+        var rowHeader = thead.children(rowSelector),
         columnHeader = rowHeader.find('th:nth-child(' + index + ')');
 
         chkbox.attr('aria-checked', true);
         columnHeader.removeClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).removeClass('ui-helper-hidden');
-        tbody.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
-        tfoot.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
+        tbody.children(rowSelector).find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
+        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
 
         if(this.hasFrozenColumn) {
             var headers = rowHeader.children('th');
@@ -379,14 +380,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
         tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
 
-        var rowHeader = thead.children('tr'),
+        var rowSelector = 'tr:not(.ui-expanded-row-content)';
+        var rowHeader = thead.children(rowSelector),
         columnHeader = rowHeader.find('th:nth-child(' + index + ')');
 
         chkbox.attr('aria-checked', false);
         columnHeader.addClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).addClass('ui-helper-hidden');
-        tbody.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
-        tfoot.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        tbody.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
 
         if(this.hasFrozenColumn) {
             var headers = rowHeader.children('th');

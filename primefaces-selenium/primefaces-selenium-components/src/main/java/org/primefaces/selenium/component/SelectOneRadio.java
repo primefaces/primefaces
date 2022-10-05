@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -169,5 +169,14 @@ public abstract class SelectOneRadio extends AbstractComponent {
      */
     public void enableOption(int index) {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable(" + index + ");");
+    }
+
+    /**
+     * Is this component readonly?
+     *
+     * @return true if readonly
+     */
+    public boolean isReadOnly() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".cfg.readonly");
     }
 }

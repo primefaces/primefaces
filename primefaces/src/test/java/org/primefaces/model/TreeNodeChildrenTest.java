@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,4 +59,185 @@ public class TreeNodeChildrenTest {
         assertEquals(root, values.get(1).getParent());
     }
 
+    @Test
+    public void moveNodeSameListDown() {
+        // Arrange
+        TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
+        TreeNode<String> node1 = new DefaultTreeNode<>("Node 1", root);
+        TreeNode<String> node2 = new DefaultTreeNode<>("Node 2", root);
+        TreeNode<String> node3 = new DefaultTreeNode<>("Node 3", root);
+        TreeNode<String> node4 = new DefaultTreeNode<>("Node 4", root);
+        TreeNode<String> node5 = new DefaultTreeNode<>("Node 5", root);
+
+        // Pre-assert
+        assertEquals(node1, root.getChildren().get(0));
+        assertEquals(root, node1.getParent());
+        assertEquals(node2, root.getChildren().get(1));
+        assertEquals(root, node2.getParent());
+        assertEquals(node3, root.getChildren().get(2));
+        assertEquals(root, node3.getParent());
+        assertEquals(node4, root.getChildren().get(3));
+        assertEquals(root, node4.getParent());
+        assertEquals(node5, root.getChildren().get(4));
+        assertEquals(root, node5.getParent());
+
+        // Act (simulate Drag&Drop)
+        root.getChildren().add(2, root.getChildren().get(0));
+
+        // Assert
+        assertEquals(node2, root.getChildren().get(0));
+        assertEquals(root, node2.getParent());
+        assertEquals(node1, root.getChildren().get(1));
+        assertEquals(root, node1.getParent());
+        assertEquals(node3, root.getChildren().get(2));
+        assertEquals(root, node3.getParent());
+        assertEquals(node4, root.getChildren().get(3));
+        assertEquals(root, node4.getParent());
+        assertEquals(node5, root.getChildren().get(4));
+        assertEquals(root, node5.getParent());
+    }
+
+    @Test
+    public void moveNodeSameListUp() {
+        // Arrange
+        TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
+        TreeNode<String> node1 = new DefaultTreeNode<>("Node 1", root);
+        TreeNode<String> node2 = new DefaultTreeNode<>("Node 2", root);
+        TreeNode<String> node3 = new DefaultTreeNode<>("Node 3", root);
+        TreeNode<String> node4 = new DefaultTreeNode<>("Node 4", root);
+        TreeNode<String> node5 = new DefaultTreeNode<>("Node 5", root);
+
+        // Pre-assert
+        assertEquals(node1, root.getChildren().get(0));
+        assertEquals(root, node1.getParent());
+        assertEquals(node2, root.getChildren().get(1));
+        assertEquals(root, node2.getParent());
+        assertEquals(node3, root.getChildren().get(2));
+        assertEquals(root, node3.getParent());
+        assertEquals(node4, root.getChildren().get(3));
+        assertEquals(root, node4.getParent());
+        assertEquals(node5, root.getChildren().get(4));
+        assertEquals(root, node5.getParent());
+
+        // Act (simulate Drag&Drop)
+        root.getChildren().add(2, root.getChildren().get(3));
+
+        // Assert
+        assertEquals(node1, root.getChildren().get(0));
+        assertEquals(root, node1.getParent());
+        assertEquals(node2, root.getChildren().get(1));
+        assertEquals(root, node2.getParent());
+        assertEquals(node4, root.getChildren().get(2));
+        assertEquals(root, node4.getParent());
+        assertEquals(node3, root.getChildren().get(3));
+        assertEquals(root, node3.getParent());
+        assertEquals(node5, root.getChildren().get(4));
+        assertEquals(root, node5.getParent());
+    }
+
+    @Test
+    public void moveNodeToChild() {
+        // Arrange
+        TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
+        TreeNode<String> node1 = new DefaultTreeNode<>("Node 1", root);
+        TreeNode<String> node2 = new DefaultTreeNode<>("Node 2", root);
+        TreeNode<String> node3 = new DefaultTreeNode<>("Node 3", root);
+        TreeNode<String> node31 = new DefaultTreeNode<>("Node 3.1", node3);
+        TreeNode<String> node32 = new DefaultTreeNode<>("Node 3.2", node3);
+        TreeNode<String> node33 = new DefaultTreeNode<>("Node 3.3", node3);
+        TreeNode<String> node4 = new DefaultTreeNode<>("Node 4", root);
+        TreeNode<String> node5 = new DefaultTreeNode<>("Node 5", root);
+
+        // Pre-assert
+        assertEquals(node1, root.getChildren().get(0));
+        assertEquals(root, node1.getParent());
+        assertEquals(node2, root.getChildren().get(1));
+        assertEquals(root, node2.getParent());
+        assertEquals(node3, root.getChildren().get(2));
+        assertEquals(root, node3.getParent());
+        assertEquals(node31, root.getChildren().get(2).getChildren().get(0));
+        assertEquals(node3, node31.getParent());
+        assertEquals(node32, root.getChildren().get(2).getChildren().get(1));
+        assertEquals(node3, node32.getParent());
+        assertEquals(node33, root.getChildren().get(2).getChildren().get(2));
+        assertEquals(node3, node33.getParent());
+        assertEquals(node4, root.getChildren().get(3));
+        assertEquals(root, node4.getParent());
+        assertEquals(node5, root.getChildren().get(4));
+        assertEquals(root, node5.getParent());
+
+        // Act (simulate Drag&Drop)
+        root.getChildren().get(2).getChildren().add(1, root.getChildren().get(3));
+
+        // Assert
+        assertEquals(node1, root.getChildren().get(0));
+        assertEquals(root, node1.getParent());
+        assertEquals(node2, root.getChildren().get(1));
+        assertEquals(root, node2.getParent());
+        assertEquals(node3, root.getChildren().get(2));
+        assertEquals(root, node3.getParent());
+        assertEquals(node31, root.getChildren().get(2).getChildren().get(0));
+        assertEquals(node3, node31.getParent());
+        assertEquals(node4, root.getChildren().get(2).getChildren().get(1));
+        assertEquals(node3, node4.getParent());
+        assertEquals(node32, root.getChildren().get(2).getChildren().get(2));
+        assertEquals(node3, node32.getParent());
+        assertEquals(node33, root.getChildren().get(2).getChildren().get(3));
+        assertEquals(node3, node33.getParent());
+        assertEquals(node5, root.getChildren().get(3));
+        assertEquals(root, node5.getParent());
+    }
+
+    @Test
+    public void moveNodeToParent() {
+        // Arrange
+        TreeNode<String> root = new DefaultTreeNode<>("Node R", null);
+        TreeNode<String> node1 = new DefaultTreeNode<>("Node 1", root);
+        TreeNode<String> node2 = new DefaultTreeNode<>("Node 2", root);
+        TreeNode<String> node3 = new DefaultTreeNode<>("Node 3", root);
+        TreeNode<String> node31 = new DefaultTreeNode<>("Node 3.1", node3);
+        TreeNode<String> node32 = new DefaultTreeNode<>("Node 3.2", node3);
+        TreeNode<String> node33 = new DefaultTreeNode<>("Node 3.3", node3);
+        TreeNode<String> node4 = new DefaultTreeNode<>("Node 4", root);
+        TreeNode<String> node5 = new DefaultTreeNode<>("Node 5", root);
+
+        // Pre-assert
+        assertEquals(node1, root.getChildren().get(0));
+        assertEquals(root, node1.getParent());
+        assertEquals(node2, root.getChildren().get(1));
+        assertEquals(root, node2.getParent());
+        assertEquals(node3, root.getChildren().get(2));
+        assertEquals(root, node3.getParent());
+        assertEquals(node31, root.getChildren().get(2).getChildren().get(0));
+        assertEquals(node3, node31.getParent());
+        assertEquals(node32, root.getChildren().get(2).getChildren().get(1));
+        assertEquals(node3, node32.getParent());
+        assertEquals(node33, root.getChildren().get(2).getChildren().get(2));
+        assertEquals(node3, node33.getParent());
+        assertEquals(node4, root.getChildren().get(3));
+        assertEquals(root, node4.getParent());
+        assertEquals(node5, root.getChildren().get(4));
+        assertEquals(root, node5.getParent());
+
+        // Act (simulate Drag&Drop)
+        root.getChildren().add(2, root.getChildren().get(2).getChildren().get(1));
+
+        // Assert
+        assertEquals(node1, root.getChildren().get(0));
+        assertEquals(root, node1.getParent());
+        assertEquals(node2, root.getChildren().get(1));
+        assertEquals(root, node2.getParent());
+        assertEquals(node32, root.getChildren().get(2));
+        assertEquals(root, node32.getParent());
+        assertEquals(node3, root.getChildren().get(3));
+        assertEquals(root, node3.getParent());
+        assertEquals(node31, root.getChildren().get(3).getChildren().get(0));
+        assertEquals(node3, node31.getParent());
+        assertEquals(node33, root.getChildren().get(3).getChildren().get(1));
+        assertEquals(node3, node33.getParent());
+        assertEquals(node4, root.getChildren().get(4));
+        assertEquals(root, node4.getParent());
+        assertEquals(node5, root.getChildren().get(5));
+        assertEquals(root, node5.getParent());
+    }
 }

@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -21,8 +21,8 @@
             Available columns are <b>name</b>, <b>country</b>, <b>date</b>, <b>status</b> and <b>activity</b>.
 
             <h:form id="form">
-                <div class="p-mt-3 p-mb-5">
-                    <p:inputText id="template" value="#{dtColumnsView.columnTemplate}" size="50" styleClass="p-mr-2"/>
+                <div class="mt-3 mb-5">
+                    <p:inputText id="template" value="#{dtColumnsView.columnTemplate}" size="50" styleClass="mr-2"/>
                     <p:commandButton update="customers" action="#{dtColumnsView.updateColumns}" value="Update"
                                      process="@parent" icon="pi pi-refresh"
                                      oncomplete="PF('customersTable').clearFilters()"/>

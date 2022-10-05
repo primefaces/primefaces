@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -213,7 +213,7 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Act
         PrimeSelenium.setHiddenInput(rating.getInput(), "-1");
-        Assertions.assertEquals("-1", rating.getInput().getAttribute("value"));
+        Assertions.assertEquals("0", rating.getInput().getAttribute("value"));
         page.submit.click();
 
         // Assert
@@ -223,7 +223,7 @@ public class Rating001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(10)
-    @DisplayName("Rating: Submit value above maximum should return original value")
+    @DisplayName("Rating: Submit value above maximum should return max value")
     public void testMaximumServerSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
@@ -231,17 +231,17 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Act
         PrimeSelenium.setHiddenInput(rating.getInput(), "14");
-        Assertions.assertEquals("14", rating.getInput().getAttribute("value"));
+        Assertions.assertEquals("8", rating.getInput().getAttribute("value"));
         page.submit.click();
 
         // Assert
-        Assertions.assertEquals(2L, rating.getValue());
+        Assertions.assertEquals(8L, rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(11)
-    @DisplayName("Rating: set value to a string should trigger error.xhtml")
+    @DisplayName("Rating: set value to a string should default range to exact middle of min and max")
     public void testInvalidNumberServerSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
@@ -249,11 +249,11 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Act
         PrimeSelenium.setHiddenInput(rating.getInput(), "def");
-        Assertions.assertEquals("def", rating.getInput().getAttribute("value"));
         page.submit.click();
 
         // Assert
-        Assertions.assertEquals("Error", page.getWebDriver().getTitle());
+        // 4 is the exact middle between min=0 max=8 which is range default
+        Assertions.assertEquals(4L, rating.getValue());
     }
 
     private JSONObject assertConfiguration(JSONObject cfg) {

@@ -331,10 +331,6 @@ if (!PrimeFaces.widget) {
                     PrimeFaces.detachedWidgets.push($this.widgetVar);
                 });
             }
-
-            if (this.cfg.postConstruct) {
-                this.cfg.postConstruct.call(this, this);
-            }
         },
 
         /**
@@ -367,11 +363,6 @@ if (!PrimeFaces.widget) {
             this.refreshListeners = [];
 
             var returnValue = this.init(cfg);
-
-            if (this.cfg.postRefresh) {
-                this.cfg.postRefresh.call(this, this);
-            }
-
             return returnValue;
         },
 

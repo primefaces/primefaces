@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -406,7 +406,7 @@ public class TreeTable extends TreeTableBase {
         resetDynamicColumns();
 
         // reset value when filtering is enabled
-        // filtering stores the filtered values the value property, so it needs to be resetted; see #7336
+        // filtering stores the filtered values the value property, so it needs to be reset; see #7336
         if (isFilteringEnabled()) {
             setValue(null);
         }

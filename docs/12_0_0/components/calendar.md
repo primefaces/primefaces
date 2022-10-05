@@ -127,13 +127,14 @@ ajax selection and more.
 | timeOnly | false | Boolean | Shows only timepicker without date.
 | timeZone | null | Time Zone | String or a java.time.ZoneId instance or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to ZoneId.systemDefault(). (This attribute is only relevant for java.util.Date in combination with the built-in converter.)
 | title | null | String | Advisory tooltip information.
-| touchable | false | Boolean | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | type | text | String | Input field type. Default is text.
 | validator | null | Method Expr | A method expression that refers to a method validating the input
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | valueChangeListener | null | Method Expr | A method expression that refers to a method for handling a valuchangeevent
 | widgetVar | null | String | Name of the client side widget.
 | yearRange | null | String | Year range for the navigator, default "c-10:c+10"
+| shortYearCutoff | +10 | String | The cutoff year for determining the century for a date. Any dates entered with a year value less than or equal to the cutoff year are considered to be in the current century, while those greater than it are deemed to be in the previous century.
 
 ## Getting Started with Calendar
 Value of the calendar should be a java.time.LocalDate.

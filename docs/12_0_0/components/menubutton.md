@@ -28,7 +28,7 @@ MenuButton displays different commands in a popup menu.
 | widgetVar | null | String | Name of the client side widget
 | model | null | MenuModel | MenuModel instance to create menus programmatically
 | disabled | false | Boolean | Disables or enables the button.
-| disableOnAjax | false | Boolean | If true, the button will be disabled during Ajax requests triggered by its menu items.
+| disableOnAjax | true | Boolean | If true, the button will be disabled during Ajax requests triggered by its menu items.
 | icon | null | String | Icon of the menu button.
 | iconPos | left | String | Position of the icon, valid values are left and right.
 | title | null | String | Advisory tooltip information.

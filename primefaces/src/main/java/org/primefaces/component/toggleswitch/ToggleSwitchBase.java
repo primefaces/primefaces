@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,9 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
         styleClass,
         tabindex,
         onfocus,
-        onblur
+        onblur,
+        onIcon,
+        offIcon;
     }
 
     public ToggleSwitchBase() {
@@ -137,6 +139,22 @@ public abstract class ToggleSwitchBase extends UIInput implements Widget, Client
 
     public void setOnblur(String onblur) {
         getStateHelper().put(PropertyKeys.onblur, onblur);
+    }
+
+    public String getOnIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
+    }
+
+    public void setOnIcon(String onIcon) {
+        getStateHelper().put(PropertyKeys.onIcon, onIcon);
+    }
+
+    public String getOffIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
+    }
+
+    public void setOffIcon(String offIcon) {
+        getStateHelper().put(PropertyKeys.offIcon, offIcon);
     }
 
     @Override

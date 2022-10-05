@@ -294,7 +294,8 @@
 }
 
 /** Reflow **/
-.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title {
+.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title,
+.ui-datatable-reflow .ui-expanded-row-content td .ui-column-title {
     display: none;
 }
 

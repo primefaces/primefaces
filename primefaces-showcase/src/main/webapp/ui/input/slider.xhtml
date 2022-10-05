@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -21,19 +21,19 @@
             <h:form>
                 <p:growl id="growl" showDetail="true"/>
 
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <h:panelGrid columns="1" style="margin-bottom: 10px">
                     <p:inputText id="txt" value="#{sliderView.number1}"/>
                     <p:slider for="txt" range="false"/>
                 </h:panelGrid>
 
-                <h5 class="p-mt-0">Basic Min Range</h5>
+                <h5 class="mt-0">Basic Min Range</h5>
                 <h:panelGrid columns="1" style="margin-bottom: 10px">
                     <p:inputText id="sliderTxtMin" value="#{sliderView.number1}"/>
                     <p:slider for="sliderTxtMin"/>
                 </h:panelGrid>
 
-                <h5 class="p-mt-0">Basic Max Range</h5>
+                <h5 class="mt-0">Basic Max Range</h5>
                 <h:panelGrid columns="1" style="margin-bottom: 10px">
                     <p:inputText id="sliderTxtMax" value="#{sliderView.number1}"/>
                     <p:slider for="sliderTxtMax" range="max"/>

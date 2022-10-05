@@ -35,6 +35,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables input field
 | dropdown | false | Boolean | Enables dropdown mode when set true.
+| dropdownMode | blank | String | Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
 | dropdownAriaLabel | null | String | ARIA Label for the dropdown button.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
@@ -162,8 +163,8 @@ public class Player {
 ```
 ## Limiting the Results
 Number of results shown can be limited, by default there is no limit. When the suggestions exceed
-the number of results, a text defined by _moreText_ is displayed to indicate this case. There is no
-default action when the moreText is clicked, you need to use _moreText_ ajax behavior event to handle
+the number of results, a text defined by `moreText` is displayed to indicate this case. There is no
+default action when the moreText is clicked, you need to use `moreTextSelect` ajax behavior event to handle
 more results.
 
 ``` xhtml

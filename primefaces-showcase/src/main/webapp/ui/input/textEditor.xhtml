@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -19,11 +19,11 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:textEditor widgetVar="editor1" value="#{editorView.text}" height="300"  />
 
                 <h3 class="first">Custom Toolbar</h3>
-                <p:textEditor widgetVar="editor2" value="#{editorView.text2}" height="300" placeholder="Enter your content">
+                <p:textEditor widgetVar="editor2" value="#{editorView.text2}" height="300" placeholder="Enter your content" required="true">
                     <f:facet name="toolbar">
                      <span class="ql-formats">
                         <button class="ql-bold"></button>
@@ -37,6 +37,7 @@
                     </span>
                     </f:facet>
                 </p:textEditor>
+                <p:commandButton value="Save" update="@form" icon="pi pi-check"/>
             </h:form>
         </div>
     </ui:define>

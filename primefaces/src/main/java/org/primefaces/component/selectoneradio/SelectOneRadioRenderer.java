@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SelectOneRadioRenderer extends SelectOneRenderer {
 
@@ -91,7 +87,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneRadio", radio)
                 .attr("custom", custom, false)
-                .attr("unselectable", radio.isUnselectable()).finish();
+                .attr("unselectable", radio.isUnselectable())
+                .attr("readonly", radio.isReadonly(), false)
+                .finish();
     }
 
     protected void encodeResponsiveLayout(FacesContext context, SelectOneRadio radio) throws IOException {
@@ -141,6 +139,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
                 writer.writeAttribute("role", "radio", null);
+                writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("div");
 
@@ -281,6 +280,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
             writer.startElement("td", null);
             writer.writeAttribute("role", "radio", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
         }
@@ -301,6 +301,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
             writer.startElement("tr", null);
             writer.writeAttribute("role", "radio", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
             writer.startElement("td", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
@@ -333,6 +334,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
                 writer.startElement("td", null);
                 writer.writeAttribute("role", "radio", null);
+                writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
                 writer.endElement("td");
                 idx++;

@@ -3,7 +3,7 @@
  *
  * BlockUI is used to block interactivity of JSF components with optional AJAX integration.
  *
- * @prop {JQuery} block The DOM element for the overlay that blocks the UI.
+ * @prop {JQuery} target The DOM element for the overlay that blocks the UI.
  * @prop {JQuery} content The DOM element for the content of the blocker.
  * @prop {JQuery} blocker The DOM element for the content of the blocking overlay.
  *
@@ -17,6 +17,7 @@
  * @prop {string} cfg.block Search expression for block targets.
  * @prop {string} cfg.styleClass Style class of the component.
  * @prop {string} cfg.triggers Search expression of the components to bind.
+ * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  */
 PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
@@ -28,20 +29,22 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.block = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
         this.content = this.jq;
         this.cfg.animate = (this.cfg.animate === false) ? false : true;
         this.cfg.blocked = (this.cfg.blocked === true) ? true : false;
 
         this.render();
 
-        if(this.cfg.triggers) {
+        if (this.cfg.triggers) {
             this.bindTriggers();
         }
 
-        if(this.cfg.blocked) {
+        if (this.cfg.blocked) {
             this.show();
         }
+
+        this.bindResizer();
     },
 
     /**
@@ -50,27 +53,63 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     refresh: function(cfg) {
-        this.blocker.remove();
-        this.block.children('.ui-blockui-content').remove();
-        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
-
+        this._cleanup();
         this._super(cfg);
     },
 
     /**
-     * Sets up the global event listeners on the document.
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this._super();
+        this._cleanup();
+    },
+
+    /**
+     * Clean up this widget and remove elements from DOM.
      * @private
      */
+    _cleanup: function() {
+        this.content.remove();
+        this.blocker.remove();
+        this.jq.remove();
+        this.target.attr('aria-busy', false);
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+    },
+
+    /**
+     * Sets up the global resize listener on the document.
+     * @private
+     */
+    bindResizer: function() {
+        var $this = this;
+        this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_resize', this.target, function() {
+            $this.alignOverlay();
+        });
+
+        // subscribe to all DOM update events so we can resize even if another DOM element changed
+        $(document).on('pfAjaxUpdated', function(e, xhr, settings) {
+            if (!$this.cfg.blocked) {
+                $this.alignOverlay();
+            }
+        });
+    },
+
+    /**
+      * Sets up the global event listeners on the document.
+      * @private
+      */
     bindTriggers: function() {
         var $this = this;
 
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if(!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
+            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
                 $this.show();
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if(!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
+            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
                 $this.hide();
             }
         });
@@ -81,8 +120,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      *
      * @param {JQuery.AjaxSettings} settings containing source ID.
      * @returns {boolean} `true` if if one of component's triggers equals the source ID from the provided settings.
+     * @private
      */
-    isXhrSourceATrigger: function (settings) {
+    isXhrSourceATrigger: function(settings) {
         var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
         if (!sourceId) {
             return false;
@@ -101,34 +141,25 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * milliseconds, respectively.
      */
     show: function(duration) {
-        this.blocker.css('z-index', PrimeFaces.nextZindex());
-
-        //center position of content
-        for(var i = 0; i < this.block.length; i++) {
-            var blocker = $(this.blocker[i]),
-                content = $(this.content[i]);
-
-            content.css({
-                'left': ((blocker.width() - content.outerWidth()) / 2) + 'px',
-                'top': ((blocker.height() - content.outerHeight()) / 2)+ 'px',
-                'z-index': PrimeFaces.nextZindex()
-            });
+        if (this.isBlocking()) {
+            return;
         }
+        this.alignOverlay();
 
         var animated = this.cfg.animate;
-        if(animated)
+        if (animated)
             this.blocker.fadeIn(duration);
         else
             this.blocker.show(duration);
 
-        if(this.hasContent()) {
-            if(animated)
+        if (this.hasContent()) {
+            if (animated)
                 this.content.fadeIn(duration);
             else
                 this.content.show(duration);
         }
 
-        this.block.attr('aria-busy', true);
+        this.target.attr('aria-busy', true);
     },
 
     /**
@@ -139,21 +170,36 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * respectively.
      */
     hide: function(duration) {
+        if (!this.isBlocking()) {
+            return;
+        }
+        var $this = this;
         var animated = this.cfg.animate;
+        var hasContent = this.hasContent();
+        var callback = function() {
+            if (!hasContent) {
+                resetPositionCallback();
+            }
+        };
+        var resetPositionCallback = function() {
+            for (var i = 0; i < $this.target.length; i++) {
+                $($this.target[i]).css('position', '');
+            }
+        };
 
-        if(animated)
-            this.blocker.fadeOut(duration);
+        if (animated)
+            this.blocker.fadeOut(duration, callback);
         else
-            this.blocker.hide(duration);
+            this.blocker.hide(duration, callback);
 
-        if(this.hasContent()) {
-            if(animated)
-                this.content.fadeOut(duration);
+        if (hasContent) {
+            if (animated)
+                this.content.fadeOut(duration, resetPositionCallback);
             else
-                this.content.hide(duration);
+                this.content.hide(duration, resetPositionCallback);
         }
 
-        this.block.attr('aria-busy', false);
+        this.target.attr('aria-busy', false);
     },
 
     /**
@@ -161,29 +207,91 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     render: function() {
-        this.blocker = $('<div id="' + this.id + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+        var widgetId = this.id,
+            shouldClone = this.hasMultipleTargets() && this.hasContent();
+        // there can be 1 to N targets
+        for (var i = 0; i < this.target.length; i++) {
+            var currentTarget = $(this.target[i]),
+                currentTargetId = currentTarget.attr('id') || this.id,
+                currentContent = this.jq;
 
-        if(this.cfg.styleClass) {
-            this.blocker.addClass(this.cfg.styleClass);
+            // create a specific blocker for this target
+            var currentBlocker = $('<div id="' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+
+            // style the blocker
+            if (this.cfg.styleClass) {
+                currentBlocker.addClass(this.cfg.styleClass);
+            }
+            if (currentTarget.hasClass('ui-corner-all')) {
+                currentBlocker.addClass('ui-corner-all');
+            }
+
+            // when more than 1 target need to clone the content for each target
+            if (shouldClone) {
+                currentContent = currentContent.clone();
+                currentContent.attr('id', currentTargetId + '_blockcontent');
+            }
+
+            // assign data ids to this widget
+            currentBlocker.attr('data-bui-overlay', widgetId);
+            currentContent.attr('data-bui-content', widgetId);
+
+
+            // ARIA 
+            currentTarget.attr('aria-busy', this.cfg.blocked);
+
+            // append the blocker to the document 
+            $(document.body).append(currentBlocker);
+            currentBlocker.append(currentContent);
         }
 
-        if(this.block.hasClass('ui-corner-all')) {
-            this.blocker.addClass('ui-corner-all');
+        // assign all matching blockers to widget
+        this.blocker = $('[data-bui-overlay~="' + widgetId + '"]');
+        this.content = $('[data-bui-content~="' + widgetId + '"]');
+
+        // set the size and position to match the target
+        this.alignOverlay();
+    },
+
+    /**
+    * Align the overlay so it covers its target component.
+    * @private
+    */
+    alignOverlay: function() {
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
+        if (this.blocker) {
+            this.blocker.css('z-index', PrimeFaces.nextZindex());
         }
 
-        if(this.block.length > 1) {
-            this.content = this.content.clone();
-        }
+        //center position of content
+        for (var i = 0; i < this.target.length; i++) {
+            var currentTarget = $(this.target[i]),
+                blocker = $(this.blocker[i]),
+                content = $(this.content[i]);
 
-        var position = this.block.css("position");
-        if (position !== "fixed" && position  !== "absolute") {
-            this.block.css('position', 'relative');
-        }
-        this.block.attr('aria-busy', this.cfg.blocked).append(this.blocker).append(this.content);
+            // configure the target positioning
+            var position = currentTarget.css("position");
+            if (position !== "fixed" && position !== "absolute") {
+                currentTarget.css('position', 'relative');
+            }
 
-        if(this.block.length > 1) {
-            this.blocker = $(PrimeFaces.escapeClientId(this.id + '_blocker'));
-            this.content = this.block.children('.ui-blockui-content');
+            // set the size and position to match the target
+            var height = currentTarget.height(),
+                width = currentTarget.width(),
+                offset = currentTarget.offset();
+            var sizeAndPosition = {
+                'height': height + 'px',
+                'width': width + 'px',
+                'left': offset.left + 'px',
+                'top': offset.top + 'px'
+            };
+            blocker.css(sizeAndPosition);
+
+            content.css({
+                'left': ((blocker.width() - content.outerWidth()) / 2) + 'px',
+                'top': ((blocker.height() - content.outerHeight()) / 2) + 'px',
+                'z-index': PrimeFaces.nextZindex()
+            });
         }
     },
 
@@ -194,6 +302,23 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      */
     hasContent: function() {
         return this.content.contents().length > 0;
+    },
+
+    /**
+     * Checks whether this blocker has more than 1 target.
+     * @private
+     * @return {boolean} `true` if this blocker has more than 1 target, `false` otherwise.
+     */
+    hasMultipleTargets: function() {
+        return this.target.length > 1;
+    },
+
+    /**
+     * Checks whether this blockUI is currently blocking.
+     * @return {boolean} `true` if this blockUI is blocking, or `false` otherwise.
+     */
+    isBlocking: function() {
+        return this.blocker.is(':visible');
     }
 
 });

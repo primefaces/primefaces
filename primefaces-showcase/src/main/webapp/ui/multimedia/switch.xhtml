@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -21,9 +21,9 @@
         <div class="card">
             <h5 style="margin-top:0">Manual</h5>
             <p:commandButton type="button" onclick="PF('switcher').previous()"
-                             icon="pi pi-chevron-left" id="prev" styleClass="p-mr-2 p-mb-3" />
+                             icon="pi pi-chevron-left" id="prev" styleClass="mr-2 mb-3" />
             <p:commandButton type="button" onclick="PF('switcher').next()"
-                             icon="pi pi-chevron-right" id="next" styleClass="p-mr-2 p-mb-3" />
+                             icon="pi pi-chevron-right" id="next" styleClass="mr-2 mb-3" />
 
             <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
                            slideshowAuto="false">

@@ -35,6 +35,7 @@
  * @prop {JQuery} [itemsContainer] The DOM element for the container with the available selectable options.
  * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable options.
  * @prop {JQuery} focusInput The hidden input that can be focused via the tab key etc.
+ * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
  * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
  * @prop {JQuery} menuIcon The DOM element for the icon for bringing up the overlay panel.
  * @prop {JQuery} options The DOM elements for the available selectable options.
@@ -97,6 +98,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
+        this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.jq);
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.find('option');
         this.cfg.effect = this.cfg.effect||'fade';
@@ -135,6 +137,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
 
+        // float label
+        this.bindFloatLabel();
+
         // see #7602
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.focusInput.attr('readonly', true);
@@ -157,9 +162,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         highlightedItem = this.items.eq(this.options.index(selectedOption));
 
         //disable options
-        this.options.filter(':disabled').each(function() {
-            $this.items.eq($(this).index()).addClass('ui-state-disabled');
-        });
+        $this.items.filter('[disabled]').addClass('ui-state-disabled');
 
         //activate selected
         if(this.cfg.editable) {
@@ -184,14 +187,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.syncTitle(selectedOption);
         }
 
-        //for Screen Readers
+        // ARIA
         for(var i = 0; i < this.items.length; i++) {
             this.items.eq(i).attr('id', this.id + '_' + i);
         }
 
-        var highlightedItemId = highlightedItem.attr('id');
-        this.jq.attr('aria-owns', this.itemsContainer.attr('id'));
+        var highlightedItemId = highlightedItem.attr('id'),
+            itemsContainerId = this.itemsContainer.attr('id');
+        this.jq.attr('aria-owns', itemsContainerId);
         this.focusInput.attr('aria-autocomplete', 'list')
+            .attr('aria-owns', itemsContainerId)
             .attr('aria-activedescendant', highlightedItemId)
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
@@ -245,6 +250,15 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Handles floating label CSS if wrapped in a floating label.
+     * @private
+     * @param {JQuery | undefined} input the input
+     */
+    updateFloatLabel: function(input) {
+        PrimeFaces.utils.updateFloatLabel(this.jq, input, this.hasFloatLabel);
+    },
+
+    /**
      * Sets up all event listeners required by this widget.
      * @private
      */
@@ -294,11 +308,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             if(!$this.cfg.dynamic && !$this.items) {
                 $this.callHandleMethod($this.handleTabKey(), e);
             }
+            if ($this.hasFloatLabel) {
+                $this.jq.addClass('ui-inputwrapper-focus');
+            }
         })
         .on('blur.ui-selectonemenu', function(){
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
-
+            if ($this.hasFloatLabel) {
+                $this.jq.removeClass('ui-inputwrapper-focus');
+            }
             $this.callBehavior('blur');
         });
 
@@ -321,6 +340,36 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.skinInput(this.filterInput);
 
             this.bindFilterEvents();
+        }
+    },
+    
+    /**
+     * Sets up the event listeners if this is bound to a floating label.
+     * @private
+     */
+    bindFloatLabel: function() {
+        if (!this.hasFloatLabel) {
+            return;
+        }
+        var $this = this;
+        this.panel.addClass('ui-input-overlay-panel');
+        this.jq.addClass('ui-inputwrapper');
+
+        this.updateFloatLabel(this.input);
+
+        this.input.off('change').on('change', function() {
+            $this.updateFloatLabel($(this));
+        });
+
+        if (this.cfg.editable) {
+            this.label.on('input', function(e) {
+                $this.updateFloatLabel($(this));
+            }).on('focus', function() {
+                $this.jq.addClass('ui-inputwrapper-focus');
+            }).on('blur', function() {
+                $this.jq.removeClass('ui-inputwrapper-focus');
+                $this.updateFloatLabel($(this));
+            });
         }
     },
 
@@ -1246,10 +1295,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     hide.push(item);
                 }
                 else {
-                    if(this.filterMatcher(itemLabel, filterValue))
+                    if(this.filterMatcher(itemLabel, filterValue)) {
                         show.push(item);
-                    else
+                    }
+                    else if(!item.is('.ui-selectonemenu-item-group-children')){
                         hide.push(item);
+                    }
+                    else {
+                        itemLabel = this.cfg.caseSensitive ? option.parent().attr('label') : option.parent().attr('label').toLowerCase();
+                        if (this.filterMatcher(itemLabel, filterValue)) {
+                            show.push(item);
+                        }
+                        else {
+                            hide.push(item);
+                        }
+                    }
                 }
             }
 
@@ -1264,13 +1324,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 var group = groups.eq(g);
 
                 if(g === (groups.length - 1)) {
-                    if(group.nextAll().filter(':visible').length === 0)
+                    if(group.nextAll().filter('.ui-selectonemenu-item-group-children:visible').length === 0)
                         hide.push(group);
                     else
                         show.push(group);
                 }
                 else {
-                    if(group.nextUntil('.ui-selectonemenu-item-group').filter(':visible').length === 0)
+                    if(group.nextUntil('.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0)
                         hide.push(group);
                     else
                         show.push(group);
@@ -1284,6 +1344,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var firstVisibleItem = this.items.filter(':visible:not(.ui-state-disabled):first');
         if(firstVisibleItem.length) {
             this.highlightItem(firstVisibleItem);
+            PrimeFaces.scrollInView(this.itemsWrapper, firstVisibleItem);
         }
 
         if(this.itemsContainer.height() < this.cfg.initialHeight) {
@@ -1491,7 +1552,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        var dataLabel = label.replace(/(<([^>]+)>)/gi, "").replaceAll('"', '&quot;');
+        var dataLabel = PrimeFaces.escapeHTML(label.replace(/(<([^>]+)>)/gi, ""));
         if ($item.data("noselection-option")) {
             cssClass += " ui-noselection-option";
         }

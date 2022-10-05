@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .ui-splitbutton {
                 margin-right: .5rem;
             }
@@ -29,7 +29,7 @@
             <h:form>
                 <p:growl id="messages"/>
 
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <p:splitButton value="Save" action="#{buttonView.save}" update="messages" icon="pi pi-save">
                     <p:menuitem value="Update" action="#{buttonView.update}" update="messages" icon="pi pi-refresh"/>
                     <p:menuitem value="Delete" action="#{buttonView.delete}" ajax="false" icon="pi pi-times"/>
@@ -98,9 +98,15 @@
                     <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
                 </p:splitButton>
 
-                <h5>Disable on Ajax</h5>
-                <p:splitButton value="Save" disableOnAjax="true" action="#{buttonView.sleepAndSave}"
+                <h5>Ajax Disabling and Status Icon</h5>
+                <p:splitButton value="Save" action="#{buttonView.sleepAndSave}"
                                update="messages" icon="pi pi-save">
+                    <p:menuitem value="Update" action="#{buttonView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{buttonView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
+                </p:splitButton>
+
+                <p:splitButton value="No Icon" action="#{buttonView.sleepAndSave}"
+                               update="messages">
                     <p:menuitem value="Update" action="#{buttonView.sleepAndUpdate}" update="messages" icon="pi pi-refresh"/>
                     <p:menuitem value="Delete" action="#{buttonView.sleepAndDelete}" update="messages" icon="pi pi-times"/>
                 </p:splitButton>

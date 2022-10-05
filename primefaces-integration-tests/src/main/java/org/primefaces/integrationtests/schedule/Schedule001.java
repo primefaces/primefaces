@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,9 +32,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
+import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
@@ -60,7 +60,7 @@ public class Schedule001 implements Serializable {
     public void init() {
         eventModel = new DefaultScheduleModel();
 
-        DefaultScheduleEvent event = DefaultScheduleEvent.builder()
+        DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
                     .title("Champions League Match")
                     .startDate(previousDay8Pm())
                     .endDate(previousDay11Pm())
@@ -98,7 +98,7 @@ public class Schedule001 implements Serializable {
                     .build();
         eventModel.addEvent(event);
 
-        DefaultScheduleEvent scheduleEventAllDay = DefaultScheduleEvent.builder()
+        DefaultScheduleEvent<?> scheduleEventAllDay = DefaultScheduleEvent.builder()
                     .title("Holidays (AllDay)")
                     .startDate(sevenDaysLater0am())
                     .endDate(eightDaysLater0am())
@@ -109,47 +109,55 @@ public class Schedule001 implements Serializable {
         eventModel.addEvent(scheduleEventAllDay);
     }
 
+    private LocalDateTime now() {
+        LocalDateTime now =  LocalDateTime.now();
+        if (now.getDayOfMonth() > 1) {
+            return now;
+        }
+        return LocalDateTime.now().plusDays(1);
+    }
+
     private LocalDateTime previousDay8Pm() {
-        return LocalDateTime.now().minusDays(1).withHour(20).withMinute(0).withSecond(0).withNano(0);
+        return now().minusDays(1).withHour(20).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime previousDay11Pm() {
-        return LocalDateTime.now().minusDays(1).withHour(23).withMinute(0).withSecond(0).withNano(0);
+        return now().minusDays(1).withHour(23).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime today1Pm() {
-        return LocalDateTime.now().withHour(13).withMinute(0).withSecond(0).withNano(0);
+        return now().withHour(13).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime theDayAfter3Pm() {
-        return LocalDateTime.now().plusDays(1).withHour(15).withMinute(0).withSecond(0).withNano(0);
+        return now().plusDays(1).withHour(15).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime today6Pm() {
-        return LocalDateTime.now().withHour(18).withMinute(0).withSecond(0).withNano(0);
+        return now().withHour(18).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime nextDay9Am() {
-        return LocalDateTime.now().plusDays(1).withHour(9).withMinute(0).withSecond(0).withNano(0);
+        return now().plusDays(1).withHour(9).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime nextDay11Am() {
-        return LocalDateTime.now().plusDays(1).withHour(11).withMinute(0).withSecond(0).withNano(0);
+        return now().plusDays(1).withHour(11).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime fourDaysLater3pm() {
-        return LocalDateTime.now().plusDays(4).withHour(15).withMinute(0).withSecond(0).withNano(0);
+        return now().plusDays(4).withHour(15).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime sevenDaysLater0am() {
-        return LocalDateTime.now().plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return now().plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
     }
 
     private LocalDateTime eightDaysLater0am() {
-        return LocalDateTime.now().plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return now().plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
     }
 
-    public void onEventSelect(SelectEvent<ScheduleEvent> selectEvent) {
+    public void onEventSelect(SelectEvent<ScheduleEvent<LocalDateTime>> selectEvent) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event selected",
                     selectEvent.getObject().getGroupId() + ": " + selectEvent.getObject().getTitle());
         addMessage(message);

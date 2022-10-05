@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,16 @@
  */
 package org.primefaces.integrationtests.overlaypanel;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -94,9 +98,9 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(3)
-    @DisplayName("OverlayPanel: Destroy overlay")
-    public void testDestroy(Page page) {
+    @Order(4)
+    @DisplayName("OverlayPanel: Unrender overlay")
+    public void testUnrender(Page page) {
         // Arrange
         OverlayPanel overlayPanel = page.overlayPanel;
         overlayPanel.show();
@@ -108,11 +112,33 @@ public class OverlayPanel001Test extends AbstractPrimePageTest {
         // Assert
         try {
             overlayPanel.isDisplayed();
-            Assertions.fail("OverlayPanel should have been destroyed.");
+            Assertions.fail("OverlayPanel should have been unrendered.");
         }
         catch (NoSuchElementException ex) {
             // overlay panel should be destroyed
         }
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("OverlayPanel: Destroy widget and make sure DOM elements removed")
+    public void testDestroy(Page page) {
+        // Arrange
+        OverlayPanel overlayPanel = page.overlayPanel;
+        overlayPanel.show();
+        Assertions.assertTrue(overlayPanel.isVisible());
+        Assertions.assertEquals(1, getOverlays().size());
+
+        // Act
+        overlayPanel.destroy();
+
+        // Assert
+        Assertions.assertEquals(0, getOverlays().size());
+        assertNoJavascriptErrors();
+    }
+
+    private List<WebElement> getOverlays() {
+        return getWebDriver().findElements(By.className("ui-overlaypanel"));
     }
 
     private void assertConfiguration(JSONObject cfg) {

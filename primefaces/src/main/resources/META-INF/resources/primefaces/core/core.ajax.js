@@ -260,7 +260,7 @@ if (!PrimeFaces.ajax) {
                     var ajaxUtils = PrimeFaces.ajax.Utils;
 
                     // reset PrimeFaces JS state because the view is completely replaced with a new one
-                    window.PrimeFaces = null;
+                    window.PrimeFaces.resetState();
 
                     ajaxUtils.updateHead(content);
                     ajaxUtils.updateBody(content);
@@ -278,7 +278,13 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
+                    var target = $(PrimeFaces.escapeClientId(id));
+                    if (target.length === 0) {
+                        PrimeFaces.warn("DOM element with id '" + id + "' cant be found; skip update...");
+                    }
+                    else {
+                        target.replaceWith(content);
+                    }
                 }
             }
         },
@@ -886,6 +892,10 @@ if (!PrimeFaces.ajax) {
                             PrimeFaces.error(err);
                         }
 
+                        if(global) {
+                            $(document).trigger('pfAjaxUpdated', [xhr, this]);
+                        }
+
                         PrimeFaces.debug('DOM is updated.');
                     })
                     .always(function(data, status, xhr) {
@@ -1280,15 +1290,13 @@ if (!PrimeFaces.ajax) {
                     var widgetVar = PrimeFaces.detachedWidgets[i];
 
                     var widget = PF(widgetVar);
-                    if (widget) {
-                        if (widget.isDetached() === true) {
-                            PrimeFaces.widgets[widgetVar] = null;
-                            widget.destroy();
+                    if (widget && widget.isDetached() === true) {
+                        widget.destroy();
 
-                            try {
-                                delete widget;
-                            } catch (e) {}
-                        }
+                        try {
+                            delete PrimeFaces.widgets[widgetVar];
+                            delete widget;
+                        } catch (e) { }
                     }
                 }
 

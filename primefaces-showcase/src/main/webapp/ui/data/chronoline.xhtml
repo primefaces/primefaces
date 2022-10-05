@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -100,7 +100,7 @@
                         #{event.date}
                     </f:facet>
 
-                    <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="p-shadow-2"
+                    <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="shadow-1"
                                     value="../../resources/demo/images/product/#{event.image}" alt="#{event.image}"/>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
                         quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
@@ -108,7 +108,7 @@
                 </p:card>
 
                 <f:facet name="marker">
-                    <span class="custom-marker p-shadow-2" style="background-color: #{event.color}"><i class="#{event.icon}"/></span>
+                    <span class="custom-marker shadow-1" style="background-color: #{event.color}"><i class="#{event.icon}"/></span>
                 </f:facet>
             </p:chronoline>
 

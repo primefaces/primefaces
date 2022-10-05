@@ -1,6 +1,4 @@
-/**
- * Polish
- */
+/** Polish */
 PrimeFaces.locales['pl'] = {
   closeText: 'Zamknij',
   prevText: 'Poprzedni',
@@ -24,6 +22,7 @@ PrimeFaces.locales['pl'] = {
   millisecondText: 'Millisekunda',
   currentText: 'Teraz',
   ampm: false,
+  year: 'Rok',
   month: 'Miesiąc',
   week: 'Tydzień',
   day: 'Dzień',
@@ -36,8 +35,9 @@ PrimeFaces.locales['pl'] = {
   aria: {
     'paginator.PAGE': 'Strona {0}',
     'calendar.BUTTON': 'Pokaż kalendarz',
-    'datatable.sort.ASC': 'Kliknij aby posortować kolumny rosnąco',
-    'datatable.sort.DESC': 'Kliknij aby posortować kolumny malejąco',
+    'datatable.sort.ASC': 'Kliknij, aby posortować kolumny rosnąco',
+    'datatable.sort.DESC': 'Kliknij, aby posortować kolumny malejąco',
+    'datatable.sort.NONE': 'Kliknij, aby usunąć sortowanie kolumny',
     'columntoggler.CLOSE': 'Zamknij',
     'overlaypanel.CLOSE': 'Zamknij'
   },

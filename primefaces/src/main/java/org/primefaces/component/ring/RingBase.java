@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,10 @@ package org.primefaces.component.ring;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.Widget;
 
+/**
+ * @deprecated please use Carousel component
+ */
+@Deprecated
 public abstract class RingBase extends UIData implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

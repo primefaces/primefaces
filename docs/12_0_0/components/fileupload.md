@@ -265,7 +265,22 @@ Any return of `false` from the `onupload` callback will not send the files:
 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" onupload="return confirm('Are you sure?')"/>
 ```
 
+#### Validate Files Before Adding
+You can add a client side callback, if you want to use a custom function to approve a file before adding using `onAdd`.
+For example only add a file if its named exactly `primefaces.pdf`.
 
+```javascript
+function onAddFile(file, callback) {
+   if (file.name === "primefaces.pdf") {
+       // this callback adds the file to the list
+       callback.call(this, file);
+   }
+}
+```
+
+```xhtml
+<p:fileUpload listener="#{fileUploadView.handleFileUpload}" onAdd="onAddFile(file, callback);"/>
+```
 
 
 ## Auto Upload
@@ -461,9 +476,11 @@ Widget: _PrimeFaces.widget.SimpleFileUpload_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 show() | - | void | Shows file chooser dialog.
+clear() | - | void | Clears the currently selected file.
 
 Widget: _PrimeFaces.widget.FileUpload_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 show() | - | void | Shows file(s) chooser dialog.
+clear() | - | void | Clears the currently selected file(s).

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,13 @@
  */
 package org.primefaces.integrationtests.slider;
 
-import lombok.Data;
+import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -50,15 +51,4 @@ public class Slider001 implements Serializable {
     public void submit() {
     }
 
-    /*
-    public void itemSelect(SelectEvent<String> event) {
-        FacesMessage msg = new FacesMessage("itemSelect", event.getObject());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void itemUnselect(UnselectEvent<String> event) {
-        FacesMessage msg = new FacesMessage("itemUnselect", event.getObject());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-    */
 }

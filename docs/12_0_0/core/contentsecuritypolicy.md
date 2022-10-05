@@ -19,6 +19,33 @@ CSP is disabled by default and a global parameter is required to turn it on.
     <param-value>true</param-value>
 </context-param>
 ```
+
+In large web applications you might decide to report CSP violations only as a start instead of directly forcing them. 
+Browsers will report CSP violations to a user-defined HTTP endpoint using `report-uri` directive.
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP</param-name>
+    <param-value>reportOnly</param-value>
+</context-param>
+<context-param>
+    <param-name>primefaces.CSP_REPORT_ONLY_POLICY</param-name>
+    <param-value>report-uri /my-csp-reports</param-value>
+</context-param>
+```
+
+When using PrimeFaces in a component (like portlets for instance), the platform hosting the component might need to
+manage the CSP headers and nonce on scripts. For instance in a CMS where different kinds of components can be used
+and all need to have the same nonce. In these cases the option `policyProvided` can be used. This will make
+PrimeFaces CSP compliant, while not setting the CSP Header and add the nonce to JavaScripts.
+
+```xml
+<context-param>
+    <param-name>primefaces.CSP</param-name>
+    <param-value>policyProvided</param-value>
+</context-param>
+```
+
 ## Policy
 There are many ways to configure CSP for different levels of security. Currently, PrimeFaces has chosen to
 support the NONCE (number used once) based checking for script evaluation only. Nonce attributes are automatically
@@ -47,7 +74,7 @@ script-src 'self' 'nonce-XYZ123456'
 
 ## Custom Policy
 We cannot know every Javascript usage on every PrimeFaces website. You may have custom code in your
-application that you need to allow other CSP directives such as `unsafe-inline` or whitelist a website
+application that you need to allow other CSP directives such as `unsafe-inline` or allowlist a website
 such as `https://www.google-analytics.com`.  By using the `primefaces.CSP_POLICY` context parameter you
 can override the default policy. NOTE: If you use anything custom the `script-src` must be the last 
 thing in CSP_POLICY because we add the NONCE on the end of this policy.

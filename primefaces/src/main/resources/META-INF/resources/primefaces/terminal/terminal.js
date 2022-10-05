@@ -162,7 +162,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             // parse the JSON response of the matches
-                            var responseObj = JSON.parse(content);
+                            var responseObj = JSON.parse(PrimeFaces.utils.decodeXml(content));
 
                             if (responseObj == null) {
                                 // if the response is null (no command model), do nothing

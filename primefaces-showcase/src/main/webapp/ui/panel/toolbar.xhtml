@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -22,13 +22,13 @@
 
                 <p:toolbar>
                     <p:toolbarGroup>
-                        <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="p-mr-2" />
+                        <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="mr-2" />
                         <p:commandButton type="button" value="Open" icon="pi pi-folder-open" styleClass="ui-button-success" />
 
-                        <i class="pi pi-bars p-px-2"/>
+                        <i class="pi pi-bars px-2"/>
 
-                        <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="ui-button-help p-mr-2" />
-                        <p:commandButton type="button" title="Print" icon="pi pi-print" styleClass="ui-button-warning p-mr-2"/>
+                        <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="ui-button-help mr-2" />
+                        <p:commandButton type="button" title="Print" icon="pi pi-print" styleClass="ui-button-warning mr-2"/>
                         <p:commandButton type="button" title="Delete" icon="pi pi-trash" styleClass="ui-button-danger"/>
                     </p:toolbarGroup>
 

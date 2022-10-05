@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,11 @@
 package org.primefaces.integrationtests.datepicker;
 
 import java.time.LocalDate;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -38,6 +40,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
 
     @Test
     @DisplayName("DatePicker: minDate and maxDate; See GitHub #7576")
+    @Order(1)
     public void testMinMax(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
@@ -63,6 +66,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
 
     @Test
     @DisplayName("DatePicker: minDate and maxDate; See GitHub #7576")
+    @Order(1)
     public void testMinMaxValueInside(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
@@ -86,6 +90,7 @@ public class DatePicker010Test extends AbstractDatePickerTest {
 
     @Test
     @DisplayName("DatePicker: minDate and maxDate; See GitHub #7576")
+    @Order(1)
     public void testMinMaxValueOutside(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
@@ -107,6 +112,36 @@ public class DatePicker010Test extends AbstractDatePickerTest {
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
+    @Test
+    @DisplayName("DatePicker: maxDate after now default view to max date; See GitHub #8912")
+    @Order(2)
+    public void testViewDateisMaxDate(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datePickerMaxDate;
+
+        // Act
+        datePicker.click(); // focus to bring up panel
+
+        // Assert
+        assertDate(datePicker.showPanel(), "October", "2021");
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @DisplayName("DatePicker: minDate after now default view to min date; See GitHub #8912")
+    @Order(3)
+    public void testViewDateisMinDate(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datePickerMinDate;
+
+        // Act
+        datePicker.click(); // focus to bring up panel
+
+        // Assert
+        assertDate(datePicker.showPanel(), "August", "2034");
+        assertNoJavascriptErrors();
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
@@ -120,6 +155,12 @@ public class DatePicker010Test extends AbstractDatePickerTest {
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:datepicker")
         DatePicker datePicker;
+
+        @FindBy(id = "form:maxdate")
+        DatePicker datePickerMaxDate;
+
+        @FindBy(id = "form:mindate")
+        DatePicker datePickerMinDate;
 
         @Override
         public String getLocation() {

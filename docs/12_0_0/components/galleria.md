@@ -141,6 +141,7 @@ Widget: _PrimeFaces.widget.Galleria_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 | show() | - | void | Shows content on fullscreen mode. |
+| hide() | - | void | Hides content on fullscreen mode. |
 | next() | - | void | Moves to the next content that comes after the currently shown content. |
 | prev() | - | void | Moves to the previous content that comes before the currently shown content. |
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,15 @@
  */
 package org.primefaces.model.chart;
 
-import org.primefaces.util.EscapeUtils;
-
 import java.io.IOException;
 import java.io.Writer;
 
+import org.primefaces.util.EscapeUtils;
+
+/**
+ * @deprecated please use ChartsJS as this will be removed in PF 13.0.0
+ */
+@Deprecated
 public class BarChartSeries extends ChartSeries {
 
     private static final long serialVersionUID = 1L;

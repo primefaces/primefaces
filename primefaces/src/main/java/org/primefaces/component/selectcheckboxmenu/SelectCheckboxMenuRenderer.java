@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -166,13 +167,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("data-escaped", String.valueOf(escaped), null);
         if (selectItemGroupLabel != null) {
             writer.writeAttribute("data-group-label", selectItemGroupLabel, null);
         }
 
+        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
@@ -213,7 +214,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String label = menu.getLabel();
         String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " ui-state-error" : SelectCheckboxMenu.LABEL_CLASS;
         if (label == null) {
-            label = "";
+            label = Constants.EMPTY_STRING;
         }
 
         writer.startElement("span", null);
@@ -233,9 +234,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
         String listClass = createStyleClass(menu, null, SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS);
+        String label = menu.getEmptyLabel() == null ? menu.getLabel() : menu.getEmptyLabel();
 
         writer.startElement("ul", null);
-        writer.writeAttribute("data-label", menu.getLabel(), null);
+        writer.writeAttribute("data-label", label, null);
         writer.writeAttribute("class", listClass, null);
         if (valuesArray != null) {
             int length = Array.getLength(valuesArray);
@@ -364,6 +366,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("readonly", "readonly", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "combobox", null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);

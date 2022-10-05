@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceWrapper;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
 /**
  * {@link ResourceWrapper} which appends the version of PrimeFaces to the URL.
@@ -40,7 +41,11 @@ public class PrimeResource extends ResourceWrapper {
     public PrimeResource(final Resource resource) {
         super();
         wrapped = resource;
-        version = "&v=" + PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().getBuildVersion();
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion()
+                ? null
+                : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
     }
 
     @Override
@@ -50,6 +55,9 @@ public class PrimeResource extends ResourceWrapper {
 
     @Override
     public String getRequestPath() {
+        if (version == null) {
+            return super.getRequestPath();
+        }
         return super.getRequestPath() + version;
     }
 

@@ -13,7 +13,7 @@ PrimeIcons is PrimeTek's web font used in PrimeFaces, PrimeNG, PrimeVue, and Pri
 It comes built into PrimeFaces JAR and they are always added to the view as newer Themes are based on it.
 
 ## FontAwesome
-PrimeFaces supports both FontAwesome 4.x and 5.x, you just need to manually include it via your pom.xml:
+PrimeFaces supports FontAwesome 4.x, 5.x, and 6.x+, you just need to manually include it via your pom.xml:
 
 ```xml
 <dependency>

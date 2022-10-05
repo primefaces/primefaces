@@ -199,7 +199,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             if (!input.is(':checked')) {
                 $this.check(input, checkbox);
                 if(!silent) {
-                    this.input.trigger('change');
+                    input.trigger('change');
                 }
             }
         });
@@ -218,7 +218,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             if (input.is(':checked')) {
                 $this.uncheck(input, checkbox);
                 if(!silent) {
-                    this.input.trigger('change');
+                    input.trigger('change');
                 }
             }
         });

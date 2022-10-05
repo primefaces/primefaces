@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .icon-filter.ui-inputtext {
                 width: 100%;
                 padding: 1rem;
@@ -23,12 +23,17 @@
                 margin-bottom: .5rem;
             }
 
-            .icons-list  .p-md-2 {
+            .icons-list .md:col-2 {
                 padding-bottom: 2rem;
             }
+
+            .icons-list .new {
+                background: #fff;
+            }
+
         </style>
 
-        <script type="text/javascript">
+        <script>
             //<![CDATA[
                 var icons = $('#icons-grid').children();
     
@@ -102,11 +107,12 @@
 
             <p:inputText onkeyup="onFilter(event)" styleClass="icon-filter" placeholder="Search an icon" />
 
-            <div id="icons-grid" class="p-grid icons-list">
+            <div id="icons-grid" class="grid icons-list">
                 <ui:repeat value="#{primeIconsView.icons}" var="icon">
-                    <div class="p-col-12 p-md-2" data-name="#{icon.name}" data-key="#{icon.key}">
+                    <div class="col-12 md:col-2#{primeIconsView.isNew(icon) ? ' new' : ''}"
+                         data-name="#{icon.name}" data-key="#{icon.key}">
                         <i class="pi pi-#{icon.name}"></i>
-                        <div>#{icon.name}</div>
+                        <div>pi-#{icon.name}</div>
                     </div>
                 </ui:repeat>
             </div>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ public class Constants {
         public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
         public static final String CSP = "primefaces.CSP";
         public static final String CSP_POLICY = "primefaces.CSP_POLICY";
+        public static final String CSP_REPORT_ONLY_POLICY = "primefaces.CSP_REPORT_ONLY_POLICY";
         public static final String EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING = "primefaces.EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING";
         public static final String MULTI_VIEW_STATE_STORE = "primefaces.MULTI_VIEW_STATE_STORE";
         public static final String MARK_INPUT_AS_INVALID_ON_ERROR_MSG = "primefaces.MARK_INPUT_AS_INVALID_ON_ERROR_MSG";
@@ -54,6 +55,7 @@ public class Constants {
         public static final String FLEX = "primefaces.FLEX";
         public static final String PRIME_ICONS = "primefaces.PRIME_ICONS";
         public static final String CLIENT_SIDE_LOCALISATION = "primefaces.CLIENT_SIDE_LOCALISATION";
+        public static final String HIDE_RESOURCE_VERSION = "primefaces.HIDE_RESOURCE_VERSION";
 
         private ContextParams() {
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,9 @@
  */
 package org.primefaces.showcase.view.data;
 
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.*;
-import org.primefaces.showcase.service.ExtenderService;
-import org.primefaces.showcase.service.ExtenderService.ExtenderExample;
-
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
@@ -44,9 +40,14 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
+import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
+import org.primefaces.event.schedule.ScheduleRangeEvent;
+import org.primefaces.model.*;
+import org.primefaces.showcase.service.ExtenderService;
+import org.primefaces.showcase.service.ExtenderService.ExtenderExample;
 
 @Named
 @ViewScoped
@@ -66,6 +67,7 @@ public class ScheduleJava8View implements Serializable {
     private boolean showHeader = true;
     private boolean draggable = true;
     private boolean resizable = true;
+    private boolean selectable = false;
     private boolean showWeekends = true;
     private boolean tooltip = true;
     private boolean allDaySlot = true;
@@ -311,6 +313,13 @@ public class ScheduleJava8View implements Serializable {
         addMessage(message);
     }
 
+    public void onRangeSelect(ScheduleRangeEvent event) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Range selected",
+                "Start-Date:" + event.getStartDate() + ", End-Date: " + event.getEndDate());
+
+        addMessage(message);
+    }
+
     public void onEventDelete() {
         String eventId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("eventId");
         if (event != null) {
@@ -380,6 +389,14 @@ public class ScheduleJava8View implements Serializable {
 
     public void setResizable(boolean resizable) {
         this.resizable = resizable;
+    }
+
+    public boolean isSelectable() {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable) {
+        this.selectable = selectable;
     }
 
     public boolean isTooltip() {

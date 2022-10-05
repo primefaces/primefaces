@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -19,31 +19,31 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Basic</h5>
+                <h5 class="mt-0">Basic</h5>
                 <h:panelGrid columns="3" cellpadding="7">
                     <p:outputLabel for="name" value="Name"/>
                     <p:inputText id="name" value="#{basicView.text1}"/>
                     <h:outputText id="display" value="#{basicView.text1}"/>
                 </h:panelGrid>
-                <p:commandButton value="Submit" update="display" styleClass="p-mt-3" />
+                <p:commandButton value="Submit" update="display" styleClass="mt-3" />
             </h:form>
         </div>
 
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Action Listener</h5>
+                <h5 class="mt-0">Action Listener</h5>
                 <h:panelGrid columns="2" cellpadding="7">
                     <h:outputText value="Counter: "/>
                     <h:outputText id="output" value="#{basicView.number}"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Increment" action="#{basicView.increment}" update="output" styleClass="p-mt-3"/>
+                <p:commandButton value="Increment" action="#{basicView.increment}" update="output" styleClass="mt-3"/>
             </h:form>
         </div>
 
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Events</h5>
+                <h5 class="mt-0">Events</h5>
                 <h:panelGrid columns="3" cellpadding="7">
                     <h:outputText value="KeyUp"/>
                     <p:inputText id="firstname" value="#{basicView.text2}">
@@ -77,10 +77,10 @@
 
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Advanced</h5>
+                <h5 class="mt-0">Advanced</h5>
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
-                <h:panelGrid columns="2" cellpadding="7" styleClass="p-mb-3">
+                <h:panelGrid columns="2" cellpadding="7" styleClass="mb-3">
                     <p:outputLabel for="country" value="Country"/>
                     <p:selectOneMenu id="country" value="#{basicView.country}" style="width:12rem">
                         <p:ajax listener="#{basicView.onCountryChange}" update="city"/>

@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script type="text/javascript">
+        <script>
             function handleDrop(event, ui) {
                 var droppedProduct = ui.draggable;
 
@@ -26,7 +26,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="productForm">
-                <h5 class="p-mt-0">Available Products</h5>
+                <h5 class="mt-0">Available Products</h5>
                 <p:dataTable id="availableProducts" var="product" value="#{dndProductsView.products}">
                         <p:column style="width:20px">
                             <h:outputText id="dragIcon" styleClass="ui-icon pi pi-plus"/>

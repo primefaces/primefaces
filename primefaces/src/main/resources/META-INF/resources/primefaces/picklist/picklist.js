@@ -1310,7 +1310,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} button A button to enable.
      */
     enableButton: function (button) {
-        button.removeAttr('disabled').removeClass('ui-state-disabled');
+        button.prop('disabled', false).removeClass('ui-state-disabled');
         button.attr('tabindex', this.getTabIndex());
     },
 

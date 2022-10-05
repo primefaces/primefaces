@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -35,7 +35,7 @@
 
                         <p:commandButton value="Crop"
                                          action="#{cropUploaderBean.crop}"
-                                         update="cropped messages" styleClass="p-my-3"/>
+                                         update="cropped messages" styleClass="my-3"/>
 
                         <h:panelGrid columns="2" cellpadding="7">
 

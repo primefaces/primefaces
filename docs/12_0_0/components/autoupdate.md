@@ -14,7 +14,7 @@ AutoUpdate is a tag handler to mark a component to be updated at every ajax requ
 | Name | Default | Type | Description | 
 | --- | --- | --- | --- |
 | disabled | false | Boolean | Whether the autoUpdate functionality is enabled.
-| on | null | String | Defines an observer event, which will trigger the auto update.
+| on | null | String | Defines one or multiple observer events, which will trigger the auto update.
 
 ## Getting Started with AutoUpdate
 AutoUpdate is used by nesting inside a parent component.
@@ -42,7 +42,7 @@ Global:
 </h:outputText>
 
 
- Event1:
+Event1:
 <h:outputText id="displayEvent1" value="#{observerView.text}">
     <p:autoUpdate on="event1" />
 </h:outputText>
@@ -51,5 +51,11 @@ Global:
 Event2:
 <h:outputText id="displayEvent2" value="#{observerView.text}">
     <p:autoUpdate on="event2" />
+</h:outputText>
+
+
+Both Events:
+<h:outputText id="displayBothEvents" value="#{observerView.text}">
+    <p:autoUpdate on="event1, event2"/>
 </h:outputText>
 ```

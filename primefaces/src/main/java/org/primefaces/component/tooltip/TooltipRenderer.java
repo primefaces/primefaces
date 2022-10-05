@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -109,6 +109,7 @@ public class TooltipRenderer extends CoreRenderer {
                 .attr("atPos", tooltip.getAt(), null)
                 .attr("delegate", tooltip.isDelegate(), false)
                 .attr("styleClass", tooltip.getStyleClass(), null)
+                .attr("autoHide", tooltip.isAutoHide(), true)
                 .returnCallback("beforeShow", "function()", tooltip.getBeforeShow())
                 .callback("onShow", "function()", tooltip.getOnShow())
                 .callback("onHide", "function()", tooltip.getOnHide());

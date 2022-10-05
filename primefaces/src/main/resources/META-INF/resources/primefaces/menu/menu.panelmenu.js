@@ -444,7 +444,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             this.expandedNodes = expandedNodeIds.split(',');
 
             for(var i = 0 ; i < this.expandedNodes.length; i++) {
-                var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]));
+                var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]).replace(/\|/g,"\\|"));
                 if(element.is('div.ui-panelmenu-content'))
                     this.expandRootSubmenu(element.prev(), true);
                 else if(element.is('li.ui-menu-parent'))

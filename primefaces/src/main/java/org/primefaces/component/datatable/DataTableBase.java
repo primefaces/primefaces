@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -109,7 +109,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         showGridlines,
         size,
         widgetVar,
-        partialUpdate
+        partialUpdate,
+        showSelectAll
     }
 
     public DataTableBase() {
@@ -699,5 +700,13 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setPartialUpdate(boolean partialUpdate) {
         getStateHelper().put(PropertyKeys.partialUpdate, partialUpdate);
+    }
+
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
     }
 }

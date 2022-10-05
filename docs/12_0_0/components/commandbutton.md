@@ -63,7 +63,7 @@ CommandButton is an extended version of standard commandButton with ajax and the
 | alt | null | String | Alternate textual description of the button.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | disabled | false | Boolean | Disables the button.
-| disableOnAjax | false | Boolean | If true, the button will be disabled during Ajax requests triggered by the button.
+| disableOnAjax | true | Boolean | If true, the button will be disabled during Ajax requests triggered by the button.
 | label | null | String | A localized user presentable name.
 | lang | null | String | Code describing the language used in the generated markup for this component.
 | tabindex | null | Integer | Position of the button element in the tabbing order.
@@ -161,5 +161,6 @@ structural style classes;
 | .ui-button | Button element
 | .ui-button-text-only | Button element when icon is not used
 | .ui-button-text | Label of button
+| .ui-state-loading | Button element; when `disableOnAjax` is set and an Ajax request triggered by the button is in progress.
 
 As skinning style classes are global, see the main theming section for more information.

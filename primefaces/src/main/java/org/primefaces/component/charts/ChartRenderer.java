@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -164,7 +164,8 @@ public class ChartRenderer extends CoreRenderer {
             if (scales instanceof CartesianScales) {
                 writer.write("\"scales\":{");
                 CartesianScales cScales = (CartesianScales) scales;
-                StringBuilder scaleAttrs = new StringBuilder(20);
+                StringBuilder scaleAttrs = new StringBuilder(128);
+
                 List<CartesianAxes> xAxes = cScales.getXAxes();
                 if (xAxes != null && !xAxes.isEmpty()) {
                     encodeAxes(context, chartName, "x", xAxes);
@@ -184,13 +185,13 @@ public class ChartRenderer extends CoreRenderer {
             else if (scales instanceof RadialScales) {
                 writer.write("\"scale\":{");
                 RadialScales rScales = (RadialScales) scales;
-                StringBuilder scaleAttrs = new StringBuilder(50);
+                StringBuilder scaleAttrs = new StringBuilder(128);
                 if (rScales.getAngleLines() != null) {
                     writeJsonAttribute(scaleAttrs, "angleLines", rScales.getAngleLines().encode());
                 }
 
                 if (rScales.getGridLines() != null) {
-                    writeJsonAttribute(scaleAttrs, "gridLines", rScales.getGridLines().encode());
+                    writeJsonAttribute(scaleAttrs, "grid", rScales.getGridLines().encode());
                 }
 
                 if (rScales.getPointLabels() != null) {

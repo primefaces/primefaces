@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -21,7 +21,7 @@
         <div class="card">
             <h:form>
                 <p:panel header="Form">
-                    <h:panelGrid columns="4" cellpadding="5" styleClass="p-mb-3">
+                    <h:panelGrid columns="4" cellpadding="5" styleClass="mb-3">
                         <h:outputLabel for="txt1" value="Text 1"/>
                         <p:inputText id="txt1" value="#{selectorView.text1}" required="true" label="Text 1">
                             <f:validateLength minimum="2"/>
@@ -45,10 +45,10 @@
                         <h:outputText value="#{selectorView.text3}"/>
                     </h:panelGrid>
     
-                    <p:commandButton update="@(form)" value="All Forms" styleClass="p-mr-2"/>
-                    <p:commandButton update="@(form:last)" value="Last Form" styleClass="p-mr-2"/>
-                    <p:commandButton update="@(.ui-panel)" value="All Panels" styleClass="p-mr-2"/>
-                    <p:commandButton process="@(.ui-panel :input)" update="@(.ui-panel)" value="Inputs of Panel" styleClass="p-mr-2"/>
+                    <p:commandButton update="@(form)" value="All Forms" styleClass="mr-2"/>
+                    <p:commandButton update="@(form:last)" value="Last Form" styleClass="mr-2"/>
+                    <p:commandButton update="@(.ui-panel)" value="All Panels" styleClass="mr-2"/>
+                    <p:commandButton process="@(.ui-panel :input)" update="@(.ui-panel)" value="Inputs of Panel" styleClass="mr-2"/>
                     <p:commandButton process="@(.ui-panel :input:not(select))" update="@(.ui-panel)" value="Inputs Except Select"/>
     
                     <p:growl id="messages"/>

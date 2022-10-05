@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -19,20 +19,20 @@
     <ui:define name="implementation">
         <div class="card">
             <h5>Positions</h5>
-            <div class="p-grid ui-fluid">
-                <div class="p-col-12 p-md-3">
+            <div class="grid ui-fluid">
+                <div class="col-12 md:col-3">
                     <p:inputText id="right" type="text" placeholder="Right" />
                     <p:tooltip for="right" value="Enter your username" position="right"/>
                 </div>
-                <div class="p-col-12 p-md-3">
+                <div class="col-12 md:col-3">
                     <p:inputText id="top" type="text" placeholder="Top" />
                     <p:tooltip for="top" value="Enter your username" position="top"/>
                 </div>
-                <div class="p-col-12 p-md-3">
+                <div class="col-12 md:col-3">
                     <p:inputText id="bottom" type="text" placeholder="Bottom" />
                     <p:tooltip for="bottom" value="Enter your username" position="bottom"/>
                 </div>
-                <div class="p-col-12 p-md-3">
+                <div class="col-12 md:col-3">
                     <p:inputText id="left" type="text" placeholder="Left" />
                     <p:tooltip for="left" value="Enter your username" position="left"/>
                 </div>
@@ -49,6 +49,16 @@
             <h5>Track Mouse</h5>
             <p:graphicImage id="track" name="/images/primefaces-logo.svg" library="showcase"/>
             <p:tooltip for="track" value="Enter your username" trackMouse="true"/>
+
+            <h5>Auto Hide</h5>
+            <p:commandButton type="button" id="autoHideTrue" value="Auto Hide (true)" class="mr-2" />
+            <p:tooltip for="autoHideTrue" autoHide="true">
+                <p:graphicImage name="/images/primefaces-logo.svg" library="showcase"/>
+            </p:tooltip>
+            <p:commandButton type="button" id="autoHideFalse" value="Auto Hide (false)" />
+            <p:tooltip for="autoHideFalse" autoHide="false">
+                <p:graphicImage name="/images/primefaces-logo.svg" library="showcase"/>
+            </p:tooltip>
 
             <h5>Animation</h5>
             <p:commandButton type="button" id="animate" icon="pi pi-cog"/>

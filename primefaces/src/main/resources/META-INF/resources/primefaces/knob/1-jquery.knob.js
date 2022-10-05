@@ -1,4 +1,4 @@
-/*!jQuery Knob*/
+/*jQuery Knob*/
 /**
  * Downward compatible, touchable dial
  *

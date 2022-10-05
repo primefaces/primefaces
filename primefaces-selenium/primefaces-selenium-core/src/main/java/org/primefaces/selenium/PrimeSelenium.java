@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,20 @@
  */
 package org.primefaces.selenium;
 
+import java.time.Duration;
 import java.util.List;
+
 import org.openqa.selenium.*;
+import org.openqa.selenium.html5.WebStorage;
+import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.Guard;
+import org.primefaces.selenium.spi.DeploymentAdapter;
 import org.primefaces.selenium.spi.PrimePageFactory;
 import org.primefaces.selenium.spi.PrimePageFragmentFactory;
 import org.primefaces.selenium.spi.WebDriverProvider;
-import org.primefaces.selenium.spi.DeploymentAdapter;
-
-import java.time.Duration;
-import org.openqa.selenium.html5.WebStorage;
-import org.openqa.selenium.support.decorators.WebDriverDecorator;
 
 public final class PrimeSelenium {
 
@@ -313,7 +313,10 @@ public final class PrimeSelenium {
      * @return true if clickable false if not
      */
     public static boolean isElementClickable(WebElement element) {
-        return isElementDisplayed(element) && isElementEnabled(element) && !hasCssClass(element, "ui-state-disabled");
+        return isElementDisplayed(element) &&
+                    isElementEnabled(element) &&
+                    !hasCssClass(element, "ui-state-disabled") &&
+                    !Boolean.parseBoolean(element.getAttribute("aria-busy"));
     }
 
     /**
@@ -569,7 +572,7 @@ public final class PrimeSelenium {
 
         if (webDriver instanceof WebDriverDecorator) {
             WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = driver.getDecoratedDriver().getOriginal();
+            webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
         }
 
         if (webDriver instanceof WebStorage) {
@@ -589,7 +592,7 @@ public final class PrimeSelenium {
 
         if (webDriver instanceof WebDriverDecorator) {
             WebDriverDecorator driver = (WebDriverDecorator) webDriver;
-            webDriver = driver.getDecoratedDriver().getOriginal();
+            webDriver = (WebDriver) driver.getDecoratedDriver().getOriginal();
         }
 
         if (webDriver instanceof HasCapabilities) {

@@ -11,7 +11,7 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-	   <!-- Load custom tag into JSF web application -->
+   <!-- Load custom tag into JSF web application -->
     <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/showcase.taglib.xml</param-value>
@@ -27,7 +27,7 @@
     </context-param>
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Production</param-value>
+        <param-value>${jsf.project.stage}</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
@@ -112,10 +112,19 @@
 
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
-        <filter-class>org.primefaces.showcase.filter.CharacterEncodingFilter</filter-class>
+        <filter-class>org.primefaces.webapp.filter.CharacterEncodingFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Character Encoding Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>No Cache Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.NoCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>No Cache Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
 

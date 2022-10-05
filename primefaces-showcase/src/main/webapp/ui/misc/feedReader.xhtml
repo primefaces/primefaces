@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -18,8 +18,8 @@
     <ui:define name="implementation">
         <div class="card">
             <p:feedReader value="https://www.nasa.gov/rss/dyn/breaking_news.rss" var="feed">
-                <div class="p-p-3">
-                    <h:outputText value="#{feed.title}" styleClass="p-text-bold p-d-block" />
+                <div class="p-3">
+                    <h:outputText value="#{feed.title}" styleClass="font-bold block" />
                     <h:outputText value="#{feed.description.value}" escape="false"/>
                     <p:divider/>
                 </div>

@@ -103,6 +103,24 @@
         },
 
         /**
+         * Gets the form by id or the closest form if the id is not a form itself.
+         * In AJAX we also have a fallback for the first form in DOM, this should not be used here.
+         *
+         * @param {string} id ID of the component to get the closest form or if its a form itself
+         * @return {JQuery} the form or NULL if no form found
+         */
+        getClosestForm: function(id) {
+            var form = $(PrimeFaces.escapeClientId(id));
+            if (!form.is('form')) {
+                form = form.closest('form');
+            }
+            if (!form) {
+                PrimeFaces.error('Form element could not be found for id: ' + id);
+            }
+            return form;
+        },
+
+        /**
          * Adds hidden input elements to the given form. For each key-value pair, a new hidden input element is created
          * with the given value and the key used as the name.
          * @param {string} parent The ID of a FORM element.
@@ -110,7 +128,7 @@
          * @return {typeof PrimeFaces} This object for chaining.
          */
         addSubmitParam : function(parent, params) {
-            var form = $(this.escapeClientId(parent));
+            var form = PrimeFaces.getClosestForm(parent);
 
             for(var key in params) {
                 form.append("<input type=\"hidden\" name=\"" + PrimeFaces.escapeHTML(key) + "\" value=\"" + PrimeFaces.escapeHTML(params[key]) + "\" class=\"ui-submit-param\"></input>");
@@ -128,7 +146,7 @@
          * @param {string} [target] The target attribute to use on the form during the submit process.
          */
         submit : function(formId, target) {
-            var form = $(this.escapeClientId(formId));
+            var form = PrimeFaces.getClosestForm(formId);
             var prevTarget;
 
             if (target) {
@@ -307,13 +325,6 @@
                 }
             });
 
-            //aria
-            if(input.is(':not([type="password"])')) {
-                input.attr('role', 'textbox')
-                     .attr('aria-readonly', input.prop('readonly'));
-            }
-            input.attr('aria-disabled', input.is(':disabled'));
-
             if(input.is('textarea')) {
                 input.attr('aria-multiline', true);
             }
@@ -355,13 +366,6 @@
             }).on("keyup", function() {
                 $(this).removeClass('ui-state-active');
             });
-
-            //aria
-            var role = button.attr('role');
-            if(!role) {
-                button.attr('role', 'button');
-            }
-            button.attr('aria-disabled', button.prop('disabled'));
 
             return this;
         },
@@ -631,12 +635,19 @@
                 //ajax update
                 if(widget && (widget.constructor === this.widget[widgetName])) {
                     widget.refresh(cfg);
+                    if (cfg.postRefresh) {
+                        cfg.postRefresh.call(widget, widget);
+                    }
                 }
                 //page init
                 else {
-                    this.widgets[widgetVar] = new this.widget[widgetName](cfg);
+		    var newWidget = new this.widget[widgetName](cfg);
+                    this.widgets[widgetVar] = newWidget;
                     if(this.settings.legacyWidgetNamespace) {
-                        window[widgetVar] = this.widgets[widgetVar];
+                        window[widgetVar] = newWidget;
+                    }
+                    if (cfg.postConstruct) {
+                       cfg.postConstruct.call(newWidget, newWidget);
                     }
                 }
             }
@@ -807,14 +818,16 @@
          */
         scrollTo: function(id) {
             var offset = $(PrimeFaces.escapeClientId(id)).offset();
-
-            $('html,body').animate({
-                scrollTop:offset.top
-                ,
-                scrollLeft:offset.left
-            },{
-                easing: 'easeInCirc'
-            },1000);
+            var scrollBehavior = 'scroll-behavior';
+            var target = $('html,body');
+            var sbValue = target.css(scrollBehavior);
+            target.css(scrollBehavior, 'auto');
+            target.animate(
+                    { scrollTop: offset.top, scrollLeft: offset.left },
+                    1000,
+                    'easeInCirc',
+                    function(){ target.css(scrollBehavior, sbValue) }
+            );
         },
 
         /**
@@ -1145,6 +1158,19 @@
          */
         toISOString: function(date) {
             return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
+        },
+
+        /**
+         * Reset any state variables on update="@all".
+         */
+        resetState: function() {
+            PrimeFaces.ajax.Queue.abortAll();
+
+            PrimeFaces.zindex = 1000;
+            PrimeFaces.detachedWidgets = [];
+            PrimeFaces.animationActive = false;
+            PrimeFaces.customFocus = false;
+            PrimeFaces.widgets = {};            
         },
 
         /**

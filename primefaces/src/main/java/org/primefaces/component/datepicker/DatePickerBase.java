@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,18 +29,24 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.api.Widget;
-import org.primefaces.util.CalendarUtils;
 import org.primefaces.model.datepicker.DateMetadataModel;
+import org.primefaces.util.CalendarUtils;
 
 public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DatePickerRenderer";
+
+    /**
+     * Standard 576px considered a small screen so we can auto switch the picker to touch mode
+     */
+    public static final int RESPONSIVE_BREAKPOINT_SMALL = 576;
 
     protected String timeSeparator;
     protected String fractionSeparator;
@@ -80,6 +86,7 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         numberOfMonths,
         view,
         autoDetectDisplay,
+        responsiveBreakpoint,
         touchUI,
         dateTemplate,
         appendTo,
@@ -91,6 +98,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         timeInput,
         showWeek,
         weekCalculator,
+        showMinMaxRange,
+        autoMonthFormat,
         model
     }
 
@@ -466,6 +475,30 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setModel(DateMetadataModel model) {
         getStateHelper().put(PropertyKeys.model, model);
+    }
+
+    public void setResponsiveBreakpoint(int responsiveBreakpoint) {
+        getStateHelper().put(PropertyKeys.responsiveBreakpoint, responsiveBreakpoint);
+    }
+
+    public int getResponsiveBreakpoint() {
+        return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, RESPONSIVE_BREAKPOINT_SMALL);
+    }
+
+    public boolean isShowMinMaxRange() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMinMaxRange, true);
+    }
+
+    public void setShowMinMaxRange(boolean showMinMaxRange) {
+        getStateHelper().put(PropertyKeys.showMinMaxRange, showMinMaxRange);
+    }
+
+    public boolean isAutoMonthFormat() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoMonthFormat, true);
+    }
+
+    public void setAutoMonthFormat(boolean autoMonthFormat) {
+        getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
     }
 
     @Override

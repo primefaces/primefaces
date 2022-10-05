@@ -187,6 +187,6 @@ structural style classes:
 .ui-spinner-button-down | Decrement button
 
 ### Text alignment
-The PrimeFlex 2.0.0 classes `text-left`, `text-center` and `text-right` are supported to align the text of the Spinner input field.
+The PrimeFlex 3.0.0 classes `text-left`, `text-center` and `text-right` are supported to align the text of the Spinner input field.
 
 As skinning style classes are global, see the main theming section for more information.

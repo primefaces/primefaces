@@ -51,6 +51,7 @@
  * @prop {boolean} [querying] Whether an AJAX request for the autocompletion items is currently in progress.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {number} requestId Tracking number to make sure search requests match up in query mode
  * @prop {JQuery} status The DOM element for the autocomplete status ARIA element.
  * @prop {boolean} suppressInput Whether key input events should be ignored currently.
  * @prop {number} [timeout] Timeout ID for the timer used to clear the autocompletion cache in regular
@@ -785,6 +786,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.alignPanel();
         }
 
+	// #8717 always clear list before trying to fill it
+        if(this.cfg.forceSelection) {
+            this.currentItems = [];
+        }
+
         if(this.items.length > 0) {
             var firstItem = this.items.eq(0);
 
@@ -811,7 +817,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if(this.cfg.forceSelection) {
-                this.currentItems = [];
                 this.items.each(function(i, item) {
                     $this.currentItems.push($(item).attr('data-item-label'));
                 });
@@ -893,7 +898,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
-        this.querying = true;
+        this.setQuerying(true);
 
         var $this = this;
 
@@ -904,6 +909,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var options;
 
         if (!this.cfg.completeEndpoint) {
+            this.requestId = this.requestId + 1 || 1;
+            var currentRequestId = this.requestId;
             options = {
                 source: this.id,
                 process: this.id,
@@ -913,6 +920,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function (content) {
+                            // #8725 ensure its the same request when slow server
+                            if (this.requestId !== currentRequestId) {
+                                return;
+                            }
                             if (this.cfg.dynamic && !this.isDynamicLoaded) {
                                 this.panel = $(content);
                                 this.appendPanel();
@@ -937,8 +948,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     return true;
                 },
                 oncomplete: function () {
-                    $this.querying = false;
-                    $this.isDynamicLoaded = true;
+                    $this.setQuerying(false);
+                    $this.isDynamicLoaded = $this.requestId === currentRequestId;
                 }
             };
 
@@ -959,7 +970,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.callBehavior('query', options);
         }
         else {
-            if (!!this.cfg.completeEndpoint) {
+            if (this.cfg.completeEndpoint) {
                 $.ajax({
                         url: this.cfg.completeEndpoint,
                         data: { query: query },
@@ -973,11 +984,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             if (!!suggestion.value) {
                                 itemValue = $("<div>").text(suggestion.value).html();
                             }
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + itemValue + '" data-item-label="' + labelEncoded + '" role="option">' + labelEncoded + '</li>';
+                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
                         });
                         if (suggestions.moreAvailable == true && $this.cfg.moreText) {
                             var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + moreTextEncoded + '</li>';
+                            html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
                         }
                         html += '</ul>';
 
@@ -986,13 +997,30 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         $this.showSuggestions(query);
                     })
                     .always(function() {
-                        $this.querying = false;
+                        $this.setQuerying(false);
                     });
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);
             }
         }
+    },
+
+    /**
+     * Sets the querying state.
+     * @param {boolean} state Querying state to set.
+     * @private
+     */
+    setQuerying: function(state) {
+        if (state && !this.querying) {
+            this.jq.addClass('ui-state-loading')
+                    .append('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
+        }
+        else if (!state && this.querying) {
+            this.jq.removeClass('ui-state-loading')
+                    .find('.ui-icon-loading').remove();
+        }
+        this.querying = state;
     },
 
     /**
@@ -1022,6 +1050,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     hide: function() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
+            if (this.cfg.dynamic && this.cfg.queryMode === 'server') {
+               this.isDynamicLoaded = false;
+            }
 
             this.transition.hide({
                 onExit: function() {
@@ -1201,7 +1232,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             itemValue = item.attr('data-token-value');
         }
 
-        var foundItem = this.multiItemContainer.children("li.ui-autocomplete-token[data-token-value='"+itemValue+"']");
+        var foundItem = this.multiItemContainer.children("li.ui-autocomplete-token[data-token-value='" + $.escapeSelector(itemValue) + "']");
         if(!foundItem.length) {
             return;
         }

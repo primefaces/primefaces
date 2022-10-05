@@ -55,7 +55,7 @@ filterMatchMode | startsWith | String | Match mode for filtering.
 disabled | false | Boolean | Disables tree.
 multipleDrag | false | Boolean | When enabled, the selected multiple nodes can be dragged from a tree to another tree.
 dropCopyNode | false | Boolean | When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.
-onDrop | null | MethodExpression | Method providing suggestions.
+onDrop | null | MethodExpression | Method returning whether the dragged node(s) can be dropped on the dropped node.
 filterMode | lenient | String | Mode for filtering valid values are lenient and strict. Default is lenient.
 filterFunction | null | MethodExpression | Custom implementation to filter TreeNodes against a constraint.
 
@@ -348,6 +348,16 @@ Two additional options exist for further configuration, _dragMode_ defines the t
 be dropped, default value is _self_ and other values are _parent_ and _ancestor_. _dropRestrict_ on the other
 hand, can restrict the drop target to be within the parent by setting it to _sibling_.
 
+### Prevent dropping on certain nodes
+
+The `onDrop` attribute can be used to prevent dropping of certain nodes on certain nodes.
+
+```java
+public boolean boolean onDrop(TreeDragDropInfo info) {
+    // return true if info.getDragNode() or info.getDragNodes() can be dropped on info.getDropNode()
+}
+```
+
 ## Horizontal Tree
 Default orientation of tree is vertical, setting it to horizontal displays nodes in an horizontal layout.
 All features of vertical tree except dragdrop is available for horizontal tree as well.
@@ -371,7 +381,7 @@ that selection must be enabled in tree component for context menu integration.
 ```
 
 ## Skinning
-Tree resides in a container element which _style_ and _styleClass_ options apply. Following is the list of
+Tree resides in a container element which `style` and `styleClass` options apply. Following is the list of
 structural style classes;
 
 | Class | Applies |
@@ -388,3 +398,4 @@ structural style classes;
 
 As skinning style classes are global, see the main theming section for more information.
 
+To remove border and padding add `ui-noborder` style class to the component using the `styleClass` attribute.

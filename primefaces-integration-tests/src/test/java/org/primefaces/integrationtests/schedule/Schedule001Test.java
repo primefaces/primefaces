@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,9 @@
  */
 package org.primefaces.integrationtests.schedule;
 
+import java.time.*;
+import java.util.List;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -35,9 +38,6 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.*;
 import org.primefaces.selenium.component.model.Msg;
-
-import java.time.*;
-import java.util.List;
 
 public class Schedule001Test extends AbstractPrimePageTest {
 
@@ -106,8 +106,10 @@ public class Schedule001Test extends AbstractPrimePageTest {
         int hour = 10 - calcOffsetInHoursBetweenClientAndServerAndTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
         // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
 
-        expectedMessage = "T" + String.format("%02d", hour) + ":00";
-        Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
+        String hourDST = String.format("T%02d:00", hour);
+        String hourST = String.format("T%02d:00", hour + 1);
+        boolean hourOK = msg.getDetail().endsWith(hourDST) || msg.getDetail().endsWith(hourST);
+        Assertions.assertTrue(hourOK, String.format("Expected: %s or %s , Actual: %s", hourDST, hourST, msg.getDetail()));
     }
 
     private void selectSlot(Page page, String time) {
@@ -198,7 +200,8 @@ public class Schedule001Test extends AbstractPrimePageTest {
         String eventTime = todaysEvents.get(0).findElement(By.className("fc-event-time")).getText();
         String eventTitle = todaysEvents.get(0).findElement(By.className("fc-event-title")).getText();
 
-        ScheduleEvent referenceEvent = schedule001.getEventModel().getEvents().get(1);
+        int eventid = LocalDateTime.now().getDayOfMonth() > 1 ? 1 : 0;
+        ScheduleEvent referenceEvent = schedule001.getEventModel().getEvents().get(eventid);
         Assertions.assertEquals(referenceEvent.getTitle(), eventTitle);
         Assertions.assertEquals(referenceEvent.getStartDate().getHour() + " Uhr", eventTime);
 

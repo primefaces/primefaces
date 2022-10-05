@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -25,11 +25,14 @@
 
                 <p:panel header="Settings">
                     <p:panelGrid columns="2" layout="flex" styleClass="ui-noborder"
-                                 columnClasses="p-col-12 p-xl-6, p-col-12 p-xl-6">
+                                 columnClasses="col-12 xl:col-6, col-12 xl:col-6">
                         <p:selectBooleanCheckbox value="#{scheduleJava8View.resizable}" itemLabel="resizable events">
                             <p:ajax update="schedule"/>
                         </p:selectBooleanCheckbox>
                         <p:selectBooleanCheckbox value="#{scheduleJava8View.draggable}" itemLabel="draggable events">
+                            <p:ajax update="schedule"/>
+                        </p:selectBooleanCheckbox>
+                        <p:selectBooleanCheckbox value="#{scheduleJava8View.selectable}" itemLabel="range selection">
                             <p:ajax update="schedule"/>
                         </p:selectBooleanCheckbox>
                         <p:selectBooleanCheckbox value="#{scheduleJava8View.showWeekends}" itemLabel="show weekends">
@@ -59,7 +62,7 @@
                     </p:panelGrid>
 
                     <p:panelGrid columns="4" layout="flex" styleClass="ui-noborder"
-                                 columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4">
+                                 columnClasses="col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4, col-12 md:col-3 xl:col-2, col-12 md:col-9 xl:col-4">
                         <p:outputLabel value="height" for="@next"/>
                         <p:inputText id="height" value="#{scheduleJava8View.height}">
                             <p:ajax update="schedule"/>
@@ -214,7 +217,7 @@
                     </p:panelGrid>
                 </p:panel>
 
-                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule" styleClass="p-mt-6"
+                <p:schedule id="schedule" value="#{scheduleJava8View.eventModel}" widgetVar="myschedule" styleClass="mt-6"
                             view="#{scheduleJava8View.view}"
                             locale="#{scheduleJava8View.locale}" timeZone="#{scheduleJava8View.timeZone}"
                             clientTimeZone="#{scheduleJava8View.clientTimeZone}"
@@ -229,6 +232,7 @@
                             initialDate="#{scheduleJava8View.initialDate}"
                             aspectRatio="#{scheduleJava8View.aspectRatio}"
                             resizable="#{scheduleJava8View.resizable}"
+                            selectable="#{scheduleJava8View.selectable}"
                             draggable="#{scheduleJava8View.draggable}" showHeader="#{scheduleJava8View.showHeader}"
                             slotLabelFormat="#{scheduleJava8View.slotLabelFormat}"
                             showWeekNumbers="#{scheduleJava8View.showWeekNumbers}"
@@ -248,34 +252,35 @@
                             oncomplete="PF('eventDialog').show();"/>
                     <p:ajax event="eventMove" listener="#{scheduleJava8View.onEventMove}" update="messages"/>
                     <p:ajax event="eventResize" listener="#{scheduleJava8View.onEventResize}" update="messages"/>
+                    <p:ajax event="rangeSelect" listener="#{scheduleJava8View.onRangeSelect}" update="messages"/>
                     <p:ajax event="viewChange" listener="#{scheduleJava8View.onViewChange}" update="view"/>
 
                 </p:schedule>
 
                 <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
                     <h:panelGrid id="eventDetails" columns="2" cellpadding="7">
-                        <p:outputLabel for="title" value="Titles" styleClass="p-text-bold"/>
+                        <p:outputLabel for="title" value="Titles" styleClass="font-bold"/>
                         <p:inputText id="title" value="#{scheduleJava8View.event.title}" required="true"/>
 
-                        <p:outputLabel for="from" value="From" styleClass="p-text-bold"/>
+                        <p:outputLabel for="from" value="From" styleClass="font-bold"/>
                         <p:datePicker id="from" value="#{scheduleJava8View.event.startDate}" pattern="dd/MM/yyyy"
                                       showTime="true" appendTo="@(body)"/>
 
-                        <p:outputLabel for="to" value="To" styleClass="p-text-bold"/>
+                        <p:outputLabel for="to" value="To" styleClass="font-bold"/>
                         <p:datePicker id="to" value="#{scheduleJava8View.event.endDate}" pattern="dd/MM/yyyy"
                                       showTime="true" appendTo="@(body)"/>
 
-                        <p:outputLabel for="allDay" value="All Day" styleClass="p-text-bold"/>
+                        <p:outputLabel for="allDay" value="All Day" styleClass="font-bold"/>
                         <h:selectBooleanCheckbox id="allDay" value="#{scheduleJava8View.event.allDay}"/>
                     </h:panelGrid>
 
                     <div>Info: "From" and "To" are located in (server-)timezone</div>
 
-                    <div class="p-d-flex p-jc-between p-mt-3">
-                        <p:commandButton type="reset" value="Reset" styleClass="p-text-bold ui-button-outlined"/>
-                        <p:commandButton id="addButton" value="Save" action="#{scheduleJava8View.addEvent}" 
-                                    oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
-                    </div>               
+                    <div class="flex justify-content-between mt-3">
+                        <p:commandButton type="reset" value="Reset" styleClass="font-bold ui-button-outlined"/>
+                        <p:commandButton id="addButton" value="Save" action="#{scheduleJava8View.addEvent}"
+                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+                    </div>
                 </p:dialog>
             </h:form>
         </div>

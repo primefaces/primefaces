@@ -86,8 +86,10 @@
             minDate: null,
             maxDate: null,
             maxDateCount: null,
+            showMinMaxRange: true,
             showOtherMonths: false,
             selectOtherMonths: false,
+            autoMonthFormat: true,
             showButtonBar: false,
             todayButtonStyleClass: 'ui-priority-secondary',
             clearButtonStyleClass: 'ui-priority-secondary',
@@ -111,6 +113,7 @@
         _create: function () {
             this.container = this.element;
             this.inputfield = this.element.children('input');
+            this.inputfield.addClass('hasDatepicker'); // needed for ui-float-label
 
             this._setInitValues();
             this._render();
@@ -186,7 +189,7 @@
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
 
-            if (this.options.timeOnly && viewDateDefaultsToNow) {
+            if (viewDateDefaultsToNow) {
                 if (this.options.minDate) {
                     if (this.viewDate < this.options.minDate) {
                         this.viewDate = new Date(this.options.minDate.getTime());
@@ -207,6 +210,7 @@
                     this.options.disabledDates[i] = this.parseOptionValue(this.options.disabledDates[i]);
                 }
             }
+            this.bindResponsiveResizeListener();
         },
 
         parseOptionValue: function(option) {
@@ -511,7 +515,7 @@
                         return this.isDateEquals(this.value[0], dateMeta);
                 }
                 else {
-                    return (this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear());
+                    return this.isDate(this.value) && this.value.getMonth() === month && this.value.getFullYear() === this.viewDate.getFullYear();
                 }
             }
 
@@ -1134,7 +1138,7 @@
         },
 
         renderTriggerButton: function () {
-            this.triggerButton = $('<button type="button" class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="-1">' +
+            this.triggerButton = $('<button type="button" class="ui-datepicker-trigger ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only' + (this.options.disabled ? ' ui-state-disabled' : '') + '" tabindex="0">' +
                 '<span class="ui-button-icon-left ' + this.options.icon + '"></span>' +
                 '<span class="ui-button-text">ui-button</span>' +
                 '</button>');
@@ -1374,13 +1378,13 @@
             for (var i = 0; i < options.length; i++) {
                 switch(name) {
                     case 'month':
-                        if ((!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
+                        if (!this.options.showMinMaxRange || (!this.isInMinYear() || i >= minDate.getMonth()) && (!this.isInMaxYear() || i <= maxDate.getMonth())) {
                             _options += '<option value="' + i + '"' + (i === current ? ' selected' : '') + '>' + this.escapeHTML(options[i]) + '</option>';
                         }
                         break;
                     case 'year':
                         var option = options[i];
-                        if (!(minDate && minDate.getFullYear() > option) && !(maxDate && maxDate.getFullYear() < option)) {
+                        if (!this.options.showMinMaxRange || (!(minDate && minDate.getFullYear() > option) && !(maxDate && maxDate.getFullYear() < option))) {
                             _options += '<option value="' +  option + '"' + (option === current ? ' selected' : '') + '>' +  option + '</option>';
                         }
                         break;
@@ -1572,7 +1576,8 @@
             var hourDisplay = hour < 10 ? '0' + hour : hour;
 
             //type="number" min="' + minHour + '" max="' + maxHour + '" - does not work well on Firefox 70, so we don´t use it
-            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="1"></input>' : '<span>' + hourDisplay + '</span>';
+            var tabindex = this.options.inline ? '0' : '1';
+            var html = this.options.timeInput ? '<input value="' + hourDisplay + '" size="2" maxlength="2" tabindex="'  +tabindex + '" class="ui-inputfield"></input>' : '<span>' + hourDisplay + '</span>';
             return this.renderTimeElements("ui-hour-picker", html, 0);
         },
 
@@ -1581,7 +1586,8 @@
                 minuteDisplay = minute < 10 ? '0' + minute : minute;
 
             //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
-            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="2"></input>' : '<span>' + minuteDisplay + '</span>';
+            var tabindex = this.options.inline ? '0' : '2';
+            var html = this.options.timeInput ? '<input value="' + minuteDisplay + '" size="2" maxlength="2" tabindex="' + tabindex + '" class="ui-inputfield"></input>' : '<span>' + minuteDisplay + '</span>';
             return this.renderTimeElements("ui-minute-picker", html, 1);
         },
 
@@ -1591,7 +1597,8 @@
                     secondDisplay = second < 10 ? '0' + second : second;
 
                 //type="number" min="0" max="59" does not work well on Firefox 70, so we don´t use it
-                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="3"></input>' : '<span>' + secondDisplay + '</span>';
+                var tabindex = this.options.inline ? '0' : '3';
+                var html =  this.options.timeInput ? '<input value="' + secondDisplay + '" size="2" maxlength="2" tabindex="' + tabindex + '" class="ui-inputfield"></input>' : '<span>' + secondDisplay + '</span>';
                 return this.renderTimeElements("ui-second-picker", html, 2);
             }
 
@@ -1604,7 +1611,8 @@
                     millisecondDisplay = millisecond < 10 ? '00' + millisecond : millisecond < 100 ? '0' + millisecond : millisecond;
 
                 //type="number" min="0" max="999" does not work well on Firefox 70, so we don´t use it
-                var html =  this.options.timeInput ? '<input value="' + millisecondDisplay + '" size="3" maxlength="3" tabindex="4"></input>' : '<span>' + millisecondDisplay + '</span>';
+                var tabindex = this.options.inline ? '0' : '4';
+                var html =  this.options.timeInput ? '<input value="' + millisecondDisplay + '" size="3" maxlength="3" tabindex="' + tabindex + '" class="ui-inputfield"></input>' : '<span>' + millisecondDisplay + '</span>';
                 return this.renderTimeElements("ui-millisecond-picker", html, 3);
             }
 
@@ -1679,6 +1687,7 @@
                 this.inputfield.off('focus.datePicker blur.datePicker keydown.datePicker input.datePicker click.datePicker')
                     .on('focus.datePicker', this.onInputFocus.bind($this))
                     .on('blur.datePicker', this.onInputBlur.bind($this))
+                    .on('change.datePicker', this.onInputChange.bind($this))
                     .on('keydown.datePicker', this.onInputKeyDown.bind($this))
                     .on('input.datePicker', this.onUserInput.bind($this))
                     .on('click.datePicker', this.onInputClick.bind($this));
@@ -1791,10 +1800,23 @@
                 this.options.onBlur.call(this, event);
             }
 
-            this.inputfield.val(this.getValueToRender());
-
             this.inputfield.removeClass('ui-state-focus');
             this.container.removeClass('ui-inputwrapper-focus');
+        },
+        
+        onInputChange: function(event) {
+            // TODO: The following code block will be rearranged according to PrimeNG/React/Vue library in future versions.
+            if (this.options.autoMonthFormat && !this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') { 
+                var viewMonth = this.viewDate.getMonth();
+                viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
+                this.viewDate.setMonth(viewMonth);
+            }
+
+            !this.options.keepInvalid && this.inputfield.val(this.getValueToRender());
+            
+            if (this.options.onChange) {
+                this.options.onChange.call(this, event);
+            }
         },
 
         onInputKeyDown: function (event) {
@@ -1826,6 +1848,9 @@
                 this.updateViewDate(event, value.length ? value[0] : value);
             }
             catch (err) {
+                //invalid date - TODO: Update according to PrimeNG/React/Vue library in future versions.
+                // var value = this.options.keepInvalid ? rawValue : null;
+
                 if (!this.options.mask) {
                     this.updateModel(event, rawValue, false);
                 }
@@ -1895,12 +1920,17 @@
                     newViewDate.setMonth(newViewDate.getMonth() - 1, 1);
                 }
 
+                // previous (check first day of month at 00:00:00)
+                newViewDate.setHours(0);
+                newViewDate.setMinutes(0);
+                newViewDate.setSeconds(0);
+
                 // #5967 check if month can be navigated to by checking last day in month
                 var testDate = new Date(newViewDate.getTime()),
                     minDate = this.options.minDate;
                 testDate.setMonth(testDate.getMonth()+1);
                 testDate.setHours(-1);
-                if (minDate && minDate > testDate) {
+                if (this.options.showMinMaxRange && minDate && minDate > testDate) {
                     this.setNavigationState(newViewDate);
                     event.preventDefault();
                     event.stopPropagation();
@@ -1954,9 +1984,14 @@
                     newViewDate.setMonth(newViewDate.getMonth() + 1, 1);
                 }
 
+                // next (check last day of month)
+                newViewDate.setHours(0);
+                newViewDate.setMinutes(0);
+                newViewDate.setSeconds(0);
+
                 // #5967 check if month can be navigated to by checking first day next month
                 var maxDate = this.options.maxDate;
-                if (maxDate && maxDate < newViewDate) {
+                if (this.options.showMinMaxRange && maxDate && maxDate < newViewDate) {
                     this.setNavigationState(newViewDate);
                     event.preventDefault();
                     event.stopPropagation();
@@ -2011,7 +2046,7 @@
                 minDate = this.options.minDate;
             testDate.setMonth(testDate.getMonth()+1);
             testDate.setHours(-1);
-            if (minDate && minDate > testDate) {
+            if (this.options.showMinMaxRange && minDate && minDate > testDate) {
                 navPrev.addClass('ui-state-disabled');
             } else {
                 navPrev.removeClass('ui-state-disabled');
@@ -2019,7 +2054,7 @@
 
             // next
             var maxDate = this.options.maxDate;
-            if (maxDate && maxDate < newViewDate) {
+            if (this.options.showMinMaxRange && maxDate && maxDate < newViewDate) {
                 navNext.addClass('ui-state-disabled');
             } else {
                 navNext.removeClass('ui-state-disabled');
@@ -2175,6 +2210,16 @@
             }
         },
 
+        bindResponsiveResizeListener: function() {
+            var $this = this;
+            if (this.options.autoDetectDisplay && !this.options.inline) {
+                var namespace = 'resize.responsive' + this.options.id;
+                $(window).off(namespace).on(namespace, function() {
+                    $this.updateResponsiveness();
+                });
+            }
+        },
+
         bindWindowResizeListener: function () {
             if (this.options.inline) {
                 return;
@@ -2214,6 +2259,17 @@
                 }
 
                 this.scrollableListener = null;
+            }
+        },
+
+        updateResponsiveness: function() {
+            if (this.options.autoDetectDisplay && this.options.responsiveBreakpoint && !this.options.inline) {
+                var currentUI = this.options.touchUI;
+                var newUi = PrimeFaces.env.mobile || PrimeFaces.env.isScreenSizeLessThan(this.options.responsiveBreakpoint);
+                if (currentUI !== newUi) {
+                    this.options.touchUI = newUi;
+                    this._render();
+                }
             }
         },
 
@@ -2696,6 +2752,7 @@
             if (this.options.onClearButtonClick) {
                 this.options.onClearButtonClick.call(this, event);
             }
+            this.hideOverlay();
         },
 
         escapeHTML: function(value) {
@@ -2732,7 +2789,7 @@
 
             this.viewDate = value;
 
-            if (this.options.monthNavigator && this.options.view !== 'month') {
+            if (this.options.autoMonthFormat && this.options.showMinMaxRange && this.options.monthNavigator && this.options.view !== 'month') {
                 var viewMonth = this.viewDate.getMonth();
                 viewMonth = (this.isInMaxYear() && Math.min(this.options.maxDate.getMonth(), viewMonth)) || (this.isInMinYear() && Math.max(this.options.minDate.getMonth(), viewMonth)) || viewMonth;
                 this.viewDate.setMonth(viewMonth);
