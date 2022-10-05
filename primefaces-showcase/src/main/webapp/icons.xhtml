@@ -23,9 +23,14 @@
                 margin-bottom: .5rem;
             }
 
-            .icons-list  .md:col-2 {
+            .icons-list .md:col-2 {
                 padding-bottom: 2rem;
             }
+
+            .icons-list .new {
+                background: #fff;
+            }
+
         </style>
 
         <script>
@@ -104,7 +109,8 @@
 
             <div id="icons-grid" class="grid icons-list">
                 <ui:repeat value="#{primeIconsView.icons}" var="icon">
-                    <div class="col-12 md:col-2" data-name="#{icon.name}" data-key="#{icon.key}">
+                    <div class="col-12 md:col-2#{primeIconsView.isNew(icon) ? ' new' : ''}"
+                         data-name="#{icon.name}" data-key="#{icon.key}">
                         <i class="pi pi-#{icon.name}"></i>
                         <div>pi-#{icon.name}</div>
                     </div>
