@@ -1277,13 +1277,6 @@ if (!PrimeFaces.ajax) {
                     };
 
                     refocus();
-
-                    // double check it - required for IE
-                    if (PrimeFaces.env.isIE()) {
-                        setTimeout(function() {
-                            refocus();
-                        }, 50);
-                    }
                 }
             },
 

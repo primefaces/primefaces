@@ -49,29 +49,6 @@ if (!PrimeFaces.env) {
             this.preferredColorSchemeLight = !this.preferredColorSchemeDark;
         },
 
-        /**
-         * Checks whether the current browser is the Internet Explorer, and optionally also whether it is a certain
-         * version of Internet Explorer.
-         * @param {1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11} [version] Version of IE to check for. If not given,
-         * checks for any version of Internet Explorer.
-         * @return {boolean} `true` if the current browser is the given version Internet Explorer, or `false` otherwise.
-         */
-        isIE: function(version) {
-            return (version === undefined) ? this.browser.msie: (this.browser.msie && parseInt(this.browser.version, 10) === version);
-        },
-
-        /**
-         * Checks whether the current browser is the Internet Explorer, and whether its version is less than the given
-         * version.
-         * @param {1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11} version Version of IE to check for. If not given,
-         * checks for any version of Internet Explorer.
-         * @return {boolean} `true` if the current browser is the Internet Explorer and its version is less than the
-         * given version.
-         */
-        isLtIE: function(version) {
-            return (this.browser.msie) ? parseInt(this.browser.version, 10) < version : false;
-        },
-
        /**
          * Gets the currently loaded PrimeFaces theme.
          * @return {string} The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.

@@ -1820,10 +1820,7 @@
         },
 
         onInputKeyDown: function (event) {
-            if (PrimeFaces.env.isIE()) {
-                this.isKeydown = true;
-            }
-            
+
             if (event.keyCode === 13) {
                 this.inputfield.val(this.getValueToRender());
             }
@@ -1843,14 +1840,6 @@
         },
 
         onUserInput: function (event) {
-            if (PrimeFaces.env.isIE()) {
-                // IE 11 Workaround for input placeholder
-                if (!this.isKeydown) {
-                   return;
-                }
-                this.isKeydown = false;
-            }
-
             var rawValue = event.target.value;
 
             try {

@@ -49,62 +49,6 @@ public class AgentUtils {
         return userAgentContains(context, "Firefox");
     }
 
-    public static boolean isEdge(FacesContext context) {
-        return userAgentContains(context, "Edge");
-    }
-
-    public static boolean isIE(FacesContext context) {
-        return userAgentContains(context, "MSIE");
-    }
-
-    /**
-     * @deprecated it is unused
-     */
-    @Deprecated
-    public static boolean isIE(FacesContext context, int value) {
-        String userAgent = getUserAgent(context);
-
-        if (userAgent == null) {
-            return false;
-        }
-        else {
-            int index = userAgent.indexOf("MSIE");
-
-            if (index == -1) {
-                return false;
-            }
-            else {
-                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
-
-                return version == value;
-            }
-        }
-    }
-
-    /**
-     * @deprecated it is unused
-     */
-    @Deprecated
-    public static boolean isLessThanIE(FacesContext context, int value) {
-        String userAgent = getUserAgent(context);
-
-        if (userAgent == null) {
-            return false;
-        }
-        else {
-            int index = userAgent.indexOf("MSIE");
-
-            if (index == -1) {
-                return false;
-            }
-            else {
-                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
-
-                return version > value;
-            }
-        }
-    }
-
     public static boolean isMac(FacesContext context) {
         return userAgentContains(context, "Mac");
     }

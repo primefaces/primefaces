@@ -4,7 +4,6 @@
  * PanelMenu is a hybrid component of accordionPanel and tree components.
  * 
  * @prop {string[]} expandedNodes A list of IDs of the menu items that are currently expanded.
- * @prop {boolean} focusCheck Flag for IE to keep track of whether an item was focused.
  * @prop {JQuery | null} focusedItem The DOM elements for the menu item that is currently focused.
  * @prop {JQuery} headers The DOM elements for the accordion panel headers that can be expanded and collapsed.
  * @prop {JQuery} menuitemLinks The DOM elements for the menu items inside each accordion panel that can be clicked.
@@ -124,10 +123,6 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     bindKeyEvents: function() {
         var $this = this;
 
-        if(PrimeFaces.env.isIE()) {
-            this.focusCheck = false;
-        }
-
         this.headers.on('focus.panelmenu', function(){
             $(this).addClass('ui-menuitem-outline');
         })
@@ -151,9 +146,6 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }).on('focus.panelmenu', function(){
             if(!$this.focusedItem) {
                 $this.focusItem($this.getFirstItemOfContent($(this)));
-                if(PrimeFaces.env.isIE()) {
-                    $this.focusCheck = false;
-                }
             }
         });
 
@@ -249,18 +241,11 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
 
                 case keyCode.TAB:
                     if($this.focusedItem) {
-                        if(PrimeFaces.env.isIE()) {
-                            $this.focusCheck = true;
-                        }
                         $(this).trigger('focus');
                     }
                 break;
             }
         }).on('blur.panelmenu', function(e) {
-            if(PrimeFaces.env.isIE() && !$this.focusCheck) {
-                return;
-            }
-
             $this.removeFocusedItem();
         });
 

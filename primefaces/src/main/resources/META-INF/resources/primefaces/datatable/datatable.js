@@ -763,25 +763,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             $this.cfg.filterDelay);
         });
-
-        // #89 IE clear "x" button
-        if (PrimeFaces.env.isIE()) {
-            filter.off('mouseup.dataTable').on('mouseup.dataTable', function(e) {
-                var input = $(this),
-                oldValue = input.val();
-
-                if(oldValue == "") {
-                    return;
-                }
-
-                setTimeout(function() {
-                    var newValue = input.val();
-                    if(newValue == "") {
-                        $this.filter();
-                    }
-                }, 1);
-            });
-        }
     },
 
     /**
@@ -4200,10 +4181,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var title = columnHeader.children('.ui-column-title');
-        if(PrimeFaces.env.isIE()) {
-            title.css('display', 'none');
-        }
-
         var nextColumnHeader = columnHeader.nextAll(':visible:first');
 
         if(this.cfg.liveResize) {
@@ -4219,10 +4196,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var minWidth = parseInt(columnHeader.css('min-width'));
         minWidth = (minWidth == 0) ? 15 : minWidth;
-
-        if(PrimeFaces.env.isIE()) {
-            title.css('display', '');
-        }
 
         if((newWidth > minWidth && nextColumnWidth > minWidth) || (expandMode && newWidth > minWidth)) {
             if(expandMode) {

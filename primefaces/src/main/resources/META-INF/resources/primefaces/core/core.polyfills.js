@@ -72,4 +72,3 @@ if (!('remove' in Element.prototype)) {
         }
     };
 }
-

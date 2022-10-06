@@ -430,10 +430,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(PrimeFaces.env.isIE(9) && (key === keyCode.BACKSPACE || key === keyCode.DELETE)) {
-                $this.processKeyEvent(e);
-            }
-
             if($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER)) {
                 if($this.itemSelectedWithEnter)
                     $this.itemSelectedWithEnter = false;
@@ -1204,11 +1200,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             if ($this.cfg.pojo) {
                 $this.hinput.val(itemValue);
-            }
-
-            if (PrimeFaces.env.isLtIE(10)) {
-                var length = $this.input.val().length;
-                $this.input.setSelection(length, length);
             }
 
             $this.invokeItemSelectBehavior(itemValue);
