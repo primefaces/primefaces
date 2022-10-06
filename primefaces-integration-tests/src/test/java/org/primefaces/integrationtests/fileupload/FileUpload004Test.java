@@ -26,12 +26,10 @@ package org.primefaces.integrationtests.fileupload;
 import java.io.File;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
-import org.primefaces.selenium.internal.ConfigProvider;
 
 /**
  * Tests basic auto multiple file upload.
@@ -117,14 +115,10 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         File file2 = locateClientSideFile("file2.csv");
         File file3 = locateClientSideFile("file3.csv");
         File file = locateClientSideFile("file3.csv");
-        int timeoutAjaxOrig = ConfigProvider.getInstance().getTimeoutAjax();
-        ConfigProvider.getInstance().setTimeoutAjax(1);
-        Assertions.assertThrows(TimeoutException.class, () -> fileUpload.setValue(file1, file2, file3));
-        ConfigProvider.getInstance().setTimeoutAjax(timeoutAjaxOrig);
-
-        Assertions.assertEquals("Maximum number of files exceeded", fileUpload.getWidgetValue());
+        fileUpload.setValue(false, file1, file2, file3);
 
         // Assert
+        Assertions.assertEquals("Maximum number of files exceeded", fileUpload.getWidgetValue());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
@@ -143,14 +137,10 @@ public class FileUpload004Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file3.csv");
-        int timeoutAjaxOrig = ConfigProvider.getInstance().getTimeoutAjax();
-        ConfigProvider.getInstance().setTimeoutAjax(1);
-        Assertions.assertThrows(TimeoutException.class, () -> fileUpload.setValue(file));
-        ConfigProvider.getInstance().setTimeoutAjax(timeoutAjaxOrig);
-
-        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
@@ -168,14 +158,10 @@ public class FileUpload004Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file1.png");
-        int timeoutAjaxOrig = ConfigProvider.getInstance().getTimeoutAjax();
-        ConfigProvider.getInstance().setTimeoutAjax(1);
-        Assertions.assertThrows(TimeoutException.class, () -> fileUpload.setValue(file));
-        ConfigProvider.getInstance().setTimeoutAjax(timeoutAjaxOrig);
-
-        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
