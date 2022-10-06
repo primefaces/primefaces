@@ -124,6 +124,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                     $this.display.text(validationFailureMessage + details);
                     $this.input.val('');
+                    files = $this.input[0].files; // required for FF as of 105
 
                     if ($this.cfg.onvalidationfailure) {
                     	$this.cfg.onvalidationfailure({

@@ -64,6 +64,16 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @param value the file name to set
      */
     public void setValue(Serializable value) {
+        setValue(value, true);
+    }
+
+    /**
+     * Sets the input's value.
+     * This should be the files absolute path.
+     * @param value the file name to
+     * @param useGuard use guard to wait until the upload finished
+     */
+    public void setValue(Serializable value, boolean useGuard) {
         Runnable runnable = () -> {
             if (getInput() != this && !PrimeSelenium.isChrome()) {
                 // input file cannot be cleared if skinSimple=false or in Chrome
@@ -76,17 +86,22 @@ public abstract class FileUpload extends AbstractInputComponent {
         };
 
         if (isAutoUpload()) {
-            if (isAdvancedMode()) {
-                Runnable guarded = Guard.custom(
-                    runnable,
-                    200,
-                    ConfigProvider.getInstance().getTimeoutFileUpload(),
-                    PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
+            if (useGuard) {
+                if (isAdvancedMode()) {
+                    Runnable guarded = Guard.custom(
+                            runnable,
+                            200,
+                            ConfigProvider.getInstance().getTimeoutFileUpload(),
+                            PrimeExpectedConditions.script("return " + getWidgetByIdScript() + ".files.length === 0;"));
 
-                guarded.run();
+                    guarded.run();
+                }
+                else {
+                    PrimeSelenium.guardAjax(runnable).run();
+                }
             }
             else {
-                PrimeSelenium.guardAjax(runnable).run();
+                runnable.run();
             }
         }
         else {
@@ -99,12 +114,21 @@ public abstract class FileUpload extends AbstractInputComponent {
      * @param values the file name(s) to set
      */
     public void setValue(File... values) {
+        setValue(true, values);
+    }
+
+    /**
+     * Sets the input's value from given files.
+     * @param values the file name(s) to set
+     * @param useGuard use guard to wait until the upload finished
+     */
+    public void setValue(boolean useGuard, File... values) {
         // several references in the WEB state that (at least) Firefox and Chrome accept
         // multiple filenames separated by a new line character
         String paths = Arrays.stream(values)
                 .map(f -> f.getAbsolutePath())
                 .collect(Collectors.joining("\n"));
-        setValue(paths);
+        setValue(paths, useGuard);
     }
 
     /**

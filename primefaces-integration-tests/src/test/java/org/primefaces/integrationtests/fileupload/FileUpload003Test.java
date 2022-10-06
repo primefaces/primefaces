@@ -27,12 +27,10 @@ import java.io.File;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
-import org.primefaces.selenium.internal.ConfigProvider;
 
 /**
  * Tests basic auto single file upload.
@@ -95,14 +93,10 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file3.csv");
-        int timeoutAjaxOrig = ConfigProvider.getInstance().getTimeoutAjax();
-        ConfigProvider.getInstance().setTimeoutAjax(1);
-        Assertions.assertThrows(TimeoutException.class, () -> fileUpload.setValue(file));
-        ConfigProvider.getInstance().setTimeoutAjax(timeoutAjaxOrig);
-
-        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
@@ -120,14 +114,10 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file1.png");
-        int timeoutAjaxOrig = ConfigProvider.getInstance().getTimeoutAjax();
-        ConfigProvider.getInstance().setTimeoutAjax(1);
-        Assertions.assertThrows(TimeoutException.class, () -> fileUpload.setValue(file));
-        ConfigProvider.getInstance().setTimeoutAjax(timeoutAjaxOrig);
-
-        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
