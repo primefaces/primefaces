@@ -41,7 +41,11 @@ public class HorizontalBarChartModel extends BarChartModel {
     @Override
     public BarChartOptions getOptions() {
         BarChartOptions barChartOptions = super.getOptions();
+        if (barChartOptions == null) {
+            barChartOptions = new BarChartOptions();
+            setOptions(barChartOptions);
+        }
         barChartOptions.setIndexAxis("y");
-        return  barChartOptions;
+        return barChartOptions;
     }
 }
