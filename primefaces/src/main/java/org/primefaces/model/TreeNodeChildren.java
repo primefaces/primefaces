@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,10 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
 
     public TreeNodeChildren(TreeNode<T> parent) {
         this.parent = parent;
+    }
+
+    public TreeNode<T> getParent() {
+        return parent;
     }
 
     private void eraseParent(TreeNode<T> node) {
@@ -182,7 +186,7 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
         }
     }
 
-    private void updateRowKeys(TreeNode<?> node) {
+    protected void updateRowKeys(TreeNode<?> node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -193,7 +197,7 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
         }
     }
 
-    private void updateRowKeys(int index, TreeNode<?> node) {
+    protected void updateRowKeys(int index, TreeNode<?> node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = index; i < childCount; i++) {
@@ -203,7 +207,7 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
         }
     }
 
-    private void updateRowKeys(TreeNode<?> node, TreeNode<?> childNode, int i) {
+    protected void updateRowKeys(TreeNode<?> node, TreeNode<?> childNode, int i) {
         String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
         childNode.setRowKey(childRowKey);
         this.updateRowKeys(childNode);

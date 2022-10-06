@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -100,10 +101,11 @@ public class OutputLabelRenderer extends CoreRenderer {
                             }
                             else {
                                 String labelString = value;
-                                int colonPos = labelString.lastIndexOf(':');
+                                char separatorChar = UINamingContainer.getSeparatorChar(context);
+                                int separatorCharPos = labelString.lastIndexOf(separatorChar);
 
-                                if (colonPos != -1) {
-                                    labelString = labelString.substring(0, colonPos);
+                                if (separatorCharPos != -1) {
+                                    labelString = labelString.substring(0, separatorCharPos);
                                 }
 
                                 input.getAttributes().put("label", labelString);

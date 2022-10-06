@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,8 +43,9 @@ public class PrimeResource extends ResourceWrapper {
         wrapped = resource;
 
         FacesContext context = FacesContext.getCurrentInstance();
-        version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion() ? "" :
-                "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
+        version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion()
+                ? null
+                : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
     }
 
     @Override
@@ -54,6 +55,9 @@ public class PrimeResource extends ResourceWrapper {
 
     @Override
     public String getRequestPath() {
+        if (version == null) {
+            return super.getRequestPath();
+        }
         return super.getRequestPath() + version;
     }
 

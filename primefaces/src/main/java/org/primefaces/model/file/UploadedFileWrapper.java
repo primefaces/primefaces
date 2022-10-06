@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.model.file;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
@@ -32,7 +33,7 @@ import javax.faces.context.FacesContext;
 /**
  * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
  */
-public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder {
+public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder, Serializable {
 
     private UploadedFile wrapped;
 

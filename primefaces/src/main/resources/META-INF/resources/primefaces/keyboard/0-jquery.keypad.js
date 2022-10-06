@@ -5,7 +5,7 @@
    Please attribute the author if you use it. */
 
 /* globals JQClass */
-/*! Simple JavaScript Inheritance
+/* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.
  */
@@ -84,7 +84,7 @@
 		return JQClass;
 	};
 })();
-/*! Abstract base class for collection plugins v1.0.2.
+/* Abstract base class for collection plugins v1.0.2.
 	Written by Keith Wood (wood.keith{at}optusnet.com.au) December 2013.
 	Licensed under the MIT license (http://keith-wood.name/licence.html). */
 (function($) { // Ensure $, encapsulate

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -113,7 +113,9 @@ public class ScheduleRenderer extends CoreRenderer {
                 }
                 jsonObject.put("title", event.getTitle());
                 jsonObject.put("start", dateTimeFormatter.format(event.getStartDate().atZone(zoneId)));
-                jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
+                if (event.getEndDate() != null) {
+                    jsonObject.put("end", dateTimeFormatter.format(event.getEndDate().atZone(zoneId)));
+                }
                 jsonObject.put("allDay", event.isAllDay());
                 if (event.isDraggable() != null) {
                     jsonObject.put("startEditable", event.isDraggable());

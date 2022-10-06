@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,8 @@ public class InputNumber006 implements Serializable {
     private static final long serialVersionUID = -3197892739640653975L;
     private Integer value;
 
+    private Integer value2;
+
     @PostConstruct
     public void init() {
 
@@ -53,8 +55,21 @@ public class InputNumber006 implements Serializable {
         }
     }
 
+    public String buildSomeSecondOutput() {
+        if (value2 == null) {
+            return "no value";
+        }
+        else {
+            return "value = " + value2;
+        }
+    }
+
     public void someAction() {
         TestUtils.addMessage("some action; value: " + value);
+    }
+
+    public void someSecondAction() {
+        TestUtils.addMessage("some second action; value: " + value2);
     }
 
 }

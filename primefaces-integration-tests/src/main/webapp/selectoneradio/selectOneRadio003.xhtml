@@ -18,16 +18,16 @@
 
             <h:panelGrid columns="2" cellpadding="5">
                 <p:radioButton id="opt1" for="selectoneradio" itemIndex="0"/>
-                <h:outputLabel for="opt1" value="Lewis"/>
+                <p:outputLabel id="label1" for="opt1" value="Lewis"/>
 
                 <p:radioButton id="opt2" for="selectoneradio" itemIndex="1"/>
-                <h:outputLabel for="opt2" value="Max"/>
+                <p:outputLabel id="label2" for="opt2" value="Max"/>
 
                 <p:radioButton id="opt3" for="selectoneradio" itemIndex="2"/>
-                <h:outputLabel for="opt3" value="Charles"/>
+                <p:outputLabel id="label3" for="opt3" value="Charles"/>
 
                 <p:radioButton id="opt4" for="selectoneradio" itemIndex="3"/>
-                <h:outputLabel for="opt4" value="Lando"/>
+                <p:outputLabel id="label4" for="opt4" value="Lando"/>
             </h:panelGrid>
 
             <p:commandButton id="submit" update="@form" value="Submit"/>

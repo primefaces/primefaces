@@ -2,7 +2,7 @@
     font-family: 'primeicons';
     font-display: block;
     src: url("#{resource['primefaces:primeicons/primeicons.eot']}");
-    src: url("#{resource['primefaces:primeicons/primeicons.eot']}#iefix") format("embedded-opentype"), url("#{resource['primefaces:primeicons/primeicons.ttf']}") format("truetype"), url("#{resource['primefaces:primeicons/primeicons.woff']}") format("woff"), url("#{resource['primefaces:primeicons/primeicons.svg']}?#primeicons") format("svg");
+    src: url("#{resource['primefaces:primeicons/primeicons.eot']}#iefix") format('embedded-opentype'), url("#{resource['primefaces:primeicons/primeicons.woff2']}") format('woff2'), url("#{resource['primefaces:primeicons/primeicons.woff']}") format('woff'), url("#{resource['primefaces:primeicons/primeicons.ttf']}") format('truetype'), url("#{resource['primefaces:primeicons/primeicons.svg']}#primeicons") format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -55,6 +55,94 @@
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
     }
+}
+
+.pi-eraser:before {
+    content: "\ea04";
+}
+
+.pi-stopwatch:before {
+    content: "\ea01";
+}
+
+.pi-verified:before {
+    content: "\ea02";
+}
+
+.pi-delete-left:before {
+    content: "\ea03";
+}
+
+.pi-hourglass:before {
+    content: "\e9fe";
+}
+
+.pi-truck:before {
+    content: "\ea00";
+}
+
+.pi-wrench:before {
+    content: "\e9ff";
+}
+
+.pi-microphone:before {
+    content: "\e9fa";
+}
+
+.pi-megaphone:before {
+    content: "\e9fb";
+}
+
+.pi-arrow-right-arrow-left:before {
+    content: "\e9fc";
+}
+
+.pi-bitcoin:before {
+    content: "\e9fd";
+}
+
+.pi-file-edit:before {
+    content: "\e9f6";
+}
+
+.pi-language:before {
+    content: "\e9f7";
+}
+
+.pi-file-export:before {
+    content: "\e9f8";
+}
+
+.pi-file-import:before {
+    content: "\e9f9";
+}
+
+.pi-file-word:before {
+    content: "\e9f1";
+}
+
+.pi-gift:before {
+    content: "\e9f2";
+}
+
+.pi-cart-plus:before {
+    content: "\e9f3";
+}
+
+.pi-thumbs-down-fill:before {
+    content: "\e9f4";
+}
+
+.pi-thumbs-up-fill:before {
+    content: "\e9f5";
+}
+
+.pi-arrows-alt:before {
+    content: "\e9f0";
+}
+
+.pi-calculator:before {
+    content: "\e9ef";
 }
 
 .pi-sort-alt-slash:before {

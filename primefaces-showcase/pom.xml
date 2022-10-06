@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>12.0.0-SNAPSHOT</version>
+        <version>13.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -17,13 +17,13 @@
     <name>PrimeFaces Showcase</name>
 
     <properties>
-        <owb.version>2.0.26</owb.version>
-        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
-        <mojarra.version>2.3.17</mojarra.version>
-        <myfaces.version>2.3.9</myfaces.version>
+        <owb.version>2.0.27</owb.version>
+        <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
+        <mojarra.version>2.3.18</mojarra.version>
+        <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <resteasy.version>5.0.3.Final</resteasy.version>
-        <jetty.version>9.4.46.v20220331</jetty.version>
+        <resteasy.version>5.0.4.Final</resteasy.version>
+        <jetty.version>9.4.49.v20220914</jetty.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
 
@@ -117,7 +117,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.36</version>
+            <version>2.0.3</version>
         </dependency>
 
         <!-- GraphicImage -->
@@ -225,7 +225,7 @@
             <plugin>
                 <groupId>io.github.cleydyr</groupId>
                 <artifactId>dart-sass-maven-plugin</artifactId>
-                <version>0.2.0</version>
+                <version>0.3.0</version>
                 <executions>
                     <execution>
                         <id>generate-css-using-sass</id>
@@ -285,7 +285,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.2</version>
             </extension>
         </extensions>
     </build>

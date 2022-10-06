@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,6 @@
 package org.primefaces.application.resource;
 
 import java.io.ByteArrayInputStream;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.util.Constants;
-
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,7 +31,17 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.application.ProjectStage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.primefaces.model.StreamedContent;
+import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
@@ -128,7 +129,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                 context.responseComplete();
             }
             catch (Exception e) {
-                throw new IOException("Error in streaming dynamic resource", e);
+                throw new IOException("Error in streaming dynamic resource. Verify you are not using a @ViewScoped bean.", e);
             }
         }
     }

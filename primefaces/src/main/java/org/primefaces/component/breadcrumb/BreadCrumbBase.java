@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         homeDisplay,
+        homeIcon,
         tabindex,
         lastItemDisabled,
         seo;
@@ -92,6 +93,14 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public void setHomeDisplay(String homeDisplay) {
         getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
+    }
+
+    public String getHomeIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.homeIcon, "ui-icon ui-icon-home");
+    }
+
+    public void setHomeIcon(String homeIcon) {
+        getStateHelper().put(PropertyKeys.homeIcon, homeIcon);
     }
 
     @Override

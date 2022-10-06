@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package org.primefaces.model.charts.axes.cartesian.linear;
 import java.io.IOException;
 
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
+import org.primefaces.model.charts.axes.cartesian.CartesianTime;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -41,6 +42,7 @@ public class CartesianLinearAxes extends CartesianAxes {
     private String type;
     private boolean beginAtZero;
     private CartesianLinearTicks ticks;
+    private CartesianTime time;
 
     /**
      * Gets the ticks
@@ -96,6 +98,14 @@ public class CartesianLinearAxes extends CartesianAxes {
         this.type = type;
     }
 
+    public CartesianTime getTime() {
+        return time;
+    }
+
+    public void setTime(CartesianTime time) {
+        this.time = time;
+    }
+
     /**
      * Write the options of cartesian category axes
      *
@@ -114,8 +124,15 @@ public class CartesianLinearAxes extends CartesianAxes {
                 fsw.write(this.ticks.encode());
                 fsw.write("}");
             }
+            if (this.time != null) {
+                fsw.write(",\"time\":{");
+                fsw.write(this.time.encode());
+                fsw.write("}");
+            }
 
             return fsw.toString();
         }
     }
+
+
 }

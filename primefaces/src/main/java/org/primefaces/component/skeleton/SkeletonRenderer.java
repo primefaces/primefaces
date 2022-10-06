@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.skeleton;
 
-import org.primefaces.renderkit.CoreRenderer;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import java.io.IOException;
+import org.primefaces.renderkit.CoreRenderer;
 
 public class SkeletonRenderer extends CoreRenderer {
 
@@ -51,7 +51,7 @@ public class SkeletonRenderer extends CoreRenderer {
                          .add(skeleton.getStyle())
                          .add(hasSize,  "width", size, skeleton.getWidth())
                          .add(hasSize,  "height", size, skeleton.getHeight())
-                         .add(borderRadius != null,  "borderRadius", borderRadius)
+                         .add(borderRadius != null,  "border-radius", borderRadius)
                          .build();
 
         writer.startElement("div", null);

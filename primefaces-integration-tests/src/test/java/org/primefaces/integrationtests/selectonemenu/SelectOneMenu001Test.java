@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
 
 public class SelectOneMenu001Test extends AbstractPrimePageTest {
@@ -143,8 +144,42 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         selectOneMenu.selectByValue("2");
         page.button.click();
 
-        // Assert - part 1
+        // Assert
         Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("SelectOneMenu: itemSelect - event")
+    public void testItemSelect(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+
+        // Act
+        selectOneMenu.select("Max");
+
+        // Assert - part 1
+        Assertions.assertEquals("2", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("Driver-ID (itemSelect)", page.messages.getMessage(0).getSummary());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("SelectOneMenu: change - event")
+    public void testChange(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu2;
+        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+
+        // Act
+        selectOneMenu.select("Max");
+
+        // Assert - part 1
+        Assertions.assertEquals("2", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
@@ -162,8 +197,14 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         @FindBy(id = "form:selectonemenu")
         SelectOneMenu selectOneMenu;
 
+        @FindBy(id = "form:selectonemenu2")
+        SelectOneMenu selectOneMenu2;
+
         @FindBy(id = "form:button")
         CommandButton button;
+
+        @FindBy(id = "form:msgs")
+        Messages messages;
 
         @Override
         public String getLocation() {

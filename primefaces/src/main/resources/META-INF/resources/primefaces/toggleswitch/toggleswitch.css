@@ -17,9 +17,8 @@
     border-radius: 30px;
 }
 
-.ui-toggleswitch-slider:before {
+.ui-toggleswitch-handler {
     position: absolute;
-    content: "";
     height: 1.250em;
     width: 1.250em;
     left: .25em;
@@ -27,10 +26,39 @@
     border-radius: 50%;
     -webkit-transition: .3s;
     transition: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.ui-toggleswitch-checked .ui-toggleswitch-slider:before {
+.ui-toggleswitch-checked .ui-toggleswitch-handler {
     -webkit-transform: translateX(1.250em);
     -ms-transform: translateX(1.250em);
     transform: translateX(1.250em);
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler {
+    position: relative;
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span {
+    position: absolute;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: opacity,transform;
+}
+
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span + span {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+.ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span + span {
+    opacity: 1;
+    transform: rotate(0deg);
 }

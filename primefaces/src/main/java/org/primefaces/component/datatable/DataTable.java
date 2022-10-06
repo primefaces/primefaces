@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
@@ -61,8 +62,8 @@ import org.primefaces.util.*;
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
-@ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
+@ResourceDependency(library = "primefaces", name = "components.js")
 public class DataTable extends DataTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
@@ -197,6 +198,7 @@ public class DataTable extends DataTableBase {
         visibleColumnsAsMap,
         resizableColumnsAsMap,
         selectedRowKeys,
+        selectAll,
         expandedRowKeys,
         columnMeta,
         width;
@@ -325,6 +327,34 @@ public class DataTable extends DataTableBase {
                 FilterEvent wrappedEvent = new FilterEvent(this, event.getBehavior(), getFilterByAsMap());
                 wrappedEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 super.queueEvent(wrappedEvent);
+            }
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+
+        // GitHub #8992: Must set mutate the filter value
+        Map<String, FilterMeta> filterBy = getFilterByAsMap();
+        ELContext elContext = context.getELContext();
+        for (FilterMeta filter : filterBy.values()) {
+            UIColumn column = findColumn(filter.getColumnKey());
+            if (column == null) {
+                continue;
+            }
+            ValueExpression columnFilterValueVE = column.getValueExpression(Column.PropertyKeys.filterValue.toString());
+            if (columnFilterValueVE == null) {
+                continue;
+            }
+            if (column.isDynamic()) {
+                DynamicColumn dynamicColumn = (DynamicColumn) column;
+                dynamicColumn.applyStatelessModel();
+                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                dynamicColumn.cleanStatelessModel();
+            }
+            else {
+                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
             }
         }
     }
@@ -461,8 +491,11 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyDataIfRequired() {
-        if (isLazy() && ((LazyDataModel) getValue()).getWrappedData() == null) {
-            loadLazyData();
+        if (isLazy()) {
+            DataModel model = getDataModel();
+            if (model instanceof LazyDataModel && ((LazyDataModel) model).getWrappedData() == null) {
+                loadLazyData();
+            }
         }
     }
 
@@ -604,22 +637,10 @@ public class DataTable extends DataTableBase {
             if (!hasRowKeyVe) {
                 throw new UnsupportedOperationException("DataTable#rowKey must be defined for component " + getClientId(getFacesContext()));
             }
-            else {
-                Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-                String var = getVar();
-                boolean containsVar = requestMap.containsKey(var);
-                if (!containsVar) {
-                    requestMap.put(var, object);
-                }
 
-                String rowKey = getRowKey();
-
-                if (!containsVar) {
-                    requestMap.remove(var);
-                }
-
-                return rowKey;
-            }
+            return ComponentUtils.executeInRequestScope(getFacesContext(), getVar(), object, () -> {
+                return getRowKey();
+            });
         }
     }
 
@@ -658,6 +679,14 @@ public class DataTable extends DataTableBase {
 
     public String getSelectedRowKeysAsString() {
         return String.join(",", getSelectedRowKeys());
+    }
+
+    public boolean isSelectAll() {
+        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.selectAll, () -> false);
+    }
+
+    public void setSelectAll(boolean selectAll) {
+        getStateHelper().put(InternalPropertyKeys.selectAll, selectAll);
     }
 
     public SummaryRow getSummaryRow() {
@@ -974,7 +1003,7 @@ public class DataTable extends DataTableBase {
     @Override
     public Object saveState(FacesContext context) {
         // reset value when filtering is enabled
-        // filtering stores the filtered values the value property, so it needs to be resetted; see #7336
+        // filtering stores the filtered values the value property, so it needs to be reset; see #7336
         if (isFilteringEnabled()) {
             setValue(null);
         }
@@ -1205,5 +1234,12 @@ public class DataTable extends DataTableBase {
                 mvs.getExpandedRowKeys().remove(rowKey);
             }
         }
+    }
+
+    public LazyDataModel<?> getLazyDataModel() {
+        if (isLazy()) {
+            return (LazyDataModel<?>) getDataModel();
+        }
+        return null;
     }
 }

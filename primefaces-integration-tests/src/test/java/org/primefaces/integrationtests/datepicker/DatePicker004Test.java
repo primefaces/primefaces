@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -144,9 +144,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert - clear button reset to NOW
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
-        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, Objects.toString(now.getHour()), null, null);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         Assertions.assertNull(datePicker.getValue());
     }
 
@@ -226,9 +224,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert - clear button reset to NOW
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
-        assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, Objects.toString(now.getHour()), null, null);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         Assertions.assertNull(datePicker.getValue());
     }
 

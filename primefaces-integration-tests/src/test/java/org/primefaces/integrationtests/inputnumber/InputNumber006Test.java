@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,8 @@ public class InputNumber006Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("InputNumber: click on button after typing into InputNumber must trigger two ajax-calls")
-    public void testAjaxChangeEvent(final Page page) {
+    @DisplayName("InputNumber: click on button after typing into InputNumber must trigger two ajax-calls (valueChange-Event)")
+    public void testAjaxValueChangeEvent(final Page page) {
         // Arrange
         InputNumber inputNumber = page.inputnumber;
 
@@ -63,6 +63,30 @@ public class InputNumber006Test extends AbstractPrimePageTest {
         assertConfiguration(inputNumber.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(2)
+    @DisplayName("InputNumber: click on button after typing into InputNumber must trigger two ajax-calls (blur-Event)")
+    public void testAjaxBlurEvent(final Page page) {
+        // Arrange
+        InputNumber inputNumber = page.inputnumber2;
+
+        // Act
+        inputNumber.getInput().sendKeys("5678");
+        page.button2.click();
+        /*
+         Wait a bit because clicking the button triggers two ajax-calls and AjaxGuard as part of button.click() only
+         guards the first AJAX-call.
+         */
+        PrimeSelenium.wait(500);
+
+        // Assert
+        Assertions.assertEquals("value = 5678", page.outputpanel2.getText());
+        Assertions.assertFalse(page.messages.isEmpty());
+        Assertions.assertEquals("some second action; value: 5678", page.messages.getMessage(0).getSummary());
+
+        assertConfiguration(inputNumber.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputNumber Config = " + cfg);
@@ -76,11 +100,20 @@ public class InputNumber006Test extends AbstractPrimePageTest {
         @FindBy(id = "form:inputnumber")
         InputNumber inputnumber;
 
+        @FindBy(id = "form:inputnumber2")
+        InputNumber inputnumber2;
+
         @FindBy(id = "form:button")
         CommandButton button;
 
+        @FindBy(id = "form:button2")
+        CommandButton button2;
+
         @FindBy(id = "form:outputpanel")
         WebElement outputpanel;
+
+        @FindBy(id = "form:outputpanel2")
+        WebElement outputpanel2;
 
         @Override
         public String getLocation() {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,9 @@ package org.primefaces.component.repeat;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -44,21 +41,15 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostValidateEvent;
-import javax.faces.event.PreValidateEvent;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.ResultSetDataModel;
-import javax.faces.model.ScalarDataModel;
+import javax.faces.event.*;
+import javax.faces.model.*;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.api.IterationStatus;
 import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -70,14 +61,21 @@ import org.primefaces.util.Constants;
  * Also see: https://code.google.com/archive/p/primefaces/issues/7190
  * Mojarra's implementation if ui:repeat needs to check if ui:repeat is nested in another repeat component, see: {@link #isNestedInIterator}.
  * This is not required in the MyFaces impl.
- * Would be nice if Mojarra could enhance their implementation some day.
+ *
+ * Mojarra has finally addressed all issues this class was solving in 2.3.18, 3.0.3, 4.0.
+ * Issue: https://github.com/eclipse-ee4j/mojarra/issues/4957
+ *
+ * @deprecated Use JSF ui:repeat
  */
 //CHECKSTYLE:OFF
+@Deprecated
 public class UIRepeat extends UINamingContainer {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIRepeat";
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
+    
+    private static final Logger LOGGER = Logger.getLogger(UIRepeat.class.getName());
 
     private final static DataModel EMPTY_MODEL =
           new ListDataModel<>(Collections.emptyList());
@@ -527,6 +525,15 @@ public class UIRepeat extends UINamingContainer {
         // stop if not rendered
         if (!this.isRendered())
             return;
+        
+        PrimeEnvironment environment = PrimeApplicationContext.getCurrentInstance(faces).getEnvironment();
+        if (environment.isMojarra()) {
+            LOGGER.log(Level.WARNING, "Mojarra versions 2.3.18, 3.0.3, and 4.0+ do not require p:repeat, "
+                        + "please upgrade and switch to ui:repeat.");
+        }
+        else {
+            LOGGER.log(Level.WARNING, "Apache MyFaces does not require p:repeat, please switch to ui:repeat.");
+        }
 
         // clear datamodel
         this.resetDataModel();

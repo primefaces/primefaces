@@ -199,6 +199,10 @@ if (!PrimeFaces.utils) {
                         }
                     }
                 }
+                else if (event.ctrlKey) { 
+                    // #8965 allow cut, copy, paste
+                    return;
+                }
                 else if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
@@ -383,9 +387,12 @@ if (!PrimeFaces.utils) {
          * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-
-            var scrollParent = widget.getJQ().scrollParent();
-            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
+            var scrollParent;
+            var widgetJq = widget.getJQ();
+            if (widgetJq && typeof widgetJq.scrollParent === 'function') {
+                scrollParent = widgetJq.scrollParent();
+            }
+            if (!scrollParent || PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
@@ -892,6 +899,20 @@ if (!PrimeFaces.utils) {
             else {
                 element.removeClass('ui-inputwrapper-filled');
             }
+        },
+
+        /**
+         * Decode escaped XML into regular string.
+         *
+         * @param {string | undefined} input the input to check if filled
+         * @return {string | undefined} either the original string or escaped XML
+         */
+        decodeXml: function(input) {
+            if (/&amp;|&quot;|&#39;|'&lt;|&gt;/.test(input)) {
+                var doc = new DOMParser().parseFromString(input, "text/html");
+                return doc.documentElement.textContent;
+            }
+            return input;
         }
     };
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ import org.primefaces.util.SharedStringBuilder;
 
 public class AvatarRenderer extends CoreRenderer {
 
-    private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]");
+    private static final Pattern LETTER_PATTTERN = Pattern.compile("\\b[\\p{L}\\p{M}]", Pattern.UNICODE_CHARACTER_CLASS);
     private static final String GRAVATAR_URL = "https://www.gravatar.com/avatar/";
     private static final String SB_AVATAR = AvatarRenderer.class.getName() + "#avatar";
 

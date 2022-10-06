@@ -18,11 +18,20 @@
                 <p:ajax process="@this" update="form:outputpanel"/>
             </p:inputNumber>
 
+            <p:inputNumber id="inputnumber2" value="#{inputNumber006.value2}" decimalPlaces="0">
+                <p:ajax process="@this" update="form:outputpanel2" event="blur"/>
+            </p:inputNumber>
+
             <p:outputPanel id="outputpanel">
                 #{inputNumber006.buildSomeOutput()}
             </p:outputPanel>
 
+            <p:outputPanel id="outputpanel2">
+                #{inputNumber006.buildSomeSecondOutput()}
+            </p:outputPanel>
+
             <p:commandButton id="button" update="form:msgs" value="Submit" action="#{inputNumber006.someAction()}"/>
+            <p:commandButton id="button2" update="form:msgs" value="Submit 2" action="#{inputNumber006.someSecondAction()}"/>
         </h:form>
 
     </h:body>

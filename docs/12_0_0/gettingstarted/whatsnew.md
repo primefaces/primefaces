@@ -20,8 +20,19 @@ This page contains a list of big features. Please check the GitHub issues for al
 * CommandLink
   * Now has a widget and can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the link during Ajax requests triggered by it.
-* Exporter: added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output.
+* DataExporter:
+  * Added new options for `visibleOnly`, `exportHeader` and `exportFooter` to give better control over output. 
+  * ExcelOptions: Added new property `numberFormat` in order to use a custom java.text.DecimalFormat for formatting numbers in Excel export. If null, defaults to decimal format of current Locale.
+  * ExcelOptions: Added new property `currencyFormat` in order to use a custom java.text.DecimalFormat for formatting currency in Excel export. If null, defaults to decimal format of current Locale.
+* DatePicker: added `showMinMaxRange` attribute to only display valid dates within the min/max range.
+* Dialog Framework
+  * Improved responsive dialogs including showcase-example.
+  * DialogFrameworkOptions including builder as convenient way to create dialog-options.
 * FileUpload: added `clear()` widget method in SkinSimple mode to clear out selected file.
+* Galleria: added `hide()` widget method to hide content on fullscreen mode.
+* GMap
+  * Added `Symbol` which can be used as marker icon.
+  * Models and events now have generically typed data instead of `Object`.
 * InputMask: added new options for `showMaskOnFocus` and `showMaskOnHover` to give better control over mask.
 * MenuButton
   * Now can be enabled and disabled by its widget.
@@ -35,13 +46,20 @@ This page contains a list of big features. Please check the GitHub issues for al
   * Now can be enabled and disabled by its widget.
   * Added `disableOnAjax` attribute to disable the button during Ajax requests triggered by it or its menu items.
   * Added Ajax load indicator (spinner) within the button during Ajax requests triggered by it.
-* TabView: added `ui-state-error` class to tabs that contain invalid inputs.
+* TabMenu: added `orientation` (of the tab items relative to where you want to put the content) attribute.
+* TabView: added `ui-state-error` class to tabs that contain invalid inputs and `focusOnError` if you want to focus the first tab with an error.
 * Tree: added `filterFunction` attribute for custom filtering.
 * ToggleSwitch: added `onIcon` and `offIcon` attributes
 * Tooltip: added `autoHide` attribute when set to false will keep the tooltip showing while focused.
 * OverlayPanel: added `autoHide` attribute when set to false will keep the overlay showing while focused.
+* PrimeIcons: updated to 6.0.1.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
+Or check the list of 400+ issues closed for
+[12.0.0-RC1](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0-RC1),
+[12.0.0-RC2](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0-RC2),
+[12.0.0-RC3](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0-RC3)
+and [12.0.0](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0).
 
 ### PrimeFaces Selenium 
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,9 @@
  */
 package org.primefaces.util;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -37,10 +39,12 @@ import javax.faces.application.NavigationCase;
 import javax.faces.component.*;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.component.html.HtmlOutputFormat;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 
@@ -49,10 +53,15 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
+
 public class ComponentUtils {
 
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
             EnumSet.of(VisitHint.SKIP_UNRENDERED));
+
+    public static final Set<VisitHint> VISIT_HINTS_SKIP_ITERATION = Collections.unmodifiableSet(
+            EnumSet.of(VisitHint.SKIP_ITERATION));
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
@@ -99,7 +108,12 @@ public class ComponentUtils {
 
             ValueHolder valueHolder = (ValueHolder) component;
             if (value == UNDEFINED_VALUE) {
-                value = valueHolder.getValue();
+                if (component instanceof HtmlOutputFormat) {
+                    value = encodeComponent(component, context);
+                }
+                else {
+                    value = valueHolder.getValue();
+                }
             }
 
             //format the value as string
@@ -255,7 +269,11 @@ public class ComponentUtils {
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        return component.isTouchable() || PrimeRequestContext.getCurrentInstance(context).isTouchable();
+        Boolean local = component.isTouchable();
+        if (local != null) {
+            return local;
+        }
+        return PrimeRequestContext.getCurrentInstance(context).isTouchable();
     }
 
     public static boolean isFlex(FacesContext context, FlexAware component) {
@@ -606,5 +624,55 @@ public class ComponentUtils {
                 ComponentTraversalUtils.closest(UITable.class, (UIComponent) column);
 
         return table.getConvertedFieldValue(FacesContext.getCurrentInstance(), column);
+    }
+
+    /**
+     * Encodes the given component locally as HTML.
+     * @param component The component to capture HTML output for.
+     * @param context The current FacesContext.
+     * @return The encoded HTML output of the given component.
+     * @throws UncheckedIOException Whenever something fails at I/O level. This would be quite unexpected as it happens locally.
+     */
+    public static String encodeComponent(UIComponent component, FacesContext context) {
+        FastStringWriter output = new FastStringWriter();
+        ResponseWriter originalWriter = context.getResponseWriter();
+
+        if (originalWriter != null) {
+            context.setResponseWriter(originalWriter.cloneWithWriter(output));
+        }
+        else {
+            context.setResponseWriter(getRenderKit(context).createResponseWriter(output, "text/html", "UTF-8"));
+        }
+
+        try {
+            component.encodeAll(context);
+        }
+        catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        finally {
+            if (originalWriter != null) {
+                context.setResponseWriter(originalWriter);
+            }
+        }
+
+        return output.toString();
+    }
+
+    public static <T> T executeInRequestScope(FacesContext context, String var, Object value, Supplier<T> callback) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        Object oldValue = requestMap.remove(var);
+        try {
+            requestMap.put(var, value);
+
+            return callback.get();
+        }
+        finally {
+            requestMap.remove(var);
+            if (oldValue != null) {
+                requestMap.put(var, oldValue);
+            }
+        }
     }
 }

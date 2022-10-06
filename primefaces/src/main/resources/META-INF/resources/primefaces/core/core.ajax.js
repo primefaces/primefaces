@@ -892,6 +892,10 @@ if (!PrimeFaces.ajax) {
                             PrimeFaces.error(err);
                         }
 
+                        if(global) {
+                            $(document).trigger('pfAjaxUpdated', [xhr, this]);
+                        }
+
                         PrimeFaces.debug('DOM is updated.');
                     })
                     .always(function(data, status, xhr) {

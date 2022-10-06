@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,6 +61,10 @@ public class SelectionFeature implements DataTableFeature {
 
         if (LangUtils.isNotBlank(selection)) {
             rowKeys = LangUtils.newLinkedHashSet(selection.split(","));
+            table.setSelectAll(ALL_SELECTOR.equals(selection));
+        }
+        else {
+            table.setSelectAll(false);
         }
 
         if (isFiltered) {
@@ -216,7 +220,7 @@ public class SelectionFeature implements DataTableFeature {
             requestMap.put(var, o);
         }
 
-        boolean selectable = !table.isDisabledSelection();
+        boolean selectable = table.isSelectionEnabled();
 
         if (!containsVar) {
             requestMap.remove(var);

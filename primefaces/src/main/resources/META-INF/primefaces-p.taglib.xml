@@ -131,19 +131,19 @@
             org.primefaces.component.export.DataExporterTagHandler
         </handler-class>
         <attribute>
-            <description>Server side id of the datatable whose data would be exported.</description>
+            <description>Search expression to resolve one or multiple target components.</description>
             <name>target</name>
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Export type: "xls","pdf","csv", "xml".</description>
+            <description>Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml"</description>
             <name>type</name>
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Filename of the generated export file, defaults to datatable server side id.</description>
+            <description>Filename of the generated export file, defaults to target component id.</description>
             <name>fileName</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -197,13 +197,13 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>Exports the header and cell content according to the option.</description>
+            <description>Options object to customize document.</description>
             <name>options</name>
             <required>false</required>
-            <type>java.lang.Object</type>
+            <type>org.primefaces.component.export.ExporterOptions</type>
         </attribute>
         <attribute>
-            <description>Custom exporter to be used instead of built-in exporters.</description>
+            <description>Custom org.primefaces.component.export.Exporter to be used instead of built-in exporters.</description>
             <name>exporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
@@ -419,6 +419,12 @@
             <handler-class>org.primefaces.behavior.confirm.ConfirmBehaviorHandler</handler-class>
         </behavior>
         <attribute>
+            <description>Source of the confirmation component. Valid values are the clientId of the source component and "this".</description>
+            <name>source</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description>Type of the confirmation component.</description>
             <name>type</name>
             <required>false</required>
@@ -501,8 +507,8 @@
     </tag>
 
     <tag>
-        <description>Repeat is an alternative to the standard ui:repeat component, that fix the compatibility with Mojarra. There are no additonal features and
-            usage is same as ui:repeat.
+        <description>Repeat is an alternative to the standard ui:repeat component, that fix the compatibility with Mojarra. There are no additional features and
+            usage is same as ui:repeat. Do not use with Apache MyFaces. Upgrade to Mojarra 2.3.18, 3.0.3 or 4.0+ if possible.
         </description>
         <tag-name>repeat</tag-name>
         <component>
@@ -1104,7 +1110,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -2331,6 +2337,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines home icon CSS class, default value is "ui-icon ui-icon-home".]]>
+            </description>
+            <name>homeIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Position of the items in the tabbing order. Default is 0.]]>
             </description>
             <name>tabindex</name>
@@ -2783,7 +2797,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -3650,6 +3664,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The cutoff year for determining the century for a date. Default is "+10".]]>
+            </description>
+            <name>shortYearCutoff</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -3699,7 +3721,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -4015,6 +4037,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enables paginator links. Default is true.]]>
+            </description>
+            <name>paginator</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -4204,7 +4234,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -4809,7 +4839,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -8515,6 +8545,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to show the select all checkbox inside the column's header.]]>
+            </description>
+            <name>showSelectAll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -8954,7 +8992,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -10064,7 +10102,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -11977,7 +12015,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -12466,7 +12504,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -13005,7 +13043,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -13632,7 +13670,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -13835,7 +13873,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -14359,7 +14397,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -14914,7 +14952,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -15599,7 +15637,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -17990,7 +18028,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -18251,7 +18289,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -18849,7 +18887,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
     </tag>
     <tag>
@@ -19519,7 +19557,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -20107,7 +20145,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -20334,7 +20372,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -21193,7 +21231,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -22544,7 +22582,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -22763,7 +22801,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -22974,7 +23012,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23290,7 +23328,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23461,7 +23499,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23648,7 +23686,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23899,7 +23937,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24078,7 +24116,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24313,7 +24351,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24693,7 +24731,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -25117,7 +25155,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -25687,7 +25725,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -27494,6 +27532,14 @@
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Orientation of the tab items relative to where you want to put the content, valid values are "top" (default), "left", "right" and "bottom".]]>
+            </description>
+            <name>orientation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -27636,7 +27682,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Orientation of the tab headers, valid values are "top" and "bottom".]]>
+                <![CDATA[Orientation of the tab headers, valid values are "top" (default), "left", "right" and "bottom".]]>
             </description>
             <name>orientation</name>
             <required>false</required>
@@ -27695,6 +27741,14 @@
                 <![CDATA[Whether to keep TabView state across views, defaults to false.]]>
             </description>
             <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to focus the first tab that contains an error after form submission.]]>
+            </description>
+            <name>focusOnError</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -27912,7 +27966,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -28814,7 +28868,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -29124,7 +29178,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -29595,7 +29649,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Method providing suggestions.]]>
+                <![CDATA[Method returning whether the dragged node(s) can be dropped on the dropped node.]]>
             </description>
             <name>onDrop</name>
             <required>false</required>
@@ -30268,7 +30322,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -31367,7 +31421,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -31944,6 +31998,22 @@
             <name>selectionMode</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Only display valid dates within the min/max range. Default is true.]]>
+            </description>
+            <name>showMinMaxRange</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to format the month. Default is true.]]>
+            </description>
+            <name>autoMonthFormat</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -32733,7 +32803,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -33526,7 +33596,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>

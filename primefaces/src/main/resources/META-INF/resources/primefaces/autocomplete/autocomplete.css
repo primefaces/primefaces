@@ -168,13 +168,6 @@
 /* loading */
 .ui-autocomplete .ui-icon-loading {
     position: absolute;
-    width: 1rem;
-    height: 1rem;
-    right: 4px;
     top: 50%;
     margin-top: -0.5rem;
-}
-
-.ui-autocomplete .ui-button + .ui-autocomplete-status + .ui-icon-loading {
-    right: calc(2.4em + 4px);
 }

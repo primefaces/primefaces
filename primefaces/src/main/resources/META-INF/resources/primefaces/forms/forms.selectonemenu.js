@@ -137,6 +137,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
 
+        // float label
+        this.bindFloatLabel();
+
         // see #7602
         if (PrimeFaces.env.isTouchable(this.cfg)) {
             this.focusInput.attr('readonly', true);
@@ -159,9 +162,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         highlightedItem = this.items.eq(this.options.index(selectedOption));
 
         //disable options
-        this.options.filter(':disabled').each(function() {
-            $this.items.eq($(this).index()).addClass('ui-state-disabled');
-        });
+        $this.items.filter('[disabled]').addClass('ui-state-disabled');
 
         //activate selected
         if(this.cfg.editable) {
@@ -330,9 +331,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         //key bindings
         this.bindKeyEvents();
-        
-        //float label
-        this.bindFloatLabel();
 
         //filter
         if(this.cfg.filter) {
@@ -1297,10 +1295,21 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     hide.push(item);
                 }
                 else {
-                    if(this.filterMatcher(itemLabel, filterValue))
+                    if(this.filterMatcher(itemLabel, filterValue)) {
                         show.push(item);
-                    else
+                    }
+                    else if(!item.is('.ui-selectonemenu-item-group-children')){
                         hide.push(item);
+                    }
+                    else {
+                        itemLabel = this.cfg.caseSensitive ? option.parent().attr('label') : option.parent().attr('label').toLowerCase();
+                        if (this.filterMatcher(itemLabel, filterValue)) {
+                            show.push(item);
+                        }
+                        else {
+                            hide.push(item);
+                        }
+                    }
                 }
             }
 
@@ -1315,13 +1324,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 var group = groups.eq(g);
 
                 if(g === (groups.length - 1)) {
-                    if(group.nextAll().filter(':visible').length === 0)
+                    if(group.nextAll().filter('.ui-selectonemenu-item-group-children:visible').length === 0)
                         hide.push(group);
                     else
                         show.push(group);
                 }
                 else {
-                    if(group.nextUntil('.ui-selectonemenu-item-group').filter(':visible').length === 0)
+                    if(group.nextUntil('.ui-selectonemenu-item-group').filter('.ui-selectonemenu-item-group-children:visible').length === 0)
                         hide.push(group);
                     else
                         show.push(group);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -98,6 +98,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         timeInput,
         showWeek,
         weekCalculator,
+        showMinMaxRange,
+        autoMonthFormat,
         model
     }
 
@@ -481,6 +483,22 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public int getResponsiveBreakpoint() {
         return (Integer) getStateHelper().eval(PropertyKeys.responsiveBreakpoint, RESPONSIVE_BREAKPOINT_SMALL);
+    }
+
+    public boolean isShowMinMaxRange() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMinMaxRange, true);
+    }
+
+    public void setShowMinMaxRange(boolean showMinMaxRange) {
+        getStateHelper().put(PropertyKeys.showMinMaxRange, showMinMaxRange);
+    }
+
+    public boolean isAutoMonthFormat() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoMonthFormat, true);
+    }
+
+    public void setAutoMonthFormat(boolean autoMonthFormat) {
+        getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
     }
 
     @Override

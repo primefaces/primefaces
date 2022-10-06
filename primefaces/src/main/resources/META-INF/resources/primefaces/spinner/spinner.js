@@ -147,27 +147,26 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     $this.format();
                 break;
 
-                case keyCode.BACKSPACE:
-                case keyCode.DELETE:
-                case keyCode.LEFT:
-                case keyCode.RIGHT:
-                case keyCode.TAB:
-                    return;
-
                 default:
                     //do nothing
                 break;
             }
 
+            // #8958 allow TAB, F1, F12 etc
+            var isPrintableKey = e.key.length === 1 || e.key === 'Unidentified';
+            if (!isPrintableKey) {
+                return;
+            }
+
             /* Github #1964 do not allow minus */
-            var isNegative = event.key === '-';
+            var isNegative = e.key === '-';
             if ($this.cfg.min >= 0 && isNegative) {
                 e.preventDefault();
                 return;
             }
 
             /* GitHub #5579 do not allow decimal separator for integers */
-            var isDecimalSeparator = event.key === $this.cfg.decimalSeparator;
+            var isDecimalSeparator = e.key === $this.cfg.decimalSeparator;
             if (isDecimalSeparator && $this.cfg.precision === 0) {
                 e.preventDefault();
                 return;
@@ -175,8 +174,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
             /* GitHub #5579 prevent non numeric characters and duplicate separators */
             var value = $(this).val();
-            var isNumber = isFinite(event.key);
-            var isThousandsSeparator = event.key === $this.cfg.thousandSeparator;
+            var isNumber = isFinite(e.key);
+            var isThousandsSeparator = e.key === $this.cfg.thousandSeparator;
             if ((isNegative && value.indexOf('-') != -1)
                     || (isDecimalSeparator && value.indexOf($this.cfg.decimalSeparator)!= -1)
                     || (isThousandsSeparator && value.indexOf($this.cfg.thousandSeparator)!= -1)) {

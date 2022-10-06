@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -116,8 +116,7 @@ public class InputNumber004Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertEquals("", inputNumber.getValue());
 
-        // NOTE: because its now NULL the default decimal places is set back to 2 because its no longer an Integer
-        assertConfiguration(inputNumber.getWidgetConfiguration(), "2", "0.0000001", "999999");
+        assertConfiguration(inputNumber.getWidgetConfiguration(), "0", "0", "999999");
     }
 
     @Test

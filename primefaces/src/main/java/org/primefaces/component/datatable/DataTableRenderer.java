@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -660,7 +660,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
-        writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
         if (component != null) {
@@ -695,8 +694,8 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode)) {
-            encodeCheckbox(context, table, false, false, HTML.CHECKBOX_ALL_CLASS, true);
+        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
+            encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
         writer.endElement("th");
@@ -768,9 +767,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            if (filterValue != null) {
-                ((ValueHolder) filterFacet).setValue(filterValue);
-            }
+            ((ValueHolder) filterFacet).setValue(filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
@@ -1015,7 +1012,6 @@ public class DataTableRenderer extends DataRenderer {
                         String rowStyle = headerRow.getStyle();
 
                         writer.startElement("tr", null);
-                        writer.writeAttribute("role", "row", null);
                         if (rowClass != null) {
                             writer.writeAttribute("class", rowClass, null);
                         }
@@ -1053,7 +1049,6 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             writer.startElement("tr", null);
-            writer.writeAttribute("role", "row", null);
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
@@ -1155,7 +1150,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         SummaryRow summaryRow = table.getSummaryRow();
         HeaderRow headerRow = table.getHeaderRow();
-        ELContext eLContext = context.getELContext();
+        ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
@@ -1171,7 +1166,7 @@ public class DataTableRenderer extends DataRenderer {
 
             table.setRowIndex(i);
 
-            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), eLContext))) {
+            if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
                 table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
@@ -1179,7 +1174,7 @@ public class DataTableRenderer extends DataRenderer {
             table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
-            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), eLContext)) {
+            if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
                 table.setRowIndex(i);
                 encodeSummaryRow(context, summaryRow, sort);
             }
@@ -1227,7 +1222,7 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean selectionEnabled = table.isSelectionEnabled() && !table.isDisabledSelection();
+        boolean selectionEnabled = table.isSelectionEnabled();
         boolean rowExpansionAvailable = table.getRowExpansion() != null;
         String rowKey = null;
         List<UIColumn> columns = table.getColumns();
@@ -1239,12 +1234,13 @@ public class DataTableRenderer extends DataRenderer {
 
         //Preselection
         boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
+        boolean disabled = table.isDisabledSelection();
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled, DataTable.SELECTABLE_ROW_CLASS)
+                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
                 .add(selected, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
@@ -1257,7 +1253,6 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("data-rk", rowKey, null);
         }
         writer.writeAttribute("class", rowStyleClass, null);
-        writer.writeAttribute("role", "row", null);
         if (selectionEnabled) {
             writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
@@ -1654,17 +1649,37 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
-                                    ELContext eLContext) {
+                                    ELContext elContext) {
 
         table.setRowIndex(currentRowIndex);
-        Object currentGroupByData = groupByVE.getValue(eLContext);
+        Object currentGroupByData = groupByVE.getValue(elContext);
 
-        table.setRowIndex(currentRowIndex + step);
-        if (!table.isRowAvailable()) {
-            return false;
+        int nextRowIndex = currentRowIndex + step;
+
+        Object nextGroupByData;
+
+        // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
+        // 1) get the rowData manually for the next row
+        // 2) put it into request-scope
+        // 3) invoke the groupBy ValueExpression
+        if (table.isLazy()) {
+            Object nextRowData = table.getLazyDataModel().getRowData(nextRowIndex, table.getActiveSortMeta(), table.getActiveFilterMeta());
+            if (nextRowData == null) {
+                return false;
+            }
+
+            nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> {
+                return groupByVE.getValue(elContext);
+            });
         }
+        else {
+            table.setRowIndex(nextRowIndex);
+            if (!table.isRowAvailable()) {
+                return false;
+            }
 
-        Object nextGroupByData = groupByVE.getValue(eLContext);
+            nextGroupByData = groupByVE.getValue(elContext);
+        }
 
         return Objects.equals(nextGroupByData, currentGroupByData);
     }

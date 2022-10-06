@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,18 @@
 package org.primefaces.model.map;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class DefaultMapModel implements MapModel, Serializable {
+public class DefaultMapModel<T> implements MapModel<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Logger LOGGER = Logger.getLogger(DefaultMapModel.class.getName());
 
     private static final String MARKER_ID_PREFIX = "marker";
 
@@ -40,11 +47,11 @@ public class DefaultMapModel implements MapModel, Serializable {
 
     private static final String RECTANGLE_ID_PREFIX = "rectangle_";
 
-    private List<Marker> markers;
-    private List<Polyline> polylines;
-    private List<Polygon> polygons;
-    private List<Circle> circles;
-    private List<Rectangle> rectangles;
+    private List<Marker<T>> markers;
+    private List<Polyline<T>> polylines;
+    private List<Polygon<T>> polygons;
+    private List<Circle<T>> circles;
+    private List<Rectangle<T>> rectangles;
 
     public DefaultMapModel() {
         markers = new ArrayList<>();
@@ -55,32 +62,35 @@ public class DefaultMapModel implements MapModel, Serializable {
     }
 
     @Override
-    public List<Marker> getMarkers() {
+    public List<Marker<T>> getMarkers() {
         return markers;
     }
 
     @Override
-    public List<Polyline> getPolylines() {
+    public List<Polyline<T>> getPolylines() {
         return polylines;
     }
 
     @Override
-    public List<Polygon> getPolygons() {
+    public List<Polygon<T>> getPolygons() {
         return polygons;
     }
 
     @Override
-    public List<Circle> getCircles() {
+    public List<Circle<T>> getCircles() {
         return circles;
     }
 
     @Override
-    public List<Rectangle> getRectangles() {
+    public List<Rectangle<T>> getRectangles() {
         return rectangles;
     }
 
     @Override
-    public void addOverlay(Overlay overlay) {
+    public void addOverlay(Overlay<T> overlay) {
+        if (overlay.getId() != null) {
+            LOGGER.log(Level.WARNING, "Overlays should not have a set ID. It will be overwritten.");
+        }
         if (overlay instanceof Marker) {
             overlay.setId(MARKER_ID_PREFIX + UUID.randomUUID().toString());
             markers.add((Marker) overlay);
@@ -105,7 +115,7 @@ public class DefaultMapModel implements MapModel, Serializable {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Overlay findOverlay(String id) {
+    public Overlay<T> findOverlay(String id) {
         List<? extends Overlay> overlays = Collections.emptyList();
 
         if (id.startsWith(MARKER_ID_PREFIX)) {

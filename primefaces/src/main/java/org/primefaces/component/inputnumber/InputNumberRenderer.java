@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package org.primefaces.component.inputnumber;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import javax.el.PropertyNotFoundException;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -71,17 +72,14 @@ public class InputNumberRenderer extends InputRenderer {
 
         try {
             if (LangUtils.isBlank(submittedValue)) {
-                ValueExpression valueExpression = inputNumber.getValueExpression("value");
-                if (valueExpression != null) {
-                    Class<?> type = valueExpression.getType(context.getELContext());
-                    if (type != null && type.isPrimitive() && LangUtils.isNotBlank(inputNumber.getMinValue())) {
-                        // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
-                        submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
-                    }
-                    else if (type != null && type.isPrimitive() && LangUtils.isNotBlank(inputNumber.getMaxValue())) {
-                        // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
-                        submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
-                    }
+                Class<?> type = getTypeFromValueExpression(context, inputNumber);
+                if (type != null && type.isPrimitive() && LangUtils.isNotBlank(inputNumber.getMinValue())) {
+                    // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
+                    submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
+                }
+                else if (type != null && type.isPrimitive() && LangUtils.isNotBlank(inputNumber.getMaxValue())) {
+                    // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
+                    submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
                 }
             }
             else {
@@ -186,7 +184,8 @@ public class InputNumberRenderer extends InputRenderer {
         String styleClass = createStyleClass(inputNumber, InputNumber.PropertyKeys.inputStyleClass.name(), InputText.STYLE_CLASS) ;
         String inputMode = inputNumber.getInputmode();
         if (inputMode == null) {
-            String decimalPlaces = getDecimalPlaces(inputNumber, inputNumber.getValue());
+            boolean isIntegral = isIntegral(context, inputNumber, inputNumber.getValue());
+            String decimalPlaces = getDecimalPlaces(isIntegral, inputNumber);
             inputMode = "0".equals(decimalPlaces) ? "numeric" : "decimal";
             inputNumber.setInputmode(inputMode);
         }
@@ -224,6 +223,7 @@ public class InputNumberRenderer extends InputRenderer {
                     ? "."
                     : inputNumber.getDecimalSeparator();
 
+        boolean isIntegral = isIntegral(context, inputNumber, value);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber);
@@ -235,9 +235,9 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("currencySymbol", inputNumber.getSymbol())
             .attr("currencySymbolPlacement", inputNumber.getSymbolPosition(), "p")
             .attr("negativePositiveSignPlacement", inputNumber.getSignPosition(), null)
-            .attr("minimumValue", getMinimum(inputNumber, value))
-            .attr("maximumValue", getMaximum(inputNumber, value))
-            .attr("decimalPlaces", getDecimalPlaces(inputNumber, value))
+            .attr("minimumValue", getMinimum(isIntegral, inputNumber))
+            .attr("maximumValue", getMaximum(isIntegral, inputNumber))
+            .attr("decimalPlaces", getDecimalPlaces(isIntegral, inputNumber))
             .attr("emptyInputBehavior", emptyValue, "focus")
             .attr("leadingZero", inputNumber.getLeadingZero(), "deny")
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
@@ -345,32 +345,33 @@ public class InputNumberRenderer extends InputRenderer {
     }
 
     /**
-     * Determines the number of decimal places to use.  If this is an Integer type number then default to 0
+     * Determines the number of decimal places to use.
+     * First sees if a value is set and return that.
+     * Else, if this is an integer type number then default to 0
      * decimal places if none was declared else default to 2.
+     * @param isIntegral flag whether the (expected) value is integral
      * @param inputNumber the component
-     * @param value the value of the input number
      * @return the number of decimal places to use
      */
-    private String getDecimalPlaces(InputNumber inputNumber, Object value) {
-        String defaultDecimalPlaces = "2";
-        if (isIntegral(value)) {
-            defaultDecimalPlaces = "0";
+    private String getDecimalPlaces(boolean isIntegral, InputNumber inputNumber) {
+        if (inputNumber.getDecimalPlaces() != null) {
+            return inputNumber.getDecimalPlaces();
         }
-        String decimalPlaces = isValueBlank(inputNumber.getDecimalPlaces())
-                ? defaultDecimalPlaces
-                : inputNumber.getDecimalPlaces();
-        return decimalPlaces;
+        if (isIntegral) {
+            return "0";
+        }
+        return "2";
     }
 
     /**
      * If using @Positive annotation and this is an Integer default to 0 instead of 0.0001.
+     * @param isIntegral flag whether the (expected) value is integral
      * @param inputNumber the component
-     * @param value the value of the input number
      * @return the minimum value of the component
      */
-    private String getMinimum(InputNumber inputNumber, Object value) {
+    private String getMinimum(boolean isIntegral, InputNumber inputNumber) {
         String minimum = inputNumber.getMinValue();
-        if (isIntegral(value) && PositiveClientValidationConstraint.MIN_VALUE.equals(minimum)) {
+        if (isIntegral && PositiveClientValidationConstraint.MIN_VALUE.equals(minimum)) {
             minimum = "0";
         }
         return formatForPlugin(minimum);
@@ -378,20 +379,50 @@ public class InputNumberRenderer extends InputRenderer {
 
     /**
      * If using @Negative annotation and this is an Integer default to 0 instead of -0.0001.
+     * @param isIntegral flag whether the (expected) value is integral
      * @param inputNumber the component
-     * @param value the value of the input number
      * @return the maximum value of the component
      */
-    private String getMaximum(InputNumber inputNumber, Object value) {
+    private String getMaximum(boolean isIntegral, InputNumber inputNumber) {
         String maximum = inputNumber.getMaxValue();
-        if (isIntegral(value) && NegativeClientValidationConstraint.MAX_VALUE.equals(maximum)) {
+        if (isIntegral && NegativeClientValidationConstraint.MAX_VALUE.equals(maximum)) {
             maximum = "0";
         }
         return formatForPlugin(maximum);
     }
 
-    private boolean isIntegral(Object value) {
-        return value instanceof Long || value instanceof Integer || value instanceof Short || value instanceof BigInteger || value instanceof Byte;
+    private boolean isIntegral(FacesContext context, InputNumber inputNumber, Object value) {
+        if (value != null) {
+            return value instanceof Long
+                    || value instanceof Integer
+                    || value instanceof Short
+                    || value instanceof BigInteger
+                    || value instanceof Byte;
+        }
+
+        Class<?> type = getTypeFromValueExpression(context, inputNumber);
+        if (type == null) {
+            return false;
+        }
+
+        return type.isAssignableFrom(Long.class)
+                || type.isAssignableFrom(Integer.class)
+                || type.isAssignableFrom(Short.class)
+                || type.isAssignableFrom(BigInteger.class)
+                || type.isAssignableFrom(Byte.class);
     }
 
+    public Class<?> getTypeFromValueExpression(FacesContext context, InputNumber inputNumber) {
+        ValueExpression valueExpression = inputNumber.getValueExpression("value");
+        if (valueExpression == null) {
+            return null;
+        }
+
+        try {
+            return valueExpression.getType(context.getELContext());
+        }
+        catch (PropertyNotFoundException e) {
+            return null;
+        }
+    }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.Chips;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
@@ -47,15 +46,6 @@ public class Chips004Test extends AbstractPrimePageTest {
     @DisplayName("Chips: GitHub #1895/#6691: Chips allow pasting of delimited list")
     @Tag("SafariExclude") // can't get copy and paste working on Safari
     public void testClipboardPaste(Page page) {
-        if (PrimeSelenium.isChrome()) {
-            /*
-             * Chrome 98 - bug
-             * https://bugs.chromium.org/p/chromedriver/issues/detail?id=3999
-             * Re-enable with Chrome 99!
-             */
-            return;
-        }
-
         // Arrange
         Chips chips = page.chips;
         InputText clipboard = page.clipboard;

@@ -59,6 +59,7 @@
  * @prop {number} cfg.selected The currently selected tab.
  * @prop {number} cfg.tabindex Position of the element in the tabbing order.
  * @prop {boolean} cfg.multiViewState Whether to keep TabView state across views.
+ * @prop {boolean} cfg.focusOnError Whether to focus the first tab that has an error associated to it.
  */
 PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -339,16 +340,24 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     bindRefreshListener: function() {
+        var $this = this;
+        var focusIndex = -1;
         this.addRefreshListener(function() {
             $(this.jqId + '>ul>li').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
-                if ($(tabId + ' .ui-state-error').length > 0) {
+                if ($(tabId + ' .ui-state-error').length > 0 || $(tabId + ' .ui-message-error-detail').length > 0) {
                     $(this).addClass('ui-state-error');
+                    if (focusIndex < 0) {
+                        focusIndex = $(this).data('index');
+                    }
                 } else {
                     $(this).removeClass('ui-state-error');
                 }
             });
+            if ($this.cfg.focusOnError && focusIndex >= 0) {
+               setTimeout(function () {$this.select(focusIndex, true)}, 10);
+            }
         });
     },
 
@@ -575,6 +584,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      */
     loadDynamicTab: function(newPanel) {
         var $this = this,
+        tabIndex = newPanel.data('index'),
         options = {
             source: this.id,
             process: this.id,
@@ -582,21 +592,22 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             params: [
                 {name: this.id + '_contentLoad', value: true},
                 {name: this.id + '_newTab', value: newPanel.attr('id')},
-                {name: this.id + '_tabindex', value: newPanel.data('index')}
+                {name: this.id + '_tabindex', value: tabIndex}
             ],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            // hide first
-                            // otherwise it will already be displayed after replacing the content with .html()
+                            // #8994 get new tab reference in case AJAX update removed the old one from DOM
+                            var updatedTab = $this.panelContainer.children().eq(tabIndex);
                             if($this.cfg.effect) {
-                                newPanel.hide();
+                                // hide first, otherwise it will be displayed after replacing the content with .html()
+                                updatedTab.hide();
                             }
-                            newPanel.html(content);
+                            updatedTab.html(content);
 
                             if($this.cfg.cache) {
-                                $this.markAsLoaded(newPanel);
+                                $this.markAsLoaded(updatedTab);
                             }
                         }
                     });
@@ -604,7 +615,9 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function() {
-                $this.show(newPanel);
+                // #8994 get new tab reference in case AJAX update removed the old one from DOM
+                var updatedTab = $this.panelContainer.children().eq(tabIndex);
+                $this.show(updatedTab);
             }
         };
 

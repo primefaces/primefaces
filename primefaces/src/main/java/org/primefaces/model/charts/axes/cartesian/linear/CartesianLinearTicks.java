@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@ public class CartesianLinearTicks extends CartesianTicks {
     private Number maxTicksLimit;
     private Number precision;
     private Number stepSize;
+    private String source;
 
 
     /**
@@ -95,7 +96,27 @@ public class CartesianLinearTicks extends CartesianTicks {
         this.stepSize = stepSize;
     }
 
+    /**
+     * The ticks.source property controls the ticks generation.
+     * 'auto': generates "optimal" ticks based on scale size and time options
+     * 'data': generates ticks from data (including labels from data {x|y} objects)
+     * 'labels': generates ticks from user given labels ONLY
+     * @return the ticks.source
+     */
+    public String getSource() {
+        return source;
+    }
 
+    /**
+     * Sets the ticks.source property to control tick generation.
+     * 'auto': generates "optimal" ticks based on scale size and time options
+     * 'data': generates ticks from data (including labels from data {x|y} objects)
+     * 'labels': generates ticks from user given labels ONLY
+     * @param source the source value
+     */
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     /**
      * Write the options of cartesian linear ticks
@@ -110,6 +131,9 @@ public class CartesianLinearTicks extends CartesianTicks {
             ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
             ChartUtils.writeDataValue(fsw, "precision", this.precision, true);
             ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
+            if (this.source != null) {
+                ChartUtils.writeDataValue(fsw, "source", this.source, true);
+            }
 
             return fsw.toString();
         }

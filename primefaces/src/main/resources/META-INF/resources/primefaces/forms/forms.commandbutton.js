@@ -49,7 +49,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.ajaxCount > 1) {
                     return;
                 }
-                $this.jq.toggleClass('ui-state-loading');
+                $this.jq.addClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
                 }
@@ -67,8 +67,8 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.ajaxCount > 0) {
                     return;
                 }
-                $this.jq.toggleClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false) {
+                $this.jq.removeClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabledAttr) {
                     $this.enable();
                 }
                 $this.jq.find('.ui-icon-loading').remove();
