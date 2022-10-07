@@ -1500,6 +1500,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         clone.find('th').each(function() {
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
+            header.removeAttr('aria-label');
             header.children().not('.ui-column-title').remove();
             header.children('.ui-column-title').children().remove();
         });
