@@ -181,10 +181,6 @@
     </converter>
 
     <component>
-        <component-type>org.primefaces.component.UIRepeat</component-type>
-        <component-class>org.primefaces.component.repeat.UIRepeat</component-class>
-    </component>
-    <component>
         <component-type>org.primefaces.component.AccordionPanel</component-type>
         <component-class>org.primefaces.component.accordionpanel.AccordionPanel</component-class>
     </component>
