@@ -578,7 +578,6 @@
                                 <include>keyfilter/**</include>
                                 <include>knob/**</include>
                                 <include>lifecycle/**</include>
-                                <include>lightbox/**</include>
                                 <include>log/**</include>
                                 <include>mindmap/**</include>
                                 <include>organigram/**</include>
