@@ -403,7 +403,6 @@ public class AppMenu {
         overlayMenuItems.add(new MenuItem("ConfirmDialog", "/ui/overlay/confirmDialog"));
         overlayMenuItems.add(new MenuItem("ConfirmPopup", "/ui/overlay/confirmPopup"));
         overlayMenuItems.add(new MenuItem("Dialog", "/ui/overlay/dialog"));
-        overlayMenuItems.add(new MenuItem("LightBox", "/ui/overlay/lightBox"));
         overlayMenuItems.add(new MenuItem("OverlayPanel", "/ui/overlay/overlayPanel"));
         overlayMenuItems.add(new MenuItem("Sidebar", "/ui/overlay/sidebar"));
 
