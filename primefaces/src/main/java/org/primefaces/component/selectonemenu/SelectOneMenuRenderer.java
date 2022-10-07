@@ -160,6 +160,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", focusId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
 
         //for keyboard accessibility and ScreenReader
         renderAccessibilityAttributes(context, menu);

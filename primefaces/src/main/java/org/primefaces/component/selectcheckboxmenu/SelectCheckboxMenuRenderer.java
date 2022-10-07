@@ -366,7 +366,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("readonly", "readonly", null);
-        writer.writeAttribute(HTML.ARIA_ROLE, "combobox", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
         writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
