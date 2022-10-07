@@ -217,6 +217,9 @@ public class DataTableExcelExporter extends DataTableExporter {
 
     protected boolean addColumnGroup(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
         ColumnGroup cg = table.getColumnGroup(columnType.facet());
+        if (cg == null || cg.getChildCount() == 0) {
+            return false;
+        }
         FacesContext context = FacesContext.getCurrentInstance();
         table.forEachColumnGroupRow(context, cg, true, row -> {
             final AtomicInteger colIndex = new AtomicInteger(0);
