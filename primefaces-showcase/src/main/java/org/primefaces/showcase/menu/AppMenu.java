@@ -313,7 +313,6 @@ public class AppMenu {
         dataMenuItems.add(new MenuItem("OrderList", "/ui/data/orderList"));
         dataMenuItems.add(new MenuItem("Organigram", "/ui/data/organigram"));
         dataMenuItems.add(new MenuItem("PickList", "/ui/data/pickList"));
-        dataMenuItems.add(new MenuItem("Ring", "/ui/data/ring"));
 
         //Schedule Nested MenuItem
         List<MenuItem> scheduleMenuItems = new ArrayList<>();
@@ -473,7 +472,6 @@ public class AppMenu {
         multimediaMenuItems.add(new MenuItem("Audio", "/ui/multimedia/audio"));
         multimediaMenuItems.add(new MenuItem("Barcode", "/ui/multimedia/barcode"));
         multimediaMenuItems.add(new MenuItem("Compare", "/ui/multimedia/compare"));
-        multimediaMenuItems.add(new MenuItem("ContentFlow", "/ui/multimedia/contentFlow"));
 
         //Cropper Nested MenuItem
         List<MenuItem> cropperMenuItems = new ArrayList<>();

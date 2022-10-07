@@ -558,7 +558,6 @@
                                 <include>charts/**</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
-                                <include>contentflow/**</include>
                                 <include>datepicker/**</include>
                                 <include>diagram/**</include>
                                 <include>dock/**</include>
@@ -585,7 +584,6 @@
                                 <include>photocam/**</include>
                                 <include>primeicons/*.css</include>
                                 <include>printer/**</include>
-                                <include>ring/**</include>
                                 <include>schedule/**</include>
                                 <include>scrollpanel/**</include>
                                 <include>signature/**</include>
