@@ -346,11 +346,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.ContentFlow</component-type>
-        <component-class>org.primefaces.component.contentflow.ContentFlow</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.ContextMenu</component-type>
         <component-class>org.primefaces.component.contextmenu.ContextMenu</component-class>
     </component>
@@ -723,11 +718,6 @@
     <component>
         <component-type>org.primefaces.component.Resizable</component-type>
         <component-class>org.primefaces.component.resizable.Resizable</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.Ring</component-type>
-        <component-class>org.primefaces.component.ring.Ring</component-class>
     </component>
 
     <component>
@@ -1213,11 +1203,6 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.ContentFlowRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.contentflow.ContentFlowRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ContextMenuRenderer</renderer-type>
             <renderer-class>org.primefaces.component.contextmenu.ContextMenuRenderer</renderer-class>
         </renderer>
@@ -1565,11 +1550,6 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ResizableRenderer</renderer-type>
             <renderer-class>org.primefaces.component.resizable.ResizableRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.RingRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.ring.RingRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
