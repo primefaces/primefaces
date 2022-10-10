@@ -19,22 +19,14 @@ There always may be corner-cases which need some additional manual work. So it´
 ### Windows PowerShell
 
 ```powershell
-Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0-RC2/primefaces-cli-12.0.0-RC2.jar -OutFile C:\cli\pfcli.jar
+Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0/primefaces-cli-12.0.0.jar -OutFile C:\cli\pfcli.jar
 ```
 
 ### Wget
 
 ```bash
-wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0-RC2/primefaces-cli-12.0.0-RC2.jar
+wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0/primefaces-cli-12.0.0.jar
 ```
-
-### 12.0.0 BETA
-
-Download: https://github.com/primefaces/primefaces/files/7920843/pf-cli-beta.zip
-
-This BETA has many fixes found while converting a PrimeNG project using the CLI.  Thanks to @ThoSap.
-To read about the changes: https://github.com/primefaces/primefaces/issues/8314
-
 
 ## PrimeFlex 2 → PrimeFlex 3 migration
 
