@@ -118,7 +118,7 @@
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                               sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.representatives}" />
                             </p:selectOneMenu>
