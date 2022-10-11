@@ -148,7 +148,7 @@ You can also use the pre-defined icons from ThemeRoller like _ui-icon-search_.
 A loading indicator will be shown by default when the button triggers an Ajax request. This is done based on the
 `ui-state-loading` class which is toggled on the button.
 
-If you want this default styling, you can suppress it using the following custom CSS rules:
+If you don't want this default styling, you can suppress it using the following custom CSS rules:
 
 ```css
 html .ui-state-loading.ui-button-text-only .ui-icon-loading + .ui-button-text {
