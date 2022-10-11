@@ -67,9 +67,13 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         List<JsonLDItem> ldItems = new ArrayList<>();
 
         //home icon for first item
-        if (isIconHome && elementCount > 0) {
+        if (isIconHome) {
             String icon = breadCrumb.getHomeIcon();
-            String iconStyleClass = "ui-breadcrumb-home-icon " + icon;
+            String iconStyleClass = getStyleClassBuilder(context)
+                        .add("ui-breadcrumb-home-icon")
+                        .add(icon)
+                        .add(elementCount == 0 && breadCrumb.isLastItemDisabled(), "ui-state-disabled")
+                        .build();
             ((MenuItem) menuElements.get(0)).setStyleClass(iconStyleClass);
         }
 
