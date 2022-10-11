@@ -144,6 +144,24 @@ button which can be “left” or “right”.
 ```
 You can also use the pre-defined icons from ThemeRoller like _ui-icon-search_.
 
+## Ajax loading indicator icon
+A loading indicator will be shown by default when the button triggers an Ajax request. This is done based on the
+`ui-state-loading` class which is toggled on the button.
+
+If you want this default styling, you can suppress it using the following custom CSS rules:
+
+```css
+html .ui-state-loading.ui-button-text-only .ui-icon-loading + .ui-button-text {
+    opacity: inherit;
+}
+html .ui-state-loading .ui-icon-loading {
+    display: none;
+}
+html .ui-state-loading .ui-icon:not(.ui-icon-loading) {
+    display: inherit;
+}
+```
+
 ## Client Side API
 Widget: _PrimeFaces.widget.CommandButton_
 
