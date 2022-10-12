@@ -1597,7 +1597,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -1605,7 +1605,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>
@@ -22781,7 +22781,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -22789,7 +22789,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>
@@ -24080,7 +24080,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -24088,7 +24088,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>

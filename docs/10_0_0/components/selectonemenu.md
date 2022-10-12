@@ -60,6 +60,8 @@ dynamic | false | Boolean | Defines if dynamic loading is enabled for the elemen
 dir | ltr | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 touchable | true | Boolean | Enable touch support if browser detection supports it.
+panelStyle | null | String | Style of the dropdown panel container element.
+panelStyleClass | null | String | Style  class of the dropdown panel container element.
 
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.

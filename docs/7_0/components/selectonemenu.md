@@ -56,6 +56,8 @@ onfocus | null | String | Client side callback to execute when element receives 
 onblur | null | String | Client side callback to execute when element loses focus.
 autoWidth | true | Boolean | Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.
 dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
+panelStyle | null | String | Style of the dropdown panel container element.
+panelStyleClass | null | String | Style  class of the dropdown panel container element.
 
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.
