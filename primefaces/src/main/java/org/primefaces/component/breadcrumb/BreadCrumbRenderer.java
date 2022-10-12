@@ -59,6 +59,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         int elementCount = menu.getElementsCount();
         List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
+        boolean isOnlyHomeIcon = isIconHome && elementCount == 1;
         String wrapper = "nav";
         String listType = "ol";
 
@@ -67,14 +68,15 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         List<JsonLDItem> ldItems = new ArrayList<>();
 
         //home icon for first item
-        if (isIconHome) {
+        if (isIconHome && elementCount > 0) {
             String icon = breadCrumb.getHomeIcon();
             String iconStyleClass = getStyleClassBuilder(context)
                         .add("ui-breadcrumb-home-icon")
                         .add(icon)
-                        .add(elementCount == 0 && breadCrumb.isLastItemDisabled(), "ui-state-disabled")
+                        .add(isOnlyHomeIcon && breadCrumb.isLastItemDisabled(), "ui-state-disabled")
                         .build();
-            ((MenuItem) menuElements.get(0)).setStyleClass(iconStyleClass);
+            MenuItem home = ((MenuItem) menuElements.get(0));
+            home.setStyleClass(iconStyleClass);
         }
 
         writer.startElement(wrapper, null);
@@ -103,7 +105,12 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
                     boolean last = i + 1 == elementCount;
                     if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && last)) {
-                        encodeDisabledMenuItem(context, item);
+                        if (isOnlyHomeIcon) {
+                            encodeMenuItem(context, menu, item, menu.getTabindex(), null);
+                        }
+                        else {
+                            encodeDisabledMenuItem(context, item);
+                        }
                     }
                     else {
                         Entry<String, String> attr = null;
