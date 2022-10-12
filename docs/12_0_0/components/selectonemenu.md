@@ -26,40 +26,42 @@ value | null | Object | Value of the component.
 converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id
 immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 required | false | Boolean | Marks component as required
-validator | null | MethodExpr | A method expression that refers to a method validating the input
-valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
-requiredMessage | null | String | Message to be displayed when required field validation fails.
-converterMessage | null | String | Message to be displayed when conversion fails.
-validatorMessage | null | String | Message to be displayed when validation fields.
-widgetVar | null | String | Name of the client side widget.
-disabled | false | Boolean | Disables the component.
 alwaysDisplayLabel | false | Boolean | Always display the `label` value instead of the selected item label.
-label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
-labelTemplate | null | String | Displays label of the element in a custom template. Valid placeholder is {0}.
-onchange | null | String | Client side callback to execute on value change.
-onkeyup | null | String | Client side callback to execute on keyup.
-onkeydown | null | String | Client side callback to execute on keydown.
-style | null | String | Inline style of the component.
-styleClass | null | String | Style class of the container.
-var | null | String | Name of the item iterator.
-height | auto | Integer | Height of the overlay.
-tabindex | null | String | Tabindex of the input.
+appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
+autoWidth | true | Boolean | Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.
+caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
+converterMessage | null | String | Message to be displayed when conversion fails.
+dir | ltr | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
+disabled | false | Boolean | Disables the component.
+dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 editable | false | Boolean | When true, input becomes editable.
 filter | false | Boolean | Renders an input field as a filter.
-filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filtering.
-caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
-maxlength | null | Integer | Number of maximum characters allowed in editable selectOneMenu.
-appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
-title | null | String | Advisory tooltip information.
-syncTooltip | false | Boolean | Updates the title of the component with the description of the selected item.
-onfocus | null | String | Client side callback to execute when element receives focus.
-onblur | null | String | Client side callback to execute when element loses focus.
-autoWidth | true | Boolean | Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.
-dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
-dir | ltr | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
+filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
+height | auto | Integer | Height of the overlay.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
+label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
+labelTemplate | null | String | Displays label of the element in a custom template. Valid placeholder is {0}.
+maxlength | null | Integer | Number of maximum characters allowed in editable selectOneMenu.
+onblur | null | String | Client side callback to execute when element loses focus.
+onchange | null | String | Client side callback to execute on value change.
+onfocus | null | String | Client side callback to execute when element receives focus.
+onkeydown | null | String | Client side callback to execute on keydown.
+onkeyup | null | String | Client side callback to execute on keyup.
+panelStyle | null | String | Style of the dropdown panel container element.
+panelStyleClass | null | String | Style  class of the dropdown panel container element.
+requiredMessage | null | String | Message to be displayed when required field validation fails.
+style | null | String | Inline style of the component.
+styleClass | null | String | Style class of the container.
+syncTooltip | false | Boolean | Updates the title of the component with the description of the selected item.
+tabindex | null | String | Tabindex of the input.
+title | null | String | Advisory tooltip information.
 touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
+validator | null | MethodExpr | A method expression that refers to a method validating the input
+validatorMessage | null | String | Message to be displayed when validation fields.
+valueChangeListener | null | MethodExpr | A method expression that refers to a method for handling a valuechangeevent
+var | null | String | Name of the item iterator.
+widgetVar | null | String | Name of the client side widget.
 
 ## Getting started with SelectOneMenu
 Basic SelectOneMenu usage is same as the standard one.
