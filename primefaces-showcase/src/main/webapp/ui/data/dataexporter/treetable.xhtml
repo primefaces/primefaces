@@ -66,8 +66,32 @@
                             <p:dataExporter type="xml" target="tbl" fileName="documents" pageOnly="true"/>
                         </p:commandButton>
                     </div>
+                    <div>
+                        <h5>Selection Only</h5>
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2 ui-button-outlined">
+                            <p:dataExporter type="xls" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2 ui-button-outlined">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2 ui-button-outlined">
+                            <p:dataExporter type="pdf" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2 ui-button-outlined">
+                            <p:dataExporter type="csv" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2 ui-button-outlined">
+                            <p:dataExporter type="xml" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+                    </div>
                 </div>
-                <p:treeTable id="tbl" value="#{ttBasicView.root}" var="document" paginator="true" rows="5">
+                <p:treeTable id="tbl" value="#{ttBasicView.root}" var="document" paginator="true" rows="5"
+                    selection="#{ttBasicView.multipleSelectedDocuments}"
+                    selectionMode="checkbox">
                     <p:column headerText="Name">
                         <h:outputText value="#{document.name}"/>
                     </p:column>

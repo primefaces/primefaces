@@ -49,6 +49,8 @@ public class BasicView implements Serializable {
     @Inject
     private DocumentService service;
 
+    private List<Document> multipleSelectedDocuments;
+
     @PostConstruct
     public void init() {
         root = service.createDocuments();
@@ -78,5 +80,13 @@ public class BasicView implements Serializable {
 
     public List<SortMeta> getSortBy() {
         return sortBy;
+    }
+
+    public List<Document> getMultipleSelectedDocuments() {
+        return multipleSelectedDocuments;
+    }
+
+    public void setMultipleSelectedDocuments(List<Document> multipleSelectedDocuments) {
+        this.multipleSelectedDocuments = multipleSelectedDocuments;
     }
 }
