@@ -41,10 +41,11 @@ public class GridCssMigration extends AbstractPrimeMigration implements Runnable
 
     @Override
     protected void initReplaceRegEx() {
-        // see https://www.primefaces.org/primeflex/migration
 
         // grid
-        replaceRegex.put("ui-g-(xl|lg|md|sm)-([0-9]+?)", "p-(xl|lg|md|sm)-([0-9]+?)");
+        replaceRegex.put("ui-(xl|lg|md|sm)-offset-([0-9]+?)", "p-$1-offset-$2");
+        replaceRegex.put("ui-g-offset-([0-9]+?)", "p-offset-$1");
+        replaceRegex.put("ui-(xl|lg|md|sm)-([0-9]+?)", "p-$1-$2");
         replaceRegex.put("ui-g-([0-9]+?)", "p-col-$1");
         replaceRegex.put("ui-g-nopad", "p-grid p-nogutter");
         replaceRegex.put("ui-g", "p-grid");
