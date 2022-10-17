@@ -16,6 +16,7 @@ escapeJavaScriptVarName(String str) | Escapes a string for a JS var name (e.g. '
 language() | Gets the current ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.
 dynamicColumnValue(UIComponent component) | Gets the value of the current column. This is only required when `p:columns` and `field` is used with a nested expression like `user.name`.
 dynamicColumnValueAsString(UIComponent component) | Gets the value of the current column converted to string. This is only required when `p:columns` and `field` is used with a nested expression like `user.name`.
+shouldRenderFacet(UIComponent) | Returns true when facet and one of the first level children is rendered.
 
 ### resolveClientId
 

@@ -43,6 +43,12 @@
     </function>
 
     <function>
+        <function-name>shouldRenderFacet</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.Boolean shouldRenderFacet(javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>escapeJavaScriptVarName</function-name>
         <function-class>org.primefaces.util.EscapeUtils</function-class>
         <function-signature>java.lang.String forJavaScriptVarName(java.lang.String)</function-signature>
