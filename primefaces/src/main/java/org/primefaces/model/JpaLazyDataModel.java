@@ -45,6 +45,7 @@ import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
@@ -323,7 +324,12 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         FacesContext context = FacesContext.getCurrentInstance();
         Converter<V> converter = context.getApplication().createConverter(valueType);
         if (converter != null) {
-            return converter.getAsObject(context, UIComponent.getCurrentComponent(context), value);
+            try {
+                return converter.getAsObject(context, UIComponent.getCurrentComponent(context), value);
+            }
+            catch (ConverterException e) {
+                return (V) value;
+            }
         }
 
         if (valueType == String.class) {
