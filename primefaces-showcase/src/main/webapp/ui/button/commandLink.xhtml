@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -21,19 +21,18 @@
             <h:form>
                 <p:growl id="growl" life="2000"/>
 
-                <h5 class="p-mt-0">Basic</h5>
-                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" class="p-mr-4"
+                <h5 class="mt-0">Basic</h5>
+                <p:commandLink id="ajax" update="growl" action="#{buttonView.buttonAction}" class="mr-4"
                                value="Ajax Post"/>
 
-                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" class="p-mr-4" ajax="false"
+                <p:commandLink id="nonAjax" action="#{buttonView.buttonAction}" class="mr-4" ajax="false"
                                value="Regular Post"/>
 
-                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" class="p-mr-4" disabled="true"
+                <p:commandLink id="disabled" action="#{buttonView.buttonAction}" disabled="true"
                                value="Disabled"/>
 
                 <h5>Disable on Ajax</h5>
-                <p:commandLink id="disableOnAjax" disableOnAjax="true" action="#{bottonBasicView.sleep(1000)}"
-                               value="Sleep"/>
+                <p:commandLink id="disableOnAjax" action="#{buttonBasicView.sleep()}" value="Sleep"/>
 
             </h:form>
         </div>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,68 +36,11 @@ public class CartesianLinearTicks extends CartesianTicks {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean beginAtZero;
-    private Number min;
-    private Number max;
     private Number maxTicksLimit;
     private Number precision;
     private Number stepSize;
-    private Number suggestedMax;
-    private Number suggestedMin;
+    private String source;
 
-    /**
-     * Gets the beginAtZero
-     *
-     * @return beginAtZero
-     */
-    public boolean isBeginAtZero() {
-        return beginAtZero;
-    }
-
-    /**
-     * Sets the beginAtZero
-     *
-     * @param beginAtZero if true, scale will include 0 if it is not already included.
-     */
-    public void setBeginAtZero(boolean beginAtZero) {
-        this.beginAtZero = beginAtZero;
-    }
-
-    /**
-     * Gets the min
-     *
-     * @return min
-     */
-    public Number getMin() {
-        return min;
-    }
-
-    /**
-     * Sets the min
-     *
-     * @param min User defined minimum number for the scale, overrides minimum value from data.
-     */
-    public void setMin(Number min) {
-        this.min = min;
-    }
-
-    /**
-     * Gets the max
-     *
-     * @return max
-     */
-    public Number getMax() {
-        return max;
-    }
-
-    /**
-     * Sets the max
-     *
-     * @param max User defined maximum number for the scale, overrides maximum value from data.
-     */
-    public void setMax(Number max) {
-        this.max = max;
-    }
 
     /**
      * Gets the maxTicksLimit
@@ -154,39 +97,25 @@ public class CartesianLinearTicks extends CartesianTicks {
     }
 
     /**
-     * Gets the suggestedMax
-     *
-     * @return suggestedMax
+     * The ticks.source property controls the ticks generation.
+     * 'auto': generates "optimal" ticks based on scale size and time options
+     * 'data': generates ticks from data (including labels from data {x|y} objects)
+     * 'labels': generates ticks from user given labels ONLY
+     * @return the ticks.source
      */
-    public Number getSuggestedMax() {
-        return suggestedMax;
+    public String getSource() {
+        return source;
     }
 
     /**
-     * Sets the suggestedMax
-     *
-     * @param suggestedMax Adjustment used when calculating the maximum data value.
+     * Sets the ticks.source property to control tick generation.
+     * 'auto': generates "optimal" ticks based on scale size and time options
+     * 'data': generates ticks from data (including labels from data {x|y} objects)
+     * 'labels': generates ticks from user given labels ONLY
+     * @param source the source value
      */
-    public void setSuggestedMax(Number suggestedMax) {
-        this.suggestedMax = suggestedMax;
-    }
-
-    /**
-     * Gets the suggestedMin
-     *
-     * @return suggestedMin
-     */
-    public Number getSuggestedMin() {
-        return suggestedMin;
-    }
-
-    /**
-     * Sets the suggestedMin
-     *
-     * @param suggestedMin Adjustment used when calculating the minimum data value.
-     */
-    public void setSuggestedMin(Number suggestedMin) {
-        this.suggestedMin = suggestedMin;
+    public void setSource(String source) {
+        this.source = source;
     }
 
     /**
@@ -199,14 +128,12 @@ public class CartesianLinearTicks extends CartesianTicks {
     public String encode() throws IOException {
         try (FastStringWriter fsw = new FastStringWriter()) {
             fsw.write(super.encode());
-            ChartUtils.writeDataValue(fsw, "beginAtZero", this.beginAtZero, true);
-            ChartUtils.writeDataValue(fsw, "min", this.min, true);
-            ChartUtils.writeDataValue(fsw, "max", this.max, true);
             ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
             ChartUtils.writeDataValue(fsw, "precision", this.precision, true);
             ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
-            ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
-            ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
+            if (this.source != null) {
+                ChartUtils.writeDataValue(fsw, "source", this.source, true);
+            }
 
             return fsw.toString();
         }

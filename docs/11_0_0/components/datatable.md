@@ -331,6 +331,11 @@ When a custom component is used as a filter facet, filtering needs to be called 
 preferred event such as `onchange="PF('carsTable').filter()"`. Also defining a converter might be
 necessary if the value of the filter facet is not defined.
 
+Please make sure that the filter is using the **same type as the column field** if you are using comparable
+filter match modes (like greater than). For example, if the column field is an integer, and you would like to
+add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
+(see example below).
+
 ```xhtml
 <p:dataTable id="dataTable" var="car" value="#{tableBean.carsSmall}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}">
 
@@ -528,6 +533,8 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected
 rows. You must define this key by using the `rowKey` attribute.
+    
+!> RowKey must not contain a comma `,` as it will break row selection. See [`GitHub #8932`](https://github.com/primefaces/primefaces/issues/8932).
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns

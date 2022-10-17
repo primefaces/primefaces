@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public class RadioButtonRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, RadioButton radio, SelectOneRadio selectOneRadio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String masterClientId = selectOneRadio.getClientId(context);
-        String inputId = selectOneRadio.getRadioButtonId(context);
+        String inputId = selectOneRadio.getRadioButtonId(context, radio.getItemIndex());
         String clientId = radio.getClientId(context);
         boolean disabled = radio.isDisabled() || selectOneRadio.isDisabled();
 
@@ -87,7 +87,7 @@ public class RadioButtonRenderer extends InputRenderer {
 
         writer.startElement("input", null);
         writer.writeAttribute("id", id + "_clone", null);
-        writer.writeAttribute("name", name, null);
+        writer.writeAttribute("name", name + "_clone", null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -388,8 +388,8 @@ public class ChartJsView implements Serializable {
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
         CartesianLinearTicks ticks = new CartesianLinearTicks();
-        ticks.setBeginAtZero(true);
         linearAxes.setTicks(ticks);
         cScales.addYAxesData(linearAxes);
         options.setScales(cScales);
@@ -403,7 +403,7 @@ public class ChartJsView implements Serializable {
         legend.setDisplay(true);
         legend.setPosition("top");
         LegendLabel legendLabels = new LegendLabel();
-        legendLabels.setFontStyle("bold");
+        legendLabels.setFontStyle("italic");
         legendLabels.setFontColor("#2980B9");
         legendLabels.setFontSize(24);
         legend.setLabels(legendLabels);
@@ -470,8 +470,8 @@ public class ChartJsView implements Serializable {
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
         CartesianLinearTicks ticks = new CartesianLinearTicks();
-        ticks.setBeginAtZero(true);
         linearAxes.setTicks(ticks);
         cScales.addYAxesData(linearAxes);
         options.setScales(cScales);
@@ -540,8 +540,8 @@ public class ChartJsView implements Serializable {
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
         CartesianLinearTicks ticks = new CartesianLinearTicks();
-        ticks.setBeginAtZero(true);
         linearAxes.setTicks(ticks);
         cScales.addXAxesData(linearAxes);
         options.setScales(cScales);
@@ -926,8 +926,8 @@ public class ChartJsView implements Serializable {
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setOffset(true);
+        linearAxes.setBeginAtZero(true);
         CartesianLinearTicks ticks = new CartesianLinearTicks();
-        ticks.setBeginAtZero(true);
         linearAxes.setTicks(ticks);
 
         cScales.addYAxesData(linearAxes);

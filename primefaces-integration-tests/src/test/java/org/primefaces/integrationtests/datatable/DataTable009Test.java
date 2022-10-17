@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -165,7 +165,6 @@ public class DataTable009Test extends AbstractDataTableTest {
 
         // Assert
         Assertions.assertEquals("C#", dataTable.getRow(0).getCell(1).getText());
-        firstAppeared = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:0:firstAppeared"));
         Assertions.assertEquals("2020", firstAppeared.getSelectedLabel());
 
         assertConfiguration(dataTable.getWidgetConfiguration());

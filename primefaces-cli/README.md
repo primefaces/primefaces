@@ -16,29 +16,29 @@ There always may be corner-cases which need some additional manual work. So it´
 
 ## Download
 
-**Windows PowerShell:**
+### Windows PowerShell
 
 ```powershell
-Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0/primefaces-cli-11.0.0.jar -OutFile C:\cli\pfcli.jar
+Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0/primefaces-cli-12.0.0.jar -OutFile C:\cli\pfcli.jar
 ```
 
-**Linux WGET:**
+### Wget
 
 ```bash
-wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/11.0.0/primefaces-cli-11.0.0.jar
+wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0/primefaces-cli-12.0.0.jar
 ```
 
-## PrimeFlex 2 --> PrimeFlex 3 migration
+## PrimeFlex 2 → PrimeFlex 3 migration
 
 This tool replaces PrimeFlex 2 - CSS - classes in your HTML, XHTML, ... - files with PrimeFlex 3 - CSS - classes.
 
-#### Start CLI and show help
+### Start CLI and show help
 
 ```shell
 java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration --help
 ```
 
-#### Migrate all XHTML and HTML - files in one directory (including subdirectories)
+### Migrate all XHTML and HTML - files in one directory (including subdirectories)
 
 ```shell
 java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.PrimeFlexMigration c:\projects\myapp -e="html,xhtml"
@@ -48,17 +48,17 @@ Look at https://www.primefaces.org/primeflex/ for additional information.
 
 You manually have to remove PrimeFlex 2 - CSS - file from your project and add PrimeFlex 3 - CSS - file.
 
-## Grid CSS --> PrimeFlex 2 migration
+## Grid CSS → PrimeFlex 2 migration
 
 This tool replaces legacy Grid CSS classes (e.g. ui-g, see https://www.primefaces.org/showcase-v8/ui/panel/grid.xhtml) with PrimeFlex 2 - CSS - classes (e.g. p-grid, see https://github.com/primefaces/primeflex/tree/2.0.0).
 
-#### Start CLI and show help
+### Start CLI and show help
 
 ```shell
 java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.GridCssMigration --help
 ```
 
-#### Migrate all XHTML and HTML - files in one directory (including subdirectories)
+### Migrate all XHTML and HTML - files in one directory (including subdirectories)
 
 ```shell
 java -cp "pfcli.jar" org.primefaces.cli.migration.primeflex.GridCssMigration c:\projects\myapp -e="html,xhtml"

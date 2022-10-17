@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <script type="text/javascript">
+        <script>
             //<![CDATA[
             function onrangechange1() {
                 var second = PF('timelineSecondWdgt');
@@ -58,7 +58,8 @@
             <div class="card">
                 <h5 style="margin-top: 0">Events</h5>
                 <p:timeline id="timelineFirst" value="#{linkedTimelinesView.modelFirst}" var="task"
-                            height="250px" widgetVar="timelineFirstWdgt">
+                            height="250px" widgetVar="timelineFirstWdgt"
+                            start="#{linkedTimelinesView.start}" end="#{linkedTimelinesView.end}">
                     <p:ajax event="rangechange" process="@none" onstart="onrangechange1(); return false;"/>
                     <p:ajax event="select" listener="#{linkedTimelinesView.onSelect}"/>
 

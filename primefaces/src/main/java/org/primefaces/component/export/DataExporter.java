@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,6 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.export.TreeTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
 
@@ -232,7 +231,8 @@ public class DataExporter implements ActionListener, StateHolder {
     }
 
     protected void addResponseCookie(FacesContext context) {
-        ResourceUtils.addResponseCookie(context, Constants.DOWNLOAD_COOKIE, "true", null);
+        String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
+        ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", null);
     }
 
     @Override

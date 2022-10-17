@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,7 +90,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             DynamicContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
                 LOGGER.log(Level.WARNING,
-                        "No dynamic resource handler registered for: {0}. Do you miss a dependency?",
+                        "No dynamic resource handler registered for: [{0}]. Are you missing a dependency?",
                         new Object[]{handlerType});
                 super.handleResourceRequest(context);
             }

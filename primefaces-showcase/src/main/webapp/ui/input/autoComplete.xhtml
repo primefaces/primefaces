@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -22,51 +22,55 @@
             <h:form>
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
 
-                <h5 class="p-mt-0">Single</h5>
-                <div class="p-formgrid p-grid">
-                    <div class="p-field p-col-12 p-md-4">
+                <h5 class="mt-0">Single</h5>
+                <div class="formgrid grid">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Simple" for="@next"/>
                         <p:autoComplete id="acSimple" value="#{autoCompleteView.txt1}"
                                         completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Min Length (3)" for="@next"/>
                         <p:autoComplete id="acMinLength" minQueryLength="3" value="#{autoCompleteView.txt2}"
                                         completeMethod="#{autoCompleteView.completeText}" effect="fade" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Delay(1000)" for="@next"/>
                         <p:autoComplete id="acDelay" queryDelay="1000" value="#{autoCompleteView.txt3}"
                                         completeMethod="#{autoCompleteView.completeText}" effect="blind" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Max Results(5)" for="@next"/>
                         <p:autoComplete id="acMaxResults" maxResults="5" value="#{autoCompleteView.txt4}"
-                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"
+                                        moreText="more items available">
+                            <p:ajax event="moreTextSelect" listener="#{autoCompleteView.onMoreTextSelect}"
+                                    update="msgs"/>
+                        </p:autoComplete>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Force Selection" for="@next"/>
                         <p:autoComplete id="acForce" forceSelection="true" value="#{autoCompleteView.txt5}"
                                         completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="DropDown" for="@next"/>
                         <p:autoComplete id="dd" dropdown="true" value="#{autoCompleteView.txt6}"
                                     completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Cache" for="@next"/>
                         <p:autoComplete id="cache" cache="true" cacheTimeout="30000" value="#{autoCompleteView.txt7}"
                                         completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Select Event" for="@next"/>
                         <p:autoComplete id="event" value="#{autoCompleteView.txt8}"
                                         completeMethod="#{autoCompleteView.completeText}" scrollHeight="250">
@@ -74,7 +78,7 @@
                         </p:autoComplete>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Empty message" for="@next"/>
                         <p:autoComplete id="emptyMessage" value="#{autoCompleteView.txt9}"
                                         completeMethod="#{autoCompleteView.noResults}"
@@ -84,7 +88,7 @@
                         </p:autoComplete>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Pojo" for="@next"/>
                         <p:autoComplete id="pojo" value="#{autoCompleteView.country1}"
                                         completeMethod="#{autoCompleteView.completeCountry}"
@@ -92,26 +96,26 @@
                                         converter="#{countryConverter}" forceSelection="true" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Pojo (via REST)" for="pojoRest"/>
                         <p:autoComplete id="pojoRest" widgetVar="countryPojoRest" value="#{autoCompleteView.country5}"
                                         var="country" itemLabel="#{country.displayName}" itemValue="#{country}"
                                         converter="#{countryConverter}"
                                         completeEndpoint="#{request.contextPath}/rest/country/autocomplete"
                                         forceSelection="true" emptyMessage="sorry, no suggestions"
-                                        moreText="more items available" scrollHeight="250"/>
+                                        scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="LazyModel" for="lazyModel"/>
                         <p:autoComplete id="lazyModel" widgetVar="lazyModel" value="#{autoCompleteView.txt11}"
                                         var="customer" itemLabel="#{customer.name}" itemValue="#{customer.name}"
                                         lazyModel="#{autoCompleteView.lazyModel}" lazyField="name"
                                         forceSelection="true" emptyMessage="sorry, no suggestions"
-                                        moreText="more items available" maxResults="10"/>
+                                        maxResults="10"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Custom Content" for="@next"/>
                         <p:autoComplete id="countryCustom" value="#{autoCompleteView.country2}"
                                         completeMethod="#{autoCompleteView.completeCountry}"
@@ -124,7 +128,7 @@
                         </p:autoComplete>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Itemtip" for="@next"/>
                         <p:autoComplete id="itemTip" value="#{autoCompleteView.country3}"
                                         completeMethod="#{autoCompleteView.completeCountry}"
@@ -146,7 +150,7 @@
                         </p:autoComplete>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Group" for="@next"/>
                         <p:autoComplete id="group" value="#{autoCompleteView.country4}"
                                         completeMethod="#{autoCompleteView.completeCountry}"
@@ -155,7 +159,7 @@
                                         groupBy="#{autoCompleteView.getCountryGroup(country)}" escape="false" scrollHeight="250"/>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Footer" for="@next"/>
                         <p:autoComplete id="acFooter" value="#{autoCompleteView.txt10}"
                                         completeMethod="#{autoCompleteView.completeText}"

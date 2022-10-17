@@ -33,7 +33,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
-        this.cfg.margin = this.cfg.margin||0;
+        this.cfg.margin = this.cfg.margin || 0;
 
         this.initialState = {
             top: this.target.offset().top,
@@ -51,7 +51,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
 
-        if(this.fixed) {
+        if (this.fixed) {
             this.ghost.remove();
             this.fix(true);
         }
@@ -63,10 +63,10 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      */
     bindEvents: function() {
         var $this = this,
-        win = $(window);
+            win = $(window);
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if(win.scrollTop() > $this.initialState.top - $this.cfg.margin)
+            if (win.scrollTop() > $this.initialState.top - $this.cfg.margin)
                 $this.fix();
             else
                 $this.restore();
@@ -84,14 +84,24 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [force] If `true`, pin the sticky irrespective of whether it is pinned already.
      */
     fix: function(force) {
-        if(!this.fixed || force) {
+        if (!this.fixed || force) {
             var win = $(window),
-            winScrollTop = win.scrollTop();
+                winScrollTop = win.scrollTop();
+
+            // GitHub #9295 look for overlays and make sure sticky is not higher
+            var overlays = $('.ui-widget-overlay');
+            var zIndex = PrimeFaces.nextZindex();
+            if (overlays.length) {
+                overlays.each(function() {
+                    var currentZIndex = $(this).zIndex() - 1;
+                    zIndex = currentZIndex < zIndex ? currentZIndex : zIndex;
+                });
+            }
 
             this.target.css({
                 'position': 'fixed',
                 'top': this.cfg.margin + 'px',
-                'z-index': PrimeFaces.nextZindex()
+                'z-index': zIndex
             })
             .addClass('ui-shadow ui-sticky');
 
@@ -106,7 +116,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
      * Unpins this sticky and returns it to its normal position.
      */
     restore: function() {
-        if(this.fixed) {
+        if (this.fixed) {
             this.target.css({
                 position: 'static',
                 top: 'auto',

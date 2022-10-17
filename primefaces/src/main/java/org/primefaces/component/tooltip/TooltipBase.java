@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,7 +54,8 @@ public abstract class TooltipBase extends UIOutput implements Widget {
         position,
         delegate,
         my,
-        at;
+        at,
+        autoHide;
 
         private String toString;
 
@@ -238,5 +239,13 @@ public abstract class TooltipBase extends UIOutput implements Widget {
 
     public void setAt(String at) {
         getStateHelper().put(PropertyKeys.at, at);
+    }
+
+    public boolean isAutoHide() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoHide, true);
+    }
+
+    public void setAutoHide(boolean autoHide) {
+        getStateHelper().put(PropertyKeys.autoHide, autoHide);
     }
 }

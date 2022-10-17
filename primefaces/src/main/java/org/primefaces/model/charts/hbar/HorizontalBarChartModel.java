@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,11 @@ public class HorizontalBarChartModel extends BarChartModel {
     @Override
     public BarChartOptions getOptions() {
         BarChartOptions barChartOptions = super.getOptions();
+        if (barChartOptions == null) {
+            barChartOptions = new BarChartOptions();
+            setOptions(barChartOptions);
+        }
         barChartOptions.setIndexAxis("y");
-        return  barChartOptions;
+        return barChartOptions;
     }
 }

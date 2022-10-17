@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,9 +39,10 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
+import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
+import org.primefaces.event.schedule.ScheduleRangeEvent;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.util.*;
 
@@ -65,6 +66,7 @@ public class Schedule extends ScheduleBase {
             .put("eventMove", ScheduleEntryMoveEvent.class)
             .put("eventResize", ScheduleEntryResizeEvent.class)
             .put("viewChange", SelectEvent.class)
+            .put("rangeSelect", ScheduleRangeEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
@@ -105,6 +107,16 @@ public class Schedule extends ScheduleBase {
                 SelectEvent<?> selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
                 selectEvent.setPhaseId(behaviorEvent.getPhaseId());
 
+                wrapperEvent = selectEvent;
+            }
+            if ("rangeSelect".equals(eventName)) {
+                String startDateStr = params.get(clientId + "_startDate");
+                String endDateStr = params.get(clientId + "_endDate");
+                ZoneId zoneId = CalendarUtils.calculateZoneId(this.getTimeZone());
+                LocalDateTime startDate =  CalendarUtils.toLocalDateTime(zoneId, startDateStr);
+                LocalDateTime endDate =  CalendarUtils.toLocalDateTime(zoneId, endDateStr);
+                ScheduleRangeEvent selectEvent = new ScheduleRangeEvent(this, behaviorEvent.getBehavior(), startDate, endDate);
+                selectEvent.setPhaseId(behaviorEvent.getPhaseId());
                 wrapperEvent = selectEvent;
             }
             else if ("eventSelect".equals(eventName)) {

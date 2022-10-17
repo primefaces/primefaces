@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,7 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
     public enum PropertyKeys {
         widgetVar,
         page,
+        paginator,
         circular,
         autoplayInterval,
         numVisible,
@@ -198,12 +199,12 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
     }
 
     @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
+    public Boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
     @Override
-    public void setTouchable(boolean touchable) {
+    public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 
@@ -213,5 +214,13 @@ public abstract class CarouselBase extends UITabPanel implements Widget, ClientB
 
     public void setOnPageChange(String onPageChange) {
         getStateHelper().put(PropertyKeys.onPageChange, onPageChange);
+    }
+
+    public boolean isPaginator() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.paginator, true);
+    }
+
+    public void setPaginator(boolean paginator) {
+        getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.selenium;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.html5.WebStorage;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 public abstract class AbstractPrimePage {
@@ -61,18 +60,6 @@ public abstract class AbstractPrimePage {
      *         WebStorage via WebDriver. In this case null is returned.
      */
     public WebStorage getWebStorage() {
-        WebDriver webDriver = this.getWebDriver();
-
-        if (webDriver instanceof EventFiringWebDriver) {
-            EventFiringWebDriver driver = (EventFiringWebDriver) webDriver;
-            webDriver = driver.getWrappedDriver();
-        }
-
-        if (webDriver instanceof WebStorage) {
-            return (WebStorage) webDriver;
-        }
-        else {
-            return null;
-        }
+        return PrimeSelenium.getWebStorage();
     }
 }

@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -18,7 +18,7 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <p:imageSwitch id="images" effect="fade" widgetVar="gallery" slideshowAuto="false" styleClass="p-shadow-4">
+            <p:imageSwitch id="images" effect="fade" widgetVar="gallery" slideshowAuto="false" styleClass="shadow-2">
                 <p:graphicImage name="/demo/images/nature/nature1.jpg"/>
                 <p:graphicImage name="/demo/images/nature/nature2.jpg"/>
                 <p:graphicImage name="/demo/images/nature/nature3.jpg"/>

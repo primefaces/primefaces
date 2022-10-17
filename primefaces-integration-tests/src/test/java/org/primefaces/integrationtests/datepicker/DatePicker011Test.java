@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -45,6 +41,8 @@ import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.Severity;
 
 public class DatePicker011Test extends AbstractDatePickerTest {
+
+    public static final int SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS = 250;
 
     private enum DatePickerBehaviour {
         _none, dateSelect, viewChange, close;
@@ -222,7 +220,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -237,7 +235,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -251,7 +249,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getNextMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -266,7 +264,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getPreviousMonthLink().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -280,7 +278,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.selectMonthDropdown(LocalDate.now().getMonth().getValue() % 12);
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -294,7 +292,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.selectYearDropdown(LocalDate.now().getYear() + 1);
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -308,10 +306,11 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
+            case close:
                 assertMessage(messages, behaviour);
                 break;
             default:
@@ -320,6 +319,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         }
 
         // Act - 9th select 5th of current month
+        datePicker.showPanel();
         WebElement link = datePicker.getPanel().findElement(By.linkText("5"));
         switch (behaviour) {
             case viewChange:
@@ -343,7 +343,7 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         link.click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
                 assertMessage(messages, behaviour);
@@ -401,10 +401,10 @@ public class DatePicker011Test extends AbstractDatePickerTest {
             default:
                 break;
         }
-        button.click();
+        button.click(); // may trigger 2 ajax-calls due to DatePicker internals; PrimeSelenium.guardAjax only covers the first one
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
             case dateSelect:
@@ -439,14 +439,12 @@ public class DatePicker011Test extends AbstractDatePickerTest {
         datePicker.getClearButton().click();
 
         // Assert
-        PrimeSelenium.wait(100);
+        PrimeSelenium.wait(SAFETY_WAIT_AFTER_DOUBLE_AJAX_CALL_MILLISECONDS);
         switch (behaviour) {
             case viewChange:
-            case dateSelect:
                 assertMessage(messages, behaviour);
                 break;
             default:
-                assertEmptyMessages(messages);
                 break;
         }
 

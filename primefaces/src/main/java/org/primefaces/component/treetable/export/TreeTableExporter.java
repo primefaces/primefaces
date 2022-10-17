@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,13 @@
  */
 package org.primefaces.component.treetable.export;
 
-import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.component.export.TableExporter;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.model.TreeNode;
-import org.primefaces.util.Constants;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -37,13 +39,12 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.component.export.TableExporter;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.model.TreeNode;
+import org.primefaces.util.Constants;
 
 public abstract class TreeTableExporter extends TableExporter<TreeTable> {
 
@@ -164,7 +165,13 @@ public abstract class TreeTableExporter extends TableExporter<TreeTable> {
             }
             else if (Collection.class.isAssignableFrom(selection.getClass())) {
                 for (Object obj : (Collection) selection) {
-                    requestMap.put(var, obj);
+                    if (obj instanceof TreeNode) {
+                        TreeNode node = (TreeNode) obj;
+                        requestMap.put(var, node.getData());
+                    }
+                    else {
+                        requestMap.put(var, obj);
+                    }
                     exportRow(table, document);
                 }
             }
@@ -272,7 +279,7 @@ public abstract class TreeTableExporter extends TableExporter<TreeTable> {
     }
 
     /**
-     * Traverses a tree and visitis all children until it finds the one with row index i
+     * Traverses a tree and visits all children until it finds the one with row index i
      *
      * @param node
      * @param rowIndex

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
 
     private static final long serialVersionUID = -3415081263308946252L;
 
-    private final List<ProgrammingLanguage> langs;
+    protected List<ProgrammingLanguage> langs;
 
     public ProgrammingLanguageLazyDataModel() {
         langs = new ArrayList<>();

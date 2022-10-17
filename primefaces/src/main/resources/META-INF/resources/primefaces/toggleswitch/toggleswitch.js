@@ -7,6 +7,7 @@
  *
  * @prop {JQuery} input The DOM element for the hidden input field storing the value of this switch.
  * @prop {JQuery} slider The DOM element for the slider.
+ * @prop {JQuery} handler The DOM element for the handler.
  *
  * @interface {PrimeFaces.widget.ToggleSwitchCfg} cfg The configuration for the {@link  ToggleSwitch| ToggleSwitch widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -24,6 +25,7 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.slider = this.jq.children('.ui-toggleswitch-slider');
+        this.handler = this.slider.children('.ui-toggleswitch-handler');
         this.input = $(this.jqId + '_input');
 
         if(!this.input.is(':disabled')) {
@@ -67,12 +69,10 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('change.toggleSwitch', function(e) {
             if($this.isChecked()) {
-                $this.input.prop('checked', true).attr('aria-checked', true);
-                $this.jq.addClass('ui-toggleswitch-checked');
+                $this.check(true);
             }
             else {
-                $this.input.prop('checked', false).attr('aria-checked', false);
-                $this.jq.removeClass('ui-toggleswitch-checked');
+                $this.uncheck(true);
             }
         });
     },
@@ -97,17 +97,25 @@ PrimeFaces.widget.ToggleSwitch = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Turns this switch on if it is not already turned on.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    check: function() {
-        this.input.prop('checked', true).attr('aria-checked', true).trigger('change');
+    check: function(silent) {
+        this.input.prop('checked', true).attr('aria-checked', true);
+        if (!silent) {
+            this.input.trigger('change');
+        }
         this.jq.addClass('ui-toggleswitch-checked');
     },
 
     /**
      * Turns this switch off if it is not already turned of.
+     * @param {boolean} [silent] `true` to suppress triggering event listeners, or `false` otherwise.
      */
-    uncheck: function() {
-        this.input.prop('checked', false).attr('aria-checked', false).trigger('change');
+    uncheck: function(silent) {
+        this.input.prop('checked', false).attr('aria-checked', false);
+        if (!silent) {
+            this.input.trigger('change');
+        }
         this.jq.removeClass('ui-toggleswitch-checked');
     },
 

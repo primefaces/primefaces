@@ -5,8 +5,7 @@
 PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. Heavily inspired by Arquillian Graphene.  
 It also supports JUnit5 parallel test execution to speed up tests.
 
-PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`),
-or use a remote adress (`deployment.baseUrl`).
+PrimeFaces-Selenium provides a hook-in to either startup a local server, or use a remote adress.
 
 It also manage and download the Selenium WebDriver. Currently supported: `firefox`, `chrome` and `safari`  
 You can also manage it by yourself via `webdriver.adapter`.
@@ -17,19 +16,47 @@ You can also manage it by yourself via `webdriver.adapter`.
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-core</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
+    <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-components</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
+    <scope>test</scope>
 </dependency>
 ```
 
-## Configuration
+## Getting Started
 
-PrimeFaces-Selenium can be configuredy by providing a `/primefaces-selenium/config.properties`.
+PrimeFaces-Selenium comes with the right Selenium version as transitive dependency. So don't include your own version of Selenium or better check the version, which is used by PrimeFaces-Selenium.
+
+PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`), or use a remote adress (`deployment.baseUrl`).
+Both can be set configured by providing a `/src/test/resources/primefaces-selenium/config.properties`.
+
+### Remote Adress
+
+Testing a remote application can be configured via:
+
+```properties
+deployment.baseUrl = http://127.0.0.1/myapp/
+
+webdriver.browser = chrome
+```
+
+### Local Deployment
+
 A sample `DeploymentAdapter` for Tomcat can be found here: [Tomcat Adapter](https://github.com/primefaces/primefaces/blob/master/primefaces-integration-tests/src/test/java/org/primefaces/integrationtests/TomcatDeploymentAdapter.java)
+
+This needs to be placed in the web project you would like to deploy. It can be configured via:
+
+```properties
+deployment.adapter = org.primefaces.integrationtests.TomcatDeploymentAdapter
+
+webdriver.browser = chrome
+```
+
+### Configuration
 
 Properties:
 |       property name      |   type  | default |                 description                 |
@@ -61,6 +88,7 @@ Currently, only the following components are implemented (partially):
 
 - AccordionPanel
 - AutoComplete
+- BlockUI
 - Calendar
 - CascadeSelect
 - Chips
@@ -80,6 +108,7 @@ Currently, only the following components are implemented (partially):
 - InputText
 - InputTextarea
 - Messages
+- Menubar
 - OutputLabel
 - OverlayPanel
 - Panel
@@ -88,6 +117,7 @@ Currently, only the following components are implemented (partially):
 - Schedule
 - SelectBooleanCheckbox
 - SelectBooleanButton
+- SelectCheckboxMenu
 - SelectManyCheckbox
 - SelectManyMenu
 - SelectOneButton

@@ -162,7 +162,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             // parse the JSON response of the matches
-                            var responseObj = JSON.parse(content);
+                            var responseObj = JSON.parse(PrimeFaces.utils.decodeXml(content));
 
                             if (responseObj == null) {
                                 // if the response is null (no command model), do nothing
@@ -233,14 +233,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
      * Puts focus on this terminal input.
      */
     focus: function() {
-        if (PrimeFaces.env.isIE()) {
-            window.setTimeout(function(terminal){
-                terminal.input.trigger('focus');
-            }, 50);
-        }
-        else {
-            this.input.trigger('focus');
-        }
+        this.input.trigger('focus');
     },
 
     /**

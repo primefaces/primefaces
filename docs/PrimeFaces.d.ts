@@ -3,8 +3,10 @@
 /// <reference types="cropperjs" />
 /// <reference types="downloadjs" />
 /// <reference types="google.maps" />
+/// <reference types="inputmask" />
 /// <reference types="jquery" />
 /// <reference types="jqueryui" />
+/// <reference types="js-cookie" />
 /// <reference types="moment-timezone" />
 // Type definitions for PrimeFaces
 // Project: PrimeFaces https://github.com/primefaces
@@ -2320,6 +2322,10 @@ declare namespace PrimeFaces.widget {
          */
         querying?: boolean;
         /**
+         * Tracking number to make sure search requests match up in query mode
+         */
+        requestId: number;
+        /**
          * Unbind callback for the resize handler.
          */
         resizeHandler?: PrimeFaces.UnbindCallback;
@@ -2572,6 +2578,11 @@ declare namespace PrimeFaces.widget {
          */
         private setCache(wrapper: JQuery): void;
         /**
+         * Sets the querying state.
+         * @param state Querying state to set.
+         */
+        private setQuerying(state: boolean): void;
+        /**
          * Sets up the event listener for the blur event to force a selection, when that feature is enabled.
          */
         private setupForceSelection(): void;
@@ -2742,10 +2753,6 @@ declare namespace PrimeFaces.widget {
      */
     export class BlockUI<TCfg extends BlockUICfg = BlockUICfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
-         * The DOM element for the overlay that blocks the UI.
-         */
-        block: JQuery;
-        /**
          * The DOM element for the content of the blocking overlay.
          */
         blocker: JQuery;
@@ -2754,14 +2761,42 @@ declare namespace PrimeFaces.widget {
          */
         content: JQuery;
         /**
+         * The DOM element for the overlay that blocks the UI.
+         */
+        target: JQuery;
+        /**
+         * Clean up this widget and remove elements from DOM.
+         */
+        private _cleanup(): void;
+        /**
          * Sets up the global event listeners on the document.
          */
         private bindTriggers(): void;
+        /**
+         * Will be called after an AJAX request if the widget container will be detached.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+         * this method gets called.
+         *
+         * Please note that instead of overriding this method, you should consider adding a destroy listener instead
+         * via {@link addDestroyListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method just calls all destroy listeners.
+         * @override
+         */
+        override destroy(): void;
         /**
          * Checks whether the blocking overlay contains any content items.
          * @return `true` if this blocking overlay has got any content, `false` otherwise.
          */
         private hasContent(): boolean;
+        /**
+         * Checks whether this blocker has more than 1 target.
+         * @return `true` if this blocker has more than 1 target, `false` otherwise.
+         */
+        private hasMultipleTargets(): boolean;
         /**
          * Hide the component with optional duration animation.
          * @param duration Durations are given in milliseconds; higher values indicate slower animations, not
@@ -2792,6 +2827,17 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Checks whether this blockUI is currently blocking.
+         * @return `true` if this blockUI is blocking, or `false` otherwise.
+         */
+        isBlocking(): boolean;
+        /**
+         * Checks whether one of component's triggers equals the source ID from the provided settings.
+         * @param settings containing source ID.
+         * @return `true` if if one of component's triggers equals the source ID from the provided settings.
+         */
+        private isXhrSourceATrigger(settings: JQuery.AjaxSettings): boolean;
         /**
          * Used in ajax updates, reloads the widget configuration.
          *
@@ -2852,6 +2898,648 @@ declare namespace PrimeFaces.widget {
          */
         triggers: string;
     }
+}
+// Global pollution ...
+/**
+ * Additional properties that will be set on the global `Date` object when the `Calendar` widget is loaded.
+ */
+interface Date {
+    /**
+     * Gets the microseconds.
+     *
+     * Defined globally by the Calendar widget. __Do not use this.__
+     * @deprecated
+     * @return The microseconds field of this date.
+     */
+    getMicroseconds(): number;
+    /**
+     * Set the microseconds.
+     *
+     * Defined globally by the Calendar widget. __Do not use this.__
+     * @deprecated
+     * @param microseconds The microseconds to set.
+     * @return this for chaining.
+     */
+    setMicroseconds(microseconds: number): this;
+}
+/**
+ * Namespace for the timepicker JQueryUI plugin, available as `JQuery.fn.timepicker` and `JQuery.fn.datetimepicker`.
+ * Contains some additional types and interfaces required for the typings.
+ */
+declare namespace JQueryUITimepickerAddon {
+    /**
+     * Time units for selecting a time in the calendar widget.
+     */
+    export type TimeUnit = "hour" | "minute" | "second" | "millisec" | "microsec";
+    /**
+     * Whether to use sliders, select elements or a custom control type for selecting a time (hour / minute / second) in
+     * the time picker.
+     */
+    export type ControlType = "slider" | "select";
+    /**
+     * An offset of a timezone, in minutes relative to UTC. For example, `UTC-4` is represented as `-240`.
+     */
+    export type TimezoneOffset = number;
+    /**
+     * How dates are parsed by the Timepicker.
+     *
+     * - `loose`: Uses the JavaScript method `new Date(timeString)` to guess the time
+     * - `strict`: A date text must match the timeFormat exactly.
+     */
+    export type TimeParseType = "loose" | "strict";
+    /**
+     * A custom function for parsing a time string.
+     */
+    export type TimeParseFunction =
+    /**
+     * @param timeFormat Format according to which to parse the time.
+     * @param timeString Time string to parse.
+     * @param optins Current options of the time picker.
+     * @return The parsed time, or `undefined` if the time string could not be parsed.
+     */
+    (timeFormat: string, timeString: string, options: Partial<DatetimepickerOptions>) => TimeParseResult | undefined;
+    /**
+     * Represents the available methods on a JQuery instance for the date and / or time picker.
+     */
+    export type PickerMethod = "datepicker" | "timepicker" | "datetimepicker";
+    /**
+     * Represents a timezone of the world.
+     */
+    export interface Timezone {
+        /**
+         * Name of the timezone.
+         */
+        label: string;
+        /**
+         * Offset of the timezone.
+         */
+        value: TimezoneOffset;
+    }
+    /**
+     * The timepicker for working with times, such as formatting and parsing times.
+     */
+    export interface Timepicker {
+        /**
+         * A map with a locale name (`fr`, `de`, etc.) as the key and the locale as the value.
+         */
+        regional: Record<string, Locale>;
+        /**
+         * Current version of the DateTimePicker JQueryUI add-on.
+         */
+        version: string;
+        /**
+         * Override the default settings for all instances of the time picker.
+         * @param settings The new settings to use as defaults.
+         * @return this for chaining.
+         */
+        setDefaults(settings: Partial<DatetimepickerOptions>): this;
+        /**
+         * Calls `datetimepicker` on the `startTime` and `endTime` elements, and configures them to enforce the date /
+         * time range limits.
+         * @param startTime DOM element of the date/time picker with the start date/time.
+         * @param endTime DOM element of the date/time picker with the end date/time
+         * @param options Options for the `$.fn.datetimepicker` call.
+         */
+        datetimeRange(startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): void;
+        /**
+         * Calls `timepicker` on the `startTime` and `endTime` elements, and configures them to enforce the time range
+         * limits.
+         * @param startTime DOM element of the date/time picker with the start date/time.
+         * @param endTime DOM element of the date/time picker with the end date/time
+         * @param options Options for the `$.fn.timepicker` call.
+         */
+        timeRange(startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): void;
+        /**
+         * Calls `datepicker` on the `startTime` and `endTime` elements, and configures them to enforce the date
+         * range limits.
+         * @param startTime DOM element of the date/time picker with the start date/time.
+         * @param endTime DOM element of the date/time picker with the end date/time
+         * @param options Options for the `$.fn.datepicker` call.
+         */
+        dateRange(startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): void;
+        /**
+         * Calls the given method on the `startTime` and `endTime` elements, and configures them to enforce the date /
+         * time range limits.
+         * @param method Whether to call the `datepicker`, `timepicker`, or `datetimepicker` method on the elements.
+         * @param startTime DOM element of the date/time picker with the start date/time.
+         * @param endTime DOM element of the date/time picker with the end date/time
+         * @param options Options for the `$.fn.datepicker` call.
+         * @return A JQuery instance containing the given `startTime` and `endTime` elements.
+         */
+        handleRange(method: PickerMethod, startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): JQuery;
+        /**
+         * Get the timezone offset as string from a timezone offset.
+         * @param tzMinutes If not a number, less than `-720` (`UTC-12`), or greater than `840` (`UTC+14`),
+         * this value is returned as-is
+         * @param iso8601 If `true` formats in accordance to `iso8601` (sucha as `+12:45`).
+         * @return The timezone offset as a string, such as `+0530` for `UTC+5.5`.
+         */
+        timezoneOffsetString(tzMinutes: TimezoneOffset | string, iso8601: boolean): string;
+        /**
+         * Get the number in minutes that represents a timezone string.
+         * @param tzString A formatted time zone string, such as `+0500`, `-1245`, or `Z`.
+         * @return The offset in minutes, or the given `tzString` when it does not represent a valid timezone.
+         */
+        timezoneOffsetNumber(tzString: string): TimezoneOffset | string;
+        /**
+         * JavaScript `Date`s have not support for timezones, so we must adjust the minutes to compensate.
+         * @param date Date to adjust.
+         * @param fromTimezone Timezone of the given date.
+         * @param toTimezone Timezone to adjust the date to, relative to the `fromTimezone`.
+         * @return The given date, adjusted from the `fromTimezone` to the `toTimezone`.
+         */
+        timezoneAdjust(date: Date, fromTimezone: string, toTimezone: string): Date;
+        /**
+         * Log error or data to the console during error or debugging.
+         * @param args Data to log.
+         */
+        log(...args: readonly unknown[]): void;
+    }
+    /**
+     * Represents localized messages for a certain locale that are displayed by the datetimepicker.
+     */
+    export interface Locale {
+        /**
+         * Default: `["AM", "A"]`, A Localization Setting - Array of strings to try and parse against to determine AM.
+         */
+        amNames: string[];
+        /**
+         * Default: `["PM", "P"]`, A Localization Setting - Array of strings to try and parse against to determine PM.
+         */
+        pmNames: string[];
+        /**
+         * Default: `HH:mm`, A Localization Setting - String of format tokens to be replaced with the time.
+         */
+        timeFormat: string;
+        /**
+         * Default: Empty string, A Localization Setting - String to place after the formatted time.
+         */
+        timeSuffix: string;
+        /**
+         * Default: `Choose Time`, A Localization Setting - Title of the wigit when using only timepicker.
+         */
+        timeOnlyTitle: string;
+        /**
+         * Default: `Time`, A Localization Setting - Label used within timepicker for the formatted time.
+         */
+        timeText: string;
+        /**
+         * Default: `Hour`, A Localization Setting - Label used to identify the hour slider.
+         */
+        hourText: string;
+        /**
+         * Default: `Minute`, A Localization Setting - Label used to identify the minute slider.
+         */
+        minuteText: string;
+        /**
+         * Default: `Second`, A Localization Setting - Label used to identify the second slider.
+         */
+        secondText: string;
+        /**
+         * Default: `Millisecond`, A Localization Setting - Label used to identify the millisecond slider.
+         */
+        millisecText: string;
+        /**
+         * Default: `Microsecond`, A Localization Setting - Label used to identify the microsecond slider.
+         */
+        microsecText: string;
+        /**
+         * Default: `Timezone`, A Localization Setting - Label used to identify the timezone slider.
+         */
+        timezoneText: string;
+    }
+    /**
+     * Represents the result of parsing a time string.
+     */
+    export interface TimeParseResult {
+        /**
+         * Hour of the time, starting at `0`.
+         */
+        hour: number;
+        /**
+         * Minute of the time, starting at `0`.
+         */
+        minute: number;
+        /**
+         * Seconds of the time, starting at `0`.
+         */
+        seconds: number;
+        /**
+         * Milliseconds of the time, starting at `0`.
+         */
+        millisec: number;
+        /**
+         * Microseconds of the time, starting at `0`.
+         */
+        microsec: number;
+        /**
+         * Timezone of the time.
+         */
+        timezone?: TimezoneOffset;
+    }
+    /**
+     * Options for the date time picker that lets the user select a time.
+     */
+    export interface DatetimepickerOptions extends JQueryUI.DatepickerOptions, Locale {
+        /**
+         * Default: `true` - When `altField` is used from datepicker, `altField` will only receive the formatted time
+         * and the original field only receives date.
+         */
+        altFieldTimeOnly: boolean;
+        /**
+         * Default: (separator option) - String placed between formatted date and formatted time in the altField.
+         */
+        altSeparator: string;
+        /**
+         * Default: (timeSuffix option) - String always placed after the formatted time in the altField.
+         */
+        altTimeSuffix: string;
+        /**
+         * Default: (timeFormat option) - The time format to use with the altField.
+         */
+        altTimeFormat: string;
+        /**
+         * Default: true - Whether to immediately focus the main field whenever the altField receives focus. Effective
+         * at construction time only, changing it later has no effect.
+         */
+        altRedirectFocus: boolean;
+        /**
+         * Default: [generated timezones] - An array of timezones used to populate the timezone select.
+         */
+        timezoneList: Timezone[] | Record<string, TimezoneOffset>;
+        /**
+         * Default: `slider` - How to select a time (hour / minute / second). If `slider` is unavailable through
+         * jQueryUI, `select` will be used. For advanced usage you may set this to a custom control to use controls
+         * other than sliders or selects.
+         */
+        controlType: ControlType | CustomControl;
+        /**
+         * Default: `null` - Whether to show the hour control.  The default of `null` will use detection from timeFormat.
+         */
+        showHour: boolean | null;
+        /**
+         * Default: `null` - Whether to show the minute control.  The default of `null` will use detection from
+         * timeFormat.
+         */
+        showMinute: boolean | null;
+        /**
+         * Default: `null` - Whether to show the second control.  The default of `null` will use detection from
+         * timeFormat.
+         */
+        showSecond: boolean | null;
+        /**
+         * Default: `null` - Whether to show the millisecond control.  The default of `null` will use detection from
+         * timeFormat.
+         */
+        showMillisec: boolean | null;
+        /**
+         * Default: `null` - Whether to show the microsecond control.  The default of `null` will use detection from
+         * timeFormat.
+         */
+        showMicrosec: boolean | null;
+        /**
+         * Default: `null` - Whether to show the timezone select.
+         */
+        showTimezone: boolean | null;
+        /**
+         * Default: true - Whether to show the time selected within the datetimepicker.
+         */
+        showTime: boolean;
+        /**
+         * Default: `1` - Hours per step the slider makes.
+         */
+        stepHour: number;
+        /**
+         * Default: `1` - Minutes per step the slider makes.
+         */
+        stepMinute: number;
+        /**
+         * Default: `1` - Seconds per step the slider makes.
+         */
+        stepSecond: number;
+        /**
+         * Default: `1` - Milliseconds per step the slider makes.
+         */
+        stepMillisec: number;
+        /**
+         * Default: `1` - Microseconds per step the slider makes.
+         */
+        stepMicrosec: number;
+        /**
+         * Default: `0` - Initial hour set.
+         */
+        hour: number;
+        /**
+         * Default: `0` - Initial minute set.
+         */
+        minute: number;
+        /**
+         * Default: `0` - Initial second set.
+         */
+        second: number;
+        /**
+         * Default: `0` - Initial millisecond set.
+         */
+        millisec: number;
+        /**
+         * Default: `0` - Initial microsecond set.  Note: Javascript's native `Date` object does not natively support
+         * microseconds.  Timepicker extends the Date object with `Date.prototype.setMicroseconds(m)` and
+         * `Date.prototype.getMicroseconds()`. Date comparisons will not acknowledge microseconds. Use this only for
+         * display purposes.
+         */
+        microsec: number;
+        /**
+         * Default: `null` - Initial timezone set.  If `null`, the browser's local timezone will be used.
+         */
+        timezone: TimezoneOffset | null;
+        /**
+         * Default: `0` - The minimum hour allowed for all dates.
+         */
+        hourMin: number;
+        /**
+         * Default: `0` - The minimum minute allowed for all dates.
+         */
+        minuteMin: number;
+        /**
+         * Default: `0` - The minimum second allowed for all dates.
+         */
+        secondMin: number;
+        /**
+         * Default: `0` - The minimum millisecond allowed for all dates.
+         */
+        millisecMin: number;
+        /**
+         * Default: `0` - The minimum microsecond allowed for all dates.
+         */
+        microsecMin: number;
+        /**
+         * Default: `23` - The maximum hour allowed for all dates.
+         */
+        hourMax: number;
+        /**
+         * Default: `59` - The maximum minute allowed for all dates.
+         */
+        minuteMax: number;
+        /**
+         * Default: `59` - The maximum second allowed for all dates.
+         */
+        secondMax: number;
+        /**
+         * Default: `999` - The maximum millisecond allowed for all dates.
+         */
+        millisecMax: number;
+        /**
+         * Default: `999` - The maximum microsecond allowed for all dates.
+         */
+        microsecMax: number;
+        /**
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider.  This number represents
+         * the units (in hours) between labels.
+         */
+        hourGrid: number;
+        /**
+         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
+         * the units (in minutes) between labels.
+         */
+        minuteGrid: number;
+        /**
+         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * the units (in seconds) between labels.
+         */
+        secondGrid: number;
+        /**
+         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * the units (in milliseconds) between labels.
+         */
+        millisecGrid: number;
+        /**
+         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
+         * the units (in microseconds) between labels.
+         */
+        microsecGrid: number;
+        /**
+         * Default: `true` - Whether to show the button panel at the bottom. This is generally needed.
+         */
+        showButtonPanel: boolean;
+        /**
+         * Default: `false` - Allows direct input in time field
+         */
+        timeInput: boolean;
+        /**
+         * Default: `false` - Hide the datepicker and only provide a time interface.
+         */
+        timeOnly: boolean;
+        /**
+         * Default: `false` - Show the date and time in the input, but only allow the timepicker.
+         */
+        timeOnlyShowDate: boolean;
+        /**
+         * Default: unset - Function to be called when the timepicker or selection control is injected or re-rendered.
+         */
+        afterInject(this: Timepicker): void;
+        /**
+         * Default: unset - Function to be called when a date is chosen or time has changed.
+         * @param datetimeText Currently selected date as text.
+         * @param timepicker The current timepicker instance.
+         */
+        onSelect(this: HTMLElement | null, datetimeText: string, timepicker: Timepicker): void;
+        /**
+         * Default: `true` - Always have a time set internally, even before user has chosen one.
+         */
+        alwaysSetTime: boolean;
+        /**
+         * Default: space (` `) - When formatting the time this string is placed between the formatted date and
+         * formatted time.
+         */
+        separator: string;
+        /**
+         * Default: (timeFormat option) - How to format the time displayed within the timepicker.
+         */
+        pickerTimeFormat: string;
+        /**
+         * Default: (timeSuffix option) - String to place after the formatted time within the timepicker.
+         */
+        pickerTimeSuffix: string;
+        /**
+         * Default: `true` - Whether to show the timepicker within the datepicker.
+         */
+        showTimepicker: boolean;
+        /**
+         * Default: `false` - Try to show the time dropdowns all on one line. This should be used with `controlType`
+         * `select` and as few units as possible.
+         */
+        oneLine: boolean;
+        /**
+         * Default: `null` - String of the default time value placed in the input on focus when the input is empty.
+         */
+        defaultValue: string | null;
+        /**
+         * Default: `null` - Date object of the minimum datetime allowed.  Also available as minDate.
+         */
+        minDateTime: Date | null;
+        /**
+         * Default: `null` - Date object of the maximum datetime allowed. Also Available as maxDate.
+         */
+        maxDateTime: Date | null;
+        /**
+         * Default: `null` - String of the minimum time allowed. '8:00 am' will restrict to times after 8am
+         */
+        minTime: string | null;
+        /**
+         * Default: `null` - String of the maximum time allowed. '8:00 pm' will restrict to times before 8pm
+         */
+        maxTime: string | null;
+        /**
+         * Default: `strict` - How to parse the time string. You may also set this to a function to handle the parsing
+         * yourself.
+         */
+        parse: TimeParseType | TimeParseFunction;
+    }
+    /**
+     * Optionts for the various methods of the `Timepicker` for working time date / time ranges.
+     */
+    export interface RangeOptions extends DatetimepickerOptions {
+        /**
+         * Min allowed interval in milliseconds
+         */
+        minInterval: number;
+        /**
+         * Max allowed interval in milliseconds
+         */
+        maxInterval: number;
+        /**
+         * Options that are applied only to the date / time picker for the start date / time.
+         */
+        start: Partial<DatetimepickerOptions>;
+        /**
+         * Options that are applied only to the date / time picker for the end date / time.
+         */
+        end: Partial<DatetimepickerOptions>;
+    }
+    /**
+     * Options for a custom control for selecting an hour, minute, or seconds. The control should behave in such a way
+     * that the user may select a number in the set `{ min, min+step, min+2*step, ..., max }`.
+     */
+    export interface ControlOptions {
+        /**
+         * Maximum allowed value for the time unit the user may select.
+         */
+        max: number;
+        /**
+         * Minumum allowed value for the time unit the user may select.
+         */
+        min: number;
+        /**
+         * Desired step size for selecting a value.
+         */
+        step: number;
+    }
+    /**
+     * For advanced usage of the Calendar, you may pass an object of this type to use controls other than sliders and
+     * selects for selecting an hour, minute, or second.
+     */
+    export interface CustomControl {
+        /**
+         * Creates the control for the given time unit and appends it to the given `container` element.
+         * @param instance The current date time picker instance.
+         * @param container The container element to which the created control must be appended.
+         * @param unit The type of control for which to set the value.
+         * @param val Initial value for the control
+         * @param min Minumum allowed value for the time unit the user may select.
+         * @param max Maximum allowed value for the time unit the user may select.
+         * @param step Desired step size for selecting a value.
+         * @return The `container` element as passed to this method.
+         */
+        create(instance: Timepicker, container: JQuery, unit: TimeUnit, val: number, min: number, max: number, step: number): JQuery;
+        /**
+         * Sets the given ooptions on the control for the given time unit.
+         * @param instance The current date time picker instance.
+         * @param container The container element of the control, as passed to `create`.
+         * @param unit The type of control for which to apply the options.
+         * @param opts Options to apply on the control
+         * @return The `container` element as passed to this method.
+         */
+        options(instance: Timepicker, container: JQuery, unit: TimeUnit, opts: Partial<ControlOptions>): JQuery;
+        /**
+         * Sets the value of control for the given time uit.
+         * @param instance The current date time picker instance.
+         * @param container The container element of the control, as passed to `create`.
+         * @param unit The type of control for which to set the value.
+         * @param val Value to set on this control.
+         * @return The `container` element as passed to this method.
+         */
+        value(instance: Timepicker, container: JQuery, unit: TimeUnit, val: number): JQuery;
+        /**
+         * Gets the current value of the control for the given time unit.
+         * @param instance The current date time picker instance.
+         * @param container The container element of the control, as passed to `create`.
+         * @param unit The type of control for which to get the value.
+         * @return The current value of the control.
+         */
+        value(instance: Timepicker, container: JQuery, unit: TimeUnit): number;
+    }
+}
+interface JQuery {
+    /**
+     * Initializes the datetimepicker on this element. It lets the user select both a date and a time (hour and
+     * minute).
+     * @param cfg Options for the datetimepicker.
+     * @return this for chaining.
+     */
+    datetimepicker(cfg?: Partial<JQueryUITimepickerAddon.DatetimepickerOptions>): this;
+    /**
+     * Sets and selects the given date.
+     * @param methodName Name of the method to invoke.
+     * @param date The new date to select. When not given, unselects the date.
+     * @return this for chaining.
+     */
+    datetimepicker(methodName: "setDate", date?: Date): this;
+    /**
+     * Finds the currently selected date of the datetimepicker.
+     * @param methodName Name of the method to invoke.
+     * @return The currently selected date, or `null` if no date is selected.
+     */
+    datetimepicker(methodName: "getDate"): Date | null;
+    /**
+     * Enables the datetimepicker so that the user can now select a date.
+     * @param methodName Name of the method to invoke.
+     * @return this for chaining.
+     */
+    datetimepicker(methodName: "enable"): this;
+    /**
+     * Disables the datetimepicker so that the user cannot select a date anymore.
+     * @param methodName Name of the method to invoke.
+     * @return this for chaining.
+     */
+    datetimepicker(methodName: "disable"): this;
+    /**
+     * Sets the minimum allowed date the user may select.
+     * @param methodName Name of the method to invoke.
+     * @param optionName Name of the option to set.
+     * @param date New value for the option.
+     * @return this for chaining.
+     */
+    datetimepicker(methodName: "option", optionName: "minDate", date: Date): this;
+    /**
+     * Sets the maximum allowed date the user may select.
+     * @param methodName Name of the method to invoke.
+     * @param optionName Name of the option to set.
+     * @param date New value for the option.
+     * @return this for chaining.
+     */
+    datetimepicker(methodName: "option", optionName: "maxDate", date: Date): this;
+    /**
+     * Initializes the timepicker on this element. It lets the user select a time (hour and minute).
+     * @param cfg Options for the datetimepicker.
+     * @return this for chaining.
+     */
+    timepicker(cfg?: Partial<JQueryUITimepickerAddon.DatetimepickerOptions>): this;
+}
+interface JQueryStatic {
+    /**
+     * The global instance of the timepicker utility class for working with times.
+     */
+    timepicker: JQueryUITimepickerAddon.Timepicker;
 }
 declare namespace PrimeFaces.widget.Calendar {
     /**
@@ -3252,7 +3940,7 @@ declare namespace PrimeFaces.widget.Captcha {
     /**
      * Captcha features light and dark modes for theme.
      */
-    export type Theme = "light" | "dark";
+    export type Theme = "auto" | "light" | "dark";
 }
 declare namespace PrimeFaces.widget {
     /**
@@ -3517,7 +4205,7 @@ declare namespace PrimeFaces.widget {
          */
         private forwardIsDisabled(): boolean;
         /**
-         * Retrieves the total number of the indicators.
+         * Retrieves the total number of the indicators floor to 0 so it can't be negative.
          * @return total number of the indicators.
          */
         private getTotalIndicators(): number;
@@ -4151,6 +4839,10 @@ declare namespace PrimeFaces.widget {
      */
     export class Chips<TCfg extends ChipsCfg = ChipsCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * Is this component wrapped in a float label.
+         */
+        hasFloatLabel: boolean;
+        /**
          * DOM element of the hidden INPUT field with the current value.
          */
         hinput: JQuery;
@@ -4239,6 +4931,10 @@ declare namespace PrimeFaces.widget {
          * order of the items or closes the editor turning the values back into chips.
          */
         toggleEditor(): void;
+        /**
+         * Handles floating label CSS if wrapped in a floating label.
+         */
+        private updateFloatLabel(): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -6660,6 +7356,21 @@ declare namespace PrimeFaces.ajax {
          */
         getPostUrl(form: JQuery): string;
         /**
+         * Get source ID from settings.
+         * @param settings containing source ID.
+         * @return The source ID from settings or `null` if settings does not contain a source.
+         */
+        getSourceId(settings: JQuery.AjaxSettings): string;
+        /**
+         * Checks whether the component ID from the provided widget equals the source ID from the provided
+         * settings.
+         * @param widget of the component to check for being the source.
+         * @param settings containing source ID.
+         * @return `true` if the component ID from the provided widget equals the source ID from the
+         * provided settings.
+         */
+        isXhrSource(widget: PrimeFaces.widget.BaseWidget, settings: JQuery.AjaxSettings): boolean;
+        /**
          * Updates the HTML `body` element of the current document with the content received from an AJAX request.
          * @param content The content of the changeset that was returned by an AJAX request.
          */
@@ -6822,7 +7533,7 @@ declare namespace PrimeFaces.csp {
      * @param event Event to listen to, with the `on` prefix, such as `onclick` or `onblur`.
      * @return true if component has this AJAX event
      */
-    export function hasRegisteredAjaxifiedEvent(id: string, event?: string): boolean;
+    export function hasRegisteredAjaxifiedEvent(id: string, event?: string): boolean | undefined;
     /**
      * Sets the given nonce to all forms on the current page.
      * @param nonce Nonce to set. This value is usually supplied by the server.
@@ -6966,9 +7677,38 @@ declare namespace PrimeFaces.env {
      */
     export let mobile: boolean;
     /**
+     * `true` if the user's current OS setting prefers dark mode, `false` otherwise.
+     */
+    export let preferredColorSchemeDark: boolean;
+    /**
+     * `true` if the user's current OS setting prefers light mode, `false` otherwise.
+     */
+    export let preferredColorSchemeLight: boolean;
+    /**
      * `true` if the current browser supports touch, `false` otherwise.
      */
     export let touch: boolean;
+    /**
+     * Evaluate a media query and return true/false if its a match.
+     * @param mediaquery the media query to evaluate
+     * @return true if it matches the query false if not
+     */
+    export function evaluateMediaQuery(mediaquery: string): boolean;
+    /**
+     * Gets the user's preferred color scheme set in their operating system.
+     * @return either 'dark' or 'light'
+     */
+    export function getOSPreferredColorScheme(): string;
+    /**
+     * Gets the currently loaded PrimeFaces theme.
+     * @return The current theme, such as `omega` or `luna-amber`. Empty string when no theme is loaded.
+     */
+    export function getTheme(): string;
+    /**
+     * Based on the current PrimeFaces theme determine if light or dark contrast is being applied.
+     * @return either 'dark' or 'light'
+     */
+    export function getThemeContrast(): string;
     /**
      * Initializes the environment by reading the browser environment.
      */
@@ -6990,6 +7730,18 @@ declare namespace PrimeFaces.env {
      * given version.
      */
     export function isLtIE(version: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11): boolean;
+    /**
+     * Media query to determine if screen size is above pixel count.
+     * @param pixels the number of pixels to check
+     * @return true if screen is greater than number of pixels
+     */
+    export function isScreenSizeGreaterThan(pixels: number): boolean;
+    /**
+     * Media query to determine if screen size is below pixel count.
+     * @param pixels the number of pixels to check
+     * @return true if screen is less than number of pixels
+     */
+    export function isScreenSizeLessThan(pixels: number): boolean;
     /**
      * A widget is touch enabled if the browser supports touch AND the widget has the touchable property enabled.
      * The default will be true if it widget status can't be determined.
@@ -7370,6 +8122,13 @@ declare namespace PrimeFaces {
      */
     export function getAriaLabel(key: string): string;
     /**
+     * Gets the form by id or the closest form if the id is not a form itself.
+     * In AJAX we also have a fallback for the first form in DOM, this should not be used here.
+     * @param id ID of the component to get the closest form or if its a form itself
+     * @return the form or NULL if no form found
+     */
+    export function getClosestForm(id: string): JQuery;
+    /**
      * Fetches the value of a cookie by its name
      * @param name Name of a cookie
      * @return The value of the given cookie, or `undefined` if no such cookie exists
@@ -7538,6 +8297,10 @@ declare namespace PrimeFaces {
      * @param widgetId The ID of a deferred widget.
      */
     export function removeDeferredRenders(widgetId: string): void;
+    /**
+     * Reset any state variables on update="@all".
+     */
+    export function resetState(): void;
     /**
      * Aligns container scrollbar to keep item in container viewport, algorithm copied from JQueryUI menu widget.
      * @param container The container with a scrollbar that contains the item.
@@ -7802,6 +8565,14 @@ declare namespace PrimeFaces.utils {
      */
     export function countBytes(text: string): number;
     /**
+     * When configuring numeric value like 'showDelay' and the user wants '0' we can't treat 0 as Falsey
+     * so we make the value 0.  Otherwise Falsey returns the default value.
+     * @param value the original value
+     * @param defaultValue the required default value if value is not set
+     * @return the calculated value
+     */
+    export function defaultNumeric(value: number | undefined, defaultValue: number): number;
+    /**
      * Disables CSS and jQuery animation.
      */
     export function disableAnimations(): void;
@@ -7854,6 +8625,12 @@ declare namespace PrimeFaces.utils {
      */
     export function getScrollableParents(element: Element): Element[];
     /**
+     * Is this component wrapped in a float label?
+     * @param jq An element to check if wrapped in float label.
+     * @return true this this JQ has a float label parent
+     */
+    export function hasFloatLabel(jq: JQuery | undefined | null): boolean;
+    /**
      * Ignores certain keys on filter input text box. Useful in filter input events in many components.
      * @param e The key event that occurred.
      * @return `true` if the one of the keys to ignore was pressed, or `false` otherwise.
@@ -7865,6 +8642,12 @@ declare namespace PrimeFaces.utils {
      * @return Whether the modal with the given ID is displayed.
      */
     export function isModalActive(id: string): boolean;
+    /**
+     * Is this scrollable parent a type that should be bound to the window element.
+     * @param jq An element to check if should be bound to window scroll.
+     * @return true this this JQ should be bound to the window scroll event
+     */
+    export function isScrollParentWindow(jq: JQuery | undefined | null): boolean;
     /**
      * Helper to open a new URL and if CTRL is held down open in new browser tab.
      * @param event The click event that occurred.
@@ -7990,6 +8773,13 @@ declare namespace PrimeFaces.utils {
      * @param scrollNamespace A scroll event with a namespace, such as `scroll.widgetId`.
      */
     export function unbindScrollHandler(widget: PrimeFaces.widget.BaseWidget, scrollNamespace: string): void;
+    /**
+     * Handles floating label CSS if wrapped in a floating label.
+     * @param element the to add the CSS classes to
+     * @param input the input to check if filled
+     * @param hasFloatLabel true if this is wrapped in a floating label
+     */
+    export function updateFloatLabel(element: JQuery | undefined, input: JQuery | undefined, hasFloatLabel: boolean | undefined): void;
 }
 /**
  * This object contains the  widget classes that are currently available. The key is the name of the widget, the
@@ -9437,10 +10227,10 @@ declare namespace PrimeFaces.widget.DataTable {
 declare namespace PrimeFaces.widget.DataTable {
     /**
      * Indicates how rows of a DataTable
-     * may be selected. `new` always unselects other rows, `add` preserves the currently selected rows, and `checkbox` adds
-     * a checkbox next to each row.
+     * may be selected, when clicking on the row itself (not the checkbox / radiobutton from p:column).
+     * `new` always unselects other rows, `add` preserves the currently selected rows, and `none` disables row selection.
      */
-    export type RowSelectMode = "new" | "add" | "checkbox";
+    export type RowSelectMode = "new" | "add" | "none";
 }
 declare namespace PrimeFaces.widget.DataTable {
     /**
@@ -10287,8 +11077,9 @@ declare namespace PrimeFaces.widget {
          * @param rowElement Row that was clicked.
          * @param cmSelMode The current selection mode.
          * @param fnShowMenu Optional callback function invoked when the menu was opened.
+         * @return true to hide the native browser context menu, false to display it
          */
-        private onRowRightClick(event: JQuery.TriggeredEvent, rowElement: JQuery, cmSelMode: PrimeFaces.widget.DataTable.CmSelectionMode, fnShowMenu?: () => void): void;
+        private onRowRightClick(event: JQuery.TriggeredEvent, rowElement: JQuery, cmSelMode: PrimeFaces.widget.DataTable.CmSelectionMode, fnShowMenu?: () => void): boolean;
         /**
          * Switches to the given page by loading the content via AJAX. Compare with `loadDataWithCache`, which first checks
          * whether the data is already cached and loads it from the server only when not found in the cache.
@@ -10789,8 +11580,7 @@ declare namespace PrimeFaces.widget {
          */
         rowHover: boolean;
         /**
-         * Defines row selection mode for multiple
-         * selection.
+         * Defines row selection mode when clicking on the row itself.
          */
         rowSelectMode: PrimeFaces.widget.DataTable.RowSelectMode;
         /**
@@ -12543,6 +13333,10 @@ declare namespace PrimeFaces.widget {
          * Whether focus should be put on the input again.
          */
         refocusInput: boolean;
+        /**
+         * The DOM element for the trigger button if using showIcon.
+         */
+        triggerButton: JQuery;
         /**
          * The date that is displayed in the date picker.
          */
@@ -15930,6 +16724,10 @@ declare namespace PrimeFaces.widget {
          */
         private bindEvents(): void;
         /**
+         * Clears the currently selected file.
+         */
+        clear(): void;
+        /**
          * Formats the given file size in a more human-friendly format, e.g. `1.5 MB` etc.
          * @param bytes File size in bytes to format
          * @return The given file size, formatted in a more human-friendly format.
@@ -16239,6 +17037,14 @@ declare namespace PrimeFaces.widget {
      */
     export class CommandButton<TCfg extends CommandButtonCfg = CommandButtonCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * Number of concurrent active Ajax requests.
+         */
+        ajaxCount?: number;
+        /**
+         * Sets up the global event listeners on the button.
+         */
+        private bindTriggers(): void;
+        /**
          * Disables this button so that the user cannot press the button anymore.
          */
         disable(): void;
@@ -16269,6 +17075,25 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Used in ajax updates, reloads the widget configuration.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+         * method is called with the new widget configuration from the server. This makes it possible to persist
+         * client-side state during an update, such as the currently selected tab.
+         *
+         * Please note that instead of overriding this method, you should consider adding a refresh listener instead
+         * via {@link addRefreshListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
+         * method.
+         * @override
+         * @param cfg The new widget configuration from the server.
+         * @return The value as returned by the `init` method, which is often `undefined`.
+         */
+        override refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -16278,6 +17103,83 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface CommandButtonCfg extends PrimeFaces.widget.BaseWidgetCfg {
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces CommandLink Widget__
+     *
+     * CommandLink is an extended version of standard commandLink with AJAX and theming.
+     * @typeparam TCfg Defaults to `CommandLinkCfg`. Type of the configuration object for this widget.
+     */
+    export class CommandLink<TCfg extends CommandLinkCfg = CommandLinkCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Number of concurrent active Ajax requests.
+         */
+        ajaxCount?: number;
+        /**
+         * Sets up the global event listeners on the link.
+         */
+        private bindTriggers(): void;
+        /**
+         * Disables this link so that the user cannot click the link anymore.
+         */
+        disable(): void;
+        /**
+         * Enables this link so that the user can click the link.
+         */
+        enable(): void;
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Used in ajax updates, reloads the widget configuration.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+         * method is called with the new widget configuration from the server. This makes it possible to persist
+         * client-side state during an update, such as the currently selected tab.
+         *
+         * Please note that instead of overriding this method, you should consider adding a refresh listener instead
+         * via {@link addRefreshListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
+         * method.
+         * @override
+         * @param cfg The new widget configuration from the server.
+         * @return The value as returned by the `init` method, which is often `undefined`.
+         */
+        override refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  CommandLink| CommandLink widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface CommandLinkCfg extends PrimeFaces.widget.BaseWidgetCfg {
     }
 }
 declare namespace PrimeFaces.widget {
@@ -17047,7 +17949,7 @@ declare namespace PrimeFaces.widget {
          * Checks this checkbox, if it is not checked already.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        check(silent: boolean): void;
+        check(silent?: boolean): void;
         /**
          * Disables this input so that the user cannot enter a value anymore.
          */
@@ -17088,7 +17990,7 @@ declare namespace PrimeFaces.widget {
          * Resets the input.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        resetValue(silent: boolean): void;
+        resetValue(silent?: boolean): void;
         /**
          * Checks this checkbox if it is currently unchecked, or unchecks it otherwise.
          */
@@ -17097,7 +17999,7 @@ declare namespace PrimeFaces.widget {
          * Unchecks this checkbox, if it is not unchecked already .
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        uncheck(silent: boolean): void;
+        uncheck(silent?: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -17359,7 +18261,7 @@ declare namespace PrimeFaces.widget {
          * Selects all available options.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        checkAll(silent: boolean): void;
+        checkAll(silent?: boolean): void;
         /**
          * Implementation of a `PrimeFaces.widget.SelectCheckboxMenu.FilterFunction` that matches the given option when it
          * contains the given search text.
@@ -17480,6 +18382,10 @@ declare namespace PrimeFaces.widget {
          */
         private renderItems(): void;
         /**
+         * Create the label to display values
+         */
+        private renderLabel(): void;
+        /**
          * Creates the overlay panel with the checkboxes for the selectable option.
          */
         private renderPanel(): void;
@@ -17487,7 +18393,7 @@ declare namespace PrimeFaces.widget {
          * Resets the input.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        resetValue(silent: boolean): void;
+        resetValue(silent?: boolean): void;
         /**
          * Checks the checkbox option with the given value.
          * @param value Value of the option to check.
@@ -17512,8 +18418,18 @@ declare namespace PrimeFaces.widget {
         /**
          * Select or unselect the given checkbox option.
          * @param checkbox One of the checkbox options of this widget to toggle.
+         * @param input (optional) input element representing the value of the checkbox
          */
-        toggleItem(checkbox: JQuery): void;
+        toggleItem(checkbox: JQuery, input: JQuery): void;
+        /**
+         * Bring up the overlay panel if its not showing or hide it if it is showing.
+         */
+        togglePanel(): void;
+        /**
+         * Toggles either selecting all items or unselecting all items.
+         * @param selectAll true to select all items and false to uncheck all items
+         */
+        toggleSelection(selectAll: boolean): void;
         /**
          * Unbind all panel event listeners
          */
@@ -17528,7 +18444,7 @@ declare namespace PrimeFaces.widget {
          * Unselects all available options.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        uncheckAll(silent: boolean): void;
+        uncheckAll(silent?: boolean): void;
         /**
          * When multi mode is disabled: Upates the label that indicates the currently selected item.
          */
@@ -17944,7 +18860,7 @@ declare namespace PrimeFaces.widget {
          * Check all available options.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        checkAll(silent: boolean): void;
+        checkAll(silent?: boolean): void;
         /**
          * Disables this input so that the user cannot enter a value anymore.
          */
@@ -17986,7 +18902,7 @@ declare namespace PrimeFaces.widget {
          * Resets the input.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        resetValue(silent: boolean): void;
+        resetValue(silent?: boolean): void;
         /**
          * Unchecks the given checkbox and associated input.
          * @param input the input.
@@ -17997,7 +18913,7 @@ declare namespace PrimeFaces.widget {
          * Uncheck all available options.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        uncheckAll(silent: boolean): void;
+        uncheckAll(silent?: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -18330,6 +19246,10 @@ declare namespace PrimeFaces.widget {
          */
         focusInput: JQuery;
         /**
+         * Is this component wrapped in a float label.
+         */
+        hasFloatLabel: boolean;
+        /**
          * Unbind callback for the hide overlay handler.
          */
         hideOverlayHandler?: PrimeFaces.UnbindCallback;
@@ -18440,6 +19360,10 @@ declare namespace PrimeFaces.widget {
          * Sets up the event listeners for the filter input in the overlay panel.
          */
         private bindFilterEvents(): void;
+        /**
+         * Sets up the event listeners if this is bound to a floating label.
+         */
+        private bindFloatLabel(): void;
         /**
          * Sets up the event listeners for the selectable items.
          */
@@ -18658,7 +19582,7 @@ declare namespace PrimeFaces.widget {
          * Resets the input.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        resetValue(silent: boolean): void;
+        resetValue(silent?: boolean): void;
         /**
          * Finds the index of the given selectable option.
          * @param item One of the available selectable options.
@@ -18674,7 +19598,7 @@ declare namespace PrimeFaces.widget {
          * @param item The option to select.
          * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        private selectItem(item: JQuery, silent: boolean): void;
+        private selectItem(item: JQuery, silent?: boolean): void;
         /**
          * Selects the option with the given value.
          * @param value Value of the option to select.
@@ -18719,6 +19643,11 @@ declare namespace PrimeFaces.widget {
          * Unbind all panel event listeners
          */
         private unbindPanelEvents(): void;
+        /**
+         * Handles floating label CSS if wrapped in a floating label.
+         * @param input the input
+         */
+        private updateFloatLabel(input: JQuery | undefined): void;
         /**
          * Updates the style class of the label that indicates the currently selected item.
          * @param add `true` if a placeholder should be displayed, or `false` otherwise.
@@ -18816,6 +19745,10 @@ declare namespace PrimeFaces.widget {
          */
         enabledInputs: JQuery;
         /**
+         * Whether custom is used with a facet.
+         */
+        facet: boolean;
+        /**
          * The (cloned) DOM elements for the hidden input fields of type radio storing the value of this
          * widget.
          */
@@ -18901,6 +19834,12 @@ declare namespace PrimeFaces.widget {
          */
         select(radio: JQuery): void;
         /**
+         * Sets aria-checked attribute.
+         * @param input of which to set aria-checked attribute.
+         * @param checked state to set.
+         */
+        private setAriaChecked(input: JQuery, checked: boolean): void;
+        /**
          * Removes some of the event listeners added by `bindEvents`. Called when this widget is disabled.
          * @param input Radio input element for which to remove the listeners.
          */
@@ -18923,6 +19862,10 @@ declare namespace PrimeFaces.widget {
          * Whether a custom layout is enabled.
          */
         custom: boolean;
+        /**
+         * Whether the radio group is readonly.
+         */
+        readonly: boolean;
         /**
          * Unselectable mode when true clicking a radio again will clear the selection.
          */
@@ -18958,6 +19901,10 @@ declare namespace PrimeFaces.widget {
      * @typeparam TCfg Defaults to `SplitButtonCfg`. Type of the configuration object for this widget.
      */
     export class SplitButton<TCfg extends SplitButtonCfg = SplitButtonCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * Number of concurrent active Ajax requests.
+         */
+        ajaxCount?: number;
         /**
          * The DOM element for the main button.
          */
@@ -19036,6 +19983,14 @@ declare namespace PrimeFaces.widget {
          */
         containsFilter(value: string, filter: string): boolean;
         /**
+         * Disables this button so that the user cannot press the button anymore.
+         */
+        disable(): void;
+        /**
+         * Enables this button so that the user can press the button.
+         */
+        enable(): void;
+        /**
          * A filter function that takes a value and a search and returns true if the value ends with the search term.
          * @param value Value to be filtered
          * @param filter Filter or search term to apply.
@@ -19096,6 +20051,13 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
+         * @param settings containing source ID.
+         * @return `true` if the ID of the button, or one if its menu items equals the source ID from the
+         * provided settings.
+         */
+        private isXhrSource(settings: JQuery.AjaxSettings): boolean;
         /**
          * Used in ajax updates, reloads the widget configuration.
          *
@@ -21263,6 +22225,10 @@ declare namespace PrimeFaces.widget {
      */
     export class InputMask<TCfg extends InputMaskCfg = InputMaskCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * Is this component wrapped in a float label.
+         */
+        hasFloatLabel: boolean;
+        /**
          * Applys the mask to the input.
          */
         private applyMask(): void;
@@ -22012,648 +22978,6 @@ interface JQuery {
      * @return The z-index of this element.
      */
     zIndex(zIndex: number): this;
-}
-// Global pollution ...
-/**
- * Additional properties that will be set on the global `Date` object when the `Calendar` widget is loaded.
- */
-interface Date {
-    /**
-     * Gets the microseconds.
-     *
-     * Defined globally by the Calendar widget. __Do not use this.__
-     * @deprecated
-     * @return The microseconds field of this date.
-     */
-    getMicroseconds(): number;
-    /**
-     * Set the microseconds.
-     *
-     * Defined globally by the Calendar widget. __Do not use this.__
-     * @deprecated
-     * @param microseconds The microseconds to set.
-     * @return this for chaining.
-     */
-    setMicroseconds(microseconds: number): this;
-}
-/**
- * Namespace for the timepicker JQueryUI plugin, available as `JQuery.fn.timepicker` and `JQuery.fn.datetimepicker`.
- * Contains some additional types and interfaces required for the typings.
- */
-declare namespace JQueryUITimepickerAddon {
-    /**
-     * Time units for selecting a time in the calendar widget.
-     */
-    export type TimeUnit = "hour" | "minute" | "second" | "millisec" | "microsec";
-    /**
-     * Whether to use sliders, select elements or a custom control type for selecting a time (hour / minute / second) in
-     * the time picker.
-     */
-    export type ControlType = "slider" | "select";
-    /**
-     * An offset of a timezone, in minutes relative to UTC. For example, `UTC-4` is represented as `-240`.
-     */
-    export type TimezoneOffset = number;
-    /**
-     * How dates are parsed by the Timepicker.
-     *
-     * - `loose`: Uses the JavaScript method `new Date(timeString)` to guess the time
-     * - `strict`: A date text must match the timeFormat exactly.
-     */
-    export type TimeParseType = "loose" | "strict";
-    /**
-     * A custom function for parsing a time string.
-     */
-    export type TimeParseFunction =
-    /**
-     * @param timeFormat Format according to which to parse the time.
-     * @param timeString Time string to parse.
-     * @param optins Current options of the time picker.
-     * @return The parsed time, or `undefined` if the time string could not be parsed.
-     */
-    (timeFormat: string, timeString: string, options: Partial<DatetimepickerOptions>) => TimeParseResult | undefined;
-    /**
-     * Represents the available methods on a JQuery instance for the date and / or time picker.
-     */
-    export type PickerMethod = "datepicker" | "timepicker" | "datetimepicker";
-    /**
-     * Represents a timezone of the world.
-     */
-    export interface Timezone {
-        /**
-         * Name of the timezone.
-         */
-        label: string;
-        /**
-         * Offset of the timezone.
-         */
-        value: TimezoneOffset;
-    }
-    /**
-     * The timepicker for working with times, such as formatting and parsing times.
-     */
-    export interface Timepicker {
-        /**
-         * A map with a locale name (`fr`, `de`, etc.) as the key and the locale as the value.
-         */
-        regional: Record<string, Locale>;
-        /**
-         * Current version of the DateTimePicker JQueryUI add-on.
-         */
-        version: string;
-        /**
-         * Override the default settings for all instances of the time picker.
-         * @param settings The new settings to use as defaults.
-         * @return this for chaining.
-         */
-        setDefaults(settings: Partial<DatetimepickerOptions>): this;
-        /**
-         * Calls `datetimepicker` on the `startTime` and `endTime` elements, and configures them to enforce the date /
-         * time range limits.
-         * @param startTime DOM element of the date/time picker with the start date/time.
-         * @param endTime DOM element of the date/time picker with the end date/time
-         * @param options Options for the `$.fn.datetimepicker` call.
-         */
-        datetimeRange(startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): void;
-        /**
-         * Calls `timepicker` on the `startTime` and `endTime` elements, and configures them to enforce the time range
-         * limits.
-         * @param startTime DOM element of the date/time picker with the start date/time.
-         * @param endTime DOM element of the date/time picker with the end date/time
-         * @param options Options for the `$.fn.timepicker` call.
-         */
-        timeRange(startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): void;
-        /**
-         * Calls `datepicker` on the `startTime` and `endTime` elements, and configures them to enforce the date
-         * range limits.
-         * @param startTime DOM element of the date/time picker with the start date/time.
-         * @param endTime DOM element of the date/time picker with the end date/time
-         * @param options Options for the `$.fn.datepicker` call.
-         */
-        dateRange(startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): void;
-        /**
-         * Calls the given method on the `startTime` and `endTime` elements, and configures them to enforce the date /
-         * time range limits.
-         * @param method Whether to call the `datepicker`, `timepicker`, or `datetimepicker` method on the elements.
-         * @param startTime DOM element of the date/time picker with the start date/time.
-         * @param endTime DOM element of the date/time picker with the end date/time
-         * @param options Options for the `$.fn.datepicker` call.
-         * @return A JQuery instance containing the given `startTime` and `endTime` elements.
-         */
-        handleRange(method: PickerMethod, startTime: JQuery, endTime: JQuery, options: Partial<RangeOptions>): JQuery;
-        /**
-         * Get the timezone offset as string from a timezone offset.
-         * @param tzMinutes If not a number, less than `-720` (`UTC-12`), or greater than `840` (`UTC+14`),
-         * this value is returned as-is
-         * @param iso8601 If `true` formats in accordance to `iso8601` (sucha as `+12:45`).
-         * @return The timezone offset as a string, such as `+0530` for `UTC+5.5`.
-         */
-        timezoneOffsetString(tzMinutes: TimezoneOffset | string, iso8601: boolean): string;
-        /**
-         * Get the number in minutes that represents a timezone string.
-         * @param tzString A formatted time zone string, such as `+0500`, `-1245`, or `Z`.
-         * @return The offset in minutes, or the given `tzString` when it does not represent a valid timezone.
-         */
-        timezoneOffsetNumber(tzString: string): TimezoneOffset | string;
-        /**
-         * JavaScript `Date`s have not support for timezones, so we must adjust the minutes to compensate.
-         * @param date Date to adjust.
-         * @param fromTimezone Timezone of the given date.
-         * @param toTimezone Timezone to adjust the date to, relative to the `fromTimezone`.
-         * @return The given date, adjusted from the `fromTimezone` to the `toTimezone`.
-         */
-        timezoneAdjust(date: Date, fromTimezone: string, toTimezone: string): Date;
-        /**
-         * Log error or data to the console during error or debugging.
-         * @param args Data to log.
-         */
-        log(...args: readonly unknown[]): void;
-    }
-    /**
-     * Represents localized messages for a certain locale that are displayed by the datetimepicker.
-     */
-    export interface Locale {
-        /**
-         * Default: `["AM", "A"]`, A Localization Setting - Array of strings to try and parse against to determine AM.
-         */
-        amNames: string[];
-        /**
-         * Default: `["PM", "P"]`, A Localization Setting - Array of strings to try and parse against to determine PM.
-         */
-        pmNames: string[];
-        /**
-         * Default: `HH:mm`, A Localization Setting - String of format tokens to be replaced with the time.
-         */
-        timeFormat: string;
-        /**
-         * Default: Empty string, A Localization Setting - String to place after the formatted time.
-         */
-        timeSuffix: string;
-        /**
-         * Default: `Choose Time`, A Localization Setting - Title of the wigit when using only timepicker.
-         */
-        timeOnlyTitle: string;
-        /**
-         * Default: `Time`, A Localization Setting - Label used within timepicker for the formatted time.
-         */
-        timeText: string;
-        /**
-         * Default: `Hour`, A Localization Setting - Label used to identify the hour slider.
-         */
-        hourText: string;
-        /**
-         * Default: `Minute`, A Localization Setting - Label used to identify the minute slider.
-         */
-        minuteText: string;
-        /**
-         * Default: `Second`, A Localization Setting - Label used to identify the second slider.
-         */
-        secondText: string;
-        /**
-         * Default: `Millisecond`, A Localization Setting - Label used to identify the millisecond slider.
-         */
-        millisecText: string;
-        /**
-         * Default: `Microsecond`, A Localization Setting - Label used to identify the microsecond slider.
-         */
-        microsecText: string;
-        /**
-         * Default: `Timezone`, A Localization Setting - Label used to identify the timezone slider.
-         */
-        timezoneText: string;
-    }
-    /**
-     * Represents the result of parsing a time string.
-     */
-    export interface TimeParseResult {
-        /**
-         * Hour of the time, starting at `0`.
-         */
-        hour: number;
-        /**
-         * Minute of the time, starting at `0`.
-         */
-        minute: number;
-        /**
-         * Seconds of the time, starting at `0`.
-         */
-        seconds: number;
-        /**
-         * Milliseconds of the time, starting at `0`.
-         */
-        millisec: number;
-        /**
-         * Microseconds of the time, starting at `0`.
-         */
-        microsec: number;
-        /**
-         * Timezone of the time.
-         */
-        timezone?: TimezoneOffset;
-    }
-    /**
-     * Options for the date time picker that lets the user select a time.
-     */
-    export interface DatetimepickerOptions extends JQueryUI.DatepickerOptions, Locale {
-        /**
-         * Default: `true` - When `altField` is used from datepicker, `altField` will only receive the formatted time
-         * and the original field only receives date.
-         */
-        altFieldTimeOnly: boolean;
-        /**
-         * Default: (separator option) - String placed between formatted date and formatted time in the altField.
-         */
-        altSeparator: string;
-        /**
-         * Default: (timeSuffix option) - String always placed after the formatted time in the altField.
-         */
-        altTimeSuffix: string;
-        /**
-         * Default: (timeFormat option) - The time format to use with the altField.
-         */
-        altTimeFormat: string;
-        /**
-         * Default: true - Whether to immediately focus the main field whenever the altField receives focus. Effective
-         * at construction time only, changing it later has no effect.
-         */
-        altRedirectFocus: boolean;
-        /**
-         * Default: [generated timezones] - An array of timezones used to populate the timezone select.
-         */
-        timezoneList: Timezone[] | Record<string, TimezoneOffset>;
-        /**
-         * Default: `slider` - How to select a time (hour / minute / second). If `slider` is unavailable through
-         * jQueryUI, `select` will be used. For advanced usage you may set this to a custom control to use controls
-         * other than sliders or selects.
-         */
-        controlType: ControlType | CustomControl;
-        /**
-         * Default: `null` - Whether to show the hour control.  The default of `null` will use detection from timeFormat.
-         */
-        showHour: boolean | null;
-        /**
-         * Default: `null` - Whether to show the minute control.  The default of `null` will use detection from
-         * timeFormat.
-         */
-        showMinute: boolean | null;
-        /**
-         * Default: `null` - Whether to show the second control.  The default of `null` will use detection from
-         * timeFormat.
-         */
-        showSecond: boolean | null;
-        /**
-         * Default: `null` - Whether to show the millisecond control.  The default of `null` will use detection from
-         * timeFormat.
-         */
-        showMillisec: boolean | null;
-        /**
-         * Default: `null` - Whether to show the microsecond control.  The default of `null` will use detection from
-         * timeFormat.
-         */
-        showMicrosec: boolean | null;
-        /**
-         * Default: `null` - Whether to show the timezone select.
-         */
-        showTimezone: boolean | null;
-        /**
-         * Default: true - Whether to show the time selected within the datetimepicker.
-         */
-        showTime: boolean;
-        /**
-         * Default: `1` - Hours per step the slider makes.
-         */
-        stepHour: number;
-        /**
-         * Default: `1` - Minutes per step the slider makes.
-         */
-        stepMinute: number;
-        /**
-         * Default: `1` - Seconds per step the slider makes.
-         */
-        stepSecond: number;
-        /**
-         * Default: `1` - Milliseconds per step the slider makes.
-         */
-        stepMillisec: number;
-        /**
-         * Default: `1` - Microseconds per step the slider makes.
-         */
-        stepMicrosec: number;
-        /**
-         * Default: `0` - Initial hour set.
-         */
-        hour: number;
-        /**
-         * Default: `0` - Initial minute set.
-         */
-        minute: number;
-        /**
-         * Default: `0` - Initial second set.
-         */
-        second: number;
-        /**
-         * Default: `0` - Initial millisecond set.
-         */
-        millisec: number;
-        /**
-         * Default: `0` - Initial microsecond set.  Note: Javascript's native `Date` object does not natively support
-         * microseconds.  Timepicker extends the Date object with `Date.prototype.setMicroseconds(m)` and
-         * `Date.prototype.getMicroseconds()`. Date comparisons will not acknowledge microseconds. Use this only for
-         * display purposes.
-         */
-        microsec: number;
-        /**
-         * Default: `null` - Initial timezone set.  If `null`, the browser's local timezone will be used.
-         */
-        timezone: TimezoneOffset | null;
-        /**
-         * Default: `0` - The minimum hour allowed for all dates.
-         */
-        hourMin: number;
-        /**
-         * Default: `0` - The minimum minute allowed for all dates.
-         */
-        minuteMin: number;
-        /**
-         * Default: `0` - The minimum second allowed for all dates.
-         */
-        secondMin: number;
-        /**
-         * Default: `0` - The minimum millisecond allowed for all dates.
-         */
-        millisecMin: number;
-        /**
-         * Default: `0` - The minimum microsecond allowed for all dates.
-         */
-        microsecMin: number;
-        /**
-         * Default: `23` - The maximum hour allowed for all dates.
-         */
-        hourMax: number;
-        /**
-         * Default: `59` - The maximum minute allowed for all dates.
-         */
-        minuteMax: number;
-        /**
-         * Default: `59` - The maximum second allowed for all dates.
-         */
-        secondMax: number;
-        /**
-         * Default: `999` - The maximum millisecond allowed for all dates.
-         */
-        millisecMax: number;
-        /**
-         * Default: `999` - The maximum microsecond allowed for all dates.
-         */
-        microsecMax: number;
-        /**
-         * Default: `0` - When greater than `0` a label grid will be generated under the slider.  This number represents
-         * the units (in hours) between labels.
-         */
-        hourGrid: number;
-        /**
-         * Default: `0` - When greater than `0` a label grid will be generated under the slider. This number represents
-         * the units (in minutes) between labels.
-         */
-        minuteGrid: number;
-        /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
-         * the units (in seconds) between labels.
-         */
-        secondGrid: number;
-        /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
-         * the units (in milliseconds) between labels.
-         */
-        millisecGrid: number;
-        /**
-         * Default: `0` - When greater than `0` a label grid will be genereated under the slider. This number represents
-         * the units (in microseconds) between labels.
-         */
-        microsecGrid: number;
-        /**
-         * Default: `true` - Whether to show the button panel at the bottom. This is generally needed.
-         */
-        showButtonPanel: boolean;
-        /**
-         * Default: `false` - Allows direct input in time field
-         */
-        timeInput: boolean;
-        /**
-         * Default: `false` - Hide the datepicker and only provide a time interface.
-         */
-        timeOnly: boolean;
-        /**
-         * Default: `false` - Show the date and time in the input, but only allow the timepicker.
-         */
-        timeOnlyShowDate: boolean;
-        /**
-         * Default: unset - Function to be called when the timepicker or selection control is injected or re-rendered.
-         */
-        afterInject(this: Timepicker): void;
-        /**
-         * Default: unset - Function to be called when a date is chosen or time has changed.
-         * @param datetimeText Currently selected date as text.
-         * @param timepicker The current timepicker instance.
-         */
-        onSelect(this: HTMLElement | null, datetimeText: string, timepicker: Timepicker): void;
-        /**
-         * Default: `true` - Always have a time set internally, even before user has chosen one.
-         */
-        alwaysSetTime: boolean;
-        /**
-         * Default: space (` `) - When formatting the time this string is placed between the formatted date and
-         * formatted time.
-         */
-        separator: string;
-        /**
-         * Default: (timeFormat option) - How to format the time displayed within the timepicker.
-         */
-        pickerTimeFormat: string;
-        /**
-         * Default: (timeSuffix option) - String to place after the formatted time within the timepicker.
-         */
-        pickerTimeSuffix: string;
-        /**
-         * Default: `true` - Whether to show the timepicker within the datepicker.
-         */
-        showTimepicker: boolean;
-        /**
-         * Default: `false` - Try to show the time dropdowns all on one line. This should be used with `controlType`
-         * `select` and as few units as possible.
-         */
-        oneLine: boolean;
-        /**
-         * Default: `null` - String of the default time value placed in the input on focus when the input is empty.
-         */
-        defaultValue: string | null;
-        /**
-         * Default: `null` - Date object of the minimum datetime allowed.  Also available as minDate.
-         */
-        minDateTime: Date | null;
-        /**
-         * Default: `null` - Date object of the maximum datetime allowed. Also Available as maxDate.
-         */
-        maxDateTime: Date | null;
-        /**
-         * Default: `null` - String of the minimum time allowed. '8:00 am' will restrict to times after 8am
-         */
-        minTime: string | null;
-        /**
-         * Default: `null` - String of the maximum time allowed. '8:00 pm' will restrict to times before 8pm
-         */
-        maxTime: string | null;
-        /**
-         * Default: `strict` - How to parse the time string. You may also set this to a function to handle the parsing
-         * yourself.
-         */
-        parse: TimeParseType | TimeParseFunction;
-    }
-    /**
-     * Optionts for the various methods of the `Timepicker` for working time date / time ranges.
-     */
-    export interface RangeOptions extends DatetimepickerOptions {
-        /**
-         * Min allowed interval in milliseconds
-         */
-        minInterval: number;
-        /**
-         * Max allowed interval in milliseconds
-         */
-        maxInterval: number;
-        /**
-         * Options that are applied only to the date / time picker for the start date / time.
-         */
-        start: Partial<DatetimepickerOptions>;
-        /**
-         * Options that are applied only to the date / time picker for the end date / time.
-         */
-        end: Partial<DatetimepickerOptions>;
-    }
-    /**
-     * Options for a custom control for selecting an hour, minute, or seconds. The control should behave in such a way
-     * that the user may select a number in the set `{ min, min+step, min+2*step, ..., max }`.
-     */
-    export interface ControlOptions {
-        /**
-         * Maximum allowed value for the time unit the user may select.
-         */
-        max: number;
-        /**
-         * Minumum allowed value for the time unit the user may select.
-         */
-        min: number;
-        /**
-         * Desired step size for selecting a value.
-         */
-        step: number;
-    }
-    /**
-     * For advanced usage of the Calendar, you may pass an object of this type to use controls other than sliders and
-     * selects for selecting an hour, minute, or second.
-     */
-    export interface CustomControl {
-        /**
-         * Creates the control for the given time unit and appends it to the given `container` element.
-         * @param instance The current date time picker instance.
-         * @param container The container element to which the created control must be appended.
-         * @param unit The type of control for which to set the value.
-         * @param val Initial value for the control
-         * @param min Minumum allowed value for the time unit the user may select.
-         * @param max Maximum allowed value for the time unit the user may select.
-         * @param step Desired step size for selecting a value.
-         * @return The `container` element as passed to this method.
-         */
-        create(instance: Timepicker, container: JQuery, unit: TimeUnit, val: number, min: number, max: number, step: number): JQuery;
-        /**
-         * Sets the given ooptions on the control for the given time unit.
-         * @param instance The current date time picker instance.
-         * @param container The container element of the control, as passed to `create`.
-         * @param unit The type of control for which to apply the options.
-         * @param opts Options to apply on the control
-         * @return The `container` element as passed to this method.
-         */
-        options(instance: Timepicker, container: JQuery, unit: TimeUnit, opts: Partial<ControlOptions>): JQuery;
-        /**
-         * Sets the value of control for the given time uit.
-         * @param instance The current date time picker instance.
-         * @param container The container element of the control, as passed to `create`.
-         * @param unit The type of control for which to set the value.
-         * @param val Value to set on this control.
-         * @return The `container` element as passed to this method.
-         */
-        value(instance: Timepicker, container: JQuery, unit: TimeUnit, val: number): JQuery;
-        /**
-         * Gets the current value of the control for the given time unit.
-         * @param instance The current date time picker instance.
-         * @param container The container element of the control, as passed to `create`.
-         * @param unit The type of control for which to get the value.
-         * @return The current value of the control.
-         */
-        value(instance: Timepicker, container: JQuery, unit: TimeUnit): number;
-    }
-}
-interface JQuery {
-    /**
-     * Initializes the datetimepicker on this element. It lets the user select both a date and a time (hour and
-     * minute).
-     * @param cfg Options for the datetimepicker.
-     * @return this for chaining.
-     */
-    datetimepicker(cfg?: Partial<JQueryUITimepickerAddon.DatetimepickerOptions>): this;
-    /**
-     * Sets and selects the given date.
-     * @param methodName Name of the method to invoke.
-     * @param date The new date to select. When not given, unselects the date.
-     * @return this for chaining.
-     */
-    datetimepicker(methodName: "setDate", date?: Date): this;
-    /**
-     * Finds the currently selected date of the datetimepicker.
-     * @param methodName Name of the method to invoke.
-     * @return The currently selected date, or `null` if no date is selected.
-     */
-    datetimepicker(methodName: "getDate"): Date | null;
-    /**
-     * Enables the datetimepicker so that the user can now select a date.
-     * @param methodName Name of the method to invoke.
-     * @return this for chaining.
-     */
-    datetimepicker(methodName: "enable"): this;
-    /**
-     * Disables the datetimepicker so that the user cannot select a date anymore.
-     * @param methodName Name of the method to invoke.
-     * @return this for chaining.
-     */
-    datetimepicker(methodName: "disable"): this;
-    /**
-     * Sets the minimum allowed date the user may select.
-     * @param methodName Name of the method to invoke.
-     * @param optionName Name of the option to set.
-     * @param date New value for the option.
-     * @return this for chaining.
-     */
-    datetimepicker(methodName: "option", optionName: "minDate", date: Date): this;
-    /**
-     * Sets the maximum allowed date the user may select.
-     * @param methodName Name of the method to invoke.
-     * @param optionName Name of the option to set.
-     * @param date New value for the option.
-     * @return this for chaining.
-     */
-    datetimepicker(methodName: "option", optionName: "maxDate", date: Date): this;
-    /**
-     * Initializes the timepicker on this element. It lets the user select a time (hour and minute).
-     * @param cfg Options for the datetimepicker.
-     * @return this for chaining.
-     */
-    timepicker(cfg?: Partial<JQueryUITimepickerAddon.DatetimepickerOptions>): this;
-}
-interface JQueryStatic {
-    /**
-     * The global instance of the timepicker utility class for working with times.
-     */
-    timepicker: JQueryUITimepickerAddon.Timepicker;
 }
 // Nothing to document, touch punch simply monkey patches some internal JQueryUI methods.
 /**
@@ -24777,6 +25101,75 @@ declare namespace PrimeFaces.widget {
         triggerEvent: string;
     }
 }
+declare namespace PrimeFaces.widget {
+    /**
+     * __PrimeFaces BreadCrumb Widget__
+     *
+     * BreadCrumb provides contextual information about the page hierarchy.
+     * @typeparam TCfg Defaults to `BreadCrumbCfg`. Type of the configuration object for this widget.
+     */
+    export class BreadCrumb<TCfg extends BreadCrumbCfg = BreadCrumbCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
+        /**
+         * The script element for the seo.
+         */
+        seoScript: JQuery;
+        /**
+         * A widget class should not declare an explicit constructor, the default constructor provided by this base
+         * widget should be used. Instead, override this initialize method which is called after the widget instance
+         * was constructed. You can use this method to perform any initialization that is required. For widgets that
+         * need to create custom HTML on the client-side this is also the place where you should call your render
+         * method.
+         *
+         * Please make sure to call the super method first before adding your own custom logic to the init method:
+         *
+         * ```javascript
+         * PrimeFaces.widget.MyWidget = PrimeFaces.widget.BaseWidget.extend({
+         *   init: function(cfg) {
+         *     this._super(cfg);
+         *     // custom initialization
+         *   }
+         * });
+         * ```
+         * @override
+         * @param cfg The widget configuration to be used for this widget instance.
+         * This widget configuration is usually created on the server by the `javax.faces.render.Renderer` for this
+         * component.
+         */
+        override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Used in ajax updates, reloads the widget configuration.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. However, no new instance of the widget is created. Instead, after the DOM element was replaced, this
+         * method is called with the new widget configuration from the server. This makes it possible to persist
+         * client-side state during an update, such as the currently selected tab.
+         *
+         * Please note that instead of overriding this method, you should consider adding a refresh listener instead
+         * via {@link addRefreshListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method calls all refresh listeners, then reinitializes the widget by calling the `init`
+         * method.
+         * @override
+         * @param cfg The new widget configuration from the server.
+         * @return The value as returned by the `init` method, which is often `undefined`.
+         */
+        override refresh(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+    }
+}
+declare namespace PrimeFaces.widget {
+    /**
+     * The configuration for the {@link  BreadCrumb| BreadCrumb widget}.
+     * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
+     * configuration is usually meant to be read-only and should not be modified.
+     */
+    export interface BreadCrumbCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Used to produce an Advanced SEO structure on the page. Default is false.
+         */
+        seo: boolean;
+    }
+}
 declare namespace PrimeFaces.widget.ContextMenu {
     /**
      * Client side callback invoked before the context menu is
@@ -25148,6 +25541,10 @@ declare namespace PrimeFaces.widget {
      */
     export class MenuButton<TCfg extends MenuButtonCfg = MenuButtonCfg> extends PrimeFaces.widget.TieredMenu<TCfg> {
         /**
+         * Number of concurrent active Ajax requests.
+         */
+        ajaxCount?: number;
+        /**
          * The DOM element for the menu button.
          */
         button: JQuery;
@@ -25185,6 +25582,14 @@ declare namespace PrimeFaces.widget {
          */
         override bindPanelEvents(): void;
         /**
+         * Disables this button so that the user cannot press the button anymore.
+         */
+        disable(): void;
+        /**
+         * Enables this button so that the user can press the button.
+         */
+        enable(): void;
+        /**
          * Fired when the browser viewport is resized or scrolled.  In Mobile environment we don't want to hider the overlay
          * we want to re-align it.  This is because on some mobile browser the popup may force the browser to trigger a
          * resize immediately and close the overlay. See GitHub #7075.
@@ -25218,6 +25623,12 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Checks whether one if its menu items equals the source ID from the provided settings.
+         * @param settings containing source ID.
+         * @return `true` if one if its menu items equals the source ID from the provided settings.
+         */
+        private isXhrSource(settings: JQuery.AjaxSettings): boolean;
         /**
          * Used in ajax updates, reloads the widget configuration.
          *
@@ -26675,6 +27086,10 @@ declare namespace PrimeFaces.widget {
      */
     export class OverlayPanel<TCfg extends OverlayPanelCfg = OverlayPanelCfg> extends PrimeFaces.widget.DynamicOverlayWidget<TCfg> {
         /**
+         * Variable used to control whether the overlay is being hovered in autoHide mode
+         */
+        allowHide: boolean;
+        /**
          * The DOM element for the icon that closes the overlay panel.
          */
         closerIcon: JQuery;
@@ -26719,6 +27134,10 @@ declare namespace PrimeFaces.widget {
          */
         transition?: PrimeFaces.CssTransitionHandler | null;
         /**
+         * Clean up this widget and remove elements from DOM.
+         */
+        private _cleanup(): void;
+        /**
          * Makes the overlay panel visible.
          * @param target ID or DOM element of the target component that triggers this overlay panel.
          */
@@ -26732,6 +27151,10 @@ declare namespace PrimeFaces.widget {
          * Applies focus to the first focusable element of the content in the panel.
          */
         applyFocus(): void;
+        /**
+         * Sets up mouse listeners if autoHide is disabled to keep the overlay open if overlay has focus.
+         */
+        private bindAutoHide(): void;
         /**
          * Sets up some common event listeners always required by this widget.
          */
@@ -26821,6 +27244,11 @@ declare namespace PrimeFaces.widget {
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
         /**
+         * Checks if the target has the autoHide property enabled or disabled to keep the overlay open.
+         * @return Whether this overlay should be left showing or closed.
+         */
+        isAutoHide(): boolean;
+        /**
          * Checks whether this overlay panel is currently visible.
          * @return `true` if this overlay panel is currently displayed, or `false` otherwise.
          */
@@ -26892,6 +27320,10 @@ declare namespace PrimeFaces.widget {
          * Position of the target relative to the panel.
          */
         at: string;
+        /**
+         * Whether to hide overlay when hovering over overlay content when using custom show/hide.
+         */
+        autoHide: string;
         /**
          * When the positioned element overflows the window in some direction, move it to an
          * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g.,
@@ -28439,6 +28871,88 @@ declare namespace PrimeFaces.widget {
          */
         intervalType: PrimeFaces.widget.Poll.IntervalType;
     }
+}
+/**
+ * Namespace for the jQuery.print plugin. Contains some required types and interfaces.
+ *
+ * jQuery.print is a plugin for printing specific parts of a page.
+ *
+ * See https://github.com/DoersGuild/jQuery.print
+ */
+declare namespace JQueryPrint {
+    /**
+     * Settings for the jQuery.print plugin.
+     */
+    export interface PrintSettings {
+        /**
+         * Whether or not the styles from the parent document should be included.
+         */
+        globalStyles: boolean;
+        /**
+         * Whether or not link tags with `media='print'` should be included; overridden by the {@link globalStyles}.
+         * option.
+         */
+        mediaPrint: boolean;
+        /**
+         * URL of an external stylesheet to be included.
+         */
+        stylesheet: string | null;
+        /**
+         * A selector for the items that are to be excluded from printing.
+         */
+        noPrintSelector: string;
+        /**
+         * Whether to print from an iframe instead of a pop-up window; can take the CSS selector of an existing iframe.
+         */
+        iframe: string | boolean;
+        /**
+         * Adds custom HTML after the selected content.
+         */
+        append: string | JQuery<HTMLElement>;
+        /**
+         * Adds custom HTML before the selected content.
+         */
+        prepend: string | JQuery<HTMLElement>;
+        /**
+         * Should it copy user-updated form input values onto the printed markup (this is done by manually iterating over
+         * each form element).
+         */
+        manuallyCopyFormValues: boolean;
+        /**
+         * A jQuery deferred object that is resolved once the print function is called. Can be used to setup callbacks.
+         */
+        deferred: JQuery.Deferred<void>;
+        /**
+         * To change the amount of max time to wait for the content, etc to load before printing the element from the
+         * new window or iframe created, as a fallback if the load event for the new window or iframe has not fired yet.
+         */
+        timeout: number;
+        /**
+         * To change the printed title. Must be a single line.
+         */
+        title: string | null;
+        /**
+         * To prepend a doctype to the printed document frame.
+         */
+        doctype: string;
+    }
+}
+interface JQuery {
+    /**
+     * Prints the currently selected element.
+     * @param settings Optional settings for printing.
+     * @return This jQuery instance for chaining.
+     */
+    print(settings?: Partial<JQueryPrint.PrintSettings>): this;
+}
+interface JQueryStatic {
+    /**
+     * Prints the currently selected element.
+     * @param selector CSS selector for the element to print.
+     * @param settings Optional settings for printing.
+     * @return This jQuery instance for chaining.
+     */
+    print(selector: string, settings?: Partial<JQueryPrint.PrintSettings>): this;
 }
 declare namespace PrimeFaces.widget {
     /**
@@ -30238,6 +30752,10 @@ declare namespace PrimeFaces.widget {
          */
         closeIcon: JQuery;
         /**
+         * DOM element of the container for the content of this sidebar.
+         */
+        content: JQuery;
+        /**
          * When dynamic loading is enabled, whether the content was already loaded.
          */
         loaded: boolean;
@@ -31396,6 +31914,10 @@ declare namespace PrimeFaces.widget {
          */
         min: number;
         /**
+         * Increment or decrement the element value with the mouse wheel if true.
+         */
+        modifyValueOnWheel: boolean;
+        /**
          * The number of digits to appear after the decimal point.
          */
         precision: number;
@@ -32001,6 +32523,10 @@ declare namespace PrimeFaces.widget {
          */
         private bindKeyEvents(): void;
         /**
+         * Binds refresh listener to update error highlighting on component udpate.
+         */
+        private bindRefreshListener(): void;
+        /**
          * Binds swipe events to this tabview.
          */
         private bindSwipeEvents(): void;
@@ -32517,7 +33043,7 @@ declare namespace PrimeFaces.widget {
      * [vis-timeline](https://github.com/visjs/vis-timeline).
      * @typeparam TCfg Defaults to `TimelineCfg`. Type of the configuration object for this widget.
      */
-    export class Timeline<TCfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> {
+    export class Timeline<TCfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.widget.DeferredWidget<TCfg> implements PrimeFaces.widget.ContextMenu.ContextMenuProvider<PrimeFaces.widget.Timeline> {
         /**
          * Callback that is invoked when an event was added
          * to this timeline.
@@ -32586,6 +33112,20 @@ declare namespace PrimeFaces.widget {
          * @param properties Properties for the event.
          */
         addEvent(properties: import("vis-timeline").DataItem): void;
+        /**
+         * Callback that is invoked when the context menu is initialized. Lets the
+         * context menu provider register the appropriate event listeners for when the context menu should be shown and hidden.
+         * @override
+         * @param menuWidget The widget instance of the
+         * context menu.
+         * @param targetWidget The widget instance of the target widget that wants
+         * to add a context menu.
+         * @param targetId ID selector or DOM element of the target, i.e.
+         * the element the context menu belongs to.
+         * @param cfg The current configuration of the
+         * context menu.
+         */
+        bindContextMenu(menuWidget: PrimeFaces.widget.ContextMenu, targetWidget: PrimeFaces.widget.Timeline, targetId: string, cfg: PrimeFaces.widget.ContextMenuCfg): void;
         /**
          * Cancels event adding.
          */
@@ -32977,8 +33517,9 @@ declare namespace PrimeFaces.widget {
         private _bindEvents(): void;
         /**
          * Turns this switch on if it is not already turned on.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        check(): void;
+        check(silent?: boolean): void;
         /**
          * Disables this input so that the user cannot enter a value anymore.
          */
@@ -33021,8 +33562,9 @@ declare namespace PrimeFaces.widget {
         toggle(): void;
         /**
          * Turns this switch off if it is not already turned of.
+         * @param silent `true` to suppress triggering event listeners, or `false` otherwise.
          */
-        uncheck(): void;
+        uncheck(silent?: boolean): void;
     }
 }
 declare namespace PrimeFaces.widget {
@@ -33032,6 +33574,14 @@ declare namespace PrimeFaces.widget {
      * configuration is usually meant to be read-only and should not be modified.
      */
     export interface ToggleSwitchCfg extends PrimeFaces.widget.BaseWidgetCfg {
+        /**
+         * Icon to display when button is unselected.
+         */
+        offIcon: string;
+        /**
+         * Icon to display when button is selected.
+         */
+        onIcon: string;
     }
 }
 declare namespace PrimeFaces.widget.Tooltip {
@@ -33077,6 +33627,10 @@ declare namespace PrimeFaces.widget {
      */
     export class Tooltip<TCfg extends TooltipCfg = TooltipCfg> extends PrimeFaces.widget.BaseWidget<TCfg> {
         /**
+         * Variable used to control whether the tooltip is being hovered in autoHide mode
+         */
+        allowHide: boolean;
+        /**
          * The text that is shown as the global title.
          */
         globalTitle: string;
@@ -33092,6 +33646,10 @@ declare namespace PrimeFaces.widget {
          * The set-timeout timer ID of the time for the tooltip delay.
          */
         timeout: number;
+        /**
+         * Clean up this widget and remove elements from DOM.
+         */
+        private _cleanup(): void;
         /**
          * Callback for when the tooltip is hidden, also invokes the appropriate behaviors.
          */
@@ -33112,6 +33670,10 @@ declare namespace PrimeFaces.widget {
          */
         private alignUsing(position: PrimeFaces.widget.Tooltip.TooltipPosition, feedback: Record<string, string>): void;
         /**
+         * Sets up mouse listeners if autoHide is disabled to keep the toolip open if tooltip has focus.
+         */
+        private bindAutoHide(): void;
+        /**
          * Sets up all global event listeners that are required for the tooltip.
          */
         private bindGlobal(): void;
@@ -33123,6 +33685,21 @@ declare namespace PrimeFaces.widget {
          * Clears the current set-timeout timer, if any.
          */
         private clearTimeout(): void;
+        /**
+         * Will be called after an AJAX request if the widget container will be detached.
+         *
+         * When an AJAX call is made and this component is updated, the DOM element is replaced with the newly rendered
+         * content. When the element is removed from the DOM by the update, the DOM element is detached from the DOM and
+         * this method gets called.
+         *
+         * Please note that instead of overriding this method, you should consider adding a destroy listener instead
+         * via {@link addDestroyListener}. This has the advantage of letting you add multiple listeners, and makes it
+         * possible to add additional listeners from code outside this widget.
+         *
+         * By default, this method just calls all destroy listeners.
+         * @override
+         */
+        override destroy(): void;
         /**
          * Adds the event listener for moving the tooltip to the current position of the mouse. Used when the tooltip is
          * brought up.
@@ -33160,6 +33737,11 @@ declare namespace PrimeFaces.widget {
          * component.
          */
         override init(cfg: PrimeFaces.PartialWidgetCfg<TCfg>): void;
+        /**
+         * Checks if the target has the autoHide property enabled or disabled to keep the tooltip open.
+         * @return Whether this tooltip should be left showing or closed.
+         */
+        isAutoHide(): boolean;
         /**
          * Checks whether this tooltip is visible.
          * @return Whether this tooltip is currently shown.
@@ -33206,6 +33788,10 @@ declare namespace PrimeFaces.widget {
          * Position of tooltip with respect to target. If set overrides the 'position' attribute.
          */
         atPos: string;
+        /**
+         * Whether to hide tooltip when hovering over tooltip content.
+         */
+        autoHide: string;
         /**
          * Client side callback to execute before tooltip is
          * shown. Returning false will prevent display.
@@ -34422,11 +35008,11 @@ declare namespace PrimeFaces.widget {
          */
         protected override getNodeChildrenContainer(node: JQuery): JQuery;
         /**
-         * Finds the label element for the given node.
-         * @param node Node for which to find the corresponding label.
-         * @return The element with the label for the given node.
+         * Finds the content element for the given node.
+         * @param node Node for which to find the corresponding content.
+         * @return The element with the content for the given node.
          */
-        getNodeLabel(node: JQuery): JQuery;
+        getNodeContent(node: JQuery): JQuery;
         /**
          * A widget class should not declare an explicit constructor, the default constructor provided by this base
          * widget should be used. Instead, override this initialize method which is called after the widget instance
@@ -35237,8 +35823,9 @@ declare namespace PrimeFaces.widget {
          * enabled.
          * @param event The click event that occurred.
          * @param node The node that was clicked.
+         * @return true to hide the native browser context menu, false to display it
          */
-        private onRowRightClick(event: JQuery.TriggeredEvent, node: JQuery): void;
+        private onRowRightClick(event: JQuery.TriggeredEvent, node: JQuery): boolean;
         /**
          * Propagates a select or unselect event up to the parents of the given row.
          * @param node A node that was selected or unselected.
@@ -35518,6 +36105,14 @@ declare namespace PrimeFaces.widget {
          */
         paginator: Partial<PrimeFaces.widget.PaginatorCfg>;
         /**
+         * Defines if selections should propagate down.
+         */
+        propagateSelectionDown: boolean;
+        /**
+         * Defines if selections should propagate up.
+         */
+        propagateSelectionUp: boolean;
+        /**
          * Defines if columns can be resized or not.
          */
         resizableColumns: boolean;
@@ -35712,9 +36307,11 @@ declare namespace PrimeFaces {
     /**
      * A shortcut for `PrimeFaces.validation.validateInstant`. This is used by `p:clientValidator`.
      * @param element The ID of an element to validate, or the element itself.
+     * @param highlight If the invalid element should be highlighted.
+     * @param renderMessages If messages should be rendered.
      * @return `true` if the element is valid, or `false` otherwise.
      */
-    export function vi(element: string | HTMLElement | JQuery): boolean;
+    export function vi(element: string | HTMLElement | JQuery, highlight: boolean, renderMessages: boolean): boolean;
 }
 /**
  * The module for enabling client side validation of form fields.
@@ -35764,9 +36361,11 @@ declare namespace PrimeFaces.validation {
      * If the value of the element is invalid, adds the appropriate validation failure messages.
      * This is used by `p:clientValidator`.
      * @param el The ID of an input to validate, or the input itself.
+     * @param highlight If the invalid element should be highlighted.
+     * @param renderMessages If messages should be rendered.
      * @return `true` if the element is valid, or `false` otherwise.
      */
-    export function validateInstant(el: string | HTMLElement | JQuery): boolean;
+    export function validateInstant(el: string | HTMLElement | JQuery, highlight: boolean, renderMessages: boolean): boolean;
 }
 /**
  * The object that contains functionality related to handling faces messages, especially validation errror messages.

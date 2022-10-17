@@ -30,8 +30,10 @@
 }
 
 .p-datepicker-panel .ui-timepicker > div {
-    display: inline-block;
-    margin-left: .5em;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: .25rem;
     min-width: 1.5em;
 }
 
@@ -57,11 +59,6 @@
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input {
     text-align: center;
-    font-size: 1.1em;
-    width: 1.7em;
-    border-top: 0px;
-    border-left: 0px;
-    border-right: 0px;
 }
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-millisecond-picker input {
@@ -95,7 +92,6 @@
     min-width: 80vw;
     width: auto;
     -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
 }
 

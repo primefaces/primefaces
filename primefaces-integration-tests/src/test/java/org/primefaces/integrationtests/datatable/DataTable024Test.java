@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,6 @@ public class DataTable024Test extends AbstractDataTableTest {
         // Act
         // Act - do some filtering
         dataTable.filter("Id", "2");
-        button = PrimeSelenium.createFragment(CommandButton.class, By.id("form:datatable:0:select"));
         button.click();
 
         // Assert

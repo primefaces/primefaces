@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Named("linkedTimelinesView")
 @ViewScoped
@@ -44,6 +45,9 @@ public class LinkedTimelinesView implements Serializable {
     private TimelineModel<Task, ?> modelFirst;  // model of the first timeline
     private TimelineModel<String, ?> modelSecond; // model of the second timeline
     private boolean aSelected;         // flag if the project A is selected (for test of select() call on the 2. model)
+
+    private LocalDateTime start = LocalDate.of(2015, 8, 22).atStartOfDay();
+    private LocalDateTime end = LocalDate.of(2015, 9, 4).atStartOfDay();
 
     @PostConstruct
     public void init() {
@@ -80,6 +84,15 @@ public class LinkedTimelinesView implements Serializable {
                 .startDate(LocalDate.of(2015, 8, 31))
                 .endDate(LocalDate.of(2015, 9, 3))
                 .build());
+
+        // duplicate events with 6 month-shift to check for potential daylight-saving-issues
+        new ArrayList<TimelineEvent<Task>>(modelFirst.getEvents()).forEach(e -> {
+            modelFirst.add(TimelineEvent.<Task>builder()
+                    .data(e.getData())
+                    .startDate(e.getStartDate().minusMonths(6))
+                    .endDate(e.getEndDate() == null ? null : e.getEndDate().minusMonths(6))
+                    .build());
+        });
     }
 
     private void createSecondTimeline() {
@@ -125,6 +138,22 @@ public class LinkedTimelinesView implements Serializable {
         return modelSecond;
     }
 
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
+
     public class Task implements Serializable {
 
         private final String title;
@@ -149,4 +178,5 @@ public class LinkedTimelinesView implements Serializable {
             return period;
         }
     }
+
 }

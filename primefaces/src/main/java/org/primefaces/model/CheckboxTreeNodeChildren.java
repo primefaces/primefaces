@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -143,35 +143,6 @@ public class CheckboxTreeNodeChildren<T> extends TreeNodeList<T> {
             TreeNode previous = get(index);
             super.set(index, node);
             previous.setParent(null);
-            node.setParent(parent);
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-            return previous;
-        }
-    }
-
-    /**
-     * Optimized set implementation to be used in sorting
-     *
-     * @param index index of the element to replace
-     * @param node node to be stored at the specified position
-     * @return the node previously at the specified position
-     */
-    @Override
-    public TreeNode setSibling(int index, TreeNode node) {
-        if (node == null) {
-            throw new NullPointerException();
-        }
-        else if ((index < 0) || (index >= size())) {
-            throw new IndexOutOfBoundsException();
-        }
-        else {
-            if (!parent.equals(node.getParent())) {
-                eraseParent(node);
-            }
-
-            TreeNode previous = get(index);
-            super.set(index, node);
             node.setParent(parent);
             updateRowKeys(parent);
             updateSelectionState(parent);

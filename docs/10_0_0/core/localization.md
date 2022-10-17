@@ -9,7 +9,7 @@ Server localization is handled by include a custom `Messages.properties` file fo
 in the location such as `\org\primefaces\Messages.properties` of your JAR or WAR file.  For example for a German translation
 of this file you would include a default `Messages_de.properties` file.
 
-Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/primefaces/primefaces/tree/master/src/main/resources/org/primefaces)
+Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/primefaces/primefaces/tree/master/primefaces/src/main/resources/org/primefaces)
 
 ### Default Messages.properties
 
@@ -59,7 +59,7 @@ This is handled with a client side API called PrimeFaces Locales. A client side 
 a JavaScript object with various settings, en_US is the default locale provided out of the box. 
 In case you need to support another locale, settings should be extended with the new information.
 
-Source code scripts: [GitHub Client Locale Javascript Files](https://github.com/primefaces/primefaces/tree/master/src/main/resources/META-INF/resources/primefaces/locales)
+Source code scripts: [GitHub Client Locale Javascript Files](https://github.com/primefaces/primefaces/tree/master/primefaces/src/main/resources/META-INF/resources/primefaces/locales)
 
 ### Manual Locale Loading
 If you know the locale you want added to your page and want to include one of the built in locales from PrimeFaces
@@ -147,11 +147,11 @@ Side Validation, messages property is used as the bundle for the locale.
          'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'.',
          'javax.faces.validator.LongRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'.',
          'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}.',
-         'javax.faces.validator.LongRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type.',
+         'javax.faces.validator.LongRangeValidator.TYPE': '{0}: Validation Error: Value is not of the correct type.',
          'javax.faces.validator.DoubleRangeValidator.MAXIMUM': '{1}: Validation Error: Value is greater than allowable maximum of \'{0}\'.',
          'javax.faces.validator.DoubleRangeValidator.MINIMUM': '{1}: Validation Error: Value is less than allowable minimum of \'{0}\'.',
          'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE': '{2}: Validation Error: Specified attribute is not between the expected values of {0} and {1}.',
-         'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Validation Error: Value is not of the correct type.',
+         'javax.faces.validator.DoubleRangeValidator.TYPE': '{0}: Validation Error: Value is not of the correct type.',
          'javax.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' must be a number consisting of one or more digits.',
          'javax.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' must be a number between 1.4E-45 and 3.4028235E38  Example: {1}.',
          'javax.faces.converter.DateTimeConverter.DATE': '{2}: \'{0}\' could not be understood as a date.',

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
@@ -149,11 +150,11 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         List<Predicate> predicates = new ArrayList<>();
 
-        applyGlobalFilters(cb, cq, root, predicates);
+        applyGlobalFilters(filterBy, cb, cq, root, predicates);
 
         if (filterBy != null) {
             for (FilterMeta filter : filterBy.values()) {
-                if (filter.getField() == null || filter.getFilterValue() == null) {
+                if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
                 }
 
@@ -173,7 +174,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
     }
 
-    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, List<Predicate> predicates) {
+    protected void applyGlobalFilters(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq,
+            Root<T> root, List<Predicate> predicates) {
 
     }
 
@@ -230,13 +232,22 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                              Map<String, SortMeta> sortBy) {
 
         if (sortBy != null) {
+            List<Order> orders = null;
             for (SortMeta sort : sortBy.values()) {
                 if (sort.getField() == null || sort.getOrder() == SortOrder.UNSORTED) {
                     continue;
                 }
 
+                if (orders == null) {
+                    orders = new ArrayList<>();
+                }
+
                 Expression<?> fieldExpression = resolveFieldExpression(cb, cq, root, sort.getField());
-                cq.orderBy(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(fieldExpression) : cb.desc(fieldExpression));
+                orders.add(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(fieldExpression) : cb.desc(fieldExpression));
+            }
+
+            if (orders != null) {
+                cq.orderBy(orders);
             }
         }
     }

@@ -181,4 +181,7 @@
         border-bottom: 0px;
     }
 
+    .ui-fileupload-content .ui-progressbar {
+        width: 100%;
+    }
 }

@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             body .ui-inputfield.ui-state-drag {
                 background: #ffffd6;
             }
@@ -35,7 +35,7 @@
 
                 <h5>Drop Zone</h5>
                 <div class="ui-fluid">
-                    <div class="p-field">
+                    <div class="field">
                         <p:inputTextarea id="customDropZone" widgetVar="textarea"
                                          rows="5" value="#{fileUploadView.dropZoneText}"/>
                         <small>

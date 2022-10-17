@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,8 +51,7 @@ public class ElementsLocatorInterceptor implements InvocationHandler {
             ArrayList<WebElement> fragments = new ArrayList<>();
 
             for (int i = 0; i < elements.size(); i++) {
-                WebElement element = elements.get(i);
-                WebElement fragment = PrimePageFragmentFactory.create(genericClass, element, new IndexedElementLocator(locator, i));
+                WebElement fragment = PrimePageFragmentFactory.create(genericClass, new IndexedElementLocator(locator, i));
 
                 fragments.add(fragment);
             }

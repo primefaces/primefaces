@@ -1,6 +1,4 @@
-/**
- * Polish
- */
+/** Polish */
 PrimeFaces.locales['pl'] = {
   closeText: 'Zamknij',
   prevText: 'Poprzedni',
@@ -24,6 +22,7 @@ PrimeFaces.locales['pl'] = {
   millisecondText: 'Millisekunda',
   currentText: 'Teraz',
   ampm: false,
+  year: 'Rok',
   month: 'Miesiąc',
   week: 'Tydzień',
   day: 'Dzień',
@@ -36,8 +35,9 @@ PrimeFaces.locales['pl'] = {
   aria: {
     'paginator.PAGE': 'Strona {0}',
     'calendar.BUTTON': 'Pokaż kalendarz',
-    'datatable.sort.ASC': 'Kliknij aby posortować kolumny rosnąco',
-    'datatable.sort.DESC': 'Kliknij aby posortować kolumny malejąco',
+    'datatable.sort.ASC': 'Kliknij, aby posortować kolumny rosnąco',
+    'datatable.sort.DESC': 'Kliknij, aby posortować kolumny malejąco',
+    'datatable.sort.NONE': 'Kliknij, aby usunąć sortowanie kolumny',
     'columntoggler.CLOSE': 'Zamknij',
     'overlaypanel.CLOSE': 'Zamknij'
   },
@@ -62,11 +62,11 @@ PrimeFaces.locales['pl'] = {
     'javax.faces.validator.LongRangeValidator.MAXIMUM': '{1}: Błąd walidacji: Wartość nie może być większa od \'{0}\'.',
     'javax.faces.validator.LongRangeValidator.MINIMUM': '{1}: Błąd walidacji: Wartość nie może być mniejsza od \'{0}\'.',
     'javax.faces.validator.LongRangeValidator.NOT_IN_RANGE': '{2}: Błąd walidacji: Określony atrybut nie znajduje się między oczekiwanymi wartościami {0} i {1}.',
-    'javax.faces.validator.LongRangeValidator.TYPE={0}': 'Błąd walidacji: Wartość jest niewłaściwego typu.',
+    'javax.faces.validator.LongRangeValidator.TYPE': '{0}: Błąd walidacji: Wartość jest niewłaściwego typu.',
     'javax.faces.validator.DoubleRangeValidator.MAXIMUM': '{1}: Błąd walidacji: Wartość nie możę być większa od \'{0}\'.',
     'javax.faces.validator.DoubleRangeValidator.MINIMUM': '{1}: Błąd walidacji: Wartość nie może być mniejsza od \'{0}\'.',
     'javax.faces.validator.DoubleRangeValidator.NOT_IN_RANGE': '{2}: Błąd walidacji: Określony atrybut nie znajduje się między oczekiwanymi wartościami {0} i {1}. ',
-    'javax.faces.validator.DoubleRangeValidator.TYPE={0}': 'Błąd walidacji: Wartość jest niewłaściwego typu.',
+    'javax.faces.validator.DoubleRangeValidator.TYPE': '{0}: Błąd walidacji: Wartość jest niewłaściwego typu.',
     'javax.faces.converter.FloatConverter.FLOAT': '{2}: \'{0}\' musi być liczbą składającą się z co najmniej jednej cyfry.',
     'javax.faces.converter.FloatConverter.FLOAT_detail': '{2}: \'{0}\' musi być liczbą z przedziału od 1.4E-45 do 3.4028235E38. Na przykład: {1}.',
     'javax.faces.converter.DateTimeConverter.DATE': '{2}: \'{0}\' nie może być rozumiana jako data.',

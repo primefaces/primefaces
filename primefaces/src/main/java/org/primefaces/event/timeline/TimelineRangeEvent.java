@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,38 +23,19 @@
  */
 package org.primefaces.event.timeline;
 
+import java.time.LocalDateTime;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
-import org.primefaces.event.AbstractAjaxBehaviorEvent;
+import org.primefaces.event.DateRangeEvent;
 
-import java.time.LocalDateTime;
-
-public class TimelineRangeEvent extends AbstractAjaxBehaviorEvent {
+public class TimelineRangeEvent extends DateRangeEvent {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * new start time of the visible range
-     */
-    private final LocalDateTime startDate;
-
-    /**
-     * new end time of the visible range
-     */
-    private final LocalDateTime endDate;
-
     public TimelineRangeEvent(UIComponent component, Behavior behavior, LocalDateTime startDate, LocalDateTime endDate) {
-        super(component, behavior);
-        this.startDate = startDate;
-        this.endDate = endDate;
+        super(component, behavior, startDate, endDate);
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
 }

@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -27,9 +27,9 @@
                                  expanded="#{customer.representative.name != 'Stephen Shaw'}">
                         
                         <p:column colspan="6">
-                            <div class="p-d-inline-flex p-ai-center" style="vertical-align: middle">
+                            <div class="inline-flex align-items-center" style="vertical-align: middle">
                                 <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32" style="vertical-align: middle"/>
-                                <h:outputText styleClass="p-ml-2" value="#{customer.representative.name}"/>
+                                <h:outputText styleClass="ml-2" value="#{customer.representative.name}"/>
                             </div>
                         </p:column>
                     </p:headerRow>

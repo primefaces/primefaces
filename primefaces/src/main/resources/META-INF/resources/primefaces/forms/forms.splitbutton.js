@@ -29,6 +29,7 @@
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {number} [ajaxCount] Number of concurrent active Ajax requests.
  *
  * @interface {PrimeFaces.widget.SplitButtonCfg} cfg The configuration for the {@link  SplitButton| SplitButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -171,17 +172,38 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        if (this.cfg.disableOnAjax === true) {
-            $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-                if ($this.isXhrSource(settings)) {
+        $this.ajaxCount = 0;
+        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            if ($this.isXhrSource(settings)) {
+                $this.ajaxCount++;
+                if ($this.ajaxCount > 1) {
+                    return;
+                }
+                $this.button.addClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
                 }
-            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-                if ($this.isXhrSource(settings)) {
+                var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
+                var uiIcon = $this.button.find('.ui-icon');
+                if (uiIcon.length) {
+                    var prefix = 'ui-button-icon-';
+                    loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
+                }
+                $this.button.prepend(loadIcon);
+            }
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            if ($this.isXhrSource(settings)) {
+                $this.ajaxCount--;
+                if ($this.ajaxCount > 0) {
+                    return;
+                }
+                $this.button.removeClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabledAttr) {
                     $this.enable();
                 }
-            });
-        }
+                $this.button.find('.ui-icon-loading').remove();
+            }
+        });        
 
         if(this.cfg.filter) {
             this.setupFilterMatcher();

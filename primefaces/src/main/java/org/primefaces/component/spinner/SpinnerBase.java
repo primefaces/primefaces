@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,8 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
         upIcon,
         downIcon,
         upButtonStyleClass,
-        downButtonStyleClass
+        downButtonStyleClass,
+        modifyValueOnWheel
     }
 
     public static final String BUTTONS_STACKED = "stacked";
@@ -206,4 +207,13 @@ public abstract class SpinnerBase extends AbstractPrimeHtmlInputText implements 
     public void setDownButtonStyleClass(String downButtonStyleClass) {
         getStateHelper().put(PropertyKeys.downButtonStyleClass, downButtonStyleClass);
     }
+
+    public boolean isModifyValueOnWheel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.modifyValueOnWheel, true);
+    }
+
+    public void setModifyValueOnWheel(boolean modifyValueOnWheel) {
+        getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
+    }
+
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,16 @@
 package org.primefaces.showcase.view.button;
 
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-@Named("bottonBasicView")
+@Named("buttonBasicView")
 @ViewScoped
 public class BasicView implements Serializable {
 
-    public void sleep(int msec) throws InterruptedException {
-        Thread.sleep(msec);
+    public void sleep() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
     }
 
 }

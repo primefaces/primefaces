@@ -1,14 +1,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             .grid-radio td {
                 padding: .5rem;
+            }
+            .legend {
+                display: inline-block;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: .25rem;
+                vertical-align: sub;
             }
         </style>
     </ui:define>
@@ -27,8 +34,8 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h5 class="p-mt-0">Basic</h5>
-                <p:selectOneRadio id="console" value="#{radioView.console}" unselectable="true">
+                <h5 class="mt-0">Basic</h5>
+                <p:selectOneRadio id="console" value="#{radioView.console}">
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                     <f:selectItem itemLabel="Option3" itemValue="Option3"/>
@@ -39,33 +46,59 @@
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
 
-                <h5>Responsive</h5>
-                <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3">
+                <h5>Responsive + Unselectable</h5>
+                <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3" unselectable="true">
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
 
-                <h5>Custom Layout</h5>
-                <p:outputPanel id="customPanel" style="margin-bottom:10px">
-                    <p:selectOneRadio id="customRadio" value="#{radioView.color}" layout="custom">
-                        <f:selectItem itemLabel="Red" itemValue="Red"/>
-                        <f:selectItem itemLabel="Green" itemValue="Green"/>
-                        <f:selectItem itemLabel="Blue" itemValue="Blue"/>
-                    </p:selectOneRadio>
+                <h5>Custom Layout (Facet)</h5>
+                <p:selectOneRadio id="customRadio" value="#{radioView.color}">
+                    <f:selectItem itemLabel="Red" itemValue="Red"/>
+                    <f:selectItem itemLabel="Green" itemValue="Green"/>
+                    <f:selectItem itemLabel="Blue" itemValue="Blue"/>
 
-                    <h:panelGrid columns="3" cellpadding="5">
-                        <p:radioButton id="opt1" for="customRadio" itemIndex="0"/>
-                        <h:outputLabel for="opt1" value="Red"/>
-                        <p:spinner/>
+                    <f:facet name="custom">
+                        <span class="field-radiobutton" role="radio">
+                            <p:radioButton id="facet1" for="customRadio" itemIndex="0"/>
+                            <p:outputLabel for="facet1">
+                                <span class="legend" style="background:red"/> Red
+                            </p:outputLabel>
+                        </span>
+                        <span class="field-radiobutton" role="radio">
+                            <p:radioButton id="facet2" for="customRadio" itemIndex="1"/>
+                            <p:outputLabel for="facet2">
+                                <span class="legend" style="background:green"/> Green
+                            </p:outputLabel>
+                        </span>
+                        <span class="field-radiobutton" role="radio">
+                            <p:radioButton id="facet3" for="customRadio" itemIndex="2"/>
+                            <p:outputLabel for="facet3">
+                                <span class="legend" style="background:blue"/> Blue
+                            </p:outputLabel>
+                        </span>
+                    </f:facet>
+                </p:selectOneRadio>
 
-                        <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>
-                        <h:outputLabel for="opt2" value="Green"/>
-                        <p:inputText/>
+                <h5>Custom Layout (Referenced)</h5>
+                <p:selectOneRadio id="customRadio2" value="#{radioView.color2}" layout="custom">
+                    <f:selectItem itemLabel="Red" itemValue="Red"/>
+                    <f:selectItem itemLabel="Green" itemValue="Green"/>
+                    <f:selectItem itemLabel="Blue" itemValue="Blue"/>
+                </p:selectOneRadio>
 
-                        <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>
-                        <h:outputLabel for="opt3" value="Blue"/>
-                        <p:calendar/>
-                    </h:panelGrid>
-                </p:outputPanel>
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:radioButton id="ref1" for="customRadio2" itemIndex="0"/>
+                    <span class="legend" style="background:red"/>
+                    <p:outputLabel for="ref1" value="Red"/>
+
+                    <p:radioButton id="ref2" for="customRadio2" itemIndex="1"/>
+                    <span class="legend" style="background:green"/>
+                    <p:outputLabel for="ref2" value="Green"/>
+
+                    <p:radioButton id="ref3" for="customRadio2" itemIndex="2"/>
+                    <span class="legend" style="background:blue"/>
+                    <p:outputLabel for="ref3" value="Blue"/>
+                </h:panelGrid>
             </h:form>
         </div>
     </ui:define>

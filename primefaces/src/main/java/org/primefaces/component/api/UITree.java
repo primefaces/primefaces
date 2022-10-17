@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -636,7 +636,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         processColumnChildren(context, phaseId, root, rowKey);
 
         //process child nodes if node is expanded or node itself is the root
-        if (shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
+        if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
@@ -991,7 +991,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         //visit child nodes if node is expanded or node itself is the root
-        if (shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
+        if (treeNode != null && shouldVisitNode(treeNode) && treeNode.getChildCount() > 0) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
                 String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;

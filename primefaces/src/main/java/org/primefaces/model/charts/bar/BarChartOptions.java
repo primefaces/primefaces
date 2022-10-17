@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,6 @@ public class BarChartOptions extends ChartOptions {
     private Number categoryPercentage;
     private Number barThickness;
     private Number maxBarThickness;
-    private boolean offsetGridLines = true;
     private CartesianScales scales;
 
     private String indexAxis = "x";
@@ -115,26 +114,6 @@ public class BarChartOptions extends ChartOptions {
      */
     public void setMaxBarThickness(Number maxBarThickness) {
         this.maxBarThickness = maxBarThickness;
-    }
-
-    /**
-     * Gets the offsetGridLines
-     *
-     * @return offsetGridLines
-     */
-    public boolean isOffsetGridLines() {
-        return offsetGridLines;
-    }
-
-    /**
-     * Sets the offsetGridLines
-     *
-     * @param offsetGridLines If true, the bars for a particular data point fall between the grid lines.
-     * The grid line will move to the left by one half of the tick interval.
-     * If false, the grid line will go right down the middle of the bars.
-     */
-    public void setOffsetGridLines(boolean offsetGridLines) {
-        this.offsetGridLines = offsetGridLines;
     }
 
     /**

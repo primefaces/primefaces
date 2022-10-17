@@ -43,9 +43,26 @@
     </function>
 
     <function>
+        <function-name>shouldRenderFacet</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.Boolean shouldRenderFacet(javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>escapeJavaScriptVarName</function-name>
         <function-class>org.primefaces.util.EscapeUtils</function-class>
         <function-signature>java.lang.String forJavaScriptVarName(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>dynamicColumnValue</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.Object getDynamicColumnValue(javax.faces.component.UIComponent)</function-signature>
+    </function>
+    <function>
+        <function-name>dynamicColumnValueAsString</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.String getDynamicColumnValueAsString(javax.faces.component.UIComponent)</function-signature>
     </function>
 
     <function>
@@ -120,19 +137,19 @@
             org.primefaces.component.export.DataExporterTagHandler
         </handler-class>
         <attribute>
-            <description>Server side id of the datatable whose data would be exported.</description>
+            <description>Search expression to resolve one or multiple target components.</description>
             <name>target</name>
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Export type: "xls","pdf","csv", "xml".</description>
+            <description>Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml"</description>
             <name>type</name>
             <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Filename of the generated export file, defaults to datatable server side id.</description>
+            <description>Filename of the generated export file, defaults to target component id.</description>
             <name>fileName</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -186,13 +203,13 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>Exports the header and cell content according to the option.</description>
+            <description>Options object to customize document.</description>
             <name>options</name>
             <required>false</required>
-            <type>java.lang.Object</type>
+            <type>org.primefaces.component.export.ExporterOptions</type>
         </attribute>
         <attribute>
-            <description>Custom exporter to be used instead of built-in exporters.</description>
+            <description>Custom org.primefaces.component.export.Exporter to be used instead of built-in exporters.</description>
             <name>exporter</name>
             <required>false</required>
             <type>java.lang.Object</type>
@@ -393,13 +410,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description>Title of the Print window (default to page title).</description>
-            <name>title</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Optional JSON configuration values to completely control PrintJS.</description>
+            <description>Optional JSON configuration values to completely control jQuery.print.</description>
             <name>configuration</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -413,6 +424,12 @@
             <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
             <handler-class>org.primefaces.behavior.confirm.ConfirmBehaviorHandler</handler-class>
         </behavior>
+        <attribute>
+            <description>Source of the confirmation component. Valid values are the clientId of the source component and "this".</description>
+            <name>source</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
         <attribute>
             <description>Type of the confirmation component.</description>
             <name>type</name>
@@ -495,75 +512,6 @@
         </attribute>
     </tag>
 
-    <tag>
-        <description>Repeat is an alternative to the standard ui:repeat component, that fix the compatibility with Mojarra. There are no additonal features and
-            usage is same as ui:repeat.
-        </description>
-        <tag-name>repeat</tag-name>
-        <component>
-            <component-type>org.primefaces.component.UIRepeat</component-type>
-        </component>
-        <attribute>
-            <description>The name of a collection of items that this tag iterates over. The collection may be a List, array, java.sql.ResultSet, or an
-                individual java Object. If the collection is null, this tag does nothing.
-            </description>
-            <name>value</name>
-            <required>true</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>Name of the exported scoped variable for the current item of the iteration. This scoped variable has nested visibility. Its type
-                depends on the object of the underlying collection.
-            </description>
-            <name>var</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Name of the exported request scoped variable for the status of the iteration. Object is a POJO with the following read-only JavaBeans
-                properties. This scoped variable has nested visibility.
-            </description>
-            <name>varStatus</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Read-write property setting the offset from the beginning of the collection from which to start the iteration. If not set, this offset
-                is not considered and iteration will start at the beginning of the collection.
-            </description>
-            <name>offset</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>Iteration will only process every step items of the collection, starting with the first one.</description>
-            <name>step</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>Read-write property setting the size of the collection to iterate. If this value is less than the actual size of the collection, a
-                FacesException must be thrown.
-            </description>
-            <name>size</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>If value specified: Iteration begins at the item located at the specified index. First item of the collection has index 0. If value not specified: Iteration begins with index set at the specified value.
-            </description>
-            <name>begin</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>If value specified: Iteration ends at the item located at the specified index (inclusive). If value not specified: Iteration ends when index reaches the specified value (inclusive).
-            </description>
-            <name>end</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-    </tag>
     <tag>
         <description>
             <![CDATA[Util tag to import constants.]]>
@@ -1099,7 +1047,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -1655,7 +1603,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -1663,7 +1611,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>
@@ -2286,6 +2234,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[MenuModel instance to create menus programmatically.]]>
             </description>
             <name>model</name>
@@ -2318,6 +2274,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines home icon CSS class, default value is "ui-icon ui-icon-home".]]>
+            </description>
+            <name>homeIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Position of the items in the tabbing order. Default is 0.]]>
             </description>
             <name>tabindex</name>
@@ -2329,6 +2293,14 @@
                 <![CDATA[Boolean flag indicating whether the last item should be disabled. Default is false.]]>
             </description>
             <name>lastItemDisabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Used to produce an Advanced SEO structure on the page. Default is false.]]>
+            </description>
+            <name>seo</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -2762,7 +2734,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -3629,6 +3601,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The cutoff year for determining the century for a date. Default is "+10".]]>
+            </description>
+            <name>shortYearCutoff</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -3678,7 +3658,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -3738,7 +3718,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Theme of the captcha. Default is light.]]>
+                <![CDATA[Theme of the captcha either 'light', 'dark', or 'auto'. Default is auto.]]>
             </description>
             <name>theme</name>
             <required>false</required>
@@ -3994,6 +3974,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enables paginator links. Default is true.]]>
+            </description>
+            <name>paginator</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -4033,88 +4021,6 @@
                 <![CDATA[Prevents hidden content to be shown.]]>
             </description>
             <name>disabled</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>chart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Chart</component-type>
-            <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Type of the chart.]]>
-            </description>
-            <name>type</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.chart.ChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[In responsive mode, chart is redrawn when window is resized.]]>
-            </description>
-            <name>responsive</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -4265,7 +4171,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -4870,7 +4776,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -5331,6 +5237,15 @@
             <name>displayPriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An EL expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
+    In case it's a static text, it must refer to a converter id.]]>
+            </description>
+            <name>converter</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
     <tag>
@@ -6272,7 +6187,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button. Default is 'false'.]]>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
@@ -6724,7 +6639,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the link will be disabled during Ajax requests triggered by the link. Default is 'false'.]]>
+                <![CDATA[If true, the link will be disabled during Ajax requests triggered by the link. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
@@ -6900,80 +6815,6 @@
             <name>responsive</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[ContentFlow is used to display a collection of items.]]>
-        </description>
-        <tag-name>contentFlow</tag-name>
-        <component>
-            <component-type>org.primefaces.component.ContentFlow</component-type>
-            <renderer-type>org.primefaces.component.ContentFlowRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Collection of items.]]>
-            </description>
-            <name>value</name>
-            <required>true</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the iterator to display an item.]]>
-            </description>
-            <name>var</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the container element.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the container element.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -8248,7 +8089,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add and checkbox.]]>
+                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add none.]]>
             </description>
             <name>rowSelectMode</name>
             <required>false</required>
@@ -8567,6 +8408,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to show the select all checkbox inside the column's header.]]>
+            </description>
+            <name>showSelectAll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -8787,6 +8636,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Text to display when there is no data to display.]]>
+            </description>
+            <name>emptyMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
             </description>
             <name>flex</name>
@@ -8998,7 +8855,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -10108,7 +9965,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -11227,6 +11084,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[One or more strings separated by commas, indicating possible image sources for the user agent to use.]]>
+            </description>
+            <name>srcset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[One or more strings separated by commas, indicating a set of source sizes.]]>
+            </description>
+            <name>sizes</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Style of the image.]]>
             </description>
             <name>style</name>
@@ -12005,7 +11878,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -12494,7 +12367,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -12968,6 +12841,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when the input gets focus. Default is true.]]>
+            </description>
+            <name>showMaskOnFocus</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Shows the mask when hovering the mouse. Default is true.]]>
+            </description>
+            <name>showMaskOnHover</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -13017,7 +12906,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -13644,7 +13533,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -13847,7 +13736,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -14371,7 +14260,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -14926,7 +14815,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -15611,7 +15500,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -15844,128 +15733,6 @@
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[Lightbox features a powerful overlay that can display images, multimedia content, other JSF components and external urls.]]>
-        </description>
-        <tag-name>lightBox</tag-name>
-        <component>
-            <component-type>org.primefaces.component.LightBox</component-type>
-            <renderer-type>org.primefaces.component.LightBoxRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style of the container element not the overlay element.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the container element not the overlay element.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Width of the iframe.]]>
-            </description>
-            <name>width</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Height of the iframe.]]>
-            </description>
-            <name>height</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Specifies an iframe to display an external url in overlay. Default is false.]]>
-            </description>
-            <name>iframe</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Title of the iframe element.]]>
-            </description>
-            <name>iframeTitle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Displays lightbox without requiring any user interaction by default. Default is false.]]>
-            </description>
-            <name>visible</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Whether to block scrolling of the document when lightbox is active.]]>
-            </description>
-            <name>blockScroll</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Client side callback to execute when lightbox is displayed.]]>
-            </description>
-            <name>onShow</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Client side callback to execute when lightbox is hidden.]]>
-            </description>
-            <name>onHide</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -17256,7 +17023,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'false'.]]>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by its menu items. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
@@ -18002,7 +17769,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -18263,7 +18030,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -18861,7 +18628,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
     </tag>
     <tag>
@@ -19016,6 +18783,14 @@
                 <![CDATA[Whether to block scrolling of the document when panel is modal.]]>
             </description>
             <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to hide overlay when hovering over overlay content when using custom show/hide events, default is true.]]>
+            </description>
+            <name>autoHide</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -19523,7 +19298,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -20111,7 +19886,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -20338,7 +20113,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -21197,7 +20972,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -21729,136 +21504,6 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>ring</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Ring</component-type>
-            <renderer-type>org.primefaces.component.RingRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Datasource of the component.]]>
-            </description>
-            <name>value</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
-            </description>
-            <name>var</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Number of rows to display per page. Default value is 0 meaning to display all data available.]]>
-            </description>
-            <name>rows</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Index of the first data to display.]]>
-            </description>
-            <name>first</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>easing</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When true, Ring will automatically advance the moving elements to the next child at a regular interval.Default is false.]]>
-            </description>
-            <name>autoplay</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Time in milliseconds between animation triggers when a Ring's autoplay is playing.]]>
-            </description>
-            <name>autoplayDuration</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When true, Ring will pause autoPlay when the user mouseover the Ring container. Default is false.]]>
-            </description>
-            <name>autoplayPauseOnHover</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Time in milliseconds to delay the start of Ring's configured autoplay option.]]>
-            </description>
-            <name>autoplayInitialDelay</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
             <![CDATA[Row is a helper component for datatable.]]>
         </description>
         <tag-name>row</tag-name>
@@ -22211,6 +21856,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <name>selectable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <description>Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".</description>
+        </attribute>
+        <attribute>
             <description>
                 <![CDATA[Specifies visibility of header content. Default is true.]]>
             </description>
@@ -22542,7 +22193,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -22666,7 +22317,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[The icon representing the "On" position.]]>
             </description>
             <name>onIcon</name>
             <required>false</required>
@@ -22674,7 +22325,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[The icon representing the "Off" position.]]>
             </description>
             <name>offIcon</name>
             <required>false</required>
@@ -22761,7 +22412,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -22972,7 +22623,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23136,7 +22787,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -23144,7 +22795,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>
@@ -23288,7 +22939,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23459,7 +23110,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23646,7 +23297,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -23897,7 +23548,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24076,7 +23727,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24311,7 +23962,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24435,7 +24086,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -24443,7 +24094,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>
@@ -24691,7 +24342,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -24850,6 +24501,14 @@
                 <![CDATA[Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.]]>
             </description>
             <name>hideNoSelectionOption</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
             <required>false</required>
             <type>boolean</type>
         </attribute>
@@ -25107,7 +24766,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -25677,7 +25336,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -26239,6 +25898,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Allows the user to increment or decrement the element value with the mouse wheel, default is true.]]>
+            </description>
+            <name>modifyValueOnWheel</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -26731,7 +26398,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'false'.]]>
+                <![CDATA[If true, the button will be disabled during Ajax requests triggered by the button or its menu items. Default is 'true'.]]>
             </description>
             <name>disableOnAjax</name>
             <required>false</required>
@@ -27394,6 +27061,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Title attribute for menu element on tab header.]]>
+            </description>
+            <name>menuTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -27467,6 +27142,14 @@
             <name>activeIndex</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Orientation of the tab items relative to where you want to put the content, valid values are "top" (default), "left", "right" and "bottom".]]>
+            </description>
+            <name>orientation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -27610,7 +27293,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Orientation of the tab headers, valid values are "top" and "bottom".]]>
+                <![CDATA[Orientation of the tab headers, valid values are "top" (default), "left", "right" and "bottom".]]>
             </description>
             <name>orientation</name>
             <required>false</required>
@@ -27669,6 +27352,14 @@
                 <![CDATA[Whether to keep TabView state across views, defaults to false.]]>
             </description>
             <name>multiViewState</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to focus the first tab that contains an error after form submission.]]>
+            </description>
+            <name>focusOnError</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -27886,7 +27577,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -28788,7 +28479,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -28923,6 +28614,22 @@
                 <![CDATA[Client side callback to execute when component loses focus.]]>
             </description>
             <name>onblur</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The icon representing the "On" position.]]>
+            </description>
+            <name>onIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The icon representing the "Off" position.]]>
+            </description>
+            <name>offIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -29082,7 +28789,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -29177,6 +28884,14 @@
                 <![CDATA[Defines whether html would be escaped or not, defaults to true.]]>
             </description>
             <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to hide tooltip when hovering over tooltip content, default is true.]]>
+            </description>
+            <name>autoHide</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -29545,7 +29260,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Method providing suggestions.]]>
+                <![CDATA[Method returning whether the dragged node(s) can be dropped on the dropped node.]]>
             </description>
             <name>onDrop</name>
             <required>false</required>
@@ -30218,7 +29933,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -31317,7 +31032,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -31897,6 +31612,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Only display valid dates within the min/max range. Default is true.]]>
+            </description>
+            <name>showMinMaxRange</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to format the month. Default is true.]]>
+            </description>
+            <name>autoMonthFormat</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Whether to display dates in other months (non-selectable) at the start or end of the current month.
                 To make these days selectable use the selectOtherMonths option. Default is false.]]>
             </description>
@@ -32088,6 +31819,14 @@
             <name>autoDetectDisplay</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[This is the breakpoint in pixels when to automatically switch to optimized interface if autoDetectDisplay=true. Default is 576.]]>
+            </description>
+            <name>responsiveBreakpoint</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>
@@ -32331,6 +32070,14 @@
             <name>dynamicColor</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -32667,7 +32414,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>
@@ -33460,7 +33207,7 @@
             </description>
             <name>converter</name>
             <required>false</required>
-            <type>java.faces.convert.Converter</type>
+            <type>javax.faces.convert.Converter</type>
         </attribute>
         <attribute>
             <description>

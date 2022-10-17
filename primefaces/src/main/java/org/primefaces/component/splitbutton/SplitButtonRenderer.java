@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -209,8 +209,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
                     .nativeAttr("filterFunction", button.getFilterFunction(), null);
         }
 
-        wb.attr("disableOnAjax", button.isDisableOnAjax(), false);
-        wb.finish();
+        wb.attr("disableOnAjax", button.isDisableOnAjax(), true)
+            .attr("disabledAttr", button.isDisabled(), false)
+            .finish();
     }
 
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {

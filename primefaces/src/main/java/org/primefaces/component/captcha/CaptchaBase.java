@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,7 +54,7 @@ public abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getTheme() {
-        return (String) getStateHelper().eval(PropertyKeys.theme, "light");
+        return (String) getStateHelper().eval(PropertyKeys.theme, "auto");
     }
 
     public void setTheme(String theme) {

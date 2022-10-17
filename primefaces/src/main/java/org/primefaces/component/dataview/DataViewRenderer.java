@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,8 @@ package org.primefaces.component.dataview;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,6 +36,8 @@ import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.*;
 
 public class DataViewRenderer extends DataRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(DataViewRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -78,6 +82,10 @@ public class DataViewRenderer extends DataRenderer {
 
             encodeMarkup(context, dataview);
             encodeScript(context, dataview);
+
+            if (dataview.isPaginator() && dataview.getRows() == 0) {
+                LOGGER.log(Level.WARNING, "DataView with paginator=true should also set the rows attribute. ClientId: " + dataview.getClientId());
+            }
         }
     }
 

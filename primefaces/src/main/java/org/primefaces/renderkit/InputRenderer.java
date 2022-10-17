@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -153,12 +153,10 @@ public abstract class InputRenderer extends CoreRenderer {
 
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
-            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
         }
 
         if (readonly) {
             writer.writeAttribute("readonly", "readonly", null);
-            writer.writeAttribute(HTML.ARIA_READONLY, "true", null);
         }
     }
 
@@ -172,7 +170,7 @@ public abstract class InputRenderer extends CoreRenderer {
      */
     protected void renderARIACombobox(FacesContext context, UIInput component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.writeAttribute("role", "combobox", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
         writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
     }

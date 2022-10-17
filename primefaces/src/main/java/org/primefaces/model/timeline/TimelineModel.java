@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import org.primefaces.component.timeline.TimelineUpdater;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class TimelineModel<E, G> implements Serializable {
 
@@ -151,9 +152,18 @@ public class TimelineModel<E, G> implements Serializable {
      * @param timelineUpdater TimelineUpdater instance to update the event in UI
      */
     public void update(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
-        if (timelineUpdater != null) {
-            // update UI
-            timelineUpdater.update(event);
+        // GitHub #8577 must update event
+        int index = IntStream.range(0, events.size())
+                .filter(i -> event.equals(events.get(i)))
+                .findFirst().orElse(-1);
+
+        if (index >= 0) {
+            events.set(index, event);
+
+            if (timelineUpdater != null) {
+                // update UI
+                timelineUpdater.update(event);
+            }
         }
     }
 

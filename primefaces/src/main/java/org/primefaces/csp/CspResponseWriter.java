@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,10 +32,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
+
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
 
 public class CspResponseWriter extends ResponseWriterWrapper {
 
@@ -63,10 +67,15 @@ public class CspResponseWriter extends ResponseWriterWrapper {
     private String lastNonce;
     private Map<String, String> lastEvents;
 
+    private Lazy<Boolean> policyProvided;
+
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public CspResponseWriter(ResponseWriter wrapped, CspState cspState) {
         this.wrapped = wrapped;
         this.cspState = cspState;
+
+        policyProvided = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isPolicyProvided());
     }
 
     @Override
@@ -180,9 +189,11 @@ public class CspResponseWriter extends ResponseWriterWrapper {
             return;
         }
 
-        // no nonce written -> do it
-        if ("script".equalsIgnoreCase(lastElement) && LangUtils.isBlank(lastNonce)) {
-            getWrapped().writeAttribute("nonce", cspState.getNonce(), null);
+        // no nonce written -> do it if the CSP policy is not provided
+        if (Boolean.FALSE.equals(policyProvided.get())) {
+            if ("script".equalsIgnoreCase(lastElement) && LangUtils.isBlank(lastNonce)) {
+                getWrapped().writeAttribute("nonce", cspState.getNonce(), null);
+            }
         }
 
         if (lastEvents != null && !lastEvents.isEmpty()) {

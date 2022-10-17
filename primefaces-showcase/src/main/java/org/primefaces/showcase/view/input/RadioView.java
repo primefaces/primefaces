@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ public class RadioView {
     private String city2;
     private List<String> cities;
     private String color;
+    private String color2;
 
     @PostConstruct
     public void init() {
@@ -83,6 +84,14 @@ public class RadioView {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getColor2() {
+        return color2;
+    }
+
+    public void setColor2(String color2) {
+        this.color2 = color2;
     }
 
     public List<String> getCities() {

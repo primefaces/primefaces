@@ -53,7 +53,7 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            async: true,
+            async: false,
             ignoreAutoUpdate: true,
             global: false,
             params: [

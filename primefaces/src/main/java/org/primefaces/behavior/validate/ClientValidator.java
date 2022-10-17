@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,20 @@
  */
 package org.primefaces.behavior.validate;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.Constants;
 
 public class ClientValidator extends AbstractBehavior {
+
+    private static final Logger LOGGER = Logger.getLogger(ClientValidator.class.getName());
 
     public enum PropertyKeys implements BehaviorAttribute {
         event(String.class),
@@ -53,10 +60,16 @@ public class ClientValidator extends AbstractBehavior {
             return null;
         }
 
+        if (!behaviorContext.getFacesContext().isProjectStage(ProjectStage.Production)) {
+            if (!PrimeApplicationContext.getCurrentInstance(behaviorContext.getFacesContext()).getConfig().isClientSideValidationEnabled()) {
+                LOGGER.log(Level.WARNING, Constants.ContextParams.CSV + " must be enabled for p:clientValidator!");
+            }
+        }
+
         UIComponent component = behaviorContext.getComponent();
         String target = (component instanceof InputHolder) ? "'" + ((InputHolder) component).getValidatableInputClientId() + "'" : "this";
 
-        return "return PrimeFaces.vi(" + target + ")";
+        return "return PrimeFaces.vi(" + target + ", true, true)";
     }
 
     @Override

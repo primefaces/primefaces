@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,9 @@
  */
 package org.primefaces.util;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -36,6 +37,7 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
 public class ResourceUtils {
@@ -57,6 +59,88 @@ public class ResourceUtils {
             String url = context.getApplication().getViewHandler().getResourceURL(context, value);
 
             return context.getExternalContext().encodeResourceURL(url);
+        }
+    }
+
+    public static String encodeResourceURL(FacesContext context, String src, boolean cache) {
+        return context.getExternalContext().encodeResourceURL(ResourceUtils.appendCacheBuster(src, cache));
+    }
+
+    public static String toBase64(FacesContext context, Resource resource) {
+        try {
+            return toBase64(context, resource.getInputStream(), resource.getContentType());
+        }
+        catch (IOException e) {
+            throw new FacesException("Could not open InputStream from Resource[library=" + resource.getLibraryName()
+                    + ", name=" + resource.getResourceName() + "]", e);
+        }
+    }
+
+    public static String toBase64(FacesContext context, InputStream is) {
+        return toBase64(context, toByteArray(is), null);
+    }
+
+    public static String toBase64(FacesContext context, Consumer<OutputStream> writer, String contentType) {
+        return toBase64(context, toByteArray(writer), contentType);
+    }
+
+    public static String toBase64(FacesContext context, InputStream is, String contentType) {
+        return toBase64(context, toByteArray(is), contentType);
+    }
+
+    public static String toBase64(FacesContext context, byte[] bytes) {
+        return toBase64(context, bytes, null);
+    }
+
+    public static String toBase64(FacesContext context, byte[] bytes, String contentType) {
+        String base64 = Base64.getEncoder().withoutPadding().encodeToString(bytes);
+        if (contentType == null) {
+            // try to guess content type from magic numbers
+            if (base64.startsWith("R0lGOD")) {
+                contentType = "image/gif";
+            }
+            else if (base64.startsWith("iVBORw")) {
+                contentType = "image/png";
+            }
+            else if (base64.startsWith("/9j/")) {
+                contentType = "image/jpeg";
+            }
+        }
+        return "data:" + contentType + ";base64," + base64;
+    }
+
+    public static byte[] toByteArray(Consumer<OutputStream> os) {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        os.accept(buffer);
+
+        return buffer.toByteArray();
+    }
+
+    public static byte[] toByteArray(InputStream is) {
+        try {
+            try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+                int nRead;
+                byte[] data = new byte[16384];
+
+                while ((nRead = is.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+
+                buffer.flush();
+
+                return buffer.toByteArray();
+            }
+        }
+        catch (Exception e) {
+            throw new FacesException("Could not read InputStream to byte[]", e);
+        }
+        finally {
+            try {
+                is.close();
+            }
+            catch (IOException ex) {
+                // ignore
+            }
         }
     }
 
@@ -85,15 +169,18 @@ public class ResourceUtils {
      */
     public static void addResponseCookie(FacesContext context, String name, String value, Map<String, Object> properties) {
         if (properties == null) {
-            properties = new HashMap<>(2);
+            properties = new HashMap<>(3);
         }
 
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
+        PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
 
-        if (requestContext.isSecure() && requestContext.getApplicationContext().getConfig().isCookiesSecure()) {
+        if (requestContext.isSecure() && applicationContext.getConfig().isCookiesSecure()) {
             properties.put("secure", true);
-            // SameSite hopefully supported in Servlet 5.0
-            // properties.put("sameSite", requestContext.getApplicationContext().getConfig().getCookiesSameSite());
+
+            if (applicationContext.getEnvironment().isAtLeastJsf40()) {
+                properties.put("SameSite", applicationContext.getConfig().getCookiesSameSite());
+            }
         }
 
         context.getExternalContext().addResponseCookie(name, value, properties);

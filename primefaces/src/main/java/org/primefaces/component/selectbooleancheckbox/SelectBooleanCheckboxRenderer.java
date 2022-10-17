@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -107,15 +107,10 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
-        writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
-            writer.writeAttribute(HTML.ARIA_CHECKED, "true", null);
-        }
-        else {
-            writer.writeAttribute(HTML.ARIA_CHECKED, "false", null);
         }
 
         renderValidationMetadata(context, checkbox);

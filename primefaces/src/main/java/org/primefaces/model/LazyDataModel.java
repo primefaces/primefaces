@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -107,6 +107,14 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
+    public T getRowData(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        List<T> loaded = load(rowIndex, rowIndex + 1, sortBy, filterBy);
+        if (loaded == null || loaded.isEmpty()) {
+            return null;
+        }
+        return loaded.get(0);
+    }
+
     /**
      * Recalculates <code>first</code>, see #1921.
      * Also see: {@link org.primefaces.component.api.UIPageableData#calculateFirst()}
@@ -178,11 +186,14 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     public void setRowIndex(int rowIndex) {
         int oldIndex = this.rowIndex;
 
-        if (rowIndex == -1 || pageSize == 0) {
+        if (rowIndex == -1) {
             this.rowIndex = -1;
         }
-        else {
+        else if (pageSize > 0) {
             this.rowIndex = (rowIndex % pageSize);
+        }
+        else {
+            this.rowIndex = rowIndex;
         }
 
         if (data == null) {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,9 @@
  */
 package org.primefaces.showcase.view.data;
 
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.*;
-import org.primefaces.showcase.service.ExtenderService;
-import org.primefaces.showcase.service.ExtenderService.ExtenderExample;
-
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
@@ -44,9 +40,14 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.schedule.ScheduleEntryMoveEvent;
+import org.primefaces.event.schedule.ScheduleEntryResizeEvent;
+import org.primefaces.event.schedule.ScheduleRangeEvent;
+import org.primefaces.model.*;
+import org.primefaces.showcase.service.ExtenderService;
+import org.primefaces.showcase.service.ExtenderService.ExtenderExample;
 
 @Named
 @ViewScoped
@@ -66,6 +67,7 @@ public class ScheduleJava8View implements Serializable {
     private boolean showHeader = true;
     private boolean draggable = true;
     private boolean resizable = true;
+    private boolean selectable = false;
     private boolean showWeekends = true;
     private boolean tooltip = true;
     private boolean allDaySlot = true;
@@ -104,67 +106,8 @@ public class ScheduleJava8View implements Serializable {
     public void init() {
         eventModel = new DefaultScheduleModel();
 
-        DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
-                .title("Champions League Match")
-                .startDate(previousDay8Pm())
-                .endDate(previousDay11Pm())
-                .description("Team A vs. Team B")
-                .url("https://www.uefa.com/uefachampionsleague/")
-                .borderColor("orange")
-                .build();
-        eventModel.addEvent(event);
-
-        event = DefaultScheduleEvent.builder()
-                .startDate(LocalDateTime.now().minusDays(6))
-                .endDate(LocalDateTime.now().minusDays(3))
-                .overlapAllowed(true)
-                .editable(false)
-                .resizable(false)
-                .display(ScheduleDisplayMode.BACKGROUND)
-                .backgroundColor("lightgreen")
-                .build();
-        eventModel.addEvent(event);
-
-        event = DefaultScheduleEvent.builder()
-                .title("Birthday Party")
-                .startDate(today1Pm())
-                .endDate(today6Pm())
-                .description("Aragon")
-                .overlapAllowed(true)
-                .borderColor("#CB4335")
-                .build();
-        eventModel.addEvent(event);
-
-        event = DefaultScheduleEvent.builder()
-                .title("Breakfast at Tiffanys (always resizable)")
-                .startDate(nextDay9Am())
-                .endDate(nextDay11Am())
-                .description("all you can eat")
-                .overlapAllowed(true)
-                .resizable(true)
-                .borderColor("#27AE60")
-                .build();
-        eventModel.addEvent(event);
-
-        event = DefaultScheduleEvent.builder()
-                .title("Plant the new garden stuff (always draggable)")
-                .startDate(theDayAfter3Pm())
-                .endDate(fourDaysLater3pm())
-                .description("Trees, flowers, ...")
-                .draggable(true)
-                .borderColor("#27AE60")
-                .build();
-        eventModel.addEvent(event);
-
-        DefaultScheduleEvent<?> scheduleEventAllDay = DefaultScheduleEvent.builder()
-                .title("Holidays (AllDay)")
-                .startDate(sevenDaysLater0am())
-                .endDate(eightDaysLater0am())
-                .description("sleep as long as you want")
-                .borderColor("#27AE60")
-                .allDay(true)
-                .build();
-        eventModel.addEvent(scheduleEventAllDay);
+        addEvents2EventModel(LocalDateTime.now());
+        addEvents2EventModel(LocalDateTime.now().minusMonths(6));
 
         lazyEventModel = new LazyScheduleModel() {
 
@@ -182,6 +125,70 @@ public class ScheduleJava8View implements Serializable {
         };
 
         extenderExamples = extenderService.createExtenderExamples();
+    }
+
+    private void addEvents2EventModel(LocalDateTime referenceDate) {
+        DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
+                .title("Champions League Match")
+                .startDate(previousDay8Pm(referenceDate))
+                .endDate(previousDay11Pm(referenceDate))
+                .description("Team A vs. Team B")
+                .url("https://www.uefa.com/uefachampionsleague/")
+                .borderColor("orange")
+                .build();
+        eventModel.addEvent(event);
+
+        event = DefaultScheduleEvent.builder()
+                .startDate(referenceDate.minusDays(6))
+                .endDate(referenceDate.minusDays(3))
+                .overlapAllowed(true)
+                .editable(false)
+                .resizable(false)
+                .display(ScheduleDisplayMode.BACKGROUND)
+                .backgroundColor("lightgreen")
+                .build();
+        eventModel.addEvent(event);
+
+        event = DefaultScheduleEvent.builder()
+                .title("Birthday Party")
+                .startDate(today1Pm(referenceDate))
+                .endDate(today6Pm(referenceDate))
+                .description("Aragon")
+                .overlapAllowed(true)
+                .borderColor("#CB4335")
+                .build();
+        eventModel.addEvent(event);
+
+        event = DefaultScheduleEvent.builder()
+                .title("Breakfast at Tiffanys (always resizable)")
+                .startDate(nextDay9Am(referenceDate))
+                .endDate(nextDay11Am(referenceDate))
+                .description("all you can eat")
+                .overlapAllowed(true)
+                .resizable(true)
+                .borderColor("#27AE60")
+                .build();
+        eventModel.addEvent(event);
+
+        event = DefaultScheduleEvent.builder()
+                .title("Plant the new garden stuff (always draggable)")
+                .startDate(theDayAfter3Pm(referenceDate))
+                .endDate(fourDaysLater3pm(referenceDate))
+                .description("Trees, flowers, ...")
+                .draggable(true)
+                .borderColor("#27AE60")
+                .build();
+        eventModel.addEvent(event);
+
+        DefaultScheduleEvent<?> scheduleEventAllDay = DefaultScheduleEvent.builder()
+                .title("Holidays (AllDay)")
+                .startDate(sevenDaysLater0am(referenceDate))
+                .endDate(eightDaysLater0am(referenceDate))
+                .description("sleep as long as you want")
+                .borderColor("#27AE60")
+                .allDay(true)
+                .build();
+        eventModel.addEvent(scheduleEventAllDay);
     }
 
     public ExtenderService getScheduleExtenderService() {
@@ -205,44 +212,44 @@ public class ScheduleJava8View implements Serializable {
         return lazyEventModel;
     }
 
-    private LocalDateTime previousDay8Pm() {
-        return LocalDateTime.now().minusDays(1).withHour(20).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime previousDay8Pm(LocalDateTime referenceDate) {
+        return referenceDate.minusDays(1).withHour(20).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime previousDay11Pm() {
-        return LocalDateTime.now().minusDays(1).withHour(23).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime previousDay11Pm(LocalDateTime referenceDate) {
+        return referenceDate.minusDays(1).withHour(23).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime today1Pm() {
-        return LocalDateTime.now().withHour(13).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime today1Pm(LocalDateTime referenceDate) {
+        return referenceDate.withHour(13).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime theDayAfter3Pm() {
-        return LocalDateTime.now().plusDays(1).withHour(15).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime theDayAfter3Pm(LocalDateTime referenceDate) {
+        return referenceDate.plusDays(1).withHour(15).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime today6Pm() {
-        return LocalDateTime.now().withHour(18).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime today6Pm(LocalDateTime referenceDate) {
+        return referenceDate.withHour(18).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime nextDay9Am() {
-        return LocalDateTime.now().plusDays(1).withHour(9).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime nextDay9Am(LocalDateTime referenceDate) {
+        return referenceDate.plusDays(1).withHour(9).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime nextDay11Am() {
-        return LocalDateTime.now().plusDays(1).withHour(11).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime nextDay11Am(LocalDateTime referenceDate) {
+        return referenceDate.plusDays(1).withHour(11).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime fourDaysLater3pm() {
-        return LocalDateTime.now().plusDays(4).withHour(15).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime fourDaysLater3pm(LocalDateTime referenceDate) {
+        return referenceDate.plusDays(4).withHour(15).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime sevenDaysLater0am() {
-        return LocalDateTime.now().plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime sevenDaysLater0am(LocalDateTime referenceDate) {
+        return referenceDate.plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
     }
 
-    private LocalDateTime eightDaysLater0am() {
-        return LocalDateTime.now().plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime eightDaysLater0am(LocalDateTime referenceDate) {
+        return referenceDate.plusDays(7).withHour(0).withMinute(0).withSecond(0).withNano(0);
     }
 
     public LocalDate getInitialDate() {
@@ -302,6 +309,13 @@ public class ScheduleJava8View implements Serializable {
     public void onEventResize(ScheduleEntryResizeEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized",
                 "Start-Delta:" + event.getDeltaStartAsDuration() + ", End-Delta: " + event.getDeltaEndAsDuration());
+
+        addMessage(message);
+    }
+
+    public void onRangeSelect(ScheduleRangeEvent event) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Range selected",
+                "Start-Date:" + event.getStartDate() + ", End-Date: " + event.getEndDate());
 
         addMessage(message);
     }
@@ -375,6 +389,14 @@ public class ScheduleJava8View implements Serializable {
 
     public void setResizable(boolean resizable) {
         this.resizable = resizable;
+    }
+
+    public boolean isSelectable() {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable) {
+        this.selectable = selectable;
     }
 
     public boolean isTooltip() {

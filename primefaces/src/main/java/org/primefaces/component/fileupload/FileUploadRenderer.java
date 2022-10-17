@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -278,7 +278,6 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", cssClass, null);
         writer.writeAttribute("tabindex", tabindex, null);
-        writer.writeAttribute("role", "button", null);
         writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_label", null);
 
         String chooseButtonTitle = fileUpload.getChooseButtonTitle();

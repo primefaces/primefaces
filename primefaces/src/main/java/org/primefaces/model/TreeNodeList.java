@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,14 +29,4 @@ public class TreeNodeList<T> extends ArrayList<TreeNode<T>> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Optimized set implementation to be used in sorting
-     *
-     * @param index index of the element to replace
-     * @param node node to be stored at the specified position
-     * @return the node previously at the specified position
-     */
-    public TreeNode<T> setSibling(int index, TreeNode<T> node) {
-        throw new UnsupportedOperationException();
-    }
 }

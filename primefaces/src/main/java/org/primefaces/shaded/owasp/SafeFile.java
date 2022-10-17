@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,8 +54,8 @@ public class SafeFile extends File {
 
     private static final long serialVersionUID = 1L;
     private static final Pattern PERCENTS_PAT = Pattern.compile("(%)([0-9a-fA-F])([0-9a-fA-F])");
-    private static final Pattern FILE_BLACKLIST_PAT = Pattern.compile("([\\\\/:*?<>|^])");
-    private static final Pattern DIR_BLACKLIST_PAT = Pattern.compile("([*?<>|^])");
+    private static final Pattern FILE_BLOCKLIST_PAT = Pattern.compile("([\\\\/:*?<>|^])");
+    private static final Pattern DIR_BLOCKLIST_PAT = Pattern.compile("([*?<>|^])");
 
     public SafeFile(String path) throws ValidationException {
         super(path);
@@ -83,7 +83,7 @@ public class SafeFile extends File {
 
 
     private void doDirCheck(String path) throws ValidationException {
-        Matcher m1 = DIR_BLACKLIST_PAT.matcher( path );
+        Matcher m1 = DIR_BLOCKLIST_PAT.matcher( path );
         if ( null != m1 && m1.find() ) {
             throw new ValidationException( "Invalid directory", "Directory path (" + path + ") contains illegal character: " + m1.group() );
         }
@@ -100,7 +100,7 @@ public class SafeFile extends File {
     }
 
     private void doFileCheck(String path) throws ValidationException {
-        Matcher m1 = FILE_BLACKLIST_PAT.matcher( path );
+        Matcher m1 = FILE_BLOCKLIST_PAT.matcher( path );
         if ( m1.find() ) {
             throw new ValidationException( "Invalid directory", "Directory path (" + path + ") contains illegal character: " + m1.group() );
         }
@@ -119,8 +119,8 @@ public class SafeFile extends File {
     private int containsUnprintableCharacters(String s) {
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
-            if (((int) ch) < 32 || ((int) ch) > 126) {
-                return (int) ch;
+            if ((ch) < 32 || (ch) > 126) {
+                return ch;
             }
         }
         return -1;

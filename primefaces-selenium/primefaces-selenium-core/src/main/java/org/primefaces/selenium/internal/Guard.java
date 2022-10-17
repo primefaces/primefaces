@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.spi.WebDriverProvider;
 
 import java.lang.reflect.*;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +65,7 @@ public class Guard {
 
                 WebDriver driver = WebDriverProvider.get();
 
-                WebDriverWait wait = new WebDriverWait(driver, timeout, 100);
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout), Duration.ofMillis(100));
                 wait.until(ExpectedConditions.and(expectedConditions));
 
                 return result;
@@ -86,7 +87,7 @@ public class Guard {
 
                 WebDriver driver = WebDriverProvider.get();
 
-                WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutHttp(), 100);
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigProvider.getInstance().getTimeoutHttp()), Duration.ofMillis(100));
                 wait.until(ExpectedConditions.and(
                         PrimeExpectedConditions.documentLoaded(),
                         PrimeExpectedConditions.notNavigating(),
@@ -176,7 +177,7 @@ public class Guard {
     }
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getTimeoutAjax(), 50);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigProvider.getInstance().getTimeoutAjax()), Duration.ofMillis(50));
         wait.until(d -> {
             return (Boolean) ((JavascriptExecutor) driver)
                         .executeScript("return document.readyState === 'complete'"

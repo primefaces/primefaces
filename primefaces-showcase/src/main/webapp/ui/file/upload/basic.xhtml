@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -25,7 +25,7 @@
             <h:form enctype="multipart/form-data">
                 <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true"/>
 
-                <p:commandButton value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+                <p:commandButton value="Submit" ajax="false" action="#{fileUploadView.upload}" styleClass="mt-3 ui-button-outlined block"/>
             </h:form>
         </div>
 
@@ -33,7 +33,7 @@
             <h5>Multiple</h5>
             <h:form enctype="multipart/form-data">
                 <p:fileUpload value="#{fileUploadView.files}" mode="simple" skinSimple="true" multiple="true"/>
-                <p:commandButton value="Submit" ajax="false" action="#{fileUploadView.uploadMultiple}" styleClass="p-mt-3 ui-button-outlined p-d-block"/>
+                <p:commandButton value="Submit" ajax="false" action="#{fileUploadView.uploadMultiple}" styleClass="mt-3 ui-button-outlined block"/>
             </h:form>
         </div>
 

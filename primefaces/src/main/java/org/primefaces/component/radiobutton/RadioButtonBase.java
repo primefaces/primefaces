@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,10 +24,11 @@
 package org.primefaces.component.radiobutton;
 
 import javax.faces.component.UIComponentBase;
+import org.primefaces.component.api.InputHolder;
 
 import org.primefaces.component.api.Widget;
 
-public abstract class RadioButtonBase extends UIComponentBase implements Widget {
+public abstract class RadioButtonBase extends UIComponentBase implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

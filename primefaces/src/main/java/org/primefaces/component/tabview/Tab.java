@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,11 @@
  */
 package org.primefaces.component.tabview;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.component.menu.Menu;
+import org.primefaces.util.ComponentUtils;
 
 public class Tab extends TabBase {
 
@@ -78,4 +82,18 @@ public class Tab extends TabBase {
         }
         super.processDecodes(context);
     }
+
+    public Menu getOptionsMenu() {
+        UIComponent optionsFacet = getFacet("options");
+        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+            if (optionsFacet instanceof Menu) {
+                return (Menu) optionsFacet;
+            }
+            else {
+                return (Menu) optionsFacet.getChildren().get(0);
+            }
+        }
+        return null;
+    }
+
 }

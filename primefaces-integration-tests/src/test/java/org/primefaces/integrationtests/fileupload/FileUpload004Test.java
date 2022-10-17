@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -114,14 +114,12 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         File file1 = locateClientSideFile("file1.csv");
         File file2 = locateClientSideFile("file2.csv");
         File file3 = locateClientSideFile("file3.csv");
-        fileUpload.setValue(file1, file2, file3);
-
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        File file = locateClientSideFile("file3.csv");
+        fileUpload.setValue(false, file1, file2, file3);
 
         // Assert
+        Assertions.assertEquals("Maximum number of files exceeded", fileUpload.getWidgetValue());
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
@@ -139,13 +137,11 @@ public class FileUpload004Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file3.csv");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
@@ -162,13 +158,11 @@ public class FileUpload004Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file1.png");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }

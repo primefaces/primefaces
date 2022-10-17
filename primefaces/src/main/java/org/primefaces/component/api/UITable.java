@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.column.ColumnBase;
 
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -61,7 +62,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
-        Map<String, FilterMeta> filterBy = new HashMap<>();
+        Map<String, FilterMeta> filterBy = new LinkedHashMap<>();
         AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
@@ -178,6 +179,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (f != null) {
             filterBy.put(f.getColumnKey(), f);
         }
+        setFilterByAsMap(filterBy);
 
         return f != null;
     }
@@ -273,7 +275,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     void setGlobalFilterOnly(boolean globalFilterOnly);
 
     default Map<String, SortMeta> initSortBy(FacesContext context) {
-        Map<String, SortMeta> sortBy = new HashMap<>();
+        Map<String, SortMeta> sortBy = new LinkedHashMap<>();
         AtomicBoolean sorted = new AtomicBoolean();
 
         HeaderRow headerRow = getHeaderRow();
@@ -386,6 +388,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         if (s != null) {
             sortBy.put(s.getColumnKey(), s);
         }
+        setSortByAsMap(sortBy);
 
         return s != null;
     }
@@ -531,10 +534,16 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 .collect(Collectors.joining(","));
     }
 
+    default Object getFieldValue(FacesContext context, UIColumn column) {
+        Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
+        return value;
+    }
+
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
         Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
         UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
-        return ComponentUtils.getConvertedAsString(context, component, value);
+        Object converter = column instanceof ColumnBase ? ((ColumnBase) column).getConverter() : null;
+        return ComponentUtils.getConvertedAsString(context, component, converter, value);
     }
 
     default boolean isFilteringCurrentlyActive() {
@@ -616,4 +625,15 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
      * Recalculates filteredValue after adding, updating or removing object to/from a filtered UITable.
      */
     void filterAndSort();
+
+    /**
+     * Resets all column related state after adding/removing/moving columns.
+     */
+    default void resetColumns() {
+        resetDynamicColumns();
+        setColumns(null);
+        setSortByAsMap(null);
+        setFilterByAsMap(null);
+        setColumnMeta(null);
+    }
 }

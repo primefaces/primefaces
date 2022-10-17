@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -67,7 +67,7 @@ public class LineChartRenderer extends ChartRenderer {
         LineChartOptions lineOptions = (LineChartOptions) options;
 
         writer.write(",\"options\":{");
-        writer.write("\"showLines\":" + lineOptions.isShowLines());
+        writer.write("\"showLine\":" + lineOptions.isShowLines());
         writer.write(",\"spanGaps\":" + lineOptions.isSpanGaps());
 
         encodeScales(context, type, lineOptions.getScales(), true);

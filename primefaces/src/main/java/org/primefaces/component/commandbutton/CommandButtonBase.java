@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -292,10 +292,11 @@ public abstract class CommandButtonBase extends HtmlCommandButton implements Aja
     }
 
     public boolean isDisableOnAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableOnAjax, true);
     }
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
     }
+
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,42 @@ import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.*;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
+import javax.faces.view.ViewScoped;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class RectanglesView implements Serializable {
 
-    private MapModel rectangleModel;
+    private MapModel<Long> rectangleModel;
 
     @PostConstruct
     public void init() {
-        rectangleModel = new DefaultMapModel();
+        rectangleModel = new DefaultMapModel<>();
 
         //Shared coordinates
         LatLng ne = new LatLng(36.879466, 30.667648);
         LatLng sw = new LatLng(36.885233, 30.702323);
 
         //Rectangle
-        Rectangle rect = new Rectangle(new LatLngBounds(sw, ne));
+        Rectangle<Long> rect = new Rectangle(new LatLngBounds(sw, ne));
+        rect.setData(1L);
         rect.setStrokeColor("#d93c3c");
         rect.setFillColor("#d93c3c");
         rect.setFillOpacity(0.5);
         rectangleModel.addOverlay(rect);
     }
 
-    public MapModel getRectangleModel() {
+    public MapModel<Long> getRectangleModel() {
         return rectangleModel;
     }
 
-    public void onRectangleSelect(OverlaySelectEvent event) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Rectangle Selected", null));
+    public void onRectangleSelect(OverlaySelectEvent<Long> event) {
+        Overlay<Long> overlay = event.getOverlay();
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Rectangle " + overlay.getData() + " Selected", null));
     }
 }

@@ -1,20 +1,20 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
     <ui:define name="head">
 
-        <style type="text/css">
+        <style>
             .ui-log {
                 left: 600px;
                 top: 100px;
             }
         </style>
 
-        <script type="text/javascript">
+        <script>
             function handleComplete(xhr, status, args) {
                 if (args.validationFailed) {
                     PrimeFaces.debug("Validation Failed");
@@ -48,7 +48,7 @@
                     <p:inputText id="surname" value="#{requestContextView.user.lastname}" required="true"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Save" action="#{requestContextView.save}" styleClass="p-mt-2"
+                <p:commandButton value="Save" action="#{requestContextView.save}" styleClass="mt-2"
                                  oncomplete="handleComplete(xhr, status, args)"/>
 
                 <p:log/>

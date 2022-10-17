@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 package org.primefaces.component.datalist;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -35,6 +37,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends DataRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(DataListRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -72,6 +76,10 @@ public class DataListRenderer extends DataRenderer {
 
             encodeMarkup(context, list);
             encodeScript(context, list);
+
+            if (list.isPaginator() && list.getRows() == 0) {
+                LOGGER.log(Level.WARNING, "DataList with paginator=true should also set the rows attribute. ClientId: " + list.getClientId());
+            }
         }
     }
 

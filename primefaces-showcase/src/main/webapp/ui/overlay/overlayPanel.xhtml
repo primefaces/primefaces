@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -38,6 +38,15 @@
                             <p:graphicImage name="/demo/images/nature/#{image}"/>
                         </ui:repeat>
                     </p:imageSwitch>
+                </p:overlayPanel>
+                
+                <h5>AutoHide (false)</h5>
+                <p:inputText id="autohide" value="Hover Me" />
+                <p:overlayPanel for="autohide" style="width:350px" showEvent="mouseover" hideEvent="mouseout" autoHide="false">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </p:overlayPanel>
 
                 <h5>Choose Data</h5>
@@ -95,7 +104,7 @@
                     <p:outputPanel id="productDetail" style="text-align:center;">
                         <p:column rendered="#{not empty dtSelectionView.selectedProduct}">
                             <div class="product">
-                                <div class="product-grid-item p-p-3 border-0">
+                                <div class="product-grid-item p-3 border-0">
                                     <div class="product-grid-item-top">
                                         <div>
                                             <i class="pi pi-tag product-category-icon"/>

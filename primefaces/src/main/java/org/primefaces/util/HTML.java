@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,8 @@ public class HTML {
         "lang",
         "ismap",
         "usemap",
+        "srcset",
+        "sizes",
         "style"
     );
 
@@ -289,6 +291,7 @@ public class HTML {
     public static final String ARIA_SELECTED = "aria-selected";
     public static final String ARIA_ROLE = "role";
     public static final String ARIA_ROLE_NONE = "none";
+    public static final String ARIA_ROLE_COMBOBOX = "combobox";
     public static final String ARIA_ROLE_MENU = "menu";
     public static final String ARIA_ROLE_MENUITEM = "menuitem";
     public static final String ARIA_ROLE_MENUBAR = "menubar";

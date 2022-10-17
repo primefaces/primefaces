@@ -45,6 +45,7 @@
 
 /* Grid CSS */
 .ui-panelgrid .p-grid .ui-panelgrid-cell,
+.ui-panelgrid .grid .ui-panelgrid-cell,
 .ui-panelgrid .ui-grid-responsive .ui-panelgrid-cell {
     border: 0 none;
 }

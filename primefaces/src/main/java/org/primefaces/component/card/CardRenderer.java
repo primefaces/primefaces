@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -91,7 +91,7 @@ public class CardRenderer extends CoreRenderer {
 
         //subtitle
         String subtitle = card.getSubtitle();
-        if (LangUtils.isNotBlank(title)) {
+        if (LangUtils.isNotBlank(subtitle)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
             writer.writeText(subtitle, null);
@@ -111,7 +111,7 @@ public class CardRenderer extends CoreRenderer {
         writer.endElement("div");
 
         //footer
-        String footer = card.getSubtitle();
+        String footer = card.getFooter();
         if (LangUtils.isNotBlank(footer)) {
             writer.startElement("div", card);
             writer.writeAttribute("class", Card.FOOTER_CLASS, null);

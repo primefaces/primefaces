@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,10 @@
  */
 package org.primefaces.component.breadcrumb;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 
-public abstract class BreadCrumbBase extends AbstractMenu {
+public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -33,12 +34,15 @@ public abstract class BreadCrumbBase extends AbstractMenu {
 
     public enum PropertyKeys {
 
+        widgetVar,
         model,
         style,
         styleClass,
         homeDisplay,
+        homeIcon,
         tabindex,
-        lastItemDisabled;
+        lastItemDisabled,
+        seo;
     }
 
     public BreadCrumbBase() {
@@ -48,6 +52,14 @@ public abstract class BreadCrumbBase extends AbstractMenu {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     @Override
@@ -83,6 +95,14 @@ public abstract class BreadCrumbBase extends AbstractMenu {
         getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
     }
 
+    public String getHomeIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.homeIcon, "ui-icon ui-icon-home");
+    }
+
+    public void setHomeIcon(String homeIcon) {
+        getStateHelper().put(PropertyKeys.homeIcon, homeIcon);
+    }
+
     @Override
     public String getTabindex() {
         return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
@@ -99,5 +119,13 @@ public abstract class BreadCrumbBase extends AbstractMenu {
 
     public void setLastItemDisabled(boolean lastItemDisabled) {
         getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
+    }
+
+    public boolean isSeo() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.seo, false);
+    }
+
+    public void setSeo(boolean seo) {
+        getStateHelper().put(PropertyKeys.seo, seo);
     }
 }

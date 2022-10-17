@@ -58,10 +58,6 @@ input.ui-spinner-input {
     margin-top: -9px;
 }
 
-.ui-spinner-input::-ms-clear {
-    display: none;
-}
-
 .ui-spinner-horizontal .ui-spinner-input {
     padding-left: 20px;
 }

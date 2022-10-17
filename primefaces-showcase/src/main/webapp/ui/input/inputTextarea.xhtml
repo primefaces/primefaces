@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -30,7 +30,7 @@
                 <h5>Remaining Chars</h5>
                 <p:inputTextarea rows="5" cols="30" counter="display" maxlength="10"
                                  counterTemplate="{0} characters remaining." autoResize="false"/>
-                <h:outputText id="display" class="p-d-block" />
+                <h:outputText id="display" class="block" />
 
                 <h5>AutoComplete</h5>
                 <p>Following inputTextarea send a query for each word that has at least 4 characters to the complete method. Try typing "PrimeFaces".</p>

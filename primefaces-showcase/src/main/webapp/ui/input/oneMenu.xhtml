@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -22,8 +22,8 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <div class="ui-fluid p-formgrid p-grid">
-                    <div class="p-field p-col-12 p-md-4">
+                <div class="ui-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Basic"/>
                         <p:selectOneMenu id="option" value="#{selectOneMenuView.selectedOption}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
@@ -31,13 +31,13 @@
                             <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                             <f:selectItem itemLabel="Option3" itemValue="Option3"/>
                             <f:facet name="footer">
-                                <p:divider styleClass="p-mt-0" />
+                                <p:divider styleClass="mt-0" />
                                 <h:outputText value="3 options" style="font-weight:bold;"/>
                             </f:facet>
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Grouping"/>
                         <p:selectOneMenu id="group" value="#{selectOneMenuView.countryGroup}">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
@@ -45,7 +45,7 @@
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Editable"/>
                         <p:selectOneMenu id="city" value="#{selectOneMenuView.city}" effect="fold" editable="true">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
@@ -53,7 +53,7 @@
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel value="Label"/>
                         <p:selectOneMenu id="labeled" value="#{selectOneMenuView.labeled}" label="Always Show Label"
                                         alwaysDisplayLabel="true">
@@ -61,7 +61,7 @@
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Advanced"/>
                         <p:selectOneMenu id="advanced" value="#{selectOneMenuView.country}" converter="#{countryConverter}"
                                         panelStyle="width:180px" effect="fade" var="c"
@@ -83,12 +83,12 @@
 
                             <f:facet name="footer">
                                 <h:outputText value="#{selectOneMenuView.countries.size()} countries"
-                                            style="font-weight:bold;" styleClass="p-py-1 p-d-block"/>
+                                            style="font-weight:bold;" styleClass="py-1 block"/>
                             </f:facet>
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Lazy"/>
                         <p:selectOneMenu id="lazy" value="#{selectOneMenuView.option}" dynamic="true">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
@@ -96,7 +96,7 @@
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Hide NoSelection Option"/>
                         <p:selectOneMenu id="hideNoselectionOption" value="#{selectOneMenuView.hideNoSelectOption}"
                                         hideNoSelectionOption="#{not empty selectOneMenuView.hideNoSelectOption}">
@@ -108,7 +108,7 @@
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Long Item Label"/>
                         <p:selectOneMenu id="longItemLabel" value="#{selectOneMenuView.longItemLabel}">
                             <f:selectItem itemLabel="Zero" itemValue="0"/>
@@ -126,7 +126,7 @@
                         </p:selectOneMenu>
                     </div>
 
-                    <div class="p-field p-col-12 p-md-4">
+                    <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="RTL"/>
                         <p:selectOneMenu id="trl" value="#{selectOneMenuView.rtl}" dir="rtl">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
@@ -134,6 +134,22 @@
                             <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                             <f:selectItem itemLabel="Option3" itemValue="Option3"/>
                         </p:selectOneMenu>
+                    </div>
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel value="Icons" />
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <h:panelGroup id="icon" styleClass="ui-inputgroup-addon">
+                                <i class="pi pi-#{selectOneMenuView.icon}"/>
+                            </h:panelGroup>
+                            <p:selectOneMenu value="#{selectOneMenuView.icon}" var="item">
+                                <f:selectItems value="#{['flag','wallet','map','link']}" var="item" itemLabel="#{item}"
+                                    itemValue="#{item}" />
+                                <p:column><i class="pi pi-#{item}" /> #{item} </p:column>
+
+                                <p:ajax update="@parent:@parent:icon" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
                     </div>
                 </div>
             </h:form>

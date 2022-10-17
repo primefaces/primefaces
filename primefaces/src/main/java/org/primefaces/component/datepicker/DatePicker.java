@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -167,36 +167,21 @@ public class DatePicker extends DatePickerBase {
         else if (value instanceof List && getSelectionMode().equals("range")) {
             List<?> rangeValues = (List) value;
 
-            if (rangeValues.get(0) instanceof LocalDate) {
-                LocalDate startDate = (LocalDate) rangeValues.get(0);
-                validationResult = validateDateValue(context, startDate);
+            if (rangeValues.get(0) instanceof Comparable) {
+                Comparable startDate = (Comparable) rangeValues.get(0);
+                validationResult = validateValueInternal(context, startDate);
 
                 if (isValid()) {
-                    LocalDate endDate = (LocalDate) rangeValues.get(1);
-                    validationResult = validateDateValue(context, endDate);
+                    Comparable endDate = (Comparable) rangeValues.get(1);
+                    validationResult = validateValueInternal(context, endDate);
 
-                    if (isValid() && startDate.isAfter(endDate)) {
-                        setValid(false);
-                        validationResult = ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL;
-                    }
-                }
-            }
-            else if (rangeValues.get(0) instanceof Date) {
-                Date startDate = (Date) rangeValues.get(0);
-                validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(startDate, CalendarUtils.calculateZoneId(getTimeZone())));
-
-                if (isValid()) {
-                    Date endDate = (Date) rangeValues.get(1);
-                    validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate(endDate, CalendarUtils.calculateZoneId(getTimeZone())));
-
-                    if (isValid() && startDate.after(endDate)) {
+                    if (isValid() && startDate.compareTo(endDate) > 0) {
                         setValid(false);
                         validationResult = ValidationResult.INVALID_RANGE_DATES_SEQUENTIAL;
                     }
                 }
             }
             else {
-                //no other type possible (as of 05/2019)
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, rangeValues.get(0).getClass().getTypeName() + " not supported", null);
                 context.addMessage(getClientId(context), message);
             }

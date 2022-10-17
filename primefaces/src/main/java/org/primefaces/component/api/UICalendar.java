@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -284,12 +284,12 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     @Override
-    public boolean isTouchable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.touchable, false);
+    public Boolean isTouchable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.touchable);
     }
 
     @Override
-    public void setTouchable(boolean touchable) {
+    public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
     }
 
@@ -355,7 +355,7 @@ public abstract class UICalendar extends AbstractPrimeHtmlInputText implements I
     }
 
     public Class<?> getValueType() {
-        return ELUtils.getType(getFacesContext(), getValueExpression("value"), () -> getValue());
+        return ELUtils.getType(getFacesContext(), getValueExpression("value"), this::getValue);
     }
 
     public void validateMinMax(FacesContext context) {

@@ -5,10 +5,6 @@
     font-weight: normal;
 }
 
-input[type=text]::-ms-clear {
-    display: none;
-}
-
 .ui-widget-header .ui-inputfield,
 .ui-widget-content .ui-inputfield {
     font-weight: normal;
@@ -240,7 +236,6 @@ input[type=text]::-ms-clear {
     margin: 0;
     -webkit-transform: none; 
     -moz-transform: none; 
-    -ms-transform: none;
     transform: none;
 }
 
@@ -476,6 +471,24 @@ input[type=text]::-ms-clear {
 
 .ui-button-icon-right {
     right: .5em;
+}
+
+/* button loading */
+.ui-state-loading.ui-button-text-only .ui-icon-loading + .ui-button-text {
+    opacity: 0;
+}
+
+.ui-state-loading.ui-button-text-only .ui-icon-loading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1rem;
+    height: 1rem;
+    margin: -0.5rem;
+}
+
+.ui-state-loading .ui-icon:not(.ui-icon-loading) {
+    display: none;
 }
 
 /*button sets*/
@@ -740,6 +753,10 @@ button.ui-button::-moz-focus-inner {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.ui-splitbuttonmenu .ui-divider-horizontal {
+    width: auto;
 }
 
 /** IE Hacks **/

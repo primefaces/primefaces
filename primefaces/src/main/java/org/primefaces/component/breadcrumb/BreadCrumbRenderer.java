@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,17 +25,25 @@ package org.primefaces.component.breadcrumb;
 
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.seo.JsonLDItem;
+import org.primefaces.model.seo.JsonLDModel;
+import org.primefaces.seo.JsonLD;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -51,12 +59,24 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         int elementCount = menu.getElementsCount();
         List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
+        boolean isOnlyHomeIcon = isIconHome && elementCount == 1;
         String wrapper = "nav";
         String listType = "ol";
 
+        // SEO
+        boolean isSEO = breadCrumb.isSeo();
+        List<JsonLDItem> ldItems = new ArrayList<>();
+
         //home icon for first item
         if (isIconHome && elementCount > 0) {
-            ((MenuItem) menuElements.get(0)).setStyleClass("ui-breadcrumb-home-icon ui-icon ui-icon-home");
+            String icon = breadCrumb.getHomeIcon();
+            String iconStyleClass = getStyleClassBuilder(context)
+                        .add("ui-breadcrumb-home-icon")
+                        .add(icon)
+                        .add(isOnlyHomeIcon && breadCrumb.isLastItemDisabled(), "ui-state-disabled")
+                        .build();
+            MenuItem home = ((MenuItem) menuElements.get(0));
+            home.setStyleClass(iconStyleClass);
         }
 
         writer.startElement(wrapper, null);
@@ -77,11 +97,20 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                 if (element.isRendered() && element instanceof MenuItem) {
                     MenuItem item = (MenuItem) element;
 
+                    if (isSEO) {
+                        ldItems.add(new JsonLDItem("ListItem", ldItems.size() + 1, item.getValue(), getTargetRequestURL(context, (UIOutcomeTarget) item)));
+                    }
+
                     writer.startElement("li", null);
 
                     boolean last = i + 1 == elementCount;
                     if (item.isDisabled() || (breadCrumb.isLastItemDisabled() && last)) {
-                        encodeDisabledMenuItem(context, item);
+                        if (isOnlyHomeIcon) {
+                            encodeMenuItem(context, menu, item, menu.getTabindex(), null);
+                        }
+                        else {
+                            encodeDisabledMenuItem(context, item);
+                        }
                     }
                     else {
                         Entry<String, String> attr = null;
@@ -107,6 +136,11 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         }
 
         writer.endElement(wrapper);
+
+        if (isSEO) {
+            JsonLDModel ldModel = new JsonLDModel("https://schema.org", "BreadcrumbList", "itemListElement", ldItems);
+            JsonLD.encode(context, ldModel, clientId + "_seo");
+        }
     }
 
     @Override
@@ -121,7 +155,13 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-        // Do nothing
+        BreadCrumb breadcrumb = (BreadCrumb) abstractMenu;
+
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("BreadCrumb", breadcrumb)
+                .attr("seo", breadcrumb.isSeo());
+
+        wb.finish();
     }
 
     private void encodeDisabledMenuItem(FacesContext context, MenuItem menuItem) throws IOException {

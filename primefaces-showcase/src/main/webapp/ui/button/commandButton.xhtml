@@ -1,12 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
                 
     <ui:define name="head">
-        <style type="text/css">
+        <style>
             button.ui-button {
                 margin-right: .5rem;
             }
@@ -119,8 +119,39 @@
             <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button ui-button-help ui-button-outlined" />
             <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-outlined" />
 
-            <h5>Disable on Ajax</h5>
-            <p:commandButton value="Sleep" disableOnAjax="true" action="#{bottonBasicView.sleep(1000)}" />
+            <h5>Ajax Disabling and Status Icon</h5>
+            <h:form>
+                <p:commandButton value="Keep Enabled" disableOnAjax="false" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Icon Left" icon="pi pi-check" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Icon Right" icon="pi pi-check" iconPos="right" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Custom" styleClass="custom" action="#{buttonBasicView.sleep()}" />
+            </h:form>
+            <style>
+                html body .custom.ui-button.ui-button-text-only .ui-icon-loading {
+                    opacity: 0;
+                }
+                html body .custom.ui-button.ui-button-text-only .ui-icon-loading:before {
+                    content: "\e94a";
+                }
+                html body .custom.ui-button, html body .custom.ui-button * {
+                    transition-property: all;
+                    transition-duration: .2s;
+                }
+                html body .custom.ui-button.ui-state-loading {
+                    opacity: 1;
+                    background: #888;
+                    border-color: #888;
+                }
+                html body .custom.ui-button.ui-state-loading.ui-button-text-only .ui-button-text {
+                    opacity: 1;
+                    padding-left: 2rem;
+                }
+                html body .custom.ui-button.ui-state-loading.ui-button-text-only .ui-icon-loading {
+                    opacity: 1;
+                    left: 0;
+                    margin-left: 0.5rem;
+                }
+            </style>
         </div>
     </ui:define>
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 package org.primefaces.virusscan.impl;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.primefaces.model.file.UploadedFile;
@@ -32,6 +31,7 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.virusscan.VirusException;
 import org.primefaces.virusscan.VirusScanner;
+import org.primefaces.util.IOUtils;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;

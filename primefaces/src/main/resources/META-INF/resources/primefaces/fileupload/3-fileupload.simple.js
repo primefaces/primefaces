@@ -124,6 +124,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                     $this.display.text(validationFailureMessage + details);
                     $this.input.val('');
+                    files = $this.input[0].files; // required for FF as of 105
 
                     if ($this.cfg.onvalidationfailure) {
                     	$this.cfg.onvalidationfailure({
@@ -134,15 +135,20 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                 } else {
                     // If everything is ok, format the message and display it
-                    var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
+                    if (files.length > 0) {
+                        var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
 
-                    if (files.length > 1) {
-                            toDisplay = toDisplay + " + " + (files.length - 1);
+                        if (files.length > 1) {
+                                toDisplay = toDisplay + " + " + (files.length - 1);
+                        }
+                        $this.display.text(toDisplay);
+                    } 
+                    else {
+                        $this.display.text('');
                     }
-                    $this.display.text(toDisplay);
                 }
 
-                if ($this.cfg.auto) {
+                if ($this.cfg.auto && files.length > 0) {
                     $this.upload();
                 }
             } else {
@@ -205,6 +211,18 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.jq.trigger("click");
+        }
+    },
+
+    /**
+     * Clears the currently selected file.
+     */
+    clear: function() {
+        if (this.input) {
+            this.input.val('');
+        }
+        if (this.display) {
+            this.display.text('');
         }
     },
 
@@ -294,11 +312,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
 
                 PrimeFaces.debug('Response completed.');
-
-                if ($this.display) {
-                    $this.display.text('');
-                }
-                $this.input.val('');
+                $this.clear();
 
                 if($this.cfg.global) {
                     $(document).trigger('pfAjaxComplete', [xhr, this]);

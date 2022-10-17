@@ -115,8 +115,8 @@ function makeCommentHandler(docsByNode) {
  */
 function extractComment(fullText, commentRange, severitySettings) {
     const commentLength = commentRange.end - commentRange.pos;
-    const isTripleSlashComment = commentLength >= 3 && ts.SyntaxKind.SingleLineCommentTrivia === commentRange.kind && fullText.substr(commentRange.pos, 3) === "///";
-    const isDocComment = commentLength >= 3 && ts.SyntaxKind.MultiLineCommentTrivia === commentRange.kind && fullText.substr(commentRange.pos, 3) === "/**";
+    const isTripleSlashComment = commentLength >= 3 && ts.SyntaxKind.SingleLineCommentTrivia === commentRange.kind && fullText.slice(commentRange.pos, commentRange.pos + 3) === "///";
+    const isDocComment = commentLength >= 3 && ts.SyntaxKind.MultiLineCommentTrivia === commentRange.kind && fullText.slice(commentRange.pos, commentRange.pos + 3) === "/**";
     if (isTripleSlashComment) {
         return undefined;
     }

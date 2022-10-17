@@ -86,7 +86,14 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
     show: function() {
         this.primeGalleriaWidget.show();
     },
-    
+
+    /**
+     * Hides content on fullscreen mode.
+     */
+    hide: function() {
+        this.primeGalleriaWidget.hide();
+    },
+
     /**
      * Moves to the next content that comes after the currently shown content.
      */

@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -18,6 +18,7 @@
 
     <ui:define name="implementation">
         <div class="card">
+            <h5 class="mt-0">Basic</h5>
             <p:tabMenu activeIndex="#{param.i}">
                 <p:menuitem value="Home" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-home">
                     <f:param name="i" value="0"/>
@@ -25,7 +26,30 @@
                 <p:menuitem value="Calendar" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-calendar">
                     <f:param name="i" value="1"/>
                 </p:menuitem>
-                <p:menuitem value="Edit" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-pencil">
+                <p:menuitem value="Edit" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-pencil"
+                            disabled="true">
+                    <f:param name="i" value="2"/>
+                </p:menuitem>
+                <p:menuitem value="Documentation" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-file">
+                    <f:param name="i" value="3"/>
+                </p:menuitem>
+                <p:menuitem value="Settings" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-cog">
+                    <f:param name="i" value="4"/>
+                </p:menuitem>
+            </p:tabMenu>
+        </div>
+
+        <div class="card">
+            <h5 class="mt-0">Orientation Left</h5>
+            <p:tabMenu activeIndex="#{param.i}" style="width:15rem" orientation="left">
+                <p:menuitem value="Home" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-home">
+                    <f:param name="i" value="0"/>
+                </p:menuitem>
+                <p:menuitem value="Calendar" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-calendar">
+                    <f:param name="i" value="1"/>
+                </p:menuitem>
+                <p:menuitem value="Edit" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-pencil"
+                            disabled="true">
                     <f:param name="i" value="2"/>
                 </p:menuitem>
                 <p:menuitem value="Documentation" outcome="/ui/menu/tabMenu" icon="pi pi-fw pi-file">

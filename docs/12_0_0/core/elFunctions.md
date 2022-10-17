@@ -14,6 +14,8 @@ resolveComponent(String expression, UIComponent source) | Returns the resolved U
 resolveFirstComponentWithId(String id, UIComponent source) | Returns the first UIComponent with the same id (not clientId!) as the requested id. This method ignores any algorithm or NamingContainers.
 escapeJavaScriptVarName(String str) | Escapes a string for a JS var name (e.g. ':' in a clientId). This is useful if you need to use a clientId in the `name` of a `p:remoteCommand`.
 language() | Gets the current ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.
+dynamicColumnValue(UIComponent component) | Gets the value of the current column. This is only required when `p:columns` and `field` is used with a nested expression like `user.name`.
+dynamicColumnValueAsString(UIComponent component) | Gets the value of the current column converted to string. This is only required when `p:columns` and `field` is used with a nested expression like `user.name`.
 
 ### resolveClientId
 
@@ -33,7 +35,7 @@ NOTE: this example passes "cc" as component to start the search. To start from r
     <p:dialog id="dlg" widgetVar="dlg">
         //contents
     </p:dialog>
-    <p:commandButton type="button" value="Show" onclick="PF('#{p:resolveWidgetVar(‘dlg’, cc)}').show()" />
+    <p:commandButton type="button" value="Show" onclick="PF(`#{p:resolveWidgetVar('dlg', cc)}`).show()" />
 </cc:implementation>
 ```
 

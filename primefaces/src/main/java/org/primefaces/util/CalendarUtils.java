@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.Temporal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -85,7 +81,7 @@ public class CalendarUtils {
         }
 
         if (value instanceof Date) {
-            return convertDate2LocalDate((Date) value);
+            return convertDate2LocalDate((Date) value, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -149,7 +145,7 @@ public class CalendarUtils {
         }
 
         if (value instanceof Date) {
-            return convertDate2LocalTime((Date) value);
+            return convertDate2LocalTime((Date) value, calculateZoneId(calendar.getTimeZone()));
         }
 
         String pattern = calendar.calculatePattern();
@@ -289,18 +285,9 @@ public class CalendarUtils {
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
         //first ask the converter
         Converter converter = calendar.getConverter();
+        // always use the user-applied converter first
         if (converter != null) {
-            if (converter instanceof javax.faces.convert.DateTimeConverter) {
-                javax.faces.convert.DateTimeConverter nativeConverter = (javax.faces.convert.DateTimeConverter) converter;
-                String dateType = nativeConverter.getType();
-                // only run converter if type for dates match
-                if (value.getClass().getSimpleName().equalsIgnoreCase(dateType)) {
-                    return converter.getAsString(context, calendar, value);
-                }
-            }
-            else {
-                return converter.getAsString(context, calendar, value);
-            }
+            return converter.getAsString(context, calendar, value);
         }
 
         if (value instanceof String) {
@@ -473,10 +460,6 @@ public class CalendarUtils {
         }
     }
 
-    public static LocalDate convertDate2LocalDate(Date date) {
-        return convertDate2LocalDate(date, ZoneId.systemDefault());
-    }
-
     public static LocalDate convertDate2LocalDate(Date date, ZoneId zoneId) {
         if (date == null) {
             return null;
@@ -484,6 +467,10 @@ public class CalendarUtils {
         else {
             return convertDate2ZonedDateTime(date, zoneId).toLocalDate();
         }
+    }
+
+    public static LocalDate convertDate2LocalDate(Date date) {
+        return convertDate2LocalDate(date, ZoneId.systemDefault());
     }
 
     public static LocalDateTime convertDate2LocalDateTime(Date date) {

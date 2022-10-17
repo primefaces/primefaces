@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -99,6 +99,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("required", spinner.isRequired(), false)
                 .attr("rotate", spinner.isRotate(), false)
                 .attr("decimalPlaces", decimalPlaces, null)
+                .attr("modifyValueOnWheel", spinner.isModifyValueOnWheel(), true)
                 .attr(SpinnerBase.PropertyKeys.thousandSeparator.name(), spinner.getThousandSeparator())
                 .attr(SpinnerBase.PropertyKeys.decimalSeparator.name(), spinner.getDecimalSeparator());
 

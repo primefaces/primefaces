@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -19,7 +19,7 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <p:outputPanel id="panel" styleClass="p-mb-2">
+                <p:outputPanel id="panel" styleClass="mb-2">
                     <h:panelGrid columns="3" cellpadding="7">
                         <p:outputLabel for="text1" value="Text 1:"/>
                         <p:inputText id="text1" value="#{resetInputView.text1}" required="true" label="Firstname">
@@ -33,23 +33,23 @@
                     </h:panelGrid>
                 </p:outputPanel>
 
-                <div class="p-d-flex p-jc-between">
-                    <p:commandButton value="Submit" update="panel" action="#{resetInputView.save}" styleClass="p-mr-2" />
+                <div class="flex justify-content-between">
+                    <p:commandButton value="Submit" update="panel" action="#{resetInputView.save}" styleClass="mr-2" />
 
                     <div>
                         <p:commandButton value="Reset Fail" update="panel" process="@this"
-                                         action="#{resetInputView.resetFail}" styleClass="p-mr-2 ui-button-outlined"/>
+                                         action="#{resetInputView.resetFail}" styleClass="mr-2 ui-button-outlined"/>
 
-                        <p:commandButton value="Reset Tag" update="panel" process="@this" styleClass="p-mr-2 ui-button-outlined">
+                        <p:commandButton value="Reset Tag" update="panel" process="@this" styleClass="mr-2 ui-button-outlined">
                             <p:resetInput target="panel"/>
                         </p:commandButton>
 
                         <p:commandButton value="Reset Code" update="panel" process="@this"
                                          action="#{resetInputView.reset}"
-                                         styleClass="p-mr-2 ui-button-outlined"/>
+                                         styleClass="mr-2 ui-button-outlined"/>
 
                         <p:commandButton value="Reset Non-Ajax" action="#{resetInputView.reset}" immediate="true"
-                                         ajax="false" styleClass="p-mr-2 ui-button-outlined">
+                                         ajax="false" styleClass="mr-2 ui-button-outlined">
                             <p:resetInput target="panel"/>
                         </p:commandButton>
 

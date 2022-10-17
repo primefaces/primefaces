@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,11 @@
  */
 package org.primefaces.selenium.internal;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
+import org.openqa.selenium.support.events.WebDriverListener;
 import org.primefaces.selenium.PrimeSelenium;
 
-public class ScrollElementIntoViewClickListener extends AbstractWebDriverEventListener {
+public class ScrollElementIntoViewClickListener implements WebDriverListener {
 
     private String option;
 
@@ -41,7 +40,7 @@ public class ScrollElementIntoViewClickListener extends AbstractWebDriverEventLi
     }
 
     @Override
-    public void beforeClickOn(WebElement element, WebDriver driver) {
+    public void beforeClick(WebElement element) {
         if (!PrimeSelenium.isElementDisplayed(element)) {
             return;
         }

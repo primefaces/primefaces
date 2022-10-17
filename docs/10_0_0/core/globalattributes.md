@@ -32,7 +32,7 @@ import org.primefaces.component.layout.Layout;
 
 public class DemoApplication extends ApplicationWrapper {
 
-    private static final Set<String> BLACKLISTED_COMPONENT_TYPES = Collections
+    private static final Set<String> BLOCKLISTED_COMPONENT_TYPES = Collections
             .unmodifiableSet(new HashSet<>(Arrays.asList(Layout.COMPONENT_TYPE)));
 
     private final Application wrapped;
@@ -49,7 +49,7 @@ public class DemoApplication extends ApplicationWrapper {
     @Override
     public UIComponent createComponent(FacesContext context, String componentType, String rendererType) {
         // prevent certain components from being used
-        if (BLACKLISTED_COMPONENT_TYPES.contains(componentType)) {
+        if (BLOCKLISTED_COMPONENT_TYPES.contains(componentType)) {
             throw new IllegalArgumentException(
                     componentType + " is deprecated and you should not be using this component.");
         }

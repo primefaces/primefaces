@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,8 @@ package org.primefaces.component.overlaypanel;
 
 import javax.faces.component.UIPanel;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
 public abstract class OverlayPanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
@@ -54,7 +54,8 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
         showCloseIcon,
         modal,
         blockScroll,
-        showDelay;
+        showDelay,
+        autoHide;
 
         private String toString;
 
@@ -222,5 +223,13 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
 
     public void setShowDelay(int showDelay) {
         getStateHelper().put(PropertyKeys.showDelay, showDelay);
+    }
+
+    public boolean isAutoHide() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoHide, true);
+    }
+
+    public void setAutoHide(boolean autoHide) {
+        getStateHelper().put(PropertyKeys.autoHide, autoHide);
     }
 }

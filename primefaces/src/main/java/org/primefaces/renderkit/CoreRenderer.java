@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -112,7 +112,7 @@ public abstract class CoreRenderer extends Renderer {
 
     @SafeVarargs
     protected final void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
-        if (attrs == null) {
+        if (attrs == null || attrs.length == 0) {
             renderDynamicPassThruAttributes(context, component);
             return;
         }
@@ -279,10 +279,8 @@ public abstract class CoreRenderer extends Renderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
-            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
         }
         if (value != null) {
             writer.writeAttribute("value", value, null);
@@ -495,7 +493,15 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
                                          Map<String, List<String>> parameters, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
-        String formId = form.getClientId(context);
+
+        String submitId;
+        if (form == null) {
+            submitId = component.getClientId(context);
+        }
+        else {
+            submitId = form.getClientId(context);
+        }
+
         Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
@@ -516,7 +522,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //append params
         if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+            request.append("PrimeFaces.addSubmitParam('").append(submitId).append("',{");
 
             request.append(
                     params.entrySet().stream()
@@ -529,7 +535,7 @@ public abstract class CoreRenderer extends Renderer {
 
         if (submit) {
             Object target = component.getAttributes().get("target");
-            request.append(".submit('").append(formId).append("'");
+            request.append(".submit('").append(submitId).append("'");
 
             if (target != null) {
                 request.append(",'").append(target).append("'");

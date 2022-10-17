@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,8 @@ public abstract class TabBase extends UIPanel {
         disabled,
         closable,
         titletip,
-        ariaLabel
+        ariaLabel,
+        menuTitle
     }
 
     public TabBase() {
@@ -104,6 +105,14 @@ public abstract class TabBase extends UIPanel {
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getMenuTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.menuTitle, null);
+    }
+
+    public void setMenuTitle(String menuTitle) {
+        getStateHelper().put(PropertyKeys.menuTitle, menuTitle);
     }
 
 }

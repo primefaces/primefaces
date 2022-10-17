@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,10 +23,12 @@
  */
 package org.primefaces.selenium.spi;
 
+import java.util.ArrayList;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.internal.ConfigProvider;
 import org.primefaces.selenium.internal.OnloadScriptsEventListener;
@@ -83,17 +85,17 @@ public class WebDriverProvider {
                 driver.manage().window().setSize(new Dimension(1280, 1000));
             }
 
-            EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
-            eventDriver.register(new OnloadScriptsEventListener());
+            ArrayList<WebDriverListener> listeners = new ArrayList<>();
+            listeners.add(new OnloadScriptsEventListener());
 
             if (ConfigProvider.getInstance().getScrollElementIntoView() != null) {
-                eventDriver.register(
+                listeners.add(
                         new ScrollElementIntoViewClickListener(ConfigProvider.getInstance().getScrollElementIntoView()));
             }
 
-            set(eventDriver);
+            driver = new EventFiringDecorator(listeners.toArray(new WebDriverListener[listeners.size()])).decorate(driver);
 
-            driver = eventDriver;
+            set(driver);
         }
         return driver;
     }

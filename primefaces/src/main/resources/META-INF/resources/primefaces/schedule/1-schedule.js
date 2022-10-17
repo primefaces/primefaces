@@ -223,6 +223,21 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
+        if (this.cfg.options.selectable) {
+            this.cfg.options.select = function(selectionInfo) {
+                if ($this.hasBehavior('rangeSelect')) {
+                    var ext = {
+                        params: [
+                            { name: $this.id + '_startDate', value: selectionInfo.start.toISOString() },
+                            { name: $this.id + '_endDate', value: selectionInfo.end.toISOString() }
+                        ]
+                    };
+
+                    $this.callBehavior('rangeSelect', ext);
+                }
+            };
+        };
+
         if(this.cfg.tooltip) {
             this.cfg.options.eventMouseEnter = function(mouseEnterInfo) {
                 if(mouseEnterInfo.event.extendedProps.description) {

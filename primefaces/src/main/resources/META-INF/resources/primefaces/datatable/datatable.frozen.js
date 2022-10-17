@@ -13,6 +13,7 @@
  * @prop {JQuery} frozenLayout The DOM element for the frozen layout container.
  * @prop {JQuery} frozenTbody The DOM element for the header TBODY.
  * @prop {JQuery} frozenTheadClone The DOM element for the clone of the frozen THEAD.
+ * @prop {JQuery} frozenTfoot The DOM element for the header TFOOT.
  * @prop {JQuery} scrollBodyTable The DOM element for the TABLE of the scrollable body.
  * @prop {JQuery} scrollContainer The DOM element for the container of the scrollable body.
  * @prop {undefined} scrollColgroup Always `undefined` and not used.
@@ -23,6 +24,7 @@
  * @prop {JQuery} scrollLayout The DOM element for the scrollable layout container.
  * @prop {JQuery} scrollThead The DOM element for the scrollable THEAD.
  * @prop {JQuery} scrollTheadClone The DOM element for the clone of the scrollable THEAD.
+ * @prop {JQuery} scrollTfoot The DOM element for the scrollable TFOOT.
  *
  * @interface {PrimeFaces.widget.FrozenDataTableCfg} cfg The configuration for the {@link  FrozenDataTable| FrozenDataTable widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -51,6 +53,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.scrollBodyTable = this.cfg.virtualScroll ? this.scrollBody.children('div').children('table') : this.scrollBody.children('table');
         this.scrollThead = this.thead.eq(1);
         this.scrollTbody = this.tbody.eq(1);
+        this.scrollTfoot = this.tfoot.eq(1);
         this.scrollFooterTable = this.scrollFooterBox.children('table');
         this.scrollFooterCols = this.scrollFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
         this.frozenHeader = this.frozenContainer.children('.ui-datatable-scrollable-header');
@@ -58,6 +61,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         this.frozenBodyTable = this.cfg.virtualScroll ? this.frozenBody.children('div').children('table') : this.frozenBody.children('table');
         this.frozenThead = this.thead.eq(0);
         this.frozenTbody = this.tbody.eq(0);
+        this.frozenTfoot = this.tfoot.eq(0);
         this.frozenFooter = this.frozenContainer.children('.ui-datatable-scrollable-footer');
         this.frozenFooterTable = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table');
         this.frozenFooterCols = this.frozenFooter.find('> .ui-datatable-scrollable-footer-box > table > tfoot > tr > td');
@@ -85,7 +89,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             this.scrollTbody.removeAttr('tabindex');
         }
 
-        this.fixColumnWidths();
+        if (!this.cfg.reflow) {
+            this.fixColumnWidths();
+        }
 
         if(this.cfg.scrollWidth) {
             if(this.percentageScrollWidth)
@@ -103,6 +109,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.cloneHead();
+        this.fixRowHeightsAll();
 
         if(this.cfg.liveScroll) {
             this.clearScrollState();
@@ -177,12 +184,18 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
-            if ($this.percentageScrollHeight) {
-                $this.adjustScrollHeight();
+            if ($this.resizeTimeout) {
+                clearTimeout($this.resizeTimeout);
             }
-            if ($this.percentageScrollWidth) {
-                $this.adjustScrollWidth();
-            }
+            $this.resizeTimeout = setTimeout(function() {
+                $this.fixRowHeightsAll();
+                if ($this.percentageScrollHeight) {
+                    $this.adjustScrollHeight();
+                }
+                if ($this.percentageScrollWidth) {
+                    $this.adjustScrollWidth();
+                }
+            }, 150);
         });
     },
 
@@ -362,8 +375,9 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         this.postUpdateData();
+        this.fixRowHeightsAll();
     },
-
+    
     /**
      * Clones the given row and returns it
      * @param {JQuery} original DOM element of the original row.
@@ -873,5 +887,56 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
         scrollRows.children('td.ui-duplicated-column').remove();
         frozenRows.children('td.ui-duplicated-column').remove();
+    },
+
+    /**
+     * Adjusts the height of all rows to fit the current settings.
+     */
+    fixRowHeightsAll: function() {
+        this.fixRowHeights(this.scrollThead.children(), this.frozenThead.children());
+        this.fixRowHeights(this.scrollTbody.children(), this.frozenTbody.children());
+        var frozenFootRows = this.frozenTfoot.children();
+        if (frozenFootRows.length > 0) {
+            this.fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
+            var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
+            if (scrollBarHeight > 0) {
+                var browser = PrimeFaces.env.browser;
+                if (browser.webkit === true || browser.mozilla === true) {
+                    this.frozenBody.append('<div style="height:' + scrollBarHeight + 'px"></div>');
+                } else {
+                    this.frozenBodyTable.css('margin-bottom', scrollBarHeight);
+                }
+            }
+        }
+    },
+
+    /**
+     * Adjusts the height of the given rows to fit the current settings.
+     * @protected
+     * @param {JQuery} scrollRows The scrollable rows to adjust.
+     * @param {JQuery} frozenRows The frozen rows to adjust.
+     */
+    fixRowHeights: function(scrollRows, frozenRows) {
+        frozenRows.each(function(index) {
+            var frozenRow = $(this);
+            var scrollRow = scrollRows.eq(index);
+
+            frozenRow.css('height', '');
+            scrollRow.css('height', '');
+
+            var scrollRowHeight = scrollRow.innerHeight();
+            var frozenRowHeight = frozenRow.innerHeight();
+
+            if (scrollRowHeight === frozenRowHeight) {
+                return;
+            }
+            var height = scrollRowHeight > frozenRowHeight ? scrollRowHeight : frozenRowHeight;
+            // compensation for decimal fractions
+            height += 1;
+
+            frozenRow.innerHeight(height);
+            scrollRow.innerHeight(height);
+        });
     }
+	
 });
