@@ -43,8 +43,8 @@ public class ExcelStylesManager {
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
 
     protected final Workbook wb;
-    private final Locale locale;
     protected final ExcelOptions options;
+    private final Locale locale;
 
     //internal
     private final boolean stronglyTypedCells;
@@ -70,7 +70,8 @@ public class ExcelStylesManager {
     public static ExcelStylesManager createExcelStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
         if (wb instanceof HSSFWorkbook) {
             return new ExcelStylesManager(wb, locale, options);
-        } else {
+        }
+        else {
             return new ExcelXStylesManager(wb, locale, options);
         }
     }
