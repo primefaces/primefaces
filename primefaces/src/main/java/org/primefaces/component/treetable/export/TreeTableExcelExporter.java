@@ -23,15 +23,6 @@
  */
 package org.primefaces.component.treetable.export;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -47,6 +38,14 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ExcelStylesManager;
 import org.primefaces.util.LocaleUtils;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class TreeTableExcelExporter extends TreeTableExporter {
@@ -76,7 +75,7 @@ public class TreeTableExcelExporter extends TreeTableExporter {
         }
 
         ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
-        stylesManager = new ExcelStylesManager(wb, LocaleUtils.getCurrentLocale(context), options);
+        stylesManager = ExcelStylesManager.createExcelStylesManager(wb, LocaleUtils.getCurrentLocale(context), options);
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
         exportTable(context, table, sheet, exportConfiguration);
