@@ -106,7 +106,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
 

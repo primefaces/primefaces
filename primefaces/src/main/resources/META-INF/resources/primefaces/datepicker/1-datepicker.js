@@ -270,7 +270,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.onPanelCreate = function() {
             $this.panel = this.panel;
-            $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.panel);
+            $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.jq, $this.panel);
             // #8423
             if ($this.cfg.inline) {
                 $this.panel.css('position', '');
