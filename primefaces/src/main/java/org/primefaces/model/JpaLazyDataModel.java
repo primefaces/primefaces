@@ -40,6 +40,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.faces.FacesException;
@@ -158,12 +160,18 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     continue;
                 }
 
-                String filterValue = filter.getFilterValue().toString();
                 Field filterField = LangUtils.getFieldRecursive(entityClass, filter.getField());
-                Object convertedFilterValue = convertToType(filterValue, filterField.getType());
+                Object filterValue = filter.getFilterValue();
+                Object convertedFilterValue;
+                if (filterValue.getClass().isArray() || filterValue instanceof Collection) {
+                    convertedFilterValue = filterValue;
+                }
+                else {
+                    convertedFilterValue = convertToType(filterValue.toString(), filterField.getType());
+                }
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
 
-                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, (Comparable) convertedFilterValue);
+                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, convertedFilterValue);
                 predicates.add(predicate);
             }
         }
@@ -179,10 +187,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     }
 
-    protected <F extends Comparable> Predicate createPredicate(FilterMeta filter, Field filterField,
-            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, F filterValue) {
+    protected Predicate createPredicate(FilterMeta filter, Field filterField,
+            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue) {
 
         Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> fieldExpression.as(String.class));
+        Lazy<Collection<Object>> filterValueAsCollection = new Lazy(
+                () -> filterValue.getClass().isArray() ? Arrays.asList((Object[]) filterValue)
+                        : (Collection<Object>) filterValue);
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
@@ -204,15 +215,17 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             case NOT_EQUALS:
                 return cb.notEqual(fieldExpression, filterValue);
             case LESS_THAN:
-                return cb.lessThan(fieldExpression, filterValue);
+                return cb.lessThan(fieldExpression, (Comparable) filterValue);
             case LESS_THAN_EQUALS:
-                return cb.lessThanOrEqualTo(fieldExpression, filterValue);
+                return cb.lessThanOrEqualTo(fieldExpression, (Comparable) filterValue);
             case GREATER_THAN:
-                return cb.greaterThan(fieldExpression, filterValue);
+                return cb.greaterThan(fieldExpression, (Comparable) filterValue);
             case GREATER_THAN_EQUALS:
-                return cb.greaterThanOrEqualTo(fieldExpression, filterValue);
+                return cb.greaterThanOrEqualTo(fieldExpression, (Comparable) filterValue);
             case IN:
-                throw new UnsupportedOperationException("MatchMode.IN currently not supported!");
+                return filterValueAsCollection.get().size() == 1
+                        ? cb.equal(fieldExpression, filterValueAsCollection.get().iterator().next())
+                        : fieldExpression.in(filterValueAsCollection.get());
             case NOT_IN:
                 throw new UnsupportedOperationException("MatchMode.NOT_IN currently not supported!");
             case BETWEEN:
