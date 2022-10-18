@@ -227,7 +227,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         ? cb.equal(fieldExpression, filterValueAsCollection.get().iterator().next())
                         : fieldExpression.in(filterValueAsCollection.get());
             case NOT_IN:
-                throw new UnsupportedOperationException("MatchMode.NOT_IN currently not supported!");
+                return filterValueAsCollection.get().size() == 1
+                        ? cb.notEqual(fieldExpression, filterValueAsCollection.get().iterator().next())
+                        : fieldExpression.in(filterValueAsCollection.get()).not();
             case BETWEEN:
                 throw new UnsupportedOperationException("MatchMode.BETWEEN currently not supported!");
             case NOT_BETWEEN:
