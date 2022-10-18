@@ -72,7 +72,7 @@ public class ExcelStylesManager {
             return new ExcelStylesManager(wb, locale, options);
         }
         else {
-            return new ExcelXStylesManager(wb, locale, options);
+            return new ExcelXmlStylesManager(wb, locale, options);
         }
     }
 

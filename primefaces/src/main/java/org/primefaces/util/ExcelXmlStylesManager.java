@@ -31,9 +31,9 @@ import org.primefaces.component.export.ExcelOptions;
 import java.awt.Color;
 import java.util.Locale;
 
-public class ExcelXStylesManager extends ExcelStylesManager {
+public class ExcelXmlStylesManager extends ExcelStylesManager {
 
-    protected ExcelXStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
+    protected ExcelXmlStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
         super(wb, locale, options);
     }
 
