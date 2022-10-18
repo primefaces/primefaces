@@ -163,7 +163,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 Field filterField = LangUtils.getFieldRecursive(entityClass, filter.getField());
                 Object filterValue = filter.getFilterValue();
                 Object convertedFilterValue;
-                if (filterValue.getClass().isArray() || filterValue instanceof Collection) {
+                Class<?> filterClass = filterValue.getClass();
+                if (filterClass.isArray() || Collection.class.isAssignableFrom(filterClass)) {
                     convertedFilterValue = filterValue;
                 }
                 else {
