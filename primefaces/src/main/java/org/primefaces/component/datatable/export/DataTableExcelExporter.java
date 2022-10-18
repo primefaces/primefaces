@@ -75,7 +75,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
-        stylesManager = new ExcelStylesManager(wb, LocaleUtils.getCurrentLocale(context), options);
+        stylesManager = ExcelStylesManager.createExcelStylesManager(wb, LocaleUtils.getCurrentLocale(context), options);
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
         exportTable(context, table, sheet, exportConfiguration);
