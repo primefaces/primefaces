@@ -3534,6 +3534,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} cell A cell (`TD`) in edit mode.
      */
     saveCell: function(cell) {
+        if (!cell) {
+            return;
+        }
         var inputs = cell.find('div.ui-cell-editor-input :input:enabled'),
         changed = false,
         valid = cell.data('valid'),
