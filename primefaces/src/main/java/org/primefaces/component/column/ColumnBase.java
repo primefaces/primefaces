@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2023 PrimeTek Informatics
+ * Copyright (c) 2009-2022 PrimeTek
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,6 @@ import javax.faces.component.UIColumn;
 
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.menu.MenuColumn;
-
 
 public abstract class ColumnBase extends UIColumn implements org.primefaces.component.api.UIColumn, MenuColumn {
 
@@ -56,7 +55,6 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         filterFunction,
         filterMatchMode,
         filterMaxLength,
-        filterOptions,
         filterPosition,
         filterStyle,
         filterStyleClass,
@@ -154,15 +152,6 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setFilterStyleClass(String filterStyleClass) {
         getStateHelper().put(PropertyKeys.filterStyleClass, filterStyleClass);
-    }
-
-    @Override
-    public Object getFilterOptions() {
-        return getStateHelper().eval(PropertyKeys.filterOptions, null);
-    }
-
-    public void setFilterOptions(Object filterOptions) {
-        getStateHelper().put(PropertyKeys.filterOptions, filterOptions);
     }
 
     @Override
