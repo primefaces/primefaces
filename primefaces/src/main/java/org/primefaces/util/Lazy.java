@@ -33,7 +33,7 @@ import java.util.function.Supplier;
  */
 public class Lazy<T> implements Serializable, Supplier<T> {
 
-    private static final Object NOT_INITIALIZED = new Object();
+    private static final NotInitialized NOT_INITIALIZED = new NotInitialized();
 
     @SuppressWarnings("unchecked")
     private volatile T value = (T) NOT_INITIALIZED;
@@ -74,5 +74,8 @@ public class Lazy<T> implements Serializable, Supplier<T> {
 
     public boolean isInitialized() {
         return value != NOT_INITIALIZED;
+    }
+
+    static final class NotInitialized implements Serializable {
     }
 }
