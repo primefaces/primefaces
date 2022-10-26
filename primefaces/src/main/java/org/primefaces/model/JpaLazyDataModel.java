@@ -44,6 +44,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
@@ -250,7 +252,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         if (sortBy != null) {
             List<Order> orders = null;
-            for (SortMeta sort : sortBy.values()) {
+            for (SortMeta sort : sortBy.values().stream().sorted().collect(Collectors.toList())) {
                 if (sort.getField() == null || sort.getOrder() == SortOrder.UNSORTED) {
                     continue;
                 }
