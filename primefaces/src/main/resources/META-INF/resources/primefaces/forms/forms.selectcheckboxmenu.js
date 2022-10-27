@@ -232,7 +232,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (this.cfg.multiple) {
             var items = this.multiItemContainer.children();
             if (!items.length) {
-                this.multiItemContainer.empty().append('<li class="ui-selectcheckboxmenu-emptylabel">' + this.multiItemContainer.data('label') + '</li>');
+                this.multiItemContainer.empty().append('<li class="ui-selectcheckboxmenu-emptylabel">' + (this.multiItemContainer.data('label') || '&nbsp;') + '</li>');
             }
         }
         else {
@@ -1197,17 +1197,17 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 if (i != 0) {
                     labelText = labelText + this.cfg.labelSeparator;
                 }
-                labelText = labelText + $(checkedItems[i]).next().text();
+                labelText = labelText + ($(checkedItems[i]).next().text() || '');
             }
             this.labelContainer.addClass('ui-state-active');
         }
         else {
-            labelText = this.cfg.emptyLabel || this.defaultLabel;
+            labelText = this.cfg.emptyLabel || this.defaultLabel || '';
             this.labelContainer.removeClass('ui-state-active');
         }
 
-        if (this.cfg.updateLabel) {
-             this.label.text(labelText);
+        if (this.cfg.updateLabel && !(this.cfg.multiple && labelText.length > 0)) {
+             this.label.text(labelText || '&nbsp;');
              this.labelContainer.attr('title', labelText);
         }
     },
