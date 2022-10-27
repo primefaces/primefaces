@@ -1552,9 +1552,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        if (escape) { 
-            dataLabel = PrimeFaces.escapeHTML(label.replace(/(<([^>]+)>)/gi, ""));
-        }
         if ($item.data("noselection-option")) {
             cssClass += " ui-noselection-option";
         }
@@ -1566,6 +1563,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if ($item.is(':disabled')) {
             content += ' disabled';
         }
+        var dataLabel = label;
         content += ' data-label="' + dataLabel + '"';
         content += '>';
         content += label;
