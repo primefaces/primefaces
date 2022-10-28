@@ -62,4 +62,8 @@ public class DataTable002 implements Serializable {
             TestUtils.addMessage("Selected ProgrammingLanguage", selectedProgrammingLanguage.getId().toString());
         }
     }
+
+    public ProgrammingLanguage.ProgrammingLanguageType[] getTypes() {
+        return ProgrammingLanguage.ProgrammingLanguageType.values();
+    }
 }
