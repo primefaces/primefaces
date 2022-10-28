@@ -77,10 +77,19 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
                             return lang.getName().contains((String) meta.getFilterValue());
                         }
                         if (meta.getField().equals("type")) {
-                            String[] filterValues = (String[]) meta.getFilterValue();
-                            Set<ProgrammingLanguage.ProgrammingLanguageType> filterValuesSet = Arrays.asList(filterValues).stream()
-                                    .map(f -> ProgrammingLanguage.ProgrammingLanguageType.valueOf(f))
-                                    .collect(Collectors.toSet());
+                            Set<ProgrammingLanguage.ProgrammingLanguageType> filterValuesSet = null;
+
+                            if (meta.getFilterValue() instanceof String[]) {  // Mojarra
+                                filterValuesSet = Arrays.asList((String[]) meta.getFilterValue()).stream()
+                                        .map(f -> ProgrammingLanguage.ProgrammingLanguageType.valueOf(f))
+                                        .collect(Collectors.toSet());
+                            }
+                            else if (meta.getFilterValue() instanceof Object[]) { //MyFaces
+                                filterValuesSet = Arrays.asList((Object[]) meta.getFilterValue()).stream()
+                                        .map(f -> ProgrammingLanguage.ProgrammingLanguageType.valueOf(f.toString()))
+                                        .collect(Collectors.toSet());
+                            }
+
                             return filterValuesSet.contains(lang.getType());
                         }
                         return true; //TODO: add additional implementation when required
