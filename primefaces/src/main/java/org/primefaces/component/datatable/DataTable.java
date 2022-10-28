@@ -1129,8 +1129,8 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    public void setFilterByAsMap(Map<String, FilterMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.filterByAsMap, sortBy);
+    public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
+        getStateHelper().put(InternalPropertyKeys.filterByAsMap, filterBy);
     }
 
     @Override
