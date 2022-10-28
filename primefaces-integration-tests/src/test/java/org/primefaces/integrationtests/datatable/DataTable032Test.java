@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
@@ -42,11 +43,16 @@ public class DataTable032Test extends AbstractDataTableTest {
     public void testDisabledRowSelection(Page page) {
 
         // rows are always "ui-selection-column", indepdent of if the current row is selection disabled or not
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(page.dataTable.getCell(0, 0).getWebElement(), "ui-selection-column"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(page.dataTable.getCell(1, 0).getWebElement(), "ui-selection-column"));
+        WebElement firstCell = page.dataTable.getCell(0, 0).getWebElement();
+        WebElement secondCell = page.dataTable.getCell(1, 0).getWebElement();
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(firstCell, "ui-selection-column"));
+        Assertions.assertTrue(PrimeSelenium.hasCssClass(secondCell, "ui-selection-column"));
 
-        // not selectable yet, try to trigger it
-        page.dataTable.getCell(0, 0).getWebElement().click();
+        // not selectable yet, try to trigger it, check CSS should be disabled
+        WebElement radio = firstCell.findElement(By.className("ui-radiobutton-box"));
+        assertCss(radio, "ui-state-disabled");
+        assertNotClickable(radio);
+        firstCell.click();
         Assertions.assertTrue(page.messages.isEmpty());
 
         // make it selectable now
@@ -54,9 +60,15 @@ public class DataTable032Test extends AbstractDataTableTest {
         toggleSwitch.click();
 
         // selectable yet, try to trigger it
-        PrimeSelenium.guardAjax(page.dataTable.getCell(0, 0).getWebElement()).click();
+        firstCell = page.dataTable.getCell(0, 0).getWebElement();
+        PrimeSelenium.guardAjax(firstCell).click();
+
+        // make sure it is actually Active
+        radio = firstCell.findElement(By.className("ui-radiobutton-box"));
+        assertCss(radio, "ui-state-active");
 
         Assertions.assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
+        assertNoJavascriptErrors();
     }
 
     public static class Page extends AbstractPrimePage {
