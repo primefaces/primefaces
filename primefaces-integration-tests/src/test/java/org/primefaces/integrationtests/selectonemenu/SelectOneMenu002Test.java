@@ -84,7 +84,7 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         // Act
         selectOneMenu.toggleDropdown();
 
-        // Assert
+        // Assert - part 1
         List<WebElement> optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
         Assertions.assertEquals("German Cars", optgroups.get(0).getText());
         Assertions.assertEquals("American <Cars>", optgroups.get(1).getText());
@@ -93,6 +93,20 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Mercedes", options.get(2).getText());
         Assertions.assertEquals("Chry<sler", options.get(4).getText());
 
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+
+        // Act
+        selectOneMenu.select("Ford & Lincoln");
+
+        // Assert - part 2
+        Assertions.assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+
+        // Act
+        page.button.click();
+
+        // Assert - part 3
+        Assertions.assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
