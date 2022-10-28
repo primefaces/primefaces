@@ -25,13 +25,15 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.StateManager;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -65,10 +67,6 @@ public class UIData extends javax.faces.component.UIData {
     private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
     private static final String SB_ID = UIData.class.getName() + "#id";
 
-    private final Map<String, Object> _rowTransientStates = new HashMap<>();
-    private Map<String, Object> _rowDeltaStates = new HashMap<>();
-    private Object _initialDescendantFullComponentState;
-
     private String clientId;
     private DataModel model;
     private Boolean isNested;
@@ -78,8 +76,7 @@ public class UIData extends javax.faces.component.UIData {
         rowIndex,
         rowIndexVar,
         saved,
-        lazy,
-        rowStatePreserved
+        lazy
     }
 
     public boolean isLazy() {
@@ -118,14 +115,49 @@ public class UIData extends javax.faces.component.UIData {
         getStateHelper().put(PropertyKeys.rowIndexVar, rowIndexVar);
     }
 
-    @Override
-    public boolean isRowStatePreserved() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
-    }
+    public void setRowModel(int rowIndex) {
+        //update rowIndex
+        getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
+        getDataModel().setRowIndex(rowIndex);
 
-    @Override
-    public void setRowStatePreserved(boolean rowStatePreserved) {
-        getStateHelper().put(PropertyKeys.rowStatePreserved, rowStatePreserved);
+        //clear datamodel
+        if (rowIndex == -1) {
+            setDataModel(null);
+        }
+
+        //update var
+        String var = getVar();
+        if (var != null) {
+            String rowIndexVar = getRowIndexVar();
+            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
+
+            if (rowIndex == -1) {
+                oldVar = requestMap.remove(var);
+
+                if (rowIndexVar != null) {
+                    requestMap.remove(rowIndexVar);
+                }
+            }
+            else if (isRowAvailable()) {
+                requestMap.put(var, getRowData());
+
+                if (rowIndexVar != null) {
+                    requestMap.put(rowIndexVar, rowIndex);
+                }
+            }
+            else {
+                requestMap.remove(var);
+
+                if (rowIndexVar != null) {
+                    requestMap.put(rowIndexVar, rowIndex);
+                }
+
+                if (oldVar != null) {
+                    requestMap.put(var, oldVar);
+                    oldVar = null;
+                }
+            }
+        }
     }
 
     @Override
@@ -192,8 +224,7 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
+        for (UIComponent child : getChildren()) {
             if (child.isRendered() && (child.getFacetCount() > 0)) {
                 for (UIComponent facet : child.getFacets().values()) {
                     process(context, facet, phaseId);
@@ -330,299 +361,6 @@ public class UIData extends javax.faces.component.UIData {
 
         //clear
         clientId = null;
-    }
-
-    //Row State preserved implementation is taken from Mojarra
-    private void setRowIndexRowStatePreserved(int rowIndex) {
-        if (rowIndex < -1) {
-            throw new IllegalArgumentException("rowIndex is less than -1");
-        }
-
-        if (getRowIndex() == rowIndex) {
-            return;
-        }
-
-        FacesContext facesContext = getFacesContext();
-
-        if (_initialDescendantFullComponentState != null) {
-            //Just save the row
-            Map<String, Object> sm = saveFullDescendantComponentStates(facesContext, null, getChildren().iterator(), false);
-            if (sm != null && !sm.isEmpty()) {
-                _rowDeltaStates.put(getContainerClientId(facesContext), sm);
-            }
-
-            if (getRowIndex() != -1) {
-                _rowTransientStates.put(getContainerClientId(facesContext),
-                               saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
-            }
-        }
-
-        // Update to the new row index
-        //this.rowIndex = rowIndex;
-        getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
-        DataModel localModel = getDataModel();
-        localModel.setRowIndex(rowIndex);
-
-        // if rowIndex is -1, clear the cache
-        if (rowIndex == -1) {
-            setDataModel(null);
-        }
-
-        // Clear or expose the current row data as a request scope attribute
-        String var = getVar();
-        if (var != null) {
-            Map<String, Object> requestMap
-                    = getFacesContext().getExternalContext().getRequestMap();
-            if (rowIndex == -1) {
-                oldVar = requestMap.remove(var);
-            }
-            else if (isRowAvailable()) {
-                requestMap.put(var, getRowData());
-            }
-            else {
-                requestMap.remove(var);
-                if (null != oldVar) {
-                    requestMap.put(var, oldVar);
-                    oldVar = null;
-                }
-            }
-        }
-
-        if (_initialDescendantFullComponentState != null) {
-            Object rowState = _rowDeltaStates.get(getContainerClientId(facesContext));
-            if (rowState == null) {
-                //Restore as original
-                restoreFullDescendantComponentStates(facesContext, getChildren().iterator(), _initialDescendantFullComponentState, false);
-            }
-            else {
-                //Restore first original and then delta
-                restoreFullDescendantComponentDeltaStates(facesContext, getChildren().iterator(), rowState, _initialDescendantFullComponentState, false);
-            }
-            if (getRowIndex() == -1) {
-                restoreTransientDescendantComponentStates(facesContext, getChildren().iterator(), null, false);
-            }
-            else {
-                rowState = _rowTransientStates.get(getContainerClientId(facesContext));
-                if (rowState == null) {
-                    restoreTransientDescendantComponentStates(facesContext, getChildren().iterator(), null, false);
-                }
-                else {
-                    restoreTransientDescendantComponentStates(facesContext, getChildren().iterator(), (Map<String, Object>) rowState, false);
-                }
-            }
-        }
-    }
-
-    private void setRowIndexWithoutRowStatePreserved(int rowIndex) {
-        saveDescendantState();
-        setRowModel(rowIndex);
-        restoreDescendantState();
-    }
-
-    public void setRowModel(int rowIndex) {
-        //update rowIndex
-        getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
-        getDataModel().setRowIndex(rowIndex);
-
-        //clear datamodel
-        if (rowIndex == -1) {
-            setDataModel(null);
-        }
-
-        //update var
-        String var = getVar();
-        if (var != null) {
-            String rowIndexVar = getRowIndexVar();
-            Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
-
-            if (rowIndex == -1) {
-                oldVar = requestMap.remove(var);
-
-                if (rowIndexVar != null) {
-                    requestMap.remove(rowIndexVar);
-                }
-            }
-            else if (isRowAvailable()) {
-                requestMap.put(var, getRowData());
-
-                if (rowIndexVar != null) {
-                    requestMap.put(rowIndexVar, rowIndex);
-                }
-            }
-            else {
-                requestMap.remove(var);
-
-                if (rowIndexVar != null) {
-                    requestMap.put(rowIndexVar, rowIndex);
-                }
-
-                if (oldVar != null) {
-                    requestMap.put(var, oldVar);
-                    oldVar = null;
-                }
-            }
-        }
-    }
-
-    @Override
-    public int getRowIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.rowIndex, -1);
-    }
-
-    @Override
-    public void setRowIndex(int rowIndex) {
-        if (isRowStatePreserved()) {
-            setRowIndexRowStatePreserved(rowIndex);
-        }
-        else {
-            setRowIndexWithoutRowStatePreserved(rowIndex);
-        }
-    }
-
-    protected void saveDescendantState() {
-        FacesContext context = getFacesContext();
-
-        if (getChildCount() > 0) {
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent kid = getChildren().get(i);
-                saveDescendantState(kid, context);
-            }
-        }
-
-        if (getFacetCount() > 0) {
-            for (UIComponent facet : getFacets().values()) {
-                saveDescendantState(facet, context);
-            }
-        }
-    }
-
-    protected void saveDescendantState(UIComponent component, FacesContext context) {
-        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-
-        if (component instanceof EditableValueHolder) {
-            EditableValueHolder input = (EditableValueHolder) component;
-            SavedState state = null;
-            String componentClientId = component.getClientId(context);
-
-            if (saved == null) {
-                state = new SavedState();
-                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
-            }
-
-            if (state == null) {
-                state = saved.get(componentClientId);
-
-                if (state == null) {
-                    state = new SavedState();
-                    getStateHelper().put(PropertyKeys.saved, componentClientId, state);
-                }
-            }
-
-            state.setValue(input.getLocalValue());
-            state.setValid(input.isValid());
-            state.setSubmittedValue(input.getSubmittedValue());
-            state.setLocalValueSet(input.isLocalValueSet());
-        }
-        else if (component instanceof UIForm) {
-            UIForm form = (UIForm) component;
-            String componentClientId = component.getClientId(context);
-            SavedState state = null;
-            if (saved == null) {
-                state = new SavedState();
-                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
-            }
-
-            if (state == null) {
-                state = saved.get(componentClientId);
-                if (state == null) {
-                    state = new SavedState();
-                    //saved.put(clientId, state);
-                    getStateHelper().put(PropertyKeys.saved, componentClientId, state);
-                }
-            }
-            state.setSubmitted(form.isSubmitted());
-        }
-
-        //save state for children
-        if (component.getChildCount() > 0) {
-            for (int i = 0; i < component.getChildCount(); i++) {
-                UIComponent kid = component.getChildren().get(i);
-                saveDescendantState(kid, context);
-            }
-        }
-
-        //save state for facets
-        if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                saveDescendantState(facet, context);
-            }
-        }
-
-    }
-
-    protected void restoreDescendantState() {
-        FacesContext context = getFacesContext();
-
-        if (getChildCount() > 0) {
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent kid = getChildren().get(i);
-                restoreDescendantState(kid, context);
-            }
-        }
-
-        if (getFacetCount() > 0) {
-            for (UIComponent facet : getFacets().values()) {
-                restoreDescendantState(facet, context);
-            }
-        }
-    }
-
-    protected void restoreDescendantState(UIComponent component, FacesContext context) {
-        String id = component.getId();
-        component.setId(id); //reset the client id
-        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-
-        if (component instanceof EditableValueHolder) {
-            EditableValueHolder input = (EditableValueHolder) component;
-            String componentClientId = component.getClientId(context);
-
-            SavedState state = saved.get(componentClientId);
-            if (state == null) {
-                state = new SavedState();
-            }
-
-            input.setValue(state.getValue());
-            input.setValid(state.isValid());
-            input.setSubmittedValue(state.getSubmittedValue());
-            input.setLocalValueSet(state.isLocalValueSet());
-        }
-        else if (component instanceof UIForm) {
-            UIForm form = (UIForm) component;
-            String componentClientId = component.getClientId(context);
-            SavedState state = saved.get(componentClientId);
-            if (state == null) {
-                state = new SavedState();
-            }
-
-            form.setSubmitted(state.getSubmitted());
-            state.setSubmitted(form.isSubmitted());
-        }
-
-        //restore state of children
-        if (component.getChildCount() > 0) {
-            for (int i = 0; i < component.getChildCount(); i++) {
-                UIComponent kid = component.getChildren().get(i);
-                restoreDescendantState(kid, context);
-            }
-        }
-
-        //restore state of facets
-        if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                restoreDescendantState(facet, context);
-            }
-        }
-
     }
 
     @Override
@@ -812,9 +550,11 @@ public class UIData extends javax.faces.component.UIData {
                     for (int j = 0; j < row.getChildCount(); j++) {
                         UIComponent col = row.getChildren().get(j);
                         if (col instanceof Column) {
-                            boolean value = visitColumnFacets(context, callback, col);
-                            if (value) {
-                                return true;
+                            if (col.getFacetCount() > 0) {
+                                boolean value = visitColumnFacets(context, callback, col);
+                                if (value) {
+                                    return true;
+                                }
                             }
                         }
                         else if (col instanceof Columns) {
@@ -842,11 +582,9 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected boolean visitColumnFacets(VisitContext context, VisitCallback callback, UIComponent component) {
-        if (component.getFacetCount() > 0) {
-            for (UIComponent columnFacet : component.getFacets().values()) {
-                if (columnFacet.visitTree(context, callback)) {
-                    return true;
-                }
+        for (UIComponent columnFacet : component.getFacets().values()) {
+            if (columnFacet.visitTree(context, callback)) {
+                return true;
             }
         }
 
@@ -939,289 +677,14 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     @Override
-    public void markInitialState() {
-        if (isRowStatePreserved()) {
-            if (getFacesContext().getAttributes().containsKey(StateManager.IS_BUILDING_INITIAL_STATE)) {
-                _initialDescendantFullComponentState = saveDescendantInitialComponentStates(getFacesContext(), getChildren().iterator(), false);
-            }
-        }
-        super.markInitialState();
-    }
-
-    private void restoreFullDescendantComponentStates(FacesContext facesContext,
-                                                      Iterator<UIComponent> childIterator, Object state,
-                                                      boolean restoreChildFacets) {
-        Iterator<? extends Object[]> descendantStateIterator = null;
-        while (childIterator.hasNext()) {
-            if (descendantStateIterator == null && state != null) {
-                descendantStateIterator = ((Collection<? extends Object[]>) state)
-                        .iterator();
-            }
-            UIComponent component = childIterator.next();
-
-            // reset the client id (see spec 3.1.6)
-            component.setId(component.getId());
-            if (!component.isTransient()) {
-                Object childState = null;
-                Object descendantState = null;
-                if (descendantStateIterator != null
-                        && descendantStateIterator.hasNext()) {
-                    Object[] object = descendantStateIterator.next();
-                    childState = object[0];
-                    descendantState = object[1];
-                }
-
-                component.clearInitialState();
-                component.restoreState(facesContext, childState);
-                component.markInitialState();
-
-                Iterator<UIComponent> childsIterator;
-                if (restoreChildFacets) {
-                    childsIterator = component.getFacetsAndChildren();
-                }
-                else {
-                    childsIterator = component.getChildren().iterator();
-                }
-                restoreFullDescendantComponentStates(facesContext, childsIterator,
-                        descendantState, true);
-            }
-        }
-    }
-
-    private Collection<Object[]> saveDescendantInitialComponentStates(FacesContext facesContext,
-                                                                      Iterator<UIComponent> childIterator, boolean saveChildFacets) {
-        Collection<Object[]> childStates = null;
-        while (childIterator.hasNext()) {
-            if (childStates == null) {
-                childStates = new ArrayList<>();
-            }
-
-            UIComponent child = childIterator.next();
-            if (!child.isTransient()) {
-                // Add an entry to the collection, being an array of two
-                // elements. The first element is the state of the children
-                // of this component; the second is the state of the current
-                // child itself.
-
-                Iterator<UIComponent> childsIterator;
-                if (saveChildFacets) {
-                    childsIterator = child.getFacetsAndChildren();
-                }
-                else {
-                    childsIterator = child.getChildren().iterator();
-                }
-                Object descendantState = saveDescendantInitialComponentStates(
-                        facesContext, childsIterator, true);
-                Object state = null;
-                if (child.initialStateMarked()) {
-                    child.clearInitialState();
-                    state = child.saveState(facesContext);
-                    child.markInitialState();
-                }
-                else {
-                    state = child.saveState(facesContext);
-                }
-                childStates.add(new Object[]{state, descendantState});
-            }
-        }
-        return childStates;
-    }
-
-    private Map<String, Object> saveFullDescendantComponentStates(FacesContext facesContext, Map<String, Object> stateMap,
-                                                                  Iterator<UIComponent> childIterator, boolean saveChildFacets) {
-        while (childIterator.hasNext()) {
-            UIComponent child = childIterator.next();
-            if (!child.isTransient()) {
-                Iterator<UIComponent> childsIterator;
-                if (saveChildFacets) {
-                    childsIterator = child.getFacetsAndChildren();
-                }
-                else {
-                    childsIterator = child.getChildren().iterator();
-                }
-                stateMap = saveFullDescendantComponentStates(facesContext, stateMap,
-                        childsIterator, true);
-                Object state = child.saveState(facesContext);
-                if (state != null) {
-                    if (stateMap == null) {
-                        stateMap = new HashMap<>();
-                    }
-                    stateMap.put(child.getClientId(facesContext), state);
-                }
-            }
-        }
-        return stateMap;
-    }
-
-    private void restoreFullDescendantComponentDeltaStates(FacesContext facesContext,
-                                                           Iterator<UIComponent> childIterator, Object state, Object initialState,
-                                                           boolean restoreChildFacets) {
-        Map<String, Object> descendantStateIterator = null;
-        Iterator<? extends Object[]> descendantFullStateIterator = null;
-        while (childIterator.hasNext()) {
-            if (descendantStateIterator == null && state != null) {
-                descendantStateIterator = (Map<String, Object>) state;
-            }
-            if (descendantFullStateIterator == null && initialState != null) {
-                descendantFullStateIterator = ((Collection<? extends Object[]>) initialState).iterator();
-            }
-            UIComponent component = childIterator.next();
-
-            // reset the client id (see spec 3.1.6)
-            component.setId(component.getId());
-            if (!component.isTransient()) {
-                Object childInitialState = null;
-                Object descendantInitialState = null;
-                Object childState = null;
-                if (descendantStateIterator != null
-                        && descendantStateIterator.containsKey(component.getClientId(facesContext))) {
-                    //Object[] object = (Object[]) descendantStateIterator.get(component.getClientId(facesContext));
-                    //childState = object[0];
-                    childState = descendantStateIterator.get(component.getClientId(facesContext));
-                }
-                if (descendantFullStateIterator != null
-                        && descendantFullStateIterator.hasNext()) {
-                    Object[] object = descendantFullStateIterator.next();
-                    childInitialState = object[0];
-                    descendantInitialState = object[1];
-                }
-
-                component.clearInitialState();
-                if (childInitialState != null) {
-                    component.restoreState(facesContext, childInitialState);
-                    component.markInitialState();
-                    component.restoreState(facesContext, childState);
-                }
-                else {
-                    component.restoreState(facesContext, childState);
-                    component.markInitialState();
-                }
-
-                Iterator<UIComponent> childsIterator;
-                if (restoreChildFacets) {
-                    childsIterator = component.getFacetsAndChildren();
-                }
-                else {
-                    childsIterator = component.getChildren().iterator();
-                }
-                restoreFullDescendantComponentDeltaStates(facesContext, childsIterator,
-                        state, descendantInitialState, true);
-            }
-        }
-    }
-
-    private void restoreTransientDescendantComponentStates(FacesContext facesContext, Iterator<UIComponent> childIterator, Map<String, Object> state,
-                                                           boolean restoreChildFacets) {
-        while (childIterator.hasNext()) {
-            UIComponent component = childIterator.next();
-
-            // reset the client id (see spec 3.1.6)
-            component.setId(component.getId());
-            if (!component.isTransient()) {
-                component.restoreTransientState(facesContext, (state == null) ? null : state.get(component.getClientId(facesContext)));
-
-                Iterator<UIComponent> childsIterator;
-                if (restoreChildFacets) {
-                    childsIterator = component.getFacetsAndChildren();
-                }
-                else {
-                    childsIterator = component.getChildren().iterator();
-                }
-                restoreTransientDescendantComponentStates(facesContext, childsIterator, state, true);
-            }
-        }
-
-    }
-
-    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext, Map<String,
-                                    Object> childStates, Iterator<UIComponent> childIterator, boolean saveChildFacets) {
-        while (childIterator.hasNext()) {
-            UIComponent child = childIterator.next();
-            if (!child.isTransient()) {
-                Iterator<UIComponent> childsIterator;
-                if (saveChildFacets) {
-                    childsIterator = child.getFacetsAndChildren();
-                }
-                else {
-                    childsIterator = child.getChildren().iterator();
-                }
-                childStates = saveTransientDescendantComponentStates(facesContext, childStates, childsIterator, true);
-                Object state = child.saveTransientState(facesContext);
-                if (state != null) {
-                    if (childStates == null) {
-                        childStates = new HashMap<>();
-                    }
-                    childStates.put(child.getClientId(facesContext), state);
-                }
-            }
-        }
-        return childStates;
-    }
-
-    @Override
-    public void restoreState(FacesContext context, Object state) {
-        if (state == null) {
-            return;
-        }
-
-        Object[] values = (Object[]) state;
-        super.restoreState(context, values[0]);
-        Object restoredRowStates = UIComponentBase.restoreAttachedState(context, values[1]);
-        if (restoredRowStates == null) {
-            if (!_rowDeltaStates.isEmpty()) {
-                _rowDeltaStates.clear();
-            }
-        }
-        else {
-            _rowDeltaStates = (Map<String, Object>) restoredRowStates;
-        }
-    }
-
-    @Override
     public Object saveState(FacesContext context) {
-        // See MyFaces UIData
-        ComponentUtils.ViewPoolingResetMode viewPoolingResetMode = ComponentUtils.isViewPooling(context);
-        if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.SOFT) {
-            _rowTransientStates.clear();
-            _initialDescendantFullComponentState = null;
+        // reset component for MyFaces view pooling
+        clientId = null;
+        model = null;
+        isNested = null;
+        oldVar = null;
 
-            clientId = null;
-            model = null;
-            isNested = null;
-            oldVar = null;
-        }
-        else if (viewPoolingResetMode == ComponentUtils.ViewPoolingResetMode.HARD) {
-            _rowTransientStates.clear();
-            _rowDeltaStates.clear();
-            _initialDescendantFullComponentState = null;
-
-            clientId = null;
-            model = null;
-            isNested = null;
-            oldVar = null;
-        }
-
-        if (initialStateMarked()) {
-            Object superState = super.saveState(context);
-
-            if (superState == null && _rowDeltaStates.isEmpty()) {
-                return null;
-            }
-            else {
-                Object[] values = null;
-                Object attachedState = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
-                if (superState != null || attachedState != null) {
-                    values = new Object[]{superState, attachedState};
-                }
-                return values;
-            }
-        }
-        else {
-            Object[] values = new Object[2];
-            values[0] = super.saveState(context);
-            values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
-            return values;
-        }
+        return super.saveState(context);
     }
 
     protected boolean isNestedWithinIterator() {

@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -52,8 +54,6 @@ import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
 
