@@ -63,7 +63,7 @@ public class SelectOneMenu002 implements Serializable {
             new SelectItem("Chrysler", "Chry<sler"),
             new SelectItem("blank", "&nbsp;"),
             new SelectItem("GM", "GM"),
-            new SelectItem("Ford", "Ford")});
+            new SelectItem("Ford & Lincoln", "Ford & Lincoln")});
 
         cars = new ArrayList<>();
         cars.add(g1);
