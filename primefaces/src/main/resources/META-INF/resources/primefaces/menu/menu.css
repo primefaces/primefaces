@@ -65,6 +65,13 @@
     float:left;
 }
 
+.ui-menu .ui-menuitem-icon-right {
+    margin-left: 0.5rem;
+}
+.ui-menu .ui-menuitem-icon-left {
+    margin-right: 0.5rem;
+}
+
 .ui-menu .ui-submenu-icon {
     margin-top: 1px;
 }

@@ -26,9 +26,11 @@ package org.primefaces.component.menu;
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
@@ -129,14 +131,11 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = menuitem.getIcon();
         Object value = menuitem.getValue();
 
-        if (icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-            writer.endElement("span");
+        boolean isIconLeft = "left".equals(menuitem.getIconPos());
+        if (isIconLeft) {
+            encodeIcon(writer, menu, menuitem, isIconLeft);
         }
 
         writer.startElement("span", null);
@@ -155,6 +154,21 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         }
 
         writer.endElement("span");
+
+        boolean isIconRight = "right".equals(menuitem.getIconPos());
+        if (isIconRight) {
+            encodeIcon(writer, menu, menuitem, isIconRight);
+        }
+    }
+
+    protected void encodeIcon(ResponseWriter writer, AbstractMenu menu, MenuItem menuitem, boolean shouldRender) throws IOException {
+        String icon = menuitem.getIcon();
+        if (icon != null && shouldRender) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon + " ui-menuitem-icon-" + menuitem.getIconPos(), null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+            writer.endElement("span");
+        }
     }
 
     protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, WidgetBuilder wb) throws IOException {

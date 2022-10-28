@@ -251,7 +251,7 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     @Override
     public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "right");
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
     public void setIconPos(String iconPos) {

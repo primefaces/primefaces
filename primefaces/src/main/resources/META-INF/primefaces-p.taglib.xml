@@ -17241,7 +17241,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of the icon, default value is right.]]>
+                <![CDATA[Position of the icon, default value is left.]]>
             </description>
             <name>iconPos</name>
             <required>false</required>
