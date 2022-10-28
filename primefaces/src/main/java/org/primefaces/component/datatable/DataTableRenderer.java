@@ -1237,12 +1237,13 @@ public class DataTableRenderer extends DataRenderer {
         //Preselection
         boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
         boolean disabled = table.isDisabledSelection();
+        boolean allowSelection = selectionEnabled && !disabled;
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(selectionEnabled && !disabled, DataTable.SELECTABLE_ROW_CLASS)
+                .add(allowSelection, DataTable.SELECTABLE_ROW_CLASS)
                 .add(selected, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
@@ -1266,13 +1267,13 @@ public class DataTableRenderer extends DataRenderer {
             UIColumn column = columns.get(i);
 
             if (column instanceof Column) {
-                encodeCell(context, table, column, selected, selectionEnabled, rowIndex);
+                encodeCell(context, table, column, selected, allowSelection, rowIndex);
             }
             else if (column instanceof DynamicColumn) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyModel();
 
-                encodeCell(context, table, dynamicColumn, false, selectionEnabled, rowIndex);
+                encodeCell(context, table, dynamicColumn, false, allowSelection, rowIndex);
             }
         }
 
@@ -1499,10 +1500,12 @@ public class DataTableRenderer extends DataRenderer {
             encodeNativeRadio(context, table, checked, disabled);
         }
         else {
-            String boxClass = HTML.RADIOBUTTON_BOX_CLASS;
             String iconClass = checked ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS : HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
-            boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-            boxClass = checked ? boxClass + " ui-state-active" : boxClass;
+            String boxClass = getStyleClassBuilder(context)
+                        .add(HTML.RADIOBUTTON_BOX_CLASS)
+                        .add(disabled, "ui-state-disabled")
+                        .add(checked, "ui-state-active")
+                        .build();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
@@ -1551,9 +1554,11 @@ public class DataTableRenderer extends DataRenderer {
         else {
             String ariaRowLabel = table.getAriaRowLabel();
             Object rowKey = null;
-            String boxClass = HTML.CHECKBOX_BOX_CLASS;
-            boxClass = disabled ? boxClass + " ui-state-disabled" : boxClass;
-            boxClass = checked ? boxClass + " ui-state-active" : boxClass;
+            String boxClass = getStyleClassBuilder(context)
+                        .add(HTML.CHECKBOX_BOX_CLASS)
+                        .add(disabled, "ui-state-disabled")
+                        .add(checked, "ui-state-active")
+                        .build();
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
             if (isHeaderCheckbox) {
