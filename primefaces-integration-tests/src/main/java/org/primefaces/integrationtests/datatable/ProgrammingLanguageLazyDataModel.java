@@ -28,9 +28,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.SortMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,7 +41,8 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
     public ProgrammingLanguageLazyDataModel() {
         langs = new ArrayList<>();
         for (int i = 1; i <= 75; i++) {
-            langs.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10), ProgrammingLanguage.ProgrammingLanguageType.COMPILED));
+            langs.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10),
+                    ((i % 2) == 0) ? ProgrammingLanguage.ProgrammingLanguageType.COMPILED : ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED));
         }
     }
 
@@ -76,6 +75,22 @@ public class ProgrammingLanguageLazyDataModel extends LazyDataModel<ProgrammingL
                         }
                         if (meta.getField().equals("name")) {
                             return lang.getName().contains((String) meta.getFilterValue());
+                        }
+                        if (meta.getField().equals("type")) {
+                            Set<ProgrammingLanguage.ProgrammingLanguageType> filterValuesSet = null;
+
+                            if (meta.getFilterValue() instanceof String[]) {  // Mojarra
+                                filterValuesSet = Arrays.asList((String[]) meta.getFilterValue()).stream()
+                                        .map(f -> ProgrammingLanguage.ProgrammingLanguageType.valueOf(f))
+                                        .collect(Collectors.toSet());
+                            }
+                            else if (meta.getFilterValue() instanceof Object[]) { //MyFaces
+                                filterValuesSet = Arrays.asList((Object[]) meta.getFilterValue()).stream()
+                                        .map(f -> ProgrammingLanguage.ProgrammingLanguageType.valueOf(f.toString()))
+                                        .collect(Collectors.toSet());
+                            }
+
+                            return filterValuesSet.contains(lang.getType());
                         }
                         return true; //TODO: add additional implementation when required
                     });

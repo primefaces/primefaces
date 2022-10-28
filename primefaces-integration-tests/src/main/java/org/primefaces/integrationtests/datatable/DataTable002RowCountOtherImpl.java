@@ -50,4 +50,7 @@ public class DataTable002RowCountOtherImpl extends DataTable002 {
         }
     }
 
+    public ProgrammingLanguage.ProgrammingLanguageType[] getTypes() {
+        return ProgrammingLanguage.ProgrammingLanguageType.values();
+    }
 }
