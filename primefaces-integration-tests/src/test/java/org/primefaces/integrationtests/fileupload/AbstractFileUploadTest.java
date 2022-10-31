@@ -23,17 +23,17 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import org.junit.jupiter.api.Assertions;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.model.datatable.Row;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Assertions;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
 
 public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
 
@@ -59,7 +59,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         String diag = expectedFiles + " <> " + actualFiles;
         Assertions.assertEquals(files.length, uploadedFiles.getRows().size(), diag);
 
-        // sequence is not guarateed to be the same, so sort by name and size
+        // sequence is not guaranteed to be the same, so sort by name and size
         Arrays.sort(files, (f1, f2) -> {
             int res = f1.getName().compareTo(f2.getName());
             res = res == 0 ? (int) (f1.length() - f2.length()) : res;

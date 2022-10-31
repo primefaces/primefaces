@@ -23,6 +23,8 @@
  */
 package org.primefaces.selenium;
 
+import java.io.File;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -99,6 +101,21 @@ public final class PrimeExpectedConditions {
             @Override
             public String toString() {
                 return "is " + element + " visible in viewport";
+            }
+        };
+    }
+
+    public static ExpectedCondition<Boolean> fileExists(String path) {
+        return new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                File f = new File(path);
+                return f.exists() && f.isFile();
+            }
+
+            @Override
+            public String toString() {
+                return String.format("File '%s' to be present within the time specified", path);
             }
         };
     }
