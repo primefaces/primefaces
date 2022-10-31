@@ -29,18 +29,21 @@ import lombok.Setter;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.List;
 
 @Named
 @ViewScoped
 @Getter
 @Setter
-public class DataTable002RowCountOtherImpl extends DataTable002 {
+public class DataTable039 extends DataTable002 {
 
-    private static final long serialVersionUID = 4266502895860698885L;
+    private static final long serialVersionUID = -3473389242161557269L;
+
+    private List<ProgrammingLanguage.ProgrammingLanguageType> selectedProgrammingLanguageTypes = new ArrayList<>();
 
     @PostConstruct
     public void init() {
-        lazyDataModel = new ProgrammingLanguageLazyDataModelRowCountOtherImpl();
+        lazyDataModel = new ProgrammingLanguageLazyDataModelViewBeanReference(this);
     }
-
 }
