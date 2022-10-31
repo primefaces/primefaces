@@ -53,6 +53,46 @@
             <artifactId>rome</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
+        <!-- Data Exporter -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.virtuald</groupId>
+                    <artifactId>curvesapi</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-all</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.santuario</groupId>
+                    <artifactId>xmlsec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>de.rototor.pdfbox</groupId>
+                    <artifactId>graphics2d</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+        </dependency>
 
         <!-- Tomcat embedded -->
         <dependency>
@@ -426,6 +466,7 @@
             <id>chrome</id>
             <properties>
                 <webdriver.browser>chrome</webdriver.browser>
+                <excludedGroups>ChromeExclude</excludedGroups>
             </properties>
         </profile>
         <profile>

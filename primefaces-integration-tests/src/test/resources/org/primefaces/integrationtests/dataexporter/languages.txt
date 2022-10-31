@@ -1,0 +1,32 @@
+datatable
+	langs
+		idid
+		typetype
+		namename
+		first_appearedfirst_appeared
+	langs
+	langs
+		idid
+		typetype
+		namename
+		first_appearedfirst_appeared
+	langs
+	langs
+		idid
+		typetype
+		namename
+		first_appearedfirst_appeared
+	langs
+	langs
+		idid
+		typetype
+		namename
+		first_appearedfirst_appeared
+	langs
+	langs
+		idid
+		typetype
+		namename
+		first_appearedfirst_appeared
+	langs
+datatable

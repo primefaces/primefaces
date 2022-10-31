@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <div class="flex justify-content-between">
+                <div>
+                    <h5>Standard</h5>
+                    <p:commandButton id="buttonXlsx" value="XLSX" styleClass="mr-2 mb-2">
+                        <p:dataExporter type="xlsxstream" target="datatable" fileName="languages" />
+                    </p:commandButton>
+                    <p:commandButton id="buttonPdf" value="PDF" styleClass="mr-2 mb-2">
+                        <p:dataExporter type="pdf" target="datatable" fileName="languages" />
+                    </p:commandButton>
+                    <p:commandButton id="buttonCsv" value="CSV" styleClass="mr-2 mb-2">
+                        <p:dataExporter type="csv" target="datatable" fileName="languages" />
+                    </p:commandButton>
+                    <p:commandButton id="buttonXml" value="XML" styleClass="mr-2 mb-2">
+                        <p:dataExporter type="xml" target="datatable" fileName="languages" />
+                    </p:commandButton>
+                    <p:commandButton id="buttonTxt" value="TXT" styleClass="mr-2 mb-2">
+                        <p:dataExporter type="txt" target="datatable" fileName="languages"
+                            exporter="#{dataExporter001.textExporter}" />
+                    </p:commandButton>
+                </div>
+            </div>
+            <p:dataTable id="datatable" var="langs" value="#{dataExporter001.progLanguages}"
+                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                paginator="true" rows="10" styleClass="mt-2">
+                <f:facet name="header">
+                    <div class="p-d-flex p-ai-center p-jc-between">
+                        <span>Programming Languages</span>
+                    </div>
+                </f:facet>
+                <p:column field="id" headerText="ID" />
+                <p:column field="type" />
+                <p:column headerText="Name" field="name" />
+                <p:column headerText="First appeared" field="firstAppeared" />
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</f:view>
+</html>
