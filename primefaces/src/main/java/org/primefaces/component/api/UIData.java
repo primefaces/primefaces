@@ -723,11 +723,12 @@ public class UIData extends javax.faces.component.UIData {
                     return true;
                 }
 
-                if (requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitRows)) {
+                Set<UIComponent> rejectedChildren = new HashSet<>();
+                if (requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitRows, rejectedChildren)) {
                     return true;
                 }
 
-                if (visitRows(context, callback, visitRows)) {
+                if (visitRows(context, callback, visitRows, rejectedChildren)) {
                     return true;
                 }
 
@@ -760,7 +761,7 @@ public class UIData extends javax.faces.component.UIData {
         return false;
     }
 
-    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows) {
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, Set<UIComponent> rejectedChildren) {
         if (visitRows) {
             setRowIndex(-1);
         }
@@ -771,6 +772,10 @@ public class UIData extends javax.faces.component.UIData {
                 VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
                 if (result == VisitResult.COMPLETE) {
                     return true;
+                }
+                else if (result == VisitResult.REJECT) {
+                    rejectedChildren.add(child);
+                    continue;
                 }
 
                 if (child instanceof UIColumn) {
@@ -853,7 +858,7 @@ public class UIData extends javax.faces.component.UIData {
         return false;
     }
 
-    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows) {
+    protected boolean visitRows(VisitContext context, VisitCallback callback, boolean visitRows, Set<UIComponent> rejectedChildren) {
         boolean requiresColumns = requiresColumns();
         int processed = 0;
         int rowIndex = 0;
@@ -878,31 +883,33 @@ public class UIData extends javax.faces.component.UIData {
             if (getChildCount() > 0) {
                 for (int i = 0; i < getChildCount(); i++) {
                     UIComponent kid = getChildren().get(i);
-                    if (requiresColumns) {
-                        if (kid instanceof Columns) {
-                            Columns columns = (Columns) kid;
-                            for (int j = 0; j < columns.getRowCount(); j++) {
-                                columns.setRowIndex(j);
+                    if (!rejectedChildren.contains(kid)) {
+                        if (requiresColumns) {
+                            if (kid instanceof Columns) {
+                                Columns columns = (Columns) kid;
+                                for (int j = 0; j < columns.getRowCount(); j++) {
+                                    columns.setRowIndex(j);
 
-                                boolean value = visitColumnContent(context, callback, columns);
+                                    boolean value = visitColumnContent(context, callback, columns);
+                                    if (value) {
+                                        columns.setRowIndex(-1);
+                                        return true;
+                                    }
+                                }
+
+                                columns.setRowIndex(-1);
+                            }
+                            else {
+                                boolean value = visitColumnContent(context, callback, kid);
                                 if (value) {
-                                    columns.setRowIndex(-1);
                                     return true;
                                 }
                             }
-
-                            columns.setRowIndex(-1);
                         }
                         else {
-                            boolean value = visitColumnContent(context, callback, kid);
-                            if (value) {
+                            if (kid.visitTree(context, callback)) {
                                 return true;
                             }
-                        }
-                    }
-                    else {
-                        if (kid.visitTree(context, callback)) {
-                            return true;
                         }
                     }
                 }
