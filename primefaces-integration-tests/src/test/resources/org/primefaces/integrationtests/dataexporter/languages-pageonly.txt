@@ -1,0 +1,12 @@
+datatable
+	langs
+		idid
+		typetype
+		namename
+	langs
+	langs
+		idid
+		typetype
+		namename
+	langs
+datatable
