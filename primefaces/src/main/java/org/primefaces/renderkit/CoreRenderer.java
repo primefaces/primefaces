@@ -210,7 +210,9 @@ public abstract class CoreRenderer extends Renderer {
                     }
                 }
                 else if (hasEventValue) {
-                    builder.append(eventValue);
+                    if (shouldRenderAttribute(eventValue)) {
+                        builder.append(eventValue);
+                    }
                 }
 
                 if (builder.length() > 0) {
