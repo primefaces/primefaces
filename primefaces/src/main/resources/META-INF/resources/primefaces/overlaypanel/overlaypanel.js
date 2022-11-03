@@ -59,7 +59,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        this._super(cfg);
+       if (cfg.target) {
+            this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.target);
+        }
+        this._super(cfg, null, null, this.target);
 
         this.content = this.jq.children('div.ui-overlaypanel-content');
 
@@ -81,8 +84,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         this.bindCommonEvents();
 
-        if (this.cfg.target) {
-            this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+        if (this.target) {
             this.bindTargetEvents();
 
             // set aria attributes
@@ -90,9 +92,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 'aria-expanded': false,
                 'aria-controls': this.id
             });
-
-            //dialog support
-            this.setupDialogSupport();
         }
 
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
@@ -491,31 +490,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if (this.target) {
             this.target.attr('aria-expanded', false);
-        }
-    },
-
-    /**
-     * In case this overlay panel is inside a dialog widget, applies some CSS fixes so that this overlay panel is above
-     * the dialog-
-     * @private
-     */
-    setupDialogSupport: function() {
-        if (this.target && this.target[0]) {
-            var dialog = this.target[0].closest('.ui-dialog');
-            if (dialog) {
-                var $dialog = $(dialog);
-                if ($dialog.length == 1) {
-                    //set position as fixed to scroll with dialog
-                    if ($dialog.css('position') === 'fixed') {
-                        this.jq.css('position', 'fixed');
-                    }
-
-                    //append to body if not already appended by user choice
-                    if (!this.cfg.appendTo) {
-                        this.jq.appendTo(document.body);
-                    }
-                }
-            }
         }
     },
 

@@ -20,13 +20,13 @@
  * @interface {PrimeFaces.widget.CascadeSelectCfg} cfg The configuration for the {@link  CascadeSelect| CascadeSelect widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
- * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
+ * @extends {PrimeFaces.widget.DynamicOverlayWidgetCfg} cfg
  *
  * @prop {string} cfg.appendTo Appends the overlay to the element defined by search expression. Defaults to the document
  * body.
  * @prop {boolean} cfg.disabled If true, disables the component.
  */
-PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * @override
@@ -34,22 +34,19 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.BaseWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        this._super(cfg);
+        this.panel = $(PrimeFaces.escapeClientId(cfg.id) + '_panel');
+        this._super(cfg, this.panel, cfg.id + '_panel');
 
         this.input = $(this.jqId + '_input');
         this.label = this.jq.children('.ui-cascadeselect-label');
         this.triggers = this.jq.children('.ui-cascadeselect-trigger').add(this.label);
-        this.panel = $(this.jqId + '_panel');
         this.itemsWrapper = this.panel.children('.ui-cascadeselect-items-wrapper');
         this.items = this.itemsWrapper.find('li.ui-cascadeselect-item');
         this.contents = this.items.children('.ui-cascadeselect-item-content');
         this.cfg.disabled = this.jq.hasClass('ui-state-disabled');
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
 
         if (!this.cfg.disabled) {
             this.bindEvents();
-
-            PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
             this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
         }
     },
