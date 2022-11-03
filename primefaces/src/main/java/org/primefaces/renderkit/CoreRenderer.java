@@ -216,7 +216,7 @@ public abstract class CoreRenderer extends Renderer {
                 }
 
                 if (builder.length() > 0) {
-                    writer.writeAttribute(domEvent, builder.toString(), domEvent);
+                    renderAttribute(context, component, domEvent, builder.toString());
                     builder.setLength(0);
                 }
             }
@@ -235,14 +235,27 @@ public abstract class CoreRenderer extends Renderer {
 
             Object value = component.getAttributes().get(attribute);
 
-            if (shouldRenderAttribute(value)) {
-                writer.writeAttribute(attribute, value.toString(), attribute);
-            }
+            renderAttribute(context, component, attribute, value);
         }
 
         //dynamic attributes
         if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
+        }
+    }
+
+    protected void renderAttribute(FacesContext context, UIComponent component, String attribute, Object value)
+                throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (shouldRenderAttribute(value)) {
+            String stringValue = value.toString();
+            if (Boolean.valueOf(stringValue)) {
+                writer.writeAttribute(attribute, true, attribute);
+            }
+            else {
+                writer.writeAttribute(attribute, stringValue, attribute);
+            }
         }
     }
 
