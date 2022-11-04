@@ -115,7 +115,7 @@ public class FileUploadUtils {
                 throw new ValidationException("Invalid directory", "Invalid directory, specified parent is not a directory.");
             }
             if (!file.getCanonicalFile().toPath().startsWith(parentFile.getCanonicalFile().toPath())) {
-                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not inside specified parent.");
+                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not reside inside specified parent.");
             }
 
             if (!file.getCanonicalPath().equals(filePath)) {
