@@ -114,31 +114,42 @@ if (!PrimeFaces.csp) {
          *
          * @param {string} js The JavaScript code to evaluate.
          * @param {string} [nonceValue] Nonce value. Leave out if not using CSP.
+         * @param {string} [windowContext] Optional Window context to call eval from.
          */
-        eval: function (js, nonceValue) {
+        eval: function (js, nonceValue, windowContext) {
             // assign the NONCE if necessary
             var options = {};
             if (nonceValue) {
                 options = {nonce: nonceValue};
             } else if (PrimeFaces.csp.NONCE_VALUE) {
-                options = {nonce: PrimeFaces.csp.NONCE_VALUE};
+                if (windowContext) {
+                    options = {nonce: windowContext.PrimeFaces.csp.NONCE_VALUE};
+                } else {
+                    options = {nonce: PrimeFaces.csp.NONCE_VALUE};
+                }
             }
 
             // evaluate the script
-            $.globalEval(js, options);
+            if (windowContext) {
+                $.globalEval(js, options, windowContext.document);
+            } else {
+                $.globalEval(js, options);
+            }
         },
         
         /**
          * Perform a CSP safe `eval()` with a return result value.
          *
          * @param {string} js The JavaScript code to evaluate.
+         * @param {string} [nonceValue] Nonce value. Leave out if not using CSP.
+         * @param {string} [windowContext] Optional Window context to call eval from.
          * @return {unknown} The result of the evaluated JavaScript code.
          * @see https://stackoverflow.com/a/33945236/502366
          */
-        evalResult: function (js) {
+        evalResult: function (js, nonceValue, windowContext) {
             var executeJs = "var cspResult = " + js;
-            PrimeFaces.csp.eval(executeJs);
-            return cspResult;
+            PrimeFaces.csp.eval(executeJs, nonceValue, windowContext);
+            return windowContext ? windowContext.cspResult : cspResult;
         },
 
         /**

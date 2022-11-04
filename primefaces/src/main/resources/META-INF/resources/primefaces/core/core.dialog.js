@@ -221,8 +221,8 @@ if (!PrimeFaces.dialog) {
                         onShow: function() {
                             if (cfg.options.onShow) {
                                 var onShowFunction = '(function(ext){' + cfg.options.onShow + '})';
-                                var onShowCallback = PrimeFaces.csp.NONCE_VALUE
-                                    ? PrimeFaces.csp.evalResult(onShowFunction)
+                                var onShowCallback = rootWindow.PrimeFaces.csp.NONCE_VALUE
+                                    ? PrimeFaces.csp.evalResult(onShowFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow)
                                     : rootWindow.eval(onShowFunction);
                                 if (onShowCallback) {
                                     onShowCallback.call(this);
@@ -232,8 +232,8 @@ if (!PrimeFaces.dialog) {
                         onHide: function() {
                             if (cfg.options.onHide) {
                                 var onHideFunction = '(function(ext){' + cfg.options.onHide + '})';
-                                var onHideCallback = PrimeFaces.csp.NONCE_VALUE
-                                    ? PrimeFaces.csp.evalResult(onHideFunction)
+                                var onHideCallback = rootWindow.PrimeFaces.csp.NONCE_VALUE
+                                    ? PrimeFaces.csp.evalResult(onHideFunction, rootWindow.PrimeFaces.csp.NONCE_VALUE, rootWindow)
                                     : rootWindow.eval(onHideFunction);
                                 if (onHideCallback) {
                                     onHideCallback.call(this);
@@ -359,8 +359,8 @@ if (!PrimeFaces.dialog) {
                 var dialogReturnBehaviorStr = $(windowContext.document.getElementById(sourceComponentId)).data('dialogreturn');
                 if(dialogReturnBehaviorStr) {
                     var dialogFunction = '(function(ext){this.' + dialogReturnBehaviorStr + '})';
-                    if (PrimeFaces.csp.NONCE_VALUE) {
-                        dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction);
+                    if (windowContext.PrimeFaces.csp.NONCE_VALUE) {
+                        dialogReturnBehavior = PrimeFaces.csp.evalResult(dialogFunction, windowContext.PrimeFaces.csp.NONCE_VALUE, windowContext);
                     }
                     else {
                         dialogReturnBehavior = windowContext.eval(dialogFunction);
