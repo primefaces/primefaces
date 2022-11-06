@@ -24,6 +24,7 @@
 package org.primefaces.component.splitbutton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -134,7 +135,10 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             }
         }
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_WITH_CLICK_ATTRS);
+        // GitHub #9381 ignore style as its applied to parent div
+        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITH_CLICK_ATTRS);
+        attrs.remove("style");
+        renderPassThruAttributes(context, button, attrs);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
