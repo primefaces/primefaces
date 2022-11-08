@@ -45,12 +45,12 @@
 			setSelector = function (hsb, cal) {
 				$(cal).data('colorpicker').selector.css('backgroundColor', '#' + HSBToHex({h: hsb.h, s: 100, b: 100}));
 				$(cal).data('colorpicker').selectorIndic.css({
-					left: String(parseInt(150 * hsb.s/100, 10)),
-					top: String(parseInt(150 * (100-hsb.b)/100, 10))
+					left: parseInt(150 * hsb.s/100, 10),
+					top: parseInt(150 * (100-hsb.b)/100, 10)
 				});
 			},
 			setHue = function (hsb, cal) {
-				$(cal).data('colorpicker').hue.css('top', String(parseInt(150 - 150 * hsb.h/360, 10)));
+				$(cal).data('colorpicker').hue.css('top', parseInt(150 - 150 * hsb.h/360, 10));
 			},
 			setCurrentColor = function (hsb, cal) {
 				$(cal).data('colorpicker').currentColor.css('backgroundColor', '#' + HSBToHex(hsb));
