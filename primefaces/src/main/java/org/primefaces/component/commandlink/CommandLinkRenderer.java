@@ -100,7 +100,6 @@ public class CommandLinkRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
         if (link.isDisabled()) {
             writer.writeAttribute("tabindex", "-1", null);
-            writer.writeAttribute("aria-disabled", "true", null);
         }
 
         if (ajax) {

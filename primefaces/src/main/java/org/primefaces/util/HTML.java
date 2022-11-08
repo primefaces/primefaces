@@ -93,7 +93,6 @@ public class HTML {
         "charset",
         "coords",
         "dir",
-        "disabled",
         "hreflang",
         "rel",
         "rev",
