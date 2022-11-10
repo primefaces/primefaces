@@ -46,6 +46,7 @@ public abstract class DataViewBase extends UIPageableData
         multiViewState,
         gridRowStyle,
         gridRowStyleClass,
+        gridRowTitle,
         flex
     }
 
@@ -132,11 +133,11 @@ public abstract class DataViewBase extends UIPageableData
     }
 
     public String getRowTitle() {
-        return (String) getStateHelper().eval(TreeTableBase.PropertyKeys.rowTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.gridRowTitle, null);
     }
 
     public void setRowTitle(String rowTitle) {
-        getStateHelper().put(TreeTableBase.PropertyKeys.rowTitle, rowTitle);
+        getStateHelper().put(PropertyKeys.gridRowTitle, rowTitle);
     }
 
     @Override
