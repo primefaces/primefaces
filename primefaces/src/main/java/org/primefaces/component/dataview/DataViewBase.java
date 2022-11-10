@@ -26,6 +26,7 @@ package org.primefaces.component.dataview;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
+import org.primefaces.component.treetable.TreeTableBase;
 
 public abstract class DataViewBase extends UIPageableData
         implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, MultiViewStateAware<DataViewState>, FlexAware {
@@ -128,6 +129,14 @@ public abstract class DataViewBase extends UIPageableData
 
     public void setGridRowStyleClass(String gridRowStyleClass) {
         getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(TreeTableBase.PropertyKeys.rowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(TreeTableBase.PropertyKeys.rowTitle, rowTitle);
     }
 
     @Override

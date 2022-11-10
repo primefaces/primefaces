@@ -278,6 +278,7 @@ public class DataViewRenderer extends DataRenderer {
             else {
                 writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
             }
+            writer.writeAttribute("title", dataview.getRowTitle(), null);
 
             for (int i = 0; i < numberOfRowsToRender; i++) {
                 dataview.setRowIndex(rowIndex);

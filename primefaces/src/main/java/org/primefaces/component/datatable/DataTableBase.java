@@ -85,6 +85,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         rowSelectMode,
         rowSelector,
         rowStyleClass,
+        rowTitle,
         saveOnCellBlur,
         scrollHeight,
         scrollRows,
@@ -200,6 +201,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.rowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.rowTitle, rowTitle);
     }
 
     public String getOnExpandStart() {

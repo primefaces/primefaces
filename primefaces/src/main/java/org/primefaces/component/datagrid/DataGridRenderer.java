@@ -188,6 +188,7 @@ public class DataGridRenderer extends DataRenderer {
         else {
             writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
         }
+        writer.writeAttribute("title", grid.getRowTitle(), null);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
@@ -198,6 +199,7 @@ public class DataGridRenderer extends DataRenderer {
             for (int j = 0; j < columns; j++) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnClass, null);
+
                 if (!LangUtils.isEmpty(columnInlineStyle)) {
                     writer.writeAttribute("style", columnInlineStyle, null);
                 }

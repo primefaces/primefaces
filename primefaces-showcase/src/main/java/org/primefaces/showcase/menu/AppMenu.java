@@ -253,6 +253,7 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("RowColor", "/ui/data/datatable/rowColor"));
         dataTableMenuItems.add(new MenuItem("RowExpansion", "/ui/data/datatable/expansion"));
         dataTableMenuItems.add(new MenuItem("RowGroup", "/ui/data/datatable/rowGroup"));
+        dataTableMenuItems.add(new MenuItem("RowTitle", "/ui/data/datatable/rowTitle"));
         dataTableMenuItems.add(new MenuItem("RTL", "/ui/data/datatable/rtl"));
         dataTableMenuItems.add(new MenuItem("Scroll", "/ui/data/datatable/scroll"));
         dataTableMenuItems.add(new MenuItem("Selection", "/ui/data/datatable/selection"));
