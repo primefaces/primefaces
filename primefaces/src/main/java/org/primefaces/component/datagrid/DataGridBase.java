@@ -27,7 +27,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
 import org.primefaces.component.datalist.DataListBase;
-import org.primefaces.component.treetable.TreeTableBase;
 
 public abstract class DataGridBase extends UIPageableData
         implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, FlexAware, MultiViewStateAware<DataGridState> {
