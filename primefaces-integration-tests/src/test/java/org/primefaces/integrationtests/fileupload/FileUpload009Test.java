@@ -51,7 +51,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        wait4File(page.uploadedFiles, file.getName());
+        wait4File(page.uploadedFiles, file.getName()); // causes sometimes StaleElementReference - why?
 
         // Assert
         assertNoJavascriptErrors();

@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
@@ -88,11 +89,13 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
     }
 
     protected void wait4File(DataTable uploadedFiles, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
         PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
                 uploadedFiles.findElement(By.tagName("tbody")), filename));
     }
 
     protected void wait4File(DataTable uploadedFiles, int row, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
         PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
                 uploadedFiles.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(row - 1), filename));
     }
