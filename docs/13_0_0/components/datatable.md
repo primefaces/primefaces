@@ -18,7 +18,7 @@ DataTable displays data in tabular format.
 ## Attributes
 
 | Name                      | Default            | Type             | Description
-| ------------------------- | ------------------ | ---------------- | ------------------ |
+|---------------------------| ------------------ | ---------------- | ------------------ |
 | allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is false.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
@@ -83,6 +83,7 @@ DataTable displays data in tabular format.
 | rows                      | 0                  | Integer          | Number of rows to display per page.
 | rowsPerPageLabel          | null               | String           | Label for the rowsPerPage dropdown.
 | rowsPerPageTemplate       | null               | String           | Template of the rowsPerPage dropdown.
+| rowTitle                  | null               | String           | Title for each row.
 | saveOnCellBlur            | true               | Boolean          | Saves the changes in cell editing on blur, when set to false changes are discarded.
 | scrollHeight              | null               | Integer          | Scroll viewport height.
 | scrollRows                | 0                  | Integer          | Number of rows to load on live scroll.

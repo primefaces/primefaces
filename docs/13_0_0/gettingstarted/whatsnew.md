@@ -6,6 +6,14 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ### PrimeFaces
 
+* DataGrid
+    * Added attribute `rowTitle` to support row-specific titles.
+* DataTable
+    * Added attribute `rowTitle` to support row-specific titles.
+* DataView
+    * Added attribute `gridRowTitle` to support row-specific titles.
+* TreeTable
+    * Added attribute `rowTitle` to support row-specific titles.
 * ...
 
 Look into [migration guide](https://primefaces.github.io/primefaces/13_0_0/#/../migrationguide/13_0_0) for more enhancements and changes.

@@ -558,6 +558,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("tr", null);
         writer.writeAttribute("id", tt.getClientId(context) + "_node_" + rowKey, null);
         writer.writeAttribute("class", rowStyleClass, null);
+        writer.writeAttribute("title", tt.getRowTitle(), null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(treeNode.isExpanded()), null);
         writer.writeAttribute("data-rk", rowKey, null);
 
