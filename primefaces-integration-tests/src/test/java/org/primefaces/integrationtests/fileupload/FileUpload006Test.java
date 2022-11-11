@@ -110,7 +110,7 @@ public class FileUpload006Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        wait4File(page.uploadedFiles, 3, file2.getName());
+        wait4File(page.uploadedFiles, 3, ".csv"); // order is not stable
 
         // Assert
         assertNoJavascriptErrors();
