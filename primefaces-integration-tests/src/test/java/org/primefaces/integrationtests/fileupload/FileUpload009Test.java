@@ -51,7 +51,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        wait4File(page.uploadedFiles, 1, file.getName());
+        wait4File(page.uploadedFiles, file.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -76,7 +76,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        wait4File(page.uploadedFiles, 1, file1.getName());
+        wait4File(page.uploadedFiles, file1.getName()); // order is not stable
 
         // Assert
         assertNoJavascriptErrors();
@@ -101,7 +101,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        wait4File(page.uploadedFiles, 1, file1.getName());
+        wait4File(page.uploadedFiles, file1.getName()); // order is not stable
 
         // Assert
         assertNoJavascriptErrors();
@@ -116,7 +116,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        wait4File(page.uploadedFiles, 3, file3.getName());
+        wait4File(page.uploadedFiles, 3, ".csv"); // order is not stable
 
         // Assert
         assertNoJavascriptErrors();
@@ -171,7 +171,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file4.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
-        wait4File(page.uploadedFiles, 1, file1.getName());
+        wait4File(page.uploadedFiles, file1.getName()); // order is not stable
 
         // Assert
         assertNoJavascriptErrors();
