@@ -83,15 +83,18 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
     }
 
     protected void wait4EmptyMesssage(DataTable uploadedFiles) {
-        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(uploadedFiles.findElement(By.tagName("tbody")).findElement(By.cssSelector("tr.ui-datatable-empty-message"))));
+        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(
+                uploadedFiles.findElement(By.tagName("tbody")).findElement(By.cssSelector("tr.ui-datatable-empty-message"))));
     }
 
     protected void wait4File(DataTable uploadedFiles, String filename) {
-        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(uploadedFiles.findElement(By.tagName("tbody")), filename));
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")), filename));
     }
 
     protected void wait4File(DataTable uploadedFiles, int row, String filename) {
-        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(uploadedFiles.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(row-1), filename));
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(row - 1), filename));
     }
 
 }
