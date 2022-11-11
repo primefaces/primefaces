@@ -26,8 +26,12 @@ package org.primefaces.integrationtests.fileupload;
 import java.io.File;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
 
@@ -43,6 +47,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
     public void testAdvancedMultipleUploadSingleFile(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
@@ -50,6 +55,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 1, file.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -62,6 +68,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
     public void testAdvancedMultipleUploadMultipleFiles(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
@@ -73,6 +80,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 1, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -85,6 +93,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
     public void testAdvancedMultipleUploadMultipleFilesTwice(Page page) throws Exception {
         // Arrange
         FileUpload fileUpload = page.fileupload;
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
@@ -96,6 +105,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 1, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -110,6 +120,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 3, file3.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -122,6 +133,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
     public void testAdvancedMultipleUploadCancel(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertEquals("", fileUpload.getValue());
 
         // Act
@@ -145,6 +157,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
     public void testAdvancedMultipleUploadFileLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertEquals("", fileUpload.getValue());
         String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
         Assertions.assertNotNull(fileLimitMsg);
@@ -162,6 +175,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file3.getName()), fileUpload.getWidgetValues().toString());
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file4.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 1, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -185,6 +199,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
     public void testAdvancedMultipleUploadSizeLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertEquals("", fileUpload.getValue());
         String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
         Assertions.assertNotNull(invalidSizeMsg);
@@ -208,6 +223,7 @@ public class FileUpload009Test extends AbstractFileUploadTest {
     public void testAdvancedMultipleUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertEquals("", fileUpload.getValue());
         String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
         Assertions.assertNotNull(invalidTypeMsg);
