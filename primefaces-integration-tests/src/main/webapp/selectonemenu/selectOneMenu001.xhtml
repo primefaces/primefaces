@@ -16,6 +16,7 @@
                 <p:autoUpdate/>
             </p:messages>
 
+            <p:outputLabel for="@next" value="SelectOneMenu"/>
             <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu001.value}">
                 <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true"/>
                 <f:selectItems value="#{selectOneMenu001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>

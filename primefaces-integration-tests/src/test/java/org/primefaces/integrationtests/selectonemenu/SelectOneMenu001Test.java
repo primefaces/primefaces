@@ -63,6 +63,31 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
+    @Order(1)
+    @DisplayName("SelectOneMenu: Selecting a record by typing some letters #4682")
+    public void testSelectingByTypingSomeLetters(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+
+        // Act
+        selectOneMenu.getLabel().sendKeys("La");
+        page.button.click();
+
+        // Assert - part 1
+        Assertions.assertEquals("Lando", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+
+        // Act
+        selectOneMenu.getLabel().sendKeys("Le");
+        page.button.click();
+
+        // Assert - part 2
+        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
     @Order(2)
     @DisplayName("SelectOneMenu: show panel")
     public void testShowPanel(Page page) {
