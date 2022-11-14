@@ -230,6 +230,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
         if (this.cfg.multiple) {
+            this.multiItemContainer = this.multiItemContainer || this.jq.children('.ui-selectcheckboxmenu-multiple-container');
             var items = this.multiItemContainer.children();
             if (!items.length) {
                 this.multiItemContainer.empty().append('<li class="ui-selectcheckboxmenu-emptylabel">' + (this.multiItemContainer.data('label') || '&nbsp;') + '</li>');
@@ -1207,7 +1208,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if (this.cfg.updateLabel && !(this.cfg.multiple && labelText.length > 0)) {
-             this.label.text(labelText || '&nbsp;');
+             this.label.text(labelText);
              this.labelContainer.attr('title', labelText);
         }
     },

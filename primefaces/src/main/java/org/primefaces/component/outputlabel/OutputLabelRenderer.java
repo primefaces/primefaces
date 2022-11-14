@@ -43,6 +43,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -93,7 +94,8 @@ public class OutputLabelRenderer extends CoreRenderer {
                     if (target instanceof UIInput) {
                         UIInput input = (UIInput) target;
 
-                        if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
+                        if (value != null && !(target instanceof SelectCheckboxMenu) &&
+                                (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                             ValueExpression ve = label.getValueExpression("value");
 
                             if (ve != null) {
