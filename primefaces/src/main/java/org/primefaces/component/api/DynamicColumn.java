@@ -344,6 +344,16 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public int getExportRowspan() {
+        return columns.getExportRowspan();
+    }
+
+    @Override
+    public int getExportColspan() {
+        return columns.getExportColspan();
+    }
+
+    @Override
     public int getDisplayPriority() {
         return columns.getDisplayPriority();
     }

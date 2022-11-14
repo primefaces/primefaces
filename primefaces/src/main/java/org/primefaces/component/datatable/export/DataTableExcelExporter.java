@@ -227,61 +227,63 @@ public class DataTableExcelExporter extends DataTableExporter {
             Row xlRow = sheet.createRow(rowIndex);
 
             table.forEachColumn(context, row, true, true, false, column -> {
-                String text = null;
-                switch (columnType) {
-                    case HEADER:
-                        text = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
-                        break;
+                if (column.isRendered() && column.isExportable()) {
+                    String text = null;
+                    switch (columnType) {
+                        case HEADER:
+                            text = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
+                            break;
 
-                    case FOOTER:
-                        text = (column.getExportFooterValue() != null) ? column.getExportFooterValue() : column.getFooterText();
-                        break;
+                        case FOOTER:
+                            text = (column.getExportFooterValue() != null) ? column.getExportFooterValue() : column.getFooterText();
+                            break;
 
-                    default:
-                        text = null;
-                        break;
-                }
+                        default:
+                            text = null;
+                            break;
+                    }
 
-                // by default column has 1 rowspan && colspan
-                int rowSpan = column.getRowspan() - 1;
-                int colSpan = column.getColspan() - 1;
+                    // by default column has 1 rowspan && colspan
+                    int rowSpan = (column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan()) - 1;
+                    int colSpan = (column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan()) - 1;
 
-                if (rowSpan > 0 && colSpan > 0) {
-                    colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
-                    sheet.addMergedRegion(new CellRangeAddress(
-                                rowIndex, // first row (0-based)
-                                rowIndex + rowSpan, // last row (0-based)
-                                colIndex.get(), // first column (0-based)
-                                colIndex.get() + colSpan // last column (0-based)
-                    ));
-                    addColumnValue(xlRow, (short) colIndex.get(), text);
-                    colIndex.set(colIndex.get() + colSpan);
+                    if (rowSpan > 0 && colSpan > 0) {
+                        colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
+                        sheet.addMergedRegion(new CellRangeAddress(
+                                    rowIndex, // first row (0-based)
+                                    rowIndex + rowSpan, // last row (0-based)
+                                    colIndex.get(), // first column (0-based)
+                                    colIndex.get() + colSpan // last column (0-based)
+                        ));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                        colIndex.set(colIndex.get() + colSpan);
+                    }
+                    else if (rowSpan > 0) {
+                        sheet.addMergedRegion(new CellRangeAddress(
+                                    rowIndex, // first row (0-based)
+                                    rowIndex + rowSpan, // last row (0-based)
+                                    colIndex.get(), // first column (0-based)
+                                    colIndex.get() // last column (0-based)
+                        ));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                    }
+                    else if (colSpan > 0) {
+                        colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
+                        sheet.addMergedRegion(new CellRangeAddress(
+                                    rowIndex, // first row (0-based)
+                                    rowIndex, // last row (0-based)
+                                    colIndex.get(), // first column (0-based)
+                                    colIndex.get() + colSpan // last column (0-based)
+                        ));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                        colIndex.set(colIndex.get() + colSpan);
+                    }
+                    else {
+                        colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                    }
+                    colIndex.incrementAndGet();
                 }
-                else if (rowSpan > 0) {
-                    sheet.addMergedRegion(new CellRangeAddress(
-                                rowIndex, // first row (0-based)
-                                rowIndex + rowSpan, // last row (0-based)
-                                colIndex.get(), // first column (0-based)
-                                colIndex.get() // last column (0-based)
-                    ));
-                    addColumnValue(xlRow, (short) colIndex.get(), text);
-                }
-                else if (colSpan > 0) {
-                    colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
-                    sheet.addMergedRegion(new CellRangeAddress(
-                                rowIndex, // first row (0-based)
-                                rowIndex, // last row (0-based)
-                                colIndex.get(), // first column (0-based)
-                                colIndex.get() + colSpan // last column (0-based)
-                    ));
-                    addColumnValue(xlRow, (short) colIndex.get(), text);
-                    colIndex.set(colIndex.get() + colSpan);
-                }
-                else {
-                    colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
-                    addColumnValue(xlRow, (short) colIndex.get(), text);
-                }
-                colIndex.incrementAndGet();
                 return true;
             });
             return true;

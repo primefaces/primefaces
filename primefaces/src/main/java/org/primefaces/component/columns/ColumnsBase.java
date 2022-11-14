@@ -43,6 +43,8 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportFunction,
         exportHeaderValue,
         exportValue,
+        exportColspan,
+        exportRowspan,
         exportable,
         field,
         filterBy,
@@ -370,6 +372,24 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setExportValue(String exportValue) {
         getStateHelper().put(PropertyKeys.exportValue, exportValue);
+    }
+
+    @Override
+    public int getExportRowspan() {
+        return (Integer) getStateHelper().eval(PropertyKeys.exportRowspan, 0);
+    }
+
+    public void setExportRowspan(int exportRowspan) {
+        getStateHelper().put(PropertyKeys.exportRowspan, exportRowspan);
+    }
+
+    @Override
+    public int getExportColspan() {
+        return (Integer) getStateHelper().eval(PropertyKeys.exportColspan, 0);
+    }
+
+    public void setExportColspan(int exportColspan) {
+        getStateHelper().put(PropertyKeys.exportColspan, exportColspan);
     }
 
     @Override

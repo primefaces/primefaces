@@ -283,8 +283,8 @@ public class DataTablePDFExporter extends DataTableExporter {
                             break;
                     }
 
-                    int rowSpan = column.getRowspan();
-                    int colSpan = column.getColspan();
+                    int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
+                    int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
                     addColumnValue(pdfTable, textValue, rowSpan, colSpan);
                 }
                 return true;
