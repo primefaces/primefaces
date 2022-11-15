@@ -5216,6 +5216,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the number of rows the column spans to be exported.]]>
+            </description>
+            <name>exportRowspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the number of columns the column spans to be exported.]]>
+            </description>
+            <name>exportColspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5634,6 +5650,22 @@
             <name>exportValue</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the number of rows the column spans to be exported.]]>
+            </description>
+            <name>exportRowspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the number of columns the column spans to be exported.]]>
+            </description>
+            <name>exportColspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
         <attribute>
             <description>

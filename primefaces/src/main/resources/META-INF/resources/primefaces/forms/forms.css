@@ -531,16 +531,25 @@ button.ui-button::-moz-focus-inner {
     padding: 0 3px;
 }
 
-.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger  .ui-icon {
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon {
     margin-top: 3px;
 }
 
-.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label  {
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label {
     display: block;
     padding: 3px 26px 3px 5px;
     width: auto;
     border: none;
     cursor: pointer;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label:after {
+    content: "p";
+    display: inline-flex;
+    visibility: hidden;
+    overflow: hidden;
+    width: 0;
+    clip: rect(0, 0, 0, 0);
 }
 
 .ui-selectcheckboxmenu.ui-state-disabled .ui-selectcheckboxmenu-trigger,

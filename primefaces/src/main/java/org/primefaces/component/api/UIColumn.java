@@ -216,6 +216,10 @@ public interface UIColumn {
 
     String getExportValue();
 
+    int getExportRowspan();
+
+    int getExportColspan();
+
     boolean isGroupRow();
 
     String getExportHeaderValue();

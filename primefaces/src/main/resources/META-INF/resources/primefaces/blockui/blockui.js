@@ -216,7 +216,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 currentContent = this.jq;
 
             // create a specific blocker for this target
-            var currentBlocker = $('<div id="' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
+            var currentBlocker = $('<div id="' + widgetId + '_' + currentTargetId + '_blocker" class="ui-blockui ui-widget-overlay ui-helper-hidden"></div>');
 
             // style the blocker
             if (this.cfg.styleClass) {
@@ -229,7 +229,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             // when more than 1 target need to clone the content for each target
             if (shouldClone) {
                 currentContent = currentContent.clone();
-                currentContent.attr('id', currentTargetId + '_blockcontent');
+                currentContent.attr('id', widgetId + '_' + currentTargetId + '_blockcontent');
             }
 
             // assign data ids to this widget

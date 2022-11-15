@@ -31,7 +31,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
@@ -77,6 +81,23 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
             Assertions.assertEquals("", row.getCell(2).getText(), row.getCell(2).getText()); // empty error message
             Assertions.assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
         }
+    }
+
+    protected void wait4EmptyMesssage(DataTable uploadedFiles) {
+        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(
+                uploadedFiles.findElement(By.tagName("tbody")).findElement(By.cssSelector("tr.ui-datatable-empty-message"))));
+    }
+
+    protected void wait4File(DataTable uploadedFiles, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")), filename));
+    }
+
+    protected void wait4File(DataTable uploadedFiles, int row, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(row - 1), filename));
     }
 
 }
