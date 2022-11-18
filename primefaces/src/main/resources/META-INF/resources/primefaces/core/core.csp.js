@@ -63,7 +63,7 @@ if (!PrimeFaces.csp) {
                 // if the eventhandler return false, we must use preventDefault
                 var jsWrapper = function(event) {
                     var retVal = js.call(element, event);
-                    if (retVal === false && event.cancelable) {
+                    if (retVal === false && (typeof event.cancelable !== 'boolean' || event.cancelable)) {
                         event.preventDefault();
                     }
                 };
