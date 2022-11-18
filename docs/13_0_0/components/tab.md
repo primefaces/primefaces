@@ -25,6 +25,7 @@ disabled | false | Boolean | Disables tab element.
 closable | false | Boolean | Makes the tab closable when enabled.
 titletip | null | String | Tooltip of the tab header.
 menuTitle | null | String | Tooltip for the menu button.
+ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 
 ## Getting started with the Tab
 See the sections of components who utilize _tab_ component for more information.

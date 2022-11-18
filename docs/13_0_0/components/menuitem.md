@@ -56,6 +56,7 @@ containerStyleClass | null | String | Style class of the menuitem container.
 form | null | String | Form to serialize for an ajax request. Default is the enclosing form.
 escape | true | Boolean | Defines whether value would be escaped or not
 rel | null | String | Defines the relationship between the current document and the linked document.
+ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 
 ## Getting started with MenuItem
 MenuItem is a generic component used by the following components.
