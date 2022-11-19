@@ -46,6 +46,8 @@ onShow | null | String | Client side callback to execute when the actions are vi
 onHide | null | String | Client side callback to execute when the actions are hidden.
 keepOpen | false | Boolean | Whether the menu should be kept open on clicking menu items.
 badge | null | Object | Badge to render. Either a `String` value or `org.primefaces.model.badge.BadgeModel` instance.
+ariaLabel | null | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
+title | null | String | Advisory tooltip information.
 
 ## Getting Started with SpeedDial
 When pressed, a floating action button can display multiple primary actions that can be performed on a page. It has a
