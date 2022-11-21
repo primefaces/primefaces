@@ -1243,7 +1243,7 @@ public class DataTableRenderer extends DataRenderer {
         String rowStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.ROW_CLASS)
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
-                .add(allowSelection, DataTable.SELECTABLE_ROW_CLASS)
+                .add(allowSelection && !"none".equals(table.getRowSelectMode()), DataTable.SELECTABLE_ROW_CLASS)
                 .add(selected, "ui-state-highlight")
                 .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
