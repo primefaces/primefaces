@@ -809,6 +809,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.rowSelectMode !== 'none') {
                 this.bindRowEvents();
             }
+            else {
+                this.jq.find('tr.ui-datatable-selectable').css('cursor', 'default');
+            }
         }
         else if(this.cfg.selectionMode === 'checkbox') {
             this.bindCheckboxEvents();
@@ -816,6 +819,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(this.cfg.rowSelectMode !== 'none') {
                 this.bindRowEvents();
+            }
+            else {
+                this.jq.find('tr.ui-datatable-selectable').css('cursor', 'default');
             }
         }
         else {
