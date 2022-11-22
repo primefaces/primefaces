@@ -190,13 +190,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if (animated)
             this.blocker.fadeOut(duration, callback);
         else
-            this.blocker.hide(duration, callback);
+            this.blocker.hide(duration || 0, callback);
 
         if (hasContent) {
             if (animated)
                 this.content.fadeOut(duration, resetPositionCallback);
             else
-                this.content.hide(duration, resetPositionCallback);
+                this.content.hide(duration || 0, resetPositionCallback);
         }
 
         this.target.attr('aria-busy', false);
