@@ -19,7 +19,6 @@ This page contains a list of big features. Please check the GitHub issues for al
 * MenuItem
     * Added attribute `ariaLabel` to allow screen reader support on menu items that do not have text or tooltip.
 * VirusScan
-    * Added default configuration for host and port (localhost:3310) of the ClamDeamonScanner such that no explicit configuration in web.xml is needed anymore when these defaults are fine.
     * Generalized ClamDeamonScanner such that the implementation of a custom ClamDeamonScanner can now access all virus scan parameters from the ClamDaemonClient.
 
 

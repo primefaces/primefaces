@@ -57,7 +57,8 @@ public class ClamDaemonScanner implements VirusScanner {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        return ctx.getInitParameter(CONTEXT_PARAM_HOST) != null && ctx.getInitParameter(CONTEXT_PARAM_PORT) != null;
     }
 
     /**
