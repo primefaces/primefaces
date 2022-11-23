@@ -45,6 +45,7 @@ filterMatchMode | null | String | Match mode for filtering, valid values are sta
 filterFunction | null | String | Client side function to use in custom filterMatchMode.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area
+collectionType | null | String | Optional attribute that is a literal string that is the fully qualified class name of a concrete class that implements `java.util.Collection` or an EL expression that evaluates to either 1. such a String, or 2. the `Class` object itself.
 
 ## Getting started with SelectManyMenu
 SelectManyMenu usage is same as the standard one.
