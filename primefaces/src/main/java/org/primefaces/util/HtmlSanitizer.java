@@ -34,7 +34,7 @@ public class HtmlSanitizer {
             .allowUrlProtocols("data", "http", "https")
             .allowElements("img")
             .allowAttributes("src")
-            .matching(Pattern.compile("^(data:image/(gif|png|jpeg)[,;]|http|https|mailto|//).+", Pattern.CASE_INSENSITIVE))
+            .matching(Pattern.compile("^(data:image/(gif|png|jpeg|webp)[,;]|http|https|mailto|//).+", Pattern.CASE_INSENSITIVE))
             .onElements("img")
             .toFactory();
 
