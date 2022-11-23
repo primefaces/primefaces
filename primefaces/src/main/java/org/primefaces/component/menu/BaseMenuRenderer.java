@@ -38,6 +38,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
@@ -78,6 +79,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         String style = menuitem.getStyle();
         boolean disabled = menuitem.isDisabled();
         String rel = menuitem.getRel();
+        String ariaLabel = menuitem.getAriaLabel();
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", tabindex, null);
@@ -104,6 +106,10 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
         if (rel != null) {
             writer.writeAttribute("rel", rel, null);
+        }
+
+        if (LangUtils.isNotEmpty(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         }
 
         if (disabled) {

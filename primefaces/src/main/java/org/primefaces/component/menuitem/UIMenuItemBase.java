@@ -74,7 +74,8 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         form,
         escape,
         rel,
-        ignoreComponentNotFound
+        ignoreComponentNotFound,
+        ariaLabel
     }
 
     public UIMenuItemBase() {
@@ -396,5 +397,14 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    @Override
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

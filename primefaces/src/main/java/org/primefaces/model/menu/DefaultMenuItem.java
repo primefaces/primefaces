@@ -80,6 +80,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean escape = true;
     private String rel;
     private boolean ignoreComponentNotFound;
+    private String ariaLabel;
 
     /**
      * Creates a new menu item without value.
@@ -526,6 +527,15 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     }
 
     @Override
+    public String getAriaLabel() {
+        return ariaLabel;
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        this.ariaLabel = ariaLabel;
+    }
+
+    @Override
     public boolean isIgnoreComponentNotFound() {
         return ignoreComponentNotFound;
     }
@@ -753,6 +763,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
         public Builder ignoreComponentNotFound(boolean ignoreComponentNotFound) {
             menuItem.setIgnoreComponentNotFound(ignoreComponentNotFound);
+            return this;
+        }
+
+        public Builder ariaLabel(String ariaLabel) {
+            menuItem.setAriaLabel(ariaLabel);
             return this;
         }
 

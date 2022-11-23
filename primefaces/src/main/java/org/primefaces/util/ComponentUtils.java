@@ -675,4 +675,17 @@ public class ComponentUtils {
             }
         }
     }
+
+    public static int getRenderedChildCount(UIComponent component) {
+        int renderedChildCount = 0;
+
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child.isRendered()) {
+                renderedChildCount++;
+            }
+        }
+
+        return renderedChildCount;
+    }
 }
