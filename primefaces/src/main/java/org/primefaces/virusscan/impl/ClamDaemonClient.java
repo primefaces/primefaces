@@ -62,6 +62,7 @@ public class ClamDaemonClient {
      * @param host The hostname of the server running clamav-daemon
      * @param port The port that clamav-daemon listens to(By default it might not listen to a port. Check your clamav configuration).
      * @param timeout zero means infinite timeout. Not a good idea, but will be accepted.
+     * @param buffer The buffer (chunk size).
      */
     public ClamDaemonClient(final String host, final int port, final int timeout, final int buffer) {
         if (timeout < 0) {
