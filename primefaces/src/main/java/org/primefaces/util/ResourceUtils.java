@@ -105,6 +105,9 @@ public class ResourceUtils {
             else if (base64.startsWith("/9j/")) {
                 contentType = "image/jpeg";
             }
+            else if (base64.startsWith("UklGR")) {
+                contentType = "image/webp";
+            }
         }
         return "data:" + contentType + ";base64," + base64;
     }
