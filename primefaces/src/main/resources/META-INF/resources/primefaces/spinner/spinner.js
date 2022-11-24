@@ -243,9 +243,12 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         var step = this.cfg.step * dir,
         currentValue = this.value ? this.value : 0,
         newValue = currentValue + step;
+        
+        if (Number.isSafeInteger(step)) {
+            // GitHub #8631 round to nearest step
+            newValue = (dir > 0) ? Math.floor(newValue / step) * step : Math.ceil(newValue / step) * step;
+        }
 
-        // GitHub #8631 round to nearest step
-        newValue = (dir > 0) ? Math.floor(newValue / step) * step : Math.ceil(newValue / step) * step;
         newValue = this.parseValue(newValue);
 
         if(this.cfg.maxlength !== undefined && newValue.toString().length > this.cfg.maxlength) {
