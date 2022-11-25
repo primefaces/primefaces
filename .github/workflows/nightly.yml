@@ -10,7 +10,7 @@ permissions:
 jobs:
   nightly:
     if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Java ${{ matrix.java }}, ${{ matrix.profile }}
     strategy:
       fail-fast: false
