@@ -94,7 +94,7 @@ by **qrcodegen** library. Following versions are supported officially.
 <dependency>
     <groupId>io.nayuki</groupId>
     <artifactId>qrcodegen</artifactId>
-    <version>1.6.0</version>
+    <version>1.8.0</version>
 </dependency>
 <dependency>
     <groupId>net.sf.barcode4j</groupId>
