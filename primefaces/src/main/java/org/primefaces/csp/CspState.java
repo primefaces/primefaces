@@ -53,7 +53,7 @@ public class CspState {
      */
     public String getNonce() {
         if (nonce == null) {
-            if (context.isPostback()) {
+            if (context.isPostback() || context.getPartialViewContext().isAjaxRequest()) {
                 nonce = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
                 validate(nonce);
             }
