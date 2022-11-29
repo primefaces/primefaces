@@ -70,9 +70,9 @@ public class CspPhaseListener implements PhaseListener {
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }
-    
+
     public static void initCsp(FacesContext context, Boolean enabled, Boolean policyProvided, String reportOnlyPolicy, String customPolicy) {
-    	if (Boolean.FALSE.equals(enabled) || Boolean.TRUE.equals(policyProvided)) {
+        if (Boolean.FALSE.equals(enabled) || Boolean.TRUE.equals(policyProvided)) {
             return;
         }
 

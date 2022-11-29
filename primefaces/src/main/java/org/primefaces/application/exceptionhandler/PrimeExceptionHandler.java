@@ -170,9 +170,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         if (writer == null) {
             return;
         }
-        
+
         CspPhaseListener.initCsp(context, config.get().isCsp(), config.get().isPolicyProvided(),
-        		config.get().getCspReportOnlyPolicy(), config.get().getCspPolicy());
+                config.get().getCspReportOnlyPolicy(), config.get().getCspPolicy());
 
         boolean isResponseReset = false;
 
