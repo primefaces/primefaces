@@ -54,6 +54,7 @@ import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCa
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspPhaseListener;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
@@ -169,6 +170,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         if (writer == null) {
             return;
         }
+        
+        CspPhaseListener.initCsp(context, config.get().isCsp(), config.get().isPolicyProvided(),
+        		config.get().getCspReportOnlyPolicy(), config.get().getCspPolicy());
 
         boolean isResponseReset = false;
 
