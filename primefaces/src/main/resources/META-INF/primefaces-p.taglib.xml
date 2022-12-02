@@ -13516,6 +13516,22 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if the element value should be selected on focus, default is true.]]>
+            </description>
+            <name>selectOnFocus</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where should be positioned the caret on focus such as 'start', 'end', 'decimalLeft', 'decimalRight', default is null.]]>
+            </description>
+            <name>caretPositionOnFocus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
