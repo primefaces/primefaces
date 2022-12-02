@@ -53,6 +53,8 @@ import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspPhaseListener;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
@@ -169,6 +171,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             return;
         }
 
+        CspPhaseListener.initCsp(context, config.get().isCsp(), config.get().isPolicyProvided(),
+                config.get().getCspReportOnlyPolicy(), config.get().getCspPolicy());
+
         boolean isResponseReset = false;
 
         //mojarra workaround to avoid invalid partial output due to open tags
@@ -220,7 +225,20 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             externalContext.setResponseContentType("text/xml");
 
             writer.startDocument();
-            writer.startElement("changes", null);
+
+            if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("var hf=function(type,message,timestampp){");
+                sb.append(handlerComponent.getOnexception());
+                sb.append("};hf.call(this,\""
+                        + info.getType() + "\",\""
+                        + EscapeUtils.forJavaScript(info.getMessage())
+                        + "\",\""
+                        + info.getFormattedTimestamp()
+                        + "\");");
+
+                PrimeRequestContext.getCurrentInstance(context).getScriptsToExecute().add(sb.toString());
+            }
 
             if (LangUtils.isNotBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
@@ -231,36 +249,13 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     for (int i = 0; i < updates.size(); i++) {
                         UIComponent component = updates.get(i);
 
-                        writer.startElement("update", null);
-                        writer.writeAttribute("id", component.getClientId(context), null);
-                        writer.startCDATA();
-
+                        writer.startUpdate(component.getClientId(context));
                         component.encodeAll(context);
-
-                        writer.endCDATA();
-                        writer.endElement("update");
+                        writer.endUpdate();
                     }
                 }
             }
 
-            if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
-                writer.startElement("eval", null);
-                writer.startCDATA();
-
-                writer.write("var hf=function(type,message,timestampp){");
-                writer.write(handlerComponent.getOnexception());
-                writer.write("};hf.call(this,\""
-                        + info.getType() + "\",\""
-                        + EscapeUtils.forJavaScript(info.getMessage())
-                        + "\",\""
-                        + info.getFormattedTimestamp()
-                        + "\");");
-
-                writer.endCDATA();
-                writer.endElement("eval");
-            }
-
-            writer.endElement("changes");
             writer.endDocument();
 
             context.responseComplete();

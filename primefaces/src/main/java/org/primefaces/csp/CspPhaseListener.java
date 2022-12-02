@@ -62,32 +62,41 @@ public class CspPhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (Boolean.FALSE.equals(enabled.get()) || Boolean.TRUE.equals(policyProvided.get())) {
+        FacesContext context = event.getFacesContext();
+        initCsp(context, enabled.get(), policyProvided.get(), reportOnlyPolicy.get(), customPolicy.get());
+    }
+
+    @Override
+    public PhaseId getPhaseId() {
+        return PhaseId.RENDER_RESPONSE;
+    }
+
+    public static void initCsp(FacesContext context, Boolean enabled, Boolean policyProvided, String reportOnlyPolicy, String customPolicy) {
+        if (Boolean.FALSE.equals(enabled) || Boolean.TRUE.equals(policyProvided)) {
             return;
         }
 
-        FacesContext context = event.getFacesContext();
         ExternalContext externalContext = context.getExternalContext();
 
         CspState state = PrimeFacesContext.getCspState(context);
+        if (state.isInitialized()) {
+            // already have run initCsp() once no need to run it again
+            return;
+        }
+        state.setInitialized(true);
 
-        if (LangUtils.isNotBlank(reportOnlyPolicy.get())) {
-            String policy = "script-src 'self' 'nonce-" + state.getNonce() + "'; " + reportOnlyPolicy.get() + ";";
+        if (LangUtils.isNotBlank(reportOnlyPolicy)) {
+            String policy = "script-src 'self' 'nonce-" + state.getNonce() + "'; " + reportOnlyPolicy + ";";
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
         else {
-            String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
+            String policy = LangUtils.isBlank(customPolicy) ? "script-src 'self'" : customPolicy;
             policy += " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy", policy);
         }
 
         String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');};";
         PrimeFaces.current().executeInitScript(init);
-    }
-
-    @Override
-    public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
     }
 
 }
