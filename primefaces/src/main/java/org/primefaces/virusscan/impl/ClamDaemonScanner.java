@@ -102,24 +102,28 @@ public class ClamDaemonScanner implements VirusScanner {
      *
      * @return the {@link ClamDaemonClient}
      */
-    ClamDaemonClient getClamAvClient() {
+    public ClamDaemonClient getClamAvClient() {
         if (client != null) {
             return client;
         }
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-        String host = ctx.getInitParameter(CONTEXT_PARAM_HOST);
-        int port = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_PORT));
-
-        int timeout = 60000; // default to 1 minute
+        String host = ClamDaemonClient.DEFAULT_HOST;
+        if (ctx.getInitParameter(CONTEXT_PARAM_HOST) != null) {
+            host = ctx.getInitParameter(CONTEXT_PARAM_HOST);
+        }
+        int port = ClamDaemonClient.DEFAULT_PORT;
+        if (ctx.getInitParameter(CONTEXT_PARAM_PORT) != null) {
+            port = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_PORT));
+        }
+        int timeout = ClamDaemonClient.DEFAULT_TIMEOUT;
         if (ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT) != null) {
             timeout = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT));
         }
-
-        int chunkSize = 2048; // default buffer size in bytes
+        int buffer = ClamDaemonClient.DEFAULT_BUFFER;
         if (ctx.getInitParameter(CONTEXT_PARAM_BUFFER) != null) {
-            chunkSize = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
+            buffer = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
         }
-        client = new ClamDaemonClient(host, port, timeout, chunkSize);
+        client = new ClamDaemonClient(host, port, timeout, buffer);
         return client;
     }
 

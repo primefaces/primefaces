@@ -192,7 +192,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>2.0.4</version>
+            <version>2.0.5</version>
             <scope>test</scope>
         </dependency>
 
@@ -989,6 +989,11 @@
                                 <relocation>
                                     <pattern>javax.faces</pattern>
                                     <shadedPattern>jakarta.faces</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>/javax.faces</pattern>
+                                    <shadedPattern>/jakarta.faces</shadedPattern>
+                                    <rawString>true</rawString>
                                 </relocation>
                                 <relocation>
                                     <pattern>javax.el</pattern>
