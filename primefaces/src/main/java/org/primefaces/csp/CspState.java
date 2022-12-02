@@ -54,11 +54,15 @@ public class CspState {
     public String getNonce() {
         if (nonce == null) {
             if (context.isPostback()) {
-                nonce = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
+                nonce = (String) context.getViewRoot().getViewMap().get(Constants.RequestParams.NONCE_PARAM);
+                if (nonce == null) {
+                    nonce = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
+                }
                 validate(nonce);
             }
             else {
                 nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+                context.getViewRoot().getViewMap().put(Constants.RequestParams.NONCE_PARAM, nonce);
             }
         }
 
@@ -76,7 +80,8 @@ public class CspState {
             throw new FacesException("Missing CSP nonce");
         }
         try {
-            Base64.getDecoder().decode(nonce);
+            String decodedNonce = new String(Base64.getDecoder().decode(nonce), StandardCharsets.UTF_8);
+            UUID.fromString(decodedNonce);
         }
         catch (Exception e) {
             throw new FacesException("Invalid CSP nonce", e);
