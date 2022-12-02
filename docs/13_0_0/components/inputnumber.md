@@ -80,6 +80,7 @@ styleClass | null | String | Style class of the input element.
 tabindex | null | Integer | Position of the input element in the tabbing order.
 title | null | String | Advisory tooltip information.
 type | text | String | Input field type.
+caretPositionOnFocus | null | String | Defines where should be positioned the caret on focus. Values 'start', 'end', 'decimalLeft', 'decimalRight'.
 decimalPlaces | 2 | String | Number of decimal places. If value is Integer/Long/Short/BigInteger number defaults to 0 else defaults to 2 only if the initial value is not `null`.
 decimalSeparator | *1 | String | Decimal separator char.
 decimalSeparatorAlternative | null | String | Allow to declare an alternative decimal separator which is automatically replaced by `decimalCharacter` when typed.
@@ -93,6 +94,7 @@ minValue | -10000000000000 | String | Minimum value. Warning: If minValue is gre
 modifyValueOnWheel | true | Boolean | Allows the user to increment or decrement the element value with the mouse wheel.
 padControl | true | Boolean | Controls padding of the decimal places. If true, always pads the decimal with zeros.
 roundMethod | Round-Half-Up-Symmetric | String | Controls the rounding method.
+selectOnFocus | true | Boolean | Defines if the element value should be selected on focu.
 symbol | none | String | Desired symbol or unit.
 symbolPosition | p | String | Position of the symbol. 'p' for prefix 's' for suffix
 signPosition | null | String | Placement of the negative/positive sign relative to the symbolPosition option The sign is placed on either side of the symbolPosition, which can be placed on either side of the numbers. 'p' for prefix 's' for suffix 'l' for left 'r' for right
