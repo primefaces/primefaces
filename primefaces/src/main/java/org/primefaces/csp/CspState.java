@@ -40,6 +40,7 @@ public class CspState {
     private FacesContext context;
     private Map<String, Map<String, String>> eventHandlers;
     private String nonce;
+    private boolean initialized = false;
 
     public CspState(FacesContext context) {
         this.context = context;
@@ -90,6 +91,19 @@ public class CspState {
 
     public Map<String, Map<String, String>> getEventHandlers() {
         return eventHandlers;
+    }
+
+    /**
+     * To prevent CSP from being initialized twice for any reason check if we already have run once when calling initialize.
+     *
+     * @return true if CSP has already been initialized, false if not.
+     */
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
     }
 
 }

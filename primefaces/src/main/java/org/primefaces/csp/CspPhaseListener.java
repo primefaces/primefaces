@@ -79,6 +79,11 @@ public class CspPhaseListener implements PhaseListener {
         ExternalContext externalContext = context.getExternalContext();
 
         CspState state = PrimeFacesContext.getCspState(context);
+        if (state.isInitialized()) {
+            // already have run initCsp() once no need to run it again
+            return;
+        }
+        state.setInitialized(true);
 
         if (LangUtils.isNotBlank(reportOnlyPolicy)) {
             String policy = "script-src 'self' 'nonce-" + state.getNonce() + "'; " + reportOnlyPolicy + ";";
