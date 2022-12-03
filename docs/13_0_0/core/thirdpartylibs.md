@@ -9,7 +9,6 @@ are many other third party libraries and plugins used to support features.
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.8.0 | https://www.chartjs.org |
 | [Color Picker](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#colorpicker) | (2012) | www.eyecon.ro |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
-| [ContentFlow](../jsdocs/classes/src_PrimeFaces.ContentFlow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.10.1 | https://fullcalendar.io/ |
