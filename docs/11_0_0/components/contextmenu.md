@@ -44,7 +44,7 @@ page meaning, right-click on anywhere on page will display the menu.
     <p:menuitem value="Save" action="#{bean.save}" update="msg"/>
     <p:menuitem value="Delete" action="#{bean.delete}" ajax="false"/>
     <p:menuitem value="Go Home" url=" http://www.primefaces.org " target="_blank"/>
-</p:contextMenu
+</p:contextMenu>
 ```
 ContextMenu example above is attached to the whole page and consists of three different
 menuitems with different use cases. First menuitem triggers an ajax action, second one triggers a
