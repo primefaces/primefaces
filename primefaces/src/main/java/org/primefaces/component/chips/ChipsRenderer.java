@@ -25,6 +25,7 @@ package org.primefaces.component.chips;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
