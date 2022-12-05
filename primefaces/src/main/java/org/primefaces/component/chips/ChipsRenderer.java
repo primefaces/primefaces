@@ -64,6 +64,9 @@ public class ChipsRenderer extends InputRenderer {
         }
 
         if (submittedValues.length > 0) {
+            if (chips.isUnique()) {
+                submittedValues = Stream.of(submittedValues).distinct().toArray(String[]::new);
+            }
             chips.setSubmittedValue(submittedValues);
         }
         else {
