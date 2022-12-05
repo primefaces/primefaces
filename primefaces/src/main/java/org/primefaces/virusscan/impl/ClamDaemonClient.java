@@ -113,9 +113,9 @@ public class ClamDaemonClient {
             os.write(asBytes("zPING\0"));
             os.flush();
             try (InputStream is = s.getInputStream()) {
-                byte[] buffer = new byte[4];
-                int read = is.read(buffer);
-                return Arrays.equals(buffer, asBytes("PONG"));
+                byte[] buffer4 = new byte[4];
+                int read = is.read(buffer4);
+                return Arrays.equals(buffer4, asBytes("PONG"));
             }
         }
     }
