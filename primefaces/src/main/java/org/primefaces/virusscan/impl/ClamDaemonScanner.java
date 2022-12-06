@@ -119,11 +119,11 @@ public class ClamDaemonScanner implements VirusScanner {
         if (ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT) != null) {
             timeout = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT));
         }
-        int buffer = ClamDaemonClient.DEFAULT_BUFFER;
+        int bufferSize = ClamDaemonClient.DEFAULT_BUFFER;
         if (ctx.getInitParameter(CONTEXT_PARAM_BUFFER) != null) {
-            buffer = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
+            bufferSize = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
         }
-        client = new ClamDaemonClient(host, port, timeout, buffer);
+        client = new ClamDaemonClient(host, port, timeout, bufferSize);
         return client;
     }
 
