@@ -113,6 +113,7 @@ Currently, only the following components are implemented (partially):
 - OverlayPanel
 - Panel
 - Password
+- Picklist
 - Rating
 - Schedule
 - SelectBooleanCheckbox
