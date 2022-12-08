@@ -41,7 +41,7 @@ public class ScrollElementIntoViewClickListener implements WebDriverListener {
 
     @Override
     public void beforeClick(WebElement element) {
-        if (!PrimeSelenium.isElementDisplayed(element)) {
+        if (!PrimeSelenium.isElementDisplayed(element) || PrimeSelenium.isVisibleInViewport(element)) {
             return;
         }
 

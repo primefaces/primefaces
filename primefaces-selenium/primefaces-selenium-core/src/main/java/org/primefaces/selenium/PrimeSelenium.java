@@ -277,6 +277,29 @@ public final class PrimeSelenium {
     }
 
     /**
+     * Is the Element visisible in the current viewport??
+     *
+     * @param element the WebElement to check
+     * @return true if visible
+     */
+    public static boolean isVisibleInViewport(WebElement element) {
+        try {
+            return PrimeSelenium.executeScript("var elem = arguments[0],"
+                    + "    box = elem.getBoundingClientRect(),"
+                    + "    cx = box.left + box.width / 2,"
+                    + "    cy = box.top + box.height / 2,"
+                    + "    e = document.elementFromPoint(cx, cy);"
+                    + "for (; e; e = e.parentElement) {"
+                    + "    if (e === elem) { return true; }"
+                    + "}"
+                    + "return false;", element);
+        }
+        catch (NoSuchElementException | StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
+    /**
      * Is the Element enabled on the page?
      *
      * @param by the selector
