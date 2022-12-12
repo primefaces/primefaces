@@ -23,26 +23,28 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.util.SerializableSupplier;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
 import javax.faces.FacesException;
+
 import org.primefaces.util.SerializableConsumer;
+import org.primefaces.util.SerializableSupplier;
 
 /**
  * Default implementation of a StreamedContent
  */
 public class DefaultStreamedContent implements StreamedContent, Serializable {
 
+    private static final long serialVersionUID = 1L;
     private SerializableSupplier<InputStream> stream;
     private String contentType;
     private String name;
     private String contentEncoding;
-    private Integer contentLength;
+    private Long contentLength;
     private SerializableConsumer<OutputStream> writer;
 
     public DefaultStreamedContent() {
@@ -70,7 +72,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
     }
 
     @Override
-    public Integer getContentLength() {
+    public Long getContentLength() {
         return contentLength;
     }
 
@@ -111,7 +113,7 @@ public class DefaultStreamedContent implements StreamedContent, Serializable {
             return this;
         }
 
-        public Builder contentLength(Integer contentLength) {
+        public Builder contentLength(Long contentLength) {
             streamedContent.contentLength = contentLength;
             return this;
         }

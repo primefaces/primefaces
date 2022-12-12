@@ -36,7 +36,7 @@ public interface StreamedContent {
 
     String getContentEncoding();
 
-    Integer getContentLength();
+    Long getContentLength();
 
     /**
      * {@link InputStream} which will be buffered and written to the response.
