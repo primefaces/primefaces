@@ -110,11 +110,15 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
     
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
     
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', target, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
     },
 

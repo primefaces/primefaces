@@ -1206,6 +1206,13 @@
          * @type {boolean}
          */
         customFocus : false,
+        
+        /**
+         * PrimeFaces per defaults hides all overlays on scrolling/resizing to avoid positioning problems.
+         * This is really hard to overcome in selenium tests and we can disable this behavior with this setting.
+         * @type {boolean}
+         */
+        hideOverlaysOnViewportChange : true,
 
         /**
          * A list of widgets that were once instantiated, but are not removed from the DOM, such as due to the result

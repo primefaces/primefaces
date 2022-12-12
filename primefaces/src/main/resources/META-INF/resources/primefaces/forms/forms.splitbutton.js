@@ -249,11 +249,15 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             });
 
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.menu, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
     },
 

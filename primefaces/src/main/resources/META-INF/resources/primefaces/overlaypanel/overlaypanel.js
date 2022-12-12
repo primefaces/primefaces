@@ -275,7 +275,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @private
      */
     handleViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.align(this.target);
         } else {
             this.hide();

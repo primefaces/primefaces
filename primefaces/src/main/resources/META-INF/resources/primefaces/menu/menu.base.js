@@ -161,7 +161,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     handleViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.align();
         } else {
             this.hide();

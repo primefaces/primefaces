@@ -326,7 +326,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     handleViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();

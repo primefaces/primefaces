@@ -436,7 +436,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     handleViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();
