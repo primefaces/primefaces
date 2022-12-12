@@ -173,6 +173,10 @@ public class ConfigProvider {
             // CHECKSTYLE:ON
         }
 
+        if (scrollElementIntoView != null) {
+            onloadScripts.add("if (window.PrimeFaces) { $(function() { PrimeFaces.hideOverlaysOnViewportChange = false; }); }");
+        }
+
         if (onloadScriptsAdapter != null) {
             onloadScriptsAdapter.registerOnloadScripts(onloadScripts);
         }
