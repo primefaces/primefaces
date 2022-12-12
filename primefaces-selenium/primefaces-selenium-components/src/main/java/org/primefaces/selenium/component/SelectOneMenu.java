@@ -135,7 +135,11 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public String getSelectedLabel() {
-        return getLabel().getText();
+        WebElement label = getLabel();
+        if (PrimeSelenium.isElementDisplayed(label)) {
+            return label.getText();
+        }
+        return label.getAttribute("textContent");
     }
 
     public boolean isSelected(String label) {

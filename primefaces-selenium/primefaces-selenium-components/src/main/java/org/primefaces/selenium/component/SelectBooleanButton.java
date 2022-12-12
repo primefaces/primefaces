@@ -24,6 +24,8 @@
 package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractToggleComponent;
 
 /**
@@ -37,7 +39,11 @@ public abstract class SelectBooleanButton extends AbstractToggleComponent {
      * @return the label text of the button
      */
     public String getLabel() {
-        return findElement(By.className("ui-button-text")).getText();
+        WebElement label = findElement(By.className("ui-button-text"));
+        if (PrimeSelenium.isElementDisplayed(label)) {
+            return label.getText();
+        }
+        return label.getAttribute("textContent");
     }
 
 }

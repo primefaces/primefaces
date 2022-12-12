@@ -25,6 +25,7 @@ package org.primefaces.selenium.component;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.openqa.selenium.By;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -58,7 +59,11 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public String getSelectedLabel() {
-        return getActiveOption().getText();
+        WebElement label = getActiveOption().findElement(By.className("ui-button-text"));
+        if (PrimeSelenium.isElementDisplayed(label)) {
+            return label.getText();
+        }
+        return label.getAttribute("textContent");
     }
 
     public boolean isSelected(String label) {
