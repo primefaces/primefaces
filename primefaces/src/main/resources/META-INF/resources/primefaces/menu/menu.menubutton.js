@@ -279,11 +279,11 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
         }
 
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.menu, function() {
-            $this.handleViewportChange();
+            $this.handleOverlayViewportChange();
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.handleViewportChange();
+            $this.handleOverlayViewportChange();
         });
     },
 
@@ -312,7 +312,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * resize immediately and close the overlay. See GitHub #7075.
      * @private
      */
-    handleViewportChange: function() {
+    handleOverlayViewportChange: function() {
         if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
