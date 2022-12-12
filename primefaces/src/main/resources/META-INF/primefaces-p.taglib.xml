@@ -16754,6 +16754,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
+            </description>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the main container element.]]>
             </description>
             <name>style</name>

@@ -16,6 +16,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `rowTitle` to support row-specific titles.
 * SpeedDial
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
+* Menu
+    * Added attribute `appendTo` to support custom append of the menu instead of default `@(body)`.
 * MenuItem
     * Added attribute `ariaLabel` to allow screen reader support on menu items that do not have text or tooltip.
 * VirusScan
