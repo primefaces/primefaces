@@ -95,7 +95,7 @@ Widget: _PrimeFaces.widget.Sidebar_
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
-show() | - | void | Shows overlay menu.
+show(reload) | reload | void | Shows overlay menu.
 hide() | - | void | Hides overlay menu.
 
 ## Skinning
