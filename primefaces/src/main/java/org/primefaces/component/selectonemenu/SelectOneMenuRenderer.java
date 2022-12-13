@@ -273,7 +273,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.endElement("input");
         }
         else {
-            writer.startElement("label", null);
+            writer.startElement("span", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
             if (menu.getPlaceholder() != null) {
@@ -284,7 +284,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeText(label, null);
             }
             writer.write("&nbsp;");
-            writer.endElement("label");
+            writer.endElement("span");
         }
     }
 
