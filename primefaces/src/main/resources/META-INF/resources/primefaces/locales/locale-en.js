@@ -32,6 +32,7 @@
      noEventsText: 'No Events',
      today: 'Today',
      clear: 'Clear',
+     select: 'Select',
      aria: {
          'paginator.PAGE': 'Page {0}',
          'calendar.BUTTON': 'Show Calendar',
