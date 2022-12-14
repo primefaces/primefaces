@@ -73,7 +73,6 @@
                 monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 today: 'Today',
                 clear: 'Clear',
-                select: 'Select',
                 year: 'Year',
                 month: 'Month',
                 week: 'Week',
@@ -1349,7 +1348,7 @@
 
         renderTitleMonthElement: function (month, index) {
             if (this.options.monthNavigator && this.options.view !== 'month' && index === 0) {
-                return '<select class="ui-datepicker-month" aria-label="'+this.options.locale.select+' '+this.options.locale.month+'">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort, month) + '</select>';
+                return '<select class="ui-datepicker-month" aria-label="'+this.options.locale.month+'">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort, month) + '</select>';
             }
             else {
                 return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>' + '&#xa0;';
@@ -1368,7 +1367,7 @@
                     yearOptions.push(i);
                 }
 
-                return '<select class="ui-datepicker-year" aria-label="'+this.options.locale.select+' '+this.options.locale.year+'">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
+                return '<select class="ui-datepicker-year" aria-label="'+this.options.locale.year+'">' + this.renderTitleOptions('year', yearOptions, year) + '</select>';
             }
             else {
                 return '<span class="ui-datepicker-year">' + year + '</span>';
