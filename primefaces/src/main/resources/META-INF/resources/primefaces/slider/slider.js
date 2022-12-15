@@ -235,7 +235,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} inputValue A value of a slider handle to store.
      */
     setInputValue: function(input, inputValue) {
-        if (input.parent().hasClass('ui-inputnumber')) {
+        if (input.parent().hasClass('ui-inputnumber') || (this.cfg.range === true && input.hasClass('ui-inputnumber'))) {
             var inputNumberId = input.closest('.ui-inputnumber').attr('id');
             var inputNumberWidget = PrimeFaces.getWidgetById(inputNumberId);
             inputNumberWidget.autonumeric.set(inputValue);
