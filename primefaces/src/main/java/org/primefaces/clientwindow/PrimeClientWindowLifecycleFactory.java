@@ -24,36 +24,30 @@
 package org.primefaces.clientwindow;
 
 import java.util.Iterator;
+
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 
 public class PrimeClientWindowLifecycleFactory extends LifecycleFactory {
 
-    private final LifecycleFactory wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeClientWindowLifecycleFactory(LifecycleFactory wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
     }
 
     @Override
     public void addLifecycle(String lifecycleId, Lifecycle lifecycle) {
-        wrapped.addLifecycle(lifecycleId, lifecycle);
+        getWrapped().addLifecycle(lifecycleId, lifecycle);
     }
 
     @Override
     public Lifecycle getLifecycle(String lifecycleId) {
-        Lifecycle result = wrapped.getLifecycle(lifecycleId);
+        Lifecycle result = getWrapped().getLifecycle(lifecycleId);
         return new PrimeClientWindowLifecycle(result);
     }
 
     @Override
     public Iterator<String> getLifecycleIds() {
-        return wrapped.getLifecycleIds();
+        return getWrapped().getLifecycleIds();
     }
 
-    @Override
-    public LifecycleFactory getWrapped() {
-        return wrapped;
-    }
 }

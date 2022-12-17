@@ -29,22 +29,8 @@ import javax.faces.context.PartialViewContextFactory;
 
 public class PrimePartialViewContextFactory extends PartialViewContextFactory {
 
-    private PartialViewContextFactory parent;
-
-    // #6212 - don't remove it
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public PrimePartialViewContextFactory() {
-
-    }
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContextFactory(PartialViewContextFactory parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public PartialViewContextFactory getWrapped() {
-        return this.parent;
+        super(parent);
     }
 
     @Override

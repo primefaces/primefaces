@@ -26,6 +26,7 @@ package org.primefaces.application.resource;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceWrapper;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
@@ -34,23 +35,15 @@ import org.primefaces.context.PrimeRequestContext;
  */
 public class PrimeResource extends ResourceWrapper {
 
-    private Resource wrapped;
-    private String version;
+    private final String version;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResource(final Resource resource) {
-        super();
-        wrapped = resource;
+        super(resource);
 
         FacesContext context = FacesContext.getCurrentInstance();
         version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion()
                 ? null
                 : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
-    }
-
-    @Override
-    public Resource getWrapped() {
-        return wrapped;
     }
 
     @Override
