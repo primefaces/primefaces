@@ -287,9 +287,23 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             };
             blocker.css(sizeAndPosition);
 
+            var contentHeight = content.outerHeight();
+            var contentWidth = content.outerWidth();
+            // #9496 if display:none then we need to clone to get its dimensions
+            if (contentHeight === 0) {
+                var currentWidth = this.content[i].getBoundingClientRect().width;
+                var clone = this.content[i].cloneNode(true);
+                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset; width: ' + currentWidth + 'px';
+                document.body.append(clone);
+                var jqClone = $(clone);
+                contentHeight = jqClone.outerHeight();
+                contentWidth = jqClone.outerWidth();
+                jqClone.remove();
+            }
+
             content.css({
-                'left': ((blocker.width() - content.outerWidth()) / 2) + 'px',
-                'top': ((blocker.height() - content.outerHeight()) / 2) + 'px',
+                'left': ((blocker.width() - contentWidth) / 2) + 'px',
+                'top': ((blocker.height() - contentHeight) / 2) + 'px',
                 'z-index': PrimeFaces.nextZindex()
             });
         }
