@@ -284,7 +284,10 @@ public class ResourceUtils {
     }
 
     public static String getMonitorKeyCookieName(FacesContext context, ValueExpression monitorKey) {
-        String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId().replace('/', '_');
+        String monitorKeyCookieName = Constants.DOWNLOAD_COOKIE + context.getViewRoot().getViewId();
+        monitorKeyCookieName = monitorKeyCookieName.replace('/', '_');
+        // #9521 remove file extension like .xhtml or .jsf as it violates cookie naming rules
+        monitorKeyCookieName = monitorKeyCookieName.substring(0, monitorKeyCookieName.lastIndexOf('.'));
         if (monitorKey != null) {
             String evaluated = (String) monitorKey.getValue(context.getELContext());
             if (LangUtils.isNotBlank(evaluated)) {
