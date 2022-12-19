@@ -42,7 +42,7 @@ import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
 
-public class PrimePartialResponseWriter extends PartialResponseWriter {
+public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
 
