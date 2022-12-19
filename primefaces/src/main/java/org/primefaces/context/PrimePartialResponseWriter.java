@@ -23,14 +23,8 @@
  */
 package org.primefaces.context;
 
-import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.primefaces.util.BeanUtils;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.ResourceUtils;
+import java.io.IOException;
+import java.util.*;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UINamingContainer;
@@ -38,15 +32,17 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.AbortProcessingException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.primefaces.application.resource.DynamicResourcesPhaseListener;
+import org.primefaces.util.BeanUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
+
+public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
 
