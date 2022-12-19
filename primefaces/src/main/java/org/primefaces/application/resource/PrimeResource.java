@@ -26,6 +26,7 @@ package org.primefaces.application.resource;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceWrapper;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 
@@ -34,23 +35,15 @@ import org.primefaces.context.PrimeRequestContext;
  */
 public class PrimeResource extends ResourceWrapper {
 
-    private Resource wrapped;
     private String version;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResource(final Resource resource) {
-        super();
-        wrapped = resource;
+        super(resource);
 
         FacesContext context = FacesContext.getCurrentInstance();
         version = PrimeRequestContext.getCurrentInstance(context).isHideResourceVersion()
                 ? null
                 : "&v=" + PrimeApplicationContext.getCurrentInstance(context).getEnvironment().getBuildVersion();
-    }
-
-    @Override
-    public Resource getWrapped() {
-        return wrapped;
     }
 
     @Override
@@ -61,38 +54,4 @@ public class PrimeResource extends ResourceWrapper {
         return super.getRequestPath() + version;
     }
 
-    @Override
-    public String getContentType() {
-        return getWrapped().getContentType();
-    }
-
-    @Override
-    public String getLibraryName() {
-        return getWrapped().getLibraryName();
-    }
-
-    @Override
-    public String getResourceName() {
-        return getWrapped().getResourceName();
-    }
-
-    @Override
-    public void setContentType(final String contentType) {
-        getWrapped().setContentType(contentType);
-    }
-
-    @Override
-    public void setLibraryName(final String libraryName) {
-        getWrapped().setLibraryName(libraryName);
-    }
-
-    @Override
-    public void setResourceName(final String resourceName) {
-        getWrapped().setResourceName(resourceName);
-    }
-
-    @Override
-    public String toString() {
-        return getWrapped().toString();
-    }
 }
