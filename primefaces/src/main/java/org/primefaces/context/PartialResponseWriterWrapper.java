@@ -31,7 +31,6 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.ResponseWriter;
-import javax.faces.context.ResponseWriterWrapper;
 import javax.faces.render.ResponseStateManager;
 
 
@@ -40,7 +39,7 @@ import javax.faces.render.ResponseStateManager;
  * oncomplete callback scripts, resetting the AJAX response (specifically for {@link FullAjaxExceptionHandler}) and
  * fixing incomplete XML response in case of exceptions.
  */
-public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
+public class PartialResponseWriterWrapper extends PartialResponseWriter {
 
     /**
      * <p class="changed_added_2_0">Reserved ID value to indicate
@@ -140,6 +139,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void startInsertBefore(String targetId)
             throws IOException {
         startChangesIfNecessary();
@@ -159,6 +159,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void startInsertAfter(String targetId)
             throws IOException {
         startChangesIfNecessary();
@@ -176,6 +177,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void endInsert() throws IOException {
         ResponseWriter writer = getWrapped();
         writer.endCDATA();
@@ -197,6 +199,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void startUpdate(String targetId) throws IOException {
         startChangesIfNecessary();
         inUpdate = true;
@@ -212,6 +215,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void endUpdate() throws IOException {
         ResponseWriter writer = getWrapped();
         writer.endCDATA();
@@ -227,6 +231,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void updateAttributes(String targetId, Map<String, String> attributes)
             throws IOException {
         startChangesIfNecessary();
@@ -249,6 +254,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void delete(String targetId) throws IOException {
         startChangesIfNecessary();
         ResponseWriter writer = getWrapped();
@@ -264,6 +270,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void redirect(String url) throws IOException {
         endChangesIfNecessary();
         ResponseWriter writer = getWrapped();
@@ -278,6 +285,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void startEval() throws IOException {
         startChangesIfNecessary();
         ResponseWriter writer = getWrapped();
@@ -291,6 +299,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void endEval() throws IOException {
         ResponseWriter writer = getWrapped();
         writer.endCDATA();
@@ -304,6 +313,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void startExtension(Map<String, String> attributes) throws IOException {
         startChangesIfNecessary();
         ResponseWriter writer = getWrapped();
@@ -321,6 +331,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void endExtension() throws IOException {
         ResponseWriter writer = getWrapped();
         writer.endElement("extension");
@@ -333,6 +344,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void startError(String errorName) throws IOException {
         endUpdateIfNecessary();
         endChangesIfNecessary();
@@ -351,6 +363,7 @@ public class PartialResponseWriterWrapper extends ResponseWriterWrapper {
      * @throws IOException if an input/output error occurs
      * @since 2.0
      */
+    @Override
     public void endError() throws IOException {
         ResponseWriter writer = getWrapped();
         writer.endCDATA();
