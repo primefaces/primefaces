@@ -789,6 +789,7 @@
                 }
 
                 var cookieName = 'primefaces.download' + PrimeFaces.settings.viewId.replace(/\//g, '_');
+                cookieName = cookieName.substr(0, cookieName.lastIndexOf("."));
                 if (monitorKey && monitorKey !== '') {
                     cookieName += '_' + monitorKey;
                 }
