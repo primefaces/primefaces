@@ -358,4 +358,9 @@ public class DynamicColumn implements UIColumn {
         return columns.getDisplayPriority();
     }
 
+    @Override
+    public String getTitle() {
+        return columns.getTitle();
+    }
+
 }

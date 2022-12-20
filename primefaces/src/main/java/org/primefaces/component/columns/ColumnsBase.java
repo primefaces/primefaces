@@ -72,6 +72,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         sortable,
         style,
         styleClass,
+        title,
         toggleable,
         visible,
         width
@@ -453,6 +454,15 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setDisplayPriority(int displayPriority) {
         getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
+    }
+
+    @Override
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
 }

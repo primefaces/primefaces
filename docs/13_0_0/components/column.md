@@ -59,6 +59,7 @@ treetable and more.
 | sortPriority              | Integer.MAX_VALUE  | Integer          | Sets default sorting priority over the other columns. Lower values have more priority.
 | style | null | String | Inline style of the column.
 | styleClass | null | String | Style class of the column.
+| title | null | String | Advisory tooltip information.
 | toggleable | true | Boolean | Defines if column is toggleable by columnToggler component. Default value is true and a false value marks the column as static.
 | visible | true | Boolean | Controls the visibilty of the column.
 | width | null | String | The width of the column ('px' as default if no length unit is defined)

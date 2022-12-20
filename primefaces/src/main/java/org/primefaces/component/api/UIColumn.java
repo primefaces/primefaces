@@ -27,8 +27,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.el.ELContext;
 
+import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -141,6 +141,8 @@ public interface UIColumn {
     String getSelectionMode();
 
     boolean isResizable();
+
+    String getTitle();
 
     String getStyle();
 

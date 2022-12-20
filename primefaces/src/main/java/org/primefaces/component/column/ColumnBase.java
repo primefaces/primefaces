@@ -77,6 +77,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         sortable,
         style,
         styleClass,
+        title,
         toggleable,
         visible,
         width
@@ -477,4 +478,12 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
     }
 
+    @Override
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
+    }
 }

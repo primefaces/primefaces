@@ -10,10 +10,12 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `rowTitle` to support row-specific titles.
 * DataTable
     * Added attribute `rowTitle` to support row-specific titles.
+    * Added attribute `title` column/columns to support cell specific titles.
 * DataView
     * Added attribute `gridRowTitle` to support row-specific titles.
 * TreeTable
     * Added attribute `rowTitle` to support row-specific titles.
+    * Added attribute `title` column/columns to support cell specific titles.
 * SpeedDial
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * Menu
