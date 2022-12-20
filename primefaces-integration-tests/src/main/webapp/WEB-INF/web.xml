@@ -27,6 +27,10 @@
         <param-value>${primefaces.THEME}</param-value>
     </context-param>
     <context-param>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
         <param-name>primefaces.MOVE_SCRIPTS_TO_BOTTOM</param-name>
         <param-value>true</param-value>
     </context-param>

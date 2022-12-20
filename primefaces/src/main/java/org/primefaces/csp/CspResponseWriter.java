@@ -25,8 +25,12 @@ package org.primefaces.csp;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.*;
-
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -54,6 +58,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                     "onselect", "onshow", "onstalled", "onstorage", "onsubmit", "onsuspend", "ontimeupdate", "ontoggle", "ontouchcancel",
                     "ontouchend", "ontouchmove", "ontouchstart", "ontransitionend", "onunload", "onvolumechange", "onwaiting", "onwheel"));
 
+    private ResponseWriter wrapped;
+
     private CspState cspState;
 
     private String lastElement;
@@ -63,8 +69,9 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
     private Lazy<Boolean> policyProvided;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public CspResponseWriter(ResponseWriter wrapped, CspState cspState) {
-        super(wrapped);
+        this.wrapped = wrapped;
         this.cspState = cspState;
 
         policyProvided = new Lazy<>(() ->
@@ -255,4 +262,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         return getWrapped().cloneWithWriter(writer);
     }
 
+    @Override
+    public ResponseWriter getWrapped() {
+        return wrapped;
+    }
 }
