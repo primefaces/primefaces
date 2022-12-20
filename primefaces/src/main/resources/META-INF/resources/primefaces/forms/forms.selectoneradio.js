@@ -145,16 +145,15 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 if(!radio.hasClass('ui-state-active')) {
                     $this.unselect($this.checkedRadio);
                     $this.select(radio);
-                    $this.fireClickEvent(input, e);
-                    input.trigger('change');
                 }
                 else {
                     if ($this.cfg.unselectable) {
                         $this.unselect($this.checkedRadio);
                     }
-                    $this.fireClickEvent(input, e);
                 }
 
+                $this.fireClickEvent(input, e);
+                input.trigger('change');
                 input.trigger('focus.selectOneRadio');
 
                 // Github issue #4467

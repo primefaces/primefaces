@@ -33,6 +33,7 @@ import javax.inject.Named;
 
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
 
@@ -53,6 +54,10 @@ public class SelectOneRadio002 implements Serializable {
     public void init() {
         drivers = driverService.getDrivers();
         value = 3;
+    }
+
+    public void onAjaxChange() {
+        TestUtils.addMessage(Integer.valueOf(value).toString(), Integer.valueOf(value).toString());
     }
 
 }
