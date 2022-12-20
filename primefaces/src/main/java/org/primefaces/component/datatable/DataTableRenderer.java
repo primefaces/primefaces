@@ -1306,6 +1306,7 @@ public class DataTableRenderer extends DataRenderer {
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
         int responsivePriority = column.getResponsivePriority();
+        String title = column.getTitle();
         String style = column.getStyle();
 
         String styleClass = getStyleClassBuilder(context)
@@ -1335,6 +1336,9 @@ public class DataTableRenderer extends DataRenderer {
         }
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, null);
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, null);
         }
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
         if (component != null) {

@@ -4960,6 +4960,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the column.]]>
             </description>
             <name>style</name>
@@ -5361,6 +5369,14 @@
             <name>sortBy</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
