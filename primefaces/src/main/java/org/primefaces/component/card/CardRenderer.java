@@ -23,14 +23,15 @@
  */
 package org.primefaces.component.card;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
+
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class CardRenderer extends CoreRenderer {
 
@@ -58,10 +59,10 @@ public class CardRenderer extends CoreRenderer {
         //header
         String header = card.getHeader();
         if (LangUtils.isNotBlank(header)) {
-            writer.startElement("div", card);
+            writer.startElement("h6", card);
             writer.writeAttribute("class", Card.HEADER_CLASS, null);
             writer.writeText(header, null);
-            writer.endElement("div");
+            writer.endElement("h6");
         }
         else if (ComponentUtils.shouldRenderFacet(headerFacet)) {
             writer.startElement("div", card);
