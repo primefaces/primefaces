@@ -30,10 +30,10 @@ import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspPartialResponseWriter;
 import org.primefaces.expression.SearchExpressionConstants;
+
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -42,10 +42,17 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
+    private PartialViewContext wrapped;
     private PartialResponseWriter writer;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContext(PartialViewContext wrapped) {
-        super(wrapped);
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public PartialViewContext getWrapped() {
+        return this.wrapped;
     }
 
     @Override

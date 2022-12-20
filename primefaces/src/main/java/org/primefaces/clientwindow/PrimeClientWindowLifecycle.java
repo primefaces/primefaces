@@ -32,8 +32,11 @@ import javax.faces.lifecycle.LifecycleWrapper;
 // if we would add the client-window-factory entry, pre JSF2.3 would crash
 public class PrimeClientWindowLifecycle extends LifecycleWrapper {
 
+    private final Lifecycle wrapped;
+
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeClientWindowLifecycle(Lifecycle wrapped) {
-        super(wrapped);
+        this.wrapped = wrapped;
     }
 
     @Override
@@ -51,5 +54,10 @@ public class PrimeClientWindowLifecycle extends LifecycleWrapper {
             facesContext.getExternalContext().setClientWindow(null);
             throw e;
         }
+    }
+
+    @Override
+    public Lifecycle getWrapped() {
+        return wrapped;
     }
 }

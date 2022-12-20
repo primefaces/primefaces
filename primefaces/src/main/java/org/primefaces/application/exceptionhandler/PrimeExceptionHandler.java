@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -42,11 +41,14 @@ import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
-import javax.faces.context.*;
+import javax.faces.context.ExceptionHandler;
+import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
-
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
 import org.primefaces.config.PrimeConfiguration;
@@ -55,8 +57,8 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspPhaseListener;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.Lazy;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
@@ -64,11 +66,18 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+    private final ExceptionHandler wrapped;
     private final Lazy<PrimeConfiguration> config;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
-        super(wrapped);
+        this.wrapped = wrapped;
         this.config = new Lazy(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
+    }
+
+    @Override
+    public ExceptionHandler getWrapped() {
+        return wrapped;
     }
 
     @Override

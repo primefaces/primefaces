@@ -29,8 +29,16 @@ import javax.faces.context.FacesContext;
 
 public class PrimeExternalContext extends ExternalContextWrapper {
 
+    private ExternalContext wrapped;
+
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExternalContext(ExternalContext wrapped) {
-        super(wrapped);
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public ExternalContext getWrapped() {
+        return wrapped;
     }
 
     public static PrimeExternalContext getCurrentInstance(FacesContext facesContext) {

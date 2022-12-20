@@ -25,8 +25,11 @@ package org.primefaces.context;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
-import javax.faces.context.*;
-
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextWrapper;
+import javax.faces.context.ResponseWriter;
+import javax.faces.context.ResponseWriterWrapper;
 import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
 import org.primefaces.application.resource.MoveScriptsToBottomState;
 import org.primefaces.config.PrimeConfiguration;
@@ -38,6 +41,7 @@ import org.primefaces.csp.CspState;
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
+    private final FacesContext wrapped;
     private final boolean moveScriptsToBottom;
     private final boolean csp;
     private final boolean markInputAsInvalidOnErrorMsg;
@@ -46,8 +50,9 @@ public class PrimeFacesContext extends FacesContextWrapper {
     private CspState cspState;
     private PrimeExternalContext externalContext;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContext(FacesContext wrapped) {
-        super(wrapped);
+        this.wrapped = wrapped;
 
         PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
         PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
@@ -72,7 +77,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
     @Override
     public ExternalContext getExternalContext() {
         if (externalContext == null) {
-            externalContext = new PrimeExternalContext(getWrapped().getExternalContext());
+            externalContext = new PrimeExternalContext(wrapped.getExternalContext());
         }
         return externalContext;
     }
@@ -111,8 +116,13 @@ public class PrimeFacesContext extends FacesContextWrapper {
     }
 
     @Override
+    public FacesContext getWrapped() {
+        return wrapped;
+    }
+
+    @Override
     public void release() {
-        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(getWrapped());
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(wrapped);
         if (requestContext != null) {
             requestContext.release();
         }
