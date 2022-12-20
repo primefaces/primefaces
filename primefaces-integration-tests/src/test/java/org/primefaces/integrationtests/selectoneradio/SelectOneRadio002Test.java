@@ -32,6 +32,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneRadio;
 
 public class SelectOneRadio002Test extends AbstractPrimePageTest {
@@ -61,6 +62,33 @@ public class SelectOneRadio002Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneRadio.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(1)
+    @DisplayName("SelectOneRadio: AJAX Selecting again unselects with unselectable='true' and fires change")
+    public void testUnselectableAjax(Page page) {
+        // Arrange
+        SelectOneRadio selectOneRadio = page.selectOneRadioAjax;
+        Assertions.assertEquals(4, selectOneRadio.getItemsSize());
+        Assertions.assertEquals("Charles", selectOneRadio.getSelectedLabel());
+
+        // Act
+        selectOneRadio.select("Charles");
+
+        // Assert -- should be empty
+        Assertions.assertEquals("", selectOneRadio.getSelectedLabel());
+        Assertions.assertEquals("0", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("0", page.messages.getMessage(0).getSummary());
+
+        // Act
+        selectOneRadio.select("Charles");
+
+        // Assert
+        Assertions.assertEquals("Charles", selectOneRadio.getSelectedLabel());
+        Assertions.assertEquals("3", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("3", page.messages.getMessage(0).getSummary());
+        assertConfiguration(selectOneRadio.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneRadio Config = " + cfg);
@@ -70,6 +98,12 @@ public class SelectOneRadio002Test extends AbstractPrimePageTest {
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:selectoneradio")
         SelectOneRadio selectOneRadio;
+
+        @FindBy(id = "formAjax:selectoneradioajax")
+        SelectOneRadio selectOneRadioAjax;
+
+        @FindBy(id = "formAjax:msgs")
+        Messages messages;
 
         @FindBy(id = "form:submit")
         CommandButton submit;
