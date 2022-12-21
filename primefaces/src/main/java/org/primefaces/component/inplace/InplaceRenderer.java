@@ -52,13 +52,11 @@ public class InplaceRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inplace.getClientId(context);
         String widgetVar = inplace.resolveWidgetVar(context);
-
         String userStyle = inplace.getStyle();
-        String styleClass = getStyleClassBuilder(context).add(Inplace.CONTAINER_CLASS, inplace.getStyleClass()).build();
         boolean disabled = inplace.isDisabled();
-        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
-
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
+        String styleClass = getStyleClassBuilder(context).add(Inplace.CONTAINER_CLASS, inplace.getStyleClass()).build();
+        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
         String mode = inplace.getMode();
 
         //container
@@ -70,7 +68,6 @@ public class InplaceRenderer extends CoreRenderer {
         }
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
-
 
         //output
         String outputStyle = validationFailed
@@ -133,12 +130,9 @@ public class InplaceRenderer extends CoreRenderer {
         }
 
         UIComponent editor = inplace.getChildren().get(0);
-        String value;
-        if (editor instanceof Password || "password".equalsIgnoreCase(String.valueOf(editor.getAttributes().get("type")))) {
-            value = "********";
-        }
-        else {
-            value = ComponentUtils.getValueToRender(context, editor);
+        String value = ComponentUtils.getValueToRender(context, editor);
+        if (LangUtils.isNotBlank(value) && (editor instanceof Password || "password".equalsIgnoreCase(String.valueOf(editor.getAttributes().get("type"))))) {
+            value = Inplace.PASSWORD_MASK;
         }
 
         if (LangUtils.isBlank(value)) {

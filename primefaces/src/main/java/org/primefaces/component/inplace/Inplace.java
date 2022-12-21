@@ -52,6 +52,7 @@ public class Inplace extends InplaceBase {
     public static final String CANCEL_BUTTON_CLASS = "ui-inplace-cancel";
     public static final String DISPLAY_INLINE = "inline";
     public static final String DISPLAY_NONE = "none";
+    public static final String PASSWORD_MASK = "**********";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("save", null)
