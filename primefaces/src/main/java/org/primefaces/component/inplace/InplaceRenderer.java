@@ -29,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.component.password.Password;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
 
@@ -131,7 +132,15 @@ public class InplaceRenderer extends CoreRenderer {
             return label;
         }
 
-        String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
+        UIComponent editor = inplace.getChildren().get(0);
+        String value;
+        if (editor instanceof Password || "password".equalsIgnoreCase(String.valueOf(editor.getAttributes().get("type")))) {
+            value = "********";
+        }
+        else {
+            value = ComponentUtils.getValueToRender(context, editor);
+        }
+
         if (LangUtils.isBlank(value)) {
             String emptyLabel = inplace.getEmptyLabel();
             if (emptyLabel != null) {
