@@ -45,8 +45,8 @@ public class RealDriverConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+        // we run on JSF 2.2 too, there is no managed=true
         if (driverService == null) {
-            // we run on JSF 2.2 too, there is no managed=true
             driverService = CDI.current().select(RealDriverService.class).get();
         }
 
