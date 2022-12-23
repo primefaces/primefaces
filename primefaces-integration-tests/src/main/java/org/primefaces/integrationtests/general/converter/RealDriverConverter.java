@@ -37,7 +37,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-@FacesConverter(value = "realDriverConverter", managed = true)
+@FacesConverter(value = "realDriverConverter")
 public class RealDriverConverter implements Converter {
 
     @Inject
@@ -46,10 +46,7 @@ public class RealDriverConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (driverService == null) {
-            /**
-             * Not ideal work-around because @Inject does not work for managed
-             * FacesConverter on TomEE + Mojarra as of march 2021.
-             */
+            // we run on JSF 2.2 too, there is no managed=true
             driverService = CDI.current().select(RealDriverService.class).get();
         }
 
