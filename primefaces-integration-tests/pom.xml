@@ -522,9 +522,6 @@
         </profile>
         <profile>
             <id>myfaces-2.2</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
