@@ -280,6 +280,7 @@ public class DataViewRenderer extends DataRenderer {
             }
             writer.writeAttribute("title", dataview.getRowTitle(), null);
 
+            int renderedCount = 0;
             for (int i = 0; i < numberOfRowsToRender; i++) {
                 dataview.setRowIndex(rowIndex);
                 if (!dataview.isRowAvailable()) {
@@ -287,6 +288,11 @@ public class DataViewRenderer extends DataRenderer {
                 }
 
                 for (int j = 0; j < columns; j++) {
+                    if (renderedCount >= itemsToRender) {
+                        break;
+                    }
+                    renderedCount++;
+                    
                     writer.startElement("div", null);
                     writer.writeAttribute("class", columnClass, null);
                     if (!LangUtils.isEmpty(columnInlineStyle)) {
