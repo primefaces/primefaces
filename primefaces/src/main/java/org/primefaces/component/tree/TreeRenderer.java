@@ -37,6 +37,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
@@ -158,8 +159,7 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(tree.getRowNode());
             }
             else {
-                String separator = Character.toString(UINamingContainer.getSeparatorChar(context));
-                Tree otherTree = (Tree) tree.findComponent(separator + dragSource);
+                Tree otherTree = (Tree) SearchExpressionFacade.resolveComponent(context, context.getViewRoot(), dragSource);
                 otherTree.setRowKey(otherTree.getValue(), rowKey);
                 dragNodeList.add(otherTree.getRowNode());
             }
