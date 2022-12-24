@@ -32,6 +32,7 @@ import java.io.Serializable;
 public class InplaceView implements Serializable {
 
     private String text = "PrimeFaces";
+    private String password = "secret";
 
     public String getText() {
         return text;
@@ -39,5 +40,13 @@ public class InplaceView implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
