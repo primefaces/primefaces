@@ -292,7 +292,7 @@ public class DataViewRenderer extends DataRenderer {
                         break;
                     }
                     renderedCount++;
-                    
+
                     writer.startElement("div", null);
                     writer.writeAttribute("class", columnClass, null);
                     if (!LangUtils.isEmpty(columnInlineStyle)) {
