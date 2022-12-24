@@ -55,7 +55,13 @@ public class InplaceRenderer extends CoreRenderer {
         String userStyle = inplace.getStyle();
         boolean disabled = inplace.isDisabled();
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String styleClass = getStyleClassBuilder(context).add(Inplace.CONTAINER_CLASS, inplace.getStyleClass()).build();
+        UIComponent outputFacet = inplace.getFacet("output");
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(outputFacet);
+        boolean withPassword = !shouldRenderFacet && isPassword(inplace.getChildren().get(0));
+        String styleClass = getStyleClassBuilder(context)
+                .add(Inplace.CONTAINER_CLASS, inplace.getStyleClass())
+                .add(withPassword, "p-password")
+                .build();
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
         String mode = inplace.getMode();
 
@@ -73,7 +79,6 @@ public class InplaceRenderer extends CoreRenderer {
         String outputStyle = validationFailed
                 ? Inplace.DISPLAY_NONE
                 : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE);
-        UIComponent outputFacet = inplace.getFacet("output");
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_display", "id");
@@ -84,11 +89,11 @@ public class InplaceRenderer extends CoreRenderer {
             writer.writeAttribute("role", "button", null);
         }
 
-        if (ComponentUtils.shouldRenderFacet(outputFacet)) {
+        if (shouldRenderFacet) {
             outputFacet.encodeAll(context);
         }
         else {
-            writer.writeText(getLabelToRender(context, inplace), null);
+            encodeLabel(context, inplace, withPassword);
         }
 
         writer.endElement("span");
@@ -123,16 +128,35 @@ public class InplaceRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected String getLabelToRender(FacesContext context, Inplace inplace) {
+    protected void encodeLabel(FacesContext context, Inplace inplace, boolean withPassword) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent editor = inplace.getChildren().get(0);
+        String value = ComponentUtils.getValueToRender(context, editor);
+        boolean needsWrapping = withPassword
+                && LangUtils.isBlank(inplace.getLabel())
+                && !LangUtils.isBlank(value);
+        if (needsWrapping) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "p-masked", null);
+            writer.writeText(Constants.EMPTY_STRING, null);
+        }
+        else {
+            writer.writeText(getLabelToRender(context, inplace, value), null);
+        }
+        if (needsWrapping) {
+            writer.endElement("span");
+        }
+    }
+
+    protected boolean isPassword(UIComponent editor) {
+        return editor instanceof Password
+                || "password".equalsIgnoreCase(String.valueOf(editor.getAttributes().get("type")));
+    }
+
+    protected String getLabelToRender(FacesContext context, Inplace inplace, String value) {
         String label = inplace.getLabel();
         if (!isValueBlank(label)) {
             return label;
-        }
-
-        UIComponent editor = inplace.getChildren().get(0);
-        String value = ComponentUtils.getValueToRender(context, editor);
-        if (LangUtils.isNotBlank(value) && (editor instanceof Password || "password".equalsIgnoreCase(String.valueOf(editor.getAttributes().get("type"))))) {
-            value = Inplace.PASSWORD_MASK;
         }
 
         if (LangUtils.isBlank(value)) {

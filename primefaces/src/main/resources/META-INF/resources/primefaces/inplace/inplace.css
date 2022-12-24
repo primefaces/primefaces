@@ -2,3 +2,4 @@
 .ui-inplace .ui-inplace-disabled {cursor: default;}
 .ui-inplace .ui-inplace-content {}
 .ui-inplace .ui-inplace-editor {margin-left:0.1em;}
+.ui-inplace.p-password .p-masked:before {content:'••••••'}
