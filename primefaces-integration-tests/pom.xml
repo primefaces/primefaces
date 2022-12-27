@@ -473,7 +473,7 @@
             <id>chrome-jsf22</id>
             <properties>
                 <webdriver.browser>chrome</webdriver.browser>
-                <excludedGroups>ChromeExclude, JSF22Exclude</excludedGroups>
+                <excludedGroups>ChromeExclude,Jsf22Exclude</excludedGroups>
             </properties>
         </profile>
         <profile>
