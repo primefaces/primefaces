@@ -139,7 +139,7 @@ public class DatePicker015Test extends AbstractDatePickerTest {
         Assertions.assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
         WebElement timePicker = panel.findElement(By.className("ui-timepicker"));
-        
+
         // between JDK8 and 11 some space characters became non breaking space '\u00A0'
         ampm = ampm.replaceAll(Constants.SPACE, Constants.NON_BREAKING_SPACE_STR);
         Assertions.assertEquals(ampm,
