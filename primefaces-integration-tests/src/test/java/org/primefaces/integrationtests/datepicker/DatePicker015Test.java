@@ -60,7 +60,7 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         Assertions.assertEquals(expected, datePicker.getValue());
-        Assertions.assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
+        assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
 
         // Act
         WebElement panel = datePicker.showPanel();
@@ -71,8 +71,8 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
-        Assertions.assertEquals(expectedString + pm, page.messages.getMessage(0).getDetail());
+        assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
+        assertEquals(expectedString + pm, page.messages.getMessage(0).getDetail());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         Assertions.assertEquals(expected, datePicker.getValue());
-        Assertions.assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
+        assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
 
         // Act
         WebElement panel = datePicker.showPanel();
@@ -101,8 +101,8 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
-        Assertions.assertEquals(expectedString + pm, page.messages.getMessage(1).getDetail());
+        assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
+        assertEquals(expectedString + pm, page.messages.getMessage(1).getDetail());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         Assertions.assertEquals(expected, datePicker.getValue());
-        Assertions.assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
+        assertEquals(expectedString + pm, datePicker.getInput().getAttribute("value"));
 
         // Act
         WebElement panel = datePicker.showPanel();
@@ -131,19 +131,15 @@ public class DatePicker015Test extends AbstractDatePickerTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
-        Assertions.assertEquals(expectedString + am, page.messages.getMessage(2).getDetail());
+        assertEquals(expectedString + am, datePicker.getInput().getAttribute("value"));
+        assertEquals(expectedString + am, page.messages.getMessage(2).getDetail());
     }
 
     protected void assertAmPm(WebElement panel, String ampm) {
         Assertions.assertNotNull(panel);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
         WebElement timePicker = panel.findElement(By.className("ui-timepicker"));
-
-        // between JDK8 and 11 some space characters became non breaking space '\u00A0'
-        ampm = ampm.replaceAll(Constants.SPACE, Constants.NON_BREAKING_SPACE_STR);
-        Assertions.assertEquals(ampm,
-                timePicker.findElement(By.cssSelector("div.ui-ampm-picker > span")).getText());
+        assertEquals(ampm, timePicker.findElement(By.cssSelector("div.ui-ampm-picker > span")).getText());
     }
 
     protected void toggleAmPm(WebElement panel) {
@@ -151,6 +147,13 @@ public class DatePicker015Test extends AbstractDatePickerTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(panel));
         WebElement amPmPicker = panel.findElement(By.className("ui-ampm-picker"));
         amPmPicker.findElement(By.className("ui-picker-down")).click();
+    }
+
+    protected void assertEquals(String expected, String actual) {
+        // between JDK8 and 11 some space characters became non breaking space '\u00A0'
+        expected = expected.replaceAll("\\p{Z}", Constants.SPACE);
+        actual = actual.replaceAll("\\p{Z}", Constants.SPACE);
+        Assertions.assertEquals(expected, actual);
     }
 
     public static class Page extends AbstractPrimePage {
