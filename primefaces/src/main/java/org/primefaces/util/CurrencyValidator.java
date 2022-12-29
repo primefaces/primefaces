@@ -48,10 +48,6 @@ public class CurrencyValidator extends BigDecimalValidator {
 
     private static final CurrencyValidator VALIDATOR = new CurrencyValidator();
 
-    /** Space hack to fix Brazilian Real and maybe others */
-    private static final char NON_BREAKING_SPACE = '\u00A0';
-    private static final String NON_BREAKING_SPACE_STR = Character.toString(NON_BREAKING_SPACE);
-
     /**
      * Return a singleton instance of this validator.
      *
@@ -82,8 +78,8 @@ public class CurrencyValidator extends BigDecimalValidator {
         }
 
         // between JDK8 and 11 some space characters became non breaking space '\u00A0'
-        if (formatter.getPositivePrefix().indexOf(NON_BREAKING_SPACE) >= 0) {
-            value = value.replaceAll(Constants.SPACE, NON_BREAKING_SPACE_STR);
+        if (formatter.getPositivePrefix().indexOf(Constants.NON_BREAKING_SPACE) >= 0) {
+            value = value.replaceAll(Constants.SPACE, Constants.NON_BREAKING_SPACE_STR);
         }
 
         // Initial parse of the value

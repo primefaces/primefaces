@@ -224,6 +224,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         if(localeSettings) {
             var locale = {};
+            if (this.cfg.localeAm) {
+                locale["am"] = this.cfg.localeAm;
+            }
+            if (this.cfg.localePm) {
+                locale["pm"] = this.cfg.localePm;
+            }
             for(var setting in localeSettings) {
                 locale[setting] = localeSettings[setting];
             }
