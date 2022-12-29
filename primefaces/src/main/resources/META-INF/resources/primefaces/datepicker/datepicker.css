@@ -39,7 +39,8 @@
 
 .p-datepicker-panel .ui-timepicker > .ui-minute-picker, 
 .p-datepicker-panel .ui-timepicker > .ui-second-picker,
-.p-datepicker-panel .ui-timepicker > .ui-millisecond-picker {
+.p-datepicker-panel .ui-timepicker > .ui-millisecond-picker,
+.p-datepicker-panel .ui-timepicker > .ui-ampm-picker {
     margin-left: 0;
 }
 
@@ -71,6 +72,10 @@
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker .ui-picker-down {
     padding-top: .1em;
+}
+
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker > span {
+    padding: .5rem;
 }
 
 .ui-datepicker-multiple-month .ui-datepicker-group {

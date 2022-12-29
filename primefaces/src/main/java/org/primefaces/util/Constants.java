@@ -127,6 +127,10 @@ public class Constants {
 
     public static final String MULTI_VIEW_STATES = "primefaces.MULTI_VIEW_STATES";
 
+    /** Space hack to fix Brazilian Real and other locale issues */
+    public static final char NON_BREAKING_SPACE = '\u00A0';
+    public static final String NON_BREAKING_SPACE_STR = Character.toString(NON_BREAKING_SPACE);
+
     private Constants() {
     }
 }

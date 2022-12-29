@@ -76,7 +76,9 @@
                 year: 'Year',
                 month: 'Month',
                 week: 'Week',
-                day: 'Day'
+                day: 'Day',
+                am: 'AM',
+                pm: 'PM'
             },
             dateFormat: 'mm/dd/yy',
             yearRange: null,
@@ -751,7 +753,7 @@
             }
 
             if (this.options.hourFormat === '12') {
-                output += date.getHours() > 11 ? ' PM' : ' AM';
+                output += date.getHours() > 11 ? ' ' + this.options.locale.pm : ' ' + this.options.locale.am;
             }
 
             return output;
@@ -776,9 +778,9 @@
                 throw "Invalid time";
             }
             else {
-                if (this.options.hourFormat === '12' && h !== 12 && ampm === 'PM') {
+                if (this.options.hourFormat === '12' && h !== 12 && ampm === this.options.locale.pm) {
                     h += 12;
-                } else if (this.options.hourFormat === '12' && h === 12 && ampm === 'AM') {
+                } else if (this.options.hourFormat === '12' && h === 12 && ampm === this.options.locale.am) {
                     h -= 12;
                 }
 
@@ -996,6 +998,12 @@
                 if (this.options.showTime) {
                     var ampm = this.options.hourFormat === '12' ? parts.pop() : null;
                     var timeString = parts.pop();
+                    
+                    // #9559 some locales are "a. m." with a space 
+                    if (/\d/.test(timeString) === false) {
+                        ampm = timeString + ' ' +  ampm;
+                        timeString = parts.pop();
+                    }
 
                     date = this.parseDate(parts.join(' '), this.options.dateFormat);
                     this.populateTime(date, timeString, ampm);
@@ -1009,7 +1017,7 @@
         },
 
         populateTime: function (value, timeString, ampm) {
-            if (this.options.hourFormat === '12' && (ampm !== 'PM' && ampm !== 'AM')) {
+            if (this.options.hourFormat === '12' && (ampm !== this.options.locale.pm && ampm !== this.options.locale.am)) {
                 throw new Error('Invalid Time');
             }
 
@@ -1626,7 +1634,7 @@
         renderAmPmPicker: function () {
             if (this.options.hourFormat === '12') {
                 var hour = this.isDate(this.value) ? this.value.getHours() : this.viewDate.getHours(),
-                    display = hour > 11 ? 'PM' : 'AM';
+                    display = hour > 11 ? this.options.locale.pm : this.options.locale.am;
 
                 return this.renderTimeElements("ui-ampm-picker", '<span>' + display + '</span>', 4);
             }
