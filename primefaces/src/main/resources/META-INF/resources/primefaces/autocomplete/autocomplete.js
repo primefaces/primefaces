@@ -580,7 +580,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.checkMatchedItem = true;
 	    }).on('change.autoComplete', function(e) {
             var value = e.currentTarget.value,
-            valid = $this.isValid(value);
+            valid = $this.isValid(value, true);
 
             if ($this.cfg.forceSelection && $this.currentInputValue === '' && !valid) {
                 $this.preventInputChangeEvent = true;
@@ -1480,6 +1480,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     fireClearEvent: function() {
         this.callBehavior('clear');
+        this.previousText = this.currentText;
+        this.currentText = '';
     },
 
     /**
@@ -1497,12 +1499,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var valid = false;
 
         for(var i = 0; i < this.currentItems.length; i++) {
-            var stripedItem = this.currentItems[i];
-            if (stripedItem) {
-                stripedItem = stripedItem.replace(/\r?\n/g, '');
+            var strippedItem = this.currentItems[i];
+            if (strippedItem) {
+                strippedItem = strippedItem.replace(/\r?\n/g, '');
             }
 
-            if(stripedItem === value) {
+            if(strippedItem === value) {
                 valid = true;
                 break;
             }
@@ -1513,6 +1515,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(!this.cfg.multiple) {
                 this.hinput.val('');
             }
+            shouldFireClearEvent = shouldFireClearEvent && (!this.cfg.multiple && this.currentText);
             if (shouldFireClearEvent) {
                 this.fireClearEvent();
             }
