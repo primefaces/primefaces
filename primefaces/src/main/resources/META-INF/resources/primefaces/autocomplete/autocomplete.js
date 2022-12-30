@@ -553,8 +553,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             }
                         }
 
-                        if($this.cfg.multiple && itemValue && valid) {
-                            $this.addItem(itemValue);
+                        if($this.cfg.multiple && itemValue) {
+                            if (valid) {
+                                $this.addItem(itemValue);
+                            }
+                            
                             e.preventDefault();
                             e.stopPropagation();
                         }
