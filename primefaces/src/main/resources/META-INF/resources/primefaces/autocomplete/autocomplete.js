@@ -1281,11 +1281,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         this.input.on('blur', function(e) {
             // #5731: do not fire clear event if selecting item
-            var fireClearEvent = e.relatedTarget == null || PrimeFaces.escapeClientId(e.relatedTarget.id) !== $this.panelId,
+            var isNotPanel = e.relatedTarget == null || PrimeFaces.escapeClientId(e.relatedTarget.id) !== $this.panelId,
             value = $(this).val(),
-            valid = $this.isValid(value, fireClearEvent);
+            valid = $this.isValid(value, isNotPanel);
 
-            if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
+            if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter && isNotPanel) {
                 var selectedItem = $this.items.filter('[data-item-label="' + $.escapeSelector(value) + '"]');
                 if (selectedItem.length) {
                     selectedItem.trigger("click");
