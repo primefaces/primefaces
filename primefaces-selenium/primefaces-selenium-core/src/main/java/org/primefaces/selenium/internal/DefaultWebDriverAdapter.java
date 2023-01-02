@@ -30,6 +30,7 @@ import java.util.logging.Level;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverLogLevel;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
@@ -87,7 +88,7 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 firefoxOptions.setHeadless(config.isWebdriverHeadless());
-                firefoxOptions.setLogLevel(FirefoxDriverLogLevel.INFO);
+                firefoxOptions.setLogLevel(FirefoxDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
                 firefoxOptions.addPreference("browser.helperApps.neverAsk.openFile", "application/octet-stream");
                 return new FirefoxDriver(firefoxOptions);
             case "chrome":
@@ -95,6 +96,7 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 chromeOptions.setHeadless(config.isWebdriverHeadless());
                 chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
+                chromeOptions.setLogLevel(ChromeDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
                 Map<String, Object> chromePrefs = new HashMap<>();
                 chromePrefs.put("download.prompt_for_download", false);
                 chromePrefs.put("download.directory_upgrade", true);

@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.primefaces.selenium.spi.WebDriverAdapter;
@@ -54,6 +55,7 @@ public class ConfigProvider {
     private String webdriverBrowser;
     private boolean webdriverHeadless = false;
     private String webdriverVersion;
+    private Level webdriverLogLevel = Level.INFO;
 
     private String deploymentBaseUrl;
     private DeploymentAdapter deploymentAdapter;
@@ -132,6 +134,11 @@ public class ConfigProvider {
                 String webdriverVersion = properties.getProperty("webdriver.version");
                 if (webdriverVersion != null && !webdriverVersion.trim().isEmpty()) {
                     this.webdriverVersion = webdriverVersion;
+                }
+
+                String webdriverLogLevel = properties.getProperty("webdriver.logLevel");
+                if (webdriverLogLevel != null && !webdriverLogLevel.trim().isEmpty()) {
+                    this.webdriverLogLevel = Level.parse(webdriverLogLevel);
                 }
 
                 String onloadScriptsAdapter = properties.getProperty("onloadScripts.adapter");
@@ -244,6 +251,10 @@ public class ConfigProvider {
 
     public String getWebdriverVersion() {
         return webdriverVersion;
+    }
+
+    public Level getWebdriverLogLevel() {
+        return webdriverLogLevel;
     }
 
     public static synchronized ConfigProvider getInstance() {
