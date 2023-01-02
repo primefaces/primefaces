@@ -162,7 +162,12 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeScript(FacesContext context, DataTable table) throws IOException {
         String selectionMode = table.resolveSelectionMode();
-        String widgetClass = (table.getFrozenColumns() == 0) ? "DataTable" : "FrozenDataTable";
+        boolean isFrozenTable = (table.getFrozenColumns() > 0);
+        String widgetClass = isFrozenTable ? "FrozenDataTable" : "DataTable";
+
+        if (isFrozenTable && !table.isScrollable()) {
+            throw new FacesException("Frozen columns can only be used with a table set scrollable='true'.");
+        }
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(widgetClass, table);
