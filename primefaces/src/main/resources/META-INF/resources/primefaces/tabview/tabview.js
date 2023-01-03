@@ -345,7 +345,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         var focusIndex = -1;
         this.addRefreshListener(function() {
 			
-			// update error highlighting and set focusIndex
+            // update error highlighting and set focusIndex
             $(this.jqId + '>ul>li').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
@@ -361,7 +361,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             
             // set focusIndex to restore the last active tab
             // "focusOnError" always takes precedence over "focusOnLastActiveTab"
-            if (focusIndex < 0) {
+            if (focusIndex < 0 || !$this.cfg.focusOnError) {
                     focusIndex = $this.cfg.selected;
             }
 
