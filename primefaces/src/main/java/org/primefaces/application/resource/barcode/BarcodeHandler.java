@@ -73,6 +73,10 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
         String sessionKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
         Map<String, Object> session = externalContext.getSessionMap();
         Map<String, String> barcodeMapping = (Map<String, String>) session.get(Constants.BARCODE_MAPPING);
+        if (barcodeMapping == null) {
+            barcodeMapping = new HashMap<>();
+            session.put(Constants.BARCODE_MAPPING, barcodeMapping);
+        }
         String value = barcodeMapping.get(sessionKey);
 
         if (value != null) {
