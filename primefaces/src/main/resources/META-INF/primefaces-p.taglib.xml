@@ -27469,6 +27469,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[Whether to focus on the last active tab that a user selected.]]>
+            </description>
+            <name>focusOnLastActiveTab</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>

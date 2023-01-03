@@ -44,6 +44,7 @@ TabView is a container component to group content in tabs.
 | touchable      | null    | Boolean    | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | multiViewState | false   | Boolean    | Whether to keep TabView state across views, defaults to false.
 | focusOnError   | false   | Boolean    | Whether to focus the first tab that contains an error after form submission.
+| focusOnLastActiveTab   | true   | Boolean    | Whether to focus on the last active tab that a user selected.
 
 ## Getting started with the TabView
 TabView requires one more child tab components to display. Titles can also be defined by using

@@ -13,6 +13,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `title` column/columns to support cell specific titles.
 * DataView
     * Added attribute `gridRowTitle` to support row-specific titles.
+* TabView
+    * Added `focusOnLastActiveTab` if you want to focus on the tab that the user last activated.
 * TreeTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
