@@ -186,7 +186,7 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     public void setFocusOnError(boolean focusOnError) {
         getStateHelper().put(PropertyKeys.focusOnError, focusOnError);
     }
-    
+
     public boolean isFocusOnLastActiveTab() {
         return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, true);
     }
