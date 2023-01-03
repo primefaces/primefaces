@@ -362,8 +362,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             // set focusIndex to restore the last active tab
             // "focusOnError" always takes precedence over "focusOnLastActiveTab"
             if (focusIndex < 0) {
-				focusIndex = $this.cfg.selected;
-			}
+                    focusIndex = $this.cfg.selected;
+            }
 
             if (($this.cfg.focusOnError || $this.cfg.focusOnLastActiveTab) && focusIndex >= 0) {
                setTimeout(function () {$this.select(focusIndex, true)}, 10);
