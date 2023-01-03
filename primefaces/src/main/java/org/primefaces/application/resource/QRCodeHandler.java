@@ -47,25 +47,30 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
         String sessionKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
         Map<String, Object> session = externalContext.getSessionMap();
         Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
-        String value = barcodeMapping.get(sessionKey);
-
-        if (value != null) {
-            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-
-            QrCode qrCode = QrCode.encodeText(value, getErrorCorrection(params.get("qrec")));
-            if ("png".equals(params.get("fmt"))) {
-                externalContext.setResponseContentType("image/png");
-                ImageIO.write(toImage(qrCode, 12, 0), "png", externalContext.getResponseOutputStream());
-            }
-            else {
-                externalContext.setResponseContentType("image/svg+xml");
-                externalContext.getResponseOutputWriter().write(toSvgString(qrCode, 0, "#FFFFFF", "#000000"));
-            }
-            handleCache(externalContext, cache);
-            externalContext.setResponseStatus(200);
-            externalContext.responseFlushBuffer();
-            context.responseComplete();
+        if (barcodeMapping == null) {
+            return;
         }
+
+        String value = barcodeMapping.get(sessionKey);
+        if (value == null) {
+            return;
+        }
+
+        boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+
+        QrCode qrCode = QrCode.encodeText(value, getErrorCorrection(params.get("qrec")));
+        if ("png".equals(params.get("fmt"))) {
+            externalContext.setResponseContentType("image/png");
+            ImageIO.write(toImage(qrCode, 12, 0), "png", externalContext.getResponseOutputStream());
+        }
+        else {
+            externalContext.setResponseContentType("image/svg+xml");
+            externalContext.getResponseOutputWriter().write(toSvgString(qrCode, 0, "#FFFFFF", "#000000"));
+        }
+        handleCache(externalContext, cache);
+        externalContext.setResponseStatus(200);
+        externalContext.responseFlushBuffer();
+        context.responseComplete();
     }
 
     protected Ecc getErrorCorrection(final String value) {
