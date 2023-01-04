@@ -124,6 +124,7 @@ Schedule provides various ajax behavior events to respond user actions.
 dateSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is selected.
 dateDblSelect | org.primefaces.event.SelectEvent<LocalDateTime> | When a date is double click selected.
 eventSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is selected.
+eventDblSelect | org.primefaces.event.SelectEvent<ScheduleEvent> | When an event is double click selected.
 eventMove | org.primefaces.event.schedule.ScheduleEntryMoveEvent | When an event is moved.
 eventResize | org.primefaces.event.schedule.ScheduleEntryResizeEvent | When an event is resized.
 rangeSelect | org.primefaces.event.schedule.ScheduleRangeEvent  | When a date range is selected when selectable=true.
