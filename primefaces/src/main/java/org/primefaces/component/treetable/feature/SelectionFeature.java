@@ -23,17 +23,21 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.*;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 public class SelectionFeature implements TreeTableFeature {
@@ -53,9 +57,10 @@ public class SelectionFeature implements TreeTableFeature {
     public void decode(FacesContext context, TreeTable table) {
         boolean multiple = table.isMultipleSelectionMode();
         Class<?> selectionType = table.getSelectionType();
+        boolean isArray = selectionType != null && selectionType.isArray();
         TreeNode root = table.getValue();
 
-        if (multiple && !selectionType.isArray() && !List.class.isAssignableFrom(selectionType)) {
+        if (multiple && selectionType != null && !isArray && !List.class.isAssignableFrom(selectionType)) {
             throw new FacesException("Multiple selection reference must be an Array or a List for TreeTable " + table.getClientId());
         }
 
