@@ -26,4 +26,13 @@
         <packageUrl regex="true">^pkg:maven/org\.apache\.geronimo\.specs/geronimo\-ws\-metadata_2\.0_spec@.*$</packageUrl>
         <cve>CVE-2021-41568</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+            https://github.com/jeremylong/DependencyCheck/issues/5213
+            The 'utils_project' is a personal collection of scripts from someones /bin/ directory, not a maven project
+            https://github.com/fredsmith/utils
+       ]]></notes>
+       <packageUrl regex="true">^pkg:maven/.*/.*@.*$</packageUrl>
+       <cpe>cpe:/a:utils_project:utils</cpe>
+</suppress>
 </suppressions>
