@@ -42,6 +42,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -235,9 +236,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         ? cb.notEqual(fieldExpression, filterValueAsCollection.get().iterator().next())
                         : fieldExpression.in(filterValueAsCollection.get()).not();
             case BETWEEN:
-                throw new UnsupportedOperationException("MatchMode.BETWEEN currently not supported!");
+                Iterator<Object> iter1 = filterValueAsCollection.get().iterator();
+                return cb.and(cb.greaterThanOrEqualTo(fieldExpression, (Comparable) iter1.next()),
+                    cb.lessThanOrEqualTo(fieldExpression, (Comparable) iter1.next()));
             case NOT_BETWEEN:
-                throw new UnsupportedOperationException("MatchMode.NOT_BETWEEN currently not supported!");
+                Iterator<Object> iter2 = filterValueAsCollection.get().iterator();
+                return cb.and(cb.greaterThanOrEqualTo(fieldExpression, (Comparable) iter2.next()),
+                    cb.lessThanOrEqualTo(fieldExpression, (Comparable) iter2.next())).not();
             case GLOBAL:
                 throw new UnsupportedOperationException("MatchMode.GLOBAL currently not supported!");
         }
