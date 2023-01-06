@@ -64,12 +64,12 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         List<WebElement> optgroups = selectOneMenu.getInput().findElements(By.tagName("optgroup"));
         Assertions.assertEquals(2, optgroups.size());
         List<WebElement> options = selectOneMenu.getInput().findElements(By.tagName("option"));
-        Assertions.assertEquals(8, options.size());
+        Assertions.assertEquals(9, options.size());
         // panel-content
         optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
         Assertions.assertEquals(2, optgroups.size());
         options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(8, options.size());
+        Assertions.assertEquals(9, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -92,6 +92,7 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals("Mercedes", options.get(2).getText());
         Assertions.assertEquals("Chry<sler", options.get(4).getText());
+        Assertions.assertEquals("GitHub \"9336\" Quoted", options.get(8).getText());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 

@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -63,7 +64,8 @@ public class SelectOneMenu002 implements Serializable {
             new SelectItem("Chrysler", "Chry<sler"),
             new SelectItem("blank", "&nbsp;"),
             new SelectItem("GM", "GM"),
-            new SelectItem("Ford & Lincoln", "Ford & Lincoln")});
+            new SelectItem("Ford & Lincoln", "Ford & Lincoln"),
+            new SelectItem("GitHub \"9336\" Quoted", "GitHub \"9336\" Quoted")});
 
         cars = new ArrayList<>();
         cars.add(g1);
