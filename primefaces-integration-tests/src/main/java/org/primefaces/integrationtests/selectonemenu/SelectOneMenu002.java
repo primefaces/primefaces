@@ -65,7 +65,9 @@ public class SelectOneMenu002 implements Serializable {
             new SelectItem("blank", "&nbsp;"),
             new SelectItem("GM", "GM"),
             new SelectItem("Ford & Lincoln", "Ford & Lincoln"),
-            new SelectItem("GitHub \"9336\" Quoted", "GitHub \"9336\" Quoted")});
+            new SelectItem("GitHub \"9336\" Quoted", "GitHub \"9336\" Quoted"),
+            new SelectItem("< GitHub <i>9336</i>", "< GitHub <i>9336</i>", "", false, true),
+            new SelectItem("< GitHub <i>9336</i>", "< GitHub <i>9336</i>", "", false, false)});
 
         cars = new ArrayList<>();
         cars.add(g1);

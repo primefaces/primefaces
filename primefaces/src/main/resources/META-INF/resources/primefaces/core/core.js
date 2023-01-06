@@ -543,10 +543,12 @@
         /**
          * Escapes the given value to be used as the content of an HTML element or attribute.
          * @param {string} value A string to be escaped
+         * @param {boolean | undefined} preventDoubleEscaping if true will not include ampersand to prevent double escaping
          * @return {string} The given value, escaped to be used as a text-literal within an HTML document.
          */
-        escapeHTML: function(value) {
-            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+        escapeHTML: function(value, preventDoubleEscaping) {
+            var regex = preventDoubleEscaping ? /[<>"'`=\/]/g : /[&<>"'`=\/]/g;
+            return String(value).replace(regex, function (s) {
                 return PrimeFaces.entityMap[s];
             });
         },
