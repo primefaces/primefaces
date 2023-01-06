@@ -23770,7 +23770,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Unselectable mode when true allows the button to be unselected. Default true.]]>
             </description>
             <name>unselectable</name>
             <required>false</required>
