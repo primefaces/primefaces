@@ -965,6 +965,10 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             	this.message.html(msg.message);
             }
         }
+        
+        if (this.cfg.global) {
+            this.positionInitialized = false;
+        }
 
         this.show();
     }
