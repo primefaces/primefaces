@@ -55,6 +55,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Lazy;
+import java.util.logging.Logger;
 import org.primefaces.util.SerializableSupplier;
 
 /**
@@ -63,6 +64,8 @@ import org.primefaces.util.SerializableSupplier;
  * @param <T> The model class.
  */
 public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
+
+    private static final Logger LOGGER = Logger.getLogger(JpaLazyDataModel.class.getName());
 
     protected Class<T> entityClass;
     protected SerializableSupplier<EntityManager> entityManager;
@@ -171,7 +174,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     convertedFilterValue = filterValue;
                 }
                 else {
-                    convertedFilterValue = convertToType(filterValue.toString(), filterField.getType());
+                    convertedFilterValue = convertToType(filterValue.toString(), filterField.getType(), filterValue);
                 }
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
 
@@ -298,7 +301,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         if (rowKeyField != null) {
-            Object convertedRowKey = convertToType(rowKey, getRowKeyGetter().getReturnType());
+            Object convertedRowKey = convertToType(rowKey, getRowKeyGetter().getReturnType(), rowKey);
 
             EntityManager em = this.entityManager.get();
 
@@ -338,7 +341,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    protected <V> V convertToType(String value, Class<V> valueType) {
+    protected <V> V convertToType(String value, Class<V> valueType, Object original) {
         FacesContext context = FacesContext.getCurrentInstance();
         Converter<V> converter = context.getApplication().createConverter(valueType);
         if (converter != null) {
@@ -346,20 +349,21 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 return converter.getAsObject(context, UIComponent.getCurrentComponent(context), value);
             }
             catch (ConverterException e) {
-                return (V) value;
+                return (V) original;
             }
         }
 
         if (valueType == String.class) {
-            return (V) value;
+            return (V) original;
         }
 
         if (BeanUtils.isPrimitiveOrPrimitiveWrapper(valueType)) {
             return (V) FacesContext.getCurrentInstance().getELContext().convertToType(value, valueType);
         }
 
-        throw new FacesException("Can not convert " + value + " to type " + valueType
+        LOGGER.warning("Can not convert " + value + " to type " + valueType
             + "; please create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+        return (V) original;
     }
 
     protected Method getRowKeyGetter() {
