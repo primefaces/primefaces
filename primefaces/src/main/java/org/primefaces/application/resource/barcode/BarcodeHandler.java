@@ -74,57 +74,58 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
         Map<String, Object> session = externalContext.getSessionMap();
         Map<String, String> barcodeMapping = (Map<String, String>) session.get(Constants.BARCODE_MAPPING);
         if (barcodeMapping == null) {
-            barcodeMapping = new HashMap<>();
-            session.put(Constants.BARCODE_MAPPING, barcodeMapping);
+            return;
         }
+
         String value = barcodeMapping.get(sessionKey);
+        if (value == null) {
+            return;
+        }
 
-        if (value != null) {
-            try {
-                BarcodeGenerator generator = generators.get(params.get("gen"));
-                String format = params.get("fmt");
-                String hrp = params.get("hrp");
-                int orientation = Integer.parseInt(params.get("ori"));
-                boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+        try {
+            BarcodeGenerator generator = generators.get(params.get("gen"));
+            String format = params.get("fmt");
+            String hrp = params.get("hrp");
+            int orientation = Integer.parseInt(params.get("ori"));
+            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
-                generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
+            generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
 
-                OutputStream out = externalContext.getResponseOutputStream();
+            OutputStream out = externalContext.getResponseOutputStream();
 
-                handleCache(externalContext, cache);
+            handleCache(externalContext, cache);
 
-                if ("png".equals(format)) {
-                    externalContext.setResponseContentType("image/png");
+            if ("png".equals(format)) {
+                externalContext.setResponseContentType("image/png");
 
-                    BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(
-                            out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
-                    generator.generate(bitmapCanvasProvider, value);
-                    bitmapCanvasProvider.finish();
-                }
-                else if ("svg".equals(format)) {
-                    externalContext.setResponseContentType("image/svg+xml");
-
-                    SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(false, orientation);
-                    generator.generate(svgCanvasProvider, value);
-                    DocumentFragment frag = svgCanvasProvider.getDOMFragment();
-
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-                    Transformer trans = factory.newTransformer();
-                    Source src = new javax.xml.transform.dom.DOMSource(frag);
-                    Result res = new javax.xml.transform.stream.StreamResult(out);
-                    trans.transform(src, res);
-                }
-
-                externalContext.setResponseStatus(200);
+                BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(
+                        out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
+                generator.generate(bitmapCanvasProvider, value);
+                bitmapCanvasProvider.finish();
             }
-            catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
+            else if ("svg".equals(format)) {
+                externalContext.setResponseContentType("image/svg+xml");
+
+                SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(false, orientation);
+                generator.generate(svgCanvasProvider, value);
+                DocumentFragment frag = svgCanvasProvider.getDOMFragment();
+
+                TransformerFactory factory = TransformerFactory.newInstance();
+                factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                Transformer trans = factory.newTransformer();
+                Source src = new javax.xml.transform.dom.DOMSource(frag);
+                Result res = new javax.xml.transform.stream.StreamResult(out);
+                trans.transform(src, res);
             }
-            finally {
-                externalContext.responseFlushBuffer();
-                context.responseComplete();
-            }
+
+            externalContext.setResponseStatus(200);
+        }
+        catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
+        }
+        finally {
+            externalContext.responseFlushBuffer();
+            context.responseComplete();
         }
     }
 }

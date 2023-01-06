@@ -53,7 +53,8 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
         tabindex,
         touchable,
         multiViewState,
-        focusOnError
+        focusOnError,
+        focusOnLastActiveTab
     }
 
     public TabViewBase() {
@@ -184,6 +185,14 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
 
     public void setFocusOnError(boolean focusOnError) {
         getStateHelper().put(PropertyKeys.focusOnError, focusOnError);
+    }
+
+    public boolean isFocusOnLastActiveTab() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, true);
+    }
+
+    public void setFocusOnLastActiveTab(boolean focusOnLastActiveTab) {
+        getStateHelper().put(PropertyKeys.focusOnLastActiveTab, focusOnLastActiveTab);
     }
 
     @Override

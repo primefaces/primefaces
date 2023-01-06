@@ -276,8 +276,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             }
 
             // set the size and position to match the target
-            var height = currentTarget.height(),
-                width = currentTarget.width(),
+            var height = currentTarget.outerHeight(),
+                width = currentTarget.outerWidth(),
                 offset = currentTarget.offset();
             var sizeAndPosition = {
                 'height': height + 'px',

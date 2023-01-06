@@ -55,7 +55,7 @@ public class ConfigProvider {
     private String webdriverBrowser;
     private boolean webdriverHeadless = false;
     private String webdriverVersion;
-    private Level webdriverLogLevel = Level.INFO;
+    private Level webdriverLogLevel = Level.WARNING;
 
     private String deploymentBaseUrl;
     private DeploymentAdapter deploymentAdapter;

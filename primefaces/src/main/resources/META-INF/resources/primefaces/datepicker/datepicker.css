@@ -39,9 +39,12 @@
 
 .p-datepicker-panel .ui-timepicker > .ui-minute-picker, 
 .p-datepicker-panel .ui-timepicker > .ui-second-picker,
-.p-datepicker-panel .ui-timepicker > .ui-millisecond-picker,
-.p-datepicker-panel .ui-timepicker > .ui-ampm-picker {
+.p-datepicker-panel .ui-timepicker > .ui-millisecond-picker {
     margin-left: 0;
+}
+
+.p-datepicker-panel .ui-timepicker > .ui-ampm-picker {
+    margin-left: 1rem;
 }
 
 .p-datepicker-panel .ui-timepicker > div a {
