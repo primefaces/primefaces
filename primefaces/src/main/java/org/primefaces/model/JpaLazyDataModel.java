@@ -236,13 +236,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         ? cb.notEqual(fieldExpression, filterValueAsCollection.get().iterator().next())
                         : fieldExpression.in(filterValueAsCollection.get()).not();
             case BETWEEN:
-                Iterator<Object> iter1 = filterValueAsCollection.get().iterator();
-                return cb.and(cb.greaterThanOrEqualTo(fieldExpression, (Comparable) iter1.next()),
-                    cb.lessThanOrEqualTo(fieldExpression, (Comparable) iter1.next()));
+                Iterator<Object> iterBetween = filterValueAsCollection.get().iterator();
+                return cb.and(cb.greaterThanOrEqualTo(fieldExpression, (Comparable) iterBetween.next()),
+                    cb.lessThanOrEqualTo(fieldExpression, (Comparable) iterBetween.next()));
             case NOT_BETWEEN:
-                Iterator<Object> iter2 = filterValueAsCollection.get().iterator();
-                return cb.and(cb.greaterThanOrEqualTo(fieldExpression, (Comparable) iter2.next()),
-                    cb.lessThanOrEqualTo(fieldExpression, (Comparable) iter2.next())).not();
+                Iterator<Object> iterNotBetween = filterValueAsCollection.get().iterator();
+                return cb.and(cb.greaterThanOrEqualTo(fieldExpression, (Comparable) iterNotBetween.next()),
+                    cb.lessThanOrEqualTo(fieldExpression, (Comparable) iterNotBetween.next())).not();
             case GLOBAL:
                 throw new UnsupportedOperationException("MatchMode.GLOBAL currently not supported!");
         }
