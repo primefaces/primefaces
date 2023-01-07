@@ -3772,6 +3772,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.]]>
+            </description>
+            <name>sourceUrl</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
