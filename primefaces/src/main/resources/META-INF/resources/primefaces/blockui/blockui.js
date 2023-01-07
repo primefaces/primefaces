@@ -12,11 +12,14 @@
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  *
+ * @prop {number | null} timeout The set-timeout timer ID for the timer of the delay before the AJAX status is
+ * triggered.
  * @prop {boolean} cfg.animate When disabled, displays block without animation effect.
  * @prop {boolean} cfg.blocked Blocks the UI by default when enabled.
  * @prop {string} cfg.block Search expression for block targets.
  * @prop {string} cfg.styleClass Style class of the component.
  * @prop {string} cfg.triggers Search expression of the components to bind.
+ * @prop {number} cfg.delay Delay in milliseconds before displaying the block. Default is `0`, meaning immediate.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  */
 PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
@@ -141,25 +144,30 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * milliseconds, respectively.
      */
     show: function(duration) {
+        var $this = this;
         if (this.isBlocking()) {
             return;
         }
-        this.alignOverlay();
 
-        var animated = this.cfg.animate;
-        if (animated)
-            this.blocker.fadeIn(duration);
-        else
-            this.blocker.show(duration);
+        var delay = this.cfg.delay || 0;
+        this.timeout = setTimeout(function() {
+            $this.alignOverlay();
 
-        if (this.hasContent()) {
+            var animated = $this.cfg.animate;
             if (animated)
-                this.content.fadeIn(duration);
+                $this.blocker.fadeIn(duration);
             else
-                this.content.show(duration);
-        }
+                $this.blocker.show(duration);
 
-        this.target.attr('aria-busy', true);
+            if ($this.hasContent()) {
+                if (animated)
+                    $this.content.fadeIn(duration);
+                else
+                    $this.content.show(duration);
+            }
+
+            $this.target.attr('aria-busy', true);
+        }, delay);
     },
 
     /**
@@ -173,6 +181,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         if (!this.isBlocking()) {
             return;
         }
+        this.deleteTimeout();
         var $this = this;
         var animated = this.cfg.animate;
         var hasContent = this.hasContent();
@@ -333,6 +342,15 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      */
     isBlocking: function() {
         return this.blocker.is(':visible');
+    },
+    
+    /**
+     * Clears the ste-timeout timer for the delay.
+     * @private
+     */
+    deleteTimeout: function() {
+        clearTimeout(this.timeout);
+        this.timeout = null;
     }
 
 });

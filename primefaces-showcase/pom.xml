@@ -312,6 +312,9 @@
             <properties>
                 <jsf.project.stage>Development</jsf.project.stage>
             </properties>
+            <build>
+                <defaultGoal>clean jetty:run</defaultGoal>
+            </build>
         </profile>
 
         <profile>

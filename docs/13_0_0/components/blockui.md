@@ -28,6 +28,7 @@ BlockUI is used to block interactivity of JSF components with optional ajax inte
 | blocked | false | Boolean | Blocks the UI by default when enabled.
 | animate | true | Boolean | When disabled, displays block without animation effect.
 | styleClass | null | String | Style class of the component.
+| delay | 0 | int | Delay in milliseconds before displaying the ajax status. Default is 0 meaning immediate.
 
 ## Getting Started with BlockUI
 BlockUI requires _trigger_ and _block_ attributes to be defined. With the special ajax integration, ajax
