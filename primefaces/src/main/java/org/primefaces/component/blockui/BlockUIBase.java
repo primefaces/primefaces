@@ -40,7 +40,8 @@ public abstract class BlockUIBase extends UIPanel implements Widget {
         block,
         blocked,
         animate,
-        styleClass
+        styleClass,
+        delay
     }
 
     public BlockUIBase() {
@@ -99,4 +100,13 @@ public abstract class BlockUIBase extends UIPanel implements Widget {
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
+
+    public int getDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+    public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
+    }
+
 }
