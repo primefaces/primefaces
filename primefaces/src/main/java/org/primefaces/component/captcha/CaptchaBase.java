@@ -41,7 +41,8 @@ public abstract class CaptchaBase extends UIInput implements Widget {
         label,
         callback,
         expired,
-        size
+        size,
+        sourceUrl
     }
 
     public CaptchaBase() {
@@ -107,5 +108,13 @@ public abstract class CaptchaBase extends UIInput implements Widget {
 
     public void setSize(String size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+    public String getSourceUrl() {
+        return (String) getStateHelper().eval(PropertyKeys.sourceUrl, "https://www.google.com/recaptcha/api.js");
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        getStateHelper().put(PropertyKeys.sourceUrl, sourceUrl);
     }
 }

@@ -94,7 +94,8 @@ public class CaptchaRenderer extends CoreRenderer {
                 .attr("tabindex", captcha.getTabindex(), 0)
                 .attr("callback", captcha.getCallback(), null)
                 .attr("expired", captcha.getExpired(), null)
-                .attr("size", captcha.getSize(), null);
+                .attr("size", captcha.getSize(), null)
+                .attr("sourceUrl", captcha.getSourceUrl(), null);
 
         wb.finish();
     }
