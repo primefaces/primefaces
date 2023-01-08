@@ -121,7 +121,7 @@ public abstract class ChipsBase extends AbstractPrimeHtmlInputText implements Wi
     }
 
     public String getSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.separator, ",");
+        return (String) getStateHelper().eval(PropertyKeys.separator, null);
     }
 
     public void setSeparator(String separator) {

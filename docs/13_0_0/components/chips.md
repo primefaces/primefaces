@@ -64,7 +64,7 @@ Chips is used to enter multiple values on an inputfield.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | required | false | Boolean | Marks component as required.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
-| separator | , | String | Separator character to allow multiple values such if a list is pasted into the input. Default is ','.
+| separator | null | String | Separator character to allow multiple values such if a list is pasted into the input.
 | title | null | String | Advisory tooltip information.
 | unique | false | Boolean | Prevent duplicate entries from being added. Default false.
 | validator | null | MethodExpr | A method expression that refers to a method for validation the input.
