@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 /**
  * <p>
@@ -55,6 +56,22 @@ public class CurrencyValidator extends BigDecimalValidator {
      */
     public static CurrencyValidator getInstance() {
         return VALIDATOR;
+    }
+
+    /**
+     * <p>
+     * Returns a <code>String</code> representing the Excel pattern for this currency.
+     * </p>
+     *
+     * @param locale The locale a <code>NumberFormat</code> is required for, system default if null.
+     * @return The <code>String</code> pattern for using in Excel format.
+     */
+    public String getExcelPattern(Locale locale) {
+        DecimalFormat format = (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
+        String pattern = format.toLocalizedPattern();
+        pattern =  pattern.replace(CURRENCY_SYMBOL_STR, "\"" + format.getDecimalFormatSymbols().getCurrencySymbol() + "\"");
+        String[] patterns = pattern.split(";");
+        return patterns[0];
     }
 
     /**
