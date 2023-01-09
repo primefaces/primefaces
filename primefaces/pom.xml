@@ -592,7 +592,6 @@
                                 <include>texteditor/**</include>
                                 <include>timeline/**</include>
                                 <include>toggleswitch/**</include>
-                                <include>watermark/**</include>
                             </includes>
                             <aggregations>
                                 <aggregation>
