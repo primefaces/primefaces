@@ -71,7 +71,7 @@ public class SelectionFeature implements TreeTableFeature {
         String selectionValue = params.get(table.getClientId(context) + "_selection");
         if (LangUtils.isBlank(selectionValue)) {
             if (multiple) {
-                table.setSelection(selectionType.isArray() ? new TreeNode[0] : Collections.emptyList());
+                table.setSelection(isArray ? new TreeNode[0] : Collections.emptyList());
             }
             else {
                 table.setSelection(null);
@@ -90,7 +90,7 @@ public class SelectionFeature implements TreeTableFeature {
                     }
                 }
 
-                table.setSelection(selectionType.isArray() ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
+                table.setSelection(isArray ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
             }
             else {
                 table.setRowKey(root, selectedRowKeys[0]);
