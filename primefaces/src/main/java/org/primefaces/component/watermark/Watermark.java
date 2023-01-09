@@ -25,10 +25,14 @@ package org.primefaces.component.watermark;
 
 import javax.faces.application.ResourceDependency;
 
+/**
+ * @deprecated In 13.0.0 for removal in 14.0.0.  Use pt:placeholder instead.
+ */
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "watermark/watermark.js")
+@Deprecated
 public class Watermark extends WatermarkBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Watermark";
