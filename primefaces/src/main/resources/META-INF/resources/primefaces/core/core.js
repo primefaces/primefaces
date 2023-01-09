@@ -928,7 +928,9 @@
          * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
     	 */
         openDialog: function(cfg) {
+            if (PrimeFaces.dialog) {
         	PrimeFaces.dialog.DialogHandler.openDialog(cfg);
+            }
         },
 
         /**
@@ -937,7 +939,9 @@
          * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
          */
         closeDialog: function(cfg) {
+            if (PrimeFaces.dialog) {
         	PrimeFaces.dialog.DialogHandler.closeDialog(cfg);
+            }
         },
 
         /**
@@ -946,7 +950,9 @@
          * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Message to show in a dialog.
          */
         showMessageInDialog: function(msg) {
+            if (PrimeFaces.dialog) {
         	PrimeFaces.dialog.DialogHandler.showMessageInDialog(msg);
+            }
         },
 
         /**
@@ -958,7 +964,7 @@
             if (msg.type === 'popup' && PrimeFaces.confirmPopup) {
                 PrimeFaces.confirmPopup.showMessage(msg);
             }
-            else {
+            else if (PrimeFaces.dialog) {
                 PrimeFaces.dialog.DialogHandler.confirm(msg);
             }
         },
