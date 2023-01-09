@@ -103,17 +103,17 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", ToggleSwitch.HANDLER_CLASS, null);
 
-        // on icon
-        if (LangUtils.isNotEmpty(toggleSwitch.getOnIcon())) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", toggleSwitch.getOnIcon(), null);
-            writer.endElement("span");
-        }
-
         // off icon
         if (LangUtils.isNotEmpty(toggleSwitch.getOffIcon())) {
             writer.startElement("span", null);
             writer.writeAttribute("class", toggleSwitch.getOffIcon(), null);
+            writer.endElement("span");
+        }
+
+        // on icon
+        if (LangUtils.isNotEmpty(toggleSwitch.getOnIcon())) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", toggleSwitch.getOnIcon(), null);
             writer.endElement("span");
         }
 
