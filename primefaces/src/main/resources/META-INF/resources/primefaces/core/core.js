@@ -1170,6 +1170,18 @@
         },
 
         /**
+         * Normalizes the provided string.
+         * 
+         * @param {string} string to normalize.
+         * @param {boolean} lowercase flag indicating whether the string should be lower cased.
+         * @returns {string} to normalize.
+         */
+        normalize: function(string, lowercase) {
+            var result = string.normalize('NFD').replace(/\p{Diacritic}/gu, '');
+            return lowercase ? result.toLowerCase() : result;
+        },
+
+        /**
          * Reset any state variables on update="@all".
          */
         resetState: function() {
