@@ -550,7 +550,7 @@
                     <failOnWarning>true</failOnWarning>
                     <imagesDir>${project.build.directory}/classes/META-INF/resources</imagesDir>
                     <languageIn>ECMASCRIPT_2015</languageIn>
-                    <languageOut>ECMASCRIPT5</languageOut>
+                    <languageOut>ECMASCRIPT_2015</languageOut>
                     <resourcesSets>
                         <resourcesSet>
                             <includes>
