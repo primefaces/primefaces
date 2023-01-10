@@ -1288,7 +1288,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = PrimeFaces.normalize(option.text(), !this.cfg.caseSensitive)
+                itemLabel = PrimeFaces.normalize(option.text(), !this.cfg.caseSensitive);
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
