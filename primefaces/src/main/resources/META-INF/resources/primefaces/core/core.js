@@ -1177,6 +1177,7 @@
          * @returns {string} normalized string.
          */
         normalize: function(string, lowercase) {
+            if (!string) return string;
             var result = string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             return lowercase ? result.toLowerCase() : result;
         },
