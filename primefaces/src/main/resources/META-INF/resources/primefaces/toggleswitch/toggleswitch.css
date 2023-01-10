@@ -47,17 +47,22 @@
     transition-property: opacity,transform;
 }
 
-.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span + span {
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span {
     opacity: 0;
     transform: rotate(-90deg);
 }
 
+.ui-toggleswitch-dual-icon .ui-toggleswitch-handler span + span {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
 .ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span {
-    opacity: 0;
-    transform: rotate(90deg);
+    opacity: 1;
+    transform: rotate(0deg);
 }
 
 .ui-toggleswitch-dual-icon.ui-toggleswitch-checked .ui-toggleswitch-handler span + span {
-    opacity: 1;
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: rotate(90deg);
 }
