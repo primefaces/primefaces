@@ -1177,7 +1177,7 @@
          * @returns {string} to normalize.
          */
         normalize: function(string, lowercase) {
-            var result = string.normalize('NFD').replace(/\p{Diacritic}/gu, '');
+            var result = string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             return lowercase ? result.toLowerCase() : result;
         },
 
