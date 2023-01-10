@@ -45,12 +45,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
@@ -64,6 +64,8 @@ import org.primefaces.util.SerializableSupplier;
  * @param <T> The model class.
  */
 public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
+
+    private static final Logger LOG = Logger.getLogger(JpaLazyDataModel.class.getName());
 
     protected Class<T> entityClass;
     protected SerializableSupplier<EntityManager> entityManager;
@@ -168,8 +170,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 Object filterValue = filter.getFilterValue();
                 Object convertedFilterValue;
 
-                Class<?> filterClass = filterValue.getClass();
-                if (filterClass.isArray() || Collection.class.isAssignableFrom(filterClass)) {
+                Class<?> filterValueClass = filterValue.getClass();
+                if (filterValueClass.isArray() || Collection.class.isAssignableFrom(filterValueClass)) {
                     convertedFilterValue = filterValue;
                 }
                 else {
@@ -345,32 +347,44 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    protected <V> V convertToType(Object value, Class<V> valueType) {
+    protected Object convertToType(Object value, Class valueType) {
+        // skip null
         if (value == null) {
             return null;
         }
 
+        // its already the same type
         if (valueType.isAssignableFrom(value.getClass())) {
-            return (V) value;
+            return value;
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        Converter<V> converter = context.getApplication().createConverter(valueType);
-        if (converter != null) {
-            try {
-                return converter.getAsObject(context, UIComponent.getCurrentComponent(context), value.toString());
-            }
-            catch (ConverterException e) {
-                return (V) value;
-            }
-        }
 
+        // primivites dont need complex conversion
         if (BeanUtils.isPrimitiveOrPrimitiveWrapper(valueType)) {
-            return (V) FacesContext.getCurrentInstance().getELContext().convertToType(value, valueType);
+            return context.getELContext().convertToType(value, valueType);
         }
 
-        throw new FacesException("Can not convert " + value + " of type " + value.getClass() + " to type " + valueType
-            + "; please create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+        Converter targetConverter = context.getApplication().createConverter(valueType);
+        if (targetConverter == null) {
+            LOG.info("Skip conversion as no converter was found for " + valueType
+                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+            return value;
+        }
+
+        Converter sourceConverter = context.getApplication().createConverter(value.getClass());
+        if (sourceConverter == null) {
+            LOG.info("Skip conversion as no converter was found for " + value.getClass()
+                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+        }
+
+        // first convert the object to string
+        String stringValue = sourceConverter == null
+                ? value.toString()
+                : sourceConverter.getAsString(context, UIComponent.getCurrentComponent(context), value);
+
+        // now convert the string to the required target
+        return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
     }
 
     protected Method getRowKeyGetter() {
