@@ -1276,7 +1276,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
-        var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
+        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), !this.cfg.caseSensitive);
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
@@ -1288,7 +1288,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
+                itemLabel = PrimeFaces.normalize(option.text(), !this.cfg.caseSensitive),
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
@@ -1302,7 +1302,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         hide.push(item);
                     }
                     else {
-                        itemLabel = this.cfg.caseSensitive ? option.parent().attr('label') : option.parent().attr('label').toLowerCase();
+                        itemLabel = PrimeFaces.normalize(option.parent().attr('label'), !this.cfg.caseSensitive);
                         if (this.filterMatcher(itemLabel, filterValue)) {
                             show.push(item);
                         }

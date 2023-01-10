@@ -1170,6 +1170,19 @@
         },
 
         /**
+         * Normalizes the provided string.
+         * 
+         * @param {string} string to normalize.
+         * @param {boolean} lowercase flag indicating whether the string should be lower cased.
+         * @returns {string} normalized string.
+         */
+        normalize: function(string, lowercase) {
+            if (!string) return string;
+            var result = string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            return lowercase ? result.toLowerCase() : result;
+        },
+
+        /**
          * Reset any state variables on update="@all".
          */
         resetState: function() {
