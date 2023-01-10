@@ -167,13 +167,15 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 Field filterField = LangUtils.getFieldRecursive(entityClass, filter.getField());
                 Object filterValue = filter.getFilterValue();
                 Object convertedFilterValue;
+
                 Class<?> filterClass = filterValue.getClass();
                 if (filterClass.isArray() || Collection.class.isAssignableFrom(filterClass)) {
                     convertedFilterValue = filterValue;
                 }
                 else {
-                    convertedFilterValue = convertToType(filterValue.toString(), filterField.getType());
+                    convertedFilterValue = convertToType(filterValue, filterField.getType());
                 }
+
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
 
                 Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, convertedFilterValue);
@@ -343,27 +345,31 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    protected <V> V convertToType(String value, Class<V> valueType) {
+    protected <V> V convertToType(Object value, Class<V> valueType) {
+        if (value == null) {
+            return null;
+        }
+
+        if (valueType.isAssignableFrom(value.getClass())) {
+            return (V) value;
+        }
+
         FacesContext context = FacesContext.getCurrentInstance();
         Converter<V> converter = context.getApplication().createConverter(valueType);
         if (converter != null) {
             try {
-                return converter.getAsObject(context, UIComponent.getCurrentComponent(context), value);
+                return converter.getAsObject(context, UIComponent.getCurrentComponent(context), value.toString());
             }
             catch (ConverterException e) {
                 return (V) value;
             }
         }
 
-        if (valueType == String.class) {
-            return (V) value;
-        }
-
         if (BeanUtils.isPrimitiveOrPrimitiveWrapper(valueType)) {
             return (V) FacesContext.getCurrentInstance().getELContext().convertToType(value, valueType);
         }
 
-        throw new FacesException("Can not convert " + value + " to type " + valueType
+        throw new FacesException("Can not convert " + value + " of type " + value.getClass() + " to type " + valueType
             + "; please create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
     }
 
