@@ -163,9 +163,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     else
                         $this.jq.children('.ui-tooltip-text').html(text);
 
-                    $this.globalTitle = text;
-                    $this.target = element;
-                    $this.show();
+                    setTimeout(function() {
+                        $this.globalTitle = text;
+                        $this.target = element;
+                        $this._show();
+                    }, $this.cfg.showDelay);
                 }
             })
             .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
