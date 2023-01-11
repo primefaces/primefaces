@@ -703,7 +703,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [animate] If it should be animated.
      */
     filter: function(value, list, animate) {
-        var filterValue = PrimeFaces.trim(value).toLowerCase(),
+        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), true),
         items = list.children('li.ui-picklist-item'),
         animated = animate || this.isAnimated();
 
@@ -716,7 +716,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < items.length; i++) {
                 var item = items.eq(i),
-                itemLabel = item.attr('data-item-label'),
+                itemLabel = PrimeFaces.normalize(item.attr('data-item-label'), false),
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
