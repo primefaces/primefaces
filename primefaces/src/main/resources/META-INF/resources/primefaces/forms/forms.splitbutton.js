@@ -486,7 +486,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Search term for filtering.
      */
     filter: function(value) {
-        var filterValue = PrimeFaces.trim(value).toLowerCase();
+        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), true);
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
@@ -496,7 +496,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < this.menuitems.length; i++) {
                 var menuitem = this.menuitems.eq(i),
-                itemLabel = menuitem.find('.ui-menuitem-text').text().toLowerCase();
+                itemLabel = PrimeFaces.normalize(menuitem.find('.ui-menuitem-text').text(), true);
 
                 /* for keyboard support */
                 menuitem.removeClass('ui-state-hover');
