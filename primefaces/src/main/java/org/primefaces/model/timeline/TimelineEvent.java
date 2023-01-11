@@ -94,6 +94,13 @@ public class TimelineEvent<T> implements Serializable {
      */
     private String styleClass;
 
+    /**
+     * The type of the item. Can be 'box' (default), 'point', 'range', or 'background'.
+     * <p>
+     * Types 'box' and 'point' need a start date, the types 'range' and 'background' needs both a start and end date.
+     */
+    private String type;
+
     public TimelineEvent() {
         this.id = UUID.randomUUID().toString();
     }
@@ -194,6 +201,14 @@ public class TimelineEvent<T> implements Serializable {
         this.title = title;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public static <T> Builder<T> builder() {
         return new Builder<>();
     }
@@ -213,6 +228,7 @@ public class TimelineEvent<T> implements Serializable {
         builder.subgroup(event.subgroup);
         builder.title(event.title);
         builder.styleClass(event.styleClass);
+        builder.type(event.type);
 
         return builder;
     }
@@ -318,6 +334,11 @@ public class TimelineEvent<T> implements Serializable {
 
         public Builder<T> title(String title) {
             event.setTitle(title);
+            return this;
+        }
+
+        public Builder<T> type(String type) {
+            event.setType(type);
             return this;
         }
 

@@ -467,6 +467,10 @@ public class TimelineRenderer extends CoreRenderer {
             fsw.write(", className: null");
         }
 
+        if (LangUtils.isNotBlank(event.getType())) {
+            fsw.write(", type: \"" + event.getType() + "\"");
+        }
+
         Object data = event.getData();
         if (LangUtils.isNotBlank(timeline.getVar()) && data != null) {
             context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
