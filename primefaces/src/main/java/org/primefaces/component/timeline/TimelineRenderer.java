@@ -461,10 +461,14 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         if (LangUtils.isNotBlank(event.getStyleClass())) {
-            fsw.write(", className: \"" + event.getStyleClass() + "\"");
+            fsw.write(", className: \"" + EscapeUtils.forJavaScript(event.getStyleClass()) + "\"");
         }
         else {
             fsw.write(", className: null");
+        }
+
+        if (LangUtils.isNotBlank(event.getType())) {
+            fsw.write(", type: \"" + EscapeUtils.forJavaScript(event.getType()) + "\"");
         }
 
         Object data = event.getData();
