@@ -92,6 +92,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("collision", panel.getCollision(), null)
                 .attr("appendTo", panel.getAppendTo(), null)
                 .attr("dynamic", panel.isDynamic(), false)
+                .attr("cache", panel.isCache(), true)
                 .attr("dismissable", panel.isDismissable(), true)
                 .attr("showCloseIcon", panel.isShowCloseIcon(), false)
                 .attr("modal", panel.isModal(), false)

@@ -55,7 +55,8 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
         modal,
         blockScroll,
         showDelay,
-        autoHide;
+        autoHide,
+        cache;
 
         private String toString;
 
@@ -231,5 +232,13 @@ public abstract class OverlayPanelBase extends UIPanel implements Widget, Client
 
     public void setAutoHide(boolean autoHide) {
         getStateHelper().put(PropertyKeys.autoHide, autoHide);
+    }
+
+    public boolean isCache() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+    }
+
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 }
