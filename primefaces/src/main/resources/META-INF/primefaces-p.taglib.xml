@@ -1231,14 +1231,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute when input element loses focus.]]>
-            </description>
-            <name>onblur</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Client side callback to execute when input element loses focus and its value has been modified since gaining focus.]]>
             </description>
             <name>onchange</name>
