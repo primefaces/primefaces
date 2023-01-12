@@ -47,7 +47,7 @@
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Editable"/>
-                        <p:selectOneMenu id="city" value="#{selectOneMenuView.city}" effect="fold" editable="true">
+                        <p:selectOneMenu id="city" value="#{selectOneMenuView.city}" editable="true">
                             <f:selectItem itemLabel="Select One" itemValue=""/>
                             <f:selectItems value="#{selectOneMenuView.cities}"/>
                         </p:selectOneMenu>
@@ -64,7 +64,7 @@
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="@next" value="Advanced"/>
                         <p:selectOneMenu id="advanced" value="#{selectOneMenuView.country}" converter="#{countryConverter}"
-                                        panelStyle="width:180px" effect="fade" var="c"
+                                        panelStyle="width:180px" var="c"
                                         filter="true" filterMatchMode="startsWith">
 
                             <f:selectItems value="#{selectOneMenuView.countries}" var="country"
