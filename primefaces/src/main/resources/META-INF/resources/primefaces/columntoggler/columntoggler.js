@@ -104,9 +104,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             hidden = column.hasClass('ui-helper-hidden'),
             boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
             iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check',
-            columnChildren = column.children('.ui-column-title'),
-            columnTitle = columnChildren.text(),
+            columnChildren = column.children('.ui-column-title').clone(),
             columnTogglerCheckboxId = this.tableId + "_columnTogglerChkbx" + i;
+            columnChildren.children().remove('script'); // GitHub #9647 remove scripts
+            var columnTitle = columnChildren.text();
 
             var label = columnChildren.find('label');
             if (label.length) {
