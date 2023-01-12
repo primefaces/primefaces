@@ -96,7 +96,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             wb.attr("filter", true)
                     .attr("filterMatchMode", listbox.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", listbox.getFilterFunction(), null)
-                    .attr("caseSensitive", listbox.isCaseSensitive(), false);
+                    .attr("caseSensitive", listbox.isCaseSensitive(), false)
+                    .attr("normalize", listbox.isNormalize(), false);
         }
 
         wb.finish();

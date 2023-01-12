@@ -37,6 +37,7 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {boolean} cfg.caseSensitive `true` if filtering is case-sensitive, `false` otherwise.
+ * @prop {boolean} cfg.normalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.filter `true` if the options can be filtered, or `false` otherwise.
  * @prop {PrimeFaces.widget.SelectListbox.FilterFunction} cfg.filterFunction A custom filter function that is used when
  * `filterMatchMode` is set to `custom`.
@@ -194,7 +195,9 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Current value of the filter.
      */
     filter: function(value) {
-        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), !this.cfg.caseSensitive);
+        var lowercase = !this.cfg.caseSensitive,
+                normalize = this.cfg.normalize,
+                filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
@@ -202,7 +205,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = PrimeFaces.normalize(option.text(), !this.cfg.caseSensitive),
+                itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize),
                 item = this.items.eq(i);
 
                 if(this.filterMatcher(itemLabel, filterValue))

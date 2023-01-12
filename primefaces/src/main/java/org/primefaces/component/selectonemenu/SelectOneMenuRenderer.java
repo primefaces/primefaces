@@ -507,7 +507,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             wb.attr("filter", true)
                     .attr("filterMatchMode", menu.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", menu.getFilterFunction(), null)
-                    .attr("caseSensitive", menu.isCaseSensitive(), false);
+                    .attr("caseSensitive", menu.isCaseSensitive(), false)
+                    .attr("normalize", menu.isNormalize(), false);
         }
 
         encodeClientBehaviors(context, menu);

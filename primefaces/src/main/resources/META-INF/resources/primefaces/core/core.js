@@ -1170,15 +1170,17 @@
         },
 
         /**
-         * Normalizes the provided string.
+         * Converts the provided string to searchable form.
          * 
          * @param {string} string to normalize.
          * @param {boolean} lowercase flag indicating whether the string should be lower cased.
-         * @returns {string} normalized string.
+         * @param {boolean} normalize flag indicating whether the string should be normalized (accents to be removed
+         * from characters).
+         * @returns {string} searchable string.
          */
-        normalize: function(string, lowercase) {
-            if (!string) return string;
-            var result = string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        toSearchable: function(string, lowercase, normalize) {
+            if (!string) return '';
+            var result = normalize ? string.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : string;
             return lowercase ? result.toLowerCase() : result;
         },
 
