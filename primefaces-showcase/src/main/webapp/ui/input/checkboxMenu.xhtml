@@ -43,6 +43,23 @@
                                         multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
                     <f:selectItems value="#{checkboxView.countries}"/>
                 </p:selectCheckboxMenu>
+
+                <h5>Advanced</h5>
+                <p:selectCheckboxMenu id="advanced" value="#{checkboxView.selectedCountries2}" label="Countries" style="width: 15rem"
+                                        multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250" var="c">
+                    <f:selectItems value="#{checkboxView.countries2}"/>
+
+                    <p:column style="width:10%">
+                        <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{c.name}"/>
+                    </p:column>
+                </p:selectCheckboxMenu>
             </h:form>
         </div>
     </ui:define>

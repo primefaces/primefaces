@@ -23,16 +23,21 @@
  */
 package org.primefaces.showcase.view.input;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
 
 @Named
 @RequestScoped
@@ -45,6 +50,11 @@ public class CheckboxView {
     private List<String> cities;
     private List<SelectItem> countries;
     private String[] selectedCountries;
+    private List<Country> countries2;
+    private String[] selectedCountries2;
+
+    @Inject
+    private CountryService service;
 
     @PostConstruct
     public void init() {
@@ -76,6 +86,8 @@ public class CheckboxView {
 
         countries.add(europeCountries);
         countries.add(americaCountries);
+
+        countries2 = service.getCountries();
     }
 
     public String[] getSelectedOptions() {
@@ -132,6 +144,22 @@ public class CheckboxView {
 
     public void setSelectedCountries(String[] selectedCountries) {
         this.selectedCountries = selectedCountries;
+    }
+
+    public List<Country> getCountries2() {
+        return countries2;
+    }
+
+    public void setCountries2(List<Country> countries2) {
+        this.countries2 = countries2;
+    }
+
+    public String[] getSelectedCountries2() {
+        return selectedCountries2;
+    }
+
+    public void setSelectedCountries2(String[] selectedCountries2) {
+        this.selectedCountries2 = selectedCountries2;
     }
 
     public void onItemUnselect(UnselectEvent event) {

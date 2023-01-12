@@ -26,6 +26,7 @@ package org.primefaces.component.selectcheckboxmenu;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.UUID;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -38,12 +39,15 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
+import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
@@ -73,7 +77,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String title = menu.getTitle();
 
         String style = menu.getStyle();
-        String styleclass =  createStyleClass(menu, SelectCheckboxMenu.STYLE_CLASS);
+        String styleclass = createStyleClass(menu, SelectCheckboxMenu.STYLE_CLASS);
         styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
 
         writer.startElement("div", menu);
@@ -97,6 +101,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         encodeMenuIcon(context, menu, valid);
+        encodePanel(context, menu, selectItems);
 
         writer.endElement("div");
     }
@@ -318,6 +323,272 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
+    protected void encodePanel(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String panelStyle = menu.getPanelStyle();
+        String panelStyleClass = SelectCheckboxMenu.PANEL_CLASS;
+        if (menu.getPanelStyleClass() != null) {
+            panelStyleClass += " " + menu.getPanelStyleClass();
+        }
+
+        // TODO: "RTLAware"!!!
+//        if (ComponentUtils.isRTL(context, menu)) {
+//            panelStyleClass = panelStyleClass + " " + SelectCheckboxMenu.RTL_PANEL_CLASS;
+//        }
+//
+        String height = Integer.toString(menu.getScrollHeight()) + "px";
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
+        writer.writeAttribute("class", panelStyleClass, null);
+        if (panelStyle != null) {
+            writer.writeAttribute("style", panelStyle, null);
+        }
+        writer.writeAttribute(HTML.ARIA_ROLE, "dialog", null);
+
+        if (menu.isShowHeader()) {
+            encodePanelHeader(context, menu, selectItems);
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.ITEMS_WRAPPER_CLASS, null);
+        writer.writeAttribute("style", "max-height:" + height, null);
+
+        if (!menu.isDynamic()) {
+            encodePanelContent(context, menu, selectItems);
+        }
+
+        writer.endElement("div");
+
+        writer.endElement("div");
+    }
+
+    private void encodePanelHeader(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Converter converter = menu.getConverter();
+        Object values = getValues(menu);
+        Object submittedValues = getSubmittedValues(menu);
+        Object valuesArray = (submittedValues != null) ? submittedValues : values;
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.HEADER_CLASS, null);
+
+        //toggler
+        boolean notChecked = selectItems.stream()
+                .anyMatch(selectItem -> {
+                    final Object itemValue;
+                    if (submittedValues != null) {
+                        itemValue = getOptionAsString(context, menu, converter, selectItem.getValue());
+                    }
+                    else {
+                        itemValue = selectItem.getValue();
+                    }
+
+                    return !isSelected(context, menu, itemValue, valuesArray, converter);
+                });
+        encodeCheckbox(context, null, false, !notChecked, null, "Select All");
+
+        //filter
+        if (menu.isFilter()) {
+            encodeFilter(context, menu);
+        }
+
+        //closer
+        writer.startElement("a", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.CLOSER_CLASS, null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, "Close", null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-circle-close", null);
+        writer.endElement("span");
+
+        writer.endElement("a");
+
+        writer.endElement("div");
+    }
+
+    protected void encodeFilter(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String id = menu.getClientId(context) + "_filter";
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.FILTER_CONTAINER_CLASS, null);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.FILTER_CLASS, null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
+        writer.writeAttribute("aria-disabled", false, null);
+        writer.writeAttribute("aria-multiline", false, null);
+        writer.writeAttribute("aria-readonly", false, null);
+
+        if (menu.getFilterPlaceholder() != null) {
+            writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
+        }
+
+        writer.endElement("input");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-search", id);
+        writer.endElement("span");
+
+        writer.endElement("div");
+    }
+
+    protected void encodePanelContent(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean customContent = menu.getVar() != null;
+
+        if (customContent) {
+            List<Column> columns = menu.getColumns();
+
+            writer.startElement("table", null);
+            writer.writeAttribute("id", menu.getClientId(context) + "_table", null);
+            writer.writeAttribute("class", SelectCheckboxMenu.TABLE_CLASS, null);
+            writer.writeAttribute("role", "listbox", null);
+            encodeColumnsHeader(context, menu, columns);
+            writer.startElement("tbody", null);
+            encodeOptionsAsTable(context, menu, selectItems, columns);
+            writer.endElement("tbody");
+            writer.endElement("table");
+        }
+        else {
+            // Rendering was moved to the client - see renderPanelContentFromHiddenSelect as part of forms.selectcheckboxmenu.js
+        }
+    }
+
+    protected void encodeColumnsHeader(FacesContext context, SelectCheckboxMenu menu, List<Column> columns)
+            throws IOException {
+
+        ResponseWriter writer = context.getResponseWriter();
+        boolean hasHeader = false;
+
+        for (int i = 0; i < columns.size(); i++) {
+            Column column = columns.get(i);
+            if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+                hasHeader = true;
+                break;
+            }
+        }
+
+        if (hasHeader) {
+            writer.startElement("thead", null);
+            for (int i = 0; i < columns.size(); i++) {
+                Column column = columns.get(i);
+                if (!column.isRendered()) {
+                    continue;
+                }
+
+                String headerText = column.getHeaderText();
+                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+
+                writer.startElement("th", null);
+                writer.writeAttribute("class", styleClass, null);
+
+                if (column.getStyle() != null) {
+                    writer.writeAttribute("style", column.getStyle(), null);
+                }
+
+                UIComponent headerFacet = column.getFacet("header");
+                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                    headerFacet.encodeAll(context);
+                }
+                else if (headerText != null) {
+                    writer.writeText(headerText, null);
+                }
+
+                writer.endElement("th");
+            }
+            writer.endElement("thead");
+        }
+    }
+
+    protected void encodeOptionsAsTable(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, List<Column> columns)
+            throws IOException {
+
+        ResponseWriter writer = context.getResponseWriter();
+        Converter converter = menu.getConverter();
+        Object values = getValues(menu);
+        Object submittedValues = getSubmittedValues(menu);
+        Object valuesArray = (submittedValues != null) ? submittedValues : values;
+        String var = menu.getVar();
+
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            String itemValueAsString = getOptionAsString(context, menu, converter, selectItem.getValue());
+            Object itemValue;
+            if (submittedValues != null) {
+                itemValue = itemValueAsString;
+            }
+            else {
+                itemValue = selectItem.getValue();
+            }
+            String itemLabel = getOptionLabel(selectItem);
+
+            boolean disabled = selectItem.isDisabled() || menu.isDisabled();
+            boolean checked = isSelected(context, menu, itemValue, valuesArray, converter);
+            if (selectItem.isNoSelectionOption() && !checked) {
+                continue;
+            }
+            final String uuid = UUID.randomUUID().toString();
+
+            String itemStyleClass = SelectCheckboxMenu.ROW_CLASS;
+            itemStyleClass += checked ? " ui-selectcheckboxmenu-checked" : " ui-selectcheckboxmenu-unchecked";
+            if (selectItem.isNoSelectionOption()) {
+                itemStyleClass += " ui-noselection-option";
+            }
+
+            context.getExternalContext().getRequestMap().put(var, itemValue);
+
+            writer.startElement("tr", null);
+            writer.writeAttribute("class", itemStyleClass, null);
+            writer.writeAttribute("data-label", itemLabel, null);
+            writer.writeAttribute("role", "option", null);
+            if (selectItem.getDescription() != null) {
+                writer.writeAttribute("title", selectItem.getDescription(), null);
+            }
+            if (menu.isMultiple()) {
+                writer.writeAttribute("data-item-value", itemValue, null);
+            }
+
+            //input
+            writer.startElement("td", null);
+            encodeCheckbox(context, uuid, disabled, checked, selectItem.getDescription(), null);
+            writer.endElement("td");
+
+            //columns
+            for (int j = 0; j < columns.size(); j++) {
+                Column column = columns.get(j);
+                if (!column.isRendered()) {
+                    continue;
+                }
+                String style = column.getStyle();
+                String styleClass = column.getStyleClass();
+
+                writer.startElement("td", null);
+                if (style != null) {
+                    writer.writeAttribute("style", style, null);
+                }
+                if (styleClass != null) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+
+                renderChildren(context, column);
+                writer.endElement("td");
+            }
+
+            writer.endElement("tr");
+        }
+
+        context.getExternalContext().getRequestMap().put(var, null);
+    }
+
     protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectCheckboxMenu", menu)
@@ -331,6 +602,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("emptyLabel", menu.getEmptyLabel())
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
+                .attr("renderPanelContentOnClient", menu.getVar() == null,  false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
                         SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
 
@@ -347,6 +619,11 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         encodeClientBehaviors(context, menu);
 
         wb.finish();
+    }
+
+    protected String getOptionLabel(SelectItem option) {
+        String itemLabel = option.getLabel();
+        return isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
     }
 
     @Override
@@ -372,6 +649,54 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("tabindex", tabindex, null);
         }
         writer.endElement("input");
+        writer.endElement("div");
+    }
+
+    private void encodeCheckbox(FacesContext context, String id, boolean disabled, boolean checked, String title, String ariaLabel) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String boxClass = HTML.CHECKBOX_BOX_CLASS;
+        if (disabled) {
+            boxClass += " ui-state-disabled";
+        }
+        if (checked) {
+            boxClass += " ui-state-active";
+        }
+        String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
+        writer.startElement("div", null);
+        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", HTML.CHECKBOX_INPUT_WRAPPER_CLASS, null);
+
+        //input
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "checkbox", null);
+        if (id != null) {
+            writer.writeAttribute("id", id, null);
+        }
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, null);
+        }
+        if (ariaLabel != null) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+        writer.endElement("input");
+
+        writer.endElement("div");
+
+        //box with icon
+        writer.startElement("div", null);
+        writer.writeAttribute("class", boxClass, null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", iconClass, null);
+        writer.endElement("span");
+
+        writer.endElement("div");
+
         writer.endElement("div");
     }
 }

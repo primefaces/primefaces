@@ -47,6 +47,7 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         caseSensitive,
         panelStyle,
         panelStyleClass,
+        var,
         appendTo,
         tabindex,
         title,
@@ -145,6 +146,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setPanelStyle(String panelStyle) {
         getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
+    }
+
+    public String getVar() {
+        return (String) getStateHelper().eval(SelectCheckboxMenuBase.PropertyKeys.var, null);
+    }
+
+    public void setVar(String var) {
+        getStateHelper().put(SelectCheckboxMenuBase.PropertyKeys.var, var);
     }
 
     public String getPanelStyleClass() {
