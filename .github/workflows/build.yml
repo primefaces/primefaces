@@ -5,13 +5,11 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Java ${{ matrix.java }} - ${{ matrix.jsfimpl }}
+    name: Build
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11, 17, 19]
-        jsfimpl: [ 'mojarra-2.3', 'myfaces-2.3']
-
+        java: [11]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
@@ -21,29 +19,22 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -Psecurity-checks,jsdoc,minify -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
-      - name: SonarCloud
-        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 11 && matrix.jsfimpl == 'myfaces-2.3'
+        run: mvn clean install -T1C -Psecurity-checks,jsdoc,minify -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+      - name: Sonar Cloud
+        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
         run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: Integration Tests (serial)
-        if: matrix.java == 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
-      - name: Integration Tests (parallel)
-        if: matrix.java != 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.jsfimpl }}
 
-  jakarta-integration-tests:
+  integration-tests-22:
     runs-on: ubuntu-latest
-    name: Java ${{ matrix.java }} - ${{ matrix.facesimpl }}
+    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 17, 19]
-        facesimpl: [ 'mojarra-4.0', 'myfaces-4.0']
-
+        java: [8]
+        facesimpl: [ 'mojarra-2.2', 'myfaces-2.2' ]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
@@ -52,8 +43,60 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           cache: 'maven'
-      - name: Jakarta Integration Tests
-        run: mvn clean install -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+      - name: Build
+        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+      - name: Integration Tests (serial)
+        if: matrix.java == 8
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
       - name: Integration Tests (parallel)
         if: matrix.java != 8
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome-jsf22,theme-saga,csp,${{ matrix.facesimpl }}
+
+
+  integration-tests-23:
+    runs-on: ubuntu-latest
+    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [8, 19]
+        facesimpl: [ 'mojarra-2.3', 'myfaces-2.3']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+      - name: Build
+        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+      - name: Integration Tests (serial)
+        if: matrix.java == 8
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+      - name: Integration Tests (parallel)
+        if: matrix.java != 8
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+
+
+  integration-tests-40:
+    if: ${{ false }}  # disable for now, wheter Mojarra nor MyFaces is stable enough
+    runs-on: ubuntu-latest
+    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [11, 19]
+        facesimpl: [ 'mojarra-4.0', 'myfaces-4.0']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+      - name: Build
+        run: mvn clean install -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+      - name: Integration Tests (parallel)
         run: mvn -B -V clean install -fprimefaces-integration-tests-jakarta/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
