@@ -56,3 +56,4 @@ node_modules/
 /primefaces-cli/target/
 /primefaces/target/
 /primefaces-integration-tests-jakarta/target/
+/primefaces-selenium/target/
