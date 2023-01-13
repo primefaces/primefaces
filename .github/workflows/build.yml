@@ -8,13 +8,15 @@ jobs:
     name: Build
     strategy:
       fail-fast: false
+      matrix:
+        java: [11]
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 8
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 8
+          java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
         run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -Psecurity-checks,jsdoc,minify -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
@@ -25,14 +27,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  javax-integration-tests:
+  integration-tests-22:
     runs-on: ubuntu-latest
     name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 19]
-        facesimpl: [ 'mojarra-2.2', 'myfaces-2.2', 'mojarra-2.3', 'myfaces-2.3']
+        java: [8]
+        facesimpl: [ 'mojarra-2.2', 'myfaces-2.2' ]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
@@ -51,7 +53,33 @@ jobs:
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
 
 
-  jakarta-integration-tests:
+  integration-tests-23:
+    runs-on: ubuntu-latest
+    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [8, 19]
+        facesimpl: [ 'mojarra-2.3', 'myfaces-2.3']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+          cache: 'maven'
+      - name: Build
+        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+      - name: Integration Tests (serial)
+        if: matrix.java == 8
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+      - name: Integration Tests (parallel)
+        if: matrix.java != 8
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+
+
+  integration-tests-40:
     runs-on: ubuntu-latest
     name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
