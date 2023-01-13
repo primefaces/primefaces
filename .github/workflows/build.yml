@@ -19,7 +19,7 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -Psecurity-checks,jsdoc,minify -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+        run: mvn clean install -T1C -Psecurity-checks,jsdoc,minify -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
       - name: Sonar Cloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
         run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
@@ -50,7 +50,7 @@ jobs:
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
       - name: Integration Tests (parallel)
         if: matrix.java != 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome-jsf22,theme-saga,csp,${{ matrix.facesimpl }}
 
 
   integration-tests-23:
@@ -80,6 +80,7 @@ jobs:
 
 
   integration-tests-40:
+    if: ${{ false }}  # disable for now, wheter Mojarra nor MyFaces is stable enough
     runs-on: ubuntu-latest
     name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
