@@ -55,3 +55,4 @@ node_modules/
 /primefaces-showcase/target/
 /primefaces-cli/target/
 /primefaces/target/
+/primefaces-integration-tests-jakarta/target/

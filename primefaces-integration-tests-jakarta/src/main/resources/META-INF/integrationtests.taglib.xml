@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<facelet-taglib version="2.0"
+                xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+
+    <namespace>http://primefaces.org/ui/integrationtests</namespace>
+
+    <tag>
+        <description>
+            <![CDATA[Tag handler to include a facelet multiple times with different contextes (objects from "value").]]>
+        </description>
+        <tag-name>includes</tag-name>
+        <handler-class>org.primefaces.integrationtests.common.IncludesTagHandler</handler-class>
+        <attribute>
+            <description>
+                <![CDATA[The relative path to a XHTML file to be include one or multiple times.]]>
+            </description>
+            <name>src</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Objects which should be available in the included XHTML files. This attribute can be either of type java.util.List or array. If it is null, the tag handler works as a standard ui:include.]]>
+            </description>
+            <name>value</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The name of the parameter which points to an object of each iteration over the given value.]]>
+            </description>
+            <name>name</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+</facelet-taglib>
