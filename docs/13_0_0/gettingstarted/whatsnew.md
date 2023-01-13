@@ -10,6 +10,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `delay` to delay displaying similar to AjaxStatus.
 * Captcha
     * Added attribute `sourceUrl` to override the Google JS location for countries that do not have access to Google.
+* DataExporter
+    * Added attribute `useLocale` to ignore column headers and use column id for titles. Useful for XML export.
 * DataGrid
     * Added attribute `rowTitle` to support row-specific titles.
 * DataTable

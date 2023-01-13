@@ -33,6 +33,7 @@ public class ExportConfiguration {
     private boolean visibleOnly;
     private boolean exportHeader;
     private boolean exportFooter;
+    private boolean useLocale;
     private String encodingType;
     private MethodExpression preProcessor;
     private MethodExpression postProcessor;
@@ -55,6 +56,7 @@ public class ExportConfiguration {
         private boolean visibleOnly;
         private boolean exportHeader;
         private boolean exportFooter;
+        private boolean useLocale;
         private String encodingType;
         private MethodExpression preProcessor;
         private MethodExpression postProcessor;
@@ -94,6 +96,11 @@ public class ExportConfiguration {
             return this;
         }
 
+        public Builder useLocale(boolean useLocale) {
+            this.useLocale = useLocale;
+            return this;
+        }
+
         public Builder encodingType(String encodingType) {
             this.encodingType = encodingType;
             return this;
@@ -127,6 +134,7 @@ public class ExportConfiguration {
             config.visibleOnly = this.visibleOnly;
             config.exportHeader = this.exportHeader;
             config.exportFooter = this.exportFooter;
+            config.useLocale = this.useLocale;
             config.encodingType = this.encodingType;
             config.preProcessor = this.preProcessor;
             config.postProcessor = this.postProcessor;
@@ -174,6 +182,10 @@ public class ExportConfiguration {
 
     public boolean isExportFooter() {
         return exportFooter;
+    }
+
+    public boolean iseUseLocale() {
+        return useLocale;
     }
 
     public String getEncodingType() {

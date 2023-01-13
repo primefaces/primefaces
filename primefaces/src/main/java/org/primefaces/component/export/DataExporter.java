@@ -61,6 +61,7 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression visibleOnly;
     private ValueExpression exportHeader;
     private ValueExpression exportFooter;
+    private ValueExpression useLocale;
     private MethodExpression preProcessor;
     private MethodExpression postProcessor;
     private ValueExpression options;
@@ -120,6 +121,13 @@ public class DataExporter implements ActionListener, StateHolder {
                         : (Boolean) exportFooter.getValue(context.getELContext());
         }
 
+        boolean isUseLocale = true;
+        if (useLocale != null) {
+            isUseLocale = useLocale.isLiteralText()
+                        ? Boolean.parseBoolean(useLocale.getValue(context.getELContext()).toString())
+                        : (Boolean) useLocale.getValue(context.getELContext());
+        }
+
         ExporterOptions exporterOptions = null;
         if (options != null) {
             exporterOptions = (ExporterOptions) options.getValue(elContext);
@@ -141,6 +149,7 @@ public class DataExporter implements ActionListener, StateHolder {
                         .selectionOnly(isSelectionOnly)
                         .visibleOnly(isVisibleOnly)
                         .exportHeader(isExportHeader)
+                        .useLocale(isUseLocale)
                         .exportFooter(isExportFooter)
                         .options(exporterOptions)
                         .preProcessor(preProcessor)
@@ -257,17 +266,18 @@ public class DataExporter implements ActionListener, StateHolder {
         visibleOnly = (ValueExpression) values[5];
         exportHeader = (ValueExpression) values[6];
         exportFooter = (ValueExpression) values[7];
-        preProcessor = (MethodExpression) values[8];
-        postProcessor = (MethodExpression) values[9];
-        encoding = (ValueExpression) values[10];
-        options = (ValueExpression) values[11];
-        onTableRender = (MethodExpression) values[12];
-        exporter = (ValueExpression) values[13];
+        useLocale = (ValueExpression) values[8];
+        preProcessor = (MethodExpression) values[9];
+        postProcessor = (MethodExpression) values[10];
+        encoding = (ValueExpression) values[11];
+        options = (ValueExpression) values[12];
+        onTableRender = (MethodExpression) values[13];
+        exporter = (ValueExpression) values[14];
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[14];
+        Object[] values = new Object[15];
 
         values[0] = target;
         values[1] = type;
@@ -277,12 +287,13 @@ public class DataExporter implements ActionListener, StateHolder {
         values[5] = visibleOnly;
         values[6] = exportHeader;
         values[7] = exportFooter;
-        values[8] = preProcessor;
-        values[9] = postProcessor;
-        values[10] = encoding;
-        values[11] = options;
-        values[12] = onTableRender;
-        values[13] = exporter;
+        values[8] = useLocale;
+        values[9] = preProcessor;
+        values[10] = postProcessor;
+        values[11] = encoding;
+        values[12] = options;
+        values[13] = onTableRender;
+        values[14] = exporter;
 
         return (values);
     }
@@ -302,6 +313,7 @@ public class DataExporter implements ActionListener, StateHolder {
         private ValueExpression visibleOnly;
         private ValueExpression exportHeader;
         private ValueExpression exportFooter;
+        private ValueExpression useLocale;
         private MethodExpression preProcessor;
         private MethodExpression postProcessor;
         private ValueExpression options;
@@ -356,6 +368,11 @@ public class DataExporter implements ActionListener, StateHolder {
             return this;
         }
 
+        public Builder useLocale(ValueExpression useLocale) {
+            this.useLocale = useLocale;
+            return this;
+        }
+
         public Builder preProcessor(MethodExpression preProcessor) {
             this.preProcessor = preProcessor;
             return this;
@@ -392,6 +409,7 @@ public class DataExporter implements ActionListener, StateHolder {
             exporter.visibleOnly = this.visibleOnly;
             exporter.exportHeader = this.exportHeader;
             exporter.exportFooter = this.exportFooter;
+            exporter.useLocale = this.useLocale;
             exporter.preProcessor = this.preProcessor;
             exporter.postProcessor = this.postProcessor;
             exporter.options = this.options;

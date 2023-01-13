@@ -26,8 +26,11 @@ package org.primefaces.component.datatable.export;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;

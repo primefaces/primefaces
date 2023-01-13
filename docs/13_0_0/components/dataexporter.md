@@ -19,6 +19,11 @@ type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "
 target | null | String | Search expression to resolve one or multiple target components.
 fileName | null | String | Filename of the generated export file, defaults to target component id.
 pageOnly | false | Boolean | Exports only current page instead of whole dataset.
+pageOnly | false | Boolean | Exports only current page instead of whole dataset.
+visibleOnly | false | Boolean | Exports only visible columns instead of whole dataset.
+exportHeader | true | Boolean | When enabled, the header will be exported.
+exportFooter | true | Boolean | When enabled, the footer will be exported.
+useLocale | true | Boolean | When enabled, the column headers are use as XML tags or CSV/Excel headers. If disabled then it will use the column id.
 preProcessor | null | MethodExpr | PreProcessor for the exported document.
 postProcessor | null | MethodExpr | PostProcessor for the exported document.
 encoding | UTF-8 | String | Character encoding to use

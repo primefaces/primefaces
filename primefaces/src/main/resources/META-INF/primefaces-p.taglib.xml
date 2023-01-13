@@ -203,6 +203,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description>When enabled, the column headers are use as XML tags or CSV/Excel headers. If disabled then it will use the column id.</description>
+            <name>useLocale</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description>Options object to customize document.</description>
             <name>options</name>
             <required>false</required>

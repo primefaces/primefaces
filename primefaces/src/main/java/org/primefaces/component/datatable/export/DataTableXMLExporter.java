@@ -117,9 +117,16 @@ public class DataTableXMLExporter extends DataTableExporter {
     }
 
     protected String getColumnTag(UIColumn column) {
-        String headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
+        String headerText = null;
         UIComponent facet = column.getFacet("header");
         String columnTag;
+        if (!getExportConfiguration().iseUseLocale()) {
+            String id = column.getClientId();
+            headerText = id.substring(id.lastIndexOf(":") + 1);
+        }
+        else {
+            headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
+        }
 
         if (headerText != null) {
             columnTag = headerText.toLowerCase();

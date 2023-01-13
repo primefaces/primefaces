@@ -40,6 +40,7 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute visibleOnly;
     private final TagAttribute exportHeader;
     private final TagAttribute exportFooter;
+    private final TagAttribute useLocale;
     private final TagAttribute preProcessor;
     private final TagAttribute postProcessor;
     private final TagAttribute encoding;
@@ -57,6 +58,7 @@ public class DataExporterTagHandler extends TagHandler {
         visibleOnly = getAttribute("visibleOnly");
         exportHeader = getAttribute("exportHeader");
         exportFooter = getAttribute("exportFooter");
+        useLocale = getAttribute("useLocale");
         encoding = getAttribute("encoding");
         preProcessor = getAttribute("preProcessor");
         postProcessor = getAttribute("postProcessor");
@@ -79,6 +81,7 @@ public class DataExporterTagHandler extends TagHandler {
         ValueExpression visibleOnlyVE = null;
         ValueExpression exportHeaderVE = null;
         ValueExpression exportFooterVE = null;
+        ValueExpression useLocaleVE = null;
         ValueExpression encodingVE = null;
         MethodExpression preProcessorME = null;
         MethodExpression postProcessorME = null;
@@ -104,6 +107,9 @@ public class DataExporterTagHandler extends TagHandler {
         if (exportFooter != null) {
             exportFooterVE = exportFooter.getValueExpression(faceletContext, Object.class);
         }
+        if (useLocale != null) {
+            useLocaleVE = useLocale.getValueExpression(faceletContext, Object.class);
+        }
         if (preProcessor != null) {
             preProcessorME = preProcessor.getMethodExpression(faceletContext, null, new Class[]{Object.class});
         }
@@ -128,6 +134,7 @@ public class DataExporterTagHandler extends TagHandler {
                     .exporter(exporterVE)
                     .exportFooter(exportFooterVE)
                     .exportHeader(exportHeaderVE)
+                    .useLocale(useLocaleVE)
                     .onTableRender(onTableRenderME)
                     .options(optionsVE)
                     .pageOnly(pageOnlyVE)
