@@ -56,4 +56,4 @@ jobs:
         run: mvn clean install -Dmaven.javadoc.skip=true -Djsdoc.skip.typedoc=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
       - name: Integration Tests (parallel)
         if: matrix.java != 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
+        run: mvn -B -V clean install -fprimefaces-integration-tests-jakarta/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
