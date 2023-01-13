@@ -54,7 +54,6 @@
  * @prop {JQuery} keyboardTarget The DOM element for the hidden input element that that can be selected via pressing
  * tab. 
  * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
- * @prop {JQuery} [labels] The DOM element with the labels for the available options in the overlay panel.
  * @prop {JQuery} labelContainer The DOM element for the container with the label indicating the currently selected
  * option.
  * @prop {string} labelId ID of the label element that indicates the currently selected option.
@@ -92,7 +91,7 @@
  * `custom`, a `filterFunction` must be specified.
  * @prop {string} cfg.filterPlaceholder Placeholder text to show when filter input is empty.
  * @prop {number} cfg.initialHeight Initial height of the item container.
- * @prop {string} cfg.labelSeparator Separator for joining item lables if updateLabel is set to true. Default is `,`.
+ * @prop {string} cfg.labelSeparator Separator for joining item labels if updateLabel is set to true. Default is `,`.
  * @prop {boolean} cfg.multiple Whether to show selected items as multiple labels.
  * @prop {PrimeFaces.widget.SelectCheckboxMenu.OnChangeCallback} cfg.onChange Callback that is invoked when a checkbox
  * option was checked or unchecked.

@@ -45,7 +45,7 @@
                 </p:selectCheckboxMenu>
 
                 <h5>Advanced</h5>
-                <p:selectCheckboxMenu id="advanced" value="#{checkboxView.selectedCountries2}" label="Countries" style="width: 15rem"
+                <p:selectCheckboxMenu id="advanced" value="#{checkboxView.selectedCountries2}" converter="#{countryConverter}" label="Countries" style="width: 15rem"
                                         multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250" var="c">
                     <f:selectItems value="#{checkboxView.countries2}"/>
 
@@ -60,6 +60,32 @@
                         <h:outputText value="#{c.name}"/>
                     </p:column>
                 </p:selectCheckboxMenu>
+                
+                <h5>Advanced II</h5>
+                <p:outputLabel for="@next" value="Advanced"/>
+                <p:selectOneMenu id="advanced2" value="#{checkboxView.selectedCountries2}" converter="#{countryConverter}"
+                                panelStyle="width:180px" var="c"
+                                filter="true" filterMatchMode="startsWith">
+
+                    <f:selectItems value="#{checkboxView.countries2}" var="country"
+                                itemLabel="#{country.name}" itemValue="#{country}"/>
+
+                    <p:column style="width:10%">
+                        <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{c.name}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <h:outputText value="#{checkboxView.countries2.size()} countries"
+                                    style="font-weight:bold;" styleClass="py-1 block"/>
+                    </f:facet>
+                </p:selectOneMenu>
             </h:form>
         </div>
     </ui:define>
