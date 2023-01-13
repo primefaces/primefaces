@@ -36,6 +36,8 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -93,11 +95,12 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
                 .attr("disabled", listbox.isDisabled(), false);
 
         if (listbox.isFilter()) {
+            PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
             wb.attr("filter", true)
                     .attr("filterMatchMode", listbox.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", listbox.getFilterFunction(), null)
                     .attr("caseSensitive", listbox.isCaseSensitive(), false)
-                    .attr("normalize", listbox.isNormalize(), false);
+                    .attr("normalize", config.isFilterNormalized(), false);
         }
 
         wb.finish();

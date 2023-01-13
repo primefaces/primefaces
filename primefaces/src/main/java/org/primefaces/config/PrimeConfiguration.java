@@ -61,6 +61,7 @@ public class PrimeConfiguration {
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
+    private final boolean filterNormalized;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -156,6 +157,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.MARK_INPUT_AS_INVALID_ON_ERROR_MSG);
         markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.FILTER_NORMALIZED);
+        filterNormalized = Boolean.parseBoolean(value);
 
         if (environment.isAtLeastJsf40()) {
             value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
@@ -292,6 +296,10 @@ public class PrimeConfiguration {
 
     public boolean isMarkInputAsInvalidOnErrorMsg() {
         return markInputAsInvalidOnErrorMsg;
+    }
+
+    public boolean isFilterNormalized() {
+        return filterNormalized;
     }
 
     public boolean isCookiesSecure() {

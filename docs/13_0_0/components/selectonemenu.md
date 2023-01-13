@@ -43,7 +43,6 @@ hideNoSelectionOption | false | boolean  | Flag indicating that, if this compone
 label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
 labelTemplate | null | String | Displays label of the element in a custom template. Valid placeholder is {0}.
 maxlength | null | Integer | Number of maximum characters allowed in editable selectOneMenu.
-normalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 onblur | null | String | Client side callback to execute when element loses focus.
 onchange | null | String | Client side callback to execute on value change.
 onfocus | null | String | Client side callback to execute when element receives focus.
@@ -110,8 +109,8 @@ Editable SelectOneMenu provides a UI to either choose from the predefined option
 manual input. Set editable option to true to use this feature.
 
 ## Filtering
-When filtering is enabled with setting _filter_ on, an input field is rendered at overlay header and on
-keyup event filtering is executed on client side using _filterMatchMode_. Default modes of
+When filtering is enabled with setting `filter` on, an input field is rendered at overlay header and on
+keyup event filtering is executed on client side using `filterMatchMode`. Default modes of
 filterMatchMode are startsWith, contains, endsWith and custom. Custom mode requires a javascript
 function to do the filtering.
 
@@ -125,6 +124,7 @@ function customFilter(itemLabel, filterValue) {
     //return true to accept and false to reject
 }
 ```
+To enable normalized filtering (removal of accents), set the context parameter `FILTER_NORMALIZED` to `true`.
 
 ## Ajax Behavior Events
 
