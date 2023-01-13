@@ -1087,11 +1087,6 @@
                                     <shadedPattern>jakarta.faces</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>/javax.faces</pattern>
-                                    <shadedPattern>/jakarta.faces</shadedPattern>
-                                    <rawString>true</rawString>
-                                </relocation>
-                                <relocation>
                                     <pattern>javax.el</pattern>
                                     <shadedPattern>jakarta.el</shadedPattern>
                                 </relocation>
@@ -1154,6 +1149,11 @@
                                 <relocation>
                                     <pattern>jsf.ajax</pattern>
                                     <shadedPattern>faces.ajax</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>/javax.faces</pattern>
+                                    <shadedPattern>/jakarta.faces</shadedPattern>
+                                    <rawString>true</rawString>
                                 </relocation>
                             </relocations>
                         </configuration>
