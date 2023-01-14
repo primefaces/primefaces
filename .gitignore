@@ -59,3 +59,4 @@ node_modules/
 /primefaces-selenium/primefaces-selenium-core/target/
 /primefaces-selenium/primefaces-selenium-components/target/
 /primefaces-integration-tests/target/
+/primefaces-integration-tests-jakarta/target/
