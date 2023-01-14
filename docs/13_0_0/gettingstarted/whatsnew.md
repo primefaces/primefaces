@@ -24,6 +24,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `title` column/columns to support cell specific titles.
 * Schedule
     * Added event `eventDblSelect` to allow an event to be double clicked.
+* SelectCheckboxMenu
+    * Added attribute `var` to support custom content in overlay panel.
 * SpeedDial
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * Menu
