@@ -40,8 +40,6 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
@@ -506,12 +504,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("renderPanelContentOnClient", menu.getVar() == null,  false);
 
         if (menu.isFilter()) {
-            PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
             wb.attr("filter", true)
                     .attr("filterMatchMode", menu.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", menu.getFilterFunction(), null)
                     .attr("caseSensitive", menu.isCaseSensitive(), false)
-                    .attr("normalize", config.isFilterNormalized(), false);
+                    .attr("filterNormalize", menu.isFilterNormalize(), false);
         }
 
         encodeClientBehaviors(context, menu);

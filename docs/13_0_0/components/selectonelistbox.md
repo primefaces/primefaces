@@ -45,6 +45,7 @@ var | null | String | Name of iterator to be used in custom content display.
 filter | false | Boolean | Displays an input filter for the list.
 filterMatchMode | null | String | Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filterMatchMode.
+filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 scrollHeight | null | Integer | Defines the height of the scrollable area.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
@@ -77,7 +78,6 @@ reject a value. To add a filter to previous example;
     ...
 </p:selectOneListbox>
 ```
-To enable normalized filtering (removal of accents), set the context parameter `FILTER_NORMALIZED` to `true`.
 
 ## Ajax Behavior Events
 

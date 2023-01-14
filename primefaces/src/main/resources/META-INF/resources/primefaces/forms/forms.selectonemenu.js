@@ -65,7 +65,7 @@
  * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Set to false
  * for custom width.
  * @prop {boolean} cfg.caseSensitive Defines if filtering would be case sensitive.
- * @prop {boolean} cfg.normalize Defines if filtering would be done using normalized values.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
  * @prop {boolean} cfg.editable When true, the input field becomes editable.
@@ -1278,7 +1278,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
         var lowercase = !this.cfg.caseSensitive,
-                normalize = this.cfg.normalize,
+                normalize = this.cfg.filterNormalize,
                 filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {

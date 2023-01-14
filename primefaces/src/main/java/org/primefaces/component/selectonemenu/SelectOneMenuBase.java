@@ -60,7 +60,8 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         autoWidth,
         dynamic,
         dir,
-        touchable
+        touchable,
+        filterNormalize
     }
 
     public SelectOneMenuBase() {
@@ -262,5 +263,13 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
     @Override
     public void setTouchable(Boolean touchable) {
         getStateHelper().put(PropertyKeys.touchable, touchable);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

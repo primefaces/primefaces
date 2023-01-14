@@ -22,7 +22,6 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | DIR | ltr | Defines orientation; 'ltr' or 'rtl' for right-to-left support. |
 | EARLY_POST_PARAM_EVALUATION | false | Make p:ajax behave like f:ajax for queued AJAX requests. See: https://github.com/primefaces/primefaces/issues/109 |
 | EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING | null | Comma separated list of exceptions for PrimeExceptionHandler to ignore e.g. `javax.faces.application.ViewExpiredException,javax.persistence.RollbackException`. |
-| FILTER_NORMALIZED | false | Enabled normalized filtering (searching) (accents will be removed from characters) |
 | FLEX | false | Use PrimeFlex instead of Grid CSS in components with responsive-modes. (not implemented by all components yet) |
 | HIDE_RESOURCE_VERSION | false | Determines whether to hide version information in resource paths. |
 | INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validation (CSV) from server via the MessageInterpolator. |

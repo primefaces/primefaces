@@ -24,6 +24,10 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `title` column/columns to support cell specific titles.
 * Schedule
     * Added event `eventDblSelect` to allow an event to be double clicked.
+* SelectOneListbox
+    * Added attribute `filterNormalize` to allow normalized filtering (without accents).
+* SelectOneMenu
+    * Added attribute `filterNormalize` to allow normalized filtering (without accents).
 * SpeedDial
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * Menu

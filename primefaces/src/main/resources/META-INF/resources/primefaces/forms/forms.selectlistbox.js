@@ -37,7 +37,7 @@
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {boolean} cfg.caseSensitive `true` if filtering is case-sensitive, `false` otherwise.
- * @prop {boolean} cfg.normalize Defines if filtering would be done using normalized values.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.filter `true` if the options can be filtered, or `false` otherwise.
  * @prop {PrimeFaces.widget.SelectListbox.FilterFunction} cfg.filterFunction A custom filter function that is used when
  * `filterMatchMode` is set to `custom`.
@@ -54,7 +54,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.input = $(this.jqId + '_input'),
+        this.input = $(this.jqId + '_input');
         this.listContainer = this.jq.children('.ui-selectlistbox-listcontainer');
         this.listElement = this.listContainer.children('.ui-selectlistbox-list');
         this.options = $(this.input).children('option');
@@ -196,7 +196,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      */
     filter: function(value) {
         var lowercase = !this.cfg.caseSensitive,
-                normalize = this.cfg.normalize,
+                normalize = this.cfg.filterNormalize,
                 filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {
