@@ -90,6 +90,7 @@
         <module>primefaces-showcase</module>
         <module>primefaces-selenium</module>
         <module>primefaces-integration-tests</module>
+        <module>primefaces-integration-tests-jakarta</module>
         <module>primefaces-cli</module>
     </modules>
 

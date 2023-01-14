@@ -23,23 +23,27 @@
  */
 package org.primefaces.component.datatable.feature;
 
+import java.io.IOException;
+import java.text.Collator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.model.ListDataModel;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
-import org.primefaces.model.*;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
-import java.io.IOException;
-import java.text.Collator;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import javax.el.ValueExpression;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements DataTableFeature {
@@ -279,7 +283,8 @@ public class SortFeature implements DataTableFeature {
             return (List<T>) ((ListDataModel<T>) value).getWrappedData();
         }
         else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+            throw new FacesException(String.format("Data type should be java.util.List or %s instance to be sortable."
+                    , javax.faces.model.ListDataModel.class.getName()));
         }
     }
 }

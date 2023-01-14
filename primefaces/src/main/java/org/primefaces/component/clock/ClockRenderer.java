@@ -24,7 +24,7 @@
 package org.primefaces.component.clock;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
@@ -106,7 +106,7 @@ public class ClockRenderer extends CoreRenderer {
             return Constants.EMPTY_STRING;
         }
 
-        TemporalAccessor time = LocalDateTime.now();
+        TemporalAccessor time = ZonedDateTime.now();
         Object value = clock.getValue();
         if (value != null) {
             if (value instanceof Date) {

@@ -23,14 +23,13 @@
  */
 package org.primefaces.validate.bean;
 
-import javax.validation.metadata.ConstraintDescriptor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class AbstractClientValidationConstraint implements ClientValidationConstraint {
+import javax.validation.metadata.ConstraintDescriptor;
 
-    public static final String CONSTRAINT_PACKAGE = "javax.validation.constraints";
+public abstract class AbstractClientValidationConstraint implements ClientValidationConstraint {
 
     private final String messageId;
     private final String messageMetadata;
