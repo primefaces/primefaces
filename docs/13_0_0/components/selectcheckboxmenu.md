@@ -37,7 +37,7 @@ label | null | String | User presentable name.
 onchange | null | String | Callback to execute on value change.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.
-scrollHeight | null | Integer | Height of the overlay.
+scrollHeight | null | String | Maximum height of the overlay, e.g. "200vh" or "200%". Default is "200px".
 onShow | null | String | Client side callback to execute when overlay is displayed.
 onHide | null | String | Client side callback to execute when overlay is hidden.
 filter | false | Boolean | Renders an input field as a filter.

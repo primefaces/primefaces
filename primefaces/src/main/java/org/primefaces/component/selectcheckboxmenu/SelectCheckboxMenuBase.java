@@ -76,11 +76,11 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
+    public String getScrollHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, "200");
     }
 
-    public void setScrollHeight(int scrollHeight) {
+    public void setScrollHeight(String scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 

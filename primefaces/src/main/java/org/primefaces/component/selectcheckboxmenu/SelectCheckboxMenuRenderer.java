@@ -173,6 +173,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         boolean checked = isSelected(context, menu, itemValue, valuesArray, converter);
+        //"SelectItem" with 'noSelectionOption="true" doesn't make sense for "SelectCheckboxMenu"...just in case
         if (option.isNoSelectionOption() && values != null && !checked) {
             return;
         }
@@ -339,8 +340,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (menu.getPanelStyleClass() != null) {
             panelStyleClass += " " + menu.getPanelStyleClass();
         }
-
-        String height = Integer.toString(menu.getScrollHeight()) + "px";
+        // TODO: "RTLAware"!
+//        if (ComponentUtils.isRTL(context, menu)) {
+//            panelStyleClass+= " " + SelectCheckboxMenu.RTL_PANEL_CLASS;
+//        }
+//
+        String maxScrollHeight = getMaxScrollHeight(menu);
 
         writer.startElement("div", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
@@ -356,7 +361,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectCheckboxMenu.ITEMS_WRAPPER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + height, null);
+        writer.writeAttribute("style", "max-height:" + maxScrollHeight, null);
 
         if (!menu.isDynamic()) {
             encodePanelContent(context, menu, selectItems);
@@ -576,6 +581,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 value = selectItem.getValue();
             }
             checked = isSelected(context, menu, value, valuesArray, converter);
+            //"SelectItem" with 'noSelectionOption="true" doesn't make sense for "SelectCheckboxMenu"...just in case
             if (selectItem.isNoSelectionOption() && !checked) {
                 return;
             }
@@ -656,7 +662,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
                 .callback("onChange", "function()", menu.getOnchange())
-                .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
+                .attr("scrollHeight", getMaxScrollHeight(menu), null)
                 .attr("showHeader", menu.isShowHeader(), true)
                 .attr("updateLabel", menu.isUpdateLabel(), false)
                 .attr("labelSeparator", menu.getLabelSeparator(), ", ")
@@ -680,6 +686,15 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         encodeClientBehaviors(context, menu);
 
         wb.finish();
+    }
+
+    protected String getMaxScrollHeight(SelectCheckboxMenu menu) {
+        try {
+            return Integer.parseInt(menu.getScrollHeight()) + "px";
+        }
+        catch (NumberFormatException e) {
+            return menu.getScrollHeight();
+        }
     }
 
     protected String getOptionLabel(SelectItem option) {
@@ -713,7 +728,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    private void encodeCheckbox(FacesContext context, String id, boolean disabled, boolean checked, String title, String ariaLabel) throws IOException {
+    protected void encodeCheckbox(FacesContext context, String id, boolean disabled, boolean checked, String title, String ariaLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String boxClass = HTML.CHECKBOX_BOX_CLASS;
         if (disabled) {

@@ -101,9 +101,11 @@
  * panel is hidden.
  * @prop {string} cfg.panelStyle Inline style of the overlay panel.
  * @prop {string} cfg.panelStyleClass Style class of the overlay panel
- * @prop {number} cfg.scrollHeight Height of the overlay panel.
+ * @prop {number} cfg.scrollHeight Maximum height of the overlay panel.
+ * @prop {number} cfg.initialHeight Initial height of the overlay panel in pixels.
  * @prop {boolean} cfg.showHeader When enabled, the header of overlay panel is displayed.
  * @prop {boolean} cfg.updateLabel When enabled, the selected items are displayed on the label.
+ * @prop {boolean} cfg.renderPanelContentOnClient Renders panel content on client.
  */
 PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
@@ -122,9 +124,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.disabled = this.jq.hasClass('ui-state-disabled');
         //Only include checkboxes with an ID that starts like ID of the menu!
         this.inputs = this.jq.find(':checkbox').filter('[id^="' + this.id.replace(/:/g,"\\:") + '"]');
-        this.panelId = this.id + '_panel';
+        this.panelId = this.jqId + '_panel';
         this.labelId = this.id + '_label';
-        this.panel = $(this.jqId + '_panel');
+        this.panel = $(this.panelId);
         this.itemContainerWrapper = this.panel.children('.ui-selectcheckboxmenu-items-wrapper');
         this.keyboardTarget = $(this.jqId + '_focus');
         this.tabindex = this.keyboardTarget.attr('tabindex');
@@ -195,6 +197,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     renderPanel: function() {
+        var rawPanelId = this.id + '_panel';
+
         //init panel content rendered by SelectCheckboxMenuRenderer
         this.header = this.panel.children('.ui-selectcheckboxmenu-header');
         this.toggler = this.header.children('.ui-chkbox');
@@ -214,18 +218,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if (this.cfg.scrollHeight) {
-            this.itemContainerWrapper.height(this.cfg.scrollHeight);
+            this.itemContainerWrapper.css('max-height', this.cfg.scrollHeight);
         }
         else if (this.inputs.length > 10) {
-            this.itemContainerWrapper.height(200);
+            this.itemContainerWrapper.css('max-height', '200px');
         }
 
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
 
-        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
+        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, rawPanelId);
         this.transition = PrimeFaces.utils.registerCSSTransition(this.panel, 'ui-connected-overlay');
 
-        this.keyboardTarget.attr('aria-controls', this.panelId);
+        this.keyboardTarget.attr('aria-controls', rawPanelId);
     },
 
     /**
@@ -398,6 +402,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             //filter
             if (this.cfg.filter) {
+                this.cfg.initialHeight = this.itemContainerWrapper.height();
                 this.setupFilterMatcher();
 
                 PrimeFaces.skinInput(this.filterInput);
@@ -685,6 +690,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value A value against which the available options are matched.
      */
     filter: function(value) {
+        this.cfg.initialHeight = this.cfg.initialHeight||this.itemContainerWrapper.height();
         var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), !this.cfg.caseSensitive);
 
         if (filterValue === '') {
@@ -730,13 +736,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.scrollInView(this.itemContainerWrapper, firstVisibleItem);
         }
 
-        if (this.cfg.scrollHeight) {
-            if (this.itemContainer.height() < this.cfg.initialHeight) {
-                this.itemContainerWrapper.css('height', 'auto');
-            }
-            else {
-                this.itemContainerWrapper.height(this.cfg.initialHeight);
-            }
+        if(this.itemContainer.height() < this.cfg.initialHeight) {
+            this.itemContainerWrapper.css('height', 'auto');
+        }
+        else {
+            this.itemContainerWrapper.height(this.cfg.initialHeight);
         }
 
         this.updateToggler();
