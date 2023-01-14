@@ -25,19 +25,19 @@ package org.primefaces.showcase.view.input;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.model.SelectItem;
-import javax.faces.model.SelectItemGroup;
-import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.showcase.domain.Country;
+import org.primefaces.showcase.service.CountryService;
 
 @Named
 @RequestScoped
@@ -50,8 +50,13 @@ public class CheckboxView {
     private List<String> cities;
     private List<SelectItem> countries;
     private String[] selectedCountries;
-    private List<SelectItem> countries2;
-    private String[] selectedCountries2;
+    private List<Country> countries2;
+    private List<Country> selectedCountries2;
+    private List<SelectItem> countries3;
+    private List<Country> selectedCountries3;
+
+    @Inject
+    private CountryService service;
 
     @PostConstruct
     public void init() {
@@ -84,16 +89,18 @@ public class CheckboxView {
         countries.add(europeCountries);
         countries.add(americaCountries);
 
-        countries2 = new ArrayList<>();
+        countries2 = service.getCountries();
 
-        SelectItemGroup europeCountries2 = new SelectItemGroup("European Countries");
-        europeCountries2.setSelectItems(isoCodesToSelectItemArray("DE", "TR", "ES"));
+        countries3 = new ArrayList<>();
 
-        SelectItemGroup americaCountries2 = new SelectItemGroup("American Countries");
-        americaCountries2.setSelectItems(isoCodesToSelectItemArray("US", "BR", "MX"));
+        SelectItemGroup europeCountries3 = new SelectItemGroup("European Countries");
+        europeCountries3.setSelectItems(isoCodesToSelectItemArray("DE", "TR", "ES"));
 
-        countries2.add(europeCountries2);
-        countries2.add(americaCountries2);
+        SelectItemGroup americaCountries3 = new SelectItemGroup("American Countries");
+        americaCountries3.setSelectItems(isoCodesToSelectItemArray("US", "BR", "MX"));
+
+        countries3.add(europeCountries3);
+        countries3.add(americaCountries3);
     }
 
     public String[] getSelectedOptions() {
@@ -152,20 +159,36 @@ public class CheckboxView {
         this.selectedCountries = selectedCountries;
     }
 
-    public List<SelectItem> getCountries2() {
+    public List<Country> getCountries2() {
         return countries2;
     }
 
-    public void setCountries2(List<SelectItem> countries2) {
+    public void setCountries2(List<Country> countries2) {
         this.countries2 = countries2;
     }
 
-    public String[] getSelectedCountries2() {
+    public List<Country> getSelectedCountries2() {
         return selectedCountries2;
     }
 
-    public void setSelectedCountries2(String[] selectedCountries2) {
+    public void setSelectedCountries2(List<Country> selectedCountries2) {
         this.selectedCountries2 = selectedCountries2;
+    }
+
+    public List<SelectItem> getCountries3() {
+        return countries3;
+    }
+
+    public void setCountries3(List<SelectItem> countries3) {
+        this.countries3 = countries3;
+    }
+
+    public List<Country> getSelectedCountries3() {
+        return selectedCountries3;
+    }
+
+    public void setSelectedCountries3(List<Country> selectedCountries3) {
+        this.selectedCountries3 = selectedCountries3;
     }
 
     public void onItemUnselect(UnselectEvent event) {
@@ -207,9 +230,7 @@ public class CheckboxView {
     }
 
     private SelectItem[] isoCodesToSelectItemArray(String... isoCodes) {
-        return Stream.of(isoCodes)
-                .map(isoCode -> new Locale("", isoCode))
-                .map(locale -> new Country(locale.hashCode(), locale))
+        return CountryService.toCountryStream(isoCodes)
                 .map(country -> new SelectItem(country, country.getName()))
                 .toArray(SelectItem[]::new);
     }

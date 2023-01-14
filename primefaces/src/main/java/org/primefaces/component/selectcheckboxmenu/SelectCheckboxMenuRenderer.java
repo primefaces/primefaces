@@ -580,7 +580,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 return;
             }
 
-            //values for attributes
+            //attribute values
             rowStyleClass = SelectCheckboxMenu.ROW_ITEM_CLASS;
             rowStyleClass += checked ? " ui-selectcheckboxmenu-checked" : " ui-selectcheckboxmenu-unchecked";
             if (selectItem.isNoSelectionOption()) {
@@ -589,7 +589,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             itemValueAsString = getOptionAsString(context, menu, converter, selectItem.getValue());
             role = "option";
 
-            //init variable for rendering of columns
+            //init variable for column rendering
             String var = menu.getVar();
             Object varValue = selectItem.getValue();
             context.getExternalContext().getRequestMap().put(var, varValue);
