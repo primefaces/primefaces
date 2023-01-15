@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11]
+        java: [11, 17]
         profile: [
           'headless,firefox,myfaces-2.3,uploader-native', 'headless,firefox,mojarra-2.3,uploader-native',
           'headless,firefox,myfaces-2.3,uploader-commons', 'headless,firefox,mojarra-2.3,uploader-commons',
