@@ -122,8 +122,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.menuIcon = this.jq.children('.ui-selectcheckboxmenu-trigger');
         this.triggers = this.jq.find('.ui-selectcheckboxmenu-trigger, .ui-selectcheckboxmenu-label');
         this.disabled = this.jq.hasClass('ui-state-disabled');
-        //Only include checkboxes with an ID that starts like ID of the menu!
-        this.inputs = this.jq.find(':checkbox').filter('[id^="' + this.id.replace(/:/g,"\\:") + '"]');
+        this.inputs = this.jq.filter('.ui-helper-hidden').find(':checkbox');
         this.panelId = this.jqId + '_panel';
         this.labelId = this.id + '_label';
         this.panel = $(this.panelId);
