@@ -127,7 +127,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
         int idx = -1;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
                 String selectItemGroupLabel = selectItemGroup.getLabel() == null ? "" : selectItemGroup.getLabel();
@@ -260,7 +261,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 Object value = Array.get(valuesArray, i);
 
                 SelectItem selectedItem = null;
-                for (SelectItem item : selectItems) {
+                for (int j = 0; j < selectItems.size(); j++) {
+                    SelectItem item = selectItems.get(j);
                     if (item instanceof SelectItemGroup) {
                         SelectItemGroup group = (SelectItemGroup) item;
                         for (SelectItem groupItem : group.getSelectItems()) {
@@ -535,7 +537,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOptionsAsTable(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, List<Column> columns) throws IOException {
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
                 encodeTableOption(context, menu, selectItemGroup, columns);
@@ -592,6 +595,9 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             if (selectItem.isNoSelectionOption()) {
                 rowStyleClass += " ui-noselection-option";
             }
+            if (selectItem.isDisabled()) {
+                rowStyleClass += " ui-state-disabled";
+            }
             itemValueAsString = getOptionAsString(context, menu, converter, selectItem.getValue());
             role = "option";
 
@@ -633,7 +639,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.endElement("td");
 
             //columns
-            for (Column column : columns) {
+            for (int i = 0; i < columns.size(); i++) {
+                Column column = columns.get(i);
                 if (!column.isRendered()) {
                     continue;
                 }

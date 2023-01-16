@@ -97,7 +97,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     }
 
     public List<Column> getColumns() {
-        List<Column> columns = new ArrayList<>(5);
+        List<Column> columns = new ArrayList<>();
 
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
