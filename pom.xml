@@ -266,6 +266,19 @@
 
     <profiles>
         <profile>
+            <id>jdk8</id>
+            <activation>
+                <jdk>8</jdk>
+            </activation>
+            <modules>
+                <module>primefaces</module>
+                <module>primefaces-showcase</module>
+                <module>primefaces-selenium</module>
+                <module>primefaces-integration-tests</module>
+                <module>primefaces-cli</module>
+            </modules>
+        </profile>
+        <profile>
             <id>release</id>
             <build>
                 <plugins>
