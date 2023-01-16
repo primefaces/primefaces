@@ -97,16 +97,16 @@ However, there are some settings and patterns that can improve the performance.
     <param-value>false</param-value>
 </context-param>
 
+<!-- Uses Lambda instead of reflection, might fail for some cases / environments -->
+<context-param>
+    <param-name>org.apache.myfaces.USE_LAMBDA_METAFACTORYL</param-name>
+    <param-value>true</param-value>
+</context-param>
+
 <!-- Increase startup performance and EL resolution by disable deprecated features -->
 <context-param>
     <param-name>org.apache.myfaces.SUPPORT_JSP_AND_FACES_EL</param-name>
     <param-value>false</param-value>
-</context-param>
-<!-- NOTE: the ExpressionFactory might differ e.g. on Glassfish or Wildfly.
-     This parameter is optional since MyFaces 2.3.3. -->
-<context-param>
-    <param-name>org.apache.myfaces.EXPRESSION_FACTORY</param-name>
-    <param-value>org.apache.el.ExpressionFactoryImpl</param-value>
 </context-param>
 
 <!-- Increase cache -->
