@@ -228,6 +228,8 @@ public interface UIColumn {
 
     String getExportFooterValue();
 
+    String getExportTag();
+
     String getSortOrder();
 
     int getSortPriority();

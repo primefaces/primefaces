@@ -5264,6 +5264,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the display priority, in which order the columns should be displayed.]]>
             </description>
             <name>displayPriority</name>
@@ -5704,6 +5712,14 @@
                 <![CDATA[Defines if the footer value of column to be exported.]]>
             </description>
             <name>exportFooterValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8078,6 +8094,14 @@
             <name>editingRow</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -29725,6 +29749,14 @@
                 <![CDATA[Updates children only when set to "children" or the node itself with children when set to "self" on node expand.]]>
             </description>
             <name>expandMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
