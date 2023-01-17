@@ -879,20 +879,24 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if (!this.isLoaded()) {
             this._renderPanel();
         }
+        var panelVisible = this.panel.is(':visible');
         for (var i = 0; i < this.items.length; i++) {
             var el = this.items.eq(i);
-            var input = this.inputs.eq(i);
-            var inputNative = input[0];
+            if (!panelVisible || (panelVisible && el.is(':visible'))) {
+                var input = this.inputs.eq(i);
+                var inputNative = input[0];
 
-            if (!inputNative.disabled) {
-                this.inputs.eq(i).prop('checked', false);
-                this.uncheck(el.children('.ui-chkbox').children('.ui-chkbox-box'));
+                if (!inputNative.disabled) {
+                    this.inputs.eq(i).prop('checked', false);
+                    this.uncheck(el.children('.ui-chkbox').children('.ui-chkbox-box'));
+
+                    if (this.cfg.multiple) {
+                        this.multiItemContainer.children('[data-item-value="'+el.text()+'"]').remove();
+                    }
+                }
             }
         }
-        
-        if (this.cfg.multiple) {
-            this.multiItemContainer.children().remove();
-        }
+
 
         this.uncheck(this.togglerBox);
 
