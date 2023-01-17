@@ -49,12 +49,12 @@ public class DataTableXMLExporter extends DataTableExporter {
             PrintWriter writer = new PrintWriter(osw);) {
 
             if (exportConfiguration.getPreProcessor() != null) {
-                // PF 9 - attention: breaking change to PreProcessor (PrintWriter instead of writer)
                 exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
             }
 
+            String doctag = table.getExportTag() != null ? table.getExportTag() : table.getId();
             writer.append("<?xml version=\"1.0\"?>\n");
-            writer.append("<" + table.getId() + ">\n");
+            writer.append("<" + doctag + ">\n");
 
             if (exportConfiguration.isPageOnly()) {
                 exportPageOnly(context, table, writer);
@@ -66,7 +66,7 @@ public class DataTableXMLExporter extends DataTableExporter {
                 exportAll(context, table, writer);
             }
 
-            writer.append("</" + table.getId() + ">");
+            writer.append("</" + doctag + ">");
 
             table.setRowIndex(-1);
 
