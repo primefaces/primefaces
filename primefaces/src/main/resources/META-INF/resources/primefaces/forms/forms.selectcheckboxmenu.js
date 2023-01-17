@@ -122,7 +122,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.menuIcon = this.jq.children('.ui-selectcheckboxmenu-trigger');
         this.triggers = this.jq.find('.ui-selectcheckboxmenu-trigger, .ui-selectcheckboxmenu-label');
         this.disabled = this.jq.hasClass('ui-state-disabled');
-        this.inputs = this.jq.filter('.ui-helper-hidden').find(':checkbox');
+        //get the hidden checkboxes except that ones in overlay panel
+        this.inputs = this.jq.children('div.ui-helper-hidden:not(.ui-input-overlay)').children(':checkbox');
         this.panelId = this.jqId + '_panel';
         this.labelId = this.id + '_label';
         this.panel = $(this.panelId);
@@ -401,7 +402,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             //filter
             if (this.cfg.filter) {
-                this.cfg.initialHeight = this.itemContainerWrapper.height();
                 this.setupFilterMatcher();
 
                 PrimeFaces.skinInput(this.filterInput);
@@ -736,9 +736,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.itemContainer.height() < this.cfg.initialHeight) {
+            //shrink to fit filtered content size
             this.itemContainerWrapper.css('height', 'auto');
         }
         else {
+            //resize to initial (max.) height
             this.itemContainerWrapper.height(this.cfg.initialHeight);
         }
 
