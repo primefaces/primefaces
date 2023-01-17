@@ -88,6 +88,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         saveOnCellBlur,
         showGridlines,
         size,
+        exportTag,
         exportRowTag
     }
 
@@ -528,5 +529,13 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setExportRowTag(String exportRowTag) {
         getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
+    }
+
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 }

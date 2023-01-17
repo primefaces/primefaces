@@ -17,7 +17,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 * DataTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
-    * Added attribute `exportRowTag` to allow finer grain control over XML export.
+    * Added attribute `exportTag` and `exportRowTag` to allow finer grain control over XML export.
 * DataView
     * Added attribute `gridRowTitle` to support row-specific titles.
 * OverlayPanel
@@ -27,7 +27,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 * TreeTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
-    * Added attribute `exportRowTag` to allow finer grain control over XML export.
+    * Added attribute `exportTag` and `exportRowTag` to allow finer grain control over XML export.
 * Schedule
     * Added event `eventDblSelect` to allow an event to be double clicked.
 * SpeedDial
