@@ -93,3 +93,5 @@ Finally you must enable it with faces-config.xml:
       <application-factory>org.your.DemoApplicationFactory</application-factory>
 </factory>
 ```
+
+!> Global attributes will ignore backing bean EL expression values. [`See GitHub 9694`](https://github.com/primefaces/primefaces/issues/9694) Hard coded values in XHTML will work properly but not EL expressions.
