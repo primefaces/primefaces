@@ -83,7 +83,7 @@ public abstract class AccordionPanel extends AbstractComponent {
     /**
      * Toggle the tab denoted by the specified index.
      *
-     * @param index the index of the tab to expand
+     * @param index the index of the tab to toggle
      */
     public void toggleTab(int index) {
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
@@ -91,6 +91,30 @@ public abstract class AccordionPanel extends AbstractComponent {
         }
         else {
             getHeaders().get(index).click();
+        }
+    }
+
+    /**
+     * Expands the tab denoted by the specified index.
+     *
+     * @param index the index of the tab to expand
+     */
+    public void expandTab(int index) {
+        WebElement tab = getHeaders().get(index);
+        if (tab.getAttribute("aria-expanded").equalsIgnoreCase("false")) {
+            toggleTab(index);
+        }
+    }
+
+    /**
+     * Collapse the tab denoted by the specified index.
+     *
+     * @param index the index of the tab to collapse
+     */
+    public void collapseTab(int index) {
+        WebElement tab = getHeaders().get(index);
+        if (tab.getAttribute("aria-expanded").equalsIgnoreCase("true")) {
+            toggleTab(index);
         }
     }
 
