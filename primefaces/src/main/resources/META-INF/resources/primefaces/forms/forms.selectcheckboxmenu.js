@@ -879,7 +879,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     this.uncheck(el.find('.ui-chkbox').children('.ui-chkbox-box'));
 
                     if (this.cfg.multiple) {
-                        this.multiItemContainer.children().remove();
+                        this.removeMultipleItem(el);
                     }
                 }
             }
