@@ -140,7 +140,7 @@ Please refer to the [showcase](https://www.primefaces.org/showcase) in order to 
 
 ### Contribution
 ***
-Visit the [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contributing-to-PrimeFaces) page for detailed information.
+Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
