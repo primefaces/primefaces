@@ -885,6 +885,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
+
         this.uncheck(this.togglerBox);
 
         if (!silent) {

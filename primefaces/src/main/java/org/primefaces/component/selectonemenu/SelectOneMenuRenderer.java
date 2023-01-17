@@ -441,7 +441,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
-                itemStyleClass = itemStyleClass + " ui-noselection-option";
+                itemStyleClass += " ui-noselection-option";
+            }
+            if (selectItem.isDisabled()) {
+                itemStyleClass += " ui-state-disabled";
             }
 
             context.getExternalContext().getRequestMap().put(var, itemValue);

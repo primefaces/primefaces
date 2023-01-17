@@ -10,11 +10,14 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `delay` to delay displaying similar to AjaxStatus.
 * Captcha
     * Added attribute `sourceUrl` to override the Google JS location for countries that do not have access to Google.
+* Column/Columns
+    * Added attribute `exportTag` to allow finer grain control over XML export.
 * DataGrid
     * Added attribute `rowTitle` to support row-specific titles.
 * DataTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
+    * Added attribute `exportRowTag` to allow finer grain control over XML export.
 * DataView
     * Added attribute `gridRowTitle` to support row-specific titles.
 * OverlayPanel
@@ -24,6 +27,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 * TreeTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
+    * Added attribute `exportRowTag` to allow finer grain control over XML export.
 * Schedule
     * Added event `eventDblSelect` to allow an event to be double clicked.
 * SelectCheckboxMenu

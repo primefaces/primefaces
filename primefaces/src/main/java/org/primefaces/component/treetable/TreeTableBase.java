@@ -87,7 +87,8 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         cloneOnFilter,
         saveOnCellBlur,
         showGridlines,
-        size
+        size,
+        exportRowTag
     }
 
     protected enum InternalPropertyKeys {
@@ -519,5 +520,13 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setSize(String size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+    public String getExportRowTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportRowTag, null);
+    }
+
+    public void setExportRowTag(String exportRowTag) {
+        getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
     }
 }

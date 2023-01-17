@@ -314,6 +314,11 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public String getExportTag() {
+        return columns.getExportTag();
+    }
+
+    @Override
     public String getSortOrder() {
         return columns.getSortOrder();
     }
