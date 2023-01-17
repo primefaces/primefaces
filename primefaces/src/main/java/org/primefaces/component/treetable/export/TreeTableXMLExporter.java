@@ -40,6 +40,7 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
 
 public class TreeTableXMLExporter extends TreeTableExporter {
 
@@ -90,12 +91,14 @@ public class TreeTableXMLExporter extends TreeTableExporter {
 
     @Override
     protected void preRowExport(TreeTable table, Object document) {
-        ((PrintWriter) document).append("\t<" + table.getVar() + ">\n");
+        String rowtag = table.getExportRowTag() != null ? table.getExportRowTag() : table.getVar();
+        ((PrintWriter) document).append("\t<" + rowtag + ">\n");
     }
 
     @Override
     protected void postRowExport(TreeTable table, Object document) {
-        ((PrintWriter) document).append("\t</" + table.getVar() + ">\n");
+        String rowtag = table.getExportRowTag() != null ? table.getExportRowTag() : table.getVar();
+        ((PrintWriter) document).append("\t</" + rowtag + ">\n");
     }
 
     @Override
@@ -117,7 +120,10 @@ public class TreeTableXMLExporter extends TreeTableExporter {
     }
 
     protected String getColumnTag(UIColumn column) {
-        String headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
+        String headerText = column.getExportTag();
+        if (LangUtils.isBlank(headerText)) {
+            headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
+        }
         UIComponent facet = column.getFacet("header");
         String columnTag;
 
