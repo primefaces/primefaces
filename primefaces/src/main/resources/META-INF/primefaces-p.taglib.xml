@@ -8097,6 +8097,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
             </description>
             <name>exportRowTag</name>
@@ -29757,6 +29765,14 @@
                 <![CDATA[Updates children only when set to "children" or the node itself with children when set to "self" on node expand.]]>
             </description>
             <name>expandMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
