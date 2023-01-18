@@ -31,15 +31,8 @@ import org.primefaces.component.api.UICalendar;
 
 public class DemoApplication extends ApplicationWrapper {
 
-    private final Application wrapped;
-
     public DemoApplication(Application wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public Application getWrapped() {
-        return wrapped;
+        super(wrapped);
     }
 
     @Override
@@ -68,20 +61,18 @@ import javax.faces.application.ApplicationFactory;
 
 public class DemoApplicationFactory extends ApplicationFactory {
 
-    private final ApplicationFactory wrapped;
-
     public DemoApplicationFactory(ApplicationFactory wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
     }
 
     @Override
     public Application getApplication() {
-        return new DemoApplication(wrapped.getApplication());
+        return new DemoApplication(getWrapped().getApplication());
     }
 
     @Override
     public void setApplication(Application application) {
-        wrapped.setApplication(application);
+        getWrapped().setApplication(application);
     }
 }
 ```
