@@ -372,6 +372,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
         writer.endElement("div");
 
+        encodePanelFooter(context, menu);
         writer.endElement("div");
     }
 
@@ -486,6 +487,19 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         else {
             // Rendering was moved to the client - see renderPanelContentFromHiddenSelect as part of forms.selectcheckboxmenu.js
         }
+    }
+
+    protected void encodePanelFooter(FacesContext context, SelectCheckboxMenu menu) throws IOException {
+        UIComponent facet = menu.getFacet("footer");
+        if (!ComponentUtils.shouldRenderFacet(facet)) {
+            return;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SelectCheckboxMenu.FOOTER_CLASS, null);
+        facet.encodeAll(context);
+        writer.endElement("div");
     }
 
     protected void encodeColumnsHeader(FacesContext context, SelectCheckboxMenu menu, List<Column> columns) throws IOException {

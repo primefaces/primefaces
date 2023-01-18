@@ -31,6 +31,12 @@
                                       style="width: 15rem" panelStyle="width: 15rem" scrollHeight="250"
                                       value="#{checkboxView.selectedCities}">
                     <f:selectItems value="#{checkboxView.cities}"/>
+
+                    <f:facet name="footer">
+                        <p:divider styleClass="mt-0" />
+                        <h:outputText value="#{checkboxView.cities.size()} cities"
+                                      styleClass="py-1 block font-bold"/>
+                    </f:facet>
                 </p:selectCheckboxMenu>
 
                 <h5>Multiple</h5>
@@ -74,6 +80,11 @@
                                 </f:facet>
                                 <h:outputText value="#{c.name}"/>
                             </p:column>
+
+                            <f:facet name="footer">
+                                <h:outputText value="#{checkboxView.countries2.size()} countries"
+                                              styleClass="py-1 block font-bold"/>
+                            </f:facet>
                         </p:selectCheckboxMenu>
                     </div>
 

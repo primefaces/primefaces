@@ -92,7 +92,7 @@ function customFilter(itemLabel, filterValue) {
 
 ## Custom Content
 SelectCheckboxMenu can display custom content in overlay panel by using column component and the
-var option to refer to each item. Facets for column `header` may also be used.
+var option to refer to each item. Facets for column `header` and overall `footer` may also be used.
 
 ```java
 public class MenuBean {
@@ -119,6 +119,12 @@ public class MenuBean {
              <h:outputText value="Player"/>
          </f:facet>
     </p:column>
+
+    <f:facet name="footer">
+         <p:divider />
+         <h:outputText value="#{menuBean.players.size()} available players"
+                       style="font-weight: bold"/>
+    </f:facet>
 </p:selectCheckboxMenu>
 ```
 
@@ -164,6 +170,7 @@ the list of structural style classes;
 .ui-selectcheckboxmenu-trigger | Dropdown icon.
 .ui-selectcheckboxmenu-panel | Overlay panel.
 .ui-selectcheckboxmenu-header | Header in overlay panel.
+.ui-selectcheckboxmenu-footer | Footer in overlay panel.
 .ui-selectcheckboxmenu-filter-container | Container for filter in overlay panel header.
 .ui-selectcheckboxmenu-filter | Filter in overlay panel header.
 .ui-selectcheckboxmenu-close | Closer in overlay panel header.
