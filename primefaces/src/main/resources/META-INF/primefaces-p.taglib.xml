@@ -22859,11 +22859,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Defines the maximum height of the scrollable area.]]>
             </description>
             <name>scrollHeight</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -22926,6 +22926,14 @@
                 <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of iterator to be used in custom content display.]]>
+            </description>
+            <name>var</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
