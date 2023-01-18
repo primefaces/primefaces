@@ -41,6 +41,7 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.component.messages.Messages;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
@@ -410,7 +411,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 });
 
         //toggler
-        encodeCheckbox(context, null, false, !notChecked, null, "Select All");
+        encodeCheckbox(context, null, false, !notChecked, null, MessageFactory.getMessage(SelectCheckboxMenu.ARIA_TOGGLER_CHECKBOX_ALL));
 
         //filter
         if (menu.isFilter()) {
@@ -421,7 +422,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("class", SelectCheckboxMenu.CLOSER_CLASS, null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, "Close", null);
+        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE), null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-circle-close", null);
@@ -635,7 +636,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
             //input
             writer.startElement("td", null);
-            encodeCheckbox(context, uuid, disabled, checked, selectItem.getDescription(), null);
+            encodeCheckbox(context, uuid, disabled, checked, selectItem.getDescription(), selectItem.getLabel());
             writer.endElement("td");
 
             //columns
