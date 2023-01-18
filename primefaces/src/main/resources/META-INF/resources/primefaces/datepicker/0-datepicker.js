@@ -2074,7 +2074,7 @@
         },
 
         onTimePickerElementMouseDown: function (event, type, direction) {
-            if (!this.options.disabled && event.which === 1) {
+            if (!this.options.disabled && event.button === 0) { // left button
                 this.repeat(event, null, type, direction);
                 event.preventDefault();
             }

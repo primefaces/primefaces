@@ -197,13 +197,11 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             var input = $(this),
             currentRadio = input.parent().next(),
             index = $this.enabledInputs.index(input),
-            size = $this.enabledInputs.length,
-            keyCode = $.ui.keyCode,
-            key = e.which;
+            size = $this.enabledInputs.length;
 
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'ArrowLeft':
                     var prevRadioInput = (index === 0) ? $this.enabledInputs.eq((size - 1)) : $this.enabledInputs.eq(--index),
                     prevRadio = prevRadioInput.parent().next();
 
@@ -214,8 +212,8 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
+                case 'ArrowDown':
+                case 'ArrowRight':
                     var nextRadioInput = (index === (size - 1)) ? $this.enabledInputs.eq(0) : $this.enabledInputs.eq(++index),
                     nextRadio = nextRadioInput.parent().next();
 
@@ -226,7 +224,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.SPACE:
+                case ' ':
                     if(!input.prop('checked')) {
                         $this.select(currentRadio);
                         input.trigger('focus').trigger('change');

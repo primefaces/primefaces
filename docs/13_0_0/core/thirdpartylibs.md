@@ -19,7 +19,6 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Cycle Plugin](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#cycle) | 2.88 |  http://jquery.malsup.com/cycle/ |
 | [jQuery File Upload Plugin](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#fileupload) | 10.2.0 | https://github.com/blueimp/jQuery-File-Upload |
 | [jQuery Hotkeys Plugin](../jsdocs/interfaces/src_PrimeFaces.JQueryStatic.html#hotkeys) | 0.2.0 | https://github.com/tzuryby/jquery.hotkeys |
-| [jQuery Keyfilter](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keyfilter) | 1.8 | https://github.com/akzhan/jquery-keyfilter |
 | [jQuery Knob](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#knob) | 1.2.13 | https://github.com/aterrien/jQuery-Knob |
 | [jQuery MouseWheel](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#mousewheel) | 3.1.13 | https://github.com/jquery/jquery-mousewheel |
 | [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |

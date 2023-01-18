@@ -155,21 +155,19 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = $(panelMarkup).appendTo(document.body);
 
         this.jq.on("keyup", function(e) {
-            var keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-
-                case keyCode.UP:
-                case keyCode.LEFT:
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
-                case keyCode.ENTER:
-                case keyCode.TAB:
-                case keyCode.SPACE:
-                case 17: //keyCode.CONTROL:
-                case 18: //keyCode.ALT:
-                case keyCode.ESCAPE:
-                case 224:   //mac command
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'ArrowDown':
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                case 'Enter':
+                case 'Tab':
+                case ' ':
+                case 'Shift':
+                case 'Control':
+                case 'Alt':
+                case 'Meta':
+                case 'Escape':
                     //do not search
                 break;
 
@@ -191,12 +189,11 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             }
 
         }).on("keydown", function(e) {
-            var overlayVisible = _self.panel.is(':visible'),
-            keyCode = $.ui.keyCode;
+            var overlayVisible = _self.panel.is(':visible');
 
-            switch(e.which) {
-                case keyCode.UP:
-                case keyCode.LEFT:
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'ArrowLeft':
                     if(overlayVisible) {
                         var highlightedItem = _self.items.filter('.ui-state-highlight'),
                         prev = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.prev();
@@ -217,8 +214,8 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 break;
 
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
+                case 'ArrowDown':
+                case 'ArrowRight':
                     if(overlayVisible) {
                         var highlightedItem = _self.items.filter('.ui-state-highlight'),
                         next = highlightedItem.length == 0 ? _self.items.eq(0) : highlightedItem.next();
@@ -239,7 +236,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
                     if(overlayVisible) {
                         _self.items.filter('.ui-state-highlight').trigger('click');
 
@@ -250,12 +247,13 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 break;
 
-                case keyCode.SPACE:
-                case 17: //keyCode.CONTROL:
-                case 18: //keyCode.ALT:
-                case keyCode.BACKSPACE:
-                case keyCode.ESCAPE:
-                case 224:   //mac command
+                case ' ':
+                case 'Shift':
+                case 'Control':
+                case 'Alt':
+                case 'Meta':
+                case 'Backspace':
+                case 'Escape':
                     _self.clearTimeout();
 
                     if(overlayVisible) {
@@ -263,7 +261,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     _self.clearTimeout();
 
                     if(overlayVisible) {

@@ -161,11 +161,10 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            var isRootLink = $this.isRootLink(currentitem),
-            keyCode = $.ui.keyCode;
+            var isRootLink = $this.isRootLink(currentitem);
 
-            switch(e.which) {
-                    case keyCode.LEFT:
+            switch(e.key) {
+                    case 'ArrowLeft':
                         if(isRootLink && !$this.cfg.vertical) {
                             var prevItem = currentitem.prevAll('.ui-menuitem:first');
                             if(prevItem.length) {
@@ -191,7 +190,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         }
                     break;
 
-                    case keyCode.RIGHT:
+                    case 'ArrowRight':
                         if(isRootLink && !$this.cfg.vertical) {
                             var nextItem = currentitem.nextAll('.ui-menuitem:visible:first');
                             if(nextItem.length) {
@@ -215,7 +214,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         }
                     break;
 
-                    case keyCode.UP:
+                    case 'ArrowUp':
                         if(!isRootLink || $this.cfg.vertical) {
                             var prevItem = $this.findPrevItem(currentitem);
                             if(prevItem.length) {
@@ -227,7 +226,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         if(isRootLink && !$this.cfg.vertical) {
                             var submenu = currentitem.children('ul.ui-menu-child');
                             if(submenu.is(':visible')) {
@@ -249,7 +248,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");
@@ -261,7 +260,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ESCAPE:
+                    case 'Escape':
                         if(currentitem.hasClass('ui-menu-parent')) {
                             var submenu = currentitem.children('ul.ui-menu-list:visible');
                             if(submenu.length > 0) {

@@ -65,15 +65,13 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             });
 
             this.trigger.on('keydown.ui-menu', function(e) {
-                var keyCode = $.ui.keyCode;
-
-                switch(e.which) {
-                    case keyCode.DOWN:
+                switch(e.key) {
+                    case 'ArrowDown':
                         $this.keyboardTarget.trigger('focus.menu');
                         e.preventDefault();
                     break;
 
-                    case keyCode.TAB:
+                    case 'Tab':
                         if($this.jq.is(':visible')) {
                             $this.hide();
                         }
@@ -109,11 +107,9 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             $this.menuitemLinks.filter('.ui-state-hover').removeClass('ui-state-hover');
         })
         .on('keydown.menu', function(e) {
-            var currentLink = $this.menuitemLinks.filter('.ui-state-hover'),
-            keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                    case keyCode.UP:
+            var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
+            switch(e.key) {
+                    case 'ArrowUp':
                         var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
                         if(prevItem.length) {
                             currentLink.removeClass('ui-state-hover');
@@ -123,7 +119,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
                         if(nextItem.length) {
                             currentLink.removeClass('ui-state-hover');
@@ -133,13 +129,13 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");
                         PrimeFaces.utils.openLink(e, currentLink);
                     break;
 
-                    case keyCode.ESCAPE:
+                    case 'Escape':
                         $this.hide();
 
                         if($this.cfg.overlay) {

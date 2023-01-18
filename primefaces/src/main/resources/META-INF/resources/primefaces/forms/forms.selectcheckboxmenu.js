@@ -409,7 +409,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.filterInput.on('keyup.selectCheckboxMenu', function() {
                     $this.filter($(this).val());
                 }).on('keydown.selectCheckboxMenu', function(e) {
-                    if (e.which === $.ui.keyCode.ESCAPE) {
+                    if (e.key === 'Escape') {
                         $this.hide();
                     }
                 });
@@ -508,16 +508,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
         }).on('keydown.selectCheckboxMenu', function(e) {
-            var keyCode = $.ui.keyCode,
-                key = e.which;
+            var key = e.key;
 
             if (!$this.isLoaded()) {
                 $this._renderPanel();
             }
 
             switch (key) {
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case ' ':
                     $this.togglePanel();
                     if ($this.panel.is(":hidden")) {
                         e.stopPropagation(); // GitHub #8340
@@ -525,7 +524,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                     break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     if (e.altKey) {
                         $this.togglePanel();
                     }
@@ -533,7 +532,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                     break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     if ($this.panel.is(':visible')) {
                         if (!$this.cfg.showHeader) {
                             //".ui-chkbox" is a grandchild when columns are used!
@@ -547,7 +546,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
                     break;
 
-                case keyCode.ESCAPE:
+                case 'Escape':
                     $this.hide();
                     break;
             };
@@ -570,18 +569,15 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     $this.closer.removeClass('ui-state-focus');
                 })
                 .on('keydown.selectCheckboxMenu', function(e) {
-                    var keyCode = $.ui.keyCode,
-                        key = e.which;
-
-                    switch (key) {
-                        case keyCode.ENTER:
-                        case keyCode.SPACE:
+                    switch (e.key) {
+                        case 'Enter':
+                        case ' ':
                             $this.hide();
 
                             e.preventDefault();
                             break;
 
-                        case keyCode.ESCAPE:
+                        case 'Escape':
                             $this.hide();
                             break;
                     };
@@ -590,11 +586,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
             this.bindCheckboxKeyEvents(togglerCheckboxInput);
             togglerCheckboxInput.on('keydown.selectCheckboxMenu', function(e) {
-                if (e.which === $.ui.keyCode.TAB && e.shiftKey) {
+                if (e.key === 'Tab' && e.shiftKey) {
                     e.preventDefault();
                 }
             }).on('keyup.selectCheckboxMenu', function(e) {
-                if (e.which === $.ui.keyCode.SPACE) {
+                if (e.key === ' ') {
                     var input = $(this);
                     $this.toggleSelection(!input.prop('checked'));
                     e.preventDefault();
@@ -611,7 +607,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         itemKeyInputs.on('keydown.selectCheckboxMenu', function(e) {
             var index = $this.items.index($(this).closest("li"));
 
-            if (e.which === $.ui.keyCode.TAB) {
+            if (e.key === 'Tab') {
                 if (!e.shiftKey && index === $this.items.length - 1) {
                     e.preventDefault();
                 } else if (e.shiftKey && !$this.cfg.showHeader && index === 0) {
@@ -619,7 +615,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }).on('keyup.selectCheckboxMenu', function(e) {
-            if (e.which === $.ui.keyCode.SPACE) {
+            if (e.key === ' ') {
                 var input = $(this),
                     box = input.parent().next();
                 $this.toggleItem(box, input);
@@ -1162,13 +1158,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 box.removeClass('ui-state-focus');
             })
             .on('keydown.selectCheckboxMenu', function(e) {
-                var keyCode = $.ui.keyCode,
-                    key = e.which;
-
-                if (key === keyCode.SPACE) {
+                if (e.key === ' ') {
                     e.preventDefault();
                 }
-                else if (key === keyCode.ESCAPE) {
+                else if (e.key === 'Escape') {
                     $this.hide();
                 }
             });

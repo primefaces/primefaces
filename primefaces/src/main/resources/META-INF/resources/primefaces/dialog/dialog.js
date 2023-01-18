@@ -423,8 +423,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.closeOnEscape) {
             $(document).on('keydown.dialog_' + this.id, function(e) {
-                var keyCode = $.ui.keyCode;
-                if(e.which === keyCode.ESCAPE && $this.isVisible()) {
+                if(e.key === 'Escape' && $this.isVisible()) {
                     // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
                     var active = parseInt($this.jq.css('z-index')) === parseInt($('.ui-dialog:visible').last().css('z-index'));
                     if(active) {
