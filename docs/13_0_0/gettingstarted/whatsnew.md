@@ -32,6 +32,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added event `eventDblSelect` to allow an event to be double clicked.
 * SelectCheckboxMenu
     * Added attribute `var` to support custom content in overlay panel.
+    * Added support for facet `footer` in overlay panel.
 * SpeedDial
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * Menu
