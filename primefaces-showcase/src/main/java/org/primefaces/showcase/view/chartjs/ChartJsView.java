@@ -223,6 +223,11 @@ public class ChartJsView implements Serializable {
         title.setText("Line Chart");
         options.setTitle(title);
 
+        Title subtitle = new Title();
+        subtitle.setDisplay(true);
+        subtitle.setText("Line Chart Subtitle");
+        options.setSubtitle(subtitle);
+
         lineModel.setOptions(options);
         lineModel.setData(data);
     }
