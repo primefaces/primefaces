@@ -10,6 +10,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `delay` to delay displaying similar to AjaxStatus.
 * Captcha
     * Added attribute `sourceUrl` to override the Google JS location for countries that do not have access to Google.
+* Charts
+    * Added attribute `subtitle` exactly the same configuration options with title are available for subtitle.
 * Column/Columns
     * Added attribute `exportTag` to allow finer grain control over XML export.
 * DataGrid

@@ -37,6 +37,7 @@ public abstract class ChartOptions implements Serializable {
 
     private Elements elements;
     private Title title;
+    private Title subtitle; // exact same model as Title
     private Tooltip tooltip;
     private Legend legend;
     private Animation animation;
@@ -51,6 +52,14 @@ public abstract class ChartOptions implements Serializable {
 
     public Title getTitle() {
         return title;
+    }
+
+    public void setSubtitle(Title subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public Title getSubtitle() {
+        return subtitle;
     }
 
     public void setTitle(Title title) {

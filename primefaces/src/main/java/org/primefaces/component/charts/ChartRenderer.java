@@ -258,16 +258,18 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.write("\"plugins\":{");
         Title title = options.getTitle();
+        Title subtitle = options.getSubtitle();
         Tooltip tooltip = options.getTooltip();
         Legend legend = options.getLegend();
 
-        encodeTitle(context, title, false);
-        encodeTooltip(context, tooltip, title != null);
-        encodeLegend(context, legend, title != null || tooltip != null);
+        encodeTitle(context, title, "title", false);
+        encodeTitle(context, subtitle, "subtitle", title != null);
+        encodeTooltip(context, tooltip, title != null || subtitle != null);
+        encodeLegend(context, legend, title != null || subtitle != null || tooltip != null);
         writer.write("}");
     }
 
-    protected void encodeTitle(FacesContext context, Title title, boolean hasComma) throws IOException {
+    protected void encodeTitle(FacesContext context, Title title, String element, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (title != null) {
@@ -275,7 +277,7 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
-            writer.write("\"title\":{");
+            writer.write(String.format("\"%s\":{", element));
             writer.write(title.encode());
             writer.write("}");
         }
