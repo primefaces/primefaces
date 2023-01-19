@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -126,6 +126,10 @@ public class Constants {
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
 
     public static final String MULTI_VIEW_STATES = "primefaces.MULTI_VIEW_STATES";
+
+    /** Space hack to fix Brazilian Real and other locale issues */
+    public static final char NON_BREAKING_SPACE = '\u00A0';
+    public static final String NON_BREAKING_SPACE_STR = Character.toString(NON_BREAKING_SPACE);
 
     private Constants() {
     }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,6 +50,15 @@ public abstract class CommandButton extends AbstractComponent {
             button = PrimeSelenium.guardHttp(button);
         }
 
+        button.click();
+    }
+
+    /**
+     * #8840 Some scenario's with ajax="false" like in a download you may not want to guard the click.
+     */
+    public void clickUnguarded() {
+        WebElement button = getRoot();
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
         button.click();
     }
 }

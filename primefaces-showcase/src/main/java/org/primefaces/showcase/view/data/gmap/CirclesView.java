@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,48 +30,53 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
+import javax.faces.view.ViewScoped;
+import org.primefaces.model.map.Overlay;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class CirclesView implements Serializable {
 
-    private MapModel circleModel;
+    private MapModel<Long> circleModel;
 
     @PostConstruct
     public void init() {
 
-        circleModel = new DefaultMapModel();
+        circleModel = new DefaultMapModel<>();
 
         //Shared coordinates
         LatLng coord1 = new LatLng(36.879466, 30.667648);
         LatLng coord4 = new LatLng(36.885233, 30.702323);
 
         //Circle
-        Circle circle1 = new Circle(coord1, 500);
+        Circle<Long> circle1 = new Circle<>(coord1, 500);
         circle1.setStrokeColor("#d93c3c");
         circle1.setFillColor("#d93c3c");
         circle1.setFillOpacity(0.5);
+        circle1.setData(1L);
 
-        Circle circle2 = new Circle(coord4, 300);
+        Circle<Long> circle2 = new Circle<>(coord4, 300);
         circle2.setStrokeColor("#00ff00");
         circle2.setFillColor("#00ff00");
         circle2.setStrokeOpacity(0.7);
         circle2.setFillOpacity(0.7);
+        circle2.setData(2L);
 
         circleModel.addOverlay(circle1);
         circleModel.addOverlay(circle2);
     }
 
-    public MapModel getCircleModel() {
+    public MapModel<Long> getCircleModel() {
         return circleModel;
     }
 
-    public void onCircleSelect(OverlaySelectEvent event) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Circle Selected", null));
+    public void onCircleSelect(OverlaySelectEvent<Long> event) {
+        Overlay<Long> overlay = event.getOverlay();
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Circle " + overlay.getData() + " Selected", null));
     }
 }

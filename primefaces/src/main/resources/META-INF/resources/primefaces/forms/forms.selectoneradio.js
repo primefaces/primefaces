@@ -47,7 +47,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             var base = this.facet ? this.inputs : this.outputs;
             for(var i=0; i < base.length; i++) {
                 this.labels = this.labels.add('label[for="' +
-                        (this.facet ? base.eq(i).attr('id') : base.eq(i).parent().attr('id')) + '"]');
+                    (this.facet ? base.eq(i).attr('id') : base.eq(i).prev().find('.ui-radio-clone').attr('id')) + '"]');
             }
 
             //update radio state
@@ -145,16 +145,15 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
                 if(!radio.hasClass('ui-state-active')) {
                     $this.unselect($this.checkedRadio);
                     $this.select(radio);
-                    $this.fireClickEvent(input, e);
-                    input.trigger('change');
                 }
                 else {
                     if ($this.cfg.unselectable) {
                         $this.unselect($this.checkedRadio);
                     }
-                    $this.fireClickEvent(input, e);
                 }
 
+                $this.fireClickEvent(input, e);
+                input.trigger('change');
                 input.trigger('focus.selectOneRadio');
 
                 // Github issue #4467
@@ -191,7 +190,7 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             radio.removeClass('ui-state-focus');
         })
         .on('keydown.selectOneRadio', function(e) {
-            if (this.cfg.readonly) {
+            if ($this.cfg.readonly) {
                 return;
             }
 

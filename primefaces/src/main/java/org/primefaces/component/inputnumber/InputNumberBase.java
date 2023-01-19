@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,6 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputNumberRenderer";
 
     public enum PropertyKeys {
-
         placeholder,
         widgetVar,
         type,
@@ -55,7 +54,9 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         padControl,
         leadingZero,
         decimalSeparatorAlternative,
-        modifyValueOnWheel
+        modifyValueOnWheel,
+        caretPositionOnFocus,
+        selectOnFocus
     }
 
     public InputNumberBase() {
@@ -221,4 +222,19 @@ public abstract class InputNumberBase extends AbstractPrimeHtmlInputText impleme
         getStateHelper().put(PropertyKeys.modifyValueOnWheel, modifyValueOnWheel);
     }
 
+    public boolean isSelectOnFocus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectOnFocus, true);
+    }
+
+    public void setSelectOnFocus(boolean selectOnFocus) {
+        getStateHelper().put(PropertyKeys.selectOnFocus, selectOnFocus);
+    }
+
+    public String getCaretPositionOnFocus() {
+        return (String) getStateHelper().eval(PropertyKeys.caretPositionOnFocus, null);
+    }
+
+    public void setCaretPositionOnFocus(String caretPositionOnFocus) {
+        getStateHelper().put(PropertyKeys.caretPositionOnFocus, caretPositionOnFocus);
+    }
 }

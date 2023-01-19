@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +31,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectCheckboxMenu;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 import java.util.Comparator;
@@ -158,12 +160,65 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals(10, rows.size()); //one page
         Assertions.assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
         Assertions.assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
+
+        // Act
+        getButtonUpdate().click();
+
+        // Assert - filter must not be lost after update
+        rows = dataTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(10, rows.size()); //one page
+        Assertions.assertEquals(langsFiltered.get(0).getName(), rows.get(0).getCell(1).getText());
+        Assertions.assertEquals(langsFiltered.get(1).getName(), rows.get(1).getCell(1).getText());
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
     @Order(4)
+    @DisplayName("DataTable: Lazy: filter - selectCheckboxMenu")
+    public void testLazyFilterSelectCheckboxMenu(String xhtml) {
+        // Arrange
+        goTo(xhtml);
+        DataTable dataTable = getDataTable();
+        Assertions.assertNotNull(dataTable);
+        List<ProgrammingLanguage> langsFiltered = model.getLangs().stream()
+                .filter(l -> l.getType() == ProgrammingLanguage.ProgrammingLanguageType.COMPILED)
+                .sorted(Comparator.comparingInt(ProgrammingLanguage::getFirstAppeared))
+                .collect(Collectors.toList());
+
+        // Act
+        dataTable.selectPage(1);
+        dataTable.sort("First Appeared");
+        SelectCheckboxMenu filterType = getFilterType();
+        filterType.togglPanel();
+        List<WebElement> filterTypeCheckboxes = filterType.getPanel().findElements(By.cssSelector(".ui-chkbox-box"));
+        PrimeSelenium.guardAjax(filterTypeCheckboxes.get(1)).click();
+
+        // Assert
+        List<Row> rows = dataTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(10, rows.size()); //one page
+        for (int row = 0; row < 10; row++) {
+            Assertions.assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
+        }
+
+        // Act
+        getButtonUpdate().click();
+
+        // Assert - filter must not be lost after update
+        rows = dataTable.getRows();
+        Assertions.assertNotNull(rows);
+        Assertions.assertEquals(10, rows.size()); //one page
+        for (int row = 0; row < 10; row++) {
+            Assertions.assertEquals(langsFiltered.get(row).getName(), rows.get(row).getCell(1).getText());
+        }
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideXhtmls")
+    @Order(20)
     @DisplayName("DataTable: Lazy: rowSelect-event")
     public void testLazyRowSelect(String xhtml) {
         // Arrange
@@ -185,7 +240,7 @@ public class DataTable002Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
-    @Order(5)
+    @Order(21)
     @DisplayName("DataTable: Lazy: rowSelect-event with filter applied before")
     public void testLazyRowSelectWithFilterApplied(String xhtml) {
         // Arrange
@@ -210,7 +265,7 @@ public class DataTable002Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
-    @Order(6)
+    @Order(22)
     @DisplayName("DataTable: Lazy: selection with filter applied before")
     public void testLazySelectionWithFilterApplied(String xhtml) {
         // Arrange
@@ -236,7 +291,7 @@ public class DataTable002Test extends AbstractDataTableTest {
 
     @ParameterizedTest
     @MethodSource("provideXhtmls")
-    @Order(7)
+    @Order(30)
     @DisplayName("DataTable: Lazy: delete rows from last page - https://github.com/primefaces/primefaces/issues/1921")
     public void testLazyRowDeleteFromLastPage(String xhtml) {
         // Arrange
@@ -244,16 +299,17 @@ public class DataTable002Test extends AbstractDataTableTest {
         DataTable dataTable = getDataTable();
         Assertions.assertNotNull(dataTable);
         dataTable.selectPage(dataTable.getPaginator().getPages().size());
+        int colDeleteButton = 4;
 
         // Act & Assert
         for (int row = 5; row > 1; row--) {
             Assertions.assertEquals(row, getDataTable().getRows().size());
-            PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+            PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
             Assertions.assertEquals(8, getDataTable().getPaginator().getActivePage().getNumber());
         }
 
         // Act & Assert - delete last row on page 8
-        PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
         Assertions.assertEquals(7, getDataTable().getPaginator().getActivePage().getNumber());
         Assertions.assertEquals(10, getDataTable().getRows().size());
 
@@ -265,7 +321,7 @@ public class DataTable002Test extends AbstractDataTableTest {
         Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
 
         // Act & Assert - delete first row on page 7
-        PrimeSelenium.guardAjax(getDataTable().getCell(0, 3).getWebElement().findElement(By.className("ui-button"))).click();
+        PrimeSelenium.guardAjax(getDataTable().getCell(0, colDeleteButton).getWebElement().findElement(By.className("ui-button"))).click();
         Assertions.assertEquals(1, getMessages().getAllMessages().size());
         Assertions.assertEquals("ProgrammingLanguage Deleted", getMessages().getMessage(0).getSummary());
         Assertions.assertEquals(row0ProgLang, getMessages().getMessage(0).getDetail());
@@ -297,5 +353,13 @@ public class DataTable002Test extends AbstractDataTableTest {
 
     private CommandButton getButtonSubmit() {
         return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonSubmit"));
+    }
+
+    private CommandButton getButtonUpdate() {
+        return PrimeSelenium.createFragment(CommandButton.class, By.id("form:buttonUpdate"));
+    }
+
+    private SelectCheckboxMenu getFilterType() {
+        return PrimeSelenium.createFragment(SelectCheckboxMenu.class, By.id("form:datatable:filterType"));
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -222,6 +222,11 @@ public class ChartJsView implements Serializable {
         title.setDisplay(true);
         title.setText("Line Chart");
         options.setTitle(title);
+
+        Title subtitle = new Title();
+        subtitle.setDisplay(true);
+        subtitle.setText("Line Chart Subtitle");
+        options.setSubtitle(subtitle);
 
         lineModel.setOptions(options);
         lineModel.setData(data);

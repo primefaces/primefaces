@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,9 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
         onShow,
         onHide,
         keepOpen,
-        badge
+        badge,
+        ariaLabel,
+        title
     }
 
     public SpeedDialBase() {
@@ -268,5 +270,21 @@ public abstract class SpeedDialBase extends AbstractMenu implements Widget {
 
     public void setBadge(Object badge) {
         getStateHelper().put(PropertyKeys.badge, badge);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 }

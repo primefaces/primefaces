@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +25,19 @@ package org.primefaces.model.map;
 
 import java.util.List;
 
-public interface MapModel {
+public interface MapModel<T> {
 
-    void addOverlay(Overlay overlay);
+    void addOverlay(Overlay<T> overlay);
 
-    List<Marker> getMarkers();
+    List<Marker<T>> getMarkers();
 
-    List<Polyline> getPolylines();
+    List<Polyline<T>> getPolylines();
 
-    List<Polygon> getPolygons();
+    List<Polygon<T>> getPolygons();
 
-    List<Circle> getCircles();
+    List<Circle<T>> getCircles();
 
-    List<Rectangle> getRectangles();
+    List<Rectangle<T>> getRectangles();
 
-    Overlay findOverlay(String id);
+    Overlay<T> findOverlay(String id);
 }

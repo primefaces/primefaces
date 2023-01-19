@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<datatable>
+	<langs>
+		<id>1</id>
+		<type>COMPILED</type>
+		<name>Java</name>
+		<first_appeared>1995</first_appeared>
+	</langs>
+	<langs>
+		<id>2</id>
+		<type>COMPILED</type>
+		<name>C#</name>
+		<first_appeared>2000</first_appeared>
+	</langs>
+	<langs>
+		<id>3</id>
+		<type>INTERPRETED</type>
+		<name>JavaScript</name>
+		<first_appeared>1995</first_appeared>
+	</langs>
+	<langs>
+		<id>4</id>
+		<type>INTERPRETED</type>
+		<name>TypeScript</name>
+		<first_appeared>2012</first_appeared>
+	</langs>
+	<langs>
+		<id>5</id>
+		<type>INTERPRETED</type>
+		<name>Python</name>
+		<first_appeared>1990</first_appeared>
+	</langs>
+</datatable>

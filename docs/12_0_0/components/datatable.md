@@ -109,8 +109,9 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
-| touchable                 | false              | Boolean          | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable                 | null              | Boolean           | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
+| showSelectAll             | true               | Boolean          | Whether to show the select all checkbox inside the column's header.
 
 ## Getting started with the DataTable
 We will be using the same Car and CarBean classes described in DataGrid section.
@@ -333,8 +334,8 @@ necessary if the value of the filter facet is not defined.
 
 Please make sure that the filter is using the **same type as the column field** if you are using comparable
 filter match modes (like greater than). For example, if the column field is an integer, and you would like to
-add a greater than filter, make sure to convert the filter to integer as well. Do so by adding a `f:converter`
-(see example below).
+add a greater than filter, make sure to convert the filter to integer as well. Do so by using the column's `converter`
+attribute or adding a `f:converter` to the filter input (see example below).
 
 In case you want to filter `LocalDateTime` or `Date` values, use the converter tag
 `<f:convertDateTime type="localDateTime"/>` or `<f:convertDateTime type="date"/>` as child of the filtering `DatePicker`
@@ -544,6 +545,8 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected
 rows. You must define this key by using the `rowKey` attribute.
+    
+!> RowKey must not contain a comma `,` as it will break row selection. See [`GitHub #8932`](https://github.com/primefaces/primefaces/issues/8932).
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns

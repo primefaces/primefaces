@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,17 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
-import lombok.Data;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Data;
 
 @Named
 @ViewScoped
@@ -63,7 +64,10 @@ public class SelectOneMenu002 implements Serializable {
             new SelectItem("Chrysler", "Chry<sler"),
             new SelectItem("blank", "&nbsp;"),
             new SelectItem("GM", "GM"),
-            new SelectItem("Ford", "Ford")});
+            new SelectItem("Ford & Lincoln", "Ford & Lincoln"),
+            new SelectItem("GitHub \"9336\" Quoted", "GitHub \"9336\" Quoted"),
+            new SelectItem("< GitHub <i>9336</i>", "< GitHub <i>9336</i>", "", false, true),
+            new SelectItem("< GitHub <i>9336</i>", "< GitHub <i>9336</i>", "", false, false)});
 
         cars = new ArrayList<>();
         cars.add(g1);

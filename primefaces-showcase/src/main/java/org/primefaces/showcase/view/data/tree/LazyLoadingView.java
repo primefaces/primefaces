@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ public class LazyLoadingView implements Serializable {
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        FileInfo path = new FileInfo(context.getExternalContext().getRealPath("/"));
+        FileInfo path = new FileInfo(context.getExternalContext().getRealPath("/"), true);
         root = new LazyLoadingTreeNode(path, (folder) -> listFiles(folder));
     }
 
@@ -55,7 +55,7 @@ public class LazyLoadingView implements Serializable {
 
         List<FileInfo> result = new ArrayList<>();
         for (File file : files) {
-            result.add(new FileInfo(file.getAbsolutePath()));
+            result.add(new FileInfo(file.getAbsolutePath(), file.isDirectory()));
         }
         return result;
     }

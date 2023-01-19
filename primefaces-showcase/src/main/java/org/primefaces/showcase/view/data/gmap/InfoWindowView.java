@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,13 +38,13 @@ import java.io.Serializable;
 @ViewScoped
 public class InfoWindowView implements Serializable {
 
-    private MapModel advancedModel;
+    private MapModel<String> advancedModel;
 
-    private Marker marker;
+    private Marker<String> marker;
 
     @PostConstruct
     public void init() {
-        advancedModel = new DefaultMapModel();
+        advancedModel = new DefaultMapModel<>();
 
         //Shared coordinates
         LatLng coord1 = new LatLng(36.879466, 30.667648);
@@ -53,21 +53,21 @@ public class InfoWindowView implements Serializable {
         LatLng coord4 = new LatLng(36.885233, 30.702323);
 
         //Icons and Data
-        advancedModel.addOverlay(new Marker(coord1, "Konyaalti", "konyaalti.png", "https://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
-        advancedModel.addOverlay(new Marker(coord2, "Ataturk Parki", "ataturkparki.png"));
-        advancedModel.addOverlay(new Marker(coord4, "Kaleici", "kaleici.png", "https://maps.google.com/mapfiles/ms/micons/pink-dot.png"));
-        advancedModel.addOverlay(new Marker(coord3, "Karaalioglu Parki", "karaalioglu.png", "https://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
+        advancedModel.addOverlay(new Marker<>(coord1, "Konyaalti", "konyaalti.png", "https://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
+        advancedModel.addOverlay(new Marker<>(coord2, "Ataturk Parki", "ataturkparki.png"));
+        advancedModel.addOverlay(new Marker<>(coord4, "Kaleici", "kaleici.png", "https://maps.google.com/mapfiles/ms/micons/pink-dot.png"));
+        advancedModel.addOverlay(new Marker<>(coord3, "Karaalioglu Parki", "karaalioglu.png", "https://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
     }
 
-    public MapModel getAdvancedModel() {
+    public MapModel<String> getAdvancedModel() {
         return advancedModel;
     }
 
-    public void onMarkerSelect(OverlaySelectEvent event) {
+    public void onMarkerSelect(OverlaySelectEvent<String> event) {
         marker = (Marker) event.getOverlay();
     }
 
-    public Marker getMarker() {
+    public Marker<String> getMarker() {
         return marker;
     }
 }

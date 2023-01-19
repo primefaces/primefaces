@@ -55,7 +55,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                    $this.jq.toggleClass('ui-state-loading');
+                    $this.jq.addClass('ui-state-loading');
                     $this.disable();
                 }
             }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
@@ -64,8 +64,10 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
-                    $this.jq.toggleClass('ui-state-loading');
-                    $this.enable();
+                    $this.jq.removeClass('ui-state-loading');
+                    if (!$this.cfg.disabledAttr) {
+                        $this.enable();
+                    }
                 }
             });
         }
@@ -77,8 +79,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
     disable: function() {
         this.jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
                 .addClass('ui-state-disabled')
-                .attr('tabindex', '-1')
-                .attr('aria-disabled', 'true');
+                .attr('tabindex', '-1');
     },
 
     /**
@@ -86,7 +87,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         this.jq.removeClass('ui-state-disabled')
-                .removeAttr('tabindex aria-disabled');
+                .removeAttr('tabindex');
     }
 
 });

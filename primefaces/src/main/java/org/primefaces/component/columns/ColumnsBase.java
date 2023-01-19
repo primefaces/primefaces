@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,10 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         exportFunction,
         exportHeaderValue,
         exportValue,
+        exportColspan,
+        exportRowspan,
         exportable,
+        exportTag,
         field,
         filterBy,
         filterFunction,
@@ -70,6 +73,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         sortable,
         style,
         styleClass,
+        title,
         toggleable,
         visible,
         width
@@ -373,6 +377,33 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
+    }
+
+    @Override
+    public int getExportRowspan() {
+        return (Integer) getStateHelper().eval(PropertyKeys.exportRowspan, 0);
+    }
+
+    public void setExportRowspan(int exportRowspan) {
+        getStateHelper().put(PropertyKeys.exportRowspan, exportRowspan);
+    }
+
+    @Override
+    public int getExportColspan() {
+        return (Integer) getStateHelper().eval(PropertyKeys.exportColspan, 0);
+    }
+
+    public void setExportColspan(int exportColspan) {
+        getStateHelper().put(PropertyKeys.exportColspan, exportColspan);
+    }
+
+    @Override
     public String getExportHeaderValue() {
         return (String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
@@ -433,6 +464,15 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setDisplayPriority(int displayPriority) {
         getStateHelper().put(PropertyKeys.displayPriority, displayPriority);
+    }
+
+    @Override
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
 }

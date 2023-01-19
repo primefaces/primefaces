@@ -601,8 +601,8 @@ All JavaScript files in `src/main/resources/META-INF/resources/primefaces` are
 processed by default. Some of those files are third-party libraries and some
 have got doc comments that are invalid.
 
-To prevent these libraries from being processed, add them to the blacklist in
-`src/main/type-definitions/blacklist.txt`, which looks like this:
+To prevent these libraries from being processed, add them to the blocklist in
+`src/main/type-definitions/blocklist.txt`, which looks like this:
 
 ```
 # List of files to be excluded from the type declaration file.

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,7 +74,8 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
         form,
         escape,
         rel,
-        ignoreComponentNotFound
+        ignoreComponentNotFound,
+        ariaLabel
     }
 
     public UIMenuItemBase() {
@@ -251,7 +252,7 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     @Override
     public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "right");
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
     public void setIconPos(String iconPos) {
@@ -396,5 +397,14 @@ public abstract class UIMenuItemBase extends UICommand implements AjaxSource, UI
 
     public void setIgnoreComponentNotFound(boolean ignoreComponentNotFound) {
         getStateHelper().put(PropertyKeys.ignoreComponentNotFound, ignoreComponentNotFound);
+    }
+
+    @Override
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

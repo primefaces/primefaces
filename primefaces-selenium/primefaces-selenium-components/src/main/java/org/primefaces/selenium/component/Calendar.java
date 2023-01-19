@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -125,25 +125,24 @@ public abstract class Calendar extends AbstractInputComponent {
         else {
             String formattedDate = millisAsFormattedDate(millis);
             // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
-            WebElement input = getInput();
 
             // select everything
             selectAllText();
 
             // overwrite value
             if (isViewChangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(formattedDate);
+                PrimeSelenium.guardAjax(getInput()).sendKeys(formattedDate);
             }
             else {
-                input.sendKeys(formattedDate);
+                getInput().sendKeys(formattedDate);
             }
 
             // force change event
             if (isOnchangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
+                PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
             }
             else {
-                input.sendKeys(Keys.TAB);
+                getInput().sendKeys(Keys.TAB);
             }
         }
     }
@@ -164,7 +163,7 @@ public abstract class Calendar extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void setDate(long epoch) {
-        PrimeSelenium.executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
     }
 
     /**

@@ -30,7 +30,6 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.cfg.separator = this.cfg.separator || ',';
 
         this.input = $(this.jqId + '_input');
         this.hinput = $(this.jqId + '_hinput');
@@ -148,13 +147,13 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     var duplicateFound = false;
                     this.hinput.children('option').each(function() {
                         if (this.value === escapedValue) {
-                            $this.refocus(refocus);
                             duplicateFound = true;
                             return false; // breaks
                         }
                     });
                     if (duplicateFound) {
-                        return;
+                        $this.refocus(refocus);
+                        continue;
                     }
                 }
 
@@ -231,7 +230,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
             tokens.each(function() {
                 var token = $(this),
                     tokenValue = token.find('span.ui-chips-token-label').html();
-                editor = editor + tokenValue + $this.cfg.separator;
+                editor = editor + tokenValue + ($this.cfg.separator !== undefined ? $this.cfg.separator : '');
                 $this.removeItem(token, true);
             });
 

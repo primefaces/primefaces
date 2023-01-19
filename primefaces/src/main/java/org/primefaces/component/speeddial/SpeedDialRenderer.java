@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,15 @@
  */
 package org.primefaces.component.speeddial;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.badge.BadgeRenderer;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -30,16 +39,8 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.List;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class SpeedDialRenderer extends BaseMenuRenderer {
 
@@ -49,7 +50,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         SpeedDial speedDial = (SpeedDial) abstractMenu;
         String clientId = speedDial.getClientId(context);
 
-        writer.startElement("div", speedDial);
+        writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
 
         encodeContainer(context, speedDial);
@@ -72,7 +73,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .build();
         String containerStyle = speedDial.getStyle();
 
-        writer.startElement("div", speedDial);
+        writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, "class");
 
         if (containerStyle != null) {
@@ -97,7 +98,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .add(speedDial.getMaskStyleClass())
                 .build();
 
-        writer.startElement("ul", speedDial);
+        writer.startElement("ul", null);
         writer.writeAttribute("class", listClass, "class");
         writer.writeAttribute("role", "menu", "role");
 
@@ -110,6 +111,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 String title = menuItem.getTitle();
                 String style = menuItem.getStyle();
                 String rel = menuItem.getRel();
+                String ariaLabel = menuItem.getAriaLabel();
 
                 writer.startElement("li", null);
                 writer.writeAttribute("role", "none", "role");
@@ -140,6 +142,10 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
 
                 if (rel != null) {
                     writer.writeAttribute("rel", rel, null);
+                }
+
+                if (LangUtils.isNotEmpty(ariaLabel)) {
+                    writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
                 }
 
                 if (disabled) {
@@ -186,6 +192,8 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
     protected void encodeButton(FacesContext context, SpeedDial speedDial) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String buttonStyle = speedDial.getButtonStyle();
+        String ariaLabel = speedDial.getAriaLabel();
+        String title = speedDial.getTitle();
         boolean isDisabled = speedDial.isDisabled();
         String buttonStyleClass = getStyleClassBuilder(context)
                 .add(HTML.BUTTON_ICON_ONLY_BUTTON_CLASS)
@@ -198,6 +206,14 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         writer.startElement("button", speedDial);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("class", buttonStyleClass, "class");
+
+        if (LangUtils.isNotEmpty(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+
+        if (LangUtils.isNotEmpty(title)) {
+            writer.writeAttribute("title", title, null);
+        }
 
         if (buttonStyle != null) {
             writer.writeAttribute("style", buttonStyle, "style");
@@ -236,7 +252,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
                 .build();
         String maskStyle = speedDial.getMaskStyle();
 
-        writer.startElement("div", speedDial);
+        writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, "class");
 
         if (maskStyle != null) {

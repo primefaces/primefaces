@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,9 +77,11 @@ public class InputTextRenderer extends InputRenderer {
         if (counter != null) {
             UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputText, counter);
 
-            wb.attr("counter", counterComponent.getClientId(context))
-                    .attr("counterTemplate", inputText.getCounterTemplate(), null)
-                    .attr("countBytesAsChars", inputText.getCountBytesAsChars());
+            if (counterComponent != null) {
+                wb.attr("counter", counterComponent.getClientId(context))
+                        .attr("counterTemplate", inputText.getCounterTemplate(), null)
+                        .attr("countBytesAsChars", inputText.getCountBytesAsChars());
+            }
         }
 
         wb.finish();

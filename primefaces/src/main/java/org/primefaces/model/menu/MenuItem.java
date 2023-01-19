@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,9 @@ package org.primefaces.model.menu;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.el.MethodExpression;
+
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.util.SerializableFunction;
 
@@ -114,5 +116,7 @@ public interface MenuItem extends MenuElement, Confirmable {
     boolean isEscape();
 
     String getRel();
+
+    String getAriaLabel();
 
 }

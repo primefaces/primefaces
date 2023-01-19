@@ -194,7 +194,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Current value of the filter.
      */
     filter: function(value) {
-        var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
+        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), !this.cfg.caseSensitive);
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
@@ -202,7 +202,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
+                itemLabel = PrimeFaces.normalize(option.text(), !this.cfg.caseSensitive),
                 item = this.items.eq(i);
 
                 if(this.filterMatcher(itemLabel, filterValue))

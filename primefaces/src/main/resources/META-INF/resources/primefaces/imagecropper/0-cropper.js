@@ -1,4 +1,4 @@
-/*!
+/*
  * Cropper.js v1.5.6
  * https://fengyuanchen.github.io/cropperjs
  *

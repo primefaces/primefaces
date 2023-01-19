@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -184,6 +184,10 @@ public class Slider extends SliderBase {
             Object value = input.getValue();
 
             if (value != null) {
+                if (value instanceof String) {
+                    return (String) value;
+                }
+
                 Converter converter = ComponentUtils.getConverter(context, input);
                 if (converter != null) {
                     return converter.getAsString(context, this, value);

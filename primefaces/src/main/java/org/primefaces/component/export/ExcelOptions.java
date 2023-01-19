@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package org.primefaces.component.export;
+
+import java.text.DecimalFormat;
 
 public class ExcelOptions implements ExporterOptions {
 
@@ -44,6 +46,9 @@ public class ExcelOptions implements ExporterOptions {
     private boolean autoSizeColumn = true;
 
     private boolean stronglyTypedCells = true;
+
+    private DecimalFormat numberFormat;
+    private DecimalFormat currencyFormat;
 
     public ExcelOptions() {
     }
@@ -156,5 +161,21 @@ public class ExcelOptions implements ExporterOptions {
 
     public void setStronglyTypedCells(boolean stronglyTypedCells) {
         this.stronglyTypedCells = stronglyTypedCells;
+    }
+
+    public DecimalFormat getNumberFormat() {
+        return numberFormat;
+    }
+
+    public void setNumberFormat(DecimalFormat numberFormat) {
+        this.numberFormat = numberFormat;
+    }
+
+    public DecimalFormat getCurrencyFormat() {
+        return currencyFormat;
+    }
+
+    public void setCurrencyFormat(DecimalFormat currencyFormat) {
+        this.currencyFormat = currencyFormat;
     }
 }

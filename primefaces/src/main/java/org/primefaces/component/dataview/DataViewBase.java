@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,7 @@ public abstract class DataViewBase extends UIPageableData
         multiViewState,
         gridRowStyle,
         gridRowStyleClass,
+        gridRowTitle,
         flex
     }
 
@@ -128,6 +129,14 @@ public abstract class DataViewBase extends UIPageableData
 
     public void setGridRowStyleClass(String gridRowStyleClass) {
         getStateHelper().put(PropertyKeys.gridRowStyleClass, gridRowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.gridRowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.gridRowTitle, rowTitle);
     }
 
     @Override

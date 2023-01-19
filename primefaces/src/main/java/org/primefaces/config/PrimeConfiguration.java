@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,6 +55,7 @@ public class PrimeConfiguration {
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
     private boolean csp;
+    private boolean policyProvided;
     private String cspPolicy;
     private String cspReportOnlyPolicy;
     private String[] exceptionTypesToIgnoreInLogging;
@@ -134,6 +135,10 @@ public class PrimeConfiguration {
                 csp = Boolean.TRUE;
                 cspReportOnlyPolicy = externalContext.getInitParameter(Constants.ContextParams.CSP_REPORT_ONLY_POLICY);
                 break;
+            case "policyProvided":
+                csp = Boolean.TRUE;
+                policyProvided = Boolean.TRUE;
+                break;
             default:
                 csp = Boolean.FALSE;
                 break;
@@ -152,7 +157,10 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.MARK_INPUT_AS_INVALID_ON_ERROR_MSG);
         markInputAsInvalidOnErrorMsg = Boolean.parseBoolean(value);
 
-        cookiesSameSite = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+        if (environment.isAtLeastJsf40()) {
+            value = externalContext.getInitParameter(Constants.ContextParams.COOKIES_SAME_SITE);
+            cookiesSameSite = (value == null) ? "Strict" : value;
+        }
 
         cookiesSecure = true;
         if (environment.isAtLeastServlet30() && externalContext.getContext() instanceof ServletContext) {
@@ -260,6 +268,10 @@ public class PrimeConfiguration {
 
     public boolean isCsp() {
         return csp;
+    }
+
+    public boolean isPolicyProvided() {
+        return policyProvided;
     }
 
     public String getCspPolicy() {

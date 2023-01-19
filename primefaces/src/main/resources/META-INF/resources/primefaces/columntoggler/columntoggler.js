@@ -104,9 +104,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             hidden = column.hasClass('ui-helper-hidden'),
             boxClass = hidden ? 'ui-chkbox-box ui-widget ui-corner-all ui-state-default' : 'ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active',
             iconClass = (hidden) ? 'ui-chkbox-icon ui-icon ui-icon-blank' : 'ui-chkbox-icon ui-icon ui-icon-check',
-            columnChildren = column.children('.ui-column-title'),
-            columnTitle = columnChildren.text(),
+            columnChildren = column.children('.ui-column-title').clone(),
             columnTogglerCheckboxId = this.tableId + "_columnTogglerChkbx" + i;
+            columnChildren.children().remove('script'); // GitHub #9647 remove scripts
+            var columnTitle = columnChildren.text();
 
             var label = columnChildren.find('label');
             if (label.length) {
@@ -336,14 +337,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
         tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
 
-        var rowHeader = thead.children('tr'),
+        var rowSelector = 'tr:not(.ui-expanded-row-content)';
+        var rowHeader = thead.children(rowSelector),
         columnHeader = rowHeader.find('th:nth-child(' + index + ')');
 
         chkbox.attr('aria-checked', true);
         columnHeader.removeClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).removeClass('ui-helper-hidden');
-        tbody.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
-        tfoot.children('tr').find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
+        tbody.children(rowSelector).find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
+        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').removeClass('ui-helper-hidden');
 
         if(this.hasFrozenColumn) {
             var headers = rowHeader.children('th');
@@ -379,14 +381,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         tbody = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tbody.eq(0) : this.tbody.eq(1)) : this.tbody,
         tfoot = this.hasFrozenColumn ? (column.hasClass('ui-frozen-column') ? this.tfoot.eq(0) : this.tfoot.eq(1)) : this.tfoot;
 
-        var rowHeader = thead.children('tr'),
+        var rowSelector = 'tr:not(.ui-expanded-row-content)';
+        var rowHeader = thead.children(rowSelector),
         columnHeader = rowHeader.find('th:nth-child(' + index + ')');
 
         chkbox.attr('aria-checked', false);
         columnHeader.addClass('ui-helper-hidden');
         $(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).addClass('ui-helper-hidden');
-        tbody.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
-        tfoot.children('tr').find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        tbody.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
+        tfoot.children(rowSelector).find('td:nth-child(' + index + ')').addClass('ui-helper-hidden');
 
         if(this.hasFrozenColumn) {
             var headers = rowHeader.children('th');

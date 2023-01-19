@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -161,14 +161,15 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("MenuButton", button);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
-        wb.attr("collision", button.getCollision());
-        wb.attr("autoDisplay", button.isAutoDisplay());
-        wb.attr("toggleEvent", button.getToggleEvent(), null);
-        wb.attr("delay", button.getDelay());
-        wb.attr("disableOnAjax", button.isDisableOnAjax(), true);
-        wb.finish();
+        wb.init("MenuButton", button)
+            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
+                  SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+            .attr("collision", button.getCollision())
+            .attr("autoDisplay", button.isAutoDisplay())
+            .attr("toggleEvent", button.getToggleEvent(), null)
+            .attr("delay", button.getDelay())
+            .attr("disableOnAjax", button.isDisableOnAjax(), true)
+            .attr("disabledAttr", button.isDisabled(), false)
+            .finish();
     }
 }

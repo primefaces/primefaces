@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -106,10 +106,12 @@ public class Schedule001Test extends AbstractPrimePageTest {
         int hour = 10 - calcOffsetInHoursBetweenClientAndServerAndTimezone(startOfWeek.atStartOfDay(ZoneId.of(ALTERNATIV_SERVER_TIMEZONE)));
         // Message is created by server, so we see date selected transfered into server-timezone, what may be confusing from a user perspective
 
-        String hourDST = String.format("T%02d:00", hour);
-        String hourST = String.format("T%02d:00", hour + 1);
-        boolean hourOK = msg.getDetail().endsWith(hourDST) || msg.getDetail().endsWith(hourST);
-        Assertions.assertTrue(hourOK, String.format("Expected: %s or %s , Actual: %s", hourDST, hourST, msg.getDetail()));
+        // different ST/DST-scenarios
+        String hourCurrent = String.format("T%02d:00", hour);
+        String hourPlus1 = String.format("T%02d:00", hour + 1);
+        String hourMinus1 = String.format("T%02d:00", hour - 1);
+        boolean hourOK = msg.getDetail().endsWith(hourCurrent) || msg.getDetail().endsWith(hourPlus1) || msg.getDetail().endsWith(hourMinus1);
+        Assertions.assertTrue(hourOK, String.format("Expected: %s or %s or %s , Actual: %s", hourCurrent, hourPlus1, hourMinus1, msg.getDetail()));
     }
 
     private void selectSlot(Page page, String time) {

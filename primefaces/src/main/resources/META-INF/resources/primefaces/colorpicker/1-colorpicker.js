@@ -147,11 +147,15 @@
         //popup ui
         if (this.cfg.popup && this.overlay) {
             this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jqEl, function() {
-                $this.overlay.hide();
+                if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                    $this.overlay.hide();
+                }
             });
 
             this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.overlay, function() {
-                $this.overlay.hide();
+                if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                    $this.overlay.hide();
+                }
             });
         }
     },
@@ -194,16 +198,7 @@
      * @private
      */
     setupDialogSupport: function() {
-        if (this.jqEl && this.jqEl[0]) {
-            var dialog = this.jqEl[0].closest('.ui-dialog');
-            if (dialog) {
-                var $dialog = $(dialog);
-
-                if($dialog.length == 1 && $dialog.css('position') === 'fixed') {
-                    this.overlay.css('position', 'fixed');
-                }
-            }
-        }
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jqEl, this.overlay);
     },
 
     /**

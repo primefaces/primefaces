@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,13 @@
  */
 package org.primefaces.validate.bean;
 
-import javax.validation.metadata.ConstraintDescriptor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class AbstractClientValidationConstraint implements ClientValidationConstraint {
+import javax.validation.metadata.ConstraintDescriptor;
 
-    public static final String CONSTRAINT_PACKAGE = "javax.validation.constraints";
+public abstract class AbstractClientValidationConstraint implements ClientValidationConstraint {
 
     private final String messageId;
     private final String messageMetadata;

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,13 +40,13 @@ import java.io.Serializable;
 @ViewScoped
 public class MarkerSelectionView implements Serializable {
 
-    private MapModel simpleModel;
+    private MapModel<Long> simpleModel;
 
-    private Marker marker;
+    private Marker<Long> marker;
 
     @PostConstruct
     public void init() {
-        simpleModel = new DefaultMapModel();
+        simpleModel = new DefaultMapModel<>();
 
         //Shared coordinates
         LatLng coord1 = new LatLng(36.879466, 30.667648);
@@ -55,23 +55,25 @@ public class MarkerSelectionView implements Serializable {
         LatLng coord4 = new LatLng(36.885233, 30.702323);
 
         //Basic marker
-        simpleModel.addOverlay(new Marker(coord1, "Konyaalti"));
-        simpleModel.addOverlay(new Marker(coord2, "Ataturk Parki"));
-        simpleModel.addOverlay(new Marker(coord3, "Karaalioglu Parki"));
-        simpleModel.addOverlay(new Marker(coord4, "Kaleici"));
+        simpleModel.addOverlay(new Marker<>(coord1, "Konyaalti", 1L));
+        simpleModel.addOverlay(new Marker<>(coord2, "Ataturk Parki", 2L));
+        simpleModel.addOverlay(new Marker<>(coord3, "Karaalioglu Parki", 3L));
+        simpleModel.addOverlay(new Marker<>(coord4, "Kaleici", 4L));
     }
 
-    public MapModel getSimpleModel() {
+    public MapModel<Long> getSimpleModel() {
         return simpleModel;
     }
 
-    public void onMarkerSelect(OverlaySelectEvent event) {
+    public void onMarkerSelect(OverlaySelectEvent<Long> event) {
         marker = (Marker) event.getOverlay();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Selected", marker.getTitle()));
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Marker " + marker.getData() + " Selected", marker.getTitle()));
     }
 
-    public Marker getMarker() {
+    public Marker<Long> getMarker() {
         return marker;
     }
 }

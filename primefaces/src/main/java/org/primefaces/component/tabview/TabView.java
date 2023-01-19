@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -178,13 +178,13 @@ public class TabView extends TabViewBase {
 
     public void forEachTab(ConsumerThree<Tab, Integer, Boolean> callback) {
         int activeIndex = getActiveIndex();
+        boolean activeTabRendered = false;
 
         if (isRepeating()) {
             int dataCount = getRowCount();
 
             //boundary check
             activeIndex = activeIndex >= dataCount ? 0 : activeIndex;
-            boolean activeTabRendered = false;
 
             Tab tab = getDynamicTab();
 
@@ -199,7 +199,6 @@ public class TabView extends TabViewBase {
                     if (!activeTabRendered && i > activeIndex) {
                         tabActive = true;
                     }
-
                     if (tabActive) {
                         activeTabRendered = true;
                     }
@@ -211,11 +210,27 @@ public class TabView extends TabViewBase {
             setIndex(-1);
         }
         else {
+            int renderedChildCount = ComponentUtils.getRenderedChildCount(this);
+
+            //boundary check
+            activeIndex = activeIndex >= renderedChildCount ? 0 : activeIndex;
+
             int j = 0;
             for (int i = 0; i < getChildCount(); i++) {
                 UIComponent child = getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
-                    callback.accept((Tab) child, j, (j == activeIndex));
+                    boolean tabActive = j == activeIndex;
+
+                    // e.g. if the first tab is not rendered and the activeIndex=0
+                    //- > we should render the first rendered tab as active
+                    if (!activeTabRendered && j > activeIndex) {
+                        tabActive = true;
+                    }
+                    if (tabActive) {
+                        activeTabRendered = true;
+                    }
+
+                    callback.accept((Tab) child, j, tabActive);
                     j++;
                 }
             }

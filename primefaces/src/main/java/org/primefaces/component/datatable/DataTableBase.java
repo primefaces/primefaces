@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,6 +57,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         editingRow,
         escapeText,
         expandedRow,
+        exportTag,
+        exportRowTag,
         filterBy,
         filterDelay,
         filterEvent,
@@ -85,6 +87,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         rowSelectMode,
         rowSelector,
         rowStyleClass,
+        rowTitle,
         saveOnCellBlur,
         scrollHeight,
         scrollRows,
@@ -109,7 +112,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         showGridlines,
         size,
         widgetVar,
-        partialUpdate
+        partialUpdate,
+        showSelectAll
     }
 
     public DataTableBase() {
@@ -199,6 +203,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.rowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.rowTitle, rowTitle);
     }
 
     public String getOnExpandStart() {
@@ -699,5 +711,29 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setPartialUpdate(boolean partialUpdate) {
         getStateHelper().put(PropertyKeys.partialUpdate, partialUpdate);
+    }
+
+    public boolean isShowSelectAll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSelectAll, true);
+    }
+
+    public void setShowSelectAll(boolean showSelectAll) {
+        getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
+    }
+
+    public String getExportRowTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportRowTag, null);
+    }
+
+    public void setExportRowTag(String exportRowTag) {
+        getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
+    }
+
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 }

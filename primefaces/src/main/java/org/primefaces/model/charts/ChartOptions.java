@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ public abstract class ChartOptions implements Serializable {
 
     private Elements elements;
     private Title title;
+    private Title subtitle; // exact same model as Title
     private Tooltip tooltip;
     private Legend legend;
     private Animation animation;
@@ -51,6 +52,14 @@ public abstract class ChartOptions implements Serializable {
 
     public Title getTitle() {
         return title;
+    }
+
+    public void setSubtitle(Title subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public Title getSubtitle() {
+        return subtitle;
     }
 
     public void setTitle(Title title) {

@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -330,9 +330,9 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
-                        <p:outputLabel for="timeonlyMilliseconds" value="Time Only (HH:mm:ss.SSS)"/>
+                        <p:outputLabel for="timeonlyMilliseconds" value="Time Only (HH:mm:ss.SSS a)"/>
                         <p:datePicker id="timeonlyMilliseconds" value="#{calendarJava8View.time9}"
-                                      showSeconds="true" showMilliseconds="true" pattern="HH:mm:ss.SSS"/>
+                                      showSeconds="true" showMilliseconds="true" pattern="HH:mm:ss.SSS a" hourFormat="12"/>
                     </div>
                 </div>
             </div>

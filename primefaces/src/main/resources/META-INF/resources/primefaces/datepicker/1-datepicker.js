@@ -26,6 +26,7 @@
  * date picker instance.
  *
  * @prop {JQuery} input The DOM element for the hidden input element with the selected date.
+ * @prop {JQuery} triggerButton The DOM element for the trigger button if using showIcon.
  * @prop {JQuery} jqEl The DOM element for the inline picker or the input.
  * @prop {JQuery} [panel] The DOM element for the panel with the datepicker.
  * @prop {boolean} refocusInput Whether focus should be put on the input again.
@@ -89,6 +90,22 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.behaviors) {
                 PrimeFaces.attachBehaviors(this.jqEl, this.cfg.behaviors);
             }
+            
+            // get the current attached events if using CSP
+            var events = this.input[0] ? $._data(this.input[0], "events") : null;
+        
+            // use DOM if non-CSP and JQ event if CSP
+            var originalOnchange = this.input.prop('onchange');
+            if (!originalOnchange && events && events.change) {
+                originalOnchange = events.change[0].handler;
+            }
+            this.input.prop('onchange', null).off('change');
+
+            this.cfg.onChange = function(event) {
+                if (originalOnchange) {
+                    originalOnchange.call(this, event);
+                }
+            };
 
             this.cfg.onBeforeShow = function() {
                 if($this.refocusInput) {
@@ -127,29 +144,36 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         //Initialize datepicker
         this.cfg.panelStyleClass = (this.cfg.panelStyleClass || '') + ' p-datepicker-panel';
-        this.cfg.viewDate = this.viewDateOption;
         this.cfg.rangeSeparator = this.cfg.rangeSeparator||'-';
         this.cfg.timeSeparator = this.cfg.timeSeparator||':';
+        
+        if (this.cfg.selectionMode === "range") {
+            this.cfg.viewDate = this.viewDateOption;
+        }
+        else {
+            this.cfg.viewDate = this.cfg.defaultDate;
+        }
+        
 
         this.applyMask(); // must be before datepicker see #6445 and #7176
         this.jq.datePicker(this.cfg);
 
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
-            var triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true);
+            this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
+            this.triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true);
 
             var title = this.jqEl.attr('title');
             if(title) {
-                triggerButton.attr('title', title);
+                this.triggerButton.attr('title', title);
             }
 
             var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
             if(buttonIndex) {
-                triggerButton.attr('tabindex', buttonIndex);
+                this.triggerButton.attr('tabindex', buttonIndex);
             }
 
-            PrimeFaces.skinButton(triggerButton);
+            PrimeFaces.skinButton(this.triggerButton);
         }
 
         //mark target and descendants of target as a trigger for a PrimeFaces overlay
@@ -200,6 +224,12 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         if(localeSettings) {
             var locale = {};
+            if (this.cfg.localeAm) {
+                locale["am"] = this.cfg.localeAm;
+            }
+            if (this.cfg.localePm) {
+                locale["pm"] = this.cfg.localePm;
+            }
             for(var setting in localeSettings) {
                 locale[setting] = localeSettings[setting];
             }
@@ -218,10 +248,11 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         }
         var $this = this;
         if (this.cfg.mask) {
+            var isAutoClear = (this.cfg.maskAutoClear === undefined) ? true : this.cfg.maskAutoClear;
             var maskCfg = {
                 placeholder: this.cfg.maskSlotChar||'_',
-                clearMaskOnLostFocus: this.cfg.maskAutoClear||true,
-                clearIncomplete: this.cfg.maskAutoClear||true,
+                clearMaskOnLostFocus: isAutoClear,
+                clearIncomplete: isAutoClear,
                 autoUnmask: false,
                 showMaskOnHover: false,
                 onBeforePaste: function (pastedValue, opts) {
@@ -240,6 +271,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 maskCfg.mask = this.cfg.mask;
             }
             this.input.inputmask('remove').inputmask(maskCfg);
+            this.input.off("blur.inputmask"); // GitHub #9259
         }
     },
 
@@ -252,7 +284,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.onPanelCreate = function() {
             $this.panel = this.panel;
-            $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.panel);
+            $this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo($this, $this.jq, $this.panel);
             // #8423
             if ($this.cfg.inline) {
                 $this.panel.css('position', '');
@@ -500,6 +532,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.jq.data().primeDatePicker.options.disabled = false;
         this.updatePanel();
         PrimeFaces.utils.enableInputWidget(this.input);
+        PrimeFaces.utils.enableButton(this.triggerButton);
     },
 
     /**
@@ -510,6 +543,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         this.jq.data().primeDatePicker.options.disabled = true;
         this.updatePanel();
         PrimeFaces.utils.disableInputWidget(this.input);
+        PrimeFaces.utils.disableButton(this.triggerButton);
     }
 
 });

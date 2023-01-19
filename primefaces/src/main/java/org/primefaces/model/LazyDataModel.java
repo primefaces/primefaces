@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -105,6 +105,14 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         throw new UnsupportedOperationException(
                 getMessage("Provide a Converter via constructor or implement getRowData(String rowKey) in %s"
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    public T getRowData(int rowIndex, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+        List<T> loaded = load(rowIndex, rowIndex + 1, sortBy, filterBy);
+        if (loaded == null || loaded.isEmpty()) {
+            return null;
+        }
+        return loaded.get(0);
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,6 +92,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("collision", panel.getCollision(), null)
                 .attr("appendTo", panel.getAppendTo(), null)
                 .attr("dynamic", panel.isDynamic(), false)
+                .attr("cache", panel.isCache(), true)
                 .attr("dismissable", panel.isDismissable(), true)
                 .attr("showCloseIcon", panel.isShowCloseIcon(), false)
                 .attr("modal", panel.isModal(), false)

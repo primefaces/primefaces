@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.primefaces.selenium.spi.WebDriverAdapter;
@@ -54,6 +55,7 @@ public class ConfigProvider {
     private String webdriverBrowser;
     private boolean webdriverHeadless = false;
     private String webdriverVersion;
+    private Level webdriverLogLevel = Level.WARNING;
 
     private String deploymentBaseUrl;
     private DeploymentAdapter deploymentAdapter;
@@ -134,6 +136,11 @@ public class ConfigProvider {
                     this.webdriverVersion = webdriverVersion;
                 }
 
+                String webdriverLogLevel = properties.getProperty("webdriver.logLevel");
+                if (webdriverLogLevel != null && !webdriverLogLevel.trim().isEmpty()) {
+                    this.webdriverLogLevel = Level.parse(webdriverLogLevel);
+                }
+
                 String onloadScriptsAdapter = properties.getProperty("onloadScripts.adapter");
                 if (onloadScriptsAdapter != null && !onloadScriptsAdapter.trim().isEmpty()) {
                     this.onloadScriptsAdapter = (OnloadScriptsAdapter) Class.forName(onloadScriptsAdapter).getDeclaredConstructor().newInstance();
@@ -173,6 +180,10 @@ public class ConfigProvider {
             // CHECKSTYLE:ON
         }
 
+        if (scrollElementIntoView != null) {
+            onloadScripts.add("if (window.PrimeFaces) { $(function() { PrimeFaces.hideOverlaysOnViewportChange = false; }); }");
+        }
+
         if (onloadScriptsAdapter != null) {
             onloadScriptsAdapter.registerOnloadScripts(onloadScripts);
         }
@@ -184,6 +195,10 @@ public class ConfigProvider {
 
     public int getTimeoutAjax() {
         return timeoutAjax;
+    }
+
+    public void setTimeoutAjax(int timeoutAjax) {
+        this.timeoutAjax = timeoutAjax;
     }
 
     public int getTimeoutHttp() {
@@ -236,6 +251,10 @@ public class ConfigProvider {
 
     public String getWebdriverVersion() {
         return webdriverVersion;
+    }
+
+    public Level getWebdriverLogLevel() {
+        return webdriverLogLevel;
     }
 
     public static synchronized ConfigProvider getInstance() {

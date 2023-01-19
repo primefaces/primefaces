@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -112,7 +112,7 @@ public abstract class CoreRenderer extends Renderer {
 
     @SafeVarargs
     protected final void renderPassThruAttributes(FacesContext context, UIComponent component, List<String>... attrs) throws IOException {
-        if (attrs == null) {
+        if (attrs == null || attrs.length == 0) {
             renderDynamicPassThruAttributes(context, component);
             return;
         }
@@ -210,11 +210,13 @@ public abstract class CoreRenderer extends Renderer {
                     }
                 }
                 else if (hasEventValue) {
-                    builder.append(eventValue);
+                    if (shouldRenderAttribute(eventValue)) {
+                        builder.append(eventValue);
+                    }
                 }
 
                 if (builder.length() > 0) {
-                    writer.writeAttribute(domEvent, builder.toString(), domEvent);
+                    renderAttribute(context, component, domEvent, builder.toString());
                     builder.setLength(0);
                 }
             }
@@ -233,14 +235,27 @@ public abstract class CoreRenderer extends Renderer {
 
             Object value = component.getAttributes().get(attribute);
 
-            if (shouldRenderAttribute(value)) {
-                writer.writeAttribute(attribute, value.toString(), attribute);
-            }
+            renderAttribute(context, component, attribute, value);
         }
 
         //dynamic attributes
         if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
+        }
+    }
+
+    protected void renderAttribute(FacesContext context, UIComponent component, String attribute, Object value)
+                throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (shouldRenderAttribute(value)) {
+            String stringValue = value.toString();
+            if (Boolean.valueOf(stringValue)) {
+                writer.writeAttribute(attribute, true, attribute);
+            }
+            else {
+                writer.writeAttribute(attribute, stringValue, attribute);
+            }
         }
     }
 
@@ -493,7 +508,15 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
                                          Map<String, List<String>> parameters, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
-        String formId = form.getClientId(context);
+
+        String submitId;
+        if (form == null) {
+            submitId = component.getClientId(context);
+        }
+        else {
+            submitId = form.getClientId(context);
+        }
+
         Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
@@ -514,7 +537,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //append params
         if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+            request.append("PrimeFaces.addSubmitParam('").append(submitId).append("',{");
 
             request.append(
                     params.entrySet().stream()
@@ -527,7 +550,7 @@ public abstract class CoreRenderer extends Renderer {
 
         if (submit) {
             Object target = component.getAttributes().get("target");
-            request.append(".submit('").append(formId).append("'");
+            request.append(".submit('").append(submitId).append("'");
 
             if (target != null) {
                 request.append(",'").append(target).append("'");

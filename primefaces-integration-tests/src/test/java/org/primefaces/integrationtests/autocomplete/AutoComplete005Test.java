@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,6 @@ import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.AutoComplete;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
@@ -67,7 +66,7 @@ public class AutoComplete005Test extends AbstractPrimePageTest {
 
         // Act - Chr(istoph) - not allowed
         autoComplete.setValueWithoutTab("Chr");
-        PrimeSelenium.guardAjax(autoComplete.getInput()).sendKeys(Keys.ENTER);
+        autoComplete.getInput().sendKeys(Keys.ENTER);
 
         RealDriverService realDriverService = new RealDriverService();
         realDriverService.init();

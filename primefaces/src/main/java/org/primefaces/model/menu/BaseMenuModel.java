@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
 /**
@@ -36,6 +37,7 @@ import org.primefaces.util.LangUtils;
 public class BaseMenuModel implements MenuModel, Serializable {
 
     public static final String ID_SEPARATOR = "_";
+    public static final String COORDINATES_SEPARATOR = "|";
 
     private static final long serialVersionUID = 1L;
 
@@ -52,25 +54,32 @@ public class BaseMenuModel implements MenuModel, Serializable {
 
     @Override
     public void generateUniqueIds() {
-        generateUniqueIds(getElements(), true);
+        generateUniqueIds(getElements(), null);
     }
 
-    private void generateUniqueIds(List<MenuElement> elements, boolean root) {
+    private void generateUniqueIds(List<MenuElement> elements, String seed) {
         if (elements == null || elements.isEmpty()) {
             return;
         }
 
+        int counter = 0;
+        boolean root = (seed == null);
+
         for (MenuElement element : elements) {
             // #1039 check if ID was already manually set
             String id = element.getId();
+            // set coordinates as a fallback for RequestScoped models (PF < 11 did this)
+            String coordinates = root ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
             if (LangUtils.isBlank(id)) {
-                // 1. prepend root elements with "_" to distinguish them from others in MenubarRenderer#encodeSubmenuIcon - stupid, but still
-                // 2. UUID.randomUUID is overkill (used just as an example)
-                element.setId((root ? "_" : "") + UUID.randomUUID());
+                // prepend root elements with "_" to distinguish them from others in MenubarRenderer#encodeSubmenuIcon
+                String submenu = root ? ID_SEPARATOR : Constants.EMPTY_STRING;
+                // ID is _ then UUID then | then Coordinates
+                String menuId = String.format("%s%s%s%s", submenu, UUID.randomUUID(), COORDINATES_SEPARATOR, coordinates);
+                element.setId(menuId);
             }
 
             if (element instanceof MenuGroup) {
-                generateUniqueIds(((MenuGroup) element).getElements(), false);
+                generateUniqueIds(((MenuGroup) element).getElements(), coordinates);
             }
         }
     }

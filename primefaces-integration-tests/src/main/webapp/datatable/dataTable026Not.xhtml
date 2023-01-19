@@ -21,13 +21,8 @@
                          filteredValue="#{dataTable026.filteredEmployees}" filterEvent="enter">
 
                 <p:column headerText="ID" field="id"/>
-                <p:column headerText="salary notEquals" field="salary" filterMatchMode="notEquals">
-                    <f:facet name="filter">
-                        <p:inputText onkeyup="PF('wgtTable').filter()">
-                            <f:converter converterId="javax.faces.Integer" />
-                        </p:inputText>
-                    </f:facet>
-                </p:column>
+                <p:column headerText="salary notEquals" field="salary" filterMatchMode="notEquals"
+                          converter="javax.faces.Integer"/>
                 <p:column headerText="last login notBetween" field="lastLoginDateTime" filterMatchMode="notBetween">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,8 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
         defaultHour,
         defaultMinute,
         defaultSecond,
-        defaultMillisec
+        defaultMillisec,
+        shortYearCutoff
     }
 
     public CalendarBase() {
@@ -415,6 +416,14 @@ public abstract class CalendarBase extends UICalendar implements Widget, InputHo
 
     public void setDefaultMillisec(int defaultMillisec) {
         getStateHelper().put(PropertyKeys.defaultMillisec, defaultMillisec);
+    }
+
+    public String getShortYearCutoff() {
+        return (String) getStateHelper().eval(PropertyKeys.shortYearCutoff, null);
+    }
+
+    public void setShortYearCutoff(String shortYearCutoff) {
+        getStateHelper().put(PropertyKeys.shortYearCutoff, shortYearCutoff);
     }
 
     @Override

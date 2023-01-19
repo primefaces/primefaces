@@ -181,10 +181,6 @@
     </converter>
 
     <component>
-        <component-type>org.primefaces.component.UIRepeat</component-type>
-        <component-class>org.primefaces.component.repeat.UIRepeat</component-class>
-    </component>
-    <component>
         <component-type>org.primefaces.component.AccordionPanel</component-type>
         <component-class>org.primefaces.component.accordionpanel.AccordionPanel</component-class>
     </component>
@@ -280,11 +276,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.Chart</component-type>
-        <component-class>org.primefaces.component.chart.Chart</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.Checkbox</component-type>
         <component-class>org.primefaces.component.checkbox.Checkbox</component-class>
     </component>
@@ -352,11 +343,6 @@
     <component>
         <component-type>org.primefaces.component.ConfirmPopup</component-type>
         <component-class>org.primefaces.component.confirmpopup.ConfirmPopup</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.ContentFlow</component-type>
-        <component-class>org.primefaces.component.contentflow.ContentFlow</component-class>
     </component>
 
     <component>
@@ -575,11 +561,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.LightBox</component-type>
-        <component-class>org.primefaces.component.lightbox.LightBox</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.Link</component-type>
         <component-class>org.primefaces.component.link.Link</component-class>
     </component>
@@ -737,11 +718,6 @@
     <component>
         <component-type>org.primefaces.component.Resizable</component-type>
         <component-class>org.primefaces.component.resizable.Resizable</component-class>
-    </component>
-
-    <component>
-        <component-type>org.primefaces.component.Ring</component-type>
-        <component-class>org.primefaces.component.ring.Ring</component-class>
     </component>
 
     <component>
@@ -1167,11 +1143,6 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.chart.ChartRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.CheckboxRenderer</renderer-type>
             <renderer-class>org.primefaces.component.checkbox.CheckboxRenderer</renderer-class>
         </renderer>
@@ -1229,11 +1200,6 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ConfirmPopupRenderer</renderer-type>
             <renderer-class>org.primefaces.component.confirmpopup.ConfirmPopupRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.ContentFlowRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.contentflow.ContentFlowRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
@@ -1437,11 +1403,6 @@
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.LightBoxRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.lightbox.LightBoxRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.LinkRenderer</renderer-type>
             <renderer-class>org.primefaces.component.link.LinkRenderer</renderer-class>
         </renderer>
@@ -1589,11 +1550,6 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ResizableRenderer</renderer-type>
             <renderer-class>org.primefaces.component.resizable.ResizableRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.RingRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.ring.RingRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

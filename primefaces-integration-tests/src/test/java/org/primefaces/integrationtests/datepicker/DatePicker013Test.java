@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,8 @@ package org.primefaces.integrationtests.datepicker;
 
 
 import java.time.LocalDateTime;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
@@ -38,6 +36,7 @@ public class DatePicker013Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
+    @Tag("Jsf22Exclude")
     @DisplayName("DatePicker: f:convertDateTime vs internal conversion")
     public void testFConvertDateTimeVsInternal(Page page) {
         // Arrange

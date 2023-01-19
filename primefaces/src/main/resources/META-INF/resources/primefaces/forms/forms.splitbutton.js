@@ -179,7 +179,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.ajaxCount > 1) {
                     return;
                 }
-                $this.button.toggleClass('ui-state-loading');
+                $this.button.addClass('ui-state-loading');
                 if ($this.cfg.disableOnAjax !== false) {
                     $this.disable();
                 }
@@ -197,8 +197,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.ajaxCount > 0) {
                     return;
                 }
-                $this.button.toggleClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false) {
+                $this.button.removeClass('ui-state-loading');
+                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabledAttr) {
                     $this.enable();
                 }
                 $this.button.find('.ui-icon-loading').remove();
@@ -249,11 +249,15 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             });
 
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.menu, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
     },
 
@@ -482,7 +486,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Search term for filtering.
      */
     filter: function(value) {
-        var filterValue = PrimeFaces.trim(value).toLowerCase();
+        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), true);
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
@@ -492,7 +496,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < this.menuitems.length; i++) {
                 var menuitem = this.menuitems.eq(i),
-                itemLabel = menuitem.find('.ui-menuitem-text').text().toLowerCase();
+                itemLabel = PrimeFaces.normalize(menuitem.find('.ui-menuitem-text').text(), true);
 
                 /* for keyboard support */
                 menuitem.removeClass('ui-state-hover');

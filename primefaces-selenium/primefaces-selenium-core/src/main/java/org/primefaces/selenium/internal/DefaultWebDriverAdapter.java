@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,25 @@
  */
 package org.primefaces.selenium.internal;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
+
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverLogLevel;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.primefaces.selenium.spi.WebDriverAdapter;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DefaultWebDriverAdapter implements WebDriverAdapter {
 
@@ -83,15 +88,22 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 firefoxOptions.setHeadless(config.isWebdriverHeadless());
-                if (!config.isWebdriverHeadless()) {
-                    firefoxOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
-                }
+                firefoxOptions.setLogLevel(FirefoxDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
+                firefoxOptions.addPreference("browser.helperApps.neverAsk.openFile", "application/octet-stream");
                 return new FirefoxDriver(firefoxOptions);
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 chromeOptions.setHeadless(config.isWebdriverHeadless());
-                chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+                chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
+                chromeOptions.setLogLevel(ChromeDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
+                Map<String, Object> chromePrefs = new HashMap<>();
+                chromePrefs.put("download.prompt_for_download", false);
+                chromePrefs.put("download.directory_upgrade", true);
+                chromePrefs.put("safebrowsing.enabled", true);
+                chromePrefs.put("profile.default_content_settings.popups", 0);
+                chromePrefs.put("download.default_directory", System.getProperty("java.io.tmpdir"));
+                chromeOptions.setExperimentalOption("prefs", chromePrefs);
                 return new ChromeDriver(chromeOptions);
             case "safari":
                 SafariOptions safariOptions = new SafariOptions();

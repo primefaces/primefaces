@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -117,6 +117,8 @@ public class TabViewRenderer extends CoreRenderer {
                 .attr("effectDuration", tabView.getEffectDuration(), null)
                 .attr("scrollable", tabView.isScrollable())
                 .attr("tabindex", tabView.getTabindex(), null)
+                .attr("focusOnError", tabView.isFocusOnError(), false)
+                .attr("focusOnLastActiveTab", tabView.isFocusOnLastActiveTab(), true)
                 .attr("touchable", ComponentUtils.isTouchable(context, tabView),  true)
                 .attr("multiViewState", tabView.isMultiViewState(), false);
 

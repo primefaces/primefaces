@@ -763,25 +763,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             $this.cfg.filterDelay);
         });
-
-        // #89 IE clear "x" button
-        if (PrimeFaces.env.isIE()) {
-            filter.off('mouseup.dataTable').on('mouseup.dataTable', function(e) {
-                var input = $(this),
-                oldValue = input.val();
-
-                if(oldValue == "") {
-                    return;
-                }
-
-                setTimeout(function() {
-                    var newValue = input.val();
-                    if(newValue == "") {
-                        $this.filter();
-                    }
-                }, 1);
-            });
-        }
     },
 
     /**
@@ -828,6 +809,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.rowSelectMode !== 'none') {
                 this.bindRowEvents();
             }
+            else {
+                this.jq.find('tr.ui-datatable-selectable').css('cursor', 'default');
+            }
         }
         else if(this.cfg.selectionMode === 'checkbox') {
             this.bindCheckboxEvents();
@@ -835,6 +819,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             if(this.cfg.rowSelectMode !== 'none') {
                 this.bindRowEvents();
+            }
+            else {
+                this.jq.find('tr.ui-datatable-selectable').css('cursor', 'default');
             }
         }
         else {
@@ -851,7 +838,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindRowHover(this.rowSelector);
 
-        this.jq.off('click.dataTable mousedown.dataTable', this.rowSelector).on('mousedown.dataTable', this.rowSelector, null, function(e) {
+        this.tbody.off('click.dataTable mousedown.dataTable', this.rowSelector).on('mousedown.dataTable', this.rowSelector, null, function(e) {
             $this.mousedownOnRow = true;
         })
         .on('click.dataTable', this.rowSelector, null, function(e) {
@@ -985,7 +972,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     bindRowHover: function(rowSelector) {
         var $this = this;
-        this.jq.off('mouseenter.dataTable mouseleave.dataTable', rowSelector)
+        this.tbody.off('mouseenter.dataTable mouseleave.dataTable', rowSelector)
             .on('mouseenter.dataTable', rowSelector, null, function() {
                 if (!$this.ignoreRowHoverEvent) {
                     $(this).addClass('ui-state-hover');
@@ -999,7 +986,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if (this.cfg.groupColumnIndexes) {
             var columnSelector = rowSelector + ' > td';
-            this.jq.off('mouseenter.dataTable mouseleave.dataTable', columnSelector)
+            this.tbody.off('mouseenter.dataTable mouseleave.dataTable', columnSelector)
                 .on('mouseenter.dataTable', columnSelector, null, function() {
                     var row = $(this).parent();
                     if ($(this).hasClass('ui-grouped-column')) {
@@ -1519,6 +1506,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         clone.find('th').each(function() {
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
+            header.removeAttr('aria-label');
             header.children().not('.ui-column-title').remove();
             header.children('.ui-column-title').children().remove();
         });
@@ -2385,7 +2373,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if($(event.target).is(this.rowSelectorForRowClick)) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
-            metaKey = event.metaKey||event.ctrlKey,
+            metaKey = event.metaKey||event.ctrlKey||PrimeFaces.env.isTouchable(this.cfg),
             shiftKey = event.shiftKey;
 
             this.assignFocusedRow(row);
@@ -3250,7 +3238,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
                                 return;
 
-                            if($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length)
+                            if($.datepicker && ($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length))
                                 return;
 
                             if($this.cfg.saveOnCellBlur)
@@ -3552,6 +3540,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} cell A cell (`TD`) in edit mode.
      */
     saveCell: function(cell) {
+        if (!cell) {
+            return;
+        }
         var inputs = cell.find('div.ui-cell-editor-input :input:enabled'),
         changed = false,
         valid = cell.data('valid'),
@@ -4200,10 +4191,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var title = columnHeader.children('.ui-column-title');
-        if(PrimeFaces.env.isIE()) {
-            title.css('display', 'none');
-        }
-
         var nextColumnHeader = columnHeader.nextAll(':visible:first');
 
         if(this.cfg.liveResize) {
@@ -4219,10 +4206,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         var minWidth = parseInt(columnHeader.css('min-width'));
         minWidth = (minWidth == 0) ? 15 : minWidth;
-
-        if(PrimeFaces.env.isIE()) {
-            title.css('display', '');
-        }
 
         if((newWidth > minWidth && nextColumnWidth > minWidth) || (expandMode && newWidth > minWidth)) {
             if(expandMode) {

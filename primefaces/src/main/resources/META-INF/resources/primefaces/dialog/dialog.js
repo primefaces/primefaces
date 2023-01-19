@@ -55,7 +55,7 @@
  * body.
  * @prop {boolean} cfg.absolutePositioned Whether the dialog is positioned absolutely.
  * @prop {boolean} cfg.blockScroll Whether to prevent the document from scrolling when the dialog is visible.
- * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once..
+ * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once.
  * @prop {boolean} cfg.closeOnEscape Whether the dialog is closed when the user presses the escape button.
  * @prop {boolean} cfg.closable Whether the dialog can be closed by the user.
  * @prop {boolean} cfg.draggable Whether the dialog is draggable.
@@ -64,6 +64,7 @@
  * of height. When this is set to `true`, automatically adjust the height to fit the dialog within the viewport.
  * @prop {number} cfg.height The height of the dialog in pixels.
  * @prop {string} cfg.hideEffect Effect to use when hiding the dialog.
+ * @prop {string} cfg.iframeStyleClass One or more CSS classes for the iframe within the dialog.
  * @prop {string} cfg.iframeTitle The title of the iframe with the dialog.
  * @prop {boolean} cfg.maximizable Whether the dialog is maximizable.
  * @prop {number} cfg.minHeight The minimum height of the dialog in pixels.
@@ -76,6 +77,8 @@
  * @prop {PrimeFaces.widget.Dialog.OnShowCallback} cfg.onShow Client-side callback to invoke when the dialog is opened.
  * @prop {string} cfg.position Defines where the dialog should be displayed
  * @prop {boolean} cfg.resizable Whether the dialog can be resized by the user.
+ * @prop {boolean} cfg.resizeObserver Use ResizeObserver to automatically adjust dialog-height after e.g. AJAX-updates. Resizeable must be set to false to use this option. (Known limitation: Dialog does not automatically resize yet when resizing the browser-window.)
+ * @prop {boolean} cfg.resizeObserverCenter Can be used together with resizeObserver = true. Centers the dialog again after it was resized to ensure the whole dialog is visible onscreen.
  * @prop {boolean} cfg.responsive Whether the dialog is responsive. In responsive mode, the dialog adjusts itself based
  * on the screen width.
  * @prop {string} cfg.showEffect Effect to use when showing the dialog
@@ -204,6 +207,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
 
         this.content.css('max-height', maxHeight + 'px');
+
+        if(this.cfg.hasIframe) {
+            this.content.children('iframe').css('max-height', maxHeight + 'px');
+        }
     },
 
 
@@ -398,6 +405,21 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $this.toggleMinimize();
             e.preventDefault();
         });
+
+        if(this.cfg.hasIframe && !this.cfg.resizable && this.cfg.resizeObserver) {
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
+            var resizeObserver = new ResizeObserver((entries) => {
+                var iframe = this.content.children('iframe')[0];
+                var frameHeight = $(iframe.contentWindow.document.body).outerHeight(true) + 8; // 8 because of weird p:messages - sizing issue
+                $(iframe).height(frameHeight);
+
+                if (this.cfg.resizeObserverCenter) {
+                    // further improvement possible - maybe only center the dialog again if parts of the dialog are outside the window
+                    this.initPosition();
+                }
+            });
+            resizeObserver.observe(this.content.children('iframe')[0].contentWindow.document.body);
+        }
 
         if(this.cfg.closeOnEscape) {
             $(document).on('keydown.dialog_' + this.id, function(e) {
@@ -942,6 +964,10 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             else {
             	this.message.html(msg.message);
             }
+        }
+        
+        if (this.cfg.global) {
+            this.positionInitialized = false;
         }
 
         this.show();

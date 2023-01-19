@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectBooleanButton;
 
 public class DataTable004Test extends AbstractDataTableTest {
 
@@ -146,6 +147,38 @@ public class DataTable004Test extends AbstractDataTableTest {
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(10)
+    @DisplayName("DataTable: DisabledSelection - feature")
+    public void testDisabledSelection(Page page) {
+        // Arrange
+        DataTable dataTable = page.dataTable;
+        page.selectBooleanButtonDisabledSelection.click();
+        Assertions.assertNotNull(dataTable);
+
+        for (int row = 0; row < 5; row++) {
+            // Act & Assert
+            if (row % 2 == 0) {
+                Assertions.assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
+
+                PrimeSelenium.guardAjax(dataTable.getCell(row, 0).getWebElement()).click();
+
+                Assertions.assertTrue(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
+                assertMessage(page, "ProgrammingLanguage Selected", languages.get(row).getName());
+            }
+            else {
+                Assertions.assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-datatable-selectable"));
+
+                dataTable.getCell(row, 0).getWebElement().click(); // nothing happens
+
+                Assertions.assertFalse(PrimeSelenium.hasCssClass(dataTable.getRow(row).getWebElement(), "ui-state-highlight"));
+                assertMessage(page, "ProgrammingLanguage Selected", languages.get(row - 1).getName()); // still the row we selected before
+            }
+        }
+
+        assertConfiguration(dataTable.getWidgetConfiguration());
+    }
+
     private void assertMessage(Page page, String summary, String detail) {
         Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains(summary));
         Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains(detail));
@@ -163,6 +196,9 @@ public class DataTable004Test extends AbstractDataTableTest {
 
         @FindBy(id = "form:datatable")
         DataTable dataTable;
+
+        @FindBy(id = "form:chkDisabledSelection")
+        SelectBooleanButton selectBooleanButtonDisabledSelection;
 
         @FindBy(id = "form:button")
         CommandButton button;

@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -87,12 +87,8 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt">
-                        <f:facet name="filter">
-                            <p:inputText onkeyup="PF('customersTable').filter()" styleClass="ui-column-filter">
-                                <f:converter converterId="javax.faces.Integer" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}" filterMatchMode="gt"
+                              converter="javax.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
 
@@ -122,7 +118,7 @@
                     <p:column field="representative" headerText="Representative" filterMatchMode="exact"
                               sortBy="#{customer.representative.name}">
                         <f:facet name="filter">
-                            <p:selectOneMenu onchange="PF('customersTable').filter()" styleClass="custom-filter">
+                            <p:selectOneMenu onchange="PF('customersTable2').filter()" styleClass="custom-filter">
                                 <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{dtFilterView.representatives}" />
                             </p:selectOneMenu>
@@ -150,12 +146,8 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status.toString()}</span>
                     </p:column>
 
-                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}">
-                        <f:facet name="filter">
-                            <p:inputText onkeyup="PF('customersTable2').filter()" styleClass="ui-column-filter">
-                                <f:converter converterId="javax.faces.Integer" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column field="activity" headerText="Activity" sortBy="#{customer.activity}"
+                              converter="javax.faces.Integer">
                         <p:progressBar value="#{customer.activity}" displayOnly="true" style="height: .5rem" />
                     </p:column>
                 </p:dataTable>

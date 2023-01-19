@@ -74,6 +74,11 @@
     display: none;
 }
 
+.ui-tree.ui-noborder {
+    border: 0;
+    padding: 0;
+}
+
 /** Horizontal Tree **/
 .ui-tree-horizontal {
     width:auto;

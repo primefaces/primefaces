@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.metadata;
 
 import java.util.Collections;
 import java.util.Set;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.el.ValueReference;
@@ -34,8 +35,10 @@ import javax.validation.groups.Default;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import javax.validation.metadata.PropertyDescriptor;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
+import org.primefaces.util.LangUtils;
 
 public class BeanValidationMetadataExtractor {
 
@@ -84,7 +87,8 @@ public class BeanValidationMetadataExtractor {
                 Object property = vr.getProperty();
 
                 if (base != null && property != null) {
-                    BeanDescriptor beanDescriptor = validator.getConstraintsForClass(base.getClass());
+                    Class<?> unproxied = LangUtils.getUnproxiedClass(base.getClass());
+                    BeanDescriptor beanDescriptor = validator.getConstraintsForClass(unproxied);
 
                     if (beanDescriptor != null) {
                         return beanDescriptor.getConstraintsForProperty(property.toString());

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
+import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
@@ -158,8 +159,7 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(tree.getRowNode());
             }
             else {
-                String separator = Character.toString(UINamingContainer.getSeparatorChar(context));
-                Tree otherTree = (Tree) tree.findComponent(separator + dragSource);
+                Tree otherTree = (Tree) SearchExpressionFacade.resolveComponent(context, context.getViewRoot(), dragSource);
                 otherTree.setRowKey(otherTree.getValue(), rowKey);
                 dragNodeList.add(otherTree.getRowNode());
             }

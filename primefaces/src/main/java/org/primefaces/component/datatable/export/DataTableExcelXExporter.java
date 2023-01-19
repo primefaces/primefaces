@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,15 @@
  */
 package org.primefaces.component.datatable.export;
 
-import java.awt.Color;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.*;
-import org.primefaces.component.export.ExporterOptions;
 
 public class DataTableExcelXExporter extends DataTableExcelExporter {
 
     @Override
     protected Workbook createWorkBook() {
         return new XSSFWorkbook();
-    }
-
-    @Override
-    protected RichTextString createRichTextString(String value) {
-        return new XSSFRichTextString(value);
     }
 
     @Override
@@ -52,70 +44,4 @@ public class DataTableExcelXExporter extends DataTableExcelExporter {
         return ".xlsx";
     }
 
-    @Override
-    protected void applyFacetOptions(Workbook wb, ExporterOptions options, CellStyle facetStyle) {
-        Font facetFont = getFont(wb, options);
-
-        if (options != null) {
-            String facetFontStyle = options.getFacetFontStyle();
-            if (facetFontStyle != null) {
-                if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
-                    facetFont.setBold(true);
-                }
-                if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
-                    facetFont.setItalic(true);
-                }
-            }
-
-            String facetBackground = options.getFacetBgColor();
-            if (facetBackground != null) {
-                XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground), new DefaultIndexedColorMap());
-                ((XSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor);
-                facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            }
-
-            String facetFontColor = options.getFacetFontColor();
-            if (facetFontColor != null) {
-                XSSFColor facetColor = new XSSFColor(Color.decode(facetFontColor), new DefaultIndexedColorMap());
-                ((XSSFFont) facetFont).setColor(facetColor);
-            }
-
-            String facetFontSize = options.getFacetFontSize();
-            if (facetFontSize != null) {
-                facetFont.setFontHeightInPoints(Short.valueOf(facetFontSize));
-            }
-        }
-
-        facetStyle.setFont(facetFont);
-    }
-
-    @Override
-    protected void applyCellOptions(Workbook wb, ExporterOptions options, CellStyle cellStyle) {
-        Font cellFont = getFont(wb, options);
-
-        if (options != null) {
-            String cellFontColor = options.getCellFontColor();
-            if (cellFontColor != null) {
-                XSSFColor cellColor = new XSSFColor(Color.decode(cellFontColor), new DefaultIndexedColorMap());
-                ((XSSFFont) cellFont).setColor(cellColor);
-            }
-
-            String cellFontSize = options.getCellFontSize();
-            if (cellFontSize != null) {
-                cellFont.setFontHeightInPoints(Short.valueOf(cellFontSize));
-            }
-
-            String cellFontStyle = options.getCellFontStyle();
-            if (cellFontStyle != null) {
-                if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
-                    cellFont.setBold(true);
-                }
-                if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
-                    cellFont.setItalic(true);
-                }
-            }
-        }
-
-        cellStyle.setFont(cellFont);
-    }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package org.primefaces.component.chips;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -64,6 +65,9 @@ public class ChipsRenderer extends InputRenderer {
         }
 
         if (submittedValues.length > 0) {
+            if (chips.isUnique()) {
+                submittedValues = Stream.of(submittedValues).distinct().toArray(String[]::new);
+            }
             chips.setSubmittedValue(submittedValues);
         }
         else {

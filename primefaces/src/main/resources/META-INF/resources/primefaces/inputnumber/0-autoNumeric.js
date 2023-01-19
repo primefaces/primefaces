@@ -97,19 +97,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ({
 
 /***/ "./src/AutoNumeric.js":
-/*!****************************!*\
+/*****************************!*\
   !*** ./src/AutoNumeric.js ***!
   \****************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AutoNumeric; });
-/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
-/* harmony import */ var _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericEnum */ "./src/AutoNumericEnum.js");
-/* harmony import */ var _maths_Evaluator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./maths/Evaluator */ "./src/maths/Evaluator.js");
-/* harmony import */ var _maths_Parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./maths/Parser */ "./src/maths/Parser.js");
+/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
+/* harmony import */ var _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/* ./AutoNumericEnum */ "./src/AutoNumericEnum.js");
+/* harmony import */ var _maths_Evaluator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/* ./maths/Evaluator */ "./src/maths/Evaluator.js");
+/* harmony import */ var _maths_Parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/* ./maths/Parser */ "./src/maths/Parser.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10793,16 +10793,16 @@ AutoNumeric.multiple = function (arg1) {
 /***/ }),
 
 /***/ "./src/AutoNumericDefaultSettings.js":
-/*!*******************************************!*\
+/********************************************!*\
   !*** ./src/AutoNumericDefaultSettings.js ***!
   \*******************************************/
-/*! no exports provided */
+/* no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
-/* harmony import */ var _AutoNumericOptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericOptions */ "./src/AutoNumericOptions.js");
+/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./AutoNumeric */ "./src/AutoNumeric.js");
+/* harmony import */ var _AutoNumericOptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/* ./AutoNumericOptions */ "./src/AutoNumericOptions.js");
 /**
  * Default settings for autoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
@@ -10910,10 +10910,10 @@ Object.defineProperty(_AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"], 'def
 /***/ }),
 
 /***/ "./src/AutoNumericEnum.js":
-/*!********************************!*\
+/*********************************!*\
   !*** ./src/AutoNumericEnum.js ***!
   \********************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11451,15 +11451,15 @@ Object.freeze(AutoNumericEnum);
 /***/ }),
 
 /***/ "./src/AutoNumericEvents.js":
-/*!**********************************!*\
+/***********************************!*\
   !*** ./src/AutoNumericEvents.js ***!
   \**********************************/
-/*! no exports provided */
+/* no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
+/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./AutoNumeric */ "./src/AutoNumeric.js");
 /**
  * Options for autoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
@@ -11520,16 +11520,16 @@ Object.defineProperty(_AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"], 'eve
 /***/ }),
 
 /***/ "./src/AutoNumericHelper.js":
-/*!**********************************!*\
+/***********************************!*\
   !*** ./src/AutoNumericHelper.js ***!
   \**********************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AutoNumericHelper; });
-/* harmony import */ var _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumericEnum */ "./src/AutoNumericEnum.js");
+/* harmony import */ var _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./AutoNumericEnum */ "./src/AutoNumericEnum.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -13441,16 +13441,16 @@ var AutoNumericHelper = /*#__PURE__*/function () {
 /***/ }),
 
 /***/ "./src/AutoNumericOptions.js":
-/*!***********************************!*\
+/************************************!*\
   !*** ./src/AutoNumericOptions.js ***!
   \***********************************/
-/*! no exports provided */
+/* no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
-/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
+/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./AutoNumeric */ "./src/AutoNumeric.js");
+/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/* ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
 /**
  * Options for autoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
@@ -14423,16 +14423,16 @@ Object.defineProperty(_AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"], 'opt
 /***/ }),
 
 /***/ "./src/AutoNumericPredefinedOptions.js":
-/*!*********************************************!*\
+/**********************************************!*\
   !*** ./src/AutoNumericPredefinedOptions.js ***!
   \*********************************************/
-/*! no exports provided */
+/* no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
-/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
+/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./AutoNumeric */ "./src/AutoNumeric.js");
+/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/* ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
 /**
  * Pre-defined options for autoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
@@ -14671,19 +14671,19 @@ Object.defineProperty(_AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"], 'pre
 /***/ }),
 
 /***/ "./src/main.js":
-/*!*********************!*\
+/**********************!*\
   !*** ./src/main.js ***!
   \*********************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
-/* harmony import */ var _AutoNumericEvents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericEvents */ "./src/AutoNumericEvents.js");
-/* harmony import */ var _AutoNumericOptions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AutoNumericOptions */ "./src/AutoNumericOptions.js");
-/* harmony import */ var _AutoNumericDefaultSettings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AutoNumericDefaultSettings */ "./src/AutoNumericDefaultSettings.js");
-/* harmony import */ var _AutoNumericPredefinedOptions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AutoNumericPredefinedOptions */ "./src/AutoNumericPredefinedOptions.js");
+/* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./AutoNumeric */ "./src/AutoNumeric.js");
+/* harmony import */ var _AutoNumericEvents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/* ./AutoNumericEvents */ "./src/AutoNumericEvents.js");
+/* harmony import */ var _AutoNumericOptions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/* ./AutoNumericOptions */ "./src/AutoNumericOptions.js");
+/* harmony import */ var _AutoNumericDefaultSettings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/* ./AutoNumericDefaultSettings */ "./src/AutoNumericDefaultSettings.js");
+/* harmony import */ var _AutoNumericPredefinedOptions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/* ./AutoNumericPredefinedOptions */ "./src/AutoNumericPredefinedOptions.js");
 /**
  * Babel + Webpack workaround for autoNumeric
  *
@@ -14733,10 +14733,10 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ "./src/maths/ASTNode.js":
-/*!******************************!*\
+/*******************************!*\
   !*** ./src/maths/ASTNode.js ***!
   \******************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14833,10 +14833,10 @@ var ASTNode = /*#__PURE__*/function () {
 /***/ }),
 
 /***/ "./src/maths/Evaluator.js":
-/*!********************************!*\
+/*********************************!*\
   !*** ./src/maths/Evaluator.js ***!
   \********************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14934,17 +14934,17 @@ var Evaluator = /*#__PURE__*/function () {
 /***/ }),
 
 /***/ "./src/maths/Lexer.js":
-/*!****************************!*\
+/*****************************!*\
   !*** ./src/maths/Lexer.js ***!
   \****************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Lexer; });
-/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../AutoNumericHelper */ "./src/AutoNumericHelper.js");
-/* harmony import */ var _Token__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Token */ "./src/maths/Token.js");
+/* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ../AutoNumericHelper */ "./src/AutoNumericHelper.js");
+/* harmony import */ var _Token__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/* ./Token */ "./src/maths/Token.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -15129,17 +15129,17 @@ var Lexer = /*#__PURE__*/function () {
 /***/ }),
 
 /***/ "./src/maths/Parser.js":
-/*!*****************************!*\
+/******************************!*\
   !*** ./src/maths/Parser.js ***!
   \*****************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Parser; });
-/* harmony import */ var _ASTNode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ASTNode */ "./src/maths/ASTNode.js");
-/* harmony import */ var _Lexer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lexer */ "./src/maths/Lexer.js");
+/* harmony import */ var _ASTNode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/* ./ASTNode */ "./src/maths/ASTNode.js");
+/* harmony import */ var _Lexer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/* ./Lexer */ "./src/maths/Lexer.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -15331,10 +15331,10 @@ var Parser = /*#__PURE__*/function () {
 /***/ }),
 
 /***/ "./src/maths/Token.js":
-/*!****************************!*\
+/*****************************!*\
   !*** ./src/maths/Token.js ***!
   \****************************/
-/*! exports provided: default */
+/* exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

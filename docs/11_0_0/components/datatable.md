@@ -533,6 +533,8 @@ keeps previous selections same as selecting a row with mouse click when metakey 
 ## RowKey
 RowKey should a unique identifier from your data model and used by datatable to find the selected
 rows. You must define this key by using the `rowKey` attribute.
+    
+!> RowKey must not contain a comma `,` as it will break row selection. See [`GitHub #8932`](https://github.com/primefaces/primefaces/issues/8932).
 
 ## Dynamic Columns
 Dynamic columns is handy in case you can’t know how many columns to render. Columns

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -188,6 +188,7 @@ public class DataGridRenderer extends DataRenderer {
         else {
             writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
         }
+        writer.writeAttribute("title", grid.getRowTitle(), null);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);
@@ -198,6 +199,7 @@ public class DataGridRenderer extends DataRenderer {
             for (int j = 0; j < columns; j++) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnClass, null);
+
                 if (!LangUtils.isEmpty(columnInlineStyle)) {
                     writer.writeAttribute("style", columnInlineStyle, null);
                 }

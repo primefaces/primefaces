@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,11 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UIData;
 import org.primefaces.component.api.UITable;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.Constants;
@@ -99,15 +97,20 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
         boolean visibleColumnsOnly = getExportConfiguration().isVisibleOnly();
         final AtomicBoolean hasNonDefaultSortPriorities = new AtomicBoolean(false);
         final List<ColumnMeta> visibleColumnMetadata = new ArrayList<>(allColumnsSize);
+        Map<String, ColumnMeta> allColumnMeta = table.getColumnMeta();
 
         table.forEachColumn(true, true, true, column -> {
-            if (column.isExportable() && (!visibleColumnsOnly || (visibleColumnsOnly && column.isVisible()))) {
-                int displayPriority = column.getDisplayPriority();
-                ColumnMeta metaCopy = new ColumnMeta(column.getColumnKey());
-                metaCopy.setDisplayPriority(displayPriority);
-                visibleColumnMetadata.add(metaCopy);
-                if (displayPriority != 0) {
-                    hasNonDefaultSortPriorities.set(true);
+            if (column.isExportable()) {
+                String columnKey = column.getColumnKey();
+                ColumnMeta currentMeta = allColumnMeta.get(columnKey);
+                if (!visibleColumnsOnly || (visibleColumnsOnly && (currentMeta == null || currentMeta.getVisible()))) {
+                    int displayPriority = column.getDisplayPriority();
+                    ColumnMeta metaCopy = new ColumnMeta(columnKey);
+                    metaCopy.setDisplayPriority(displayPriority);
+                    visibleColumnMetadata.add(metaCopy);
+                    if (displayPriority != 0) {
+                        hasNonDefaultSortPriorities.set(true);
+                    }
                 }
             }
             return true;
@@ -121,7 +124,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
 
         for (ColumnMeta meta : visibleColumnMetadata) {
             String metaColumnKey = meta.getColumnKey();
-            table.invokeOnColumn(metaColumnKey, ((UIData) table).getRowIndex(), column -> {
+            table.invokeOnColumn(metaColumnKey, -1, column -> {
                 exportcolumns.add(column);
             });
         }

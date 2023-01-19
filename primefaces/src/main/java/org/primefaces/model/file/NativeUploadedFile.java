@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
 package org.primefaces.model.file;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
@@ -39,7 +38,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
     private static final String CONTENT_DISPOSITION_FILENAME_ATTR = "filename";
 
-    private Part part;
+    private transient Part part;
     private String filename;
     private byte[] cachedContent;
     private Long sizeLimit;
@@ -101,8 +100,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     @Override
     public void write(String filePath) throws Exception {
         SafeFile file = new SafeFile(filePath);
-        String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(file.getPath()));
-        part.write(validFileName);
+        String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
+        part.write(new SafeFile(validFilePath, filename).getCanonicalPath());
     }
 
     @Override

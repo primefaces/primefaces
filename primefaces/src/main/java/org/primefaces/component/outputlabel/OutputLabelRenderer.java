@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -42,6 +43,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
 import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -92,7 +94,8 @@ public class OutputLabelRenderer extends CoreRenderer {
                     if (target instanceof UIInput) {
                         UIInput input = (UIInput) target;
 
-                        if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
+                        if (value != null && !(target instanceof SelectCheckboxMenu) &&
+                                (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                             ValueExpression ve = label.getValueExpression("value");
 
                             if (ve != null) {
@@ -100,10 +103,11 @@ public class OutputLabelRenderer extends CoreRenderer {
                             }
                             else {
                                 String labelString = value;
-                                int colonPos = labelString.lastIndexOf(':');
+                                char separatorChar = UINamingContainer.getSeparatorChar(context);
+                                int separatorCharPos = labelString.lastIndexOf(separatorChar);
 
-                                if (colonPos != -1) {
-                                    labelString = labelString.substring(0, colonPos);
+                                if (separatorCharPos != -1) {
+                                    labelString = labelString.substring(0, separatorCharPos);
                                 }
 
                                 input.getAttributes().put("label", labelString);

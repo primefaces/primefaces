@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 package org.primefaces.model.map;
 
-public class Marker extends Overlay {
+public class Marker<T> extends Overlay<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,11 @@ public class Marker extends Overlay {
 
     private boolean flat;
 
-    private String icon;
+    /**
+     * Either a URL (as {@link String}) pointing to an image file or {@link Symbol} to display instead of the default
+     * Google Maps pushpin icon.
+     */
+    private Object icon;
 
     private LatLng latlng;
 
@@ -58,20 +62,20 @@ public class Marker extends Overlay {
         this.title = title;
     }
 
-    public Marker(LatLng latlng, String title, Object data) {
+    public Marker(LatLng latlng, String title, T data) {
         super(data);
         this.latlng = latlng;
         this.title = title;
     }
 
-    public Marker(LatLng latlng, String title, Object data, String icon) {
+    public Marker(LatLng latlng, String title, T data, Object icon) {
         super(data);
         this.latlng = latlng;
         this.title = title;
         this.icon = icon;
     }
 
-    public Marker(LatLng latlng, String title, Object data, String icon, String shadow) {
+    public Marker(LatLng latlng, String title, T data, Object icon, String shadow) {
         super(data);
         this.latlng = latlng;
         this.title = title;
@@ -119,11 +123,11 @@ public class Marker extends Overlay {
         this.flat = flat;
     }
 
-    public String getIcon() {
+    public Object getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(Object icon) {
         this.icon = icon;
     }
 

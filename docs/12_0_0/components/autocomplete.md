@@ -165,8 +165,8 @@ public class Player {
 ```
 ## Limiting the Results
 Number of results shown can be limited, by default there is no limit. When the suggestions exceed
-the number of results, a text defined by _moreText_ is displayed to indicate this case. There is no
-default action when the moreText is clicked, you need to use _moreText_ ajax behavior event to handle
+the number of results, a text defined by `moreText` is displayed to indicate this case. There is no
+default action when the moreText is clicked, you need to use `moreTextSelect` ajax behavior event to handle
 more results.
 
 ``` xhtml
@@ -316,7 +316,7 @@ Sample-useage within AutoComplete. Note `completeEndpoint`-attribute.
 ```
 
 ## LazyDataModel
-You might have a `LazyDataModels` in your project which is almost suitable to serve as an `AutoComplete` suggestions
+You might have a `LazyDataModel` in your project which is almost suitable to serve as an `AutoComplete` suggestions
 provider. It can be used with `AutoComplete` by using the `lazyModel` in combination with the `lazyField` attribute.
 The query string will be applied on the provided `lazyField` property using `MatchMode.CONTAINS`.
 

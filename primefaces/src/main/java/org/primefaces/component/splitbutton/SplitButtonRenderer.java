@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.splitbutton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -134,7 +135,10 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             }
         }
 
-        renderPassThruAttributes(context, button, HTML.BUTTON_WITH_CLICK_ATTRS);
+        // GitHub #9381 ignore style as its applied to parent div
+        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITH_CLICK_ATTRS);
+        attrs.remove("style");
+        renderPassThruAttributes(context, button, attrs);
 
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
@@ -209,8 +213,9 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
                     .nativeAttr("filterFunction", button.getFilterFunction(), null);
         }
 
-        wb.attr("disableOnAjax", button.isDisableOnAjax(), true);
-        wb.finish();
+        wb.attr("disableOnAjax", button.isDisableOnAjax(), true)
+            .attr("disabledAttr", button.isDisabled(), false)
+            .finish();
     }
 
     protected String buildOnclick(FacesContext context, SplitButton button) throws IOException {

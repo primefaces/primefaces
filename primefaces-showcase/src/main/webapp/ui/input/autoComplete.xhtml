@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -45,7 +45,11 @@
                     <div class="field col-12 md:col-4">
                         <p:outputLabel value="Max Results(5)" for="@next"/>
                         <p:autoComplete id="acMaxResults" maxResults="5" value="#{autoCompleteView.txt4}"
-                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"
+                                        moreText="more items available">
+                            <p:ajax event="moreTextSelect" listener="#{autoCompleteView.onMoreTextSelect}"
+                                    update="msgs"/>
+                        </p:autoComplete>
                     </div>
 
                     <div class="field col-12 md:col-4">
@@ -99,7 +103,7 @@
                                         converter="#{countryConverter}"
                                         completeEndpoint="#{request.contextPath}/rest/country/autocomplete"
                                         forceSelection="true" emptyMessage="sorry, no suggestions"
-                                        moreText="more items available" scrollHeight="250"/>
+                                        scrollHeight="250"/>
                     </div>
 
                     <div class="field col-12 md:col-4">
@@ -108,7 +112,7 @@
                                         var="customer" itemLabel="#{customer.name}" itemValue="#{customer.name}"
                                         lazyModel="#{autoCompleteView.lazyModel}" lazyField="name"
                                         forceSelection="true" emptyMessage="sorry, no suggestions"
-                                        moreText="more items available" maxResults="10"/>
+                                        maxResults="10"/>
                     </div>
 
                     <div class="field col-12 md:col-4">

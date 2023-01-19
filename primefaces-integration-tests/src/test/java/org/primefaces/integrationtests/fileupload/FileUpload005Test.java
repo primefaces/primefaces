@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,6 +50,7 @@ public class FileUpload005Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 1, file.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -69,6 +70,7 @@ public class FileUpload005Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 1, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -79,6 +81,7 @@ public class FileUpload005Test extends AbstractFileUploadTest {
         fileUpload.setValue(file2);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file2.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 2, file2.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -98,6 +101,7 @@ public class FileUpload005Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedCancelButton().click();
+        wait4EmptyMesssage(page.uploadedFiles);
         Assertions.assertTrue(fileUpload.getWidgetValues().isEmpty(), fileUpload.getWidgetValues().toString());
 
         // Assert
@@ -121,6 +125,7 @@ public class FileUpload005Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1);
         Assertions.assertTrue(fileUpload.getWidgetValues().contains(file1.getName()), fileUpload.getWidgetValues().toString());
         fileUpload.getAdvancedUploadButton().click();
+        wait4File(page.uploadedFiles, 1, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();

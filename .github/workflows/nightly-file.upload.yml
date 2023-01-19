@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11]
+        java: [11, 17]
         profile: [
           'headless,firefox,myfaces-2.3,uploader-native', 'headless,firefox,mojarra-2.3,uploader-native',
           'headless,firefox,myfaces-2.3,uploader-commons', 'headless,firefox,mojarra-2.3,uploader-commons',
@@ -28,7 +28,7 @@ jobs:
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: ${{ matrix.java }}
       - name: Cache Maven packages
         uses: actions/cache@v3

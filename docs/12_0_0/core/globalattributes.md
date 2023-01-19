@@ -28,37 +28,20 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.layout.Layout;
 
 public class DemoApplication extends ApplicationWrapper {
 
-    private static final Set<String> BLACKLISTED_COMPONENT_TYPES = Collections
-            .unmodifiableSet(new HashSet<>(Arrays.asList(Layout.COMPONENT_TYPE)));
-
-    private final Application wrapped;
-
     public DemoApplication(Application wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public Application getWrapped() {
-        return wrapped;
+        super(wrapped);
     }
 
     @Override
     public UIComponent createComponent(FacesContext context, String componentType, String rendererType) {
-        // prevent certain components from being used
-        if (BLACKLISTED_COMPONENT_TYPES.contains(componentType)) {
-            throw new IllegalArgumentException(
-                    componentType + " is deprecated and you should not be using this component.");
-        }
-
-        final UIComponent component = super.createComponent(context, componentType, rendererType);
+        UIComponent component = super.createComponent(context, componentType, rendererType);
 
         // set a global date pattern by default
         if (component instanceof UICalendar) {
-            final UICalendar calendar = (UICalendar) component;
+            UICalendar calendar = (UICalendar) component;
             calendar.setPattern("dd-MMM-yyyy");
         }
 
@@ -78,20 +61,18 @@ import javax.faces.application.ApplicationFactory;
 
 public class DemoApplicationFactory extends ApplicationFactory {
 
-    private final ApplicationFactory wrapped;
-
     public DemoApplicationFactory(ApplicationFactory wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
     }
 
     @Override
     public Application getApplication() {
-        return new DemoApplication(wrapped.getApplication());
+        return new DemoApplication(getWrapped().getApplication());
     }
 
     @Override
     public void setApplication(Application application) {
-        wrapped.setApplication(application);
+        getWrapped().setApplication(application);
     }
 }
 ```
@@ -103,3 +84,5 @@ Finally you must enable it with faces-config.xml:
       <application-factory>org.your.DemoApplicationFactory</application-factory>
 </factory>
 ```
+
+!> Global attributes will ignore backing bean EL expression values. [`See GitHub 9694`](https://github.com/primefaces/primefaces/issues/9694) Hard coded values in XHTML will work properly but not EL expressions.

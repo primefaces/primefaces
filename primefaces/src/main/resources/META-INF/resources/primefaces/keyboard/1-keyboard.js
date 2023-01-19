@@ -65,11 +65,15 @@
 
         //Hide overlay on resize/scroll
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', null, function() {
-            $this.jq.keypad('hide');
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.jq.keypad('hide');
+            }
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.jq.keypad('hide');
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.jq.keypad('hide');
+            }
         });
     },
 

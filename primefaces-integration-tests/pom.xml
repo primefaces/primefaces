@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>12.0.0-SNAPSHOT</version>
+        <version>13.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -29,14 +29,14 @@
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
-        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
         <lombok.version>1.18.24</lombok.version>
-        <myfaces.version>2.3.9</myfaces.version>
-        <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.62</tomcat.version>
-        <resteasy.version>5.0.3.Final</resteasy.version>
-        <owb.version>2.0.26</owb.version>
-        <jetty.version>9.4.46.v20220331</jetty.version>
+        <myfaces.version>2.3.10</myfaces.version>
+        <myfaces-next.version>2.3-next-M7</myfaces-next.version>
+        <tomcat.version>9.0.71</tomcat.version>
+        <resteasy.version>5.0.5.Final</resteasy.version>
+        <owb.version>2.0.27</owb.version>
+        <jetty.version>9.4.50.v20221201</jetty.version>
     </properties>
 
     <dependencies>
@@ -52,6 +52,46 @@
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        
+        <!-- Data Exporter -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.virtuald</groupId>
+                    <artifactId>curvesapi</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.xmlgraphics</groupId>
+                    <artifactId>batik-all</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.santuario</groupId>
+                    <artifactId>xmlsec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>de.rototor.pdfbox</groupId>
+                    <artifactId>graphics2d</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcpkix-jdk15on</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
         </dependency>
 
         <!-- Tomcat embedded -->
@@ -186,11 +226,17 @@
             <artifactId>commons-fileupload</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
+            <version>2.0.6</version>
             <scope>test</scope>
         </dependency>
 
@@ -346,7 +392,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.5.0</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -420,6 +466,14 @@
             <id>chrome</id>
             <properties>
                 <webdriver.browser>chrome</webdriver.browser>
+                <excludedGroups>ChromeExclude</excludedGroups>
+            </properties>
+        </profile>
+        <profile>
+            <id>chrome-jsf22</id>
+            <properties>
+                <webdriver.browser>chrome</webdriver.browser>
+                <excludedGroups>ChromeExclude,Jsf22Exclude</excludedGroups>
             </properties>
         </profile>
         <profile>
@@ -474,6 +528,23 @@
             </properties>
         </profile>
         <profile>
+            <id>myfaces-2.2</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-api</artifactId>
+                    <version>2.2.15</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+                    <version>2.2.15</version>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>myfaces-2.3</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -507,6 +578,21 @@
                     <artifactId>myfaces-impl</artifactId>
                     <version>${myfaces-next.version}</version>
                     <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>mojarra-2.2</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sun.faces</groupId>
+                    <artifactId>jsf-api</artifactId>
+                    <version>2.2.20</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sun.faces</groupId>
+                    <artifactId>jsf-impl</artifactId>
+                    <version>2.2.20</version>
                 </dependency>
             </dependencies>
         </profile>

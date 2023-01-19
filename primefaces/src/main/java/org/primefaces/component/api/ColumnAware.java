@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,14 +31,17 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.component.row.Row;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.util.ComponentUtils;
 
@@ -147,6 +150,34 @@ public interface ColumnAware {
             }
         }
 
+        return true;
+    }
+
+    /**
+     * Return each {@link Row} in a Column Group.
+     * @param context  the {@link FacesContext}
+     * @param cg the {@link ColumnGroup} to get
+     * @param skipUnrendered If unrendered components should be skipped
+     * @param callback The callback, which will be invoked for each row. If it returns false, the algorithm will be cancelled
+     * @return false when the algorithm was cancelled
+     */
+    default boolean forEachColumnGroupRow(FacesContext context, ColumnGroup cg, boolean skipUnrendered, Predicate<Row> callback) {
+        if (cg == null || cg.getChildCount() == 0) {
+            return false;
+        }
+        for (UIComponent component : cg.getChildren()) {
+            if (!(component instanceof Row)) {
+                continue;
+            }
+            Row row = (Row) component;
+            if (skipUnrendered && !row.isRendered()) {
+                continue;
+            }
+
+            if (!callback.test(row)) {
+                return false;
+            }
+        }
         return true;
     }
 

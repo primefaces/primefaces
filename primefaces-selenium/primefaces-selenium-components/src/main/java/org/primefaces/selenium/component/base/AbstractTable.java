@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public abstract class AbstractTable<T extends Row> extends AbstractPageableData 
 
     @Override
     public List<WebElement> getRowsWebElement() {
-        return findElement(By.tagName("table")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
+        return findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
     }
 
     public abstract T getRow(int index);

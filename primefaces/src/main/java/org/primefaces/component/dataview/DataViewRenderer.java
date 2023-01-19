@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -278,7 +278,9 @@ public class DataViewRenderer extends DataRenderer {
             else {
                 writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
             }
+            writer.writeAttribute("title", dataview.getRowTitle(), null);
 
+            int renderedCount = 0;
             for (int i = 0; i < numberOfRowsToRender; i++) {
                 dataview.setRowIndex(rowIndex);
                 if (!dataview.isRowAvailable()) {
@@ -286,6 +288,11 @@ public class DataViewRenderer extends DataRenderer {
                 }
 
                 for (int j = 0; j < columns; j++) {
+                    if (renderedCount >= itemsToRender) {
+                        break;
+                    }
+                    renderedCount++;
+
                     writer.startElement("div", null);
                     writer.writeAttribute("class", columnClass, null);
                     if (!LangUtils.isEmpty(columnInlineStyle)) {

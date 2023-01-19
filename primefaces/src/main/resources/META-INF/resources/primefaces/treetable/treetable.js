@@ -94,6 +94,8 @@
  * @prop {string} cfg.nodeType Type of the row nodes of this tree table.
  * @prop {Partial<PrimeFaces.widget.PaginatorCfg>} cfg.paginator When pagination is enabled: The paginator configuration
  * for the paginator.
+ * @prop {boolean} cfg.propagateSelectionUp Defines if selections should propagate up.
+ * @prop {boolean} cfg.propagateSelectionDown Defines if selections should propagate down.
  * @prop {boolean} cfg.resizableColumns Defines if columns can be resized or not.
  * @prop {number} cfg.scrollHeight Height of scrollable data.
  * @prop {number} cfg.scrollWidth Width of scrollable data.
@@ -130,6 +132,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
         this.cfg.expandMode = this.cfg.expandMode||"children";
+        this.cfg.propagateSelectionUp = (this.cfg.propagateSelectionUp === undefined) ? true : this.cfg.propagateSelectionUp;
+        this.cfg.propagateSelectionDown = (this.cfg.propagateSelectionDown === undefined) ? true : this.cfg.propagateSelectionDown;
 
         this.renderDeferred();
     },
@@ -771,7 +775,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     if(target.is(ignoredOverlay) || target.closest(ignoredOverlay).length)
                         return;
 
-                    if($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length)
+                    if($.datepicker && ($.datepicker._datepickerShowing || $('.p-datepicker-panel:visible').length))
                         return;
 
                     if($this.cfg.saveOnCellBlur)
@@ -972,7 +976,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     onRowClick: function(event, node) {
         if($(event.target).is('td,span:not(.ui-c)')) {
             var selected = node.hasClass('ui-state-highlight'),
-            metaKey = event.metaKey||event.ctrlKey,
+            metaKey = event.metaKey||event.ctrlKey||PrimeFaces.env.isTouchable(this.cfg),
             shiftKey = event.shiftKey;
 
             if(this.isCheckboxSelection()) {
@@ -1166,13 +1170,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.selectNode(node, true);
 
         //propagate down
-        var descendants = this.getDescendants(node);
-        for(var i = 0; i < descendants.length; i++) {
-            var descendant = descendants[i];
-            if(selected)
-                this.unselectNode(descendant, true);
-            else
-                this.selectNode(descendant, true);
+        if (this.cfg.propagateSelectionDown) {
+            var descendants = this.getDescendants(node);
+            for (var i = 0; i < descendants.length; i++) {
+                var descendant = descendants[i];
+                if (selected)
+                    this.unselectNode(descendant, true);
+                else
+                    this.selectNode(descendant, true);
+            }
         }
 
         if(selected) {
@@ -1180,9 +1186,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //propagate up
-        var parentNode = this.getParent(node);
-        if(parentNode) {
-            this.propagateUp(parentNode);
+        if (this.cfg.propagateSelectionUp) {
+            var parentNode = this.getParent(node);
+            if (parentNode) {
+                this.propagateUp(parentNode);
+            }
         }
 
         this.writeSelections();

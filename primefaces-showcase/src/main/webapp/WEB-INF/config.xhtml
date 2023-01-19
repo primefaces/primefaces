@@ -1,5 +1,5 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
     <div class="layout-config">
@@ -17,7 +17,7 @@
                     <p>Change the locale of the datepicker, schedule and client side validation messages.</p>
                     <p:selectOneMenu id="locale" value="#{app.locale}" converter="#{localeConverter}"
                                      style="width:300px" panelStyle="width:300px;height:350px;" height="350px"
-                                     effect="fade" var="l" filter="true" filterMatchMode="startsWith">
+                                     var="l" filter="true" filterMatchMode="startsWith">
                         <f:selectItems value="#{countryService.locales}" var="locale"
                                        itemLabel="#{locale.displayLanguage}" itemValue="#{locale}"/>
                         <p:ajax oncomplete="window.location.reload();"/>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         caseSensitive,
         panelStyle,
         panelStyleClass,
+        var,
         appendTo,
         tabindex,
         title,
@@ -75,11 +76,11 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
+    public String getScrollHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, "200");
     }
 
-    public void setScrollHeight(int scrollHeight) {
+    public void setScrollHeight(String scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
@@ -145,6 +146,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setPanelStyle(String panelStyle) {
         getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
+    }
+
+    public String getVar() {
+        return (String) getStateHelper().eval(SelectCheckboxMenuBase.PropertyKeys.var, null);
+    }
+
+    public void setVar(String var) {
+        getStateHelper().put(SelectCheckboxMenuBase.PropertyKeys.var, var);
     }
 
     public String getPanelStyleClass() {

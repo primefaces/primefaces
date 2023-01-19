@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
 
     public enum PropertyKeys implements BehaviorAttribute {
+        source(String.class),
         type(String.class),
         header(String.class),
         message(String.class),
@@ -70,14 +71,16 @@ public class ConfirmBehavior extends AbstractBehavior {
             return null;
         }
 
-        String source = component.getClientId(context);
+        String source = getSource();
         String type = JSONObject.quote(getType());
         String headerText = JSONObject.quote(getHeader());
         String messageText = JSONObject.quote(getMessage());
         String beforeShow = JSONObject.quote(getBeforeShow());
 
+        source = (source == null) ? component.getClientId(context) : source;
+
         if (component instanceof Confirmable) {
-            String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
+            String sourceProperty = (source == null || "this".equals(source)) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
                                                    + ",type:" + type
                                                    + ",escape:" + isEscape()
@@ -99,6 +102,14 @@ public class ConfirmBehavior extends AbstractBehavior {
     @Override
     protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
+    }
+
+    public String getSource() {
+        return eval(PropertyKeys.source, null);
+    }
+
+    public void setSource(String source) {
+        put(PropertyKeys.source, source);
     }
 
     public String getType() {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,6 @@
  */
 package org.primefaces.context;
 
-import org.primefaces.cache.CacheProvider;
-import org.primefaces.cache.DefaultCacheProvider;
-import org.primefaces.component.fileupload.FileUploadDecoder;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
-import org.primefaces.virusscan.VirusScannerService;
-import org.primefaces.webapp.FileUploadChunksServlet;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -54,6 +35,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.primefaces.cache.CacheProvider;
+import org.primefaces.cache.DefaultCacheProvider;
+import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
+import org.primefaces.virusscan.VirusScannerService;
+import org.primefaces.webapp.FileUploadChunksServlet;
 
 /**
  * A {@link PrimeApplicationContext} is a contextual store for the current application.
@@ -161,11 +162,17 @@ public class PrimeApplicationContext {
     private void resolveFileTypeDetector() {
         ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
 
+        // collect all first to avoid concurrency issues #8797
+        List<FileTypeDetector> detectors = new ArrayList<>();
+        for (FileTypeDetector detector : loader) {
+            detectors.add(detector);
+        }
+
         fileTypeDetector = new FileTypeDetector() {
 
             @Override
             public String probeContentType(Path path) throws IOException {
-                for (FileTypeDetector detector: loader) {
+                for (FileTypeDetector detector : detectors) {
                     String result = detector.probeContentType(path);
                     if (result != null) {
                         return result;

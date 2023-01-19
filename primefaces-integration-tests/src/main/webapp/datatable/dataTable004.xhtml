@@ -20,7 +20,8 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:dataTable id="datatable" value="#{dataTable004.progLanguages}" var="lang" selectionMode="single" selection="#{dataTable004.selectedProgLanguage}" rowKey="#{lang.id}">
+            <p:dataTable id="datatable" value="#{dataTable004.progLanguages}" var="lang"
+                         selectionMode="single" selection="#{dataTable004.selectedProgLanguage}" rowKey="#{lang.id}" disabledSelection="#{dataTable004.isSelectionDisabled(lang)}">
                 <p:ajax event="rowSelect" listener="#{dataTable004.onRowSelect}" />
                 <p:ajax event="rowUnselect" listener="#{dataTable004.onRowUnselect}" />
 
@@ -36,6 +37,14 @@
                     <h:outputText value="#{lang.firstAppeared}" />
                 </p:column>
             </p:dataTable>
+
+            <br/>
+
+            <p:selectBooleanCheckbox id="chkDisabledSelection" value="#{dataTable004.partialDisabledSelection}" itemLabel="partially disable selection">
+                <p:ajax update="datatable" />
+            </p:selectBooleanCheckbox>
+
+            <br/>
 
             <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable004.submit}"/>
             <p:commandButton id="buttonMsgOnly" value="Submit - update card only" process="form:datatable" update="form:card"/>

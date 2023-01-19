@@ -55,7 +55,7 @@ cd primefaces-showcase
 ##### Development Mode (runs MyFaces 2.3 in JSF Development mode)
 
 ```
-mvn clean jetty:run -Ddev
+mvn -Ddev
 ```
 
 ##### Mojarra 2.3

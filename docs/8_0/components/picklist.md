@@ -123,7 +123,7 @@ In addition custom content instead of simple strings can be displayed by using c
     <p:column style="width:25%">
         <p:graphicImage value="/images/barca/#{player.photo}"/>
     </p:column>
-    <p:column style="width:75%";>
+    <p:column style="width:75%">
         #{player.name} - #{player.number}
     </p:column>
 </p:pickList>

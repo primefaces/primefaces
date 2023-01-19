@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,6 @@ public class TabMenu extends TabMenuBase {
 
     public static final String CONTAINER_CLASS = "ui-tabmenu ui-widget ui-widget-content ui-corner-all";
     public static final String NAVIGATOR_CLASS = "ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all";
-    public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-state-default ui-corner-top";
-    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-state-default ui-state-active ui-corner-top";
+    public static final String INACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-corner-top";
+    public static final String ACTIVE_TAB_HEADER_CLASS = "ui-tabmenuitem ui-state-active ui-corner-top";
 }

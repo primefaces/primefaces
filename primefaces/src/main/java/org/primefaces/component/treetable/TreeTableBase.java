@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -50,6 +50,7 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         emptyMessage,
         resizableColumns,
         rowStyleClass,
+        rowTitle,
         liveResize,
         sortBy,
         nativeElements,
@@ -86,7 +87,9 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         cloneOnFilter,
         saveOnCellBlur,
         showGridlines,
-        size
+        size,
+        exportTag,
+        exportRowTag
     }
 
     protected enum InternalPropertyKeys {
@@ -193,6 +196,14 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.rowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.rowTitle, rowTitle);
     }
 
     public boolean isLiveResize() {
@@ -510,5 +521,21 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
 
     public void setSize(String size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+    public String getExportRowTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportRowTag, null);
+    }
+
+    public void setExportRowTag(String exportRowTag) {
+        getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
+    }
+
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 }

@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
                 
@@ -53,6 +53,11 @@
                 <h5>Image</h5>
                 <p:inplace label="Show" effect="slide">
                     <p:graphicImage name="/demo/images/nature/nature3.jpg"/>
+                </p:inplace>
+
+                <h5>Password</h5>
+                <p:inplace>
+                    <p:password redisplay="true" value="#{inplaceView.password}"/>
                 </p:inplace>
             </h:form>
         </div>

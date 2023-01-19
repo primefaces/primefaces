@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,6 +53,12 @@ class AvatarRendererTest {
                     Arguments.of("G", "G"),
                     Arguments.of("BD", "BD"),
                     Arguments.of("Sting", "S"),
+                    Arguments.of("6", "6"),
+                    Arguments.of("67", "67"),
+                    Arguments.of("8675309", "8"),
+                    Arguments.of("41235 5asdd", "4"),
+                    Arguments.of("1234", "1"),
+                    Arguments.of("888 7666", "8"),
                     Arguments.of("Wolfgang Amadeus Mozart", "WM"),
                     Arguments.of("PrimeFaces Rocks", "PR"),
                     Arguments.of("ŞPrimeFaces Rocks", "ŞR"),

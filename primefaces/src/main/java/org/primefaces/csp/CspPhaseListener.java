@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,18 +41,20 @@ public class CspPhaseListener implements PhaseListener {
     private static final long serialVersionUID = 1L;
 
     private Lazy<Boolean> enabled;
+    private Lazy<Boolean> policyProvided;
     private Lazy<String> customPolicy;
     private Lazy<String> reportOnlyPolicy;
 
     public CspPhaseListener() {
         enabled = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isCsp());
+        policyProvided = new Lazy<>(() ->
+                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isPolicyProvided());
         customPolicy = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspPolicy());
         reportOnlyPolicy = new Lazy<>(() ->
                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getCspReportOnlyPolicy());
     }
-
     @Override
     public void afterPhase(PhaseEvent event) {
 
@@ -60,32 +62,41 @@ public class CspPhaseListener implements PhaseListener {
 
     @Override
     public void beforePhase(PhaseEvent event) {
-        if (Boolean.FALSE.equals(enabled.get())) {
+        FacesContext context = event.getFacesContext();
+        initCsp(context, enabled.get(), policyProvided.get(), reportOnlyPolicy.get(), customPolicy.get());
+    }
+
+    @Override
+    public PhaseId getPhaseId() {
+        return PhaseId.RENDER_RESPONSE;
+    }
+
+    public static void initCsp(FacesContext context, Boolean enabled, Boolean policyProvided, String reportOnlyPolicy, String customPolicy) {
+        if (Boolean.FALSE.equals(enabled) || Boolean.TRUE.equals(policyProvided)) {
             return;
         }
 
-        FacesContext context = event.getFacesContext();
         ExternalContext externalContext = context.getExternalContext();
 
         CspState state = PrimeFacesContext.getCspState(context);
+        if (state.isInitialized()) {
+            // already have run initCsp() once no need to run it again
+            return;
+        }
+        state.setInitialized(true);
 
-        if (LangUtils.isNotBlank(reportOnlyPolicy.get())) {
-            String policy = "script-src 'self' 'nonce-" + state.getNonce() + "'; " + reportOnlyPolicy.get() + ";";
+        if (LangUtils.isNotBlank(reportOnlyPolicy)) {
+            String policy = "script-src 'self' 'nonce-" + state.getNonce() + "'; " + reportOnlyPolicy + ";";
             externalContext.addResponseHeader("Content-Security-Policy-Report-Only", policy);
         }
         else {
-            String policy = LangUtils.isBlank(customPolicy.get()) ? "script-src 'self'" : customPolicy.get();
+            String policy = LangUtils.isBlank(customPolicy) ? "script-src 'self'" : customPolicy;
             policy += " 'nonce-" + state.getNonce() + "';";
             externalContext.addResponseHeader("Content-Security-Policy", policy);
         }
 
         String init = "if(window.PrimeFaces){PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');};";
         PrimeFaces.current().executeInitScript(init);
-    }
-
-    @Override
-    public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
     }
 
 }

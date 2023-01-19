@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,42 +25,72 @@ package org.primefaces.showcase.view.df;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.showcase.domain.Product;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import java.util.HashMap;
-import java.util.Map;
 
 @Named("dfView")
 @RequestScoped
 public class DFView {
 
     public void viewProducts() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("resizable", false);
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .resizable(false)
+                .build();
+
         PrimeFaces.current().dialog().openDynamic("viewProducts", options, null);
     }
 
     public void viewProductsCustomized() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("width", 640);
-        options.put("height", 340);
-        options.put("contentWidth", "100%");
-        options.put("contentHeight", "100%");
-        options.put("headerElement", "customheader");
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .modal(true)
+                .width("640")
+                .height("340")
+                .contentHeight("100%")
+                .contentWidth("100%")
+                .headerElement("customheader")
+                .build();
 
         PrimeFaces.current().dialog().openDynamic("viewProducts", options, null);
     }
 
+    public void viewResponsive() {
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .modal(true)
+                .fitViewport(true)
+                .responsive(true)
+                .width("900px")
+                .contentWidth("100%")
+                .resizeObserver(true)
+                .resizeObserverCenter(true)
+                .resizable(false)
+                .styleClass("max-w-screen")
+                .iframeStyleClass("max-w-screen")
+                .build();
+
+        PrimeFaces.current().dialog().openDynamic("viewResponsive", options, null);
+    }
+
+    public void viewProductsLargerThanViewport() {
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .modal(true)
+                .fitViewport(true)
+                .build();
+
+        PrimeFaces.current().dialog().openDynamic("viewProductsLargerThanViewport", options, null);
+    }
+
     public void chooseProduct() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("resizable", false);
-        options.put("draggable", false);
-        options.put("modal", true);
+        DialogFrameworkOptions options = DialogFrameworkOptions.builder()
+                .resizable(false)
+                .draggable(false)
+                .modal(false)
+                .build();
+
         PrimeFaces.current().dialog().openDynamic("selectProduct", options, null);
     }
 

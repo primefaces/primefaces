@@ -10,12 +10,13 @@ if (!PrimeFaces.utils) {
          * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
          * panel to the body.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
-         * @param {JQuery} [overlay] The DOM element for the overlay.
+         * @param {JQuery} target The DOM element that is the target of this overlay
+         * @param {JQuery} overlay The DOM element for the overlay.
          * @return {string | null} The search expression for the element to which the overlay panel should be appended.
          */
-        resolveAppendTo: function(widget, overlay) {
-            if (widget && widget.jq[0]) {
-                var dialog = widget.jq[0].closest('.ui-dialog');
+        resolveAppendTo: function(widget, target, overlay) {
+            if (widget && target && target[0]) {
+                var dialog = target[0].closest('.ui-dialog');
 
                 if (dialog && overlay && overlay.length) {
                     var $dialog = $(dialog);
@@ -199,6 +200,10 @@ if (!PrimeFaces.utils) {
                         }
                     }
                 }
+                else if (event.ctrlKey) { 
+                    // #8965 allow cut, copy, paste
+                    return;
+                }
                 else if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
@@ -303,7 +308,9 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-                hideCallback(e, $eventTarget);
+                if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                    hideCallback(e, $eventTarget);
+                }
             });
 
             return {
@@ -383,9 +390,12 @@ if (!PrimeFaces.utils) {
          * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-
-            var scrollParent = widget.getJQ().scrollParent();
-            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
+            var scrollParent;
+            var widgetJq = widget.getJQ();
+            if (widgetJq && typeof widgetJq.scrollParent === 'function') {
+                scrollParent = widgetJq.scrollParent();
+            }
+            if (!scrollParent || PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
@@ -892,6 +902,20 @@ if (!PrimeFaces.utils) {
             else {
                 element.removeClass('ui-inputwrapper-filled');
             }
+        },
+
+        /**
+         * Decode escaped XML into regular string.
+         *
+         * @param {string | undefined} input the input to check if filled
+         * @return {string | undefined} either the original string or escaped XML
+         */
+        decodeXml: function(input) {
+            if (/&amp;|&quot;|&#39;|'&lt;|&gt;/.test(input)) {
+                var doc = new DOMParser().parseFromString(input, "text/html");
+                return doc.documentElement.textContent;
+            }
+            return input;
         }
     };
 

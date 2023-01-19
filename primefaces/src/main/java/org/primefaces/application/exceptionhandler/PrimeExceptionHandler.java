@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2021 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,6 +53,8 @@ import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspPhaseListener;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
@@ -169,7 +171,10 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             return;
         }
 
-        boolean responseResetted = false;
+        CspPhaseListener.initCsp(context, config.get().isCsp(), config.get().isPolicyProvided(),
+                config.get().getCspReportOnlyPolicy(), config.get().getCspPolicy());
+
+        boolean isResponseReset = false;
 
         //mojarra workaround to avoid invalid partial output due to open tags
         if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
@@ -193,7 +198,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 externalContext.responseReset();
                 externalContext.setResponseCharacterEncoding(characterEncoding);
 
-                responseResetted = true;
+                isResponseReset = true;
             }
         }
 
@@ -211,7 +216,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         // redirect if no AjaxExceptionHandler available
         if (handlerComponent == null) {
-            handleRedirect(context, rootCause, info, responseResetted);
+            handleRedirect(context, rootCause, info, isResponseReset);
         }
         // handle custom update / onexception callback
         else {
@@ -220,7 +225,20 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             externalContext.setResponseContentType("text/xml");
 
             writer.startDocument();
-            writer.startElement("changes", null);
+
+            if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("var hf=function(type,message,timestampp){");
+                sb.append(handlerComponent.getOnexception());
+                sb.append("};hf.call(this,\""
+                        + info.getType() + "\",\""
+                        + EscapeUtils.forJavaScript(info.getMessage())
+                        + "\",\""
+                        + info.getFormattedTimestamp()
+                        + "\");");
+
+                PrimeRequestContext.getCurrentInstance(context).getScriptsToExecute().add(sb.toString());
+            }
 
             if (LangUtils.isNotBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
@@ -231,36 +249,13 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     for (int i = 0; i < updates.size(); i++) {
                         UIComponent component = updates.get(i);
 
-                        writer.startElement("update", null);
-                        writer.writeAttribute("id", component.getClientId(context), null);
-                        writer.startCDATA();
-
+                        writer.startUpdate(component.getClientId(context));
                         component.encodeAll(context);
-
-                        writer.endCDATA();
-                        writer.endElement("update");
+                        writer.endUpdate();
                     }
                 }
             }
 
-            if (LangUtils.isNotBlank(handlerComponent.getOnexception())) {
-                writer.startElement("eval", null);
-                writer.startCDATA();
-
-                writer.write("var hf=function(type,message,timestampp){");
-                writer.write(handlerComponent.getOnexception());
-                writer.write("};hf.call(this,\""
-                        + info.getType() + "\",\""
-                        + EscapeUtils.forJavaScript(info.getMessage())
-                        + "\",\""
-                        + info.getFormattedTimestamp()
-                        + "\");");
-
-                writer.endCDATA();
-                writer.endElement("eval");
-            }
-
-            writer.endElement("changes");
             writer.endDocument();
 
             context.responseComplete();
@@ -298,7 +293,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable rootCause) {
         AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(rootCause);
 
-        context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
+        context.getViewRoot().visitTree(VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_ITERATION), visitCallback);
 
         Map<String, AjaxExceptionHandler> handlers = visitCallback.getHandlers();
 
@@ -352,7 +347,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         return rootCause;
     }
 
-    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean responseResetted) throws IOException {
+    protected void handleRedirect(FacesContext context, Throwable rootCause, ExceptionInfo info, boolean isResponseReset) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
@@ -362,7 +357,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         String url = constructRedirectUrl(context, errorPage);
 
         // workaround for mojarra -> mojarra doesn't reset PartialResponseWriter#inChanges if we call externalContext#resetResponse
-        if (responseResetted && context.getPartialViewContext().isAjaxRequest()) {
+        if (isResponseReset && context.getPartialViewContext().isAjaxRequest()) {
             PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
             externalContext.addResponseHeader("Content-Type", "text/xml; charset=" + externalContext.getResponseCharacterEncoding());
             externalContext.addResponseHeader("Cache-Control", "no-cache");
