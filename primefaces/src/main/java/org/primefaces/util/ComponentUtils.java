@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -52,8 +54,6 @@ import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
 
@@ -630,8 +630,9 @@ public class ComponentUtils {
         context.setResponseWriter(writer);
 
         // append index to all id's
+        char separator = UINamingContainer.getSeparatorChar(context);
         String encodedComponent = fsw.toString();
-        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1:" + index + "\"");
+        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
         writer.write(encodedComponent);
     }
 
