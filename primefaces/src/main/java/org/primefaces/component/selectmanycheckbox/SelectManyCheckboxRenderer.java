@@ -484,7 +484,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             return;
         }
 
-        writer.startElement("div", null);
+        writer.startElement("div", getSelectItemComponent(option));
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
         encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);

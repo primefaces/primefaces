@@ -46,11 +46,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectManyRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
@@ -181,7 +177,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         //input
-        writer.startElement("input", null);
+        writer.startElement("input", getSelectItemComponent(option));
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
@@ -623,7 +619,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         //item as row
-        writer.startElement("tr", null);
+        writer.startElement("tr", getSelectItemComponent(selectItem));
         writer.writeAttribute("class", rowStyleClass, null);
         writer.writeAttribute("data-label", itemLabel, null);
         if ((itemValueAsString != null) && menu.isMultiple()) {
