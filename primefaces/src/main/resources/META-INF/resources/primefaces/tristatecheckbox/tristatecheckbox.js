@@ -64,29 +64,25 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
                 $this.box.removeClass('ui-state-focus');
             })
             .on('keydown.triStateCheckbox', function (e) {
-                var keyCode = $.ui.keyCode;
-
-                switch (e.which) {
-                    case keyCode.SPACE:
-                    case keyCode.UP:
-                    case keyCode.RIGHT:
-                    case keyCode.LEFT:
-                    case keyCode.DOWN:
+                switch (e.key) {
+                    case ' ':
+                    case 'ArrowUp':
+                    case 'ArrowDown':
+                    case 'ArrowLeft':
+                    case 'ArrowRight':
                         e.preventDefault();
                         break;
                 }
             })            
             .on('keyup.triStateCheckbox', function (e) {
-                var keyCode = $.ui.keyCode;
-
-                switch(e.which) {
-                    case keyCode.SPACE:
-                    case keyCode.UP:
-                    case keyCode.RIGHT:
+                switch(e.key) {
+                    case ' ':
+                    case 'ArrowUp':
+                    case 'ArrowRight':
                         $this.toggle(1);
                         break;
-                    case keyCode.LEFT:
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
+                    case 'ArrowLeft':
                         $this.toggle(-1);
                         break;
                 }

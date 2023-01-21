@@ -167,11 +167,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 return;
             }
 
-            var searchRowkey = "",
-            keyCode = $.ui.keyCode;
+            var searchRowkey = "";
 
-            switch(e.which) {
-                case keyCode.LEFT:
+            switch(e.key) {
+                case 'ArrowLeft':
                     var rowkey = $this.focusedNode.data('rowkey').toString(),
                     keyLength = rowkey.length;
 
@@ -193,7 +192,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.RIGHT:
+                case 'ArrowRight':
                     if(!$this.focusedNode.hasClass('ui-treenode-leaf')) {
                         var rowkey = $this.focusedNode.data('rowkey').toString(),
                         keyLength = rowkey.length;
@@ -215,7 +214,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.UP:
+                case 'ArrowUp':
                     var nodeToFocus = null,
                     prevNode = $this.previousNode($this.focusedNode);
 
@@ -236,7 +235,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     var nodeToFocus = null,
                     firstVisibleChildNode = $this.focusedNode.find("> ul > li:visible:not(.ui-tree-droppoint)").first();
 
@@ -261,8 +260,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case ' ':
                     if($this.cfg.selectionMode) {
                         var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
 
@@ -298,7 +297,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     pressTab = true;
                     $this.container.trigger('focus');
                     setTimeout(function() {

@@ -57,10 +57,7 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
             $(this).removeClass('ui-menuitem-outline');
         })
         .on('keydown.tabmenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 var currentLink = $(this).children('a');
                 currentLink.trigger('click');
                 PrimeFaces.utils.openLink(e, currentLink);

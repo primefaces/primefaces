@@ -360,11 +360,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
 
             var list = $(this),
-                keyCode = $.ui.keyCode,
-                key = e.which;
+                key = e.key;
 
             switch(key) {
-                case keyCode.UP:
+                case 'ArrowUp':
                     $this.removeOutline();
 
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
@@ -384,7 +383,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     $this.removeOutline();
 
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
@@ -404,8 +403,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case ' ':
                     if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('dblclick.pickList');
                         $this.focusedItem = null;
@@ -414,7 +413,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
                 default:
                     // #3304 find first item matching the character typed
-                    var keyChar = String.fromCharCode(key).toLowerCase();
+                    var keyChar = key.toLowerCase();
                     list.children('.ui-picklist-item').each(function() {
                         var item = $(this),
                             itemLabel = item.attr('data-item-label');
@@ -640,10 +639,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         filter
             .on('keydown', PrimeFaces.utils.blockEnterKey)
             .on('keyup', function(e) {
-                var key = e.which,
-                keyCode = $.ui.keyCode;
-
-                if((key === keyCode.ENTER)) {
+                if(e.key === 'Enter') {
                     $this.filter(this.value, $this.getFilteredList($(this)));
 
                     e.preventDefault();

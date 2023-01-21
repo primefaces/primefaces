@@ -101,14 +101,12 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
             $this.handle.removeClass('ui-state-focus');
         })
         .on('keydown.inputSwitch', function(e) {
-            var keyCode = $.ui.keyCode;
-            if(e.which === keyCode.SPACE) {
+            if(e.key === ' ') {
                 e.preventDefault();
             }
         })
         .on('keyup.inputSwitch', function(e) {
-            var keyCode = $.ui.keyCode;
-            if(e.which === keyCode.SPACE) {
+            if(e.key === ' ') {
                 $this.toggle();
 
                 e.preventDefault();

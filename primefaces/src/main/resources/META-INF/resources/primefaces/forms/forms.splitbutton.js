@@ -143,31 +143,28 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.disabled) {
                 return;
             }
-            var keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     $this.highlightNext(e);
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case ' ':
                     $this.handleEnterKey(e);
                 break;
 
 
-                case keyCode.ESCAPE:
-                case keyCode.TAB:
+                case 'Escape':
+                case 'Tab':
                     $this.handleEscapeKey();
                 break;
             }
         }).on('keyup.splitbutton', function(e) {
-            var keyCode = $.ui.keyCode;
-            if (e.which === keyCode.SPACE) {
+            if (e.key === ' ') {
                 e.preventDefault(); // Keep menu open in Firefox #7614
             }
         });
@@ -287,63 +284,29 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.filterInput.on('keyup.ui-splitbutton', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
-                case keyCode.ENTER:
-                case keyCode.TAB:
-                case keyCode.ESCAPE:
-                case keyCode.SPACE:
-                case keyCode.HOME:
-                case keyCode.PAGE_DOWN:
-                case keyCode.PAGE_UP:
-                case keyCode.END:
-                case 16: //shift
-                case 17: //keyCode.CONTROL:
-                case 18: //keyCode.ALT:
-                case 91: //left window or cmd:
-                case 92: //right window:
-                case 93: //right cmd:
-                case 20: //capslock:
-                break;
-
-                default:
-                    //function keys (F1,F2 etc.)
-                    if(key >= 112 && key <= 123) {
-                        break;
-                    }
-
-                    var metaKey = e.metaKey||e.ctrlKey;
-
-                    if(!metaKey) {
-                        $this.filter($(this).val());
-                    }
-                break;
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                return;
+            }
+            var metaKey = e.metaKey||e.ctrlKey;
+            if(!metaKey) {
+                $this.filter($(this).val());
             }
         })
         .on('keydown.ui-splitbutton',function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            switch(key) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     $this.highlightNext(e);
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
                     $this.handleEnterKey(e);
                 break;
 
-                case keyCode.SPACE:
+                case ' ':
                     var target = $(e.target);
 
                     if(target.is('input') && target.hasClass('ui-splitbuttonmenu-filter')) {
@@ -353,8 +316,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                     $this.handleEnterKey(e);
                 break;
 
-                case keyCode.ESCAPE:
-                case keyCode.TAB:
+                case 'Escape':
+                case 'Tab':
                     $this.handleEscapeKey();
                 break;
 

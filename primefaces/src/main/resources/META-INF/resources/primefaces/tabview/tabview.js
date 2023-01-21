@@ -302,11 +302,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             $(this).removeClass('ui-tabs-outline');
         })
         .on('keydown.tabview', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which,
-            element = $(this);
-
-            if((key === keyCode.SPACE || key === keyCode.ENTER) && !element.hasClass('ui-state-disabled')) {
+            var element = $(this);
+            if(PrimeFaces.utils.isActionKey(e) && !element.hasClass('ui-state-disabled')) {
                 $this.select(element.index());
                 e.preventDefault();
             }
@@ -315,20 +312,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         //Scrolling
         if(this.cfg.scrollable) {
             this.navcrollerLeft.on('keydown.tabview', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                if(key === keyCode.SPACE || key === keyCode.ENTER) {
+                if (PrimeFaces.utils.isActionKey(e)) {
                     $this.scroll(100);
                     e.preventDefault();
                 }
             });
 
             this.navcrollerRight.on('keydown.tabview', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                if(key === keyCode.SPACE || key === keyCode.ENTER) {
+                if (PrimeFaces.utils.isActionKey(e)) {
                     $this.scroll(-100);
                     e.preventDefault();
                 }

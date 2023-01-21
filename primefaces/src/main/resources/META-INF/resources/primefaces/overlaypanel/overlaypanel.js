@@ -181,9 +181,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
             .on('keydown.ui-overlaypanel', PrimeFaces.utils.blockEnterKey)
             .on('keyup.ui-overlaypanel', function(e) {
-                var keyCode = $.ui.keyCode, key = e.which;
-
-                if (key === keyCode.ENTER) {
+                if (e.key === 'Enter') {
                     $this.toggle();
                     e.preventDefault();
                 }

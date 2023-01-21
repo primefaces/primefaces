@@ -327,10 +327,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         filter.on('keydown', PrimeFaces.utils.blockEnterKey)
         .on('keyup', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if(key === keyCode.ENTER) {
+            if(e.key === 'Enter') {
                 $this.filter();
 
                 e.preventDefault();
@@ -2158,17 +2155,16 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             cell.data('edit-events-bound', true);
 
             inputs.on('keydown.treetable-cell', function(e) {
-                    var keyCode = $.ui.keyCode,
-                    shiftKey = e.shiftKey,
-                    key = e.which,
+                    var shiftKey = e.shiftKey,
+                    key = e.key,
                     input = $(this);
 
-                    if(key === keyCode.ENTER) {
+                    if(key === 'Enter') {
                         $this.saveCell(cell);
 
                         e.preventDefault();
                     }
-                    else if(key === keyCode.TAB) {
+                    else if(key === 'Tab') {
                         if(multi) {
                             var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
@@ -2184,7 +2180,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
                         e.preventDefault();
                     }
-                    else if(key === keyCode.ESCAPE) {
+                    else if(key === 'Escape') {
                         $this.doCellEditCancelRequest(cell);
                         e.preventDefault();
                     }
