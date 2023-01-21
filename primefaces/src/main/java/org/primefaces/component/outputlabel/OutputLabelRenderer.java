@@ -121,8 +121,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                         if (isAuto) {
                             boolean disabled = false;
                             if ("autoSkipDisabled".equals(indicateRequired)) {
-                                disabled = Boolean.parseBoolean(String.valueOf(input.getAttributes().get("disabled"))) ||
-                                            Boolean.parseBoolean(String.valueOf(input.getAttributes().get("readonly")));
+                                disabled = ComponentUtils.isDisabledOrReadonly(input);
                             }
 
                             if (disabled) {
