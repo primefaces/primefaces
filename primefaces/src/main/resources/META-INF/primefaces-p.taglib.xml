@@ -18320,6 +18320,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -23314,7 +23322,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -23322,7 +23330,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[ User presentable name.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23330,11 +23338,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the checkboxes, valid values are lineDirection , pageDirection, grid, responsive and custom.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -24572,7 +24588,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Is the radio button disabled.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -24580,7 +24596,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Label of the radio button.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -24588,11 +24604,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, responsive and grid.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -31681,6 +31705,14 @@
                 <![CDATA[When enabled, displays the datepicker as inline. Default is false for popup mode.]]>
             </description>
             <name>inline</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

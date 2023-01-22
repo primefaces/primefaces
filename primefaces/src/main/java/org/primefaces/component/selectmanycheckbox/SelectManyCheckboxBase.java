@@ -25,9 +25,10 @@ package org.primefaces.component.selectmanycheckbox;
 
 import javax.faces.component.html.HtmlSelectManyCheckbox;
 
+import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget {
+public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -36,7 +37,8 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
     public enum PropertyKeys {
 
         widgetVar,
-        columns
+        columns,
+        flex
     }
 
     public SelectManyCheckboxBase() {
@@ -62,5 +64,14 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
 
     public void setColumns(int columns) {
         getStateHelper().put(PropertyKeys.columns, columns);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

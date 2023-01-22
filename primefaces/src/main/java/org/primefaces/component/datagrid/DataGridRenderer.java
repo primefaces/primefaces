@@ -97,7 +97,7 @@ public class DataGridRenderer extends DataRenderer {
         String layout = grid.getLayout();
         String paginatorPosition = grid.getPaginatorPosition();
         boolean flex = ComponentUtils.isFlex(context, grid);
-        String gridContentClass = flex ? DataGrid.FLEX_GRID_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS;
+        String gridContentClass = DataGrid.GRID_CONTENT_CLASS + " " + GridLayoutUtils.getResponsiveClass(flex);
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
         String layoutClass = "tabular".equals(layout) ? DataGrid.TABLE_CONTENT_CLASS : gridContentClass;
@@ -176,18 +176,13 @@ public class DataGridRenderer extends DataRenderer {
 
         String columnClass = getStyleClassBuilder(context)
                 .add(DataGrid.COLUMN_CLASS)
-                .add(flex, GridLayoutUtils.getFlexColumnClass(columns),  GridLayoutUtils.getColumnClass(columns))
+                .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
                 .add(grid.getRowStyleClass())
                 .build();
 
         writer.startElement("div", null);
 
-        if (flex) {
-            writer.writeAttribute("class", DataGrid.FLEX_GRID_ROW_CLASS, null);
-        }
-        else {
-            writer.writeAttribute("class", DataGrid.GRID_ROW_CLASS, null);
-        }
+        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
         writer.writeAttribute("title", grid.getRowTitle(), null);
 
         for (int i = 0; i < numberOfRowsToRender; i++) {

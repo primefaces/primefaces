@@ -178,6 +178,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         wb.attr("defaultDate", defaultDate, null)
             .attr("inline", datePicker.isInline())
             .attr("userLocale", locale.toString())
+            .attr("flex", ComponentUtils.isFlex(context, datePicker), false)
             .attr("localeAm", ampm[0], "AM")
             .attr("localePm", ampm[1], "PM")
             .attr("dateFormat", CalendarUtils.convertPattern(pattern))

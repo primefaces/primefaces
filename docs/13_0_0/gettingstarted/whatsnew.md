@@ -16,6 +16,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `exportTag` to allow finer grain control over XML export.
 * DataGrid
     * Added attribute `rowTitle` to support row-specific titles.
+* DatePicker
+    * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * DataTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
@@ -24,6 +26,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `gridRowTitle` to support row-specific titles.
 * OverlayPanel
     * Added attribute `cache` similar to Dialog when `dynamic=true`.
+* OrderList
+    * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * TabView
     * Added `focusOnLastActiveTab` if you want to focus on the tab that the user last activated.
 * TreeTable
@@ -35,6 +39,10 @@ This page contains a list of big features. Please check the GitHub issues for al
 * SelectCheckboxMenu
     * Added attribute `var` to support custom content in overlay panel.
     * Added support for facet `footer` in overlay panel.
+* SelectManyCheckbox
+    * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
+* SelectOneRadio
+    * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * SpeedDial
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * Menu

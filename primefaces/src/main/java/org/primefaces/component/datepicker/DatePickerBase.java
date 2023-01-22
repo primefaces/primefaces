@@ -30,14 +30,11 @@ import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
 
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 
-public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -100,7 +97,8 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         weekCalculator,
         showMinMaxRange,
         autoMonthFormat,
-        model
+        model,
+        flex
     }
 
     public DatePickerBase() {
@@ -499,6 +497,15 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setAutoMonthFormat(boolean autoMonthFormat) {
         getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 
     @Override
