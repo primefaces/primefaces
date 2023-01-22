@@ -153,12 +153,14 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         if ("bottom".equals(orientation)) {
+            encodeFooter(context, tabView);
             encodeContents(context, tabView);
             encodeHeaders(context, tabView);
         }
         else {
             encodeHeaders(context, tabView);
             encodeContents(context, tabView);
+            encodeFooter(context, tabView);
         }
 
         encodeStateHolder(context, tabView, clientId + "_activeIndex", String.valueOf(tabView.getActiveIndex()));
@@ -175,6 +177,17 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeStateHolder(FacesContext facesContext, TabView tabView, String name, String value) throws IOException {
         renderHiddenInput(facesContext, name, value, false);
+    }
+
+    protected void encodeFooter(FacesContext context, TabView tabView) throws IOException {
+        UIComponent actions = tabView.getFacet("footer");
+        if (ComponentUtils.shouldRenderFacet(actions)) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("div", null);
+            writer.writeAttribute("class", "ui-tabs-footer", null);
+            actions.encodeAll(context);
+            writer.endElement("div");
+        }
     }
 
     protected void encodeHeaders(FacesContext context, TabView tabView) throws IOException {

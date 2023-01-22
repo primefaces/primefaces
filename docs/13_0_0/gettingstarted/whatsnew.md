@@ -26,6 +26,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `cache` similar to Dialog when `dynamic=true`.
 * TabView
     * Added `focusOnLastActiveTab` if you want to focus on the tab that the user last activated.
+    * Added `footer` facet to add a footer to the whole TabView not per tab.
 * TreeTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
