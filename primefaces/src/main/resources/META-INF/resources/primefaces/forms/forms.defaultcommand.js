@@ -39,11 +39,9 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
         //attach keypress listener to parent form
         var closestForm = this.jqTarget.closest('form');
         closestForm.off('keydown.' + this.id).on('keydown.' + this.id, {scopeEnter: false}, function (e, data) {
-            var keyCode = $.ui.keyCode;
-
             data = data || e.data;
             if (($this.scope && data.scopeEnter && data.scopeDefaultCommandId === $this.id)
-                    || (!$this.scope && !data.scopeEnter && (e.which === keyCode.ENTER))) {
+                    || (!$this.scope && !data.scopeEnter && (e.key === 'Enter'))) {
                 // Do not proceed if target is a textarea, button, link or TextEditor
                 if ($(e.target).is('textarea,button,input[type="submit"],a,.ql-editor')) {
                     return true;
@@ -59,8 +57,7 @@ PrimeFaces.widget.DefaultCommand = PrimeFaces.widget.BaseWidget.extend({
 
         if (this.scope) {
             this.scope.off('keydown.' + this.id).on('keydown.' + this.id, function (e) {
-                var keyCode = $.ui.keyCode;
-                if (e.which === keyCode.ENTER) {
+                if (e.key === 'Enter') {
                     closestForm.trigger(e, {scopeEnter: true, scopeDefaultCommandId: $this.id});
                     //e.preventDefault();
                     e.stopPropagation();

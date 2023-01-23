@@ -199,7 +199,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             String var = menu.getVar();
             context.getExternalContext().getRequestMap().put(var, option.getValue());
 
-            writer.startElement("tr", null);
+            writer.startElement("tr", getSelectItemComponent(option));
             writer.writeAttribute("class", itemClass, null);
             if (option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
@@ -233,7 +233,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.endElement("tr");
         }
         else {
-            writer.startElement("li", null);
+            writer.startElement("li", getSelectItemComponent(option));
             writer.writeAttribute("class", itemClass, null);
 
             if (showCheckbox) {
@@ -286,7 +286,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             return;
         }
 
-        writer.startElement("option", null);
+        writer.startElement("option", getSelectItemComponent(option));
         writer.writeAttribute("value", itemValueAsString, null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);

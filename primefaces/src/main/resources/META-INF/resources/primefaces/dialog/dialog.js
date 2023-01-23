@@ -55,7 +55,7 @@
  * body.
  * @prop {boolean} cfg.absolutePositioned Whether the dialog is positioned absolutely.
  * @prop {boolean} cfg.blockScroll Whether to prevent the document from scrolling when the dialog is visible.
- * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once..
+ * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the dialog should load the contents from server again. For cache="true" (default) the dialog content is only loaded once.
  * @prop {boolean} cfg.closeOnEscape Whether the dialog is closed when the user presses the escape button.
  * @prop {boolean} cfg.closable Whether the dialog can be closed by the user.
  * @prop {boolean} cfg.draggable Whether the dialog is draggable.
@@ -423,8 +423,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.closeOnEscape) {
             $(document).on('keydown.dialog_' + this.id, function(e) {
-                var keyCode = $.ui.keyCode;
-                if(e.which === keyCode.ESCAPE && $this.isVisible()) {
+                if(e.key === 'Escape' && $this.isVisible()) {
                     // GitHub #6677 if multiple dialogs check if this is the topmost active dialog to close
                     var active = parseInt($this.jq.css('z-index')) === parseInt($('.ui-dialog:visible').last().css('z-index'));
                     if(active) {

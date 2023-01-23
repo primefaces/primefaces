@@ -23,22 +23,23 @@ id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 widgetVar | null | String | Name of the client side widget.
+appendTo | null | String | Appends the overlayPanel to the given search expression.
+at | left bottom | String | Position of the target relative to the panel.
+autoHide | true | boolean | Whether to hide overlay when hovering over overlay content when using custom show/hide events.
+cache | true | Boolean | Only relevant for dynamic="true": Defines if activating the panel should load the contents from server again. For cache="true" (default) the panel content is only loaded once.
+collision | flip | String | When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".
+dismissable | true | Boolean | When set true, clicking outside of the panel hides the overlay.
+dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.
+for | null | String | Target component to display panel next to.
+hideEvent | click | String | Event on target to hide the panel.
+modal | false | Boolean | Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.
+my | left top | String | Position of the panel relative to the target.
+onHide | null | String | Client side callback to execute when panel is hidden.
+onShow | null | String | Client side callback to execute when panel is shown.
+showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
+showEvent | click | String | Event on target to show the panel.
 style | null | String | Inline style of the panel.
 styleClass | null | String | Style class of the panel.
-for | null | String | Target component to display panel next to.
-showEvent | click | String | Event on target to show the panel.
-hideEvent | click | String | Event on target to hide the panel.
-onShow | null | String | Client side callback to execute when panel is shown.
-onHide | null | String | Client side callback to execute when panel is hidden.
-my | left top | String | Position of the panel relative to the target.
-at | left bottom | String | Position of the target relative to the panel.
-collision | flip | String | When the positioned element overflows the window in some direction, move it to an alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g., "flip", "fit", "fit flip", "fit none".
-dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.
-dismissable | true | Boolean | When set true, clicking outside of the panel hides the overlay.
-showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
-modal | false | Boolean | Boolean value that specifies whether the document should be shielded with a partially transparent mask to require the user to close the Panel before being able to activate any elements in the document.
-appendTo | null | String | Appends the overlayPanel to the given search expression.
-autoHide | true | boolean | Whether to hide overlay when hovering over overlay content when using custom show/hide events.
 
 ## Getting started with OverlayPanel
 OverlayPanel needs a component as a target in addition to the content to display. Example below

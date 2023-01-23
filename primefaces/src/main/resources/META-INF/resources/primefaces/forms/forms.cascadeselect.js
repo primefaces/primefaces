@@ -78,11 +78,8 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                 $this.jq.removeClass('ui-state-focus');
             })
             .on('keydown.cascadeselect', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                switch(key) {
-                    case keyCode.DOWN:
+                switch(e.key) {
+                    case 'ArrowDown':
                         if ($this.panel.is(':visible')) {
                             $this.panel.find('.ui-cascadeselect-item:first > .ui-cascadeselect-item-content').focus();
                         }
@@ -92,14 +89,14 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                         e.preventDefault();
                         break;
 
-                    case keyCode.ESCAPE:
+                    case 'Escape':
                         if ($this.panel.is(':visible')) {
                             $this.hide();
                             e.preventDefault();
                         }
                         break;
 
-                    case keyCode.TAB:
+                    case 'Tab':
                         $this.hide();
                         break;
 
@@ -131,25 +128,23 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
             })
             .on('keydown.cascadeselect', function(e) {
                 var item = $(this).parent();
-                var keyCode = $.ui.keyCode,
-                key = e.which;
 
-                switch(key) {
-                    case keyCode.DOWN:
+                switch(e.key) {
+                    case 'ArrowDown':
                         var nextItem = item.next();
                         if (nextItem) {
                             nextItem.children('.ui-cascadeselect-item-content').focus();
                         }
                         break;
 
-                    case keyCode.UP:
+                    case 'ArrowUp':
                         var prevItem = item.prev();
                         if (prevItem) {
                             prevItem.children('.ui-cascadeselect-item-content').focus();
                         }
                         break;
 
-                    case keyCode.RIGHT:
+                    case 'ArrowRight':
                         if (item.hasClass('ui-cascadeselect-item-group')) {
                             if (item.hasClass('ui-cascadeselect-item-active')) {
                                 item.find('> .ui-cascadeselect-panel > .ui-cascadeselect-item:first > .ui-cascadeselect-item-content').focus();
@@ -160,7 +155,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                         }
                         break;
 
-                    case keyCode.LEFT:
+                    case 'ArrowLeft':
                         $this.hideGroup(item);
                         $this.hideGroup(item.siblings('.ui-cascadeselect-item-active'));
 
@@ -170,7 +165,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                         }
                         break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         item.children('.ui-cascadeselect-item-content').trigger('click.cascadeselect');
                         if (!item.hasClass('ui-cascadeselect-item-group')) {
                             $this.input.trigger('focus.cascadeselect');

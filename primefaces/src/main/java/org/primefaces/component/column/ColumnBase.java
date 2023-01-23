@@ -50,6 +50,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         exportColspan,
         exportRowspan,
         exportable,
+        exportTag,
         field,
         filterBy,
         filterFunction,
@@ -485,5 +486,14 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
 
     public void setTitle(String title) {
         getStateHelper().put(PropertyKeys.title, title);
+    }
+
+    @Override
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 }

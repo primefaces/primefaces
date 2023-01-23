@@ -5264,6 +5264,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the display priority, in which order the columns should be displayed.]]>
             </description>
             <name>displayPriority</name>
@@ -5704,6 +5712,14 @@
                 <![CDATA[Defines if the footer value of column to be exported.]]>
             </description>
             <name>exportFooterValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8078,6 +8094,22 @@
             <name>editingRow</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -18288,6 +18320,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -18952,6 +18992,14 @@
                 which is useful to reduce initial page load times. Default is false.]]>
             </description>
             <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Only relevant for dynamic="true": Defines if activating the panel should load the contents from server again. For cache="true" (default) the panel content is only loaded once.]]>
+            </description>
+            <name>cache</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -22819,11 +22867,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Defines the maximum height of the scrollable area.]]>
             </description>
             <name>scrollHeight</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -22886,6 +22934,14 @@
                 <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of iterator to be used in custom content display.]]>
+            </description>
+            <name>var</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23266,7 +23322,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -23274,7 +23330,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[ User presentable name.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23282,11 +23338,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the checkboxes, valid values are lineDirection , pageDirection, grid, responsive and custom.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -24540,7 +24604,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Is the radio button disabled.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -24548,7 +24612,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Label of the radio button.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -24556,11 +24620,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, responsive and grid.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -29738,6 +29810,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Sticky header stays in window viewport during scrolling.]]>
             </description>
             <name>stickyHeader</name>
@@ -31633,6 +31721,14 @@
                 <![CDATA[When enabled, displays the datepicker as inline. Default is false for popup mode.]]>
             </description>
             <name>inline</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

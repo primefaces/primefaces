@@ -34,6 +34,7 @@
  * @prop {string} cfg.at Position of the target relative to the panel.
  * @prop {boolean} cfg.dynamic `true` to load the content via AJAX when the overlay panel is opened, `false` to load
  * the content immediately.
+ * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the panel should load the contents from server again. For cache="true" (default) the panel content is only loaded once.
  * @prop {string} cfg.hideEvent Event on target to hide the panel.
  * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
  * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g.,
@@ -75,6 +76,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
         this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 0);
         this.cfg.autoHide = (this.cfg.autoHide === undefined) ? true : this.cfg.autoHide;
+        this.cfg.cache = this.cfg.cache === false ? false : true;
         this.allowHide = true;
 
         if (this.cfg.showCloseIcon) {
@@ -179,9 +181,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
             .on('keydown.ui-overlaypanel', PrimeFaces.utils.blockEnterKey)
             .on('keyup.ui-overlaypanel', function(e) {
-                var keyCode = $.ui.keyCode, key = e.which;
-
-                if (key === keyCode.ENTER) {
+                if (e.key === 'Enter') {
                     $this.toggle();
                     e.preventDefault();
                 }
@@ -512,7 +512,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.content.html(content);
-                            this.loaded = true;
+                            this.loaded = this.cfg.cache;
                         }
                     });
 

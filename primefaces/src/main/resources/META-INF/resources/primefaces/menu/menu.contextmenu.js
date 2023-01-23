@@ -136,7 +136,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'click.' + this.id + '_hide', this.jq,
-            function(e) { return e.which == 3 ? $this.jqTarget : null; },
+            function(e) { return e.key === 'Cancel' ? $this.jqTarget : null; },
             function(e, eventTarget) {
                 if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                     $this.hide();

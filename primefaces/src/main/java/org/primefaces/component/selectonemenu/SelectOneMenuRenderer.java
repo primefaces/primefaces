@@ -441,12 +441,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
-                itemStyleClass = itemStyleClass + " ui-noselection-option";
+                itemStyleClass += " ui-noselection-option";
+            }
+            if (selectItem.isDisabled()) {
+                itemStyleClass += " ui-state-disabled";
             }
 
             context.getExternalContext().getRequestMap().put(var, itemValue);
 
-            writer.startElement("tr", null);
+            writer.startElement("tr", getSelectItemComponent(selectItem));
             writer.writeAttribute("class", itemStyleClass, null);
             writer.writeAttribute("data-label", itemLabel, null);
             writer.writeAttribute("role", "option", null);
@@ -579,7 +582,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
 
             if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
-                writer.startElement("option", null);
+                writer.startElement("option", getSelectItemComponent(option));
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) {
                     writer.writeAttribute("disabled", "disabled", null);

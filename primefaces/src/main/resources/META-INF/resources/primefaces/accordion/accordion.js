@@ -130,10 +130,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-tabs-outline');
         })
         .on('keydown.accordion', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }

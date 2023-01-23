@@ -688,4 +688,9 @@ public class ComponentUtils {
 
         return renderedChildCount;
     }
+
+    public static boolean isDisabledOrReadonly(UIInput component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
+                || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+    }
 }

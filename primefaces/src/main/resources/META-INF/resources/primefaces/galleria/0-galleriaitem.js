@@ -122,7 +122,7 @@
         },
     
         onIndicatorKeyDown: function (e) {
-            if (event.which === 13) {
+            if (e.key === 'Enter') {
                 var index = $(e.currentTarget).index();
 
                 this.stopSlideShow();

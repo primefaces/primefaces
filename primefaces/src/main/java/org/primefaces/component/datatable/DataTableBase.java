@@ -57,6 +57,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         editingRow,
         escapeText,
         expandedRow,
+        exportTag,
+        exportRowTag,
         filterBy,
         filterDelay,
         filterEvent,
@@ -717,5 +719,21 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
 
     public void setShowSelectAll(boolean showSelectAll) {
         getStateHelper().put(PropertyKeys.showSelectAll, showSelectAll);
+    }
+
+    public String getExportRowTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportRowTag, null);
+    }
+
+    public void setExportRowTag(String exportRowTag) {
+        getStateHelper().put(PropertyKeys.exportRowTag, exportRowTag);
+    }
+
+    public String getExportTag() {
+        return (String) getStateHelper().eval(PropertyKeys.exportTag, null);
+    }
+
+    public void setExportTag(String exportTag) {
+        getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 }

@@ -366,10 +366,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.input.trigger('focus');
             }
         }).on("keyup", function(e) {
-            var keyCode = $.ui.keyCode,
-                key = e.which;
-
-            if (key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $this.searchWithDropdown();
                 $this.input.trigger('focus');
                 e.preventDefault();
@@ -426,10 +423,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.input.on('keyup.autoComplete', function(e) {
-            var keyCode = $.ui.keyCode,
-                key = e.which;
+            var key = e.key;
 
-            if ($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER)) {
+            if ($this.cfg.queryEvent === 'enter' && (key === 'Enter')) {
                 if ($this.itemSelectedWithEnter)
                     $this.itemSelectedWithEnter = false;
                 else
@@ -437,10 +433,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if ($this.panel.is(':visible')) {
-                if (key === keyCode.ESCAPE) {
+                if (key === 'Escape') {
                     $this.hide();
                 }
-                else if (key === keyCode.UP || key === keyCode.DOWN) {
+                else if (key === 'ArrowUp' || key === 'ArrowDown') {
                     var highlightedItem = $this.items.filter('.ui-state-highlight');
                     if (highlightedItem.length) {
                         $this.displayAriaStatus(highlightedItem.data('item-label'));
@@ -452,14 +448,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.isTabPressed = false;
 
         }).on('keydown.autoComplete', function(e) {
-            var keyCode = $.ui.keyCode;
-
             $this.suppressInput = false;
             if ($this.panel.is(':visible')) {
                 var highlightedItem = $this.items.filter('.ui-state-highlight');
 
-                switch (e.which) {
-                    case keyCode.UP:
+                switch (e.key) {
+                    case 'ArrowUp':
                         var prev = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.prevAll('.ui-autocomplete-item:first');
 
                         if (prev.length == 1) {
@@ -478,7 +472,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                         break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         var next = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.nextAll('.ui-autocomplete-item:first');
 
                         if (next.length == 1) {
@@ -497,7 +491,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                         break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
@@ -513,11 +507,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         break;
 
-                    case 18: //keyCode.ALT:
-                    case 224:
+                    case 'Alt':
                         break;
 
-                    case keyCode.TAB:
+                    case 'Tab':
                         if (highlightedItem.length && $this.cfg.autoSelection) {
                             highlightedItem.trigger('click');
                         } else {
@@ -531,15 +524,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
             else {
-                switch (e.which) {
-                    case keyCode.TAB:
+                switch (e.key) {
+                    case 'Tab':
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
                         $this.isTabPressed = true;
                         break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         var itemValue = $(this).val();
                         var valid = true;
                         if ($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
@@ -563,7 +556,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         }
                         break;
 
-                    case keyCode.BACKSPACE:
+                    case 'Backspace':
                         if ($this.cfg.multiple && !$this.input.val().length) {
 
                             if (e.metaKey || e.ctrlKey || e.shiftKey) {

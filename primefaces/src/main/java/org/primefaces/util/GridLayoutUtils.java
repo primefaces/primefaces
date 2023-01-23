@@ -49,6 +49,33 @@ public class GridLayoutUtils {
     }
 
     /**
+     * Get grid or flex main container grid Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getResponsiveClass(boolean flex) {
+        return flex ? "ui-grid-responsive" : "ui-grid ui-grid-responsive";
+    }
+
+    /**
+     * Get grid or flex main container grid Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getFlexGridClass(boolean flex) {
+        return flex ? "grid" : "ui-g";
+    }
+
+    /**
+     * Get grid or flex column Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getColumnClass(boolean flex, int columns) {
+        return flex ? getFlexColumnClass(columns) : getColumnClass(columns);
+    }
+
+    /**
      * Get Grid-CSS-Column-Class.
      * @param columns
      * @return

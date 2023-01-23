@@ -92,13 +92,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input.prop('onkeyup', null).off('keyup').on('keyup.inputnumber', function(e) {
 
             var oldValue;
-
-            var keyCode = e.which;
-            if (keyCode === 8 || keyCode === 13 || keyCode === 32
-                || (keyCode >= 46 && keyCode <= 90)
-                || (keyCode >= 96 && keyCode <= 111)
-                || (keyCode >= 186 && keyCode <= 222)) {
-
+            var key = e.key;
+            if (key === 'Backspace' || key === 'Enter' || key === 'Delete' || PrimeFaces.utils.isPrintableKey(e)) {
                 oldValue = $this.copyValueToHiddenInput();
             }
 

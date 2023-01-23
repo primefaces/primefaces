@@ -30,6 +30,7 @@ Columns is used by datatable to create columns dynamically.
 | exportHeaderValue | null | String | Defines if the header value of column to be exported.
 | exportRowspan | 0 | Integer | Defines the number of rows the column spans to be exported.
 | exportValue | null | String | Defines the value of the cell to be exported if something other than the cell contents or exportFunction.
+| exportTag | null | String | If XML data exporter in use, this allows customization of the column tag in the XML.
 | exportable | true | Boolean | Defines if the column should be exported by dataexporter.
 | field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
 | filterBy | null | ValueExpr | ValueExpression to be used for filtering.

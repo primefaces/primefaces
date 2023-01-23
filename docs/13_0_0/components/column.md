@@ -32,6 +32,7 @@ treetable and more.
 | exportValue | null | String | Defines the value of the cell to be exported if you want something other than the cell contents or exportFunction.
 | exportRowspan | 0 | Integer | Defines the number of rows the column spans to be exported.
 | exportColspan | 0 | Integer | Defines the number of columns the column spans to be exported.
+| exportTag | null | String | If XML data exporter in use, this allows customization of the column tag in the XML.
 | field | null | String | Name of the field associated to bean "var". If not specified, filterBy-sortBy values are used to identify the field name.
 | filterable | true | Boolean | Boolean value to mark column as filterable.
 | filterBy | null | ValueExpr | ValueExpression to be used for filtering.

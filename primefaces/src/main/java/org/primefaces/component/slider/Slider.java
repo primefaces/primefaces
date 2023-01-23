@@ -184,6 +184,10 @@ public class Slider extends SliderBase {
             Object value = input.getValue();
 
             if (value != null) {
+                if (value instanceof String) {
+                    return (String) value;
+                }
+
                 Converter converter = ComponentUtils.getConverter(context, input);
                 if (converter != null) {
                     return converter.getAsString(context, this, value);

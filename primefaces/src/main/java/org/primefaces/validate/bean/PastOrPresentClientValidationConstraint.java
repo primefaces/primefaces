@@ -27,8 +27,8 @@ public class PastOrPresentClientValidationConstraint extends AbstractClientValid
 
     public static final String CONSTRAINT_ID = "PastOrPresent";
     public static final String MESSAGE_METADATA = "data-p-pastorpresent-msg";
-    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
-    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = String.format("%s.%s", javax.validation.constraints.NotNull.class.getPackage().getName(), CONSTRAINT_ID);
+    public static final String MESSAGE_ID =  String.format("{%s.%s}", CONSTRAINT_CLASS_NAME, ATTR_MESSAGE);
 
     public PastOrPresentClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);

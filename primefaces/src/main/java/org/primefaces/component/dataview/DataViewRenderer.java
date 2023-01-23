@@ -263,21 +263,21 @@ public class DataViewRenderer extends DataRenderer {
             int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
             boolean flex = ComponentUtils.isFlex(context, dataview);
 
+            String rowClass = getStyleClassBuilder(context)
+                    .add(DataView.GRID_LAYOUT_ROW_CLASS)
+                    .add(GridLayoutUtils.getFlexGridClass(flex))
+                    .build();
+
             String columnClass = getStyleClassBuilder(context)
                     .add(DataView.GRID_LAYOUT_COLUMN_CLASS)
-                    .add(flex, GridLayoutUtils.getFlexColumnClass(columns),  GridLayoutUtils.getColumnClass(columns))
+                    .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
                     .add(dataview.getGridRowStyleClass())
                     .build();
 
             String columnInlineStyle = dataview.getGridRowStyle();
 
             writer.startElement("div", null);
-            if (flex) {
-                writer.writeAttribute("class", DataView.FLEX_GRID_LAYOUT_ROW_CLASS, null);
-            }
-            else {
-                writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
-            }
+            writer.writeAttribute("class", rowClass, null);
             writer.writeAttribute("title", dataview.getRowTitle(), null);
 
             int renderedCount = 0;
