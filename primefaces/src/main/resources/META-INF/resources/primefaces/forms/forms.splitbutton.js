@@ -449,7 +449,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Search term for filtering.
      */
     filter: function(value) {
-        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), true);
+        var lowercase = !this.cfg.caseSensitive,
+            filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, lowercase);
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
@@ -459,7 +460,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < this.menuitems.length; i++) {
                 var menuitem = this.menuitems.eq(i),
-                itemLabel = PrimeFaces.normalize(menuitem.find('.ui-menuitem-text').text(), true);
+                itemLabel = PrimeFaces.toSearchable(menuitem.find('.ui-menuitem-text').text(), true, lowercase);
 
                 /* for keyboard support */
                 menuitem.removeClass('ui-state-hover');

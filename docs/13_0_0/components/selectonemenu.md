@@ -112,7 +112,7 @@ manual input. Set editable option to true to use this feature.
 ## Filtering
 When filtering is enabled with setting `filter` on, an input field is rendered at overlay header and on
 keyup event filtering is executed on client side using `filterMatchMode`. Default modes of
-filterMatchMode are startsWith, contains, endsWith and custom. Custom mode requires a javascript
+`filterMatchMode` are `startsWith`, `contains`, `endsWith` and `custom`. Custom mode requires a javascript
 function to do the filtering.
 
 ```xhtml
