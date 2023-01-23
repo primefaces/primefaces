@@ -35,6 +35,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.RendererUtils;
 
 public class FocusRenderer extends CoreRenderer {
 
@@ -58,7 +59,7 @@ public class FocusRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.startElement("script", focus);
-        writer.writeAttribute("type", "text/javascript", null);
+        RendererUtils.encodeScript(context);
 
         if (isValueBlank(focus.getFor())) {
             encodeImplicitFocus(context, focus);

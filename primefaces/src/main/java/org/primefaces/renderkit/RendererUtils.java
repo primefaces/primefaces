@@ -24,6 +24,7 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
 import javax.faces.application.ViewHandler;
@@ -33,9 +34,13 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.HTML;
 
 public class RendererUtils {
+
+    public static final String SCRIPT_TYPE = "text/javascript";
 
     private RendererUtils() {
         // Hide constructor
@@ -117,6 +122,22 @@ public class RendererUtils {
         }
 
         return ((RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY)).getRenderKit(context, renderKitId);
+    }
+
+    /**
+     * HTML5 Doctype does not require the script type on JavaScript files.
+     *
+     * @param context the FacesContext
+     * @throws IOException if any error occurs
+     */
+    public static void encodeScript(FacesContext context) throws IOException {
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
+        PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
+        if (applicationContext.getConfig().isHtml5Compliant()) {
+            return;
+        }
+        ResponseWriter writer = context.getResponseWriter();
+        writer.writeAttribute("type", SCRIPT_TYPE, null);
     }
 
 }

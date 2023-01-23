@@ -36,6 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 
+import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.LangUtils;
 
@@ -44,7 +45,6 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private static final String SCRIPT_TAG = "script";
     private static final String BODY_TAG = "body";
     private static final String HTML_TAG = "html";
-    private static final String SCRIPT_TYPE = "text/javascript";
     private static final String TYPE_ATTRIBUTE = "type";
 
     private final ResponseWriter wrapped;
@@ -170,7 +170,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     public void startElement(String name, UIComponent component) throws IOException {
         if (SCRIPT_TAG.equalsIgnoreCase(name)) {
             inScript = true;
-            scriptType = SCRIPT_TYPE;
+            scriptType = RendererUtils.SCRIPT_TYPE;
         }
         else {
             writeFouc();
@@ -266,7 +266,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         String minimized = script.toString();
 
         if (LangUtils.isNotBlank(minimized)) {
-            if (SCRIPT_TYPE.equalsIgnoreCase(type)) {
+            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
                 minimized = minimized.replace(";;", ";");
 
                 if (minimized.contains("PrimeFaces")) {
