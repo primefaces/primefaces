@@ -94,12 +94,14 @@ public class PanelGridRenderer extends CoreRenderer {
         }
 
         String style = grid.getStyle();
-        String styleClass = grid.getStyleClass();
-        styleClass = styleClass == null ? PanelGrid.CONTAINER_CLASS : PanelGrid.CONTAINER_CLASS + " " + styleClass;
+        String containerClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTAINER_CLASS)
+                .add(grid.getStyleClass())
+                .build();
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass, "styleClass");
+        writer.writeAttribute("class", containerClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
@@ -268,8 +270,11 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
-        String contentClass = grid.getContentStyleClass();
-        contentClass = contentClass == null ? PanelGrid.CONTENT_CLASS : PanelGrid.CONTENT_CLASS + " " + contentClass;
+        String contentClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTENT_CLASS)
+                .add(GridLayoutUtils.getResponsiveClass(false))
+                .add(grid.getContentStyleClass())
+                .build();
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);
@@ -338,8 +343,11 @@ public class PanelGridRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
-        String contentClass = grid.getContentStyleClass();
-        contentClass = contentClass == null ? PanelGrid.FLEX_CONTENT_CLASS : PanelGrid.FLEX_CONTENT_CLASS + " " + contentClass;
+        String contentClass = getStyleClassBuilder(context)
+                .add(PanelGrid.CONTENT_CLASS)
+                .add(GridLayoutUtils.getFlexGridClass(true))
+                .add(grid.getContentStyleClass())
+                .build();
 
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId + "_content", null);

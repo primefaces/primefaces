@@ -30,6 +30,7 @@
             style: null,
             styleClass: null,
             inline: false,
+            flex: false,
             selectionMode: 'single',
             rangeSeparator: '-',
             timeSeparator: ':',
@@ -1269,12 +1270,15 @@
         },
 
         renderButtonBar: function () {
+            var grid = this.options.flex ? 'grid' : 'ui-g';
+            var today = this.options.flex ? 'col-6 text-left' : 'ui-g-6';
+            var clear = this.options.flex ? 'col-6 text-right' : 'ui-g-6';
             return '<div class="ui-datepicker-buttonbar ui-widget-header">' +
-                '<div class="ui-g">' +
-                '<div class="ui-g-6">' +
+                '<div class="'+grid+'">' +
+                '<div class="'+today+'">' +
                 '<button type="button" class="ui-today-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.todayButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.today + '</span></button>' +
                 '</div>' +
-                '<div class="ui-g-6">' +
+                '<div class="'+clear+'">' +
                 '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +
                 '</div>' +
                 '</div>' +

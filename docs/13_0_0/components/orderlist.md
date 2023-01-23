@@ -45,6 +45,7 @@ moveTopLabel | Move Top | String | Label of move top button.
 moveDownLabel | Move Down | String | Label of move down button.
 moveBottomLabel | Move Bottom | String | Label of move bottom button.
 controlsLocation | left | String | Location of the reorder buttons, valid values are “left”, “right” and “none”.
+flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
 responsive | false | Boolean | In responsive mode, orderList adjusts itself based on screen width.
 
 ## Getting started with OrderList
