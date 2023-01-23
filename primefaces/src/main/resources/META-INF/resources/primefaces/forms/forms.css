@@ -630,7 +630,12 @@ button.ui-button::-moz-focus-inner {
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table td {
     border-width: 1px;
     border-style: solid;
-    padding:4px 10px 4px 10px;
+    padding: .25rem .75rem .25rem 1rem;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table th:first-of-type,
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table td:first-of-type {
+    width: 3.5rem;
 }
 
 .ui-selectcheckboxmenu-header {
