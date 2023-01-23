@@ -77,6 +77,7 @@ public class MenuView implements Serializable {
                 .value("Delete")
                 .icon("pi pi-times")
                 .command("#{menuView.delete}")
+                .update("messages")
                 .build();
         firstSubmenu.getElements().add(item);
 
