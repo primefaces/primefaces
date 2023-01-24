@@ -67,7 +67,8 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         filterFunction,
         filterPlaceholder,
         ignoreComponentNotFound,
-        disableOnAjax
+        disableOnAjax,
+        filterNormalize
     }
 
     public SplitButtonBase() {
@@ -325,5 +326,13 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

@@ -29,7 +29,8 @@
                 <h5>Advanced</h5>
                 <p:selectManyMenu id="advanced" value="#{selectManyView.selectedCountries}"
                                     converter="#{countryConverter}"
-                                    var="c" filter="true" filterMatchMode="contains" showCheckbox="true" styleClass="manymenu-advanced">
+                                    var="c" filter="true" filterMatchMode="contains" filterNormalize="true"
+                                    showCheckbox="true" styleClass="manymenu-advanced">
                     <f:selectItems value="#{selectManyView.countries}" var="country" itemLabel="#{country.name}"
                                     itemValue="#{country}"/>
 

@@ -65,6 +65,7 @@
  * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Set to false
  * for custom width.
  * @prop {boolean} cfg.caseSensitive Defines if filtering would be case sensitive.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
  * @prop {boolean} cfg.editable When true, the input field becomes editable.
@@ -1206,7 +1207,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
-        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), !this.cfg.caseSensitive);
+        var lowercase = !this.cfg.caseSensitive,
+                normalize = this.cfg.filterNormalize,
+                filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
@@ -1218,7 +1221,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = PrimeFaces.normalize(option.text(), !this.cfg.caseSensitive),
+                itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize),
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
@@ -1232,7 +1235,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         hide.push(item);
                     }
                     else {
-                        itemLabel = PrimeFaces.normalize(option.parent().attr('label'), !this.cfg.caseSensitive);
+                        itemLabel = PrimeFaces.toSearchable(option.parent().attr('label'), lowercase, normalize);
                         if (this.filterMatcher(itemLabel, filterValue)) {
                             show.push(item);
                         }

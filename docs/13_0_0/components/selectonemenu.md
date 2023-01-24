@@ -38,6 +38,7 @@ editable | false | Boolean | When true, input becomes editable.
 filter | false | Boolean | Renders an input field as a filter.
 filterFunction | null | String | Client side function to use in custom filtering.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
+filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 height | auto | Integer | Height of the overlay.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
@@ -109,9 +110,9 @@ Editable SelectOneMenu provides a UI to either choose from the predefined option
 manual input. Set editable option to true to use this feature.
 
 ## Filtering
-When filtering is enabled with setting _filter_ on, an input field is rendered at overlay header and on
-keyup event filtering is executed on client side using _filterMatchMode_. Default modes of
-filterMatchMode are startsWith, contains, endsWith and custom. Custom mode requires a javascript
+When filtering is enabled with setting `filter` on, an input field is rendered at overlay header and on
+keyup event filtering is executed on client side using `filterMatchMode`. Default modes of
+`filterMatchMode` are `startsWith`, `contains`, `endsWith` and `custom`. Custom mode requires a javascript
 function to do the filtering.
 
 ```xhtml

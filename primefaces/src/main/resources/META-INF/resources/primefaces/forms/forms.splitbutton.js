@@ -41,6 +41,7 @@
  * term is matched against the items.
  * @prop {boolean} cfg.disabled Whether this input is currently disabled.
  * @prop {boolean} cfg.filter Whether client side filtering feature is enabled.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {PrimeFaces.widget.SplitButton.FilterFunction} cfg.filterFunction Custom JavaScript function for filtering the
  * available split button actions.
  */
@@ -449,7 +450,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
      * @param {string} value Search term for filtering.
      */
     filter: function(value) {
-        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), true);
+        var normalize = this.cfg.filterNormalize,
+            filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, normalize);
 
         if(filterValue === '') {
             this.menuitems.filter(':hidden').show();
@@ -459,7 +461,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < this.menuitems.length; i++) {
                 var menuitem = this.menuitems.eq(i),
-                itemLabel = PrimeFaces.normalize(menuitem.find('.ui-menuitem-text').text(), true);
+                itemLabel = PrimeFaces.toSearchable(menuitem.find('.ui-menuitem-text').text(), true, normalize);
 
                 /* for keyboard support */
                 menuitem.removeClass('ui-state-hover');
