@@ -66,6 +66,7 @@
  * @prop {boolean} cfg.escapeValue Whether the item values are escaped for HTML.
  * @prop {number} cfg.filterDelay Delay to wait in milliseconds before sending each filter query. Default is `300`.
  * @prop {string} cfg.filterEvent Client side event to invoke picklist filtering for input fields. Default is `keyup`.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {PrimeFaces.widget.PickList.FilterFunction} cfg.filterFunction A custom filter function that is used when
  * `filterMatchMode` is set to `custom`.
  * @prop {PrimeFaces.widget.PickList.FilterMatchMode} cfg.filterMatchMode Mode of the filter. When set to `custom, a
@@ -699,8 +700,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [animate] If it should be animated.
      */
     filter: function(value, list, animate) {
-        var lowercase = !this.cfg.caseSensitive,
-            filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, lowercase),
+        var normalize = this.cfg.filterNormalize,
+            filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, normalize),
             items = list.children('li.ui-picklist-item'),
             animated = animate || this.isAnimated();
 
@@ -713,7 +714,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < items.length; i++) {
                 var item = items.eq(i),
-                itemLabel = PrimeFaces.toSearchable(item.attr('data-item-label'), false, lowercase),
+                itemLabel = PrimeFaces.toSearchable(item.attr('data-item-label'), false, normalize),
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
