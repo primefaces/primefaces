@@ -27,6 +27,7 @@ A bar chart provides a way of showing data values represented as vertical bars. 
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | model | null | ChartModel | Model object of data and settings.
+| ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility. (default to chart title).
 | style | null | String | Inline style of the component.
 | styleClass | null | String | Style class of the component.
 | widgetVar | null | String | Name of the client side widget.
