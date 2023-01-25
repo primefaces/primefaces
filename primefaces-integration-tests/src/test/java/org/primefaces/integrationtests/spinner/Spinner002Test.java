@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public class Spinner002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("Spinner: Test decimal increment by 0.50")
+    @DisplayName("Spinner: Test decimal increment by 0.2")
     public void testSpinUp(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
@@ -52,26 +52,27 @@ public class Spinner002Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("0.50", spinner.getValue());
+        Assertions.assertEquals("0.20", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
-    @DisplayName("Spinner: Test decimal decrement by 0.50")
+    @DisplayName("Spinner: Test decimal decrement by 0.3")
     public void testSpinDown(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
         Assertions.assertEquals("", spinner.getValue());
 
         // Act
-        spinner.setValue("4.75");
+        spinner.setValue("4.7");
+        spinner.decrement();
         spinner.decrement();
         spinner.decrement();
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("4.25", spinner.getValue());
+        Assertions.assertEquals("4.40", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
@@ -143,10 +144,33 @@ public class Spinner002Test extends AbstractPrimePageTest {
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(7)
+    @DisplayName("Spinner: GitHub #9442 Test decimal increment by 0.7")
+    public void testSpinUp7(Page page) {
+        // Arrange
+        Spinner spinner = page.spinner;
+        Assertions.assertEquals("", spinner.getValue());
+
+        // Act
+        spinner.increment();
+        spinner.increment();
+        spinner.increment();
+        spinner.increment();
+        spinner.increment();
+        spinner.increment();
+        spinner.increment();
+        page.button.click();
+
+        // Assert
+        Assertions.assertEquals("0.70", spinner.getValue());
+        assertConfiguration(spinner.getWidgetConfiguration());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Spinner Config = " + cfg);
-        Assertions.assertEquals(0.25, cfg.getDouble("step"));
+        Assertions.assertEquals(0.1, cfg.getDouble("step"));
         Assertions.assertEquals(".", cfg.get("decimalSeparator"));
         Assertions.assertEquals(",", cfg.get("thousandSeparator"));
         if (cfg.has("decimalPlaces")) {

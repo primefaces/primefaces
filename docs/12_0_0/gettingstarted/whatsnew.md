@@ -25,7 +25,11 @@ This page contains a list of big features. Please check the GitHub issues for al
   * ExcelOptions: Added new property `numberFormat` in order to use a custom java.text.DecimalFormat for formatting numbers in Excel export. If null, defaults to decimal format of current Locale.
   * ExcelOptions: Added new property `currencyFormat` in order to use a custom java.text.DecimalFormat for formatting currency in Excel export. If null, defaults to decimal format of current Locale.
 * DatePicker: added `showMinMaxRange` attribute to only display valid dates within the min/max range.
+* Dialog Framework
+  * Improved responsive dialogs including showcase-example.
+  * DialogFrameworkOptions including builder as convenient way to create dialog-options.
 * FileUpload: added `clear()` widget method in SkinSimple mode to clear out selected file.
+* Galleria: added `hide()` widget method to hide content on fullscreen mode.
 * GMap
   * Added `Symbol` which can be used as marker icon.
   * Models and events now have generically typed data instead of `Object`.
@@ -48,12 +52,10 @@ This page contains a list of big features. Please check the GitHub issues for al
 * ToggleSwitch: added `onIcon` and `offIcon` attributes
 * Tooltip: added `autoHide` attribute when set to false will keep the tooltip showing while focused.
 * OverlayPanel: added `autoHide` attribute when set to false will keep the overlay showing while focused.
-* Dialog Framework
-  * Improved responsive dialogs including Showcase-example.
-  * DialogFrameworkOptions including builder as convenient way to create dialog-options.
+* PrimeIcons: updated to 6.0.1.
 
 Look into [migration guide](https://primefaces.github.io/primefaces/12_0_0/#/../migrationguide/12_0_0) for more enhancements and changes.
-Or check the list of 300+ issues closed for
+Or check the list of 400+ issues closed for
 [12.0.0-RC1](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0-RC1),
 [12.0.0-RC2](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0-RC2),
 [12.0.0-RC3](https://github.com/primefaces/primefaces/issues?q=is%3Aclosed+milestone%3A12.0.0-RC3)

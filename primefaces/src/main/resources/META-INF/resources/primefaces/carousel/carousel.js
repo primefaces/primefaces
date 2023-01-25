@@ -42,6 +42,7 @@
  * @prop {{breakpoint:string, numVisible:number, numScroll:number}[]} cfg.responsiveOptions An array of options for responsive design
  * @prop {string} cfg.orientation Specifies the layout of the component, valid layouts are horizontal or vertical
  * @prop {boolean} cfg.circular Sets continuous scrolling
+ * @prop {boolean} cfg.paginator Whether to display the paginator or not.
  * @prop {number} cfg.autoplayInterval Sets the time in milliseconds to have Carousel start scrolling automatically
  * after being initialized.
  *
@@ -72,6 +73,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.orientation = this.cfg.orientation || 'horizontal';
         this.cfg.circular = this.cfg.circular || false;
         this.cfg.autoplayInterval = this.cfg.autoplayInterval || 0;
+        this.cfg.paginator = this.cfg.paginator === undefined ? true : this.cfg.paginator;
 
         this.remainingItems = 0;
         this.isRemainingItemsAdded = false;
@@ -149,10 +151,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             if (this.isVertical) {
                 this.itemsContent.swipe({
                     swipeUp:function(e) {
-                        $this.navBackward(e);
+                        $this.navForward(e);
                     },
                     swipeDown: function(e) {
-                        $this.navForward(e);
+                        $this.navBackward(e);
                     },
                     excludedElements: PrimeFaces.utils.excludedSwipeElements()
                 });
@@ -160,10 +162,10 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 this.itemsContent.swipe({
                     swipeLeft:function(e) {
-                        $this.navBackward(e);
+                        $this.navForward(e);
                     },
                     swipeRight: function(e) {
-                        $this.navForward(e);
+                        $this.navBackward(e);
                     },
                     excludedElements: PrimeFaces.utils.excludedSwipeElements()
                 });
@@ -652,10 +654,12 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
     renderIndicators: function() {
         var indicatorsHtml = '';
 
-        for (var i = 0; i < this.totalIndicators; i++) {
-            indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i  ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+        if (this.cfg.paginator) {
+            for (var i = 0; i < this.totalIndicators; i++) {
+                indicatorsHtml += '<li class="ui-carousel-indicator ' + (this.page === i ? 'ui-state-highlight' : '') + '"><button class="ui-link" type="button"></button></li>';
+            }
         }
-
+        
         return indicatorsHtml;
     },
 

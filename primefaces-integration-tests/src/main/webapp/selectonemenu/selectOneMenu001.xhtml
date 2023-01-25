@@ -12,13 +12,26 @@
     <h:body>
 
         <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
             <p:selectOneMenu id="selectonemenu" value="#{selectOneMenu001.value}">
                 <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true"/>
                 <f:selectItems value="#{selectOneMenu001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
-                <p:ajax event="itemSelect" process="@this" listener="#{selectOneMenu001.onAjax}"/>
+                <p:ajax event="itemSelect" process="@this" listener="#{selectOneMenu001.onAjaxItemSelect}"/>
             </p:selectOneMenu>
 
             <p:commandButton id="button" update="@form" value="Submit"/>
+
+            <hr/>
+
+            <p:selectOneMenu id="selectonemenu2" value="#{selectOneMenu001.value2}">
+                <f:selectItem itemLabel="Select a driver" itemValue="" noSelectionOption="true"/>
+                <f:selectItems value="#{selectOneMenu001.drivers}" var="driver" itemLabel="#{driver.name}" itemValue="#{driver.id}"/>
+                <p:ajax event="change" process="@this" listener="#{selectOneMenu001.onAjaxChange()}"/>
+            </p:selectOneMenu>
+
         </h:form>
 
     </h:body>

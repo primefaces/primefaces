@@ -72,10 +72,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
                 });
                 if (this.display.attr("tabindex") >= 0) {
                     this.display.on("keydown", function(e){
-                        var keyCode = $.ui.keyCode,
-                        key = e.which;
-
-                        if(key === keyCode.SPACE || key === keyCode.ENTER) {
+                        if (PrimeFaces.utils.isActionKey(e)) {
                             $this.display.trigger($this.cfg.event);
                             e.preventDefault();
                         }
@@ -110,9 +107,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
 
             /* to enter space in inplace input within multi-selection dataTable */
             this.content.find('input:text,textarea').on('keydown.inplace-text', function(e) {
-                var keyCode = $.ui.keyCode;
-
-                if(e.which === keyCode.SPACE) {
+                if(e.key === ' ') {
                     e.stopPropagation();
                 }
             });

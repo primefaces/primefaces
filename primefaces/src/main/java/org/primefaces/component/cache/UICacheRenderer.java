@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,34 @@ package org.primefaces.component.cache;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class UICacheRenderer extends CoreRenderer {
 
+    private static final Logger LOGGER = Logger.getLogger(UICacheRenderer.class.getName());
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         UICache uiCache = (UICache) component;
+
+        // print exception in development stage
+        if (LOGGER.isLoggable(Level.WARNING) && context.getApplication().getProjectStage() == ProjectStage.Development) {
+            boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
+            if (moveScriptsToBottom) {
+                LOGGER.log(Level.WARNING, "Using p:cache in combination with PrimeFaces.MOVE_SCRIPTS_TO_BOTTOM may cause Javascript code to stop working.");
+            }
+        }
 
         if (!uiCache.isDisabled()) {
             ResponseWriter writer = context.getResponseWriter();

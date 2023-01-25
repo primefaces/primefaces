@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import javax.inject.Named;
 
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
 
@@ -53,6 +54,10 @@ public class SelectOneRadio002 implements Serializable {
     public void init() {
         drivers = driverService.getDrivers();
         value = 3;
+    }
+
+    public void onAjaxChange() {
+        TestUtils.addMessage(Integer.valueOf(value).toString(), Integer.valueOf(value).toString());
     }
 
 }

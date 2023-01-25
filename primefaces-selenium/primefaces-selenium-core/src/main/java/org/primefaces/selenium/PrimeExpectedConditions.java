@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package org.primefaces.selenium;
+
+import java.io.File;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -83,22 +85,27 @@ public final class PrimeExpectedConditions {
         return new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver webDriver) {
-                return (Boolean) PrimeSelenium.executeScript(
-                            "var elem = arguments[0],"
-                                        + "    box = elem.getBoundingClientRect(),"
-                                        + "    cx = box.left + box.width / 2,"
-                                        + "    cy = box.top + box.height / 2,"
-                                        + "    e = document.elementFromPoint(cx, cy);"
-                                        + "for (; e; e = e.parentElement) {"
-                                        + "    if (e === elem) { return true; }"
-                                        + "}"
-                                        + "return false;",
-                            element);
+                return (Boolean) PrimeSelenium.isVisibleInViewport(element);
             }
 
             @Override
             public String toString() {
                 return "is " + element + " visible in viewport";
+            }
+        };
+    }
+
+    public static ExpectedCondition<Boolean> fileExists(String path) {
+        return new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                File f = new File(path);
+                return f.exists() && f.isFile();
+            }
+
+            @Override
+            public String toString() {
+                return String.format("File '%s' to be present within the time specified", path);
             }
         };
     }

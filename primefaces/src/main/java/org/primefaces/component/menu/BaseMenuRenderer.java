@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,20 @@ package org.primefaces.component.menu;
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
@@ -71,11 +75,22 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {
+        boolean isMenuItemComponent = menuitem instanceof UIComponent;
+        if (isMenuItemComponent) {
+            UIComponent uiMenuItem = (UIComponent) menuitem;
+            UIComponent custom = uiMenuItem.getFacet("custom");
+            if (ComponentUtils.shouldRenderFacet(custom)) {
+                custom.encodeAll(context);
+                return;
+            }
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
         boolean disabled = menuitem.isDisabled();
         String rel = menuitem.getRel();
+        String ariaLabel = menuitem.getAriaLabel();
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", tabindex, null);
@@ -104,12 +119,20 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
             writer.writeAttribute("rel", rel, null);
         }
 
+        if (LangUtils.isNotEmpty(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+
         if (disabled) {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
         else {
             encodeOnClick(context, menu, menuitem);
+        }
+
+        if (isMenuItemComponent) {
+            renderPassThruAttributes(context, (UIComponent) menuitem);
         }
 
         encodeMenuItemContent(context, menu, menuitem);
@@ -129,14 +152,11 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String icon = menuitem.getIcon();
         Object value = menuitem.getValue();
 
-        if (icon != null) {
-            writer.startElement("span", null);
-            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
-            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
-            writer.endElement("span");
+        boolean isIconLeft = "left".equals(menuitem.getIconPos());
+        if (isIconLeft) {
+            encodeIcon(writer, menu, menuitem, isIconLeft);
         }
 
         writer.startElement("span", null);
@@ -155,6 +175,21 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         }
 
         writer.endElement("span");
+
+        boolean isIconRight = "right".equals(menuitem.getIconPos());
+        if (isIconRight) {
+            encodeIcon(writer, menu, menuitem, isIconRight);
+        }
+    }
+
+    protected void encodeIcon(ResponseWriter writer, AbstractMenu menu, MenuItem menuitem, boolean shouldRender) throws IOException {
+        String icon = menuitem.getIcon();
+        if (icon != null && shouldRender) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon + " ui-menuitem-icon-" + menuitem.getIconPos(), null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
+            writer.endElement("span");
+        }
     }
 
     protected void encodeOverlayConfig(FacesContext context, OverlayMenu menu, WidgetBuilder wb) throws IOException {

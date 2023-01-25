@@ -79,8 +79,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
     disable: function() {
         this.jq.removeClass('ui-state-hover ui-state-focus ui-state-active')
                 .addClass('ui-state-disabled')
-                .attr('tabindex', '-1')
-                .attr('aria-disabled', 'true');
+                .attr('tabindex', '-1');
     },
 
     /**
@@ -88,7 +87,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
      */
     enable: function() {
         this.jq.removeClass('ui-state-disabled')
-                .removeAttr('tabindex aria-disabled');
+                .removeAttr('tabindex');
     }
 
 });

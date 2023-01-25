@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -269,7 +269,11 @@ public class ComponentUtils {
     }
 
     public static boolean isTouchable(FacesContext context, TouchAware component) {
-        return component.isTouchable() || PrimeRequestContext.getCurrentInstance(context).isTouchable();
+        Boolean local = component.isTouchable();
+        if (local != null) {
+            return local;
+        }
+        return PrimeRequestContext.getCurrentInstance(context).isTouchable();
     }
 
     public static boolean isFlex(FacesContext context, FlexAware component) {
@@ -670,5 +674,23 @@ public class ComponentUtils {
                 requestMap.put(var, oldValue);
             }
         }
+    }
+
+    public static int getRenderedChildCount(UIComponent component) {
+        int renderedChildCount = 0;
+
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child.isRendered()) {
+                renderedChildCount++;
+            }
+        }
+
+        return renderedChildCount;
+    }
+
+    public static boolean isDisabledOrReadonly(UIInput component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
+                || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
     }
 }

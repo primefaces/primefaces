@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,6 +44,7 @@ public abstract class DataGridBase extends UIPageableData
         layout,
         rowStyle,
         rowStyleClass,
+        rowTitle,
         flex
     }
 
@@ -119,6 +120,14 @@ public abstract class DataGridBase extends UIPageableData
 
     public void setRowStyleClass(String rowStyleClass) {
         getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
+    }
+
+    public String getRowTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.rowTitle, null);
+    }
+
+    public void setRowTitle(String rowTitle) {
+        getStateHelper().put(PropertyKeys.rowTitle, rowTitle);
     }
 
     @Override

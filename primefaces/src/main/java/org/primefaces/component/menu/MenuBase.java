@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,8 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
         toggleable,
         statefulGlobal,
         collision,
-        maxHeight
+        maxHeight,
+        appendTo
     }
 
     public MenuBase() {
@@ -164,5 +165,13 @@ public abstract class MenuBase extends AbstractMenu implements Widget, OverlayMe
 
     public void setStatefulGlobal(boolean statefulGlobal) {
         getStateHelper().put(PropertyKeys.statefulGlobal, statefulGlobal);
+    }
+
+    public String getAppendTo() {
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
+    }
+
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 }

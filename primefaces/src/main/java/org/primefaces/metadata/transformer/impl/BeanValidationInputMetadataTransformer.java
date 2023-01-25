@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.validate.bean.*;
 
@@ -55,7 +56,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
     @Override
     public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
-        if (input.isRequired() && isMaxlenghtSet(input)) {
+        if (ComponentUtils.isDisabledOrReadonly(input) || (input.isRequired() && isMaxlenghtSet(input))) {
             return;
         }
 

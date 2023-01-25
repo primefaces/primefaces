@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,6 @@ public class PanelGridBodyRowRenderer extends CoreRenderer implements HelperRowR
 
         writer.startElement("tr", row);
         writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
-        writer.writeAttribute("role", "row", null);
         renderDynamicPassThruAttributes(context, row);
         renderChildren(context, row);
         writer.endElement("tr");

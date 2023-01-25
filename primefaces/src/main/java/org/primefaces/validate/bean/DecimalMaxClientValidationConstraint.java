@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,16 @@
  */
 package org.primefaces.validate.bean;
 
-import org.primefaces.util.HTML;
-
 import java.util.Map;
+
+import org.primefaces.util.HTML;
 
 public class DecimalMaxClientValidationConstraint extends AbstractClientValidationConstraint {
 
     public static final String CONSTRAINT_ID = "DecimalMax";
     public static final String MESSAGE_METADATA = "data-p-decimalmax-msg";
-    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
-    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = String.format("%s.%s", javax.validation.constraints.NotNull.class.getPackage().getName(), CONSTRAINT_ID);
+    public static final String MESSAGE_ID =  String.format("{%s.%s}", CONSTRAINT_CLASS_NAME, ATTR_MESSAGE);
 
     public DecimalMaxClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);

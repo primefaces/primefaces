@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,64 +23,22 @@
  */
 package org.primefaces.component.barchart;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.UIChart;
 
-import org.primefaces.component.api.PrimeClientBehaviorHolder;
-import org.primefaces.component.api.Widget;
-
-public abstract class BarChartBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
-
-    public static final String COMPONENT_FAMILY = "org.primefaces.component";
+public abstract class BarChartBase extends UIChart {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BarChartRenderer";
-
-    public enum PropertyKeys {
-
-        widgetVar,
-        model,
-        style,
-        styleClass
-    }
 
     public BarChartBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
     @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
     public org.primefaces.model.charts.bar.BarChartModel getModel() {
         return (org.primefaces.model.charts.bar.BarChartModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
     public void setModel(org.primefaces.model.charts.bar.BarChartModel model) {
         getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -100,7 +100,6 @@ public class CommandLinkRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ARIA_LABEL, link.getAriaLabel(), null);
         if (link.isDisabled()) {
             writer.writeAttribute("tabindex", "-1", null);
-            writer.writeAttribute("aria-disabled", "true", null);
         }
 
         if (ajax) {

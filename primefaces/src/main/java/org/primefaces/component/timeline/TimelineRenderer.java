@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -461,10 +461,14 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         if (LangUtils.isNotBlank(event.getStyleClass())) {
-            fsw.write(", className: \"" + event.getStyleClass() + "\"");
+            fsw.write(", className: \"" + EscapeUtils.forJavaScript(event.getStyleClass()) + "\"");
         }
         else {
             fsw.write(", className: null");
+        }
+
+        if (LangUtils.isNotBlank(event.getType())) {
+            fsw.write(", type: \"" + EscapeUtils.forJavaScript(event.getType()) + "\"");
         }
 
         Object data = event.getData();

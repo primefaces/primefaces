@@ -59,7 +59,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
-        this.cfg.appendTo = '@(body)';
+        if (!this.cfg.appendTo) {
+            this.cfg.appendTo = '@(body)';
+        }
         PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
 
@@ -161,7 +163,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     handleViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.align();
         } else {
             this.hide();

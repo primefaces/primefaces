@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,8 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight
+        scrollHeight,
+        filterNormalize
     }
 
     public SelectOneListboxBase() {
@@ -108,5 +109,13 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

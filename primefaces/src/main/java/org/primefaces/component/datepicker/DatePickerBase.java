@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,14 +30,11 @@ import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
 
-import org.primefaces.component.api.InputHolder;
-import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.UICalendar;
-import org.primefaces.component.api.Widget;
+import org.primefaces.component.api.*;
 import org.primefaces.model.datepicker.DateMetadataModel;
 import org.primefaces.util.CalendarUtils;
 
-public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder {
+public abstract class DatePickerBase extends UICalendar implements Widget, InputHolder, MixedClientBehaviorHolder, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -99,7 +96,9 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
         showWeek,
         weekCalculator,
         showMinMaxRange,
-        model
+        autoMonthFormat,
+        model,
+        flex
     }
 
     public DatePickerBase() {
@@ -490,6 +489,23 @@ public abstract class DatePickerBase extends UICalendar implements Widget, Input
 
     public void setShowMinMaxRange(boolean showMinMaxRange) {
         getStateHelper().put(PropertyKeys.showMinMaxRange, showMinMaxRange);
+    }
+
+    public boolean isAutoMonthFormat() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoMonthFormat, true);
+    }
+
+    public void setAutoMonthFormat(boolean autoMonthFormat) {
+        getStateHelper().put(PropertyKeys.autoMonthFormat, autoMonthFormat);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 
     @Override

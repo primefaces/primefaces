@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,33 @@ public class GridLayoutUtils {
             .build();
 
     private GridLayoutUtils() {
+    }
+
+    /**
+     * Get grid or flex main container grid Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getResponsiveClass(boolean flex) {
+        return flex ? "ui-grid-responsive" : "ui-grid ui-grid-responsive";
+    }
+
+    /**
+     * Get grid or flex main container grid Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getFlexGridClass(boolean flex) {
+        return flex ? "grid" : "ui-g";
+    }
+
+    /**
+     * Get grid or flex column Class.
+     * @param flex is either flex or grid CSS
+     * @return  either flex or grid CSS based on boolean
+     */
+    public static String getColumnClass(boolean flex, int columns) {
+        return flex ? getFlexColumnClass(columns) : getColumnClass(columns);
     }
 
     /**

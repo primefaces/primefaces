@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.export;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -42,8 +43,10 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExportConfiguration;
 import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.ExcelStylesManager;
+import org.primefaces.util.LocaleUtils;
 
 public class DataTableExcelExporter extends DataTableExporter {
 
@@ -72,7 +75,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
-        stylesManager = new ExcelStylesManager(wb, LocaleUtils.getCurrentLocale(context), options);
+        stylesManager = ExcelStylesManager.createExcelStylesManager(wb, LocaleUtils.getCurrentLocale(context), options);
         Sheet sheet = createSheet(wb, sheetName, options);
         applyOptions(wb, table, sheet, options);
         exportTable(context, table, sheet, exportConfiguration);
@@ -217,81 +220,74 @@ public class DataTableExcelExporter extends DataTableExporter {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
         }
-        for (UIComponent component : cg.getChildren()) {
-            if (!(component instanceof org.primefaces.component.row.Row)) {
-                continue;
-            }
-            org.primefaces.component.row.Row row = (org.primefaces.component.row.Row) component;
+        FacesContext context = FacesContext.getCurrentInstance();
+        table.forEachColumnGroupRow(context, cg, true, row -> {
+            final AtomicInteger colIndex = new AtomicInteger(0);
             int rowIndex = sheet.getLastRowNum() + 1;
             Row xlRow = sheet.createRow(rowIndex);
-            int colIndex = 0;
-            for (UIComponent rowComponent : row.getChildren()) {
-                if (!(rowComponent instanceof UIColumn)) {
-                    // most likely a ui:repeat which won't work here
-                    continue;
-                }
-                UIColumn column = (UIColumn) rowComponent;
-                if (!column.isRendered() || !column.isExportable()) {
-                    continue;
-                }
 
-                String text = null;
-                switch (columnType) {
-                    case HEADER:
-                        text = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
-                        break;
+            table.forEachColumn(context, row, true, true, false, column -> {
+                if (column.isRendered() && column.isExportable()) {
+                    String text = null;
+                    switch (columnType) {
+                        case HEADER:
+                            text = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
+                            break;
 
-                    case FOOTER:
-                        text = (column.getExportFooterValue() != null) ? column.getExportFooterValue() : column.getFooterText();
-                        break;
+                        case FOOTER:
+                            text = (column.getExportFooterValue() != null) ? column.getExportFooterValue() : column.getFooterText();
+                            break;
 
-                    default:
-                        text = null;
-                        break;
-                }
+                        default:
+                            text = null;
+                            break;
+                    }
 
-                // by default column has 1 rowspan && colspan
-                int rowSpan = column.getRowspan() - 1;
-                int colSpan = column.getColspan() - 1;
+                    // by default column has 1 rowspan && colspan
+                    int rowSpan = (column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan()) - 1;
+                    int colSpan = (column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan()) - 1;
 
-                if (rowSpan > 0 && colSpan > 0) {
-                    colIndex = calculateColumnOffset(sheet, rowIndex, colIndex);
-                    sheet.addMergedRegion(new CellRangeAddress(
-                                rowIndex, // first row (0-based)
-                                rowIndex + rowSpan, // last row (0-based)
-                                colIndex, // first column (0-based)
-                                colIndex + colSpan // last column (0-based)
-                    ));
-                    addColumnValue(xlRow, (short) colIndex, text);
-                    colIndex = colIndex + colSpan;
+                    if (rowSpan > 0 && colSpan > 0) {
+                        colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
+                        sheet.addMergedRegion(new CellRangeAddress(
+                                    rowIndex, // first row (0-based)
+                                    rowIndex + rowSpan, // last row (0-based)
+                                    colIndex.get(), // first column (0-based)
+                                    colIndex.get() + colSpan // last column (0-based)
+                        ));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                        colIndex.set(colIndex.get() + colSpan);
+                    }
+                    else if (rowSpan > 0) {
+                        sheet.addMergedRegion(new CellRangeAddress(
+                                    rowIndex, // first row (0-based)
+                                    rowIndex + rowSpan, // last row (0-based)
+                                    colIndex.get(), // first column (0-based)
+                                    colIndex.get() // last column (0-based)
+                        ));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                    }
+                    else if (colSpan > 0) {
+                        colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
+                        sheet.addMergedRegion(new CellRangeAddress(
+                                    rowIndex, // first row (0-based)
+                                    rowIndex, // last row (0-based)
+                                    colIndex.get(), // first column (0-based)
+                                    colIndex.get() + colSpan // last column (0-based)
+                        ));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                        colIndex.set(colIndex.get() + colSpan);
+                    }
+                    else {
+                        colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
+                        addColumnValue(xlRow, (short) colIndex.get(), text);
+                    }
+                    colIndex.incrementAndGet();
                 }
-                else if (rowSpan > 0) {
-                    sheet.addMergedRegion(new CellRangeAddress(
-                                rowIndex, // first row (0-based)
-                                rowIndex + rowSpan, // last row (0-based)
-                                colIndex, // first column (0-based)
-                                colIndex // last column (0-based)
-                    ));
-                    addColumnValue(xlRow, (short) colIndex, text);
-                }
-                else if (colSpan > 0) {
-                    colIndex = calculateColumnOffset(sheet, rowIndex, colIndex);
-                    sheet.addMergedRegion(new CellRangeAddress(
-                                rowIndex, // first row (0-based)
-                                rowIndex, // last row (0-based)
-                                colIndex, // first column (0-based)
-                                colIndex + colSpan // last column (0-based)
-                    ));
-                    addColumnValue(xlRow, (short) colIndex, text);
-                    colIndex = colIndex + colSpan;
-                }
-                else {
-                    colIndex = calculateColumnOffset(sheet, rowIndex, colIndex);
-                    addColumnValue(xlRow, (short) colIndex, text);
-                }
-                colIndex++;
-            }
-        }
+                return true;
+            });
+            return true;
+        });
         return true;
     }
 

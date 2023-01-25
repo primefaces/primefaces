@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,62 +47,6 @@ public class AgentUtils {
 
     public static boolean isFirefox(FacesContext context) {
         return userAgentContains(context, "Firefox");
-    }
-
-    public static boolean isEdge(FacesContext context) {
-        return userAgentContains(context, "Edge");
-    }
-
-    public static boolean isIE(FacesContext context) {
-        return userAgentContains(context, "MSIE");
-    }
-
-    /**
-     * @deprecated it is unused
-     */
-    @Deprecated
-    public static boolean isIE(FacesContext context, int value) {
-        String userAgent = getUserAgent(context);
-
-        if (userAgent == null) {
-            return false;
-        }
-        else {
-            int index = userAgent.indexOf("MSIE");
-
-            if (index == -1) {
-                return false;
-            }
-            else {
-                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
-
-                return version == value;
-            }
-        }
-    }
-
-    /**
-     * @deprecated it is unused
-     */
-    @Deprecated
-    public static boolean isLessThanIE(FacesContext context, int value) {
-        String userAgent = getUserAgent(context);
-
-        if (userAgent == null) {
-            return false;
-        }
-        else {
-            int index = userAgent.indexOf("MSIE");
-
-            if (index == -1) {
-                return false;
-            }
-            else {
-                int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
-
-                return version > value;
-            }
-        }
     }
 
     public static boolean isMac(FacesContext context) {

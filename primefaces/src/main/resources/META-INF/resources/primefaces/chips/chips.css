@@ -58,6 +58,7 @@
 
 .ui-fluid .ui-chips {
     display: flex;
+    flex: 1 1 auto;
 }
 
 .ui-fluid .ui-chips .ui-chips-container {

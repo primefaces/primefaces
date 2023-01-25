@@ -65,6 +65,13 @@
     float:left;
 }
 
+.ui-menu .ui-menuitem-icon-right {
+    margin-left: 0.5rem;
+}
+.ui-menu .ui-menuitem-icon-left {
+    margin-right: 0.5rem;
+}
+
 .ui-menu .ui-submenu-icon {
     margin-top: 1px;
 }
@@ -550,7 +557,6 @@ body .ui-menu .ui-divider.ui-divider-horizontal {
     -webkit-user-select:none;
     -khtml-user-select:none;
     -moz-user-select:none;
-    -ms-user-select:none;
     user-select:none;
     -webkit-tap-highlight-color:rgba(0,0,0,0);
 }

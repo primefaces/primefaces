@@ -16,12 +16,14 @@ You can also manage it by yourself via `webdriver.adapter`.
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-core</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
+    <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces-selenium-components</artifactId>
-    <version>11.0.0</version>
+    <version>12.0.0</version>
+    <scope>test</scope>
 </dependency>
 ```
 
@@ -30,7 +32,7 @@ You can also manage it by yourself via `webdriver.adapter`.
 PrimeFaces-Selenium comes with the right Selenium version as transitive dependency. So don't include your own version of Selenium or better check the version, which is used by PrimeFaces-Selenium.
 
 PrimeFaces-Selenium provides a hook-in to either startup a local server (`deployment.adapter`), or use a remote adress (`deployment.baseUrl`).
-Both can be set configured by providing a `/primefaces-selenium/config.properties`.
+Both can be set configured by providing a `/src/test/resources/primefaces-selenium/config.properties`.
 
 ### Remote Adress
 
@@ -65,6 +67,7 @@ Properties:
 |    webdriver.browser     | String  |         |       firefox / chrome / safari             |
 |   webdriver.headless     | boolean | false   |    if browser should be openend headless    |
 |   webdriver.version      | String  | newest  |  the webdriver version which should be used |
+|   webdriver.logLevel     | String  | WARNING |  the JUL log level which will be passed to the browser: ALL, FINEST, FINER, FINE, INFO, WARNING, SEVERE, OFF |
 |       timeout.gui        |   int   | 2       |       GUI timeout for waits in seconds      |
 |       timeout.ajax       |   int   | 10      |      AJAX timeout for guards in seconds     |
 |       timeout.http       |   int   | 10      |      HTTP timeout for guards in seconds     |
@@ -111,6 +114,7 @@ Currently, only the following components are implemented (partially):
 - OverlayPanel
 - Panel
 - Password
+- Picklist
 - Rating
 - Schedule
 - SelectBooleanCheckbox

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,19 @@
  */
 package org.primefaces.component.datatable.feature;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.*;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableBase;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
-
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.*;
 
 public class SelectionFeature implements DataTableFeature {
 
@@ -220,7 +221,7 @@ public class SelectionFeature implements DataTableFeature {
             requestMap.put(var, o);
         }
 
-        boolean selectable = table.isSelectionEnabled();
+        boolean selectable = table.isSelectionEnabled() && !table.isDisabledSelection();
 
         if (!containsVar) {
             requestMap.remove(var);

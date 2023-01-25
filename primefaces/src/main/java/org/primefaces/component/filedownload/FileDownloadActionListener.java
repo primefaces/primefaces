@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.StateHolder;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -80,7 +81,8 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     }
 
     protected void ajaxDownload(FacesContext context, StreamedContent content) {
-        String uri = DynamicContentSrcBuilder.buildStreaming(context, value, false);
+        UIComponent currentComponent = UIComponent.getCurrentComponent(context);
+        String uri = DynamicContentSrcBuilder.buildStreaming(context, currentComponent, value, false);
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
                 uri, content.getContentType(), content.getName(), monitorKeyCookieName));
@@ -102,7 +104,9 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         ResourceUtils.addNoCacheControl(externalContext);
 
         if (content.getContentLength() != null) {
-            externalContext.setResponseContentLength(content.getContentLength());
+            // GitHub #9485 Faces 4 will switch from int to long contentLength
+            // externalContext.setResponseContentLength(content.getContentLength());
+            externalContext.setResponseHeader("Content-Length", String.valueOf(content.getContentLength()));
         }
 
         try {

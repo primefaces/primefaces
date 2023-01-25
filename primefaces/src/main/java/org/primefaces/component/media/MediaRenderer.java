@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,6 @@ import org.primefaces.component.media.player.MediaPlayer;
 import org.primefaces.component.media.player.MediaPlayerFactory;
 import org.primefaces.component.media.player.PDFPlayer;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.AgentUtils;
 import org.primefaces.util.DynamicContentSrcBuilder;
 import org.primefaces.util.Lazy;
 
@@ -75,10 +74,6 @@ public class MediaRenderer extends CoreRenderer {
         writer.writeAttribute("type", player.getType(), null);
         writer.writeAttribute("data", src, null);
 
-        if (AgentUtils.isIE(context)) {
-            encodeIEConfig(writer, player);
-        }
-
         if (media.getStyleClass() != null) {
             writer.writeAttribute("class", media.getStyleClass(), null);
         }
@@ -102,14 +97,6 @@ public class MediaRenderer extends CoreRenderer {
         renderChildren(context, media);
 
         writer.endElement("object");
-    }
-
-    protected void encodeIEConfig(ResponseWriter writer, MediaPlayer player) throws IOException {
-        writer.writeAttribute("classid", player.getClassId(), null);
-
-        if (player.getCodebase() != null) {
-            writer.writeAttribute("codebase", player.getCodebase(), null);
-        }
     }
 
     protected void encodeParam(ResponseWriter writer, String name, Object value, boolean asAttribute) throws IOException {

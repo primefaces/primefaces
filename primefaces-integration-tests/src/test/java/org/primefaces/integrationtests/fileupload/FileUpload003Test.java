@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.fileupload;
 
 import java.io.File;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
@@ -92,13 +93,11 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file3.csv");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }
@@ -115,13 +114,11 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
         // Act
         File file = locateClientSideFile("file1.png");
-        fileUpload.setValue(file);
-        // for a very short time the widget value shows a message, assume the message disapeared already
-        Assertions.assertEquals("", fileUpload.getWidgetValue());
+        fileUpload.setValue(file, false);
 
         // Assert
+        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
         assertNoJavascriptErrors();
-        // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
     }

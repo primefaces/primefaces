@@ -360,7 +360,7 @@
             }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).on("keydown", function(e) {
-                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
+                if(e.key === ' ' || e.key === 'Enter') {
                     $(this).addClass('ui-state-active');
                 }
             }).on("keyup", function() {
@@ -543,10 +543,12 @@
         /**
          * Escapes the given value to be used as the content of an HTML element or attribute.
          * @param {string} value A string to be escaped
+         * @param {boolean | undefined} preventDoubleEscaping if true will not include ampersand to prevent double escaping
          * @return {string} The given value, escaped to be used as a text-literal within an HTML document.
          */
-        escapeHTML: function(value) {
-            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+        escapeHTML: function(value, preventDoubleEscaping) {
+            var regex = preventDoubleEscaping ? /[<>"'`=\/]/g : /[&<>"'`=\/]/g;
+            return String(value).replace(regex, function (s) {
                 return PrimeFaces.entityMap[s];
             });
         },
@@ -789,6 +791,7 @@
                 }
 
                 var cookieName = 'primefaces.download' + PrimeFaces.settings.viewId.replace(/\//g, '_');
+                cookieName = cookieName.substr(0, cookieName.lastIndexOf("."));
                 if (monitorKey && monitorKey !== '') {
                     cookieName += '_' + monitorKey;
                 }
@@ -925,7 +928,9 @@
          * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
     	 */
         openDialog: function(cfg) {
+            if (PrimeFaces.dialog) {
         	PrimeFaces.dialog.DialogHandler.openDialog(cfg);
+            }
         },
 
         /**
@@ -934,7 +939,9 @@
          * @param {PrimeFaces.dialog.DialogHandlerCfg} cfg Configuration of the dialog.
          */
         closeDialog: function(cfg) {
+            if (PrimeFaces.dialog) {
         	PrimeFaces.dialog.DialogHandler.closeDialog(cfg);
+            }
         },
 
         /**
@@ -943,7 +950,9 @@
          * @param {PrimeFaces.widget.ConfirmDialog.ConfirmDialogMessage} msg Message to show in a dialog.
          */
         showMessageInDialog: function(msg) {
+            if (PrimeFaces.dialog) {
         	PrimeFaces.dialog.DialogHandler.showMessageInDialog(msg);
+            }
         },
 
         /**
@@ -955,7 +964,7 @@
             if (msg.type === 'popup' && PrimeFaces.confirmPopup) {
                 PrimeFaces.confirmPopup.showMessage(msg);
             }
-            else {
+            else if (PrimeFaces.dialog) {
                 PrimeFaces.dialog.DialogHandler.confirm(msg);
             }
         },
@@ -1161,6 +1170,21 @@
         },
 
         /**
+         * Converts the provided string to searchable form.
+         * 
+         * @param {string} string to normalize.
+         * @param {boolean} lowercase flag indicating whether the string should be lower cased.
+         * @param {boolean} normalize flag indicating whether the string should be normalized (accents to be removed
+         * from characters).
+         * @returns {string} searchable string.
+         */
+        toSearchable: function(string, lowercase, normalize) {
+            if (!string) return '';
+            var result = normalize ? string.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : string;
+            return lowercase ? result.toLowerCase() : result;
+        },
+
+        /**
          * Reset any state variables on update="@all".
          */
         resetState: function() {
@@ -1206,6 +1230,13 @@
          * @type {boolean}
          */
         customFocus : false,
+        
+        /**
+         * PrimeFaces per defaults hides all overlays on scrolling/resizing to avoid positioning problems.
+         * This is really hard to overcome in selenium tests and we can disable this behavior with this setting.
+         * @type {boolean}
+         */
+        hideOverlaysOnViewportChange : true,
 
         /**
          * A list of widgets that were once instantiated, but are not removed from the DOM, such as due to the result

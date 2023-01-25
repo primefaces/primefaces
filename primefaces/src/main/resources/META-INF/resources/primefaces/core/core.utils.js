@@ -10,12 +10,13 @@ if (!PrimeFaces.utils) {
          * Finds the element to which the overlay panel should be appended. If none is specified explicitly, append the
          * panel to the body.
          * @param {PrimeFaces.widget.DynamicOverlayWidget} widget A widget that has a panel to be appended.
-         * @param {JQuery} [overlay] The DOM element for the overlay.
+         * @param {JQuery} target The DOM element that is the target of this overlay
+         * @param {JQuery} overlay The DOM element for the overlay.
          * @return {string | null} The search expression for the element to which the overlay panel should be appended.
          */
-        resolveAppendTo: function(widget, overlay) {
-            if (widget && widget.jq[0]) {
-                var dialog = widget.jq[0].closest('.ui-dialog');
+        resolveAppendTo: function(widget, target, overlay) {
+            if (widget && target && target[0]) {
+                var dialog = target[0].closest('.ui-dialog');
 
                 if (dialog && overlay && overlay.length) {
                     var $dialog = $(dialog);
@@ -164,7 +165,7 @@ if (!PrimeFaces.utils) {
             });
             $document.on('keydown.' + id, function(event) {
                 var target = $(event.target);
-                if (event.which === $.ui.keyCode.TAB) {
+                if (event.key === 'Tab') {
                     var tabbables = tabbablesCallback();
                     if (tabbables.length) {
                         var first = tabbables.filter(':first'),
@@ -307,7 +308,9 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-                hideCallback(e, $eventTarget);
+                if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                    hideCallback(e, $eventTarget);
+                }
             });
 
             return {
@@ -387,9 +390,12 @@ if (!PrimeFaces.utils) {
          * @return {PrimeFaces.UnbindCallback} unbind callback handler
          */
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
-
-            var scrollParent = widget.getJQ().scrollParent();
-            if (PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
+            var scrollParent;
+            var widgetJq = widget.getJQ();
+            if (widgetJq && typeof widgetJq.scrollParent === 'function') {
+                scrollParent = widgetJq.scrollParent();
+            }
+            if (!scrollParent || PrimeFaces.utils.isScrollParentWindow(scrollParent)) {
                 scrollParent = $(window);
             }
 
@@ -551,47 +557,44 @@ if (!PrimeFaces.utils) {
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
          */
         blockEnterKey: function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
+            if(e.key === 'Enter') {
                 e.preventDefault();
             }
         },
 
         /**
-         * Ignores certain keys on filter input text box. Useful in filter input events in many components.
+         * Is this SPACE or ENTER key. Used throughout codebase to trigger and action.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the key is an action key, or `false` otherwise.
+         */
+        isActionKey: function(e) {
+            return e.key === ' ' || e.key === 'Enter';
+        },
+
+        /**
+         * Checks if the key pressed is a printable key like 'a' or '4' etc.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the key is a printable key, or `false` otherwise.
+         */
+        isPrintableKey: function(e) {
+            return e.key.length === 1 || e.key === 'Unidentified';
+        },
+
+        /**
+         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
          * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
          */
         ignoreFilterKey: function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode,
-            ignoredKeys = [
-                keyCode.END,
-                keyCode.HOME,
-                keyCode.LEFT,
-                keyCode.RIGHT,
-                keyCode.UP,
-                keyCode.DOWN,
-                keyCode.TAB,
-                16/*Shift*/,
-                17/*Ctrl*/,
-                18/*Alt*/,
-                91, 92, 93/*left/right Win/Cmd*/,
-                keyCode.ESCAPE,
-                keyCode.PAGE_UP,
-                keyCode.PAGE_DOWN,
-                19/*pause/break*/,
-                20/*caps lock*/,
-                44/*print screen*/,
-                144/*num lock*/,
-                145/*scroll lock*/];
-
-            if (ignoredKeys.indexOf(key) > -1) {
-                return true;
+            switch (e.key) {
+                case 'Backspace':
+                case 'Enter':
+                case 'Delete':
+                    return false;
+                    break;
+                default:
+                    return !PrimeFaces.utils.isPrintableKey(e);
             }
-            return false;
         },
 
         /**

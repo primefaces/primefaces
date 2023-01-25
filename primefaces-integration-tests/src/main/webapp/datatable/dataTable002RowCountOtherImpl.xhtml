@@ -16,8 +16,8 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:dataTable id="datatable" value="#{dataTable002RowCountOtherImpl.lazyDataModel}" var="lang" paginator="true" rows="10"
-                         filterEvent="enter"
+            <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable002RowCountOtherImpl.lazyDataModel}" var="lang"
+                         paginator="true" rows="10" filterEvent="enter"
                          selectionMode="single" selection="#{dataTable002RowCountOtherImpl.selectedProgrammingLanguage}">
                 <p:ajax event="rowSelect" listener="#{dataTable002RowCountOtherImpl.onRowSelect}"/>
 
@@ -27,12 +27,21 @@
 
                 <p:column field="firstAppeared" filterMatchMode="gte"/>
 
+                <p:column field="type" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectCheckboxMenu id="filterType" onchange="PF('datatable').filter()" multiple="true" updateLabel="true">
+                            <f:selectItems value="#{dataTable002RowCountOtherImpl.types}"/>
+                        </p:selectCheckboxMenu>
+                    </f:facet>
+                </p:column>
+
                 <p:column>
                     <p:commandButton value="Delete" action="#{dataTable002RowCountOtherImpl.delete(lang)}" update="datatable" />
                 </p:column>
             </p:dataTable>
 
             <p:commandButton id="buttonSubmit" value="Submit" update="@form" action="#{dataTable002RowCountOtherImpl.submit}"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
         </h:form>
 
     </h:body>

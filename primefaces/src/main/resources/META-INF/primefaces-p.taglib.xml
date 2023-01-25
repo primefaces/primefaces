@@ -43,6 +43,12 @@
     </function>
 
     <function>
+        <function-name>shouldRenderFacet</function-name>
+        <function-class>org.primefaces.util.ComponentUtils</function-class>
+        <function-signature>java.lang.Boolean shouldRenderFacet(javax.faces.component.UIComponent)</function-signature>
+    </function>
+
+    <function>
         <function-name>escapeJavaScriptVarName</function-name>
         <function-class>org.primefaces.util.EscapeUtils</function-class>
         <function-signature>java.lang.String forJavaScriptVarName(java.lang.String)</function-signature>
@@ -419,6 +425,12 @@
             <handler-class>org.primefaces.behavior.confirm.ConfirmBehaviorHandler</handler-class>
         </behavior>
         <attribute>
+            <description>Source of the confirmation component. Valid values are the clientId of the source component and "this".</description>
+            <name>source</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <description>Type of the confirmation component.</description>
             <name>type</name>
             <required>false</required>
@@ -500,75 +512,6 @@
         </attribute>
     </tag>
 
-    <tag>
-        <description>Repeat is an alternative to the standard ui:repeat component, that fix the compatibility with Mojarra. There are no additional features and
-            usage is same as ui:repeat. Do not use with Apache MyFaces. Upgrade to Mojarra 2.3.18, 3.0.3 or 4.0+ if possible.
-        </description>
-        <tag-name>repeat</tag-name>
-        <component>
-            <component-type>org.primefaces.component.UIRepeat</component-type>
-        </component>
-        <attribute>
-            <description>The name of a collection of items that this tag iterates over. The collection may be a List, array, java.sql.ResultSet, or an
-                individual java Object. If the collection is null, this tag does nothing.
-            </description>
-            <name>value</name>
-            <required>true</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>Name of the exported scoped variable for the current item of the iteration. This scoped variable has nested visibility. Its type
-                depends on the object of the underlying collection.
-            </description>
-            <name>var</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Name of the exported request scoped variable for the status of the iteration. Object is a POJO with the following read-only JavaBeans
-                properties. This scoped variable has nested visibility.
-            </description>
-            <name>varStatus</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>Read-write property setting the offset from the beginning of the collection from which to start the iteration. If not set, this offset
-                is not considered and iteration will start at the beginning of the collection.
-            </description>
-            <name>offset</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>Iteration will only process every step items of the collection, starting with the first one.</description>
-            <name>step</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>Read-write property setting the size of the collection to iterate. If this value is less than the actual size of the collection, a
-                FacesException must be thrown.
-            </description>
-            <name>size</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>If value specified: Iteration begins at the item located at the specified index. First item of the collection has index 0. If value not specified: Iteration begins with index set at the specified value.
-            </description>
-            <name>begin</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>If value specified: Iteration ends at the item located at the specified index (inclusive). If value not specified: Iteration ends when index reaches the specified value (inclusive).
-            </description>
-            <name>end</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-    </tag>
     <tag>
         <description>
             <![CDATA[Util tag to import constants.]]>
@@ -1236,14 +1179,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute when input element loses focus.]]>
-            </description>
-            <name>onblur</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Client side callback to execute when input element loses focus and its value has been modified since gaining focus.]]>
             </description>
             <name>onchange</name>
@@ -1660,7 +1595,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -1668,7 +1603,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>
@@ -2255,6 +2190,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the block. Default is '0', meaning immediate.]]>
+            </description>
+            <name>delay</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -2326,6 +2269,14 @@
                 <![CDATA[Defines display mode of root link, valid values are "icon" default and "text".]]>
             </description>
             <name>homeDisplay</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines home icon CSS class, default value is "ui-icon ui-icon-home".]]>
+            </description>
+            <name>homeIcon</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -3821,6 +3772,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.]]>
+            </description>
+            <name>sourceUrl</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -4023,6 +3982,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enables paginator links. Default is true.]]>
+            </description>
+            <name>paginator</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -4062,88 +4029,6 @@
                 <![CDATA[Prevents hidden content to be shown.]]>
             </description>
             <name>disabled</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>chart</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Chart</component-type>
-            <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Type of the chart.]]>
-            </description>
-            <name>type</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Model of the chart.]]>
-            </description>
-            <name>model</name>
-            <required>false</required>
-            <type>org.primefaces.model.chart.ChartModel</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the component.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the component.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[In responsive mode, chart is redrawn when window is resized.]]>
-            </description>
-            <name>responsive</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -5083,6 +4968,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the column.]]>
             </description>
             <name>style</name>
@@ -5339,6 +5232,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the number of rows the column spans to be exported.]]>
+            </description>
+            <name>exportRowspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the number of columns the column spans to be exported.]]>
+            </description>
+            <name>exportColspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5350,6 +5259,14 @@
                 <![CDATA[Defines if the footer value of column to be exported.]]>
             </description>
             <name>exportFooterValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -5468,6 +5385,14 @@
             <name>sortBy</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -5760,6 +5685,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines the number of rows the column spans to be exported.]]>
+            </description>
+            <name>exportRowspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines the number of columns the column spans to be exported.]]>
+            </description>
+            <name>exportColspan</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines if the header value of column to be exported.]]>
             </description>
             <name>exportHeaderValue</name>
@@ -5771,6 +5712,14 @@
                 <![CDATA[Defines if the footer value of column to be exported.]]>
             </description>
             <name>exportFooterValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -6938,80 +6887,6 @@
             <name>responsive</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[ContentFlow is used to display a collection of items.]]>
-        </description>
-        <tag-name>contentFlow</tag-name>
-        <component>
-            <component-type>org.primefaces.component.ContentFlow</component-type>
-            <renderer-type>org.primefaces.component.ContentFlowRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Collection of items.]]>
-            </description>
-            <name>value</name>
-            <required>true</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the iterator to display an item.]]>
-            </description>
-            <name>var</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Inline style of the container element.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the container element.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -8219,6 +8094,22 @@
             <name>editingRow</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -13681,6 +13572,22 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if the element value should be selected on focus, default is true.]]>
+            </description>
+            <name>selectOnFocus</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where should be positioned the caret on focus such as 'start', 'end', 'decimalLeft', 'decimalRight', default is null.]]>
+            </description>
+            <name>caretPositionOnFocus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -15936,128 +15843,6 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[Lightbox features a powerful overlay that can display images, multimedia content, other JSF components and external urls.]]>
-        </description>
-        <tag-name>lightBox</tag-name>
-        <component>
-            <component-type>org.primefaces.component.LightBox</component-type>
-            <renderer-type>org.primefaces.component.LightBoxRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style of the container element not the overlay element.]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Style class of the container element not the overlay element.]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Width of the iframe.]]>
-            </description>
-            <name>width</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Height of the iframe.]]>
-            </description>
-            <name>height</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Specifies an iframe to display an external url in overlay. Default is false.]]>
-            </description>
-            <name>iframe</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Title of the iframe element.]]>
-            </description>
-            <name>iframeTitle</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Displays lightbox without requiring any user interaction by default. Default is false.]]>
-            </description>
-            <name>visible</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Whether to block scrolling of the document when lightbox is active.]]>
-            </description>
-            <name>blockScroll</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Client side callback to execute when lightbox is displayed.]]>
-            </description>
-            <name>onShow</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Client side callback to execute when lightbox is hidden.]]>
-            </description>
-            <name>onHide</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
             <![CDATA[Link is an extension to the standard h:link component with skinning capabilities.]]>
         </description>
         <tag-name>link</tag-name>
@@ -17025,6 +16810,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
+            </description>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the main container element.]]>
             </description>
             <name>style</name>
@@ -17560,7 +17353,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of the icon, default value is right.]]>
+                <![CDATA[Position of the icon, default value is left.]]>
             </description>
             <name>iconPos</name>
             <required>false</required>
@@ -17687,6 +17480,14 @@
             <name>ignoreComponentNotFound</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -18527,6 +18328,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -19191,6 +19000,14 @@
                 which is useful to reduce initial page load times. Default is false.]]>
             </description>
             <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Only relevant for dynamic="true": Defines if activating the panel should load the contents from server again. For cache="true" (default) the panel content is only loaded once.]]>
+            </description>
+            <name>cache</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -21831,136 +21648,6 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
-        </description>
-        <tag-name>ring</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Ring</component-type>
-            <renderer-type>org.primefaces.component.RingRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Datasource of the component.]]>
-            </description>
-            <name>value</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the iterator variable used to refer each data.]]>
-            </description>
-            <name>var</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Number of rows to display per page. Default value is 0 meaning to display all data available.]]>
-            </description>
-            <name>rows</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Index of the first data to display.]]>
-            </description>
-            <name>first</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>style</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>styleClass</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[]]>
-            </description>
-            <name>easing</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When true, Ring will automatically advance the moving elements to the next child at a regular interval.Default is false.]]>
-            </description>
-            <name>autoplay</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Time in milliseconds between animation triggers when a Ring's autoplay is playing.]]>
-            </description>
-            <name>autoplayDuration</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[When true, Ring will pause autoPlay when the user mouseover the Ring container. Default is false.]]>
-            </description>
-            <name>autoplayPauseOnHover</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Time in milliseconds to delay the start of Ring's configured autoplay option.]]>
-            </description>
-            <name>autoplayInitialDelay</name>
-            <required>false</required>
-            <type>java.lang.Integer</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
             <![CDATA[Row is a helper component for datatable.]]>
         </description>
         <tag-name>row</tag-name>
@@ -23188,11 +22875,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Defines the maximum height of the scrollable area.]]>
             </description>
             <name>scrollHeight</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -23244,7 +22931,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -23252,9 +22939,17 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of iterator to be used in custom content display.]]>
+            </description>
+            <name>var</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23635,7 +23330,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -23643,7 +23338,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[ User presentable name.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23651,11 +23346,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the checkboxes, valid values are lineDirection , pageDirection, grid, responsive and custom.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -23704,6 +23407,19 @@
             <name>hideNoSelectionOption</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Optional
+                attribute that is a literal string that is the fully qualified
+                class name of a concrete class that implements
+                <code>java.util.Collection</code>, or an EL expression that
+                evaluates to either 1. such a String, or 2. the
+                <code>Class</code> object itself.]]>
+            </description>
+            <name>collectionType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -23942,6 +23658,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the height of the scrollable area.]]>
             </description>
             <name>scrollHeight</name>
@@ -23955,6 +23679,19 @@
             <name>hideNoSelectionOption</name>
             <required>false</required>
             <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Optional
+                attribute that is a literal string that is the fully qualified
+                class name of a concrete class that implements
+                <code>java.util.Collection</code>, or an EL expression that
+                evaluates to either 1. such a String, or 2. the
+                <code>Class</code> object itself.]]>
+            </description>
+            <name>collectionType</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
@@ -24121,7 +23858,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Unselectable mode when true allows the button to be unselected. Default true.]]>
             </description>
             <name>unselectable</name>
             <required>false</required>
@@ -24356,6 +24093,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the height of the scrollable area.]]>
             </description>
             <name>scrollHeight</name>
@@ -24543,7 +24288,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Inline style of the dropdown panel container element.]]>
             </description>
             <name>panelStyle</name>
             <required>false</required>
@@ -24551,7 +24296,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
             <required>false</required>
@@ -24642,6 +24387,14 @@
                 <![CDATA[Defines if filtering would be case sensitive. Default is false.]]>
             </description>
             <name>caseSensitive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -24867,7 +24620,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Is the radio button disabled.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -24875,7 +24628,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Label of the radio button.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -24883,11 +24636,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, responsive and grid.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -27820,6 +27581,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[Whether to focus on the last active tab that a user selected.]]>
+            </description>
+            <name>focusOnLastActiveTab</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30057,6 +29826,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Sticky header stays in window viewport during scrolling.]]>
             </description>
             <name>stickyHeader</name>
@@ -30978,6 +30763,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -31041,6 +30834,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31110,6 +30911,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -31173,6 +30982,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31242,6 +31059,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -31305,6 +31130,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31374,6 +31207,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -31437,6 +31278,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31957,6 +31806,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[DateFormat pattern for localization.]]>
             </description>
             <name>pattern</name>
@@ -32072,6 +31929,14 @@
                 <![CDATA[Only display valid dates within the min/max range. Default is true.]]>
             </description>
             <name>showMinMaxRange</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Whether to format the month. Default is true.]]>
+            </description>
+            <name>autoMonthFormat</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -33803,6 +33668,22 @@
             <name>binding</name>
             <required>false</required>
             <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

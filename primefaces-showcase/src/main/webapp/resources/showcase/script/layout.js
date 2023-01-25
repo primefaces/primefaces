@@ -102,7 +102,7 @@ App = {
                     var link = $(this).find('a:first');
                     if (link) {
                         var url = new URL(link[0].href);
-                        var menuItem = $this.menu.find('a[href*="' + url.pathname + '"');
+                        var menuItem = $this.menu.find('a[href*="' + url.pathname + '"]');
                         if(menuItem.length) {
                            var scroll_position = menuItem[0].offsetTop - $this.menu[0].offsetTop;;
                            sessionStorage.setItem('scroll_position', scroll_position); 
@@ -237,7 +237,7 @@ var Storage = {
         var now = new Date();
 
         if (now.getTime() > item.expiry) {
-            localStorage.removeItem(key);
+            localStorage.removeItem(this.storageKey);
             return true;
         }
 

@@ -136,7 +136,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'click.' + this.id + '_hide', this.jq,
-            function(e) { return e.which == 3 ? $this.jqTarget : null; },
+            function(e) { return e.key === 'Cancel' ? $this.jqTarget : null; },
             function(e, eventTarget) {
                 if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                     $this.hide();
@@ -144,11 +144,15 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             });
 
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.jq, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jqTarget, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
     },
 

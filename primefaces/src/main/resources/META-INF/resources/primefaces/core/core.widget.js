@@ -608,14 +608,39 @@ if (!PrimeFaces.widget) {
     PrimeFaces.widget.DynamicOverlayWidget = PrimeFaces.widget.BaseWidget.extend({
 
 	    /**
-	     * @override
-    	 * @inheritdoc
-         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-    	 */
-        init: function(cfg) {
+         * @override
+         * @inheritdoc
+         * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg the widget configuraton
+         * @param {JQuery} [overlay] The DOM element for the overlay.
+         * @param {string} [overlayId] The ID of the overlay, usually the widget ID.
+         * @param {JQuery} [target] The DOM element that is the target of this overlay
+         */
+        init: function(cfg, overlay, overlayId, target) {
             this._super(cfg);
 
-            PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
+            // do not bind overlay if widget disabled
+            if(this.cfg.disabled === true) {
+                return;
+            }
+
+            if(!overlay) {
+                overlay = this.jq;
+            }
+
+            if(!overlayId) {
+                overlayId = this.id;
+            }
+
+            if(!target) {
+                target = this.jq;
+            }
+
+            var ignoreAppendTo = this instanceof PrimeFaces.widget.Dialog;
+            if (!ignoreAppendTo) {
+               this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, target, overlay);
+            }
+
+            PrimeFaces.utils.registerDynamicOverlay(this, overlay, overlayId);
         },
 
 

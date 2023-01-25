@@ -91,11 +91,8 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
                 return;
             }
 
-            var keyCode = $.ui.keyCode,
-                key = e.which;
-
-            switch(key) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('click.selectListbox');
                     }
@@ -110,7 +107,7 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('click.selectListbox');
                     }

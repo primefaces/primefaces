@@ -4,7 +4,6 @@
  * PanelMenu is a hybrid component of accordionPanel and tree components.
  * 
  * @prop {string[]} expandedNodes A list of IDs of the menu items that are currently expanded.
- * @prop {boolean} focusCheck Flag for IE to keep track of whether an item was focused.
  * @prop {JQuery | null} focusedItem The DOM elements for the menu item that is currently focused.
  * @prop {JQuery} headers The DOM elements for the accordion panel headers that can be expanded and collapsed.
  * @prop {JQuery} menuitemLinks The DOM elements for the menu items inside each accordion panel that can be clicked.
@@ -124,10 +123,6 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
     bindKeyEvents: function() {
         var $this = this;
 
-        if(PrimeFaces.env.isIE()) {
-            this.focusCheck = false;
-        }
-
         this.headers.on('focus.panelmenu', function(){
             $(this).addClass('ui-menuitem-outline');
         })
@@ -135,10 +130,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-menuitem-outline ui-state-hover');
         })
         .on('keydown.panelmenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -151,9 +143,6 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }).on('focus.panelmenu', function(){
             if(!$this.focusedItem) {
                 $this.focusItem($this.getFirstItemOfContent($(this)));
-                if(PrimeFaces.env.isIE()) {
-                    $this.focusCheck = false;
-                }
             }
         });
 
@@ -162,10 +151,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            var keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                case keyCode.LEFT:
+            switch(e.key) {
+                case 'ArrowLeft':
                     if($this.isExpanded($this.focusedItem)) {
                         $this.focusedItem.children('.ui-menuitem-link').trigger('click');
                     }
@@ -180,14 +167,14 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.RIGHT:
+                case 'ArrowRight':
                     if($this.focusedItem.hasClass('ui-menu-parent') && !$this.isExpanded($this.focusedItem)) {
                         $this.focusedItem.children('.ui-menuitem-link').trigger('click');
                     }
                     e.preventDefault();
                 break;
 
-                case keyCode.UP:
+                case 'ArrowUp':
                     var itemToFocus = null,
                     prevItem = $this.focusedItem.prev();
 
@@ -208,7 +195,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     var itemToFocus = null,
                     firstVisibleChildItem = $this.focusedItem.find('> ul > li:visible:first');
 
@@ -231,8 +218,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case ' ':
                     var currentLink = $this.focusedItem.children('.ui-menuitem-link');
                     //IE fix
                     setTimeout(function(){
@@ -247,20 +234,13 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     if($this.focusedItem) {
-                        if(PrimeFaces.env.isIE()) {
-                            $this.focusCheck = true;
-                        }
                         $(this).trigger('focus');
                     }
                 break;
             }
         }).on('blur.panelmenu', function(e) {
-            if(PrimeFaces.env.isIE() && !$this.focusCheck) {
-                return;
-            }
-
             $this.removeFocusedItem();
         });
 
@@ -459,7 +439,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             this.expandedNodes = expandedNodeIds.split(',');
 
             for(var i = 0 ; i < this.expandedNodes.length; i++) {
-                var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]));
+                var element = $(PrimeFaces.escapeClientId(this.expandedNodes[i]).replace(/\|/g,"\\|"));
                 if(element.is('div.ui-panelmenu-content'))
                     this.expandRootSubmenu(element.prev(), true);
                 else if(element.is('li.ui-menu-parent'))

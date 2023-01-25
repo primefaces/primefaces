@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,10 @@
  */
 package org.primefaces.component.datagrid;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -36,10 +34,13 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.model.DataModel;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -58,10 +59,7 @@ public class DataGrid extends DataGridBase {
     public static final String EMPTY_CONTENT_CLASS = "ui-datagrid-content ui-datagrid-content-empty ui-widget-content";
     public static final String TABLE_CLASS = "ui-datagrid-data";
     public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
-    public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content ui-grid ui-grid-responsive";
-    public static final String FLEX_GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content grid";
-    public static final String FLEX_GRID_ROW_CLASS = "grid";
-    public static final String GRID_ROW_CLASS = "ui-g";
+    public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content";
     public static final String COLUMN_CLASS = "ui-datagrid-column";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

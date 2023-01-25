@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,19 +36,17 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellUtil;
-import org.apache.poi.xssf.usermodel.*;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.export.ExcelOptions;
 
 public class ExcelStylesManager {
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
 
-    private final Workbook wb;
+    protected final Workbook wb;
+    protected final ExcelOptions options;
     private final Locale locale;
-    private final ExcelOptions options;
 
     //internal
-    private final boolean hssf;
     private final boolean stronglyTypedCells;
     private final DecimalFormat numberFormat;
     private final DecimalFormat currencyFormat;
@@ -59,15 +57,23 @@ public class ExcelStylesManager {
     private CellStyle formattedIntegerStyle;
     private CellStyle currencyStyle;
 
-    public ExcelStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
+    protected ExcelStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
         this.wb = wb;
         this.locale = locale;
         this.options = options;
         //internal vars
-        this.hssf = wb instanceof HSSFWorkbook;
         this.stronglyTypedCells = options == null || options.isStronglyTypedCells();
         this.numberFormat = getNumberFormat();
         this.currencyFormat = getCurrencyFormat();
+    }
+
+    public static ExcelStylesManager createExcelStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
+        if (wb instanceof HSSFWorkbook) {
+            return new ExcelStylesManager(wb, locale, options);
+        }
+        else {
+            return new ExcelXmlStylesManager(wb, locale, options);
+        }
     }
 
     /**
@@ -245,25 +251,15 @@ public class ExcelStylesManager {
         return style;
     }
 
-    private void applyFacetOptions(CellStyle style) {
+    protected void applyFacetOptions(CellStyle style) {
         if (options != null) {
-            if (hssf) {
-                applyHssfFacetOptions(style);
-            }
-            else {
-                applyXssfFacetOptions(style);
-            }
+            applyHssfFacetOptions(style);
         }
     }
 
-    private void applyCellOptions(CellStyle style) {
+    protected void applyCellOptions(CellStyle style) {
         if (options != null) {
-            if (hssf) {
-                applyHssfCellOptions(style);
-            }
-            else {
-                applyXssfCellOptions(style);
-            }
+            applyHssfCellOptions(style);
         }
     }
 
@@ -303,36 +299,6 @@ public class ExcelStylesManager {
         }
     }
 
-    private void applyXssfFacetOptions(CellStyle style) {
-        Font facetFont = wb.getFontAt(style.getFontIndex());
-        String facetFontStyle = options.getFacetFontStyle();
-        if (facetFontStyle != null) {
-            if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
-                facetFont.setBold(true);
-            }
-            if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
-                facetFont.setItalic(true);
-            }
-        }
-
-        String facetBackground = options.getFacetBgColor();
-        if (facetBackground != null) {
-            XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground), new DefaultIndexedColorMap());
-            ((XSSFCellStyle) style).setFillForegroundColor(backgroundColor);
-            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        }
-
-        String facetFontColor = options.getFacetFontColor();
-        if (facetFontColor != null) {
-            XSSFColor facetColor = new XSSFColor(Color.decode(facetFontColor), new DefaultIndexedColorMap());
-            ((XSSFFont) facetFont).setColor(facetColor);
-        }
-
-        String facetFontSize = options.getFacetFontSize();
-        if (facetFontSize != null) {
-            facetFont.setFontHeightInPoints(Short.parseShort(facetFontSize));
-        }
-    }
 
     private void applyHssfCellOptions(CellStyle style) {
         Font cellFont = wb.getFontAt(style.getFontIndex());
@@ -360,29 +326,6 @@ public class ExcelStylesManager {
         }
     }
 
-    private void applyXssfCellOptions(CellStyle style) {
-        Font cellFont = wb.getFontAt(style.getFontIndex());
-        String cellFontColor = options.getCellFontColor();
-        if (cellFontColor != null) {
-            XSSFColor cellColor = new XSSFColor(Color.decode(cellFontColor), new DefaultIndexedColorMap());
-            ((XSSFFont) cellFont).setColor(cellColor);
-        }
-
-        String cellFontSize = options.getCellFontSize();
-        if (cellFontSize != null) {
-            cellFont.setFontHeightInPoints(Short.parseShort(cellFontSize));
-        }
-
-        String cellFontStyle = options.getCellFontStyle();
-        if (cellFontStyle != null) {
-            if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
-                cellFont.setBold(true);
-            }
-            if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
-                cellFont.setItalic(true);
-            }
-        }
-    }
 
     private Font createFont() {
         Font font = wb.createFont();
@@ -398,12 +341,7 @@ public class ExcelStylesManager {
     }
 
     public RichTextString createRichTextString(String value) {
-        if (hssf) {
-            return new HSSFRichTextString(value);
-        }
-        else {
-            return new XSSFRichTextString(value);
-        }
+        return new HSSFRichTextString(value);
     }
 
     protected String getCurrencyExcelFormat() {

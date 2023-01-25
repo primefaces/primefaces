@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -160,6 +160,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", focusId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
 
         //for keyboard accessibility and ScreenReader
         renderAccessibilityAttributes(context, menu);
@@ -272,7 +273,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.endElement("input");
         }
         else {
-            writer.startElement("label", null);
+            writer.startElement("span", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_label", null);
             writer.writeAttribute("class", SelectOneMenu.LABEL_CLASS, null);
             if (menu.getPlaceholder() != null) {
@@ -283,7 +284,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeText(label, null);
             }
             writer.write("&nbsp;");
-            writer.endElement("label");
+            writer.endElement("span");
         }
     }
 
@@ -440,12 +441,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
-                itemStyleClass = itemStyleClass + " ui-noselection-option";
+                itemStyleClass += " ui-noselection-option";
+            }
+            if (selectItem.isDisabled()) {
+                itemStyleClass += " ui-state-disabled";
             }
 
             context.getExternalContext().getRequestMap().put(var, itemValue);
 
-            writer.startElement("tr", null);
+            writer.startElement("tr", getSelectItemComponent(selectItem));
             writer.writeAttribute("class", itemStyleClass, null);
             writer.writeAttribute("data-label", itemLabel, null);
             writer.writeAttribute("role", "option", null);
@@ -506,7 +510,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             wb.attr("filter", true)
                     .attr("filterMatchMode", menu.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", menu.getFilterFunction(), null)
-                    .attr("caseSensitive", menu.isCaseSensitive(), false);
+                    .attr("caseSensitive", menu.isCaseSensitive(), false)
+                    .attr("filterNormalize", menu.isFilterNormalize(), false);
         }
 
         encodeClientBehaviors(context, menu);
@@ -577,7 +582,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
 
             if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
-                writer.startElement("option", null);
+                writer.startElement("option", getSelectItemComponent(option));
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) {
                     writer.writeAttribute("disabled", "disabled", null);

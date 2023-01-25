@@ -41,7 +41,7 @@ TabView is a container component to group content in tabs.
 | scrollable     | false   | Boolean    | When enabled, tab headers can be scrolled horizontally instead of wrapping.
 | prependId      | true    | Boolean    | TabView is a naming container thus prepends its id to its children by default, a false value turns this behavior off except for dynamic tabs.
 | tabindex       | 0       | String     | Position of the element in the tabbing order.
-| touchable      | false   | Boolean    | Enable touch support if browser detection supports it. Default is false because it is globally enabled by default.
+| touchable      | null    | Boolean    | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | multiViewState | false   | Boolean    | Whether to keep TabView state across views, defaults to false.
 | focusOnError   | false   | Boolean    | Whether to focus the first tab that contains an error after form submission.
 

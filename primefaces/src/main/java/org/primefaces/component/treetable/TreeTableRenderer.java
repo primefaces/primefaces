@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -415,7 +415,6 @@ public class TreeTableRenderer extends DataRenderer {
                         String rowStyle = headerRow.getStyle();
 
                         writer.startElement("tr", null);
-                        writer.writeAttribute("role", "row", null);
                         if (rowClass != null) {
                             writer.writeAttribute("class", rowClass, null);
                         }
@@ -453,7 +452,6 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else {
             writer.startElement("tr", null);
-            writer.writeAttribute("role", "row", null);
 
             List<UIColumn> columns = tt.getColumns();
             for (int i = 0; i < columns.size(); i++) {
@@ -560,7 +558,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("tr", null);
         writer.writeAttribute("id", tt.getClientId(context) + "_node_" + rowKey, null);
         writer.writeAttribute("class", rowStyleClass, null);
-        writer.writeAttribute("role", "row", null);
+        writer.writeAttribute("title", tt.getRowTitle(), null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(treeNode.isExpanded()), null);
         writer.writeAttribute("data-rk", rowKey, null);
 
@@ -588,6 +586,7 @@ public class TreeTableRenderer extends DataRenderer {
 
                 String columnStyleClass = column.getStyleClass();
                 String columnStyle = column.getStyle();
+                String title = column.getTitle();
                 int rowspan = column.getRowspan();
                 int colspan = column.getColspan();
                 int responsivePriority = column.getResponsivePriority();
@@ -619,6 +618,9 @@ public class TreeTableRenderer extends DataRenderer {
                 }
                 if (colspan != 1) {
                     writer.writeAttribute("colspan", colspan, null);
+                }
+                if (title != null) {
+                    writer.writeAttribute("title", title, null);
                 }
 
                 if (i == 0) {
@@ -720,7 +722,6 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
-        writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);

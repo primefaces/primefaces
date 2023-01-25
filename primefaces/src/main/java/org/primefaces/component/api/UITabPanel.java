@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.*;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
@@ -912,7 +913,37 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
         if (!isRepeating()) {
-            return super.visitTree(context, callback);
+            // interpret unloaded tab as SKIP_UNRENDERED
+            // otherwise we visit them now and they get "partly" loaded; see #9168
+            if (context.getHints().contains(VisitHint.SKIP_UNRENDERED) && isDynamic()) {
+                try {
+                    pushComponentToEL(context.getFacesContext(), this);
+
+                    if (context.invokeVisitCallback(this, callback) == VisitResult.COMPLETE) {
+                        return true;
+                    }
+
+                    for (int i = 0; i < getChildCount(); i++) {
+                        UIComponent child = getChildren().get(i);
+                        if (child instanceof Tab) {
+                            Tab tab = (Tab) child;
+                            if (tab.isLoaded()) {
+                                if (tab.visitTree(context, callback)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                finally {
+                    popComponentFromEL(context.getFacesContext());
+                }
+
+                return false;
+            }
+            else {
+                return super.visitTree(context, callback);
+            }
         }
         else {
             // override the behavior from UIComponent to visit

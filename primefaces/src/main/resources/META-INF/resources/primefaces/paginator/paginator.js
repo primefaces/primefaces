@@ -118,10 +118,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-focus');
         })
         .on('keydown.paginator', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
+            if(e.key === 'Enter') {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -247,10 +244,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-state-focus');
         })
         .on('keydown.paginator', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
+            if(e.key === 'Enter') {
                 $(this).trigger('click');
                 e.preventDefault();
             }

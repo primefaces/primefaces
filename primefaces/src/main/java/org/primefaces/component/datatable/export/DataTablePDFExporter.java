@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -264,17 +264,9 @@ public class DataTablePDFExporter extends DataTableExporter {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
         }
-        for (UIComponent component : cg.getChildren()) {
-            if (!(component instanceof org.primefaces.component.row.Row)) {
-                continue;
-            }
-            org.primefaces.component.row.Row row = (org.primefaces.component.row.Row) component;
-            for (UIComponent rowComponent : row.getChildren()) {
-                if (!(rowComponent instanceof UIColumn)) {
-                    // most likely a ui:repeat which won't work here
-                    continue;
-                }
-                UIColumn column = (UIColumn) rowComponent;
+        FacesContext context = FacesContext.getCurrentInstance();
+        table.forEachColumnGroupRow(context, cg, true, row -> {
+            table.forEachColumn(context, row, true, true, false, column -> {
                 if (column.isRendered() && column.isExportable()) {
                     String textValue;
                     switch (columnType) {
@@ -291,13 +283,16 @@ public class DataTablePDFExporter extends DataTableExporter {
                             break;
                     }
 
-                    int rowSpan = column.getRowspan();
-                    int colSpan = column.getColspan();
+                    int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
+                    int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
                     addColumnValue(pdfTable, textValue, rowSpan, colSpan);
                 }
-            }
+                return true;
+            });
+
             pdfTable.completeRow();
-        }
+            return true;
+        });
         return true;
     }
 

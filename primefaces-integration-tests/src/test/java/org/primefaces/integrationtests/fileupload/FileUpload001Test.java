@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,6 +51,7 @@ public class FileUpload001Test extends AbstractFileUploadTest {
         fileUpload.setValue(file);
         Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file.getName()), fileUpload.getWidgetValue());
         page.button.click();
+        wait4File(page.uploadedFiles, 1, file.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -70,6 +71,7 @@ public class FileUpload001Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1);
         Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file1.getName()), fileUpload.getWidgetValue());
         page.button.click();
+        wait4File(page.uploadedFiles, 1, file1.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -80,6 +82,7 @@ public class FileUpload001Test extends AbstractFileUploadTest {
         fileUpload.setValue(file2);
         Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file2.getName()), fileUpload.getWidgetValue());
         page.button.click();
+        wait4File(page.uploadedFiles, 2, file2.getName());
 
         // Assert
         assertNoJavascriptErrors();
@@ -103,6 +106,7 @@ public class FileUpload001Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValue().contains(invalidSizeMsg));
         Assertions.assertTrue(fileUpload.getWidgetValue().contains(file.getName()));
         page.button.click();
+        wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
@@ -127,6 +131,7 @@ public class FileUpload001Test extends AbstractFileUploadTest {
         Assertions.assertTrue(fileUpload.getWidgetValue().contains(invalidTypeMsg));
         Assertions.assertTrue(fileUpload.getWidgetValue().contains(file.getName()));
         page.button.click();
+        wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();

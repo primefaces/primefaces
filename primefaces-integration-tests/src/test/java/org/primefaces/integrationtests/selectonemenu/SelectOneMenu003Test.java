@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -54,6 +54,24 @@ public class SelectOneMenu003Test extends AbstractPrimePageTest {
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals(null, options.get(2).getAttribute("disabled"));
         Assertions.assertEquals("true", options.get(3).getAttribute("disabled"));
+
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("SelectOneMenu: itemEscaped")
+    public void testItemEscaped(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+
+        // Act
+        selectOneMenu.toggleDropdown();
+
+        // Assert
+        List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
+        Assertions.assertEquals("Wii U", options.get(4).getText());
+        Assertions.assertEquals("Nintendo Switch", options.get(5).getText());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }

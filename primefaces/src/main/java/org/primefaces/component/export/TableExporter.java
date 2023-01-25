@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -103,7 +103,7 @@ public abstract class TableExporter<T extends UIComponent & UITable> extends Exp
             if (column.isExportable()) {
                 String columnKey = column.getColumnKey();
                 ColumnMeta currentMeta = allColumnMeta.get(columnKey);
-                if (!visibleColumnsOnly || (visibleColumnsOnly && currentMeta != null && currentMeta.getVisible())) {
+                if (!visibleColumnsOnly || (visibleColumnsOnly && (currentMeta == null || currentMeta.getVisible()))) {
                     int displayPriority = column.getDisplayPriority();
                     ColumnMeta metaCopy = new ColumnMeta(columnKey);
                     metaCopy.setDisplayPriority(displayPriority);

@@ -156,9 +156,6 @@ Many third-party libraries are jQuery plugins, see [JQuery](./interfaces/src_Pri
       the height of a textarea to fit the text. 
 * [chart.js](./classes/node_modules__types_chart_js.export_-1.html)
     * The [chart.js](https://www.chartjs.org/) library for drawing diagrams.
-* [ContentFlow](./classes/src_PrimeFaces.ContentFlow.html)
-    * [The ContentFlow library](https://web.archive.org/web/20120108070056/http://www.jacksasylum.eu/ContentFlow/index.php)
-      a flexible ImageFlow like flow written in javascript, which can handle any kind of content.
 * [Cropper.js](./classes/node_modules_cropperjs_types.Cropper-1.html)
     * The [Cropper.js](https://fengyuanchen.github.io/cropperjs/) library, a visual JavaScript image cropper.
 * [FullCalendar](./classes/node_modules__fullcalendar_core_main.Calendar.html)

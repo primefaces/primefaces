@@ -34,6 +34,7 @@
  * @prop {string} cfg.at Position of the target relative to the panel.
  * @prop {boolean} cfg.dynamic `true` to load the content via AJAX when the overlay panel is opened, `false` to load
  * the content immediately.
+ * @prop {boolean} cfg.cache Only relevant for dynamic="true": Defines if activating the panel should load the contents from server again. For cache="true" (default) the panel content is only loaded once.
  * @prop {string} cfg.hideEvent Event on target to hide the panel.
  * @prop {string} cfg.collision When the positioned element overflows the window in some direction, move it to an
  * alternative position. Similar to my and at, this accepts a single value or a pair for horizontal/vertical, e.g.,
@@ -59,7 +60,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-        this._super(cfg);
+       if (cfg.target) {
+            this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.target);
+        }
+        this._super(cfg, null, null, this.target);
 
         this.content = this.jq.children('div.ui-overlaypanel-content');
 
@@ -72,6 +76,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.dismissable = (this.cfg.dismissable === false) ? false : true;
         this.cfg.showDelay = PrimeFaces.utils.defaultNumeric(this.cfg.showDelay, 0);
         this.cfg.autoHide = (this.cfg.autoHide === undefined) ? true : this.cfg.autoHide;
+        this.cfg.cache = this.cfg.cache === false ? false : true;
         this.allowHide = true;
 
         if (this.cfg.showCloseIcon) {
@@ -81,8 +86,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         this.bindCommonEvents();
 
-        if (this.cfg.target) {
-            this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+        if (this.target) {
             this.bindTargetEvents();
 
             // set aria attributes
@@ -90,9 +94,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 'aria-expanded': false,
                 'aria-controls': this.id
             });
-
-            //dialog support
-            this.setupDialogSupport();
         }
 
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
@@ -180,9 +181,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
             .on('keydown.ui-overlaypanel', PrimeFaces.utils.blockEnterKey)
             .on('keyup.ui-overlaypanel', function(e) {
-                var keyCode = $.ui.keyCode, key = e.which;
-
-                if (key === keyCode.ENTER) {
+                if (e.key === 'Enter') {
                     $this.toggle();
                     e.preventDefault();
                 }
@@ -276,7 +275,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @private
      */
     handleViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.align(this.target);
         } else {
             this.hide();
@@ -495,31 +494,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     /**
-     * In case this overlay panel is inside a dialog widget, applies some CSS fixes so that this overlay panel is above
-     * the dialog-
-     * @private
-     */
-    setupDialogSupport: function() {
-        if (this.target && this.target[0]) {
-            var dialog = this.target[0].closest('.ui-dialog');
-            if (dialog) {
-                var $dialog = $(dialog);
-                if ($dialog.length == 1) {
-                    //set position as fixed to scroll with dialog
-                    if ($dialog.css('position') === 'fixed') {
-                        this.jq.css('position', 'fixed');
-                    }
-
-                    //append to body if not already appended by user choice
-                    if (!this.cfg.appendTo) {
-                        this.jq.appendTo(document.body);
-                    }
-                }
-            }
-        }
-    },
-
-    /**
      * Loads the contents of this overlay panel dynamically via AJAX, if dynamic loading is enabled.
      * @private
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
@@ -538,7 +512,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.content.html(content);
-                            this.loaded = true;
+                            this.loaded = this.cfg.cache;
                         }
                     });
 

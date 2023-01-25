@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ import java.util.function.Supplier;
  */
 public class Lazy<T> implements Serializable, Supplier<T> {
 
-    private static final Object NOT_INITIALIZED = new Object();
+    private static final NotInitialized NOT_INITIALIZED = new NotInitialized();
 
     @SuppressWarnings("unchecked")
     private volatile T value = (T) NOT_INITIALIZED;
@@ -50,6 +50,10 @@ public class Lazy<T> implements Serializable, Supplier<T> {
 
     public synchronized void reset(T value) {
         this.value = value;
+    }
+
+    public synchronized void reset() {
+        this.value = (T) NOT_INITIALIZED;
     }
 
     public T get() {
@@ -70,5 +74,8 @@ public class Lazy<T> implements Serializable, Supplier<T> {
 
     public boolean isInitialized() {
         return value != NOT_INITIALIZED;
+    }
+
+    static final class NotInitialized implements Serializable {
     }
 }

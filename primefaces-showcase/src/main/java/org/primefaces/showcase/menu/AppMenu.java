@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -78,6 +78,12 @@ public class AppMenu {
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
+        //ACCESSIBILITY CATEGORY START
+        List<MenuItem> uiAccessibilityMenuItems = new ArrayList<>();
+        uiAccessibilityMenuItems.add(new MenuItem("Overview", "/accessibility"));
+        menuCategories.add(new MenuCategory("Accessiblity", uiAccessibilityMenuItems));
+        //ACCESSIBILITY CATEGORY END
+
         //PRIMEBLOCKS CATEGORY START
         List<MenuItem> primeBlocksMenuItems = new ArrayList<>();
         primeBlocksMenuItems.add(new MenuItem("PrimeBlocks", "https://www.primefaces.org/primeblocks-jsf", null, "showcase/images/menu/banner-primeblocks.png"));
@@ -94,7 +100,7 @@ public class AppMenu {
 
         //PRIMEICONS CATEGORY START
         List<MenuItem> primeIconsMenuItems = new ArrayList<>();
-        primeIconsMenuItems.add(new MenuItem("Icons v5.0", "/icons"));
+        primeIconsMenuItems.add(new MenuItem("Icons v6.0.1", "/icons"));
         menuCategories.add(new MenuCategory("PrimeIcons", primeIconsMenuItems));
         //PRIMEICONS CATEGORY END
         
@@ -247,6 +253,7 @@ public class AppMenu {
         dataTableMenuItems.add(new MenuItem("RowColor", "/ui/data/datatable/rowColor"));
         dataTableMenuItems.add(new MenuItem("RowExpansion", "/ui/data/datatable/expansion"));
         dataTableMenuItems.add(new MenuItem("RowGroup", "/ui/data/datatable/rowGroup"));
+        dataTableMenuItems.add(new MenuItem("RowTitle", "/ui/data/datatable/rowTitle"));
         dataTableMenuItems.add(new MenuItem("RTL", "/ui/data/datatable/rtl"));
         dataTableMenuItems.add(new MenuItem("Scroll", "/ui/data/datatable/scroll"));
         dataTableMenuItems.add(new MenuItem("Selection", "/ui/data/datatable/selection"));
@@ -307,8 +314,6 @@ public class AppMenu {
         dataMenuItems.add(new MenuItem("OrderList", "/ui/data/orderList"));
         dataMenuItems.add(new MenuItem("Organigram", "/ui/data/organigram"));
         dataMenuItems.add(new MenuItem("PickList", "/ui/data/pickList"));
-        dataMenuItems.add(new MenuItem("Repeat", "/ui/data/repeat"));
-        dataMenuItems.add(new MenuItem("Ring", "/ui/data/ring"));
 
         //Schedule Nested MenuItem
         List<MenuItem> scheduleMenuItems = new ArrayList<>();
@@ -397,7 +402,6 @@ public class AppMenu {
         overlayMenuItems.add(new MenuItem("ConfirmDialog", "/ui/overlay/confirmDialog"));
         overlayMenuItems.add(new MenuItem("ConfirmPopup", "/ui/overlay/confirmPopup"));
         overlayMenuItems.add(new MenuItem("Dialog", "/ui/overlay/dialog"));
-        overlayMenuItems.add(new MenuItem("LightBox", "/ui/overlay/lightBox"));
         overlayMenuItems.add(new MenuItem("OverlayPanel", "/ui/overlay/overlayPanel"));
         overlayMenuItems.add(new MenuItem("Sidebar", "/ui/overlay/sidebar"));
 
@@ -469,7 +473,6 @@ public class AppMenu {
         multimediaMenuItems.add(new MenuItem("Audio", "/ui/multimedia/audio"));
         multimediaMenuItems.add(new MenuItem("Barcode", "/ui/multimedia/barcode"));
         multimediaMenuItems.add(new MenuItem("Compare", "/ui/multimedia/compare"));
-        multimediaMenuItems.add(new MenuItem("ContentFlow", "/ui/multimedia/contentFlow"));
 
         //Cropper Nested MenuItem
         List<MenuItem> cropperMenuItems = new ArrayList<>();

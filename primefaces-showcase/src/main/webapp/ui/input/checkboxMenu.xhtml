@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        SelectManyCheckbox is used to choose multiple items displayed in an overlay.
+        SelectCheckboxMenu is used to choose multiple items displayed in an overlay.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/selectcheckboxmenu"/>
@@ -24,24 +24,66 @@
                 </p:growl>
 
                 <h5 class="mt-0">Basic</h5>
-                <p:selectCheckboxMenu id="menu" value="#{checkboxView.selectedCities}" label="Cities" style="width: 15rem"
-                                        filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250"
-                                        dynamic="true">
+                <p:selectCheckboxMenu id="menu"
+                                      dynamic="true"
+                                      filter="true" filterMatchMode="startsWith"
+                                      label="Cities"
+                                      style="width: 15rem" panelStyle="width: 15rem" scrollHeight="250"
+                                      value="#{checkboxView.selectedCities}">
                     <f:selectItems value="#{checkboxView.cities}"/>
+
+                    <f:facet name="footer">
+                        <p:divider styleClass="mt-0" />
+                        <h:outputText value="#{checkboxView.cities.size()} cities"
+                                      styleClass="py-1 block font-bold"/>
+                    </f:facet>
                 </p:selectCheckboxMenu>
 
                 <h5>Multiple</h5>
-                <p:selectCheckboxMenu id="multiple" value="#{checkboxView.selectedCities2}" label="Cities" style="min-width: 15rem"
-                                          multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250"
-                                          emptyLabel="Please select..." updateLabel="true">
+                <p:selectCheckboxMenu id="multiple"
+                                      filter="true" filterMatchMode="startsWith"
+                                      label="Cities" multiple="true" emptyLabel="Please select..." updateLabel="true"
+                                      style="min-width: 15rem" panelStyle="width: 30rem" scrollHeight="250"
+                                      value="#{checkboxView.selectedCities2}">
                         <p:ajax event="itemUnselect" listener="#{checkboxView.onItemUnselect}"/>
                         <f:selectItems value="#{checkboxView.cities}"/>
                     </p:selectCheckboxMenu>
 
                 <h5>Grouped</h5>
-                <p:selectCheckboxMenu id="grouped" value="#{checkboxView.selectedCountries}" label="Countries" style="width: 15rem"
-                                        multiple="true" filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
+                <p:selectCheckboxMenu id="grouped"
+                                      filter="true" filterMatchMode="startsWith"
+                                      label="Countries" multiple="true"
+                                      style="width: 15rem" panelStyle="width: 15rem" scrollHeight="250"
+                                      value="#{checkboxView.selectedCountries}">
                     <f:selectItems value="#{checkboxView.countries}"/>
+                </p:selectCheckboxMenu>
+
+                <h5>Advanced</h5>
+                <p:selectCheckboxMenu id="advanced"
+                                      converter="#{countryConverter}"
+                                      filter="true" filterMatchMode="startsWith"
+                                      label="Countries" multiple="true"
+                                      scrollHeight="250"
+                                      value="#{checkboxView.selectedCountries2}"
+                                      var="c"
+                                      style="min-width: 15rem">
+                    <f:selectItems value="#{checkboxView.countries2}"/>
+
+                    <p:column style="width:10%">
+                        <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{c.name}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <h:outputText value="#{checkboxView.countries2.size()} countries"
+                                      styleClass="py-1 block font-bold"/>
+                    </f:facet>
                 </p:selectCheckboxMenu>
             </h:form>
         </div>

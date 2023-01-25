@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,21 @@
  */
 package org.primefaces.integrationtests.fileupload;
 
-import org.junit.jupiter.api.Assertions;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.DataTable;
-import org.primefaces.selenium.component.model.datatable.Row;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.model.datatable.Row;
 
 public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
 
@@ -59,7 +63,7 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
         String diag = expectedFiles + " <> " + actualFiles;
         Assertions.assertEquals(files.length, uploadedFiles.getRows().size(), diag);
 
-        // sequence is not guarateed to be the same, so sort by name and size
+        // sequence is not guaranteed to be the same, so sort by name and size
         Arrays.sort(files, (f1, f2) -> {
             int res = f1.getName().compareTo(f2.getName());
             res = res == 0 ? (int) (f1.length() - f2.length()) : res;
@@ -77,6 +81,23 @@ public abstract class AbstractFileUploadTest extends AbstractPrimePageTest {
             Assertions.assertEquals("", row.getCell(2).getText(), row.getCell(2).getText()); // empty error message
             Assertions.assertEquals(files[f].length(), Long.parseLong(row.getCell(1).getText())); // same file size
         }
+    }
+
+    protected void wait4EmptyMesssage(DataTable uploadedFiles) {
+        PrimeSelenium.waitGui().until(ExpectedConditions.visibilityOf(
+                uploadedFiles.findElement(By.tagName("tbody")).findElement(By.cssSelector("tr.ui-datatable-empty-message"))));
+    }
+
+    protected void wait4File(DataTable uploadedFiles, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")), filename));
+    }
+
+    protected void wait4File(DataTable uploadedFiles, int row, String filename) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.ajaxQueueEmpty());
+        PrimeSelenium.waitGui().until(ExpectedConditions.textToBePresentInElement(
+                uploadedFiles.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).get(row - 1), filename));
     }
 
 }

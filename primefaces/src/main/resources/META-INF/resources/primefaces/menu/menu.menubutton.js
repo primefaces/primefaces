@@ -161,10 +161,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             if ($this.cfg.disabled) {
                 return;
             }
-            var keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     if($this.menu.is(':visible')) {
                         var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
                         prevItems = highlightedItem.length ? highlightedItem.prevAll(':not(.ui-separator)') : null;
@@ -177,7 +175,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     if($this.menu.is(':visible')) {
                         var highlightedItem = $this.menuitems.filter('.ui-state-hover'),
                         nextItems = highlightedItem.length ? highlightedItem.nextAll(':not(.ui-separator)') : $this.menuitems.eq(0);
@@ -190,8 +188,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case ' ':
                     if($this.menu.is(':visible'))
                         $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
                     else
@@ -200,8 +198,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ESCAPE:
-                case keyCode.TAB:
+                case 'Escape':
+                case 'Tab':
                     $this.hide();
                 break;
             }
@@ -313,7 +311,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
      * @private
      */
     handleOverlayViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();

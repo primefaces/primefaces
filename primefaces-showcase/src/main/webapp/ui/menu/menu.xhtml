@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -33,6 +33,7 @@
                     <p:submenu label="Navigations">
                         <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
                         <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                        <p:menuitem value="Update (right click open in new tab)" action="#{menuView.update}" update="messages" url="http://www.primefaces.org" icon="pi pi-thumbs-up"/>
                     </p:submenu>
                 </p:menu>
             </div>
@@ -50,6 +51,7 @@
                     <p:submenu label="Navigations">
                         <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
                         <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                        <p:menuitem value="Update (right click open in new tab)" action="#{menuView.update}" update="messages" url="http://www.primefaces.org" icon="pi pi-thumbs-up"/>
                     </p:submenu>
                 </p:menu>
             </div>
@@ -71,6 +73,7 @@
                     <p:submenu label="Navigations">
                         <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
                         <p:menuitem value="Internal" outcome="/ui/menu/menubar" icon="pi pi-upload"/>
+                        <p:menuitem value="Update (right click open in new tab)" action="#{menuView.update}" update="messages" url="http://www.primefaces.org" icon="pi pi-thumbs-up"/>
                     </p:submenu>
                 </p:menu>
             </div>

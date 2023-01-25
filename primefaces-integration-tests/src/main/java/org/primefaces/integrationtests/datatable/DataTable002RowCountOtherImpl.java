@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package org.primefaces.integrationtests.datatable;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -42,12 +41,6 @@ public class DataTable002RowCountOtherImpl extends DataTable002 {
     @PostConstruct
     public void init() {
         lazyDataModel = new ProgrammingLanguageLazyDataModelRowCountOtherImpl();
-    }
-
-    public void submit() {
-        if (selectedProgrammingLanguage != null) {
-            TestUtils.addMessage("Selected ProgrammingLanguage", selectedProgrammingLanguage.getId().toString());
-        }
     }
 
 }

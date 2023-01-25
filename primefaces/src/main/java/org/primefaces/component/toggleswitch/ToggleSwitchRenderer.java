@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,8 +92,13 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected void encodeSlider(FacesContext context, ToggleSwitch toggleSwitch, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        String styleClass = getStyleClassBuilder(context)
+                    .add(ToggleSwitch.SLIDER_CLASS)
+                    .add(!toggleSwitch.isValid(), "ui-state-error")
+                    .build();
+
         writer.startElement("div", null);
-        writer.writeAttribute("class", ToggleSwitch.SLIDER_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", ToggleSwitch.HANDLER_CLASS, null);
@@ -156,6 +161,11 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected boolean isChecked(String value) {
         return value != null
                 && ("on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value));
+    }
+
+    @Override
+    public String getHighlighter() {
+        return "toggleswitch";
     }
 }
 

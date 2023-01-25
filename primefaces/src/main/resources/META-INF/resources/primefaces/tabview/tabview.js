@@ -60,6 +60,7 @@
  * @prop {number} cfg.tabindex Position of the element in the tabbing order.
  * @prop {boolean} cfg.multiViewState Whether to keep TabView state across views.
  * @prop {boolean} cfg.focusOnError Whether to focus the first tab that has an error associated to it.
+ * @prop {boolean} cfg.focusOnLastActiveTab Whether to focus on the last active tab that a user selected.
  */
 PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
@@ -301,11 +302,8 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             $(this).removeClass('ui-tabs-outline');
         })
         .on('keydown.tabview', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which,
-            element = $(this);
-
-            if((key === keyCode.SPACE || key === keyCode.ENTER) && !element.hasClass('ui-state-disabled')) {
+            var element = $(this);
+            if(PrimeFaces.utils.isActionKey(e) && !element.hasClass('ui-state-disabled')) {
                 $this.select(element.index());
                 e.preventDefault();
             }
@@ -314,20 +312,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         //Scrolling
         if(this.cfg.scrollable) {
             this.navcrollerLeft.on('keydown.tabview', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                if(key === keyCode.SPACE || key === keyCode.ENTER) {
+                if (PrimeFaces.utils.isActionKey(e)) {
                     $this.scroll(100);
                     e.preventDefault();
                 }
             });
 
             this.navcrollerRight.on('keydown.tabview', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                if(key === keyCode.SPACE || key === keyCode.ENTER) {
+                if (PrimeFaces.utils.isActionKey(e)) {
                     $this.scroll(-100);
                     e.preventDefault();
                 }
@@ -336,13 +328,15 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
-     * Binds refresh listener to update error highlighting on component udpate.
+     * Binds refresh listener to update error highlighting or restore the last active tab on component udpate.
      * @private
      */
     bindRefreshListener: function() {
         var $this = this;
         var focusIndex = -1;
         this.addRefreshListener(function() {
+			
+            // update error highlighting and set focusIndex
             $(this.jqId + '>ul>li').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
@@ -355,7 +349,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                     $(this).removeClass('ui-state-error');
                 }
             });
-            if ($this.cfg.focusOnError && focusIndex >= 0) {
+            
+            // set focusIndex to restore the last active tab
+            // "focusOnError" always takes precedence over "focusOnLastActiveTab"
+            if (focusIndex < 0 || !$this.cfg.focusOnError) {
+                    focusIndex = $this.cfg.selected;
+            }
+
+            if (($this.cfg.focusOnError || $this.cfg.focusOnLastActiveTab) && focusIndex >= 0) {
                setTimeout(function () {$this.select(focusIndex, true)}, 10);
             }
         });
@@ -544,7 +545,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             newActions.attr('aria-hidden', false);
         }
 
-        if(this.cfg.effect) {
+        if(this.cfg.effect && oldPanel.length) {
             oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
                 oldHeader.removeClass('ui-tabs-selected ui-state-active');
                 if(oldActions.length != 0) {

@@ -437,7 +437,7 @@
             this.container.children().off('click.galleria-thumbnail-item keydown.galleria-thumbnail-item')
                 .on('click.galleria-thumbnail-item', this.onItemClick.bind($this))
                 .on('keydown.galleria-thumbnail-item', function (e) {
-                    if (e.which === 13) {
+                    if (e.key === 'Enter') {
                         $this.onItemClick(e);
                     }
                 });

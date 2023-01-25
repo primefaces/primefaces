@@ -65,6 +65,7 @@
  * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Set to false
  * for custom width.
  * @prop {boolean} cfg.caseSensitive Defines if filtering would be case sensitive.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
  * @prop {boolean} cfg.editable When true, the input field becomes editable.
@@ -106,7 +107,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.panel);
+        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
 
@@ -162,9 +163,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         highlightedItem = this.items.eq(this.options.index(selectedOption));
 
         //disable options
-        this.options.filter(':disabled').each(function() {
-            $this.items.eq($(this).index()).addClass('ui-state-disabled');
-        });
+        $this.items.filter('[disabled]').addClass('ui-state-disabled');
 
         //activate selected
         if(this.cfg.editable) {
@@ -438,7 +437,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     handleViewportChange: function() {
-        if (PrimeFaces.env.mobile) {
+        if (PrimeFaces.env.mobile || PrimeFaces.hideOverlaysOnViewportChange === false) {
             this.alignPanel();
         } else {
             this.hide();
@@ -602,143 +601,105 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.focusInput.on('keydown.ui-selectonemenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'ArrowLeft':
                     $this.callHandleMethod($this.highlightPrev, e);
                 break;
 
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
+                case 'ArrowDown':
+                case 'ArrowRight':
                     $this.callHandleMethod($this.highlightNext, e);
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
                     $this.handleEnterKey(e);
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     $this.handleTabKey();
                 break;
 
-                case keyCode.ESCAPE:
+                case 'Escape':
                     $this.handleEscapeKey(e);
                 break;
 
-                case keyCode.SPACE:
+                case ' ':
                     $this.handleSpaceKey(e);
                 break;
             }
         })
         .on('keyup.ui-selectonemenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                return;
+            }
+ 
+            var matchedOptions = null,
+            metaKey = e.metaKey||e.ctrlKey||e.altKey;
 
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
-                case keyCode.ENTER:
-                case keyCode.TAB:
-                case keyCode.ESCAPE:
-                case keyCode.SPACE:
-                case keyCode.HOME:
-                case keyCode.PAGE_DOWN:
-                case keyCode.PAGE_UP:
-                case keyCode.END:
-                case keyCode.DELETE:
-                case 16: //shift
-                case 17: //keyCode.CONTROL:
-                case 18: //keyCode.ALT:
-                case 19: //Pause/Break:
-                case 20: //capslock:
-                case 44: //Print Screen:
-                case 45: //Insert:
-                case 91: //left window or cmd:
-                case 92: //right window:
-                case 93: //right cmd:
-                case 144: //num lock:
-                case 145: //scroll lock:
-                break;
+            if(!metaKey) {
+                clearTimeout($this.searchTimer);
 
-                default:
-                    //function keys (F1,F2 etc.)
-                    if(key >= 112 && key <= 123) {
-                        break;
+                // #4682: check for word match
+                var text = $(this).val();
+                matchedOptions = $this.matchOptions(text);
+                if(matchedOptions.length) {
+                    var matchIndex = matchedOptions[0].index;
+                    if($this.panel.is(':hidden')) {
+                        $this.callHandleMethod(function() {
+                            var highlightItem = $this.items.eq(matchIndex);
+                            $this.selectItem(highlightItem);
+                        }, e);
                     }
-
-                    var matchedOptions = null,
-                    metaKey = e.metaKey||e.ctrlKey||e.altKey;
-
-                    if(!metaKey) {
-                        clearTimeout($this.searchTimer);
-
-                        // #4682: check for word match
-                        var text = $(this).val();
-                        matchedOptions = $this.matchOptions(text);
-                        if(matchedOptions.length) {
-                            var matchIndex = matchedOptions[0].index;
-                            if($this.panel.is(':hidden')) {
-                                $this.callHandleMethod(function() {
-                                    var highlightItem = $this.items.eq(matchIndex);
-                                    $this.selectItem(highlightItem);
-                                }, e);
-                            }
-                            else {
-                                var highlightItem = $this.items.eq(matchIndex);
-                                $this.highlightItem(highlightItem);
-                                PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                            }
-                        } else {
-                            // #4682: check for first letter match
-                            text = String.fromCharCode(key).toLowerCase();
-                            // find all options with the same first letter
-                            matchedOptions = $this.matchOptions(text);
-                            if(matchedOptions.length) {
-                                $this.callHandleMethod(function() {
-                                    var selectedIndex = -1;
-
-                                    // is current selection one of our matches?
-                                    matchedOptions.each(function() {
-                                       var option = $(this);
-                                       var currentIndex = option[0].index;
-                                       var currentItem = $this.items.eq(currentIndex);
-                                       if (currentItem.hasClass('ui-state-highlight')) {
-                                           selectedIndex = currentIndex;
-                                           return false;
-                                       }
-                                    });
-
-                                    matchedOptions.each(function() {
-                                        var option = $(this);
-                                        var currentIndex = option[0].index;
-                                        var currentItem = $this.items.eq(currentIndex);
-
-                                        // select next item after the current selection
-                                        if (currentIndex > selectedIndex) {
-                                             if($this.panel.is(':hidden')) {
-                                                 $this.selectItem(currentItem);
-                                             }
-                                             else {
-                                                 $this.highlightItem(currentItem);
-                                                 PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
-                                             }
-                                             return false;
-                                         }
-                                    });
-                                }, e);
-                            }
-                        }
-
-                        $this.searchTimer = setTimeout(function(){
-                            $this.focusInput.val('');
-                        }, 1000);
+                    else {
+                        var highlightItem = $this.items.eq(matchIndex);
+                        $this.highlightItem(highlightItem);
+                        PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
                     }
-                break;
+                } else {
+                    // #4682: check for first letter match
+                    text = e.key.toLowerCase();
+                    // find all options with the same first letter
+                    matchedOptions = $this.matchOptions(text);
+                    if(matchedOptions.length) {
+                        $this.callHandleMethod(function() {
+                            var selectedIndex = -1;
+
+                            // is current selection one of our matches?
+                            matchedOptions.each(function() {
+                               var option = $(this);
+                               var currentIndex = option[0].index;
+                               var currentItem = $this.items.eq(currentIndex);
+                               if (currentItem.hasClass('ui-state-highlight')) {
+                                   selectedIndex = currentIndex;
+                                   return false;
+                               }
+                            });
+
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option[0].index;
+                                var currentItem = $this.items.eq(currentIndex);
+
+                                // select next item after the current selection
+                                if (currentIndex > selectedIndex) {
+                                     if($this.panel.is(':hidden')) {
+                                         $this.selectItem(currentItem);
+                                     }
+                                     else {
+                                         $this.highlightItem(currentItem);
+                                         PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                     }
+                                     return false;
+                                 }
+                            });
+                        }, e);
+                    }
+                }
+
+                $this.searchTimer = setTimeout(function(){
+                    $this.focusInput.val('');
+                }, 1000);
             }
         });
     },
@@ -773,71 +734,39 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.filterInput.on('keyup.ui-selectonemenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                return;
+            }
+            var metaKey = e.metaKey||e.ctrlKey;
 
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
-                case keyCode.ENTER:
-                case keyCode.TAB:
-                case keyCode.ESCAPE:
-                case keyCode.SPACE:
-                case keyCode.HOME:
-                case keyCode.PAGE_DOWN:
-                case keyCode.PAGE_UP:
-                case keyCode.END:
-                case 16: //shift
-                case 17: //keyCode.CONTROL:
-                case 18: //keyCode.ALT:
-                case 91: //left window or cmd:
-                case 92: //right window:
-                case 93: //right cmd:
-                case 20: //capslock:
-                break;
-
-                default:
-                    //function keys (F1,F2 etc.)
-                    if(key >= 112 && key <= 123) {
-                        break;
-                    }
-
-                    var metaKey = e.metaKey||e.ctrlKey;
-
-                    if(!metaKey) {
-                        $this.filter($(this).val());
-                    }
-                break;
+            if(!metaKey) {
+                $this.filter($(this).val());
             }
         })
         .on('keydown.ui-selectonemenu',function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
 
-            switch(key) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     $this.highlightNext(e);
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
                     $this.handleEnterKey(e);
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     $this.handleTabKey();
                 break;
 
-                case keyCode.ESCAPE:
+                case 'Escape':
                     $this.handleEscapeKey(e);
                 break;
 
-                case keyCode.SPACE:
+                case ' ':
                     $this.handleSpaceKey(e);
                 break;
 
@@ -1278,7 +1207,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
-        var filterValue = this.cfg.caseSensitive ? PrimeFaces.trim(value) : PrimeFaces.trim(value).toLowerCase();
+        var lowercase = !this.cfg.caseSensitive,
+                normalize = this.cfg.filterNormalize,
+                filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
@@ -1290,7 +1221,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = this.cfg.caseSensitive ? option.text() : option.text().toLowerCase(),
+                itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize),
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
@@ -1304,7 +1235,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         hide.push(item);
                     }
                     else {
-                        itemLabel = this.cfg.caseSensitive ? option.parent().attr('label') : option.parent().attr('label').toLowerCase();
+                        itemLabel = PrimeFaces.toSearchable(option.parent().attr('label'), lowercase, normalize);
                         if (this.filterMatcher(itemLabel, filterValue)) {
                             show.push(item);
                         }
@@ -1554,7 +1485,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
         }
 
-        var dataLabel = PrimeFaces.escapeHTML(label.replace(/(<([^>]+)>)/gi, ""));
+        var dataLabel = escape ? label.replaceAll('"', '&quot;') : PrimeFaces.escapeHTML(label, true);
+
         if ($item.data("noselection-option")) {
             cssClass += " ui-noselection-option";
         }

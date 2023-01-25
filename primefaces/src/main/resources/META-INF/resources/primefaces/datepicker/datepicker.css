@@ -43,6 +43,10 @@
     margin-left: 0;
 }
 
+.p-datepicker-panel .ui-timepicker > .ui-ampm-picker {
+    margin-left: 1rem;
+}
+
 .p-datepicker-panel .ui-timepicker > div a {
     display: block;
 }
@@ -73,6 +77,10 @@
     padding-top: .1em;
 }
 
+.p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-ampm-picker > span {
+    padding: .5rem;
+}
+
 .ui-datepicker-multiple-month .ui-datepicker-group {
     display: table-cell;
     border-left-width: 0;
@@ -92,7 +100,6 @@
     min-width: 80vw;
     width: auto;
     -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
 }
 
