@@ -39,11 +39,7 @@ public class PieChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         PieChart chart = (PieChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 

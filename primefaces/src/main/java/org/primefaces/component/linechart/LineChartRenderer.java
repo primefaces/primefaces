@@ -38,11 +38,7 @@ public class LineChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         LineChart chart = (LineChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 

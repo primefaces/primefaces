@@ -12,6 +12,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `sourceUrl` to override the Google JS location for countries that do not have access to Google.
 * Charts
     * Added attribute `subtitle` exactly the same configuration options with title are available for subtitle.
+    * Added attribute `ariaLabel` to all Charts to allow accessibility but defaults to the Charts title.
 * Column/Columns
     * Added attribute `exportTag` to allow finer grain control over XML export.
 * DataGrid
