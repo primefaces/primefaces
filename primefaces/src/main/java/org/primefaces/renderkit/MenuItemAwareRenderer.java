@@ -112,6 +112,10 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                         : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
             }
 
+            if (isLink) {
+                // allow CTRL+CLICK link to open new tab
+                command = "if(event.ctrlKey||event.metaKey){return true};" + command;
+            }
             onclick = (onclick == null) ? command : onclick + ";" + command;
         }
 
