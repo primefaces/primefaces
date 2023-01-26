@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.component.password.Password;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
 
@@ -51,13 +52,17 @@ public class InplaceRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inplace.getClientId(context);
         String widgetVar = inplace.resolveWidgetVar(context);
-
         String userStyle = inplace.getStyle();
-        String styleClass = getStyleClassBuilder(context).add(Inplace.CONTAINER_CLASS, inplace.getStyleClass()).build();
         boolean disabled = inplace.isDisabled();
-        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
-
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
+        UIComponent outputFacet = inplace.getFacet("output");
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(outputFacet);
+        boolean withPassword = !shouldRenderFacet && isPassword(inplace.getChildren().get(0));
+        String styleClass = getStyleClassBuilder(context)
+                .add(Inplace.CONTAINER_CLASS, inplace.getStyleClass())
+                .add(withPassword, "p-password")
+                .build();
+        String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
         String mode = inplace.getMode();
 
         //container
@@ -70,12 +75,10 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-
         //output
         String outputStyle = validationFailed
                 ? Inplace.DISPLAY_NONE
                 : (Inplace.MODE_OUTPUT.equals(mode) ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE);
-        UIComponent outputFacet = inplace.getFacet("output");
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId + "_display", "id");
@@ -86,11 +89,11 @@ public class InplaceRenderer extends CoreRenderer {
             writer.writeAttribute("role", "button", null);
         }
 
-        if (ComponentUtils.shouldRenderFacet(outputFacet)) {
+        if (shouldRenderFacet) {
             outputFacet.encodeAll(context);
         }
         else {
-            writer.writeText(getLabelToRender(context, inplace), null);
+            encodeLabel(context, inplace, withPassword);
         }
 
         writer.endElement("span");
@@ -125,13 +128,37 @@ public class InplaceRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected String getLabelToRender(FacesContext context, Inplace inplace) {
+    protected void encodeLabel(FacesContext context, Inplace inplace, boolean withPassword) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent editor = inplace.getChildren().get(0);
+        String value = ComponentUtils.getValueToRender(context, editor);
+        boolean needsWrapping = withPassword
+                && LangUtils.isBlank(inplace.getLabel())
+                && !LangUtils.isBlank(value);
+        if (needsWrapping) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "p-masked", null);
+            writer.writeText(Constants.EMPTY_STRING, null);
+        }
+        else {
+            writer.writeText(getLabelToRender(context, inplace, value), null);
+        }
+        if (needsWrapping) {
+            writer.endElement("span");
+        }
+    }
+
+    protected boolean isPassword(UIComponent editor) {
+        return editor instanceof Password
+                || "password".equalsIgnoreCase(String.valueOf(editor.getAttributes().get("type")));
+    }
+
+    protected String getLabelToRender(FacesContext context, Inplace inplace, String value) {
         String label = inplace.getLabel();
         if (!isValueBlank(label)) {
             return label;
         }
 
-        String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
         if (LangUtils.isBlank(value)) {
             String emptyLabel = inplace.getEmptyLabel();
             if (emptyLabel != null) {

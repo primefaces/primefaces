@@ -142,11 +142,15 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
 
         //Hide overlay on resize/scroll
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.panel, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
 
         this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jq, function() {
-            $this.hide();
+            if (PrimeFaces.hideOverlaysOnViewportChange === true) {
+                $this.hide();
+            }
         });
     },
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,21 @@
  */
 package org.primefaces.renderkit;
 
+import java.lang.reflect.Array;
+import java.util.*;
+
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.ValueHolder;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.RandomAccess;
 
+import org.primefaces.component.api.WrapperSelectItem;
 import org.primefaces.util.LangUtils;
 
 public abstract class SelectRenderer extends InputRenderer {
@@ -74,12 +66,7 @@ public abstract class SelectRenderer extends InputRenderer {
                 Object selectItemValue = uiSelectItem.getValue();
 
                 if (selectItemValue == null) {
-                    selectItem = new SelectItem(uiSelectItem.getItemValue(),
-                            uiSelectItem.getItemLabel(),
-                            uiSelectItem.getItemDescription(),
-                            uiSelectItem.isItemDisabled(),
-                            uiSelectItem.isItemEscaped(),
-                            uiSelectItem.isNoSelectionOption());
+                    selectItem = new WrapperSelectItem(uiSelectItem);
                 }
                 else {
                     selectItem = (SelectItem) selectItemValue;
@@ -182,7 +169,9 @@ public abstract class SelectRenderer extends InputRenderer {
             requestMap.remove(var);
         }
 
-        return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
+        WrapperSelectItem wrapper = new WrapperSelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
+        wrapper.setComponent(uiSelectItems);
+        return wrapper;
     }
 
     protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) throws ConverterException {
@@ -397,5 +386,19 @@ public abstract class SelectRenderer extends InputRenderer {
         }
 
         return validSubmittedValues;
+    }
+
+    /**
+     * Helper method to find the defining component of a SelectItem so passthrough attributes can be rendered.
+     * @param item the SelectItem to check
+     * @return either NULL or a component the SelectItem was defined by
+     */
+    public UIComponent getSelectItemComponent(SelectItem item) {
+        if (item instanceof WrapperSelectItem) {
+            WrapperSelectItem wrapper = (WrapperSelectItem) item;
+            return wrapper.getComponent();
+        }
+
+        return null;
     }
 }

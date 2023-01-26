@@ -510,7 +510,7 @@ button.ui-button::-moz-focus-inner {
     color: inherit;
 }
 
-/** SelectCheckbox Menu **/
+/** SelectCheckboxMenu **/
 .ui-selectcheckboxmenu {
     display: inline-block;
     position: relative;
@@ -572,6 +572,15 @@ button.ui-button::-moz-focus-inner {
     padding: 0.2em 0;
 }
 
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item {
+    font-weight: normal;
+    cursor:pointer;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item-group {
+    font-weight: bold;
+}
+
 .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list {
     border: 0 none;
 }
@@ -602,8 +611,31 @@ button.ui-button::-moz-focus-inner {
     padding-left: 2em;
 }
 
-.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item-group {
-    font-weight: bold;
+.ui-selectcheckboxmenu-footer {
+    border:0px none;
+    margin:1px 0;
+    padding:3px 5px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table {
+    border-collapse:collapse;
+    width:100%;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table td {
+    border-color: inherit;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table th,
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table td {
+    border-width: 1px;
+    border-style: solid;
+    padding: .25rem .75rem .25rem 1rem;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table th:first-of-type,
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-table td:first-of-type {
+    width: 3.5rem;
 }
 
 .ui-selectcheckboxmenu-header {

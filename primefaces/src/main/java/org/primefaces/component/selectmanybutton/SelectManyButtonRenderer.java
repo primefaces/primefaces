@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -135,7 +135,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
 
         //button
-        writer.startElement("div", null);
+        writer.startElement("div", getSelectItemComponent(option));
         writer.writeAttribute("class", buttonStyle, null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -101,9 +101,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         String style = checkbox.getStyle();
-        String styleClass = checkbox.getStyleClass();
-        styleClass = (styleClass == null) ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
-        styleClass = styleClass + " ui-grid ui-grid-responsive";
+        boolean flex = ComponentUtils.isFlex(context, checkbox);
+        String styleClass = getStyleClassBuilder(context)
+                .add(SelectManyCheckbox.STYLE_CLASS)
+                .add(GridLayoutUtils.getResponsiveClass(flex))
+                .add(checkbox.getStyleClass())
+                .build();
         int columns = checkbox.getColumns();
 
         if (columns <= 0) {
@@ -139,13 +142,13 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                     colMod = idx % columns;
                     if (colMod == 0) {
                         writer.startElement("div", null);
-                        writer.writeAttribute("class", "ui-g", null);
+                        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                     }
 
                     groupIdx++;
 
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
                     encodeOption(context, checkbox, values, submittedValues, converter, childSelectItem, groupIdx);
                     writer.endElement("div");
 
@@ -167,11 +170,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 colMod = idx % columns;
                 if (colMod == 0) {
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", "ui-g", null);
+                    writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
                 encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
                 writer.endElement("div");
 
@@ -484,7 +487,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             return;
         }
 
-        writer.startElement("div", null);
+        writer.startElement("div", getSelectItemComponent(option));
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
         encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);

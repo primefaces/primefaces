@@ -41,6 +41,8 @@ DataTable displays data in tabular format.
 | emptyMessage              | No records found.  | String           | Text to display when there is no data to display. Alternative is emptyMessage facet.
 | escapeText                | true               | Boolean          | Defines if headerText and footerText values on columns are escaped or not. Default is true.
 | expandedRow               | false              | Boolean          | Defines if row should be rendered as expanded by default.
+| exportTag                 | null               | String           | If XML data exporter in use, this allows customization of the document tag in the XML.
+| exportRowTag              | null               | String           | If XML data exporter in use, this allows customization of the row tag in the XML.
 | filterBy                  | null               | FilterMeta / Collection<FilterMeta> | Property to be used for default filtering. Expects a single or a collection of FilterMeta.
 | filterDelay               | 300                | Integer          | Delay in milliseconds before sending an ajax filter query.
 | filterEvent               | keyup              | String           | Event triggering filter for input filters.

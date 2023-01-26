@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -586,6 +586,7 @@ public class TreeTableRenderer extends DataRenderer {
 
                 String columnStyleClass = column.getStyleClass();
                 String columnStyle = column.getStyle();
+                String title = column.getTitle();
                 int rowspan = column.getRowspan();
                 int colspan = column.getColspan();
                 int responsivePriority = column.getResponsivePriority();
@@ -617,6 +618,9 @@ public class TreeTableRenderer extends DataRenderer {
                 }
                 if (colspan != 1) {
                     writer.writeAttribute("colspan", colspan, null);
+                }
+                if (title != null) {
+                    writer.writeAttribute("title", title, null);
                 }
 
                 if (i == 0) {

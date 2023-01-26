@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package org.primefaces.component.datepicker;
 
 import java.io.IOException;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -170,9 +171,16 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             defaultDate = value;
         }
 
+        // #9559 java locale must match UI local for AM/PM
+        DateFormatSymbols symbols = new DateFormatSymbols(locale);
+        String[] ampm = symbols.getAmPmStrings();
+
         wb.attr("defaultDate", defaultDate, null)
             .attr("inline", datePicker.isInline())
             .attr("userLocale", locale.toString())
+            .attr("flex", ComponentUtils.isFlex(context, datePicker), false)
+            .attr("localeAm", ampm[0], "AM")
+            .attr("localePm", ampm[1], "PM")
             .attr("dateFormat", CalendarUtils.convertPattern(pattern))
             .attr("showIcon", datePicker.isShowIcon(), false)
             .attr("buttonTabindex", datePicker.getButtonTabindex())

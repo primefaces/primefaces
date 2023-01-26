@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,10 @@ import javax.faces.component.UIComponentBase;
 
 import org.primefaces.component.api.Widget;
 
+/**
+ * @deprecated In 13.0.0 for removal in 14.0.0.  Use pt:placeholder instead.
+ */
+@Deprecated
 public abstract class WatermarkBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";

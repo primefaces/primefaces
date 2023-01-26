@@ -80,11 +80,10 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                 return;
             }
 
-            var isRootLink = !currentitem.closest('ul').hasClass('ui-menu-child'),
-            keyCode = $.ui.keyCode;
+            var isRootLink = !currentitem.closest('ul').hasClass('ui-menu-child');
 
-            switch(e.which) {
-                    case keyCode.LEFT:
+            switch(e.key) {
+                    case 'ArrowLeft':
                         if(isRootLink) {
                             var prevItem = currentitem.prevAll('.ui-menuitem:not(.ui-menubar-options):first');
                             if(prevItem.length) {
@@ -108,7 +107,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         }
                     break;
 
-                    case keyCode.RIGHT:
+                    case 'ArrowRight':
                         if(isRootLink) {
                             var nextItem = currentitem.nextAll('.ui-menuitem:not(.ui-menubar-options):first');
                             if(nextItem.length) {
@@ -130,7 +129,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         }
                     break;
 
-                    case keyCode.UP:
+                    case 'ArrowUp':
                         if(!isRootLink) {
                             var prevItem = currentitem.prev('.ui-menuitem');
                             if(prevItem.length) {
@@ -142,7 +141,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         if(isRootLink) {
                             var submenu = currentitem.children('ul.ui-menu-child');
                             if(submenu.is(':visible'))
@@ -161,7 +160,7 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");

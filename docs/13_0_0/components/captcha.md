@@ -22,22 +22,24 @@ Captcha is a form validation component based on Recaptcha API V2.
 | id | null | String | Unique identifier of the component.
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
-| value | null | Object | Value of the component than can be either an EL expression of a literal text.
-| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
-| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
-| required | false | Boolean | Marks component as required.
-| validator | null | MethodExpr | A method binding expression that refers to a method validating the input. 
-| valueChangeListener | null | ValueChange Listener | A method binding expression that refers to a method for handling a valuchangeevent.
-| requiredMessage | null | String | Message to be displayed when required field validation fails.
-| converterMessage | null | String | Message to be displayed when conversion fails.
-| validatorMessage | null | String | Message to be displayed when validation fields.
-| publicKey | null | String | Public recaptcha key for a specific domain (deprecated)
-| theme | auto | String | Theme of the captcha. Values are "light", "dark", or "auto" to try and auto detect based on current theme.
-| language | en | String | Key of the supported languages.
-| tabindex | null | Integer | Position of the input element in the tabbing order.
-| label | null | String | User presentable field name.
 | callback | null | String | The name of your callback function to be executed when the user submits a successful CAPTCHA response. The user's response, g-recaptcha-response, will be the input for your callback function.
+| converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
+| converterMessage | null | String | Message to be displayed when conversion fails.
 | expired | null | String | Callback executed when the captcha response expires and the user needs to solve a new captcha.
+| immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
+| label | null | String | User presentable field name.
+| language | en | String | Key of the supported languages.
+| publicKey | null | String | Public recaptcha key for a specific domain (deprecated)
+| required | false | Boolean | Marks component as required.
+| requiredMessage | null | String | Message to be displayed when required field validation fails.
+| size | null | String | Size of the recaptcha.
+| sourceUrl | https://www.google.com/recaptcha/api.js | String | URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.
+| tabindex | null | Integer | Position of the input element in the tabbing order.
+| theme | auto | String | Theme of the captcha. Values are "light", "dark", or "auto" to try and auto detect based on current theme.
+| validator | null | MethodExpr | A method binding expression that refers to a method validating the input. 
+| validatorMessage | null | String | Message to be displayed when validation fields.
+| value | null | Object | Value of the component than can be either an EL expression of a literal text.
+| valueChangeListener | null | ValueChange Listener | A method binding expression that refers to a method for handling a valuchangeevent.
 
 ## Getting Started with Captcha
 Catpcha is implemented as an input component with a built-in validator that is integrated with

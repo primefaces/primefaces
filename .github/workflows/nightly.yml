@@ -1,6 +1,7 @@
 name: IT
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 6 * * *'
 
@@ -10,13 +11,13 @@ permissions:
 jobs:
   nightly:
     if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Java ${{ matrix.java }}, ${{ matrix.profile }}
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 11, 17, 19]
-        profile: [ 'firefox,theme-saga,myfaces-2.3', 'firefox,csp,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-next-2.3','chrome,csp,theme-nova,myfaces-2.3', 'chrome,csp,theme-nova,mojarra-2.3', 'chrome,client-state-saving,theme-nova,mojarra-2.3' ]
+        java: [11, 17, 19]
+        profile: [ 'chrome-jsf22,csp,theme-saga,myfaces-2.2', 'firefox,theme-saga,myfaces-2.3', 'firefox,csp,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-next-2.3','chrome,csp,theme-nova,myfaces-2.3', 'chrome,csp,theme-nova,mojarra-2.3', 'chrome,client-state-saving,theme-nova,mojarra-2.3' ]
 
     steps:
       - uses: actions/checkout@v3

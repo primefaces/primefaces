@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -314,6 +314,11 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public String getExportTag() {
+        return columns.getExportTag();
+    }
+
+    @Override
     public String getSortOrder() {
         return columns.getSortOrder();
     }
@@ -356,6 +361,11 @@ public class DynamicColumn implements UIColumn {
     @Override
     public int getDisplayPriority() {
         return columns.getDisplayPriority();
+    }
+
+    @Override
+    public String getTitle() {
+        return columns.getTitle();
     }
 
 }

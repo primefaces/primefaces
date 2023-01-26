@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,11 +38,7 @@ public class BubbleChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         BubbleChart chart = (BubbleChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 

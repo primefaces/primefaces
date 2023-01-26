@@ -32,11 +32,11 @@
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
         <lombok.version>1.18.24</lombok.version>
         <myfaces.version>2.3.10</myfaces.version>
-        <myfaces-next.version>2.3-next-M6</myfaces-next.version>
-        <tomcat.version>9.0.69</tomcat.version>
-        <resteasy.version>5.0.4.Final</resteasy.version>
+        <myfaces-next.version>2.3-next-M7</myfaces-next.version>
+        <tomcat.version>9.0.71</tomcat.version>
+        <resteasy.version>5.0.5.Final</resteasy.version>
         <owb.version>2.0.27</owb.version>
-        <jetty.version>9.4.49.v20220914</jetty.version>
+        <jetty.version>9.4.50.v20221201</jetty.version>
     </properties>
 
     <dependencies>
@@ -236,7 +236,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.4</version>
+            <version>2.0.6</version>
             <scope>test</scope>
         </dependency>
 
@@ -392,7 +392,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.5.0</version>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -470,6 +470,13 @@
             </properties>
         </profile>
         <profile>
+            <id>chrome-jsf22</id>
+            <properties>
+                <webdriver.browser>chrome</webdriver.browser>
+                <excludedGroups>ChromeExclude,Jsf22Exclude</excludedGroups>
+            </properties>
+        </profile>
+        <profile>
             <id>firefox</id>
             <properties>
                 <webdriver.browser>firefox</webdriver.browser>
@@ -521,6 +528,23 @@
             </properties>
         </profile>
         <profile>
+            <id>myfaces-2.2</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-api</artifactId>
+                    <version>2.2.15</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+                    <version>2.2.15</version>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>myfaces-2.3</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -554,6 +578,21 @@
                     <artifactId>myfaces-impl</artifactId>
                     <version>${myfaces-next.version}</version>
                     <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>mojarra-2.2</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sun.faces</groupId>
+                    <artifactId>jsf-api</artifactId>
+                    <version>2.2.20</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sun.faces</groupId>
+                    <artifactId>jsf-impl</artifactId>
+                    <version>2.2.20</version>
                 </dependency>
             </dependencies>
         </profile>

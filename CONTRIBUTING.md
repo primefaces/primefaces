@@ -3,45 +3,45 @@ Contributing to PrimeFaces: Terms and Conditions
 
 ------------------------------------------------------------------------------
 
-Do you want to contribute your work to PrimeFaces? Well, then first and most important: **THANK YOU!** 
+Do you want to contribute your work to PrimeFaces? Well, then first and most important: **THANK YOU!**
 
 
 Now, in order to accept your contribution, there are some terms you must expressly agree with, so please
-read them carefully. They might look a bit cumbersome, but they are here just in order to protect 
+read them carefully. They might look a bit cumbersome, but they are here just in order to protect
 you, your contribution, and especially the project's future.
 
 **Important**: submitting any contributions to the PrimeFaces project implies your **full acceptance of these terms**,
-including the *"PrimeFaces Individual Contributor License Agreement"* detailed at the end. 
+including the *"PrimeFaces Individual Contributor License Agreement"* detailed at the end.
 
 Who can contribute?
 -------------------
 
-Anyone, with the unique condition that he/she must be a **private individual**, acting in 
+Anyone, with the unique condition that he/she must be a **private individual**, acting in
 his/her own name, and not being endorsed in their contributed work by any company or government.
 
-Note that this condition will not only refer to the ownership of the effort invested in contributing 
-to the project, but also to the fact that *no private or public company will be mentioned as a a part 
-of your contribution on the project's website or code*, including but not limited to web/email addresses 
+Note that this condition will not only refer to the ownership of the effort invested in contributing
+to the project, but also to the fact that *no private or public company will be mentioned as a part
+of your contribution on the project's website or code*, including but not limited to web/email addresses
 or package names.
 
 
 What is the first step to be taken?
 -----------------------------------
 
-First of all, **Discuss with the [project members](http://forum.primefaces.org/)** (a new thread should do) about 
-your ideas: new features, fixes, documentation... whatever you would like to contribute to the project. Let we 
-discuss the possibilities with you so that we make sure your contribution goes in the right direction and aligns 
-with the project's standards, intentions and roadmap. 
+First of all, **Discuss with the [project members](http://forum.primefaces.org/)** (a new thread should do) about
+your ideas: new features, fixes, documentation... whatever you would like to contribute to the project. Let we
+discuss the possibilities with you so that we make sure your contribution goes in the right direction and aligns
+with the project's standards, intentions and roadmap.
 
 
 
 How will your relation with the PrimeFaces project be?
 -----------------------------------------------------
 
-Your contributions will have the form of GitHub *pull requests*. Note that contributors do not 
-have read+write (or *pull+push*) access to the project repositories, only project *members* do. 
+Your contributions will have the form of GitHub *pull requests*. Note that contributors do not
+have read+write (or *pull+push*) access to the project repositories, only project *members* do.
 
-Also, please understand that *not all pull requests will be accepted and merged into the project's 
+Also, please understand that *not all pull requests will be accepted and merged into the project's
 repositories*. Talking about your planned contributions with the project members before creating pull requests
 will maximize the possibilities of your contributions being accepted.
 
@@ -49,31 +49,35 @@ About the code you contribute
 -----------------------------
 
 ### General guidelines:
-  
-  - Obviously, **your code must both compile and work correctly**. Also, the addition of any new patches to the 
+
+  - Obviously, **your code must both compile and work correctly**. Also, the addition of any new patches to the
     codebase should not render it unstable in any way.
   - All your code should be easy to read and understand by a human.
   - There should be no compilation warnings at all.
   - Checkstyle must pass without errors or warnings. Currently this is embedded into the maven build.
+  - Deactivate auto-formatting features of your IDE.
+
+### Performance guidelines:
+  - Use index-loop instead of for-each over ArrayLists (see https://issues.apache.org/jira/browse/MYFACES-3130)
 
 ### Detailed Java code quality standards:
-  
-  - All your code should compile and run in **Java 8.0**.
+
+  - All your code should compile and run in **Java 8**.
   - All comments, names of classes and variables, log messages, etc. must be **in English**.
   - All `.java` files must include the standard PrimeFaces copyright header.
   - All your code should follow the Java Code Conventions regarding variable/method/class naming.
   - Maximum line size is 160 characters.
   - Indentation should be made with 4 spaces, not tabs.
   - Line feeds should be UNIX-like (`\n`).
-  - All .java source files should be pure ASCII. All .properties files should be ISO-8859-1. 
+  - All .java source files should be pure ASCII. All .properties files should be ISO-8859-1.
   - Number autoboxing and/or autounboxing is forbidden.
   - Every class should define a constructor, even if it is the default one, and include a call to `super()`.
-  - Include `/* ... */` comments for every algorithm you develop with a minimum of complexity. *"Minimum 
-    of complexity"* usually means you had to take some design decisions in order to write it the way you did. Do 
+  - Include `/* ... */` comments for every algorithm you develop with a minimum of complexity. *"Minimum
+    of complexity"* usually means you had to take some design decisions in order to write it the way you did. Do
     not write obvious comments.
   - All public methods and classes directly available to users (i.e. public) should have comprehensive javadoc.
   - We also have some defined checkstyle rules in checkstyle.xml
-  
+
 ### Detailed HTML/XML code quality standards:
 
   - All tags, CSS styles, file names, etc. must be **in English**.
@@ -82,10 +86,10 @@ About the code you contribute
   - Maximum line size is 160 characters.
   - Indentation should be made with 4 spaces, not tabs.
   - Line feeds should be UNIX-like (`\n`).
-  - All .html and .xml source files should be pure ASCII, even if _content-type_ is set to a different encoding. 
+  - All .html and .xml source files should be pure ASCII, even if _content-type_ is set to a different encoding.
   - All XHTML self-closing (minimized) tags should have a space before `/>` (the XHTML standards say so!).
   - All inline scripts must be enclosed inside a commented `<![CDATA[...]]>` block.
-  
+
 
 About the documentation/articles you contribute
 -----------------------------------------------
@@ -95,7 +99,7 @@ Note the following only applies to documentation/articles meant to be published 
   - All documentation artifacts, including articles, must be written **in correct English**.
   - Your name and email will be displayed as *"author"* of any documentation artifacts you create.
   - Topic and text structure must be first discussed and agreed upon with the project members.
-  - Project members may edit and make small changes to your texts --of which you will be informed-- before 
+  - Project members may edit and make small changes to your texts --of which you will be informed-- before
     publishing them.
   - Format and visual styles must adhere to the PrimeFaces website standards, of which you will be informed
     by the project members.
@@ -108,11 +112,11 @@ Pay special attention to this
 All PrimeFaces software is distributed under the **MIT** open source license, and your contributions
 will be licensed in the same way.
 
-If you work for a company which, by the way or place in which your code was written, by your contract terms 
-or by the laws in your country, could claim any rights (including but not limited to intellectual or industrial 
-property) over your contributed code, you will have to send the project members (either by email from your 
-authorised superiors or by signed fax), a statement indicating that your company agrees with the terms 
-explained in this page, and that it both authorises your contribution to PrimeFaces and states that will 
+If you work for a company which, by the way or place in which your code was written, by your contract terms
+or by the laws in your country, could claim any rights (including but not limited to intellectual or industrial
+property) over your contributed code, you will have to send the project members (either by email from your
+authorised superiors or by signed fax), a statement indicating that your company agrees with the terms
+explained in this page, and that it both authorises your contribution to PrimeFaces and states that will
 never claim any kind of rights over it.
 
 
@@ -120,7 +124,7 @@ never claim any kind of rights over it.
 PrimeFaces Individual Contributor License Agreement
 --------------------------------------------------
 
-This contributor agreement ("Agreement") documents the rights granted by contributors to the PrimeFaces Project. 
+This contributor agreement ("Agreement") documents the rights granted by contributors to the PrimeFaces Project.
 
 This is a legally binding document, so please read it carefully before agreeing to it. The Agreement
 may cover more than one software project managed by PrimeFaces.
@@ -146,7 +150,7 @@ may cover more than one software project managed by PrimeFaces.
   * _"Submission Date"_ means the date on which you submit a Contribution to PrimeFaces.
   * _"Effective Date"_ means the date you execute this agreement or the date You first submit a
     Contribution to PrimeFaces, whichever is earlier.
-  
+
 ### 2. Grant of Rights
 
 #### 2.1. Copyright License
@@ -174,18 +178,18 @@ compliance with Section 2.3.
 #### 2.3 Outbound License
 
 As a condition on the grant of rights in Sections 2.1 and 2.2, PrimeFaces agrees to license the Contribution only
-under the terms of the MIT License (including any right to adopt any future version of this license if 
+under the terms of the MIT License (including any right to adopt any future version of this license if
 permitted).
 
 
-#### 2.4 Moral Rights 
+#### 2.4 Moral Rights
 
-If moral rights apply to the Contribution, to the maximum extent permitted by law, you waive and agree not 
-to assert such moral rights against PrimeFaces or its successors in interest, or any of our licensees, either 
+If moral rights apply to the Contribution, to the maximum extent permitted by law, you waive and agree not
+to assert such moral rights against PrimeFaces or its successors in interest, or any of our licensees, either
 direct or indirect.
 
 
-#### 2.5 PrimeFaces Rights 
+#### 2.5 PrimeFaces Rights
 
 You acknowledge that PrimeFaces is not obligated to use your Contribution as part of the
 Material and may decide to include any Contributions PrimeFaces considers appropriate.
@@ -205,26 +209,26 @@ You confirm that:
         the rights under Section 2.
     (c) The grant of rights under Section 2 does not violate any grant of rights which you have made to
         third parties, including your employer. If you are an employee, you have had your employer approve
-        this Agreement. If you are less than eighteen years old, please have your parents or guardian 
+        this Agreement. If you are less than eighteen years old, please have your parents or guardian
         sign the Agreement.
 
 
 
 ### 4. Disclaimer
 
-EXCEPT FOR THE EXPRESS WARRANTIES IN SECTION 3, THE CONTRIBUTION IS PROVIDED "AS IS". MORE PARTICULARLY, 
+EXCEPT FOR THE EXPRESS WARRANTIES IN SECTION 3, THE CONTRIBUTION IS PROVIDED "AS IS". MORE PARTICULARLY,
 ALL EXPRESS OR IMPLIED WARRANTIES INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTY OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE EXPRESSLY DISCLAIMED BY YOU TO PrimeFaces AND BY
-PrimeFaces TO YOU. TO THE EXTENT THAT ANY SUCH WARRANTIES CANNOT BE DISCLAIMED, SUCH WARRANTY IS LIMITED IN 
+PrimeFaces TO YOU. TO THE EXTENT THAT ANY SUCH WARRANTIES CANNOT BE DISCLAIMED, SUCH WARRANTY IS LIMITED IN
 DURATION TO THE MINIMUM PERIOD PERMITTED BY LAW.
 
 
 
 ### 5. Consequential Damage Waiver
 
-TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU OR PrimeFaces BE LIABLE FOR ANY LOSS OF 
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU OR PrimeFaces BE LIABLE FOR ANY LOSS OF
 PROFITS, LOSS OF ANTICIPATED SAVINGS, LOSS OF DATA, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL AND EXEMPLARY
-DAMAGES ARISING OUT OF THIS AGREEMENT REGARDLESS OF THE LEGAL OR EQUITABLE THEORY (CONTRACT, TORT OR OTHERWISE) 
+DAMAGES ARISING OUT OF THIS AGREEMENT REGARDLESS OF THE LEGAL OR EQUITABLE THEORY (CONTRACT, TORT OR OTHERWISE)
 UPON WHICH THE CLAIM IS BASED.
 
 
@@ -238,7 +242,7 @@ UPON WHICH THE CLAIM IS BASED.
         and, thus, exclude the application of the UN Convention in its entirety to this Agreement.
     6.2 This Agreement sets out the entire agreement between you and PrimeFaces for your Contributions to
         PrimeFaces and overrides all other agreements or understandings.
-    6.3 If You or PrimeFaces assign the rights or obligations received through this Agreement to a third party, 
+    6.3 If You or PrimeFaces assign the rights or obligations received through this Agreement to a third party,
         as a condition of the assignment, that third party must agree in writing to abide by all the rights and
         obligations in the Agreement.
     6.4 The failure of either party to require performance by the other party of any provision of this
@@ -250,4 +254,3 @@ UPON WHICH THE CLAIM IS BASED.
         provision and which is enforceable. The terms and conditions set forth in this Agreement shall apply
         notwithstanding any failure of essential purpose of this Agreement or any limited remedy to the
         maximum extent possible under law.
-

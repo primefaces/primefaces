@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,10 +92,6 @@ public class DynamicContentSrcBuilder {
         }
 
         return "";
-    }
-
-    public static String buildStreaming(FacesContext context, ValueExpression valueExpression, boolean cache) {
-        return buildStreaming(context, null, valueExpression, cache);
     }
 
     public static String buildStreaming(FacesContext context, UIComponent component, ValueExpression valueExpression, boolean cache) {

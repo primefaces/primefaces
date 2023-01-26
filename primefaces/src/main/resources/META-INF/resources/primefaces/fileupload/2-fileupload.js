@@ -491,10 +491,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             $this.show();
         })
         .on('keydown.fileupload', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $this.show();
                 $(this).trigger('blur');
                 e.preventDefault();

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,10 @@
  */
 package org.primefaces.component.dataview;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MapBuilder;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -38,10 +35,14 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.model.DataModel;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -63,8 +64,7 @@ public class DataView extends DataViewBase {
     public static final String BUTTON_CLASS = "ui-button ui-button-icon-only ui-state-default";
     public static final String LIST_LAYOUT_CONTAINER_CLASS = "ui-dataview-list-container";
     public static final String ROW_CLASS = "ui-dataview-row";
-    public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row ui-g";
-    public static final String FLEX_GRID_LAYOUT_ROW_CLASS = "ui-dataview-row grid";
+    public static final String GRID_LAYOUT_ROW_CLASS = "ui-dataview-row";
     public static final String GRID_LAYOUT_COLUMN_CLASS = "ui-dataview-column";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

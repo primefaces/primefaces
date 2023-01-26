@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -138,6 +138,7 @@ public class AvatarRenderer extends CoreRenderer {
             sb.append(m.group());
         }
         String initials = sb.toString();
+        initials = LangUtils.isEmpty(initials) ? value.charAt(0) + "" : initials;
         return initials.length() == 1 ? initials : initials.charAt(0) + initials.substring(initials.length() - 1);
     }
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ import java.io.Serializable;
 public class InplaceView implements Serializable {
 
     private String text = "PrimeFaces";
+    private String password = "secret";
 
     public String getText() {
         return text;
@@ -39,5 +40,13 @@ public class InplaceView implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

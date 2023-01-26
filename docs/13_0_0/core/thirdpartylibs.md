@@ -6,10 +6,9 @@ are many other third party libraries and plugins used to support features.
 | Library | Version | URL |
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.6.0 | https://github.com/autoNumeric/autoNumeric |
-| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.8.0 | https://www.chartjs.org |
+| [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.9.1 | https://www.chartjs.org |
 | [Color Picker](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#colorpicker) | (2012) | www.eyecon.ro |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
-| [ContentFlow](../jsdocs/classes/src_PrimeFaces.ContentFlow.html) | 1.0.2 | http://www.jacksasylum.eu/ContentFlow |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.10.1 | https://fullcalendar.io/ |
@@ -20,7 +19,6 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Cycle Plugin](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#cycle) | 2.88 |  http://jquery.malsup.com/cycle/ |
 | [jQuery File Upload Plugin](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#fileupload) | 10.2.0 | https://github.com/blueimp/jQuery-File-Upload |
 | [jQuery Hotkeys Plugin](../jsdocs/interfaces/src_PrimeFaces.JQueryStatic.html#hotkeys) | 0.2.0 | https://github.com/tzuryby/jquery.hotkeys |
-| [jQuery Keyfilter](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keyfilter) | 1.8 | https://github.com/akzhan/jquery-keyfilter |
 | [jQuery Knob](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#knob) | 1.2.13 | https://github.com/aterrien/jQuery-Knob |
 | [jQuery MouseWheel](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#mousewheel) | 3.1.13 | https://github.com/jquery/jquery-mousewheel |
 | [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |
@@ -28,7 +26,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
 | jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.2 | https://github.com/jquery/jquery-ui |
-| [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.6.1 | https://jquery.com/ |
+| [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.6.3 | https://jquery.com/ |
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
 | [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.0 | http://keith-wood.name/keypad.html |

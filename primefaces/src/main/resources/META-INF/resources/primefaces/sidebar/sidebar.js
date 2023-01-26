@@ -97,13 +97,14 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Brings up this sidebar in case is is not already visible.
+     * @param {boolean} reload If the dynamic content should be reloaded.
      */
-    show: function() {
+    show: function(reload = false) {
         if(this.isVisible()) {
             return;
         }
 
-        if (!this.loaded && this.cfg.dynamic) {
+        if ((!this.loaded || reload === true) && this.cfg.dynamic) {
             this.loadContents();
         }
         else {

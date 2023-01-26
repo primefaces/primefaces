@@ -66,7 +66,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <junit.version>5.9.1</junit.version>
+        <junit.version>5.9.2</junit.version>
 
         <npm.token/>
         <npm.username/>
@@ -90,6 +90,7 @@
         <module>primefaces-showcase</module>
         <module>primefaces-selenium</module>
         <module>primefaces-integration-tests</module>
+        <module>primefaces-integration-tests-jakarta</module>
         <module>primefaces-cli</module>
     </modules>
 
@@ -217,7 +218,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.1</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>

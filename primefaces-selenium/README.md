@@ -67,6 +67,7 @@ Properties:
 |    webdriver.browser     | String  |         |       firefox / chrome / safari             |
 |   webdriver.headless     | boolean | false   |    if browser should be openend headless    |
 |   webdriver.version      | String  | newest  |  the webdriver version which should be used |
+|   webdriver.logLevel     | String  | WARNING |  the JUL log level which will be passed to the browser: ALL, FINEST, FINER, FINE, INFO, WARNING, SEVERE, OFF |
 |       timeout.gui        |   int   | 2       |       GUI timeout for waits in seconds      |
 |       timeout.ajax       |   int   | 10      |      AJAX timeout for guards in seconds     |
 |       timeout.http       |   int   | 10      |      HTTP timeout for guards in seconds     |
@@ -113,6 +114,7 @@ Currently, only the following components are implemented (partially):
 - OverlayPanel
 - Panel
 - Password
+- Picklist
 - Rating
 - Schedule
 - SelectBooleanCheckbox

@@ -554,10 +554,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $(this).addClass('ui-state-focus');
         })
         .on('keydown.dataTable', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER) && $(e.target).is(':not(:input)')) {
+            if((e.key === 'Enter') && $(e.target).is(':not(:input)')) {
                 $(this).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
                 e.preventDefault();
             }
@@ -725,10 +722,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         filter.off('keydown keyup')
         .on('keydown', PrimeFaces.utils.blockEnterKey)
         .on('keyup', function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
+            if(e.key === 'Enter') {
                 $this.filter();
 
                 e.preventDefault();
@@ -885,19 +879,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         })
         .on('keydown', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
             if($(e.target).is(':input')) {
                 return;
             }
 
             if($this.focusedRow) {
-                switch(key) {
-                    case keyCode.UP:
-                    case keyCode.DOWN:
+                switch(e.key) {
+                    case 'ArrowUp':
+                    case 'ArrowDown':
                         var rowSelector = 'tr.ui-widget-content.ui-datatable-selectable',
-                        row = key === keyCode.UP ? $this.focusedRow.prevAll(rowSelector).eq(0) : $this.focusedRow.nextAll(rowSelector).eq(0);
+                        row = e.key === 'ArrowUp' ? $this.focusedRow.prevAll(rowSelector).eq(0) : $this.focusedRow.nextAll(rowSelector).eq(0);
 
                         if(row.length) {
                             $this.unhighlightFocusedRow();
@@ -918,8 +909,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ENTER:
-                    case keyCode.SPACE:
+                    case 'Enter':
+                    case ' ':
                         if($this.focusedRowWithCheckbox) {
                             $this.focusedRow.find('> td.ui-selection-column > div.ui-chkbox > div.ui-chkbox-box').trigger('click.dataTable');
                         }
@@ -1116,18 +1107,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             })
             .on('keydown', function(e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                switch(key) {
-                    case keyCode.ENTER:
-                    case keyCode.SPACE:
-                        if(!$(this).hasClass('ui-state-disabled')) {
-                            $this.toggleCheckAll();
-                        }
-                    break;
-                    default:
-                    break;
+                if (PrimeFaces.utils.isActionKey(e)) {
+                    if(!$(this).hasClass('ui-state-disabled')) {
+                        $this.toggleCheckAll();
+                    }
                 }
             });
 
@@ -1235,10 +1218,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.toggleExpansion($(this));
             })
             .on('keydown.datatable-expansion', togglerSelector, null, function(e) {
-                var key = e.which,
-                keyCode = $.ui.keyCode;
-
-                if((key === keyCode.ENTER)) {
+                if(e.key === 'Enter') {
                     $this.toggleExpansion($(this));
                     e.preventDefault();
                 }
@@ -1550,10 +1530,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $(PrimeFaces.escapeClientId($(this).data('original'))).addClass('ui-state-focus');
             })
             .on('keydown.dataTable', function(e) {
-                var key = e.which,
-                keyCode = $.ui.keyCode;
-
-                if((key === keyCode.ENTER) && $(e.target).is(':not(:input)')) {
+                if((e.key === 'Enter') && $(e.target).is(':not(:input)')) {
                     $(PrimeFaces.escapeClientId($(this).data('original'))).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
                     e.preventDefault();
                 }
@@ -3182,9 +3159,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             // GitHub #433 Allow ENTER to submit ESC to cancel row editor
             $(document).off("keydown.datatable", "tr.ui-row-editing")
                         .on("keydown.datatable", "tr.ui-row-editing", function(e) {
-                            var keyCode = $.ui.keyCode;
-                            switch (e.which) {
-                                case keyCode.ENTER:
+                            switch (e.key) {
+                                case 'Enter':
                                     var target = $(e.target);
                                     // GitHub #7028
                                     if(target.is("textarea")) {
@@ -3192,7 +3168,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                                     }
                                     $(this).closest("tr").find(".ui-row-editor-check").trigger("click");
                                     return false; // prevents executing other event handlers (adding new row to the table)
-                                case keyCode.ESCAPE:
+                                case 'Escape':
                                     $(this).closest("tr").find(".ui-row-editor-close").trigger("click");
                                     return false;
                                 default:
@@ -3460,12 +3436,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 cell.data('edit-events-bound', true);
 
                 inputs.on('keydown.datatable-cell', function(e) {
-                        var keyCode = $.ui.keyCode,
-                        shiftKey = e.shiftKey,
-                        key = e.which,
+                        var shiftKey = e.shiftKey,
+                        key = e.key,
                         input = $(this);
 
-                        if(key === keyCode.ENTER) {
+                        if(key === 'Enter') {
                             // GitHub #7028
                             if(input.is("textarea")) {
                                 return true;
@@ -3475,7 +3450,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                             e.preventDefault();
                         }
-                        else if(key === keyCode.TAB) {
+                        else if(key === 'Tab') {
                             if(multi) {
                                 var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
 
@@ -3491,7 +3466,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                             e.preventDefault();
                         }
-                        else if(key === keyCode.ESCAPE) {
+                        else if(key === 'Escape') {
                             $this.doCellEditCancelRequest(cell);
                             e.preventDefault();
                         }

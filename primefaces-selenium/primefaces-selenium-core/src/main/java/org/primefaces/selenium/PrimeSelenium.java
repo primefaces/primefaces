@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -274,6 +274,28 @@ public final class PrimeSelenium {
         catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
+    }
+
+    /**
+     * Is the Element visisible in the current viewport??
+     *
+     * @param element the WebElement to check
+     * @return true if visible
+     */
+    public static boolean isVisibleInViewport(WebElement element) {
+        if (!isElementDisplayed(element)) {
+            return false;
+        }
+
+        return PrimeSelenium.executeScript("var elem = arguments[0],"
+                + "    box = elem.getBoundingClientRect(),"
+                + "    cx = box.left + box.width / 2,"
+                + "    cy = box.top + box.height / 2,"
+                + "    e = document.elementFromPoint(cx, cy);"
+                + "for (; e; e = e.parentElement) {"
+                + "    if (e === elem) { return true; }"
+                + "}"
+                + "return false;", element);
     }
 
     /**

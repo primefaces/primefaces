@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<languages>
+	<language>
+		<languageid>1</languageid>
+		<languagetype>COMPILED</languagetype>
+		<languagename>Java</languagename>
+	</language>
+	<language>
+		<languageid>2</languageid>
+		<languagetype>COMPILED</languagetype>
+		<languagename>C#</languagename>
+	</language>
+	<language>
+		<languageid>3</languageid>
+		<languagetype>INTERPRETED</languagetype>
+		<languagename>JavaScript</languagename>
+	</language>
+	<language>
+		<languageid>4</languageid>
+		<languagetype>INTERPRETED</languagetype>
+		<languagename>TypeScript</languagename>
+	</language>
+	<language>
+		<languageid>5</languageid>
+		<languagetype>INTERPRETED</languagetype>
+		<languagename>Python</languagename>
+	</language>
+</languages>

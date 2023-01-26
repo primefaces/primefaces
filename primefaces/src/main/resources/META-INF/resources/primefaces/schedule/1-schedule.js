@@ -174,15 +174,31 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 eventClickInfo.jsEvent.preventDefault(); // don't let the browser navigate
                 return false;
             }
-
-            if($this.hasBehavior('eventSelect')) {
-                var ext = {
+            
+            var eventId = eventClickInfo.event.id;
+            var ext = {
                     params: [
-                        {name: $this.id + '_selectedEventId', value: eventClickInfo.event.id}
+                        {name: $this.id + '_selectedEventId', value: eventId}
                     ]
-                };
+            };
+            
+            if ($this.doubleClick === eventId) {
+                $this.doubleClick = null;
+                if ($this.hasBehavior('eventDblSelect')) {
+                    $this.callBehavior('eventDblSelect', ext);
+                }
+            } else {
+                $this.doubleClick = eventId;
+                clearInterval($this.clickTimer);
+                $this.clickTimer = setInterval(function() {
+                    $this.doubleClick = null;
+                    clearInterval($this.clickTimer);
+                    $this.clickTimer = null;
+                }, 500);
 
-                $this.callBehavior('eventSelect', ext);
+                if ($this.hasBehavior('eventSelect')) {
+                    $this.callBehavior('eventSelect', ext);
+                }
             }
         };
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -121,8 +121,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                         if (isAuto) {
                             boolean disabled = false;
                             if ("autoSkipDisabled".equals(indicateRequired)) {
-                                disabled = Boolean.parseBoolean(String.valueOf(input.getAttributes().get("disabled"))) ||
-                                            Boolean.parseBoolean(String.valueOf(input.getAttributes().get("readonly")));
+                                disabled = ComponentUtils.isDisabledOrReadonly(input);
                             }
 
                             if (disabled) {

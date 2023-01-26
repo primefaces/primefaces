@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,8 @@ package org.primefaces.component.inputnumber;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.el.PropertyNotFoundException;
 
+import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -243,7 +243,8 @@ public class InputNumberRenderer extends InputRenderer {
             .attr("allowDecimalPadding", inputNumber.isPadControl(), true)
             .attr("modifyValueOnWheel", inputNumber.isModifyValueOnWheel(), true)
             .attr("roundingMethod", inputNumber.getRoundMethod(), "S")
-            .attr("selectOnFocus", false, true)
+            .attr("caretPositionOnFocus", inputNumber.getCaretPositionOnFocus(), null)
+            .attr("selectOnFocus", inputNumber.isSelectOnFocus(), true)
             .attr("showWarnings", false, true);
 
         wb.finish();

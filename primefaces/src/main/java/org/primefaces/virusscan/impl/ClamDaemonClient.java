@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,7 @@
  */
 package org.primefaces.virusscan.impl;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -53,7 +48,7 @@ public class ClamDaemonClient {
     public static final int DEFAULT_PORT = 3310;
     public static final int DEFAULT_TIMEOUT = 30000;
 
-    private final int buffer;
+    private final int bufferSize;
     private final String host;
     private final int port;
     private final int timeout;
@@ -62,19 +57,19 @@ public class ClamDaemonClient {
      * @param host The hostname of the server running clamav-daemon
      * @param port The port that clamav-daemon listens to(By default it might not listen to a port. Check your clamav configuration).
      * @param timeout zero means infinite timeout. Not a good idea, but will be accepted.
-     * @param buffer The buffer (chunk size).
+     * @param bufferSize The buffer (chunk size).
      */
-    public ClamDaemonClient(final String host, final int port, final int timeout, final int buffer) {
+    public ClamDaemonClient(final String host, final int port, final int timeout, final int bufferSize) {
         if (timeout < 0) {
             throw new IllegalArgumentException("Negative timeout value does not make sense.");
         }
-        if (buffer <= 0) {
+        if (bufferSize <= 0) {
             throw new IllegalArgumentException("Chunk size must be greater than zero.");
         }
         this.host = host;
         this.port = port;
         this.timeout = timeout;
-        this.buffer = buffer;
+        this.bufferSize = bufferSize;
     }
 
     public ClamDaemonClient() {
@@ -85,8 +80,8 @@ public class ClamDaemonClient {
         this(host, port, DEFAULT_TIMEOUT, DEFAULT_BUFFER);
     }
 
-    public int getBuffer() {
-        return buffer;
+    public int getBufferSize() {
+        return bufferSize;
     }
 
     public String getHost() {
@@ -115,7 +110,7 @@ public class ClamDaemonClient {
             try (InputStream is = s.getInputStream()) {
                 byte[] buffer = new byte[4];
                 int read = is.read(buffer);
-                return Arrays.equals(buffer, asBytes("PONG"));
+                return read > 0 && Arrays.equals(buffer, asBytes("PONG"));
             }
         }
     }
@@ -138,7 +133,7 @@ public class ClamDaemonClient {
             // handshake
             outs.write(asBytes("zINSTREAM\0"));
             outs.flush();
-            final byte[] chunk = new byte[buffer];
+            final byte[] chunk = new byte[this.bufferSize];
 
             // send data
             int readLen = is.read(chunk);

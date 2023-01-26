@@ -1179,14 +1179,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute when input element loses focus.]]>
-            </description>
-            <name>onblur</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Client side callback to execute when input element loses focus and its value has been modified since gaining focus.]]>
             </description>
             <name>onchange</name>
@@ -2195,6 +2187,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the block. Default is '0', meaning immediate.]]>
+            </description>
+            <name>delay</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -3772,6 +3772,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[URL for the ReCaptcha JavaScript file. Some countries do not have access to Google.]]>
+            </description>
+            <name>sourceUrl</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -4960,6 +4968,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the column.]]>
             </description>
             <name>style</name>
@@ -5248,6 +5264,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the display priority, in which order the columns should be displayed.]]>
             </description>
             <name>displayPriority</name>
@@ -5361,6 +5385,14 @@
             <name>sortBy</name>
             <required>false</required>
             <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -5680,6 +5712,14 @@
                 <![CDATA[Defines if the footer value of column to be exported.]]>
             </description>
             <name>exportFooterValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the column tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8054,6 +8094,22 @@
             <name>editingRow</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -13516,6 +13572,22 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if the element value should be selected on focus, default is true.]]>
+            </description>
+            <name>selectOnFocus</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines where should be positioned the caret on focus such as 'start', 'end', 'decimalLeft', 'decimalRight', default is null.]]>
+            </description>
+            <name>caretPositionOnFocus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -16738,6 +16810,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
+            </description>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Inline style of the main container element.]]>
             </description>
             <name>style</name>
@@ -18240,6 +18320,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -18904,6 +18992,14 @@
                 which is useful to reduce initial page load times. Default is false.]]>
             </description>
             <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Only relevant for dynamic="true": Defines if activating the panel should load the contents from server again. For cache="true" (default) the panel content is only loaded once.]]>
+            </description>
+            <name>cache</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -22771,11 +22867,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Defines the maximum height of the scrollable area.]]>
             </description>
             <name>scrollHeight</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -22838,6 +22934,14 @@
                 <![CDATA[Style class of the dropdown panel container element.]]>
             </description>
             <name>panelStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of iterator to be used in custom content display.]]>
+            </description>
+            <name>var</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -23218,7 +23322,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Disables the component.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -23226,7 +23330,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[ User presentable name.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -23234,11 +23338,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the checkboxes, valid values are lineDirection , pageDirection, grid, responsive and custom.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -23538,6 +23650,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the height of the scrollable area.]]>
             </description>
             <name>scrollHeight</name>
@@ -23730,7 +23850,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Unselectable mode when true allows the button to be unselected. Default true.]]>
             </description>
             <name>unselectable</name>
             <required>false</required>
@@ -23960,6 +24080,14 @@
                 <![CDATA[Defines if filtering would be case sensitive. Default is false.]]>
             </description>
             <name>caseSensitive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -24256,6 +24384,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Maximum number of characters that may be entered in this field.]]>
             </description>
             <name>maxlength</name>
@@ -24476,7 +24612,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Is the radio button disabled.]]>
             </description>
             <name>disabled</name>
             <required>false</required>
@@ -24484,7 +24620,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Label of the radio button.]]>
             </description>
             <name>label</name>
             <required>false</required>
@@ -24492,11 +24628,19 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, responsive and grid.]]>
             </description>
             <name>layout</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -27429,6 +27573,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[Whether to focus on the last active tab that a user selected.]]>
+            </description>
+            <name>focusOnLastActiveTab</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -29666,6 +29818,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the document tag in the XML.]]>
+            </description>
+            <name>exportTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[If XML data exporter in use, this allows customization of the row tag in the XML.]]>
+            </description>
+            <name>exportRowTag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Sticky header stays in window viewport during scrolling.]]>
             </description>
             <name>stickyHeader</name>
@@ -30587,6 +30755,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30650,6 +30826,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -30719,6 +30903,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30782,6 +30974,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -30851,6 +31051,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -30914,6 +31122,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -30983,6 +31199,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -31046,6 +31270,14 @@
                 <![CDATA[Style class of the component.]]>
             </description>
             <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -31561,6 +31793,14 @@
                 <![CDATA[When enabled, displays the datepicker as inline. Default is false for popup mode.]]>
             </description>
             <name>inline</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Use modern PrimeFlex-Grid instead of classic Grid CSS.]]>
+            </description>
+            <name>flex</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

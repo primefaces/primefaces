@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -64,12 +64,12 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         List<WebElement> optgroups = selectOneMenu.getInput().findElements(By.tagName("optgroup"));
         Assertions.assertEquals(2, optgroups.size());
         List<WebElement> options = selectOneMenu.getInput().findElements(By.tagName("option"));
-        Assertions.assertEquals(8, options.size());
+        Assertions.assertEquals(11, options.size());
         // panel-content
         optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
         Assertions.assertEquals(2, optgroups.size());
         options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(8, options.size());
+        Assertions.assertEquals(11, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -92,6 +92,8 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
         Assertions.assertEquals("Mercedes", options.get(2).getText());
         Assertions.assertEquals("Chry<sler", options.get(4).getText());
+        Assertions.assertEquals("GitHub \"9336\" Quoted", options.get(8).getText());
+        Assertions.assertEquals("< GitHub <i>9336</i>", options.get(9).getText());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
@@ -102,11 +104,25 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         Assertions.assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
-        // Act
+        // Act - part 3
         page.button.click();
 
         // Assert - part 3
         Assertions.assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+
+        // Act - part 4
+        selectOneMenu.select("< GitHub <i>9336</i>");
+
+        // Assert - part 4
+        Assertions.assertEquals("< GitHub <i>9336</i>", selectOneMenu.getSelectedLabel());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+
+        // Act - part 5
+        selectOneMenu.select("GitHub \"9336\" Quoted");
+
+        // Assert - part 5
+        Assertions.assertEquals("GitHub \"9336\" Quoted", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 

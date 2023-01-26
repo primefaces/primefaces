@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -162,7 +162,12 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeScript(FacesContext context, DataTable table) throws IOException {
         String selectionMode = table.resolveSelectionMode();
-        String widgetClass = (table.getFrozenColumns() == 0) ? "DataTable" : "FrozenDataTable";
+        boolean isFrozenTable = (table.getFrozenColumns() > 0);
+        String widgetClass = isFrozenTable ? "FrozenDataTable" : "DataTable";
+
+        if (isFrozenTable && !table.isScrollable()) {
+            throw new FacesException("Frozen columns can only be used with a table set scrollable='true'.");
+        }
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(widgetClass, table);
@@ -1306,6 +1311,7 @@ public class DataTableRenderer extends DataRenderer {
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
         int responsivePriority = column.getResponsivePriority();
+        String title = column.getTitle();
         String style = column.getStyle();
 
         String styleClass = getStyleClassBuilder(context)
@@ -1335,6 +1341,9 @@ public class DataTableRenderer extends DataRenderer {
         }
         if (styleClass != null) {
             writer.writeAttribute("class", styleClass, null);
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, null);
         }
         UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
         if (component != null) {

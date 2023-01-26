@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2009-2022 PrimeTek
+ * Copyright (c) 2009-2023 PrimeTek Informatics
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,21 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.*;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 public class SelectionFeature implements TreeTableFeature {
@@ -53,9 +57,10 @@ public class SelectionFeature implements TreeTableFeature {
     public void decode(FacesContext context, TreeTable table) {
         boolean multiple = table.isMultipleSelectionMode();
         Class<?> selectionType = table.getSelectionType();
+        boolean isArray = selectionType != null && selectionType.isArray();
         TreeNode root = table.getValue();
 
-        if (multiple && !selectionType.isArray() && !List.class.isAssignableFrom(selectionType)) {
+        if (multiple && selectionType != null && !isArray && !List.class.isAssignableFrom(selectionType)) {
             throw new FacesException("Multiple selection reference must be an Array or a List for TreeTable " + table.getClientId());
         }
 
@@ -66,7 +71,7 @@ public class SelectionFeature implements TreeTableFeature {
         String selectionValue = params.get(table.getClientId(context) + "_selection");
         if (LangUtils.isBlank(selectionValue)) {
             if (multiple) {
-                table.setSelection(selectionType.isArray() ? new TreeNode[0] : Collections.emptyList());
+                table.setSelection(isArray ? new TreeNode[0] : Collections.emptyList());
             }
             else {
                 table.setSelection(null);
@@ -85,7 +90,7 @@ public class SelectionFeature implements TreeTableFeature {
                     }
                 }
 
-                table.setSelection(selectionType.isArray() ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
+                table.setSelection(isArray ? selectedNodes.toArray(new TreeNode[selectedNodes.size()]) : selectedNodes);
             }
             else {
                 table.setRowKey(root, selectedRowKeys[0]);

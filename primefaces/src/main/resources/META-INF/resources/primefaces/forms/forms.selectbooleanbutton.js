@@ -54,14 +54,12 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
             $this.jq.removeClass('ui-state-focus');
         })
         .on('keydown', function(e) {
-            var keyCode = $.ui.keyCode;
-            if(e.which === keyCode.SPACE) {
+            if(e.key === ' ') {
                 e.preventDefault();
             }
         })
         .on('keyup', function(e) {
-            var keyCode = $.ui.keyCode;
-            if(e.which === keyCode.SPACE) {
+            if(e.key === ' ') {
                 $this.toggle();
 
                 e.preventDefault();
