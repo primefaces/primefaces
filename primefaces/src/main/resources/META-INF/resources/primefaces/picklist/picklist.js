@@ -346,7 +346,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.focusedItem) {
                     PrimeFaces.scrollInView(list, $this.focusedItem);
                     $this.focusedItem.addClass('ui-picklist-outline');
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                 }
             }, 100);
         })
@@ -380,7 +380,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
@@ -400,7 +400,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
@@ -424,7 +424,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             $this.selectItem(item);
                             $this.focusedItem = item;
                             PrimeFaces.scrollInView(list, $this.focusedItem);
-                            $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                            $this.updateAriaRegion();
                             e.preventDefault();
                             return false;
                         }
@@ -1319,6 +1319,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     updateListRole: function() {
         this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
+    },
+    
+    /**
+     * Updates the `aria-grion` with the focused label text.
+     * @private
+     */
+    updateAriaRegion: function() {
+        var labelText = this.focusedItem.data('item-label');
+        this.ariaRegion.attr('aria-label', labelText)
+        this.ariaRegion.text(labelText);
     }
 
 });

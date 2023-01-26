@@ -31,6 +31,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * PickList
     * Added attribute `filterNormalize` to allow normalized filtering (without accents).
+    * Added attributes `sourceFilterPlaceholder` and `targetFilterPlaceholder` for accessibility.
 * TabView
     * Added `focusOnLastActiveTab` if you want to focus on the tab that the user last activated.
     * Added `footer` facet to add a footer to the whole TabView not per tab.

@@ -55,6 +55,8 @@ label | null | String | A localized user presentable name.
 itemDisabled | false | Boolean | Specified if an item can be picked or not.
 showSourceFilter | false | Boolean | Displays and input filter for source list.
 showTargetFilter | false | Boolean | Displays and input filter for target list.
+sourceFilterPlaceholder | null | String | Placeholder for the source filter input element.
+targetFilterPlaceholder | null | String | Placeholder for the target filter input element.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Name of the javascript function for custom filtering.
 filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).

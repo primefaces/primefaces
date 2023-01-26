@@ -20509,6 +20509,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Placeholder for the source filter input element.]]>
+            </description>
+            <name>sourceFilterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for the target filter input element.]]>
+            </description>
+            <name>targetFilterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.]]>
             </description>
             <name>filterMatchMode</name>
