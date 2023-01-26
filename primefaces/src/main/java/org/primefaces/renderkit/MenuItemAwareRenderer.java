@@ -114,7 +114,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
             if (isLink) {
                 // allow CTRL+CLICK link to open new tab
-                command = "if(event.ctrlKey||event.metaKey){return true};" + command;
+                command = "if(PF.metaKey(event)){return true};" + command;
             }
             onclick = (onclick == null) ? command : onclick + ";" + command;
         }
