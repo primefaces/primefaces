@@ -73,6 +73,8 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         itemDisabled,
         showSourceFilter,
         showTargetFilter,
+        sourceFilterPlaceholder,
+        targetFilterPlaceholder,
         filterMatchMode,
         filterFunction,
         showCheckbox,
@@ -287,6 +289,22 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
     public void setShowTargetFilter(boolean showTargetFilter) {
         getStateHelper().put(PropertyKeys.showTargetFilter, showTargetFilter);
+    }
+
+    public String getSourceFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.sourceFilterPlaceholder, null);
+    }
+
+    public void setSourceFilterPlaceholder(String sourceFilterPlaceholder) {
+        getStateHelper().put(PropertyKeys.sourceFilterPlaceholder, sourceFilterPlaceholder);
+    }
+
+    public String getTargetFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.targetFilterPlaceholder, null);
+    }
+
+    public void setTargetFilterPlaceholder(String targetFilterPlaceholder) {
+        getStateHelper().put(PropertyKeys.targetFilterPlaceholder, targetFilterPlaceholder);
     }
 
     public String getFilterMatchMode() {
