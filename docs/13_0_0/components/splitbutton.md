@@ -27,6 +27,7 @@ SplitButton displays a command by default and additional ones in an overlay.
 | actionListener | null | MethodExpr | An actionlistener that’d be processed when button is clicked.
 | immediate | false | Boolean | Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.
 | type | submit | String | Sets the behavior of the button.
+| ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 | ajax | true | Boolean | Specifies the submit mode, when set to true(default), submit would be made with Ajax.
 | async | false | Boolean | When set to true, ajax requests are not queued.
 | process | @all | String | Component(s) to process partially instead of whole view.

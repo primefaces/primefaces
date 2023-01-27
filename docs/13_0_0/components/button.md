@@ -29,6 +29,7 @@ Button is an extension to the standard h:button component with skinning capabili
 | fragment | null | String | Identifier of the target page which should be scrolled to.
 | disabled | false | Boolean | Disables button.
 | accesskey | null | String | Access key that when pressed transfers focus to button.
+| ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 | alt | null | String | Alternate textual description.
 | dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.
 | lang | null | String | Code describing the language used in the generated markup for this component.
