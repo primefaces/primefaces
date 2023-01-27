@@ -867,4 +867,15 @@ public abstract class CoreRenderer extends Renderer {
                 || val.endsWith("vw") || val.endsWith("vh")
                 || val.endsWith("vmin") || val.endsWith("vmax");
     }
+
+    /**
+     * Gets the ARIA text for an icon only button for screen readers.
+     * @param title the tooltip for the button
+     * @param ariaLabel the ARIA label for the button
+     * @return either title, or ARIA label, or fallback "ui-button"
+     */
+    protected String getIconOnlyButtonText(String title, String ariaLabel) {
+        String text = (title != null) ? title : ariaLabel;
+        return (text != null) ? text : "ui-button";
+    }
 }

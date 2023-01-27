@@ -238,7 +238,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText("ui-button", null);
+        writer.writeText(getIconOnlyButtonText(title, ariaLabel), null);
         writer.endElement("span");
 
         writer.endElement("button");
