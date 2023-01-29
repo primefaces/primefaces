@@ -66,6 +66,7 @@
  * @prop {boolean} cfg.escapeValue Whether the item values are escaped for HTML.
  * @prop {number} cfg.filterDelay Delay to wait in milliseconds before sending each filter query. Default is `300`.
  * @prop {string} cfg.filterEvent Client side event to invoke picklist filtering for input fields. Default is `keyup`.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {PrimeFaces.widget.PickList.FilterFunction} cfg.filterFunction A custom filter function that is used when
  * `filterMatchMode` is set to `custom`.
  * @prop {PrimeFaces.widget.PickList.FilterMatchMode} cfg.filterMatchMode Mode of the filter. When set to `custom, a
@@ -345,7 +346,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.focusedItem) {
                     PrimeFaces.scrollInView(list, $this.focusedItem);
                     $this.focusedItem.addClass('ui-picklist-outline');
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                 }
             }, 100);
         })
@@ -379,7 +380,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
@@ -399,7 +400,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
@@ -423,7 +424,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             $this.selectItem(item);
                             $this.focusedItem = item;
                             PrimeFaces.scrollInView(list, $this.focusedItem);
-                            $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                            $this.updateAriaRegion();
                             e.preventDefault();
                             return false;
                         }
@@ -699,9 +700,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
      * @param {boolean} [animate] If it should be animated.
      */
     filter: function(value, list, animate) {
-        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), true),
-        items = list.children('li.ui-picklist-item'),
-        animated = animate || this.isAnimated();
+        var normalize = this.cfg.filterNormalize,
+            filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), true, normalize),
+            items = list.children('li.ui-picklist-item'),
+            animated = animate || this.isAnimated();
 
         list.removeAttr('role');
 
@@ -712,7 +714,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         else {
             for(var i = 0; i < items.length; i++) {
                 var item = items.eq(i),
-                itemLabel = PrimeFaces.normalize(item.attr('data-item-label'), false),
+                itemLabel = PrimeFaces.toSearchable(item.attr('data-item-label'), false, normalize),
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
@@ -1317,6 +1319,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     updateListRole: function() {
         this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
+    },
+    
+    /**
+     * Updates the `aria-grion` with the focused label text.
+     * @private
+     */
+    updateAriaRegion: function() {
+        var labelText = this.focusedItem.data('item-label');
+        this.ariaRegion.attr('aria-label', labelText)
+        this.ariaRegion.text(labelText);
     }
 
 });

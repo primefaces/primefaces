@@ -27,8 +27,8 @@ import javax.faces.component.html.HtmlCommandButton;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
-import org.primefaces.component.api.Widget;
 import org.primefaces.component.api.MenuItemAware;
+import org.primefaces.component.api.Widget;
 import org.primefaces.model.menu.MenuModel;
 
 public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, Confirmable, Widget, MenuItemAware {
@@ -67,7 +67,9 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         filterFunction,
         filterPlaceholder,
         ignoreComponentNotFound,
-        disableOnAjax
+        disableOnAjax,
+        filterNormalize,
+        ariaLabel
     }
 
     public SplitButtonBase() {
@@ -325,5 +327,21 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setDisableOnAjax(boolean disableOnAjax) {
         getStateHelper().put(PropertyKeys.disableOnAjax, disableOnAjax);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

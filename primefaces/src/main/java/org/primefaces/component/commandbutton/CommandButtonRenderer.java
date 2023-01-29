@@ -124,9 +124,7 @@ public class CommandButtonRenderer extends CoreRenderer {
 
         if (value == null) {
             //For ScreenReader
-            String text = (title != null) ? title : "ui-button";
-
-            writer.writeText(text, "title");
+            writer.write(getIconOnlyButtonText(title, button.getAriaLabel()));
         }
         else {
             if (button.isEscape()) {

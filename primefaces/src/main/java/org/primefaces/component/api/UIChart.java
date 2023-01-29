@@ -21,34 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.selectbooleanbutton;
+package org.primefaces.component.api;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
-import org.primefaces.component.api.Widget;
+import org.primefaces.model.charts.ChartModel;
 
-public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox implements Widget {
+/**
+ * UIChart for all Chart components.
+ */
+public abstract class UIChart extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanButtonRenderer";
-
-    public static final String LABEL_ON = "primefaces.switch.LABEL_ON";
-    public static final String LABEL_OFF = "primefaces.switch.LABEL_OFF";
-
     public enum PropertyKeys {
-
         widgetVar,
-        onLabel,
-        offLabel,
-        onIcon,
-        offIcon,
-        ariaLabel;
+        model,
+        ariaLabel,
+        style,
+        styleClass
     }
 
-    public SelectBooleanButtonBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
+    public abstract ChartModel getModel();
 
     @Override
     public String getFamily() {
@@ -63,36 +58,20 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getOnLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
+    public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setOnLabel(String onLabel) {
-        getStateHelper().put(PropertyKeys.onLabel, onLabel);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public String getOffLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
+    public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setOffLabel(String offLabel) {
-        getStateHelper().put(PropertyKeys.offLabel, offLabel);
-    }
-
-    public String getOnIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
-    }
-
-    public void setOnIcon(String onIcon) {
-        getStateHelper().put(PropertyKeys.onIcon, onIcon);
-    }
-
-    public String getOffIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
-    }
-
-    public void setOffIcon(String offIcon) {
-        getStateHelper().put(PropertyKeys.offIcon, offIcon);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public String getAriaLabel() {

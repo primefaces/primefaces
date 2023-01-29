@@ -73,6 +73,8 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         itemDisabled,
         showSourceFilter,
         showTargetFilter,
+        sourceFilterPlaceholder,
+        targetFilterPlaceholder,
         filterMatchMode,
         filterFunction,
         showCheckbox,
@@ -84,7 +86,8 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         filterDelay,
         escapeValue,
         transferOnDblclick,
-        transferOnCheckboxClick
+        transferOnCheckboxClick,
+        filterNormalize
     }
 
     public PickListBase() {
@@ -288,6 +291,22 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
         getStateHelper().put(PropertyKeys.showTargetFilter, showTargetFilter);
     }
 
+    public String getSourceFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.sourceFilterPlaceholder, null);
+    }
+
+    public void setSourceFilterPlaceholder(String sourceFilterPlaceholder) {
+        getStateHelper().put(PropertyKeys.sourceFilterPlaceholder, sourceFilterPlaceholder);
+    }
+
+    public String getTargetFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.targetFilterPlaceholder, null);
+    }
+
+    public void setTargetFilterPlaceholder(String targetFilterPlaceholder) {
+        getStateHelper().put(PropertyKeys.targetFilterPlaceholder, targetFilterPlaceholder);
+    }
+
     public String getFilterMatchMode() {
         return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
@@ -390,5 +409,13 @@ public abstract class PickListBase extends UIInput implements Widget, ClientBeha
 
     public void setTransferOnCheckboxClick(boolean transferOnCheckboxClick) {
         getStateHelper().put(PropertyKeys.transferOnCheckboxClick, transferOnCheckboxClick);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }
