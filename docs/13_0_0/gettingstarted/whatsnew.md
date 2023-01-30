@@ -6,6 +6,8 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 ### PrimeFaces
 
+* Core
+    * Added attribute `primefaces.HTML5_COMPLIANCE` if you know your site is HTML5 doctype so PF won't render certain non-HTML5 compliant values like `text/javascript` on scripts.
 * BlockUI
     * Added attribute `delay` to delay displaying similar to AjaxStatus.
 * Button
