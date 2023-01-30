@@ -73,7 +73,7 @@ public class BodyRenderer extends CoreRenderer {
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);
-            RendererUtils.encodeScriptIfNecessary(context);
+            RendererUtils.encodeScriptTypeIfNecessary(context);
 
             writer.write("$(function(){");
 

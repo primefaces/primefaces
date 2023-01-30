@@ -59,7 +59,7 @@ public class FocusRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.startElement("script", focus);
-        RendererUtils.encodeScriptIfNecessary(context);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
 
         if (isValueBlank(focus.getFor())) {
             encodeImplicitFocus(context, focus);

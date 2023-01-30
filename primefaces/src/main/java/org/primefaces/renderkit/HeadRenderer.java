@@ -195,7 +195,7 @@ public class HeadRenderer extends Renderer {
         ProjectStage projectStage = context.getApplication().getProjectStage();
 
         writer.startElement("script", null);
-        RendererUtils.encodeScriptIfNecessary(context);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
         writer.write("if(window.PrimeFaces){");
 
         writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
@@ -261,7 +261,7 @@ public class HeadRenderer extends Renderer {
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);
-            RendererUtils.encodeScriptIfNecessary(context);
+            RendererUtils.encodeScriptTypeIfNecessary(context);
 
             boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
 
