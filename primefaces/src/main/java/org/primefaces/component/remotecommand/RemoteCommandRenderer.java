@@ -86,7 +86,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
         //script
         writer.startElement("script", command);
         writer.writeAttribute("id", clientId, null);
-        RendererUtils.encodeScript(context);
+        RendererUtils.encodeScriptIfNecessary(context);
 
         writer.write(name + " = function() {");
         writer.write(request);

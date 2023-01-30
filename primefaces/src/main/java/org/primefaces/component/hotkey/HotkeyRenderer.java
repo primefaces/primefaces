@@ -54,7 +54,7 @@ public class HotkeyRenderer extends CoreRenderer {
         String clientId = hotkey.getClientId(context);
 
         writer.startElement("script", null);
-        RendererUtils.encodeScript(context);
+        RendererUtils.encodeScriptIfNecessary(context);
 
         String event = "keydown." + clientId;
         writer.write("$(function(){");

@@ -130,7 +130,7 @@ public class RendererUtils {
      * @param context the FacesContext
      * @throws IOException if any error occurs
      */
-    public static void encodeScript(FacesContext context) throws IOException {
+    public static void encodeScriptIfNecessary(FacesContext context) throws IOException {
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         PrimeApplicationContext applicationContext = requestContext.getApplicationContext();
         if (applicationContext.getConfig().isHtml5Compliant()) {

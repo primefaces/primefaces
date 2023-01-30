@@ -139,7 +139,7 @@ public class WidgetBuilder {
         ResponseWriter rw = context.getResponseWriter();
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);
-        RendererUtils.encodeScript(context);
+        RendererUtils.encodeScriptIfNecessary(context);
     }
 
     protected WidgetBuilder renderLifecycleCallbacks(UIComponent component) throws IOException {
