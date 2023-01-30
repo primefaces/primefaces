@@ -28,7 +28,6 @@ import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -47,10 +46,11 @@ public class UICacheRenderer extends CoreRenderer {
         UICache uiCache = (UICache) component;
 
         // print exception in development stage
-        if (LOGGER.isLoggable(Level.WARNING) && context.getApplication().getProjectStage() == ProjectStage.Development) {
+        if (LOGGER.isLoggable(Level.WARNING)) {
             boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
             if (moveScriptsToBottom) {
-                LOGGER.log(Level.WARNING, "Using p:cache in combination with PrimeFaces.MOVE_SCRIPTS_TO_BOTTOM may cause Javascript code to stop working.");
+                logDevelopmentWarning(context,
+                        "Using p:cache in combination with PrimeFaces.MOVE_SCRIPTS_TO_BOTTOM may cause Javascript code to stop working.");
             }
         }
 

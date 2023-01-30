@@ -36,7 +36,7 @@ disabled | false | Boolean | Disables the component.
 label | null | String | User presentable name. 
 layout | lineDirection | String | Layout of the radiobuttons, valid values are lineDirection , pageDirection , custom, responsive and grid.
 flex | false | Boolean | Use modern PrimeFlex-Grid in responsive mode instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
-columns | 0 | Integer | Number of columns in grid layout.
+columns | 12 | Integer | Number of columns in responsive layout.
 onchange | null | String | Callback to execute on value change.
 onclick | null | String | Callback to execute on click of a radio.
 style | null | String | Inline style of the component.

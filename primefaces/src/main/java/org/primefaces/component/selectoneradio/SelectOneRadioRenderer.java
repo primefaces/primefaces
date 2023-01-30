@@ -69,11 +69,11 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (custom) {
             encodeCustomLayout(context, radio);
         }
-        else if ("responsive".equals(layout)) {
-            encodeResponsiveLayout(context, radio);
+        else if ("grid".equals(layout)) {
+            encodeLegacyTabularLayout(context, radio, layout);
         }
         else {
-            encodeTabularLayout(context, radio, layout);
+            encodeResponsiveLayout(context, radio);
         }
     }
 
@@ -163,9 +163,15 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabularLayout(FacesContext context, SelectOneRadio radio, String layout) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
+    protected void encodeLegacyTabularLayout(FacesContext context, SelectOneRadio radio, String layout) throws IOException {
         String clientId = radio.getClientId(context);
+        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
+                + clientId);
+        ResponseWriter writer = context.getResponseWriter();
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
         String styleClass = getStyleClassBuilder(context)

@@ -90,7 +90,7 @@ public abstract class DataGridBase extends UIPageableData
     }
 
     public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "grid");
     }
 
     public void setLayout(String layout) {
