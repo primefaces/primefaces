@@ -34,28 +34,40 @@
 
         <div class="card">
             <h:form>
-                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true">
+                   <p:autoUpdate />
+                </p:growl>
 
                 <p:dashboard id="board" model="#{dashboardView.model}">
-                    <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" update="msgs"/>
+                    <p:ajax event="reorder" listener="#{dashboardView.handleReorder}"/>
 
-                    <p:panel id="sports" header="Sports">
+                    <p:panel id="sports" header="Sports" closable="true" toggleable="true">
+                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
+                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
                         <h:outputText value="Sports Content"/>
                     </p:panel>
 
-                    <p:panel id="finance" header="Finance">
+                    <p:panel id="finance" header="Finance" closable="true" toggleable="true">
+                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
+                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
                         <h:outputText value="Finance Content"/>
                     </p:panel>
 
-                    <p:panel id="lifestyle" header="Lifestyle">
+                    <p:panel id="lifestyle" header="Lifestyle" closable="true" toggleable="true">
+                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
+                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
                         <h:outputText value="Lifestyle Content"/>
                     </p:panel>
 
-                    <p:panel id="weather" header="Weather">
+                    <p:panel id="weather" header="Weather" closable="true" toggleable="true">
+                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
+                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
                         <h:outputText value="Weather Content"/>
                     </p:panel>
 
-                    <p:panel id="politics" header="Politics">
+                    <p:panel id="politics" header="Politics" closable="true" toggleable="true">
+                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
+                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
                         <h:outputText value="Politics Content"/>
                     </p:panel>
                 </p:dashboard>

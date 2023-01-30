@@ -175,10 +175,8 @@
                                 <h:outputText value="#{product.inventoryStatus}"/>
                             </f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{product.inventoryStatus}" style="width:100%">
-                                    <f:selectItems value="#{dtEditView.inventoryStatusList}" var="status"
-                                                   itemLabel="#{status.text}" itemValue="#{status}"/>
-                                </h:selectOneMenu>
+                                <p:autoComplete id="acSimple" value="#{product.inventoryStatus}" autoSelection="false"
+                                        completeMethod="#{autoCompleteView.completeText}" scrollHeight="250"/>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
