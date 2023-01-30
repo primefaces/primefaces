@@ -5,6 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
     name: Build
     strategy:
       fail-fast: false
