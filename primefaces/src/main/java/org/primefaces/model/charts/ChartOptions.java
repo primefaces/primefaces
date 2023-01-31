@@ -35,6 +35,9 @@ public abstract class ChartOptions implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private boolean responsive = true;
+    private boolean maintainAspectRatio = true;
+    private Number aspectRatio;
     private Elements elements;
     private Title title;
     private Title subtitle; // exact same model as Title
@@ -88,5 +91,29 @@ public abstract class ChartOptions implements Serializable {
 
     public void setAnimation(Animation animation) {
         this.animation = animation;
+    }
+
+    public boolean isResponsive() {
+        return responsive;
+    }
+
+    public void setResponsive(boolean responsive) {
+        this.responsive = responsive;
+    }
+
+    public boolean isMaintainAspectRatio() {
+        return maintainAspectRatio;
+    }
+
+    public void setMaintainAspectRatio(boolean maintainAspectRatio) {
+        this.maintainAspectRatio = maintainAspectRatio;
+    }
+
+    public Number getAspectRatio() {
+        return aspectRatio;
+    }
+
+    public void setAspectRatio(Number aspectRatio) {
+        this.aspectRatio = aspectRatio;
     }
 }

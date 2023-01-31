@@ -63,7 +63,8 @@ public class LineChartRenderer extends ChartRenderer {
         LineChartOptions lineOptions = (LineChartOptions) options;
 
         writer.write(",\"options\":{");
-        writer.write("\"showLine\":" + lineOptions.isShowLines());
+        encodeResponsive(context, lineOptions, false);
+        writer.write(",\"showLine\":" + lineOptions.isShowLines());
         writer.write(",\"spanGaps\":" + lineOptions.isSpanGaps());
 
         encodeScales(context, type, lineOptions.getScales(), true);
