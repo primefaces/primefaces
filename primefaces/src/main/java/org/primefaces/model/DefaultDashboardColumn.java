@@ -24,6 +24,8 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +39,18 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
 
     public DefaultDashboardColumn() {
         widgets = new LinkedList<>();
+    }
+    
+    public DefaultDashboardColumn(String style, String styleClass, String... widgetId) {
+        this();
+        this.widgets.addAll(Arrays.asList(widgetId));
+        this.style = style;
+        this.styleClass = styleClass;
+    }
+    
+    public DefaultDashboardColumn(Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
     }
 
     @Override

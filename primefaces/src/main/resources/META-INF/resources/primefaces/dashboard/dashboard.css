@@ -1,8 +1,13 @@
 .ui-dashboard-column {
-    float: left;
-    padding-bottom: 100px;
+	float: left;
+	padding-bottom: 100px;
 }
 
-.ui-dashboard-column .ui-panel-titlebar {
-    cursor: move;
+.ui-dashboard-column .ui-panel-titlebar,
+.ui-dashboard-panel .ui-panel-titlebar {
+	cursor: move;
+}
+
+.ui-dashboard-panel .ui-panel {
+  margin-bottom: 1rem
 }

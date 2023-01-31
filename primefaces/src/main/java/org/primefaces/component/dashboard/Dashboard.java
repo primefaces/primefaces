@@ -51,6 +51,7 @@ public class Dashboard extends DashboardBase {
 
     public static final String CONTAINER_CLASS = "ui-dashboard";
     public static final String COLUMN_CLASS = "ui-dashboard-column";
+    public static final String PANEL_CLASS = "ui-dashboard-panel";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("reorder", DashboardReorderEvent.class)

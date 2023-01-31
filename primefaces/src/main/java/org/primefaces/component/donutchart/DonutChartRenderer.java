@@ -64,8 +64,9 @@ public class DonutChartRenderer extends ChartRenderer {
         DonutChartOptions donutOptions = (DonutChartOptions) options;
 
         writer.write(",options:{");
+        encodeResponsive(context, donutOptions, false);
 
-        writer.write("animation:{");
+        writer.write(",animation:{");
         writer.write("animateRotate:" + donutOptions.isAnimateRotate());
         writer.write(",animateScale:" + donutOptions.isAnimateScale());
         writer.write("}");

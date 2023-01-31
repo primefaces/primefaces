@@ -24,6 +24,7 @@
 package org.primefaces.showcase.view.panel;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -34,7 +35,6 @@ import javax.inject.Named;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
@@ -43,26 +43,26 @@ import org.primefaces.model.DefaultDashboardModel;
 @ViewScoped
 public class DashboardView implements Serializable {
 
-    private DashboardModel model;
+    private static final long serialVersionUID = 1L;
+    private static final String RESPONSIVE_CLASS = "col-12 lg:col-6 xl:col-6";
+
+    private DashboardModel legacyModel;
+    private DashboardModel responsiveModel;
 
     @PostConstruct
     public void init() {
-        model = new DefaultDashboardModel();
-        DashboardColumn column1 = new DefaultDashboardColumn();
-        DashboardColumn column2 = new DefaultDashboardColumn();
-        DashboardColumn column3 = new DefaultDashboardColumn();
+        // responsive
+        responsiveModel = new DefaultDashboardModel();
+        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS, "bar"));
+        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS, "stacked"));
+        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-3"), "donut"));
+        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-9"), "cartesian"));
 
-        column1.addWidget("sports");
-        column1.addWidget("finance");
-
-        column2.addWidget("lifestyle");
-        column2.addWidget("weather");
-
-        column3.addWidget("politics");
-
-        model.addColumn(column1);
-        model.addColumn(column2);
-        model.addColumn(column3);
+        // legacy
+        legacyModel = new DefaultDashboardModel();
+        legacyModel.addColumn(new DefaultDashboardColumn(List.of("sports", "finance")));
+        legacyModel.addColumn(new DefaultDashboardColumn(List.of("lifestyle", "weather")));
+        legacyModel.addColumn(new DefaultDashboardColumn(List.of("politics")));
     }
 
     public void handleReorder(DashboardReorderEvent event) {
@@ -93,7 +93,11 @@ public class DashboardView implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public DashboardModel getModel() {
-        return model;
+    public DashboardModel getLegacyModel() {
+        return legacyModel;
+    }
+
+    public DashboardModel getResponsiveModel() {
+        return responsiveModel;
     }
 }

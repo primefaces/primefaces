@@ -42,7 +42,8 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         disabled,
         reordering,
         style,
-        styleClass
+        styleClass,
+        responsive
     }
 
     public DashboardBase() {
@@ -100,5 +101,13 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public boolean isResponsive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+    }
+
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 }

@@ -33,6 +33,7 @@ import org.primefaces.component.panel.Panel;
 import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DashboardRenderer extends CoreRenderer {
@@ -50,16 +51,19 @@ public class DashboardRenderer extends CoreRenderer {
         encodeScript(context, dashboard);
     }
 
-    protected void encodeMarkup(FacesContext contextr, Dashboard dashboard) throws IOException {
-        ResponseWriter writer = contextr.getResponseWriter();
-        String clientId = dashboard.getClientId(contextr);
+    protected void encodeMarkup(FacesContext context, Dashboard dashboard) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = dashboard.getClientId(context);
+        boolean responsive = dashboard.isResponsive();
 
         writer.startElement("div", dashboard);
         writer.writeAttribute("id", clientId, "id");
-        String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
-        if (dashboard.isDisabled()) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add(Dashboard.CONTAINER_CLASS)
+                .add(dashboard.getStyleClass())
+                .add(dashboard.isDisabled(), "ui-state-disabled")
+                .add(responsive, GridLayoutUtils.getFlexGridClass(true))
+                .build();
         writer.writeAttribute("class", styleClass, "styleClass");
         if (dashboard.getStyle() != null) {
             writer.writeAttribute("style", dashboard.getStyle(), "style");
@@ -69,8 +73,11 @@ public class DashboardRenderer extends CoreRenderer {
         if (model != null) {
             for (DashboardColumn column : model.getColumns()) {
                 String columnStyle = column.getStyle();
-                String columnStyleClass = column.getStyleClass();
-                columnStyleClass = (columnStyleClass == null) ? Dashboard.COLUMN_CLASS : Dashboard.COLUMN_CLASS + " " + columnStyleClass;
+                String columnStyleClass = getStyleClassBuilder(context)
+                        .add(!responsive, Dashboard.COLUMN_CLASS)
+                        .add(responsive, Dashboard.PANEL_CLASS)
+                        .add(column.getStyleClass())
+                        .build();
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnStyleClass, null);
@@ -82,7 +89,7 @@ public class DashboardRenderer extends CoreRenderer {
                     Panel widget = findWidget(widgetId, dashboard);
 
                     if (widget != null) {
-                        renderChild(contextr, widget);
+                        renderChild(context, widget);
                     }
                 }
 
@@ -96,6 +103,7 @@ public class DashboardRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Dashboard dashboard) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Dashboard", dashboard)
+                .attr("responsive", dashboard.isResponsive(), false)
                 .attr("disabled", !dashboard.isReordering(), false);
 
         encodeClientBehaviors(context, dashboard);

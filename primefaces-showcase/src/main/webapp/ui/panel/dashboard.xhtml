@@ -1,81 +1,113 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
-    <ui:define name="head">
-        <style>
-            .ui-panel, div.ui-state-hover {
-                margin: 10px;
-                width: 200px;
-            }
+	<ui:define name="head">
+		<style>
+.legacy .ui-panel, .legacy .div.ui-state-hover {
+	margin: 10px;
+	width: 200px;
+}
 
-            .ui-dashboard-column {
-                width: 220px;
-            }
-        </style>
+.legacy .ui-dashboard-column {
+	width: 220px;
+}
+</style>
 
-    </ui:define>
+	</ui:define>
 
-    <ui:define name="title">
+	<ui:define name="title">
         Dashboard
     </ui:define>
 
-    <ui:define name="description">
+	<ui:define name="description">
         Dashboard is a layout component featuring dragdrop based content reordering similar to portal environments.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/dashboard"/>
-    <ui:param name="widgetLink" value="Dashboard"/>
+	<ui:param name="documentationLink" value="/components/dashboard" />
+	<ui:param name="widgetLink" value="Dashboard" />
 
-    <ui:define name="implementation">
+	<ui:define name="implementation">
+<h:form id="form">
+	<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true">
+		<p:autoUpdate />
+	</p:growl>
+	
+	<div class="card">
+        <h5 class="mt-0">Responsive</h5>
+        <p:dashboard id="responsive" model="#{dashboardView.responsiveModel}" responsive="true">
+            <p:ajax event="reorder" listener="#{dashboardView.handleReorder}" />
 
-        <div class="card">
-            <h:form>
-                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true">
-                   <p:autoUpdate />
-                </p:growl>
+            <p:panel id="bar" header="Bar" closable="true">
+                <p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+                <p:ajax event="close" listener="#{dashboardView.handleClose}" />
+                <p:barChart model="#{chartJsView.barModel}" style="width: 100%; height: 200px;"/>
+            </p:panel>
 
-                <p:dashboard id="board" model="#{dashboardView.model}">
-                    <p:ajax event="reorder" listener="#{dashboardView.handleReorder}"/>
+            <p:panel id="stacked" header="Stacked" closable="true">
+                <p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+                <p:ajax event="close" listener="#{dashboardView.handleClose}" />
+                <p:barChart model="#{chartJsView.stackedBarModel}" style="width: 100%; height: 200px;"/>
+            </p:panel>
+            
+            <p:panel id="donut" header="Donut" closable="true">
+                <p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+                <p:ajax event="close" listener="#{dashboardView.handleClose}" />
+                <p:donutChart model="#{chartJsView.donutModel}" style="width: 200px; height: 200px;"/>
+            </p:panel>
+            
+            <p:panel id="cartesian" header="Cartesian" closable="true">
+                <p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+                <p:ajax event="close" listener="#{dashboardView.handleClose}" />
+                <p:lineChart model="#{chartJsView.cartesianLinerModel}" style="width: 100%; height: 200px;"/>
+            </p:panel>
+        </p:dashboard>
+        <div style="clear:both"/>
+    </div>
 
-                    <p:panel id="sports" header="Sports" closable="true" toggleable="true">
-                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
-                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
-                        <h:outputText value="Sports Content"/>
-                    </p:panel>
+	<div class="card">
+        <h5 class="mt-0">Legacy</h5>
+		<p:dashboard id="legacy" model="#{dashboardView.legacyModel}" styleClass="legacy">
+			<p:ajax event="reorder" listener="#{dashboardView.handleReorder}" />
 
-                    <p:panel id="finance" header="Finance" closable="true" toggleable="true">
-                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
-                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
-                        <h:outputText value="Finance Content"/>
-                    </p:panel>
+			<p:panel id="sports" header="Sports" closable="true" toggleable="true">
+				<p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+				<p:ajax event="close" listener="#{dashboardView.handleClose}" />
+				<h:outputText value="Sports Content" />
+			</p:panel>
 
-                    <p:panel id="lifestyle" header="Lifestyle" closable="true" toggleable="true">
-                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
-                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
-                        <h:outputText value="Lifestyle Content"/>
-                    </p:panel>
+			<p:panel id="finance" header="Finance" closable="true" toggleable="true">
+				<p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+				<p:ajax event="close" listener="#{dashboardView.handleClose}" />
+				<h:outputText value="Finance Content" />
+			</p:panel>
 
-                    <p:panel id="weather" header="Weather" closable="true" toggleable="true">
-                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
-                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
-                        <h:outputText value="Weather Content"/>
-                    </p:panel>
+			<p:panel id="lifestyle" header="Lifestyle" closable="true"
+				toggleable="true">
+				<p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+				<p:ajax event="close" listener="#{dashboardView.handleClose}" />
+				<h:outputText value="Lifestyle Content" />
+			</p:panel>
 
-                    <p:panel id="politics" header="Politics" closable="true" toggleable="true">
-                        <p:ajax event="toggle" listener="#{dashboardView.handleToggle}"/>
-                        <p:ajax event="close" listener="#{dashboardView.handleClose}"/>
-                        <h:outputText value="Politics Content"/>
-                    </p:panel>
-                </p:dashboard>
+			<p:panel id="weather" header="Weather" closable="true"
+				toggleable="true">
+				<p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+				<p:ajax event="close" listener="#{dashboardView.handleClose}" />
+				<h:outputText value="Weather Content" />
+			</p:panel>
 
-                <div style="clear:both"/>
-            </h:form>
-        </div>
-
-    </ui:define>
+			<p:panel id="politics" header="Politics" closable="true"
+				toggleable="true">
+				<p:ajax event="toggle" listener="#{dashboardView.handleToggle}" />
+				<p:ajax event="close" listener="#{dashboardView.handleClose}" />
+				<h:outputText value="Politics Content" />
+			</p:panel>
+		</p:dashboard>
+		 <div style="clear:both"/>
+	</div>
+</h:form>
+	</ui:define>
 
 </ui:composition>
