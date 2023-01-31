@@ -7288,7 +7288,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Layout approach to use, valid values are "tabular" (default) and "grid" for responsive grid.]]>
+                <![CDATA[Layout approach to use, valid values are "tabular" and "grid" (default) for responsive grid.]]>
             </description>
             <name>layout</name>
             <required>false</required>
@@ -19305,7 +19305,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'tabular'.]]>
+                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
             </description>
             <name>layout</name>
             <required>false</required>

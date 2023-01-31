@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.el.PropertyNotFoundException;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.*;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -877,5 +878,16 @@ public abstract class CoreRenderer extends Renderer {
     protected String getIconOnlyButtonText(String title, String ariaLabel) {
         String text = (title != null) ? title : ariaLabel;
         return (text != null) ? text : "ui-button";
+    }
+
+    /**
+     * Logs a WARN log message in ProjectStage == DEVELOPMENT.
+     * @param context the FacesContext
+     * @param message the message to log
+     */
+    protected void logDevelopmentWarning(FacesContext context, String message) {
+        if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
+            LOGGER.log(Level.WARNING, message);
+        }
     }
 }

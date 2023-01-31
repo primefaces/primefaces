@@ -32,6 +32,10 @@ public abstract class PanelGridBase extends UIPanel {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PanelGridRenderer";
 
+    public static final String LAYOUT_TABULAR = "tabular";
+    public static final String LAYOUT_GRID = "grid";
+    public static final String LAYOUT_FLEX = "flex";
+
     public enum PropertyKeys {
 
         columns,
@@ -54,7 +58,7 @@ public abstract class PanelGridBase extends UIPanel {
     }
 
     public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
     }
 
     public void setColumns(int columns) {
@@ -102,7 +106,7 @@ public abstract class PanelGridBase extends UIPanel {
     }
 
     public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
+        return (String) getStateHelper().eval(PropertyKeys.layout, LAYOUT_GRID);
     }
 
     public void setLayout(String layout) {

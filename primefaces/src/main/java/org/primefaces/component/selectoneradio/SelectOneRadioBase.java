@@ -61,7 +61,7 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
     }
 
     public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
     }
 
     public void setColumns(int columns) {

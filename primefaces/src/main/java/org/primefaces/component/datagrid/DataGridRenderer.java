@@ -152,7 +152,7 @@ public class DataGridRenderer extends DataRenderer {
         String layout = grid.getLayout();
 
         if ("tabular".equals(layout)) {
-            encodeTable(context, grid);
+            encodeLegacyTable(context, grid);
         }
         else if ("grid".equals(layout)) {
             encodeGrid(context, grid);
@@ -218,7 +218,13 @@ public class DataGridRenderer extends DataRenderer {
         grid.setRowIndex(-1); //cleanup
     }
 
-    protected void encodeTable(FacesContext context, DataGrid grid) throws IOException {
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
+    protected void encodeLegacyTable(FacesContext context, DataGrid grid) throws IOException {
+        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
+                + grid.getClientId(context));
         ResponseWriter writer = context.getResponseWriter();
 
         int columns = grid.getColumns();

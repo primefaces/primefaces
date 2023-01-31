@@ -59,7 +59,7 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
     }
 
     public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
     }
 
     public void setColumns(int columns) {
