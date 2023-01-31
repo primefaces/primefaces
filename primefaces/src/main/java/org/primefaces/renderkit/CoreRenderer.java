@@ -25,6 +25,7 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -885,7 +886,7 @@ public abstract class CoreRenderer extends Renderer {
      * @param context the FacesContext
      * @param message the message to log
      */
-    protected void logDevelopmentWarning(FacesContext context, String message) {
+    protected void logDevelopmentWarning(FacesContext context, Supplier<String> message) {
         if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
             LOGGER.log(Level.WARNING, message);
         }
