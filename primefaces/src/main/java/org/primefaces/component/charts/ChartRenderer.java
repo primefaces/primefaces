@@ -45,6 +45,7 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -265,6 +266,18 @@ public class ChartRenderer extends CoreRenderer {
             writer.write(elements.encode());
             writer.write("}");
         }
+    }
+
+    protected void encodeResponsive(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (hasComma) {
+            writer.write(",");
+        }
+
+        ChartUtils.writeDataValue(writer, "responsive", options.isResponsive(), false);
+        ChartUtils.writeDataValue(writer, "maintainAspectRatio", options.isMaintainAspectRatio(), true);
+        ChartUtils.writeDataValue(writer, "aspectRatio", options.getAspectRatio(), true);
     }
 
     protected void encodePlugins(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {

@@ -63,13 +63,11 @@ public class BubbleChartRenderer extends ChartRenderer {
         BubbleChartOptions bubbleOptions = (BubbleChartOptions) options;
 
         writer.write(",\"options\":{");
-
-        encodeScales(context, type, bubbleOptions.getScales(), false);
-        encodeElements(context, bubbleOptions.getElements(), bubbleOptions.getScales() != null);
-        encodeAnimation(context, bubbleOptions.getAnimation(), (bubbleOptions.getScales() != null
-                    || bubbleOptions.getElements() != null));
-        encodePlugins(context, bubbleOptions, (bubbleOptions.getScales() != null
-                    || bubbleOptions.getElements() != null || bubbleOptions.getAnimation() != null));
+        encodeResponsive(context, bubbleOptions, false);
+        encodeScales(context, type, bubbleOptions.getScales(), true);
+        encodeElements(context, bubbleOptions.getElements(), true);
+        encodeAnimation(context, bubbleOptions.getAnimation(), true);
+        encodePlugins(context, bubbleOptions, true);
 
         writer.write("}");
     }

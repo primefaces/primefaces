@@ -52,6 +52,7 @@ import org.primefaces.model.charts.data.BubblePoint;
 import org.primefaces.model.charts.data.NumericPoint;
 import org.primefaces.model.charts.donut.DonutChartDataSet;
 import org.primefaces.model.charts.donut.DonutChartModel;
+import org.primefaces.model.charts.donut.DonutChartOptions;
 import org.primefaces.model.charts.hbar.HorizontalBarChartDataSet;
 import org.primefaces.model.charts.hbar.HorizontalBarChartModel;
 import org.primefaces.model.charts.line.LineChartDataSet;
@@ -76,6 +77,8 @@ import org.primefaces.model.charts.scatter.ScatterChartModel;
 @Named
 @RequestScoped
 public class ChartJsView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private PieChartModel pieModel;
 
@@ -943,6 +946,9 @@ public class ChartJsView implements Serializable {
     public void createDonutModel() {
         donutModel = new DonutChartModel();
         ChartData data = new ChartData();
+        DonutChartOptions options = new DonutChartOptions();
+        options.setMaintainAspectRatio(false);
+        donutModel.setOptions(options);
 
         DonutChartDataSet dataSet = new DonutChartDataSet();
         List<Number> values = new ArrayList<>();
