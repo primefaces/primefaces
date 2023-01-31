@@ -64,8 +64,8 @@ public class PieChartRenderer extends ChartRenderer {
         PieChartOptions pieOptions = (PieChartOptions) options;
 
         writer.write(",\"options\":{");
-
-        writer.write("\"animation\":{");
+        encodeResponsive(context, pieOptions, false);
+        writer.write(",\"animation\":{");
         writer.write("\"animateRotate\":" + pieOptions.isAnimateRotate());
         writer.write(",\"animateScale\":" + pieOptions.isAnimateScale());
         writer.write("}");

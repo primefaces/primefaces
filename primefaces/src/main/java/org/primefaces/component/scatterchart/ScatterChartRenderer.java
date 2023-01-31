@@ -63,7 +63,8 @@ public class ScatterChartRenderer extends ChartRenderer {
         LineChartOptions lineOptions = (LineChartOptions) options;
 
         writer.write(",\"options\":{");
-        writer.write("\"showLines\":" + lineOptions.isShowLines());
+        encodeResponsive(context, lineOptions, false);
+        writer.write(",\"showLines\":" + lineOptions.isShowLines());
         writer.write(",\"spanGaps\":" + lineOptions.isSpanGaps());
 
         encodeScales(context, type, lineOptions.getScales(), true);
