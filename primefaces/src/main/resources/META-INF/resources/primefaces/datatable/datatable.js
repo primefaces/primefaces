@@ -3399,7 +3399,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var cellEditor = cell.children('div.ui-cell-editor'),
             displayContainer = cellEditor.children('div.ui-cell-editor-output'),
             inputContainer = cellEditor.children('div.ui-cell-editor-input'),
-            inputs = inputContainer.find(':input:enabled'),
+            inputs = inputContainer.find(':input:enabled[type!=hidden]'),
             multi = inputs.length > 1;
 
             cell.addClass('ui-state-highlight ui-cell-editing');
@@ -3498,7 +3498,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         inputContainer = cellEditor.children('div.ui-cell-editor-input');
 
         if(inputContainer.length) {
-            var inputs = inputContainer.find(':input'),
+            var inputs = inputContainer.find(':input[type!=hidden]'),
             disabledInputs = inputs.filter(':disabled');
 
             if(inputs.length === disabledInputs.length) {
