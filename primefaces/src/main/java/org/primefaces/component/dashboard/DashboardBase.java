@@ -63,11 +63,11 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public org.primefaces.model.DashboardModel getModel() {
-        return (org.primefaces.model.DashboardModel) getStateHelper().eval(PropertyKeys.model, null);
+    public org.primefaces.model.dashboard.DashboardModel getModel() {
+        return (org.primefaces.model.dashboard.DashboardModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.DashboardModel model) {
+    public void setModel(org.primefaces.model.dashboard.DashboardModel model) {
         getStateHelper().put(PropertyKeys.model, model);
     }
 

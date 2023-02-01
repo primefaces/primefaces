@@ -29,18 +29,87 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.connectWith = this.jqId + ' .ui-dashboard-column';
         if (this.cfg.responsive) {
-            this.cfg.connectWith = this.jqId + ' .ui-dashboard-panel';
+            this.renderResponsive();
         }
+        else {
+            this.renderSortable();
+        }
+    },
 
+    /**
+     * Sets up the responsive drag drop for the dashboard.
+     * @private
+     */
+    renderResponsive: function() {
+        this.cfg.draggable = this.jqId + ' .ui-dashboard-panel';
+        this.cfg.panels = this.jqId + ' .ui-panel';
+        this.bindDraggable();
+        this.bindDroppable();
+    },
+
+    /**
+     * Sets up all draggable panels.
+     * @private
+     */
+    bindDraggable: function() {
+        // draggable panels by their title bar
+        $(this.cfg.panels).draggable({
+            scope: 'dashboard',
+            revert: true,
+            handle: '.ui-panel-titlebar',
+            zIndex: 9999,
+            opacity: 0.7
+        });
+    },
+
+    /**
+     * Sets up all droppable panels.
+     * @private
+     */
+    bindDroppable: function() {
+        var $this = this;
+        // droppable on other panels in the dashboard
+        $(this.cfg.panels).droppable({
+            scope: 'dashboard',
+            tolerance: 'pointer',
+            classes: {
+                'ui-droppable-active': 'ui-dashboard-active',
+                'ui-droppable-hover': 'ui-dashboard-hover'
+            },
+            drop: function(event, ui) {
+                $this.swapPanels($(this).get(0), $(ui.draggable).get(0));
+                if ($this.hasBehavior('reorder')) {
+                    $this.handleDrop($this, event, ui);
+                }
+            }
+        });
+    },
+
+    /**
+     * Sets up the sortable for the legacy dashboard.
+     * @param {HTMLElement} a the first panel
+     * @param {HTMLElement} b the second panel
+     * @private
+     */
+    swapPanels: function(a, b) {
+        var aparent = a.parentNode;
+        var asibling = a.nextSibling === b ? a : a.nextSibling;
+        b.parentNode.insertBefore(a, b);
+        aparent.insertBefore(b, asibling);
+    },
+
+    /**
+      * Sets up the sortable for the legacy dashboard.
+      * @private
+      */
+    renderSortable: function() {
+        this.cfg.connectWith = this.jqId + ' .ui-dashboard-column';
         this.cfg.placeholder = 'ui-state-hover';
         this.cfg.forcePlaceholderSize = true;
         this.cfg.revert = false;
         this.cfg.handle = '.ui-panel-titlebar';
-
-        this.bindEvents();
-
+        this.bindSortableEvents();
         $(this.cfg.connectWith).sortable(this.cfg);
     },
 
@@ -48,32 +117,56 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
      * Sets up all event listeners required by this widget.
      * @private
      */
-    bindEvents: function() {
+    bindSortableEvents: function() {
         var $this = this;
-
         if (this.hasBehavior('reorder')) {
-            this.cfg.update = function(e, ui) {
+            this.cfg.update = function(event, ui) {
                 if (this === ui.item.parent()[0]) {
-                    var itemIndex = ui.item.parent().children().filter(':not(script):visible').index(ui.item),
-                        receiverColumnIndex = ui.item.parent().parent().children().index(ui.item.parent());
-
-                    var ext = {
-                        params: [
-                            { name: $this.id + '_reordered', value: true },
-                            { name: $this.id + '_widgetId', value: ui.item.attr('id') },
-                            { name: $this.id + '_itemIndex', value: itemIndex },
-                            { name: $this.id + '_receiverColumnIndex', value: receiverColumnIndex }
-                        ]
-                    };
-
-                    if (ui.sender) {
-                        ext.params.push({ name: $this.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender) });
-                    }
-
-                    $this.callBehavior('reorder', ext);
+                    $this.handleDrop($this, event, ui);
                 }
             };
         }
+    },
+
+    /**
+     * Handle dropping a panel either from legacy sortable or responsive draggable.
+     * @param {PrimeFaces.widget.BaseWidget} widget the Dashboard widget
+     * @param {Event} e Event that occurred.
+     * @param {JQuery} ui the UI element that was dragged
+     */
+    handleDrop: function(widget, e, ui) {
+        var item = ui.item || ui.draggable;
+        var isResponsive = ui.draggable;
+        var parent = item.parent();
+        var itemIndex, receiverColumnIndex;
+        if (isResponsive) {
+            var grid = parent.parent();
+            itemIndex = 0;
+            receiverColumnIndex = grid.children().filter(':not(script):visible').index(parent);
+        }
+        else {
+            itemIndex = parent.children().filter(':not(script):visible').index(item);
+            receiverColumnIndex = parent.parent().children().index(parent);
+        }
+
+        var ext = {
+            params: [
+                { name: widget.id + '_reordered', value: true },
+                { name: widget.id + '_widgetId', value: item.attr('id') },
+                { name: widget.id + '_itemIndex', value: itemIndex },
+                { name: widget.id + '_receiverColumnIndex', value: receiverColumnIndex }
+            ]
+        };
+
+        if (ui.sender) {
+            ext.params.push({ name: widget.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender) });
+        }
+        if (isResponsive) {
+            var target = $(e.target);
+            ext.params.push({ name: widget.id + '_senderColumnIndex', value: grid.children().filter(':not(script):visible').index(target.parent()) });
+        }
+
+        widget.callBehavior('reorder', ext);
     },
 
     /**

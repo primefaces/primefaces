@@ -24,7 +24,7 @@
 package org.primefaces.showcase.view.panel;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -35,9 +35,7 @@ import javax.inject.Named;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.DashboardModel;
-import org.primefaces.model.DefaultDashboardColumn;
-import org.primefaces.model.DefaultDashboardModel;
+import org.primefaces.model.dashboard.*;
 
 @Named
 @ViewScoped
@@ -46,47 +44,62 @@ public class DashboardView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String RESPONSIVE_CLASS = "col-12 lg:col-6 xl:col-6";
 
-    private DashboardModel legacyModel;
     private DashboardModel responsiveModel;
+    private DashboardModel legacyModel;
 
     @PostConstruct
     public void init() {
         // responsive
         responsiveModel = new DefaultDashboardModel();
-        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS, "bar"));
-        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS, "stacked"));
-        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-3"), "donut"));
-        responsiveModel.addColumn(new DefaultDashboardColumn(null, RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-9"), "cartesian"));
+        responsiveModel.addWidget(new DefaultDashboardWidget("bar", RESPONSIVE_CLASS));
+        responsiveModel.addWidget(new DefaultDashboardWidget("stacked", RESPONSIVE_CLASS));
+        responsiveModel.addWidget(new DefaultDashboardWidget("donut", RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-4")));
+        responsiveModel.addWidget(new DefaultDashboardWidget("cartesian", RESPONSIVE_CLASS.replaceFirst("xl:col-\\d+", "xl:col-8")));
 
         // legacy
         legacyModel = new DefaultDashboardModel();
-        legacyModel.addColumn(new DefaultDashboardColumn(List.of("sports", "finance")));
-        legacyModel.addColumn(new DefaultDashboardColumn(List.of("lifestyle", "weather")));
-        legacyModel.addColumn(new DefaultDashboardColumn(List.of("politics")));
+        legacyModel.addColumn(new DefaultDashboardColumn(Arrays.asList("sports", "finance")));
+        legacyModel.addColumn(new DefaultDashboardColumn(Arrays.asList("lifestyle", "weather")));
+        legacyModel.addColumn(new DefaultDashboardColumn(Arrays.asList("politics")));
     }
 
     public void handleReorder(DashboardReorderEvent event) {
         FacesMessage message = new FacesMessage();
         message.setSeverity(FacesMessage.SEVERITY_INFO);
         message.setSummary("Reordered: " + event.getWidgetId());
-        message.setDetail("Item index: " + event.getItemIndex() + ", Column index: " + event.getColumnIndex()
-                + ", Sender index: " + event.getSenderColumnIndex());
+        String result = String.format("Dragged index: %d, Dropped Index: %d, Widget Index: %d",
+                event.getSenderColumnIndex(),  event.getColumnIndex(), event.getItemIndex());
+        message.setDetail(result);
 
         addMessage(message);
     }
 
     public void handleClose(CloseEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Panel Closed",
-                "Closed panel id:'" + event.getComponent().getId() + "'");
+                "Closed panel ID:'" + event.getComponent().getId() + "'");
 
         addMessage(message);
     }
 
     public void handleToggle(ToggleEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Panel Toggled",
-                "Toggle panel id:'" + event.getComponent().getId() + "' Status:" + event.getVisibility().name());
+                "Toggle panel ID:'" + event.getComponent().getId() + "' Status:" + event.getVisibility().name());
 
         addMessage(message);
+    }
+
+    /**
+     * Dashboard panel has been resized.
+     *
+     * @param widget the DashboardPanel
+     * @param size the new size CSS
+     */
+    public void onDashboardResize(final String widget, final String size) {
+        final DashboardWidget dashboard = responsiveModel.getWidget(widget);
+        if (dashboard != null) {
+            final String newCss = dashboard.getStyleClass().replaceFirst("xl:col-\\d+", size);
+            dashboard.setStyleClass(newCss);
+        }
     }
 
     private void addMessage(FacesMessage message) {

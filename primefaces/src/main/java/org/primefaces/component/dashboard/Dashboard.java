@@ -34,8 +34,8 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.DashboardReorderEvent;
-import org.primefaces.model.DashboardColumn;
-import org.primefaces.model.DashboardModel;
+import org.primefaces.model.dashboard.DashboardModel;
+import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
@@ -111,15 +111,14 @@ public class Dashboard extends DashboardBase {
     protected void updateDashboardModel(DashboardModel model, String widgetId, Integer itemIndex, Integer receiverColumnIndex, Integer senderColumnIndex) {
         if (senderColumnIndex == null) {
             //Reorder widget in same column
-            DashboardColumn column = model.getColumn(receiverColumnIndex);
+            DashboardWidget column = model.getColumn(receiverColumnIndex);
             column.reorderWidget(itemIndex, widgetId);
         }
         else {
             //Transfer widget
-            DashboardColumn oldColumn = model.getColumn(senderColumnIndex);
-            DashboardColumn newColumn = model.getColumn(receiverColumnIndex);
-
-            model.transferWidget(oldColumn, newColumn, widgetId, itemIndex);
+            DashboardWidget oldColumn = model.getColumn(senderColumnIndex);
+            DashboardWidget newColumn = model.getColumn(receiverColumnIndex);
+            model.transferWidget(oldColumn, newColumn, widgetId, itemIndex, this.isResponsive());
         }
     }
 

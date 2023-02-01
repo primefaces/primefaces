@@ -30,8 +30,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.panel.Panel;
-import org.primefaces.model.DashboardColumn;
-import org.primefaces.model.DashboardModel;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.model.dashboard.DashboardModel;
+import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -71,7 +72,7 @@ public class DashboardRenderer extends CoreRenderer {
 
         DashboardModel model = dashboard.getModel();
         if (model != null) {
-            for (DashboardColumn column : model.getColumns()) {
+            for (DashboardWidget column : model.getWidgets()) {
                 String columnStyle = column.getStyle();
                 String columnStyleClass = getStyleClassBuilder(context)
                         .add(!responsive, Dashboard.COLUMN_CLASS)
@@ -86,8 +87,7 @@ public class DashboardRenderer extends CoreRenderer {
                 }
 
                 for (String widgetId : column.getWidgets()) {
-                    Panel widget = findWidget(widgetId, dashboard);
-
+                    Panel widget = (Panel) SearchExpressionFacade.resolveComponent(context, dashboard, widgetId);
                     if (widget != null) {
                         renderChild(context, widget);
                     }
@@ -109,18 +109,6 @@ public class DashboardRenderer extends CoreRenderer {
         encodeClientBehaviors(context, dashboard);
 
         wb.finish();
-    }
-
-    protected Panel findWidget(String id, Dashboard dashboard) {
-        for (UIComponent child : dashboard.getChildren()) {
-            Panel panel = (Panel) child;
-
-            if (panel.getId().equals(id)) {
-                return panel;
-            }
-        }
-
-        return null;
     }
 
     @Override
