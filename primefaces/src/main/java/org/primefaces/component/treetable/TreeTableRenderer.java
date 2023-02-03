@@ -128,10 +128,10 @@ public class TreeTableRenderer extends DataRenderer {
             encodeNodeChildren(context, tt, root, root, tt.getFirst(), tt.getRows());
         }
         else {
-            if (tt.isDefaultFilter()) {
+            if (tt.isFilteringCurrentlyActive()) {
                 FilterFeature.getInstance().filter(context, tt, root);
             }
-            if (tt.isDefaultSort()) {
+            if (tt.isSortingCurrentlyActive()) {
                 SortFeature.getInstance().sort(context, tt);
             }
 
