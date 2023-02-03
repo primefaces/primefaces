@@ -24,6 +24,7 @@
 package org.primefaces.component.dashboard;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -72,7 +73,9 @@ public class DashboardRenderer extends CoreRenderer {
 
         DashboardModel model = dashboard.getModel();
         if (model != null) {
-            for (DashboardWidget column : model.getWidgets()) {
+            List<DashboardWidget> widgets = model.getWidgets();
+            for (int i = 0; i < widgets.size(); i++) {
+                DashboardWidget column = widgets.get(i);
                 String columnStyle = column.getStyle();
                 String columnStyleClass = getStyleClassBuilder(context)
                         .add(!responsive, Dashboard.COLUMN_CLASS)
