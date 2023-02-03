@@ -29,6 +29,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `rowTitle` to support row-specific titles.
 * DatePicker
     * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
+* Dashboard
+    * Added attribute `responsive` to support responsive modern dashboards.
 * DataTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.

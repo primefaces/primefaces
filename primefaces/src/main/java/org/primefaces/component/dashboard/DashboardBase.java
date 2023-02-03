@@ -42,7 +42,8 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         disabled,
         reordering,
         style,
-        styleClass
+        styleClass,
+        responsive
     }
 
     public DashboardBase() {
@@ -62,11 +63,11 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public org.primefaces.model.DashboardModel getModel() {
-        return (org.primefaces.model.DashboardModel) getStateHelper().eval(PropertyKeys.model, null);
+    public org.primefaces.model.dashboard.DashboardModel getModel() {
+        return (org.primefaces.model.dashboard.DashboardModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.DashboardModel model) {
+    public void setModel(org.primefaces.model.dashboard.DashboardModel model) {
         getStateHelper().put(PropertyKeys.model, model);
     }
 
@@ -100,5 +101,13 @@ public abstract class DashboardBase extends UIPanel implements Widget, ClientBeh
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public boolean isResponsive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+    }
+
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 }

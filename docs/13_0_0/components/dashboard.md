@@ -26,6 +26,7 @@ Dashboard provides a portal like layout with drag&drop based reorder capabilitie
 | model | null | DashboardModel | Dashboard model instance representing the layout of the UI.
 | disabled | false | Boolean | Disables the component.
 | reordering | true | Boolean | Allow reordering of panels.
+| responsive | false | Boolean | In responsive mode, allows use of PrimeFlex CSS to control widget sizes and responsiveness.
 | style | null | String | Inline style of the dashboard container
 | styleClass | null | String | Style class of the dashboard container
 
@@ -48,24 +49,46 @@ column. See the end of this section for the detailed Dashboard API.
 
 ```java
 public class Bean {
-    private DashboardModel model;
+    private DashboardModel legacyModel;
 
     public Bean() {
-        model = new DefaultDashboardModel();
-        DashboardColumn column1 = new DefaultDashboardColumn();
-        DashboardColumn column2 = new DefaultDashboardColumn();
-        DashboardColumn column3 = new DefaultDashboardColumn();
-        column1.addWidget("sports");
-        column1.addWidget("finance");
-        column2.addWidget("lifestyle");
-        column2.addWidget("weather");
-        column3.addWidget("politics");
-        model.addColumn(column1);
-        model.addColumn(column2);
-        model.addColumn(column3);
+        legacyModel = new DefaultDashboardModel();
+        legacyModel.addColumn(new DefaultDashboardColumn(List.of("sports", "finance")));
+        legacyModel.addColumn(new DefaultDashboardColumn(List.of("lifestyle", "weather")));
+        legacyModel.addColumn(new DefaultDashboardColumn(List.of("politics")));
     }
 }
 ```
+
+## Responsive
+Dashboard can be switched to `responsive="true"` mode to allow using PrimeFlex CSS.  The advantages and differences of this mode
+are 1) drag and drop swaps panel locations 2) different size panels 3) responsive reordering based on browser size.
+
+```xhtml
+<p:dashboard model="#{bean.model}">
+    <p:panel id="bar">
+        //Bar Chart Content
+    </p:panel>
+    <p:panel id="stacked">
+        //Stacked Chart Content
+    </p:panel>
+    //more panels like lifestyle, weather, politics...
+</p:dashboard>
+```
+Dashboard model in this mode wants `one` widget per column and should be given a PrimeFlex responsive CSS options.
+
+```java
+public class Bean {
+    private DashboardModel model;
+
+    public Bean() {
+        responsiveModel = new DefaultDashboardModel();
+        responsiveModel.addWidget(new DefaultDashboardWidget("bar", "col-12 lg:col-6 xl:col-4"));
+        responsiveModel.addColumn(new DefaultDashboardWidget("stacked", "col-12 lg:col-6 xl:col-8"));
+    }
+}
+```
+
 ## State
 Dashboard is a stateful component, whenever a widget is reordered dashboard model will be
 updated, by persisting the user changes so you can easily create a stateful dashboard.
@@ -141,7 +164,9 @@ list of structural style classes;
 | --- | --- | 
 | .ui-dashboard | Container element of dashboard
 | .ui-dashboard-column | Each column in dashboard
-| div.ui-state-hover | Placeholder
+| .ui-dashboard-active | In responsive mode highlights which components are allowed to be dropped upon
+| .ui-dashboard-hover | In responsive mode change styling of the active drop zone when hovering
+| div.ui-state-hover | Placeholder (in legacy mode)
 
 As skinning style classes are global, see the main theming section for more information. Here is an
 example based on a different theme;

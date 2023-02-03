@@ -221,6 +221,7 @@ public class ChartJsView implements Serializable {
 
         //Options
         LineChartOptions options = new LineChartOptions();
+        options.setMaintainAspectRatio(false);
         Title title = new Title();
         title.setDisplay(true);
         title.setText("Line Chart");
@@ -393,6 +394,7 @@ public class ChartJsView implements Serializable {
 
         //Options
         BarChartOptions options = new BarChartOptions();
+        options.setMaintainAspectRatio(false);
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setOffset(true);
@@ -475,6 +477,7 @@ public class ChartJsView implements Serializable {
 
         //Options
         BarChartOptions options = new BarChartOptions();
+        options.setMaintainAspectRatio(false);
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setOffset(true);
@@ -622,6 +625,7 @@ public class ChartJsView implements Serializable {
 
         //Options
         BarChartOptions options = new BarChartOptions();
+        options.setMaintainAspectRatio(false);
         CartesianScales cScales = new CartesianScales();
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setStacked(true);

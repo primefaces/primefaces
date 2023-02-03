@@ -21,19 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.dashboard;
 
 import java.util.List;
 
 public interface DashboardModel {
 
-    void addColumn(DashboardColumn column);
+    void addWidget(DashboardWidget widget);
 
-    List<DashboardColumn> getColumns();
+    void addColumn(DashboardWidget column);
+
+    List<DashboardWidget> getWidgets();
 
     int getColumnCount();
 
-    DashboardColumn getColumn(int index);
+    DashboardWidget getColumn(int index);
 
-    void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index);
+    DashboardWidget getWidget(String widgetId);
+
+    void transferWidget(DashboardWidget fromWidget, DashboardWidget toWidget, String widgetId, int index, boolean swap);
 }
