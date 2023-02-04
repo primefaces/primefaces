@@ -66,9 +66,8 @@ public class CspState {
             }
             else {
                 nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-                Map<String, Object> viewMap = context.getViewRoot().getViewMap(false);
-                if (viewMap != null) {
-                    viewMap.put(Constants.RequestParams.NONCE_PARAM, nonce);
+                if (!context.getViewRoot().isTransient()) {
+                    context.getViewRoot().getViewMap(true).put(Constants.RequestParams.NONCE_PARAM, nonce);
                 }
             }
         }
