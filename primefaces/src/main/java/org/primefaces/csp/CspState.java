@@ -55,7 +55,10 @@ public class CspState {
     public String getNonce() {
         if (nonce == null) {
             if (context.isPostback() || context.getPartialViewContext().isAjaxRequest()) {
-                nonce = (String) context.getViewRoot().getViewMap().get(Constants.RequestParams.NONCE_PARAM);
+                Map<String, Object> viewMap = context.getViewRoot().getViewMap(false);
+                if (viewMap != null) {
+                    nonce = (String) viewMap.get(Constants.RequestParams.NONCE_PARAM);
+                }
                 if (nonce == null) {
                     nonce = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.NONCE_PARAM);
                 }
@@ -63,7 +66,10 @@ public class CspState {
             }
             else {
                 nonce = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-                context.getViewRoot().getViewMap().put(Constants.RequestParams.NONCE_PARAM, nonce);
+                Map<String, Object> viewMap = context.getViewRoot().getViewMap(false);
+                if (viewMap != null) {
+                    viewMap.put(Constants.RequestParams.NONCE_PARAM, nonce);
+                }
             }
         }
 
