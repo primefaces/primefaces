@@ -40,8 +40,10 @@ import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.event.data.SortEvent;
-import org.primefaces.model.*;
-import org.primefaces.model.filter.*;
+import org.primefaces.model.ColumnMeta;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
@@ -96,27 +98,17 @@ public class TreeTable extends TreeTableBase {
     public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
 
-    static final Map<MatchMode, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
-            .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
-            .put(MatchMode.NOT_STARTS_WITH, new NegationFilterConstraintWrapper(new StartsWithFilterConstraint()))
-            .put(MatchMode.ENDS_WITH, new EndsWithFilterConstraint())
-            .put(MatchMode.NOT_ENDS_WITH, new NegationFilterConstraintWrapper(new EndsWithFilterConstraint()))
-            .put(MatchMode.CONTAINS, new ContainsFilterConstraint())
-            .put(MatchMode.NOT_CONTAINS, new NegationFilterConstraintWrapper(new ContainsFilterConstraint()))
-            .put(MatchMode.EXACT, new ExactFilterConstraint())
-            .put(MatchMode.NOT_EXACT, new NegationFilterConstraintWrapper(new ExactFilterConstraint()))
-            .put(MatchMode.LESS_THAN, new LessThanFilterConstraint())
-            .put(MatchMode.LESS_THAN_EQUALS, new LessThanEqualsFilterConstraint())
-            .put(MatchMode.GREATER_THAN, new GreaterThanFilterConstraint())
-            .put(MatchMode.GREATER_THAN_EQUALS, new GreaterThanEqualsFilterConstraint())
-            .put(MatchMode.EQUALS, new EqualsFilterConstraint())
-            .put(MatchMode.NOT_EQUALS, new NegationFilterConstraintWrapper(new EqualsFilterConstraint()))
-            .put(MatchMode.IN, new InFilterConstraint())
-            .put(MatchMode.NOT_IN, new NegationFilterConstraintWrapper(new InFilterConstraint()))
-            .put(MatchMode.GLOBAL, new GlobalFilterConstraint())
-            .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
-            .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
-            .build();
+    public static final List<TreeTableFeature> FEATURES = Collections.unmodifiableList(Arrays.asList(
+            CellEditFeature.getInstance(),
+            CollapseFeature.getInstance(),
+            ExpandFeature.getInstance(),
+            SelectionFeature.getInstance(),
+            FilterFeature.getInstance(),
+            PageFeature.getInstance(),
+            ResizableColumnsFeature.getInstance(),
+            RowEditFeature.getInstance(),
+            SelectionFeature.getInstance(),
+            SortFeature.getInstance()));
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("contextMenu", NodeSelectEvent.class)
@@ -135,18 +127,6 @@ public class TreeTable extends TreeTableBase {
             .put("cellEditCancel", CellEditEvent.class)
             .put("page", PageEvent.class)
             .build();
-
-    public static final List<TreeTableFeature> FEATURES = Collections.unmodifiableList(Arrays.asList(
-            CellEditFeature.getInstance(),
-            CollapseFeature.getInstance(),
-            ExpandFeature.getInstance(),
-            SelectionFeature.getInstance(),
-            FilterFeature.getInstance(),
-            PageFeature.getInstance(),
-            ResizableColumnsFeature.getInstance(),
-            RowEditFeature.getInstance(),
-            SelectionFeature.getInstance(),
-            SortFeature.getInstance()));
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
