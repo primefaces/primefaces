@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.tree;
 
-import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -41,11 +39,13 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -882,24 +882,15 @@ public class TreeRenderer extends CoreRenderer {
     }
 
     public FilterConstraint getFilterConstraint(Tree tree) {
-        String filterMatchMode = tree.getFilterMatchMode();
-
-        MatchMode matchMode = MatchMode.of(filterMatchMode);
-        if (matchMode == null) {
-            throw new FacesException("Illegal filter match mode:" + filterMatchMode);
-        }
-
-        FilterConstraint filterConstraint;
         if (tree.getFilterFunction() != null) {
-            filterConstraint = new FunctionFilterConstraint(tree.getFilterFunction());
-        }
-        else {
-            filterConstraint = Tree.FILTER_CONSTRAINTS.get(matchMode);
-            if (filterConstraint == null) {
-                throw new FacesException("Illegal filter match mode:" + filterMatchMode);
-            }
+            return new FunctionFilterConstraint(tree.getFilterFunction());
         }
 
-        return filterConstraint;
+        String filterMatchMode = tree.getFilterMatchMode();
+        MatchMode matchMode = Optional.ofNullable(MatchMode.of(filterMatchMode))
+                .orElseThrow(() -> new FacesException("Illegal filter match mode:" + filterMatchMode));
+
+        return Optional.ofNullable(FilterConstraints.of(matchMode))
+                    .orElseThrow(() -> new FacesException("No filter constraint found for match mode:" + matchMode));
     }
 }
