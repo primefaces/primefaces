@@ -30,19 +30,12 @@ import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PostRestoreStateEvent;
+import javax.faces.event.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.treetable.feature.FilterFeature;
-import org.primefaces.component.treetable.feature.SortFeature;
+import org.primefaces.component.treetable.feature.*;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
@@ -142,6 +135,19 @@ public class TreeTable extends TreeTableBase {
             .put("cellEditCancel", CellEditEvent.class)
             .put("page", PageEvent.class)
             .build();
+
+    public static final List<TreeTableFeature> FEATURES = Collections.unmodifiableList(Arrays.asList(
+            CellEditFeature.getInstance(),
+            CollapseFeature.getInstance(),
+            ExpandFeature.getInstance(),
+            SelectionFeature.getInstance(),
+            FilterFeature.getInstance(),
+            PageFeature.getInstance(),
+            ResizableColumnsFeature.getInstance(),
+            RowEditFeature.getInstance(),
+            SelectionFeature.getInstance(),
+            SortFeature.getInstance()));
+
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     private List<UIColumn> columns;
@@ -156,38 +162,6 @@ public class TreeTable extends TreeTableBase {
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
-    }
-
-    public boolean isExpandRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expand");
-    }
-
-    public boolean isCollapseRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_collapse");
-    }
-
-    public boolean isSelectionRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
-    }
-
-    public boolean isPaginationRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
-    }
-
-    public boolean isRowEditRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_rowEditAction");
-    }
-
-    public boolean isCellEditRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellInfo");
-    }
-
-    public boolean isCellEditCancelRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellEditCancel");
-    }
-
-    public boolean isCellEditInitRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_cellEditInit");
     }
 
     @Override
@@ -690,4 +664,9 @@ public class TreeTable extends TreeTableBase {
         FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this, getValue());
         SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
     }
+
+    public boolean shouldEncodeFeature(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_encodeFeature");
+    }
+
 }

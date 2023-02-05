@@ -100,7 +100,7 @@ public class SelectionFeature implements TreeTableFeature {
             table.setRowKey(root, null); //cleanup
         }
 
-        if (table.isCheckboxSelectionMode() && table.isSelectionRequest(context)) {
+        if (table.isCheckboxSelectionMode() && isSelectionRequest(context, clientId)) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             table.setRowKey(root, selectedNodeRowKey);
             TreeNode selectedNode = table.getRowNode();
@@ -136,4 +136,7 @@ public class SelectionFeature implements TreeTableFeature {
         return false;
     }
 
+    private boolean isSelectionRequest(FacesContext context, String clientId) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_instantSelection");
+    }
 }
