@@ -30,10 +30,6 @@ import org.primefaces.util.MapBuilder;
 
 public final class FilterConstraints {
 
-    private FilterConstraints() {
-        // NOOP
-    }
-
     private static final Map<MatchMode, FilterConstraint> ALL_CONSTRAINTS = MapBuilder.<MatchMode, FilterConstraint>builder()
             .put(MatchMode.STARTS_WITH, new StartsWithFilterConstraint())
             .put(MatchMode.NOT_STARTS_WITH, new NegationFilterConstraintWrapper(new StartsWithFilterConstraint()))
@@ -55,6 +51,10 @@ public final class FilterConstraints {
             .put(MatchMode.BETWEEN, new BetweenFilterConstraint())
             .put(MatchMode.NOT_BETWEEN, new NegationFilterConstraintWrapper(new BetweenFilterConstraint()))
             .build();
+
+    private FilterConstraints() {
+        // NOOP
+    }
 
     public static FilterConstraint of(MatchMode mode) {
         return ALL_CONSTRAINTS.get(mode);
