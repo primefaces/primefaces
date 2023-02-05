@@ -871,6 +871,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_expand', value: nodeKey}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -941,6 +942,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_collapse', value: nodeKey}
             ],
             onsuccess: function(responseXML, status, xhr) {
