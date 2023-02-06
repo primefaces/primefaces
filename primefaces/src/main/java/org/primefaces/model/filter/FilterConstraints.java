@@ -60,14 +60,14 @@ public final class FilterConstraints {
     }
 
     public static FilterConstraint of(MatchMode mode) {
-        return ALL_CONSTRAINTS.get(mode);
+        return Optional.ofNullable(ALL_CONSTRAINTS.get(mode))
+                .orElseThrow(() -> new FacesException("No filter constraint found for match mode: " + mode));
     }
 
     public static FilterConstraint of(String matchMode) {
         MatchMode mode = Optional.ofNullable(MatchMode.of(matchMode))
                 .orElseThrow(() -> new FacesException("Illegal filter match mode: " + matchMode));
 
-        return Optional.ofNullable(of(mode))
-                .orElseThrow(() -> new FacesException("No filter constraint found for match mode: " + mode));
+        return of(mode);
     }
 }
