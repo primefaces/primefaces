@@ -45,7 +45,7 @@ public class PageFeature implements TreeTableFeature {
 
     @Override
     public void decode(FacesContext context, TreeTable table) {
-        throw new FacesException("PageFeature should not encode.");
+        throw new FacesException("PageFeature should not decode.");
     }
 
     @Override
