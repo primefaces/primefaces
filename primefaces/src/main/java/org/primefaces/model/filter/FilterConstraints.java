@@ -24,6 +24,9 @@
 package org.primefaces.model.filter;
 
 import java.util.Map;
+import java.util.Optional;
+
+import javax.faces.FacesException;
 
 import org.primefaces.model.MatchMode;
 import org.primefaces.util.MapBuilder;
@@ -58,5 +61,13 @@ public final class FilterConstraints {
 
     public static FilterConstraint of(MatchMode mode) {
         return ALL_CONSTRAINTS.get(mode);
+    }
+
+    public static FilterConstraint of(String matchMode) {
+        MatchMode mode = Optional.ofNullable(MatchMode.of(matchMode))
+                .orElseThrow(() -> new FacesException("Illegal filter match mode: " + matchMode));
+
+        return Optional.ofNullable(of(mode))
+                .orElseThrow(() -> new FacesException("No filter constraint found for match mode: " + mode));
     }
 }

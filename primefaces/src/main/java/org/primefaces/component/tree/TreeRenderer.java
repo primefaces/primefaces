@@ -36,7 +36,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.MatchMode;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FilterConstraints;
@@ -886,11 +885,6 @@ public class TreeRenderer extends CoreRenderer {
             return new FunctionFilterConstraint(tree.getFilterFunction());
         }
 
-        String filterMatchMode = tree.getFilterMatchMode();
-        MatchMode matchMode = Optional.ofNullable(MatchMode.of(filterMatchMode))
-                .orElseThrow(() -> new FacesException("Illegal filter match mode:" + filterMatchMode));
-
-        return Optional.ofNullable(FilterConstraints.of(matchMode))
-                    .orElseThrow(() -> new FacesException("No filter constraint found for match mode:" + matchMode));
+        return FilterConstraints.of(tree.getFilterMatchMode());
     }
 }
