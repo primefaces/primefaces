@@ -107,7 +107,6 @@ public class TreeTable extends TreeTableBase {
             PageFeature.getInstance(),
             ResizableColumnsFeature.getInstance(),
             RowEditFeature.getInstance(),
-            SelectionFeature.getInstance(),
             SortFeature.getInstance()));
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
