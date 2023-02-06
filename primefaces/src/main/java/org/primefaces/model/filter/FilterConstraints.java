@@ -67,7 +67,6 @@ public final class FilterConstraints {
     public static FilterConstraint of(String matchMode) {
         MatchMode mode = Optional.ofNullable(MatchMode.of(matchMode))
                 .orElseThrow(() -> new FacesException("Illegal filter match mode: " + matchMode));
-
         return of(mode);
     }
 }
