@@ -32,15 +32,6 @@ import org.primefaces.model.TreeNode;
 
 public class PageFeature implements TreeTableFeature {
 
-    private static final PageFeature INSTANCE = new PageFeature();
-
-    private PageFeature() {
-    }
-
-    public static PageFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable tt) throws IOException {
         TreeNode root = tt.getValue();

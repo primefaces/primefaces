@@ -53,14 +53,6 @@ import org.primefaces.util.LocaleUtils;
 public class FilterFeature implements TreeTableFeature {
 
     private static final Logger LOGGER = Logger.getLogger(FilterFeature.class.getName());
-    private static final FilterFeature INSTANCE = new FilterFeature();
-
-    private FilterFeature() {
-    }
-
-    public static FilterFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, TreeTable table) {
@@ -96,7 +88,7 @@ public class FilterFeature implements TreeTableFeature {
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
         filter(context, table, table.getValue());
         if (table.isSortingCurrentlyActive()) {
-            SortFeature.getInstance().sort(context, table);
+            TreeTableFeatures.sortFeature().sort(context, table);
         }
 
         context.getApplication().publishEvent(context, PostFilterEvent.class, table);

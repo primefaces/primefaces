@@ -23,19 +23,19 @@
  */
 package org.primefaces.component.treetable;
 
-import java.util.*;
-
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
+import java.util.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
-import org.primefaces.component.treetable.feature.*;
+import org.primefaces.component.treetable.feature.FilterFeature;
+import org.primefaces.component.treetable.feature.TreeTableFeatures;
 import org.primefaces.event.*;
 import org.primefaces.event.data.FilterEvent;
 import org.primefaces.event.data.PageEvent;
@@ -97,17 +97,6 @@ public class TreeTable extends TreeTableBase {
     public static final String GRIDLINES_CLASS = "ui-treetable-gridlines";
     public static final String SMALL_SIZE_CLASS = "ui-treetable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-treetable-lg";
-
-    public static final List<TreeTableFeature> FEATURES = Collections.unmodifiableList(Arrays.asList(
-            CellEditFeature.getInstance(),
-            CollapseFeature.getInstance(),
-            ExpandFeature.getInstance(),
-            SelectionFeature.getInstance(),
-            FilterFeature.getInstance(),
-            PageFeature.getInstance(),
-            ResizableColumnsFeature.getInstance(),
-            RowEditFeature.getInstance(),
-            SortFeature.getInstance()));
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("contextMenu", NodeSelectEvent.class)
@@ -277,7 +266,7 @@ public class TreeTable extends TreeTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        FilterFeature feature = FilterFeature.getInstance();
+        FilterFeature feature = TreeTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
 
@@ -640,8 +629,8 @@ public class TreeTable extends TreeTableBase {
     @Override
     public void filterAndSort() {
         setValue(null);
-        FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this, getValue());
-        SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
+        TreeTableFeatures.filterFeature().filter(FacesContext.getCurrentInstance(), this, getValue());
+        TreeTableFeatures.sortFeature().sort(FacesContext.getCurrentInstance(), this);
     }
 
     public boolean shouldEncodeFeature(FacesContext context) {

@@ -40,15 +40,6 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class RowEditFeature implements TreeTableFeature {
 
-    private static final RowEditFeature INSTANCE = new RowEditFeature();
-
-    private RowEditFeature() {
-    }
-
-    public static RowEditFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable tt) throws IOException {
         TreeNode root = tt.getValue();

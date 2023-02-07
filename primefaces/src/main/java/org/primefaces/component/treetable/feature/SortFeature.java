@@ -47,15 +47,6 @@ import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements TreeTableFeature {
 
-    private static final SortFeature INSTANCE = new SortFeature();
-
-    private SortFeature() {
-    }
-
-    public static SortFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void decode(FacesContext context, TreeTable table) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

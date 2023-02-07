@@ -36,15 +36,6 @@ import org.primefaces.model.TreeNode;
 
 public class CellEditFeature implements TreeTableFeature {
 
-    private static final CellEditFeature INSTANCE = new CellEditFeature();
-
-    private CellEditFeature() {
-    }
-
-    public static CellEditFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable tt) throws IOException {
         TreeNode root = tt.getValue();

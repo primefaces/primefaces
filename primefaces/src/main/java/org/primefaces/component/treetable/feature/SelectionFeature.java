@@ -42,15 +42,6 @@ public class SelectionFeature implements TreeTableFeature {
 
     private static final String SB_DECODE_SELECTION = TreeTableRenderer.class.getName() + "#decodeSelection";
 
-    private static final SelectionFeature INSTANCE = new SelectionFeature();
-
-    private SelectionFeature() {
-    }
-
-    public static SelectionFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void decode(FacesContext context, TreeTable table) {
         boolean multiple = table.isMultipleSelectionMode();

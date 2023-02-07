@@ -29,15 +29,6 @@ import org.primefaces.component.treetable.TreeTable;
 
 public class ResizableColumnsFeature implements TreeTableFeature {
 
-    private static final ResizableColumnsFeature INSTANCE = new ResizableColumnsFeature();
-
-    private ResizableColumnsFeature() {
-    }
-
-    public static ResizableColumnsFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void decode(FacesContext context, TreeTable table) {
         table.decodeColumnResizeState(context);

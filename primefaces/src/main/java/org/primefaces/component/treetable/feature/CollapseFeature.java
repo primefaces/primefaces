@@ -33,15 +33,6 @@ import org.primefaces.model.TreeNode;
 
 public class CollapseFeature implements TreeTableFeature {
 
-    private static final CollapseFeature INSTANCE = new CollapseFeature();
-
-    private CollapseFeature() {
-    }
-
-    public static CollapseFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable tt) throws IOException {
         TreeNode root = tt.getValue();

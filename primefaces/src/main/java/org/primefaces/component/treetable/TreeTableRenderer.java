@@ -23,15 +23,14 @@
  */
 package org.primefaces.component.treetable;
 
-import java.io.IOException;
-import java.util.List;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.List;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -41,9 +40,8 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.tree.Tree;
-import org.primefaces.component.treetable.feature.FilterFeature;
-import org.primefaces.component.treetable.feature.SortFeature;
 import org.primefaces.component.treetable.feature.TreeTableFeature;
+import org.primefaces.component.treetable.feature.TreeTableFeatures;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
@@ -62,7 +60,7 @@ public class TreeTableRenderer extends DataRenderer {
     public void decode(FacesContext context, UIComponent component) {
         TreeTable tt = (TreeTable) component;
 
-        for (TreeTableFeature feature : TreeTable.FEATURES) {
+        for (TreeTableFeature feature : TreeTableFeatures.all()) {
             if (feature.shouldDecode(context, tt)) {
                 feature.decode(context, tt);
             }
@@ -76,7 +74,7 @@ public class TreeTableRenderer extends DataRenderer {
         TreeTable tt = (TreeTable) component;
 
         if (tt.shouldEncodeFeature(context)) {
-            for (TreeTableFeature feature : TreeTable.FEATURES) {
+            for (TreeTableFeature feature : TreeTableFeatures.all()) {
                 if (feature.shouldEncode(context, tt)) {
                     feature.encode(context, this, tt);
                 }
@@ -104,10 +102,10 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (table.isFilteringCurrentlyActive()) {
-            FilterFeature.getInstance().filter(context, table, table.getValue());
+            TreeTableFeatures.filterFeature().filter(context, table, table.getValue());
         }
         if (table.isSortingCurrentlyActive()) {
-            SortFeature.getInstance().sort(context, table);
+            TreeTableFeatures.sortFeature().sort(context, table);
         }
 
         table.resetDynamicColumns();
