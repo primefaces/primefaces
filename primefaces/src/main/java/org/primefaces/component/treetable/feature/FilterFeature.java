@@ -23,11 +23,6 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.data.PostFilterEvent;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.filter.*;
-
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -35,15 +30,23 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
+
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
+import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.FilterMeta;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
@@ -57,20 +60,6 @@ public class FilterFeature implements TreeTableFeature {
 
     public static FilterFeature getInstance() {
         return INSTANCE;
-    }
-
-    private boolean isFilterRequest(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
-    }
-
-    @Override
-    public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return context.getCurrentPhaseId() == PhaseId.PROCESS_VALIDATIONS && isFilterRequest(context, table);
-    }
-
-    @Override
-    public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return isFilterRequest(context, table);
     }
 
     @Override
@@ -302,4 +291,19 @@ public class FilterFeature implements TreeTableFeature {
 
         return clone;
     }
+
+    @Override
+    public boolean shouldDecode(FacesContext context, TreeTable table) {
+        return context.getCurrentPhaseId() == PhaseId.PROCESS_VALIDATIONS && isFilterRequest(context, table);
+    }
+
+    @Override
+    public boolean shouldEncode(FacesContext context, TreeTable table) {
+        return isFilterRequest(context, table);
+    }
+
+    private boolean isFilterRequest(FacesContext context, TreeTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
+    }
+
 }

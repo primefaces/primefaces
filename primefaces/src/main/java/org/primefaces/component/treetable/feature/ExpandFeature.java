@@ -23,11 +23,9 @@
  */
 package org.primefaces.component.treetable.feature;
 
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
@@ -42,21 +40,6 @@ public class ExpandFeature implements TreeTableFeature {
 
     public static ExpandFeature getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return false;
-    }
-
-    @Override
-    public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_expand");
-    }
-
-    @Override
-    public void decode(FacesContext context, TreeTable table) {
-        throw new FacesException("ExpandFeature should not decode.");
     }
 
     @Override
@@ -76,4 +59,15 @@ public class ExpandFeature implements TreeTableFeature {
             renderer.encodeNodeChildren(context, tt, root, node);
         }
     }
+
+    @Override
+    public boolean shouldDecode(FacesContext context, TreeTable table) {
+        return false;
+    }
+
+    @Override
+    public boolean shouldEncode(FacesContext context, TreeTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_expand");
+    }
+
 }
