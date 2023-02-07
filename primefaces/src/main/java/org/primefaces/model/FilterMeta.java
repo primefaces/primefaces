@@ -23,20 +23,21 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.ColumnBase;
-import org.primefaces.component.datatable.feature.FilterFeature;
-import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.model.filter.FunctionFilterConstraint;
-import org.primefaces.model.filter.GlobalFilterConstraint;
+import java.io.Serializable;
+import java.util.Objects;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import java.util.Objects;
+
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.column.ColumnBase;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.FilterConstraints;
+import org.primefaces.model.filter.FunctionFilterConstraint;
+import org.primefaces.model.filter.GlobalFilterConstraint;
 
 public class FilterMeta implements Serializable {
 
@@ -73,7 +74,7 @@ public class FilterMeta implements Serializable {
         this.field = field;
         this.columnKey = columnKey;
         this.filterBy = filterByVE;
-        this.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterMatchMode);
+        this.constraint = FilterConstraints.of(filterMatchMode);
         this.filterValue = filterValue;
         this.matchMode = filterMatchMode;
     }
@@ -101,7 +102,7 @@ public class FilterMeta implements Serializable {
         }
 
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
-        FilterConstraint constraint = FilterFeature.FILTER_CONSTRAINTS.get(matchMode);
+        FilterConstraint constraint = FilterConstraints.of(matchMode);
 
         if (column.getFilterFunction() != null) {
             constraint = new FunctionFilterConstraint(column.getFilterFunction());
@@ -222,7 +223,7 @@ public class FilterMeta implements Serializable {
 
         public FilterMeta build() {
             if (filterBy.matchMode != null) {
-                filterBy.constraint = FilterFeature.FILTER_CONSTRAINTS.get(filterBy.matchMode);
+                filterBy.constraint = FilterConstraints.of(filterBy.matchMode);
             }
             Objects.requireNonNull(filterBy.constraint, "Filter constraint is required");
             Objects.requireNonNull(filterBy.field, "Field is required");
