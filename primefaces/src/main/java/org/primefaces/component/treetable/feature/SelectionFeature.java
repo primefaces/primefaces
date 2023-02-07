@@ -23,14 +23,12 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
@@ -119,11 +117,6 @@ public class SelectionFeature implements TreeTableFeature {
                 PrimeFaces.current().ajax().addCallbackParam("descendantRowKeys", builder.toString());
             }
         }
-    }
-
-    @Override
-    public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
-        throw new FacesException("SelectFeature should not encode.");
     }
 
     @Override

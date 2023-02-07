@@ -23,11 +23,10 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-import java.util.Map;
-
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Map;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -44,11 +43,6 @@ public class CellEditFeature implements TreeTableFeature {
 
     public static CellEditFeature getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, TreeTable table) {
-        throw new FacesException("CellEditFeature should not decode.");
     }
 
     @Override

@@ -23,11 +23,9 @@
  */
 package org.primefaces.component.treetable.feature;
 
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
@@ -45,21 +43,6 @@ public class CollapseFeature implements TreeTableFeature {
     }
 
     @Override
-    public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return false;
-    }
-
-    @Override
-    public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_collapse");
-    }
-
-    @Override
-    public void decode(FacesContext context, TreeTable table) {
-        throw new FacesException("CollapseFeature should not decode.");
-    }
-
-    @Override
     public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable tt) throws IOException {
         TreeNode root = tt.getValue();
         String clientId = tt.getClientId(context);
@@ -68,5 +51,15 @@ public class CollapseFeature implements TreeTableFeature {
         tt.setRowKey(root, nodeKey);
         TreeNode node = tt.getRowNode();
         node.setExpanded(false);
+    }
+
+    @Override
+    public boolean shouldDecode(FacesContext context, TreeTable table) {
+        return false;
+    }
+
+    @Override
+    public boolean shouldEncode(FacesContext context, TreeTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_collapse");
     }
 }

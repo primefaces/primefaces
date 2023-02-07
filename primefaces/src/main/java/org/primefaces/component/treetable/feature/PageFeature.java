@@ -23,10 +23,8 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-
-import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
@@ -41,11 +39,6 @@ public class PageFeature implements TreeTableFeature {
 
     public static PageFeature getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, TreeTable table) {
-        throw new FacesException("PageFeature should not decode.");
     }
 
     @Override

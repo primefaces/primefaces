@@ -23,14 +23,12 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Map;
 
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
@@ -49,11 +47,6 @@ public class RowEditFeature implements TreeTableFeature {
 
     public static RowEditFeature getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, TreeTable table) {
-        throw new FacesException("RowEditFeature should not decode.");
     }
 
     @Override

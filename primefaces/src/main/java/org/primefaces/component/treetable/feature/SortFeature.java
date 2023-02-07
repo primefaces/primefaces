@@ -23,21 +23,26 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.event.data.PostSortEvent;
-import org.primefaces.model.*;
-
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.text.Collator;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.component.treetable.TreeTableState;
+import org.primefaces.event.data.PostSortEvent;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
+import org.primefaces.model.TreeNode;
+import org.primefaces.model.TreeNodeList;
 import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements TreeTableFeature {
@@ -49,20 +54,6 @@ public class SortFeature implements TreeTableFeature {
 
     public static SortFeature getInstance() {
         return INSTANCE;
-    }
-
-    private boolean isSortRequest(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
-    }
-
-    @Override
-    public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return isSortRequest(context, table);
-    }
-
-    @Override
-    public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return isSortRequest(context, table);
     }
 
     @Override
@@ -193,4 +184,19 @@ public class SortFeature implements TreeTableFeature {
             }
         }
     }
+
+    @Override
+    public boolean shouldDecode(FacesContext context, TreeTable table) {
+        return isSortRequest(context, table);
+    }
+
+    @Override
+    public boolean shouldEncode(FacesContext context, TreeTable table) {
+        return isSortRequest(context, table);
+    }
+
+    private boolean isSortRequest(FacesContext context, TreeTable table) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
+    }
+
 }
