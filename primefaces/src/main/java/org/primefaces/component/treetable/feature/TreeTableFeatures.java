@@ -35,7 +35,7 @@ public final class TreeTableFeatures {
     }
 
     public static <T extends TreeTableFeature> T replace(Class<T> original, T feature) {
-        if (original.isAssignableFrom(feature.getClass())) {
+        if (!original.isAssignableFrom(feature.getClass())) {
             throw new IllegalArgumentException(original.getName() + " is not assignable from " + feature.getClass().getName());
         }
 
