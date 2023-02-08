@@ -136,7 +136,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         // GitHub #9381 ignore style as its applied to parent div
-        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITH_CLICK_ATTRS);
+        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITHOUT_CLICK_ATTRS);
         attrs.remove("style");
         renderPassThruAttributes(context, button, attrs);
 
