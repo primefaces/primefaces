@@ -278,6 +278,11 @@
             return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
         },
 
+        getSaturdayIndex: function () {
+            var firstDayOfWeek = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
+            return firstDayOfWeek > 0 ? 7 - firstDayOfWeek - 1 : 6;
+        },
+
         getDaysCountInMonth: function (month, year) {
             return 32 - this.daylightSavingAdjust(new Date(year, month, 32)).getDate();
         },
@@ -1503,11 +1508,14 @@
                     '</span></td>';
             }
 
+            var saturdayIndex = this.getSaturdayIndex();
+            var sundayIndex = this.getSundayIndex();
             for (var i = 0; i < weekDates.length; i++) {
                 var date = weekDates[i],
                     cellClass = this.getClassesToAdd({
                         'ui-datepicker-other-month': date.otherMonth,
                         'ui-datepicker-today': date.today,
+                        'ui-datepicker-week-end': i == sundayIndex || i == saturdayIndex,
                         'ui-datepicker-other-month-hidden': date.otherMonth && !this.options.showOtherMonths
                     }),
                     dateClass = this.getClassesToAdd({
