@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -37,9 +36,12 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
 import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
+
+    MatchMode DEFAULT_FILTER_MATCH_MODE = MatchMode.STARTS_WITH;
 
     /**
      * Used to extract bean's property from a value expression in dynamic columns
