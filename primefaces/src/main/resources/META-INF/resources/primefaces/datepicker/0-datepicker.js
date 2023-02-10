@@ -1481,16 +1481,16 @@
         },
 
         calculateWeekNumber: function(d) {
-            var dow = this.getFirstDayOfWeek(),
+            var firstDayOfWeek = this.getFirstDayOfWeek(),
                 doy = this.options.locale.firstDayWeekOffset,
-                weekOffset = this.firstWeekOffset(d.year, dow, doy),
+                weekOffset = this.firstWeekOffset(d.year, firstDayOfWeek, doy),
                 week = Math.floor((this.dayOfYear(d) - weekOffset - 1) / 7) + 1;
 
             if(week < 1) {
-                return week + this.weeksInYear(resYear, dow, doy);
+                return week + this.weeksInYear(resYear, firstDayOfWeek, doy);
             }
-            else if(week > this.weeksInYear(d.year, dow, doy)) {
-                return  week - this.weeksInYear(d.year, dow, doy);
+            else if(week > this.weeksInYear(d.year, firstDayOfWeek, doy)) {
+                return  week - this.weeksInYear(d.year, firstDayOfWeek, doy);
             }
             else {
                 return  week;
