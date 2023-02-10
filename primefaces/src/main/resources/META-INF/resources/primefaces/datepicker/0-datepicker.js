@@ -283,8 +283,7 @@
         },
 
         getSaturdayIndex: function () {
-            var firstDayOfWeek = this.getFirstDayOfWeek();
-            return 7 - firstDayOfWeek - 1;
+            return 7 - this.getFirstDayOfWeek() - 1;
         },
 
         getDaysCountInMonth: function (month, year) {
