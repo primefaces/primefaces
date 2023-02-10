@@ -353,13 +353,16 @@ Following is the list of structural style classes;
 | .ui-datepicker-next | Next month navigator
 | .ui-datepicker-title | Title
 | .ui-datepicker-month | Month display
+| .ui-datepicker-year | Year Display
 | .ui-datepicker-table | Date table
 | .ui-datepicker-week-end | Label of weekends
+| .ui-datepicker-today | Today on the calendar
 | .ui-datepicker-other-month | Dates belonging to other months
 | .ui-datepicker td | Each cell date
-| .ui-datepicker-buttonpane | Button panel
-| .ui-datepicker-current | Today button
-| .ui-datepicker-close | Close button
+| .ui-datepicker-buttonbar | Button panel
+| .ui-today-button | Today button
+| .ui-clear-button | Close button
+| .ui-datepicker-trigger | Trigger button
 
 As skinning style classes are global, see the main theming section for more information.
 
