@@ -51,20 +51,22 @@ import org.primefaces.util.LangUtils;
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractBehaviorHandler.class.getName());
-
     protected static final String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.RetargetableHandlers";
     protected static final String MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
     protected static final Method MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE;
     protected static final Method MYFACES_ADD_ATTACHED_OBJECT_HANDLER;
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractBehaviorHandler.class.getName());
 
     private final TagAttribute event;
 
     static {
         Class<?> clazz = LangUtils.tryToLoadClassForName("org.apache.myfaces.view.facelets.FaceletCompositionContext");
         if (clazz != null) {
-            MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE = LangUtils.tryToLoadMethodForName(clazz, "getCurrentInstance", FaceletContext.class);
-            MYFACES_ADD_ATTACHED_OBJECT_HANDLER = LangUtils.tryToLoadMethodForName(clazz, "addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
+            MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE =
+                    LangUtils.tryToLoadMethodForName(clazz, "getCurrentInstance", FaceletContext.class);
+            MYFACES_ADD_ATTACHED_OBJECT_HANDLER =
+                    LangUtils.tryToLoadMethodForName(clazz, "addAttachedObjectHandler", UIComponent.class, AttachedObjectHandler.class);
         }
         else {
             MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE = null;
