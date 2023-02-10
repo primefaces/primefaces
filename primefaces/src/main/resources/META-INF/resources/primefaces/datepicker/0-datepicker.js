@@ -278,8 +278,7 @@
         },
 
         getSundayIndex: function () {
-            var firstDayOfWeek = this.getFirstDayOfWeek();
-            return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
+            return 7 - this.getFirstDayOfWeek() % 7;
         },
 
         getSaturdayIndex: function () {
