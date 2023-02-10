@@ -23,6 +23,7 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.util.LangUtils;
 
 /**
@@ -71,7 +72,7 @@ public enum MatchMode {
 
     public static MatchMode of(String operator) {
         if (LangUtils.isBlank(operator)) {
-            return STARTS_WITH;
+            return UIColumn.DEFAULT_FILTER_MATCH_MODE;
         }
 
         for (MatchMode mode : MatchMode.values()) {
