@@ -273,14 +273,18 @@
             return dayIndex >= 7 ? dayIndex - 7 : dayIndex;
         },
 
+        getFirstDayOfWeek: function () {
+            return this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
+        },
+
         getSundayIndex: function () {
-            var firstDayOfWeek = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
+            var firstDayOfWeek = this.getFirstDayOfWeek();
             return firstDayOfWeek > 0 ? 7 - firstDayOfWeek : 0;
         },
 
         getSaturdayIndex: function () {
-            var firstDayOfWeek = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
-            return firstDayOfWeek > 0 ? 7 - firstDayOfWeek - 1 : 6;
+            var firstDayOfWeek = this.getFirstDayOfWeek();
+            return 7 - firstDayOfWeek - 1;
         },
 
         getDaysCountInMonth: function (month, year) {
@@ -334,7 +338,7 @@
 
         createWeekDaysInternal: function (dayNames) {
             var weekDays = [],
-                dayIndex = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
+                dayIndex = this.getFirstDayOfWeek();
             for (var i = 0; i < 7; i++) {
                 weekDays.push(dayNames[dayIndex]);
                 dayIndex = (dayIndex === 6) ? 0 : ++dayIndex;
@@ -1479,7 +1483,7 @@
         },
 
         calculateWeekNumber: function(d) {
-            var dow = this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek,
+            var dow = this.getFirstDayOfWeek(),
                 doy = this.options.locale.firstDayWeekOffset,
                 weekOffset = this.firstWeekOffset(d.year, dow, doy),
                 week = Math.floor((this.dayOfYear(d) - weekOffset - 1) / 7) + 1;
