@@ -104,7 +104,7 @@ public class DataTableRenderer extends DataRenderer {
         encodeScript(context, table);
 
         if (table.isPaginator() && table.getRows() == 0) {
-            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: " + table.getClientId());
+            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: {0}", table.getClientId());
         }
     }
 

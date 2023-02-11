@@ -29,7 +29,7 @@
         <jakarta.faces.STATE_SAVING_METHOD>server</jakarta.faces.STATE_SAVING_METHOD>
 
         <!-- dependency versions -->
-        <lombok.version>1.18.24</lombok.version>
+        <lombok.version>1.18.26</lombok.version>
         <tomcat.version>10.1.4</tomcat.version>
         <jetty.version>11.0.13</jetty.version>
     </properties>

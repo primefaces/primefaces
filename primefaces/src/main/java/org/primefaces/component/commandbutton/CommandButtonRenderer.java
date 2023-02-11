@@ -152,9 +152,8 @@ public class CommandButtonRenderer extends CoreRenderer {
         else {
             UIForm form = ComponentTraversalUtils.closestForm(context, button);
             if (form == null) {
-                LOGGER.log(Level.FINE, "CommandButton '" + clientId
-                            + "' should be inside a form or should reference a form via its form attribute."
-                            + " We will try to find a fallback form on the client side.");
+                LOGGER.log(Level.FINE, "CommandButton '{0}' should be inside a form or should reference a form via its form attribute."
+                            + " We will try to find a fallback form on the client side.", clientId);
             }
 
             request = buildNonAjaxRequest(context, button, form, null, false);

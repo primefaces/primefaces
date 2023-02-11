@@ -148,19 +148,19 @@ public class CalendarUtilsTest {
     public void removeTime() {
         String pattern = "dd/MM/yy";
         String cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, pattern);
+        assertEquals(pattern, cleanedPattern);
         pattern = "MM/dd/yy HH:mm";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "MM/dd/yy");
+        assertEquals("MM/dd/yy", cleanedPattern);
         pattern = "dd.MM.yyyy KK:mm a";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "dd.MM.yyyy");
+        assertEquals("dd.MM.yyyy", cleanedPattern);
         pattern = "HH:mm:ss";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "");
+        assertEquals("", cleanedPattern);
         pattern = "HH:mm:ss dd/MM/yyyy";
         cleanedPattern = CalendarUtils.removeTime(pattern);
-        assertEquals(cleanedPattern, "");
+        assertEquals("", cleanedPattern);
     }
 
     @Test
