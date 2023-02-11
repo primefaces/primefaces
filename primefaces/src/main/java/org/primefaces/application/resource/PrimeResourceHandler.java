@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
@@ -52,11 +51,11 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
 
-        if (LangUtils.tryToLoadClassForName("org.krysalis.barcode4j.output.AbstractCanvasProvider") != null) {
+        if (LangUtils.isClassAvailable("org.krysalis.barcode4j.output.AbstractCanvasProvider")) {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
         }
 
-        if (LangUtils.tryToLoadClassForName("io.nayuki.qrcodegen.QrCode") != null) {
+        if (LangUtils.isClassAvailable("io.nayuki.qrcodegen.QrCode")) {
             handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
     }

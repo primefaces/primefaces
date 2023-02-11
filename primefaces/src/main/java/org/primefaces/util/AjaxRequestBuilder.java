@@ -23,26 +23,21 @@
  */
 package org.primefaces.util;
 
-import java.util.Collections;
-import java.util.EnumSet;
+import java.util.*;
+import java.util.logging.Logger;
+import javax.faces.application.ProjectStage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UIParameter;
+import javax.faces.context.FacesContext;
+import javax.faces.view.facelets.FaceletException;
+
+import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
-
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-import javax.faces.component.UIForm;
-import org.primefaces.component.api.AjaxSource;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -100,7 +95,7 @@ public class AjaxRequestBuilder {
         String form = source.getForm();
         if (LangUtils.isBlank(form)) {
             if (formComponent == null) {
-                formComponent = ComponentTraversalUtils.closestForm(context, component);
+                formComponent = ComponentTraversalUtils.closestForm(component);
             }
 
             if (formComponent == null) {

@@ -23,18 +23,18 @@
  */
 package org.primefaces.component.splitbutton;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -66,22 +66,22 @@ public class SplitButton extends SplitButtonBase {
             if (!valueBlank && iconBlank) {
                 styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
             }
-            else if (!valueBlank && !iconBlank) {
+            else if (!valueBlank) {
                 styleClass = getIconPos().equals("left")
                              ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS
                              : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
             }
-            else if (valueBlank && !iconBlank) {
+            else if (!iconBlank) {
                 styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
             }
         }
         else if (!valueBlank && iconBlank) {
             styleClass = BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if (!valueBlank && !iconBlank) {
+        else if (!valueBlank) {
             styleClass = getIconPos().equals("left") ? BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if (valueBlank && !iconBlank) {
+        else if (!iconBlank) {
             styleClass = BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
 

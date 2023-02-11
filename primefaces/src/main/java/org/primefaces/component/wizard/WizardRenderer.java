@@ -26,7 +26,6 @@ package org.primefaces.component.wizard;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -100,7 +99,7 @@ public class WizardRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = wizard.getClientId(context);
 
-        UIForm form = ComponentTraversalUtils.closestForm(context, wizard);
+        UIForm form = ComponentTraversalUtils.closestForm(wizard);
         if (form == null) {
             throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
         }

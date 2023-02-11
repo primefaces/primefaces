@@ -23,8 +23,6 @@
  */
 package org.primefaces.util;
 
-import javax.faces.FacesException;
-import javax.xml.bind.DatatypeConverter;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -34,6 +32,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.regex.Pattern;
+import javax.faces.FacesException;
+import javax.xml.bind.DatatypeConverter;
 
 public class LangUtils {
 
@@ -43,6 +43,9 @@ public class LangUtils {
     private LangUtils() {
     }
 
+    /**
+     * @deprecated Use {@link LangUtils#isEmpty(String)}} instead
+     */
     @Deprecated
     public static boolean isValueEmpty(String value) {
         return isEmpty(value);
@@ -56,6 +59,9 @@ public class LangUtils {
         return !isEmpty(value);
     }
 
+    /**
+     * @deprecated Use {@link LangUtils#isBlank(String)} instead
+     */
     @Deprecated
     public static boolean isValueBlank(String str) {
         return isBlank(str);
@@ -271,6 +277,10 @@ public class LangUtils {
         Set<E> set = new LinkedHashSet<>(elements.length);
         Collections.addAll(set, elements);
         return set;
+    }
+
+    public static boolean isClassAvailable(String name) {
+        return tryToLoadClassForName(name) != null;
     }
 
     public static Class tryToLoadClassForName(String name) {
