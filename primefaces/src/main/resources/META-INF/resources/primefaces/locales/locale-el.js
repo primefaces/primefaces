@@ -25,6 +25,7 @@ PrimeFaces.locales['el'] = {
     week: 'Εβδομάδα',
     day: 'Ημέρα',
     allDayText: 'Όλη Μέρα',
+    clear: 'Επαναφορά'
     messages: {
         'javax.faces.component.UIInput.CONVERSION': '{0}: Παρουσιάστηκε σφάλμα μετατροπής.',
         'javax.faces.component.UIInput.REQUIRED': '{0}: Σφάλμα επικύρωσης. Η τιμή είναι απαραίτητη.',

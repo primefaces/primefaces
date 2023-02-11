@@ -42,12 +42,14 @@ public class ColorPicker extends ColorPickerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColorPicker";
 
-    public static final String STYLE_CLASS = "ui-colorpicker";
+    public static final String POPUP_STYLE_CLASS = "ui-colorpicker ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String INLINE_STYLE_CLASS = "ui-colorpicker ui-widget ui-state-default";
 
     private static final String DEFAULT_EVENT = "change";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("change", null)
+            .put("open", null)
             .put("close", null)
             .build();
 

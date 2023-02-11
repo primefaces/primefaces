@@ -24,6 +24,7 @@ PrimeFaces.locales['uk'] = {
     month: 'Місяць',
     week: 'тиждень',
     day: 'День',
-    allDayText: 'Весь день'
+    allDayText: 'Весь день',
+    clear: 'Скинути'
 };
 

@@ -23,26 +23,35 @@
  */
 package org.primefaces.component.colorpicker;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-
+import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class ColorPickerBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText implements Widget, PrimeClientBehaviorHolder, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColorPickerRenderer";
 
-    public enum PropertyKeys {
+    public static final String CLEAR_LABEL = "primefaces.colorpicker.CLEAR";
+    public static final String CLOSE_LABEL = "primefaces.colorpicker.CLOSE";
 
+    public enum PropertyKeys {
         widgetVar,
         mode,
-        style,
-        styleClass,
-        disabled,
-        onchange;
+        theme,
+        themeMode,
+        format,
+        formatToggle,
+        alpha,
+        forceAlpha,
+        swatchesOnly,
+        focusInput,
+        selectInput,
+        clearButton,
+        closeButton,
+        swatches;
     }
 
     public ColorPickerBase() {
@@ -70,35 +79,99 @@ public abstract class ColorPickerBase extends UIInput implements Widget, ClientB
         getStateHelper().put(PropertyKeys.mode, mode);
     }
 
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    public String getTheme() {
+        return (String) getStateHelper().eval(PropertyKeys.theme, "default");
     }
 
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
+    public void setTheme(String theme) {
+        getStateHelper().put(PropertyKeys.theme, theme);
     }
 
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    public String getThemeMode() {
+        return (String) getStateHelper().eval(PropertyKeys.themeMode, "auto");
     }
 
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    public void setThemeMode(String themeMode) {
+        getStateHelper().put(PropertyKeys.themeMode, themeMode);
     }
 
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
+    public String getFormat() {
+        return (String) getStateHelper().eval(PropertyKeys.format, "hex");
     }
 
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
+    public void setFormat(String format) {
+        getStateHelper().put(PropertyKeys.format, format);
     }
 
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    public boolean isFormatToggle() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.formatToggle, false);
     }
 
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
+    public void setFormatToggle(boolean formatToggle) {
+        getStateHelper().put(PropertyKeys.formatToggle, formatToggle);
+    }
+
+    public boolean isAlpha() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.alpha, true);
+    }
+
+    public void setAlpha(boolean alpha) {
+        getStateHelper().put(PropertyKeys.alpha, alpha);
+    }
+
+    public boolean isForceAlpha() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.forceAlpha, false);
+    }
+
+    public void setForceAlpha(boolean forceAlpha) {
+        getStateHelper().put(PropertyKeys.forceAlpha, forceAlpha);
+    }
+
+    public boolean isSwatchesOnly() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.swatchesOnly, false);
+    }
+
+    public void setSwatchesOnly(boolean swatchesOnly) {
+        getStateHelper().put(PropertyKeys.swatchesOnly, swatchesOnly);
+    }
+
+    public boolean isFocusInput() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.focusInput, true);
+    }
+
+    public void setFocusInput(boolean focusInput) {
+        getStateHelper().put(PropertyKeys.focusInput, focusInput);
+    }
+
+    public boolean isSelectInput() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectInput, false);
+    }
+
+    public void setSelectInput(boolean selectInput) {
+        getStateHelper().put(PropertyKeys.selectInput, selectInput);
+    }
+
+    public boolean isClearButton() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.clearButton, false);
+    }
+
+    public void setClearButton(boolean clearButton) {
+        getStateHelper().put(PropertyKeys.clearButton, clearButton);
+    }
+
+    public boolean isCloseButton() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closeButton, false);
+    }
+
+    public void setCloseButton(boolean closeButton) {
+        getStateHelper().put(PropertyKeys.closeButton, closeButton);
+    }
+
+    public String getSwatches() {
+        return (String) getStateHelper().eval(PropertyKeys.swatches, null);
+    }
+
+    public void setSwatches(String swatches) {
+        getStateHelper().put(PropertyKeys.swatches, swatches);
     }
 }
