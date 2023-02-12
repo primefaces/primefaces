@@ -24,6 +24,7 @@
  * clicks on the color.
  * 
  * @prop {JQuery} input DOM element of the INPUT element
+ * @prop {boolean} popup true if popup mode, else inline mode
  * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
  * 
  * @interface {PrimeFaces.widget.ColorPickerCfg} cfg The configuration for the {@link  Coloris}.
@@ -88,16 +89,16 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
      */
     setupGlobalDefaults: function() {
         var $this = this;
-        this.cfg.popup = this.cfg.mode === 'popup';
+        this.popup = this.cfg.mode === 'popup';
 
         if (colorisInitialized) {
             return;
         }
 
         this.configureLocale();
-        this.cfg.inline = !this.cfg.popup;
+        this.cfg.inline = !this.popup;
         var settings = this.cfg;
-        if (this.cfg.popup) {
+        if (this.popup) {
             colorisInitialized = true;
             settings = {
                 el: '.ui-colorpicker',
@@ -132,6 +133,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         if (!lang) {
             return;
         }
+        PrimeFaces.localeSettings = lang;
         if (lang.closeText) { this.cfg.closeLabel = lang.closeText; }
         if (lang.clear) { this.cfg.clearLabel = lang.clear; }
         if (lang.isRTL) { this.cfg.rtl = true; }
@@ -156,7 +158,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     setupPopup: function() {
-        if (!this.cfg.popup) {
+        if (!this.popup) {
             return;
         }
         var $this = this;
@@ -255,7 +257,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
       * @return {string} the current color
       */
     getColor: function() {
-        var input = this.cfg.popup ? this.input : this.jq.find('#clr-color-value');
+        var input = this.popup ? this.input : this.jq.find('#clr-color-value');
         return input.val();
     },
 
@@ -264,6 +266,10 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
       * @param {string} color the color to set
       */
     setColor: function(color) {
+        if (!color) {
+            return;
+        }
+        color = color.toLowerCase();
         if (this.input) {
             this.input.val(color);
             this.input[0].dispatchEvent(new Event('input', { bubbles: true }));
@@ -287,10 +293,11 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Close the dialog and revert the color to its original value.
+     * @param {boolean | undefined} revert true to revert the color to its original value
      */
-    hide: function() {
+    hide: function(revert) {
         if (this.input) {
-            Coloris.close(true);
+            Coloris.close(revert);
         }
     },
 

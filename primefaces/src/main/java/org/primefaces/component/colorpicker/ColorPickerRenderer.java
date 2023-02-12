@@ -24,7 +24,6 @@
 package org.primefaces.component.colorpicker;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -41,7 +40,7 @@ public class ColorPickerRenderer extends InputRenderer {
 
     private static final Pattern COLOR_PATTERN = Pattern.compile(
             "^#(?:[\\da-f]{3}){1,2}$|^#(?:[\\da-f]{4}){1,2}$|(rgb|hsl)a?\\((\\s*-?\\d+%?\\s*,){2}(\\s*-?\\d+%?\\s*)\\)"
-            + "|(rgb|hsl)a?\\((\\s*-?\\d+%?\\s*,){3}\\s*(0|(0?\\.\\d+)|1)\\)");
+            + "|(rgb|hsl)a?\\((\\s*-?\\d+%?\\s*,){3}\\s*(0|(0?\\.\\d+)|1)\\)", Pattern.CASE_INSENSITIVE);
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -157,12 +156,9 @@ public class ColorPickerRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, ColorPicker colorPicker, String value, String uuid) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        // always use the view Locale  its a global setting not per picker
-        Locale locale = LocaleUtils.resolveLocale(context, null, colorPicker.getClientId(context));
-
         wb.init("ColorPicker", colorPicker)
                 .attr("instance", uuid)
-                .attr("locale", locale.toString())
+                .attr("locale", colorPicker.calculateLocale(context).toString())
                 .attr("mode", colorPicker.getMode())
                 .attr("defaultColor", value, null)
                 .attr("theme", colorPicker.getTheme())

@@ -1413,6 +1413,7 @@
             allDayText: 'All Day',
             moreLinkText: 'More...',
             noEventsText: 'No Events',
+            clear: 'Clear',
             aria: {
                 'paginator.PAGE': 'Page {0}',
                 'calendar.BUTTON': 'Show Calendar',

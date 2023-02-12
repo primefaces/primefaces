@@ -51,7 +51,8 @@ public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText impleme
         selectInput,
         clearButton,
         closeButton,
-        swatches;
+        swatches,
+        locale;
     }
 
     public ColorPickerBase() {
@@ -173,5 +174,13 @@ public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText impleme
 
     public void setSwatches(String swatches) {
         getStateHelper().put(PropertyKeys.swatches, swatches);
+    }
+
+    public Object getLocale() {
+        return getStateHelper().eval(PropertyKeys.locale, null);
+    }
+
+    public void setLocale(Object locale) {
+        getStateHelper().put(PropertyKeys.locale, locale);
     }
 }

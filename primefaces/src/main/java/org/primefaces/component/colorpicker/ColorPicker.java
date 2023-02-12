@@ -24,11 +24,14 @@
 package org.primefaces.component.colorpicker;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -68,5 +71,9 @@ public class ColorPicker extends ColorPickerBase {
     @Override
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
+    }
+
+    Locale calculateLocale(FacesContext facesContext) {
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 }

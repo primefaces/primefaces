@@ -131,6 +131,9 @@ ColorPicker has two modes, default mode is _popup_ and other available option is
 <p:colorPicker value="#{bean.color}" mode="inline"/>
 ```
 
+!> Inline mode only allows 1 instance of the inline ColorPicker on the page and you cannot mix Inline and Popup on the same page.  It is a limitation of Coloris.
+
+
 ## Localization and Accessibility
 ColorPicker is fully accessible both by keyboard and for visually impaired with proper ARIA screen reader support.
 To customize for your language you simplly need to update your `local-XX.js` file.  The subset of values respected
@@ -156,7 +159,8 @@ are below.  For full localization see the [localization documentation](/core/loc
 }
 ```
 
-!> Inline mode only allows 1 instance of the inline ColorPicker on the page and you cannot mix Inline and Popup on the same page.  It is a limitation of Coloris.
+!> Localization is **global** so once a locale is set on a page it is set for all ColorPicker instances.
+
 
 ## Ajax Behavior Events
 
@@ -176,7 +180,7 @@ Widget: _PrimeFaces.widget.ColorPicker_
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |
 | show() | - | void | Shows the popup panel only in popup mode |
-| hide() | - | void | Hides the popup panel only in popup mode |
+| hide(revert) | boolean | void | Hides the popup panel only in popup mode. If revert is true revert back to original color |
 | getColor() | void | String | Gets the current color value |
 | setColor(color) | String | void | Sets the current color value |
 
