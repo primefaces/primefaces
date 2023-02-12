@@ -88,13 +88,12 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
      * @private
      */
     setupGlobalDefaults: function() {
-        var $this = this;
         this.popup = this.cfg.mode === 'popup';
-
         if (colorisInitialized) {
             return;
         }
 
+        var $this = this;
         this.configureLocale();
         this.cfg.inline = !this.popup;
         var settings = this.cfg;
@@ -133,11 +132,11 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         if (!lang) {
             return;
         }
-        PrimeFaces.localeSettings = lang;
         if (lang.closeText) { this.cfg.closeLabel = lang.closeText; }
         if (lang.clear) { this.cfg.clearLabel = lang.clear; }
         if (lang.isRTL) { this.cfg.rtl = true; }
         if (lang.aria) {
+            PrimeFaces.localeSettings = lang;
             var a11y = {};
             if (PrimeFaces.getAriaLabel('colorpicker.OPEN')) { a11y.open = PrimeFaces.getAriaLabel('colorpicker.OPEN'); }
             if (PrimeFaces.getAriaLabel('colorpicker.CLOSE')) { a11y.close = PrimeFaces.getAriaLabel('colorpicker.CLOSE'); }

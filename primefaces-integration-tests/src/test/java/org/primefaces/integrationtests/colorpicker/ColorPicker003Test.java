@@ -28,49 +28,73 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeExpectedConditions;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.ColorPicker;
-import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.util.LangUtils;
+import org.primefaces.selenium.component.model.Msg;
 
-public class ColorPicker002Test extends AbstractPrimePageTest {
+public class ColorPicker003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
-    @DisplayName("ColorPicker: Check I8LN for Dutch language that all labels are translated")
-    public void testAria(Page page) {
+    @DisplayName("ColorPicker: AJAX open event")
+    public void testAjaxOpen(Page page) {
         // Arrange
-        ColorPicker colorPicker = page.colorPicker;
+        ColorPicker colorPicker = page.colorPickerOpenClose;
 
         // Act
         WebElement panel = colorPicker.showPanel();
 
         // Assert
         assertConfiguration(colorPicker.getWidgetConfiguration());
-        assertAriaLabel(panel, "clr-color-value", "Kleurwaardeveld");
-        assertAriaLabel(panel, "clr-open-label", "Open kleurkiezer");
-        assertAriaLabel(panel, "clr-close", "Sluit kleurkiezer");
-        assertAriaLabel(panel, "clr-clear", "Wis de geselecteerde kleur");
-        assertAriaLabel(panel, "clr-hue-slider", "Tintschuif");
-        assertAriaLabel(panel, "clr-alpha-slider", "Ondoorzichtigheidschuif");
-        assertAriaLabel(panel, "clr-swatch-label", "Kleurstaal");
-        assertAriaLabel(panel, "clr-color-area", "Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.");
-        assertAriaLabel(panel, "clr-color-marker", "Verzadiging: 73. Helderheid: 62.");
+        assertDisplayed(panel);
+        assertMessage(page, "Popup Opened", "#d62828");
     }
 
-    private void assertAriaLabel(WebElement panel, String id, String value) {
-        WebElement ariaElement = panel.findElement(By.id(id));
-        assertPresent(ariaElement);
-        String ariaLabel = ariaElement.getDomAttribute("aria-label");
-        if (LangUtils.isBlank(ariaLabel)) {
-            ariaLabel = ariaElement.getAttribute("textContent");
-        }
-        Assertions.assertEquals(value, ariaLabel);
+    @Test
+    @Order(2)
+    @DisplayName("ColorPicker: AJAX close event")
+    public void testAjaxClose(Page page) {
+        // Arrange
+        ColorPicker colorPicker = page.colorPickerOpenClose;
+
+        // Act
+        WebElement panel = colorPicker.showPanel();
+        colorPicker.hidePanel(false);
+
+        // Assert
+        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertNotDisplayed(panel);
+        assertMessage(page, "Popup Closed", "#d62828");
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("ColorPicker: AJAX change event")
+    public void testAjaxChange(Page page) {
+        // Arrange
+        ColorPicker colorPicker = page.colorPickerAjax;
+        Assertions.assertEquals("#e9c46a", colorPicker.getColor());
+
+        // Act
+        colorPicker.setColor("rgb(0, 183, 255)");
+
+        // Assert
+        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertMessage(page, "Color Changed", "rgb(0, 183, 255)");
+    }
+
+    private void assertMessage(Page page, String summary, String detail) {
+        Messages messages = page.messages;
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
+        Msg msg = messages.getMessage(0);
+        Assertions.assertEquals(summary, msg.getSummary());
+        Assertions.assertEquals(detail, msg.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {
@@ -78,28 +102,25 @@ public class ColorPicker002Test extends AbstractPrimePageTest {
         System.out.println("ColorPicker Config = " + cfg);
         Assertions.assertEquals("popup", cfg.getString("mode"));
         Assertions.assertEquals("auto", cfg.getString("themeMode"));
-        Assertions.assertEquals("pill", cfg.getString("theme"));
-        Assertions.assertEquals("nl", cfg.getString("locale"));
-        Assertions.assertEquals("Wissen", cfg.getString("clearLabel"));
-        Assertions.assertEquals("Sluit", cfg.getString("closeLabel"));
+        Assertions.assertEquals("default", cfg.getString("theme"));
+        Assertions.assertEquals("en", cfg.getString("locale"));
         Assertions.assertTrue(cfg.getBoolean("clearButton"));
         Assertions.assertTrue(cfg.getBoolean("closeButton"));
-        Assertions.assertTrue(cfg.getBoolean("formatToggle"));
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:msgs")
         Messages messages;
 
-        @FindBy(id = "form:colorpicker")
-        ColorPicker colorPicker;
+        @FindBy(id = "form:openclose")
+        ColorPicker colorPickerOpenClose;
 
-        @FindBy(id = "form:button")
-        CommandButton submit;
+        @FindBy(id = "form:ajax")
+        ColorPicker colorPickerAjax;
 
         @Override
         public String getLocation() {
-            return "colorpicker/colorPicker002.xhtml";
+            return "colorpicker/colorPicker003.xhtml";
         }
     }
 }

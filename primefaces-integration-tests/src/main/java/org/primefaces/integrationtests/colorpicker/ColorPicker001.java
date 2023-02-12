@@ -26,9 +26,11 @@ package org.primefaces.integrationtests.colorpicker;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.primefaces.component.colorpicker.ColorPicker;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
 
 import lombok.Data;
@@ -41,14 +43,33 @@ public class ColorPicker001 implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String color;
+    private String ajax;
+    private String openclose;
 
     @PostConstruct
     public void init() {
         color = "#2a9d8f";
+        ajax = "#e9c46a";
+        openclose = "#d62828";
     }
 
     public void submit() {
         TestUtils.addMessage("Color Saved", getColor());
+    }
+
+    public void onColorChange(AjaxBehaviorEvent e) {
+        ColorPicker picker = (ColorPicker) e.getComponent();
+        TestUtils.addMessage("Color Changed",  String.valueOf(picker.getValue()));
+    }
+
+    public void onPopupClosed(AjaxBehaviorEvent e) {
+        ColorPicker picker = (ColorPicker) e.getComponent();
+        TestUtils.addMessage("Popup Closed",  String.valueOf(picker.getValue()));
+    }
+
+    public void onPopupOpened(AjaxBehaviorEvent e) {
+        ColorPicker picker = (ColorPicker) e.getComponent();
+        TestUtils.addMessage("Popup Opened",  String.valueOf(picker.getValue()));
     }
 
 }
