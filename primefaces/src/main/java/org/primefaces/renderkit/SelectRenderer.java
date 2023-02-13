@@ -85,7 +85,7 @@ public abstract class SelectRenderer extends InputRenderer {
                             Object item = Array.get(value, j);
 
                             if (item instanceof SelectItem) {
-                                selectItem = (SelectItem) item;
+                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -107,7 +107,7 @@ public abstract class SelectRenderer extends InputRenderer {
                         for (int j = 0; j < list.size(); j++) {
                             Object item = list.get(j);
                             if (item instanceof SelectItem) {
-                                selectItem = (SelectItem) item;
+                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -120,7 +120,7 @@ public abstract class SelectRenderer extends InputRenderer {
 
                         for (Object item : collection) {
                             if (item instanceof SelectItem) {
-                                selectItem = (SelectItem) item;
+                                selectItem = updateSelectItem(context, uiSelectItems, (SelectItem) item);
                             }
                             else {
                                 selectItem = createSelectItem(context, uiSelectItems, item, null);
@@ -171,6 +171,43 @@ public abstract class SelectRenderer extends InputRenderer {
         WrapperSelectItem wrapper = new WrapperSelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
         wrapper.setComponent(uiSelectItems);
         return wrapper;
+    }
+
+    protected SelectItem updateSelectItem(FacesContext context, UISelectItems uiSelectItems, SelectItem value) {
+        if (value instanceof SelectItemGroup) {
+            return value;
+        }
+        String var = (String) uiSelectItems.getAttributes().get("var");
+        Map<String, Object> attrs = uiSelectItems.getAttributes();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+        if (var != null) {
+            requestMap.put(var, value);
+        }
+
+        Object itemLabelValue = attrs.get("itemLabel");
+        Object itemDisabled = attrs.get("itemDisabled");
+        Object itemEscaped = attrs.get("itemLabelEscaped");
+        Object noSelection = attrs.get("noSelectionOption");
+
+        if (itemLabelValue != null) {
+            value.setLabel(String.valueOf(itemLabelValue));
+        }
+        if (itemDisabled != null) {
+            value.setDisabled(Boolean.parseBoolean(itemDisabled.toString()));
+        }
+        if (itemEscaped != null) {
+            value.setEscape(Boolean.parseBoolean(itemEscaped.toString()));
+        }
+        if (noSelection != null) {
+            value.setNoSelectionOption(Boolean.parseBoolean(noSelection.toString()));
+        }
+
+        if (var != null) {
+            requestMap.remove(var);
+        }
+
+        return value;
     }
 
     protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) throws ConverterException {
