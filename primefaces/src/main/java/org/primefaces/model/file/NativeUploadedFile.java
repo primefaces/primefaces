@@ -23,14 +23,14 @@
  */
 package org.primefaces.model.file;
 
+import java.io.*;
+import java.net.URLDecoder;
+import javax.faces.FacesException;
+import javax.servlet.http.Part;
+
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
-
-import javax.faces.FacesException;
-import javax.servlet.http.Part;
-import java.io.*;
-import java.net.URLDecoder;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
@@ -191,7 +191,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         try {
             // GitHub #3916 escape + and % before decode
             encoded = encoded.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
-            encoded = encoded.replaceAll("\\+", "%2B");
+            encoded = encoded.replace("+", "%2B");
             return URLDecoder.decode(encoded, "UTF-8");
         }
         catch (UnsupportedEncodingException ex) {

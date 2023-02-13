@@ -200,7 +200,7 @@
 
             <div class="card">
                 <h5>MultiViewState</h5>
-                <p:commandButton value="Clear State" action="#{tabbedView.clearMultiViewState}" update="msgs tabViewMVS" styleClass="mb-2 ui-button-warning" />
+                <p:commandButton value="Clear State" action="#{tabbedView.clearMultiViewState}" process="@this" update="msgs tabViewMVS" styleClass="mb-2 ui-button-warning" />
                 <p:tabView multiViewState="true" id="tabViewMVS">
                     <p:tab title="Header I">
                         <p class="m-0">
