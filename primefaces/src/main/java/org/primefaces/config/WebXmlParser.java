@@ -95,7 +95,7 @@ public class WebXmlParser {
                 return parseErrorPages(webXml.getDocumentElement());
             }
         }
-        catch (Throwable e) {
+        catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Could not load or parse web.xml", e);
         }
 
@@ -126,7 +126,7 @@ public class WebXmlParser {
                         }
                     }
                 }
-                catch (Throwable e) {
+                catch (Exception e) {
                     LOGGER.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
                 }
             }
