@@ -28,21 +28,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.Msg;
-import org.primefaces.util.LangUtils;
 
-public class ColorPicker001Test extends AbstractPrimePageTest {
+public class ColorPicker001Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
@@ -75,7 +69,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertMessage(page, "Color Saved", "#a427ae");
+        assertMessage(page.messages, "Color Saved", "#a427ae");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -92,7 +86,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertMessage(page, "Color Saved", "#0080009e");
+        assertMessage(page.messages, "Color Saved", "#0080009e");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -109,7 +103,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertMessage(page, "Color Saved", "rgb(244,162,97)");
+        assertMessage(page.messages, "Color Saved", "rgb(244,162,97)");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -126,7 +120,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertMessage(page, "Color Saved", "rgba(255, 0, 0, 0.68)");
+        assertMessage(page.messages, "Color Saved", "rgba(255, 0, 0, 0.68)");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -143,7 +137,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertMessage(page, "Color Saved", "hsl(172, 54%, 20%)");
+        assertMessage(page.messages, "Color Saved", "hsl(172, 54%, 20%)");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -160,7 +154,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertMessage(page, "Color Saved", "hsla(0, 100%, 50%, 0.68)");
+        assertMessage(page.messages, "Color Saved", "hsla(0, 100%, 50%, 0.68)");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -177,7 +171,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         page.submit.click();
 
         // Assert
-        assertMessage(page, "Color Saved", ""); // color ignored and set to NULL
+        assertMessage(page.messages, "Color Saved", ""); // color ignored and set to NULL
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -225,7 +219,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
         Assertions.assertTrue(colorPicker.isEnabled());
-        WebElement triggerButton = colorPicker.findElement(By.xpath("preceding-sibling::*"));
+        WebElement triggerButton = colorPicker.getTriggerButton();
         assertClickable(triggerButton);
 
         // Act
@@ -243,7 +237,7 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
         Assertions.assertTrue(colorPicker.isEnabled());
-        WebElement triggerButton = colorPicker.findElement(By.xpath("preceding-sibling::*"));
+        WebElement triggerButton = colorPicker.getTriggerButton();
         assertClickable(triggerButton);
 
         // Act
@@ -276,24 +270,6 @@ public class ColorPicker001Test extends AbstractPrimePageTest {
         assertAriaLabel(panel, "clr-color-marker", "Saturation: 73. Brightness: 62.");
 
         assertConfiguration(colorPicker.getWidgetConfiguration());
-    }
-
-    private void assertAriaLabel(WebElement panel, String id, String value) {
-        WebElement ariaElement = panel.findElement(By.id(id));
-        assertPresent(ariaElement);
-        String ariaLabel = ariaElement.getDomAttribute("aria-label");
-        if (LangUtils.isBlank(ariaLabel)) {
-            ariaLabel = ariaElement.getAttribute("textContent");
-        }
-        Assertions.assertEquals(value, ariaLabel);
-    }
-
-    private void assertMessage(Page page, String summary, String detail) {
-        Messages messages = page.messages;
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
-        Msg msg = messages.getMessage(0);
-        Assertions.assertEquals(summary, msg.getSummary());
-        Assertions.assertEquals(detail, msg.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {

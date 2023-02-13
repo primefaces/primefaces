@@ -31,14 +31,10 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.PrimeExpectedConditions;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.model.Msg;
 
-public class ColorPicker003Test extends AbstractPrimePageTest {
+public class ColorPicker003Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
@@ -53,7 +49,7 @@ public class ColorPicker003Test extends AbstractPrimePageTest {
         // Assert
         assertConfiguration(colorPicker.getWidgetConfiguration());
         assertDisplayed(panel);
-        assertMessage(page, "Popup Opened", "#d62828");
+        assertMessage(page.messages, "Popup Opened", "#d62828");
     }
 
     @Test
@@ -70,7 +66,7 @@ public class ColorPicker003Test extends AbstractPrimePageTest {
         // Assert
         assertConfiguration(colorPicker.getWidgetConfiguration());
         assertNotDisplayed(panel);
-        assertMessage(page, "Popup Closed", "#d62828");
+        assertMessage(page.messages, "Popup Closed", "#d62828");
     }
 
     @Test
@@ -86,15 +82,7 @@ public class ColorPicker003Test extends AbstractPrimePageTest {
 
         // Assert
         assertConfiguration(colorPicker.getWidgetConfiguration());
-        assertMessage(page, "Color Changed", "rgb(0, 183, 255)");
-    }
-
-    private void assertMessage(Page page, String summary, String detail) {
-        Messages messages = page.messages;
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
-        Msg msg = messages.getMessage(0);
-        Assertions.assertEquals(summary, msg.getSummary());
-        Assertions.assertEquals(detail, msg.getDetail());
+        assertMessage(page.messages, "Color Changed", "rgb(0, 183, 255)");
     }
 
     private void assertConfiguration(JSONObject cfg) {

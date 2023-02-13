@@ -28,17 +28,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
-import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
-import org.primefaces.util.LangUtils;
 
-public class ColorPicker002Test extends AbstractPrimePageTest {
+public class ColorPicker002Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
@@ -61,16 +58,6 @@ public class ColorPicker002Test extends AbstractPrimePageTest {
         assertAriaLabel(panel, "clr-swatch-label", "Kleurstaal");
         assertAriaLabel(panel, "clr-color-area", "Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.");
         assertAriaLabel(panel, "clr-color-marker", "Verzadiging: 73. Helderheid: 62.");
-    }
-
-    private void assertAriaLabel(WebElement panel, String id, String value) {
-        WebElement ariaElement = panel.findElement(By.id(id));
-        assertPresent(ariaElement);
-        String ariaLabel = ariaElement.getDomAttribute("aria-label");
-        if (LangUtils.isBlank(ariaLabel)) {
-            ariaLabel = ariaElement.getAttribute("textContent");
-        }
-        Assertions.assertEquals(value, ariaLabel);
     }
 
     private void assertConfiguration(JSONObject cfg) {
