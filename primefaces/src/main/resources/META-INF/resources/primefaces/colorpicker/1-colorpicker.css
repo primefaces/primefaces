@@ -1,3 +1,11 @@
+.clr-picker {
+  width: 240px;
+}
+
+.clr-picker.clr-pill {
+  width: 420px;
+}
+
 .field .clr-field {
 	display: block;
 }

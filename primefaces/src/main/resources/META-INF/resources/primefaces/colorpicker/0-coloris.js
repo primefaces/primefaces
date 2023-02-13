@@ -1,10 +1,12 @@
 /*!
- * Copyright (c) 2023 Momo Bassit.
+ * Copyright (c) 2021-2023 Momo Bassit.
  * Licensed under the MIT License (MIT)
  * https://github.com/mdbassit/Coloris
- * 0.18.0
+ * Version: 0.18.0
+ * NPM: https://github.com/melloware/coloris-npm
  */
-((window, document, Math) => {
+
+window.Coloris = ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
@@ -14,7 +16,7 @@
   let bound;
   /**** PF: Prevent binding events multiple times */
 
-  // Default settings
+// Default settings
   const settings = {
     el: '[data-coloris]',
     parent: 'body',
@@ -37,6 +39,7 @@
     clearLabel: 'Clear',
     closeButton: false,
     closeLabel: 'Close',
+    onChange: () => undefined,
     a11y: {
       open: 'Open color picker',
       close: 'Close color picker',
@@ -79,7 +82,6 @@
           if (options.wrap !== false) {
             wrapFields(options.el);
           }
-          
           break;
         case 'parent':
           container = document.querySelector(options.parent);
@@ -547,6 +549,10 @@
       currentEl.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
+    if (settings.onChange) {
+      settings.onChange.call(window, color);
+    }
+
     document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color } }));
   }
 
@@ -918,8 +924,7 @@
    * Init the color picker.
    */
   function init() {
-    if (document.getElementById('clr-picker')) return; /**** PF: Prevent binding events multiple times */
-
+    if (document.getElementById('clr-picker')) return; /**** DO NOT REMOVE: Prevent binding events multiple times */
     // Render the UI
     container = null;
     picker = document.createElement('div');
@@ -1143,8 +1148,8 @@
   }
 
   // Expose the color picker to the global scope
-  window.Coloris = (() => {
-    const methods = {
+  const Coloris = (() => {
+    const methods = { 
       init: init,
       set: configure,
       wrap: wrapFields,
@@ -1174,5 +1179,11 @@
 
     return Coloris;
   })();
+
+  // Ensure init function is available not only as as a default import
+  Coloris.coloris = Coloris;
+
+  // Init the color picker when the DOM is ready
+  return Coloris;
 
 })(window, document, Math);

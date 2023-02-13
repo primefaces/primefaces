@@ -317,3 +317,5 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
 
 // global variable so Coloris is only initialized once
 var colorisInitialized = false;
+// gloabl window listener for resize events
+window.addEventListener('resize', event => { Coloris.updatePosition(); });
