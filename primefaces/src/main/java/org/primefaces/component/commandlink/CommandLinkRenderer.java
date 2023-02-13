@@ -26,7 +26,6 @@ package org.primefaces.component.commandlink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -106,7 +105,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             request = buildAjaxRequest(context, link);
         }
         else {
-            UIForm form = ComponentTraversalUtils.closestForm(context, link);
+            UIForm form = ComponentTraversalUtils.closestForm(link);
             if (form == null) {
                 throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
             }

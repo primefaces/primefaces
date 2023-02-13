@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -230,7 +229,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             onclick.append(buildAjaxRequest(context, button));
         }
         else {
-            UIForm form = ComponentTraversalUtils.closestForm(context, button);
+            UIForm form = ComponentTraversalUtils.closestForm(button);
             if (form == null) {
                 throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
             }

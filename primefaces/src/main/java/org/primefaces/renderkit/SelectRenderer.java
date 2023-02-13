@@ -25,7 +25,6 @@ package org.primefaces.renderkit;
 
 import java.lang.reflect.Array;
 import java.util.*;
-
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -44,7 +43,7 @@ public abstract class SelectRenderer extends InputRenderer {
 
     protected boolean isHideNoSelection(UIComponent component) {
         Object attribute = component.getAttributes().get("hideNoSelectionOption");
-        return  attribute != null ? (Boolean) attribute : false;
+        return Boolean.TRUE.equals(attribute);
     }
 
     protected void addSelectItem(UIInput component, List<SelectItem> selectItems, SelectItem item, boolean hideNoSelectOption) {
@@ -331,13 +330,12 @@ public abstract class SelectRenderer extends InputRenderer {
      */
     protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
             throws FacesException {
-        List<String> validSubmittedValues = doValidateSubmittedValues(
+        return doValidateSubmittedValues(
                 context,
                 component,
                 oldValues,
                 getSelectItems(context, component),
                 submittedValues);
-        return validSubmittedValues;
     }
 
     private List<String> doValidateSubmittedValues(

@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -271,7 +270,7 @@ public class PickListRenderer extends InputRenderer {
         String var = pickList.getVar();
         Converter converter = pickList.getConverter();
         boolean showCheckbox = pickList.isShowCheckbox();
-        boolean checkboxChecked = pickList.isTransferOnCheckboxClick() ? !isSource : false;
+        boolean checkboxChecked = pickList.isTransferOnCheckboxClick() && !isSource;
 
         for (Iterator it = model.iterator(); it.hasNext(); ) {
             Object item = it.next();
