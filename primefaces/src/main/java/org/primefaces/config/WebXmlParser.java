@@ -35,8 +35,10 @@ import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.primefaces.util.LangUtils;
 import org.w3c.dom.Document;
@@ -44,6 +46,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class WebXmlParser {
 
@@ -138,7 +141,7 @@ public class WebXmlParser {
         return webFragmentXmlsErrorPages;
     }
 
-    private static Document toDocument(URL url) throws Exception {
+    private static Document toDocument(URL url) throws IOException, SAXException, ParserConfigurationException {
         // web.xml is optional
         if (url == null) {
             return null;
@@ -184,7 +187,7 @@ public class WebXmlParser {
         }
     }
 
-    private static Map<String, String> parseErrorPages(Element webXml) throws Exception {
+    private static Map<String, String> parseErrorPages(Element webXml) throws XPathExpressionException {
 
         Map<String, String> errorPages = new HashMap<>();
 
