@@ -23,6 +23,9 @@
  */
 package org.primefaces.model;
 
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.util.LangUtils;
+
 /**
  * Built-in filter operators
  */
@@ -68,11 +71,15 @@ public enum MatchMode {
     }
 
     public static MatchMode of(String operator) {
+        if (LangUtils.isBlank(operator)) {
+            return UIColumn.DEFAULT_FILTER_MATCH_MODE;
+        }
+
         for (MatchMode mode : MatchMode.values()) {
             if (mode.operator().equals(operator)) {
                 return mode;
             }
         }
-        return null;
+        throw new UnsupportedOperationException("Unknown match mode: " + operator);
     }
 }

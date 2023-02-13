@@ -162,7 +162,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     @Override
     public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, DEFAULT_FILTER_MATCH_MODE.operator());
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
