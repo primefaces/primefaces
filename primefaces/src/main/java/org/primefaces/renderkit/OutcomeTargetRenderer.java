@@ -153,6 +153,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     protected String getTargetURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
         String url;
 
+        boolean clientWindowRenderingModeEnabled = false;
         Object clientWindow = null;
         try {
             if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
@@ -161,7 +162,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 clientWindow = context.getExternalContext().getClientWindow();
 
                 if (clientWindow != null) {
-                    boolean clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
+                    clientWindowRenderingModeEnabled = ((ClientWindow) clientWindow).isClientWindowRenderModeEnabled(context);
 
                     if (clientWindowRenderingModeEnabled) {
                         ((ClientWindow) clientWindow).disableClientWindowRenderMode(context);
@@ -196,7 +197,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
         finally {
-            if (clientWindow != null) {
+            if (clientWindowRenderingModeEnabled) {
                 ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
             }
         }
