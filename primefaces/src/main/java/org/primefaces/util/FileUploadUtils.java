@@ -369,7 +369,7 @@ public class FileUploadUtils {
     public static List<Path> listChunks(Path path) {
         try (Stream<Path> walk = Files.walk(path)) {
             return walk
-                    .filter(p -> Files.isRegularFile(p) && p.getFileName().toString().matches("\\d+"))
+                    .filter(p -> p.toFile().isFile() && p.getFileName().toString().matches("\\d+"))
                     .sorted(Comparator.comparing(p -> Long.parseLong(p.getFileName().toString())))
                     .collect(Collectors.toList());
         }
@@ -380,7 +380,7 @@ public class FileUploadUtils {
 
     public static <T extends HttpServletRequest> List<Path> listChunks(T request) {
         Path chunkDir = getChunkDir(request);
-        if (!Files.exists(chunkDir)) {
+        if (!chunkDir.toFile().exists()) {
             return Collections.emptyList();
         }
 
