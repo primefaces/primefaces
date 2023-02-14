@@ -12,9 +12,9 @@ window.Coloris = ((window, document, Math) => {
   let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
       closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
   
-  /**** PF: Prevent binding events multiple times */
+  /** PF: Prevent binding events multiple times */
   let bound;
-  /**** PF: Prevent binding events multiple times */
+  /** PF: Prevent binding events multiple times */
 
 // Default settings
   const settings = {
@@ -72,12 +72,12 @@ window.Coloris = ((window, document, Math) => {
     for (const key in options) {
       switch (key) {
         case 'el':
-          /**** PF: Prevent binding events multiple times */
+          /** PF: Prevent binding events multiple times */
           if (!bound) {
             bound = true;
             bindFields(options.el);
           }
-          /**** PF: Prevent binding events multiple times */
+          /** PF: Prevent binding events multiple times */
          
           if (options.wrap !== false) {
             wrapFields(options.el);
