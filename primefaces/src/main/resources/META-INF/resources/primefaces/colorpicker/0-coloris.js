@@ -12,9 +12,9 @@ window.Coloris = ((window, document, Math) => {
   let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
       closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
   
-  /** PF: Prevent binding events multiple times */
+  //***** PF: Prevent binding events multiple times
   let bound;
-  /** PF: Prevent binding events multiple times */
+  //***** PF: Prevent binding events multiple times
 
 // Default settings
   const settings = {
@@ -72,12 +72,12 @@ window.Coloris = ((window, document, Math) => {
     for (const key in options) {
       switch (key) {
         case 'el':
-          /** PF: Prevent binding events multiple times */
+          //***** PF: Prevent binding events multiple times
           if (!bound) {
             bound = true;
             bindFields(options.el);
           }
-          /** PF: Prevent binding events multiple times */
+          //***** PF: Prevent binding events multiple times
          
           if (options.wrap !== false) {
             wrapFields(options.el);
@@ -353,7 +353,7 @@ window.Coloris = ((window, document, Math) => {
    * Update the color picker's position and the color gradient's offset
    */
   function updatePickerPosition() {
-    if (!picker || (!currentEl && !settings.inline)) return; /**** DO NOT REMOVE: in case called before initialized */
+    if (!picker || (!currentEl && !settings.inline)) return; //***** DO NOT REMOVE: in case called before initialized
     const parent = container;
     const scrollY = window.scrollY;
     const pickerWidth = picker.offsetWidth;
@@ -925,7 +925,7 @@ window.Coloris = ((window, document, Math) => {
    * Init the color picker.
    */
   function init() {
-    if (document.getElementById('clr-picker')) return; /**** DO NOT REMOVE: Prevent binding events multiple times */
+    if (document.getElementById('clr-picker')) return; //***** DO NOT REMOVE: Prevent binding events multiple times
     // Render the UI
     container = null;
     picker = document.createElement('div');
@@ -1148,9 +1148,9 @@ window.Coloris = ((window, document, Math) => {
       NodeList.prototype.forEach = Array.prototype.forEach;
   }
   
-  /*****************************************************/
-  /******* NPM: Custom code starts here ****************/
-  /*****************************************************/
+  //***************************************************
+  //***** NPM: Custom code starts here ****************
+  //***************************************************
   
   /**
    * Copy the active color to the linked input field and set the color.
