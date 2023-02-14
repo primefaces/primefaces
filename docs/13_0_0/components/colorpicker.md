@@ -1,8 +1,8 @@
 # Color Picker
 
 ColorPicker is an input component with a color palette. It features:
+* Inline or Popup mode
 * Themes and dark mode
-* Color swatches
 * Multiple color formats (Hex, RGB, HSL)
 * Opacity support (Alpha channel)
 * Fully accessible (keyboard and ARIA)
@@ -10,6 +10,8 @@ ColorPicker is an input component with a color palette. It features:
 * Right-To-Left support
 * Float Label support
 * Client Side Validation (CSV) support
+* Color swatches
+
 
 [See this widget in the JavaScript API Docs.](../jsdocs/classes/src_PrimeFaces.PrimeFaces.widget.ColorPicker-1.html)
 
