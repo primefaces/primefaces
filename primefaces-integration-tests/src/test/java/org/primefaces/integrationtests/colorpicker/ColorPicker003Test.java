@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.Messages;
 
@@ -71,14 +72,31 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
 
     @Test
     @Order(3)
-    @DisplayName("ColorPicker: AJAX change event")
-    public void testAjaxChange(Page page) {
+    @DisplayName("ColorPicker: AJAX change event same format")
+    public void testAjaxChangeSameFormat(Page page) {
+        // Arrange
+        ColorPicker colorPicker = page.colorPickerAjax;
+        Assertions.assertEquals("#e9c46a", colorPicker.getColor());
+
+        // Act
+        colorPicker.setColor("#ff00ff");
+
+        // Assert
+        assertConfiguration(colorPicker.getWidgetConfiguration());
+        assertMessage(page.messages, "Color Changed", "#ff00ff");
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("ColorPicker: AJAX change event new format")
+    public void testAjaxChangeNewFormat(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerAjax;
         Assertions.assertEquals("#e9c46a", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("rgb(0, 183, 255)");
+        PrimeSelenium.wait(300);
 
         // Assert
         assertConfiguration(colorPicker.getWidgetConfiguration());

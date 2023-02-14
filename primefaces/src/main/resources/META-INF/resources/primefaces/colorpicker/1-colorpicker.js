@@ -117,7 +117,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             Coloris.init();
             Coloris(settings);
             if ($this.cfg.inline) {
-               Coloris.updatePosition(); 
+                Coloris.updatePosition();
             }
             colorisInitialized = false;
         });
@@ -179,8 +179,9 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
 
         // add error styling to thumbnail button if necessary
         $(document).ready(function() {
+            var triggerButton = $this.input.prev();
             if ($this.input.hasClass('ui-state-error')) {
-                $this.input.prev().addClass('ui-inputfield ui-state-error');
+                triggerButton.addClass('ui-inputfield ui-state-error');
             }
         });
     },
@@ -268,17 +269,9 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         if (!color) {
             return;
         }
-        color = color.toLowerCase();
-        if (this.input) {
-            this.input.val(color);
-            this.input[0].dispatchEvent(new Event('input', { bubbles: true }));
-            this.callBehavior('change');
-        }
-        else {
-            var input = this.jq.find('#clr-color-value');
-            input.val(color);
-            input[0].dispatchEvent(new Event('change', { bubbles: true }));
-        }
+        var newColor = color.toLowerCase();
+        var input = this.popup ? this.input : this.jq.find('#clr-color-value');
+        Coloris.setColor(newColor, input[0]);
     },
 
     /**
@@ -317,5 +310,4 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
 
 // global variable so Coloris is only initialized once
 var colorisInitialized = false;
-// gloabl window listener for resize events
-window.addEventListener('resize', event => { Coloris.updatePosition(); });
+

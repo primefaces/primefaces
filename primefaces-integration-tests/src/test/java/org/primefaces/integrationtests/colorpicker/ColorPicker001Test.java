@@ -99,11 +99,11 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
         Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
-        colorPicker.setColor("RGB(244,162,97)");
+        colorPicker.setColor("RGB(0,48,108)");
         page.submit.click();
 
         // Assert
-        assertMessage(page.messages, "Color Saved", "rgb(244,162,97)");
+        assertMessage(page.messages, "Color Saved", "rgb(0, 48, 108)");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -133,11 +133,11 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
         Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
-        colorPicker.setColor("HSL(172, 54%, 20%)");
+        colorPicker.setColor("HSL(171, 55%, 20%)");
         page.submit.click();
 
         // Assert
-        assertMessage(page.messages, "Color Saved", "hsl(172, 54%, 20%)");
+        assertMessage(page.messages, "Color Saved", "hsl(171, 55%, 20%)");
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
 
@@ -167,7 +167,7 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
         Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
-        colorPicker.setColor("green");
+        colorPicker.getInput().sendKeys("XXXXX");
         page.submit.click();
 
         // Assert

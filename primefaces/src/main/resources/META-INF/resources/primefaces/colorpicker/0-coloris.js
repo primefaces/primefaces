@@ -1147,6 +1147,28 @@ window.Coloris = ((window, document, Math) => {
   if (NodeList !== undefined && NodeList.prototype && !NodeList.prototype.forEach) {
       NodeList.prototype.forEach = Array.prototype.forEach;
   }
+  
+  /*****************************************************/
+  /******* NPM: Custom code starts here ****************/
+  /*****************************************************/
+  
+  /**
+   * Copy the active color to the linked input field and set the color.
+   * @param {string} [color] Color value to override the active color.
+   * @param {HTMLelement} [target] the element setting the color on
+   */
+  function setColor(color, target) {
+    currentEl = target;
+    oldColor = currentEl.value;
+    attachVirtualInstance(target);
+    currentFormat = getColorFormatFromStr(color);
+    updatePickerPosition();
+    setColorFromStr(color);
+    pickColor();
+    if (oldColor !== color) {
+       currentEl.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
 
   // Expose the color picker to the global scope
   const Coloris = (() => {
@@ -1156,6 +1178,7 @@ window.Coloris = ((window, document, Math) => {
       wrap: wrapFields,
       close: closePicker,
       setInstance: setVirtualInstance,
+      setColor: setColor,
       removeInstance: removeVirtualInstance,
       updatePosition: updatePickerPosition
     };
@@ -1177,7 +1200,12 @@ window.Coloris = ((window, document, Math) => {
         DOMReady(methods[key], args);
       };
     }
-
+    
+    // handle window resize events re-aligning the panel
+    DOMReady(() => {
+        window.addEventListener('resize', event => { Coloris.updatePosition(); });
+    });
+    
     return Coloris;
   })();
 
