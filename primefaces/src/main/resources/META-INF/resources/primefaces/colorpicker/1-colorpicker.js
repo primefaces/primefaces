@@ -24,7 +24,7 @@
  * clicks on the color.
  * 
  * @prop {JQuery} input DOM element of the INPUT element
- * @prop {boolean} popup true if popup mode, else inline mode
+ * @prop {boolean} popup True if popup mode, else inline mode
  * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
  * 
  * @interface {PrimeFaces.widget.ColorPickerCfg} cfg The configuration for the {@link  Coloris}.
@@ -308,6 +308,6 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
     }
 });
 
-// global variable so Coloris is only initialized once
+// Global variable so Coloris is only initialized once
 var colorisInitialized = false;
 

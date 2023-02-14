@@ -16,7 +16,7 @@ window.Coloris = ((window, document, Math) => {
   let bound;
   //***** PF: Prevent binding events multiple times
 
-// Default settings
+  // Default settings
   const settings = {
     el: '[data-coloris]',
     parent: 'body',
@@ -89,7 +89,7 @@ window.Coloris = ((window, document, Math) => {
             container.appendChild(picker);
             settings.parent = options.parent;
 
-            // document.body is special
+            // Treat document.body is special
             if (container === document.body) {
               container = null;
             }
@@ -1201,9 +1201,10 @@ window.Coloris = ((window, document, Math) => {
       };
     }
     
-    // handle window resize events re-aligning the panel
+    // Handle window resize events re-aligning the panel
     DOMReady(() => {
         window.addEventListener('resize', event => { Coloris.updatePosition(); });
+        window.addEventListener('scroll', event => { Coloris.updatePosition(); });
     });
     
     return Coloris;
