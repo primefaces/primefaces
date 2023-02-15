@@ -38,7 +38,17 @@ PrimeFaces.locales['tr'] = {
         'datatable.sort.ASC': 'Sütunu artan sıralamak için etkinleştir',
         'datatable.sort.DESC': 'Sütunu azalan sıralamak için etkinleştir',
         'columntoggler.CLOSE': 'Kapat',
-        'overlaypanel.CLOSE': 'Kapat'
+        'overlaypanel.CLOSE': 'Kapat',
+        'colorpicker.OPEN': 'Renk seçiciyi aç',
+        'colorpicker.CLOSE': 'Renk seçiciyi kapat',
+        'colorpicker.CLEAR': 'Seçili rengi temizle',
+        'colorpicker.MARKER': 'Doygunluk: {s}. Parlaklık: {v}.',
+        'colorpicker.HUESLIDER': 'Ton kaydırıcı',
+        'colorpicker.ALPHASLIDER': 'Opaklık kaydırıcısı',
+        'colorpicker.INPUT': 'Renk değeri alanı',
+        'colorpicker.FORMAT': 'Renk formatı',
+        'colorpicker.SWATCH': 'Renk örneği',
+        'colorpicker.INSTRUCTION': 'Doygunluk ve parlaklık seçici. Seçmek için yukarı, aşağı, sol ve sağ ok tuşlarını kullanın.'
     },
     messages: {  //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Doğrulama Hatası: Değer gerekli.',

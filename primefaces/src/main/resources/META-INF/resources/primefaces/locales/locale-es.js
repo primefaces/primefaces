@@ -39,7 +39,17 @@ PrimeFaces.locales['es'] = {
          'datatable.sort.DESC': 'ordenar columna descendente',
          'datatable.sort.NONE': 'eliminar la clasificación en la columna',
          'columntoggler.CLOSE': 'Cerrar',
-         'overlaypanel.CLOSE': 'Cerrar'
+         'overlaypanel.CLOSE': 'Cerrar',
+         'colorpicker.OPEN': 'Abrir selector de color',
+         'colorpicker.CLOSE': 'Cerrar el selector de color',
+         'colorpicker.CLEAR': 'Limpiar el color seleccionado',
+         'colorpicker.MARKER': 'Saturación: {s}. Brillo: {v}.',
+         'colorpicker.HUESLIDER': 'Deslizador de tono',
+         'colorpicker.ALPHASLIDER': 'Deslizador de opacidad',
+         'colorpicker.INPUT': 'Campo de valor de color',
+         'colorpicker.FORMAT': 'Formato de color',
+         'colorpicker.SWATCH': 'Muestra de color',
+         'colorpicker.INSTRUCTION': 'Selector de saturación y brillo. Utilice las teclas de flecha arriba, abajo, izquierda y derecha para seleccionar.'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Error de validación: se necesita un valor.',
