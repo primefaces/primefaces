@@ -25,7 +25,19 @@ PrimeFaces.locales['el'] = {
     week: 'Εβδομάδα',
     day: 'Ημέρα',
     allDayText: 'Όλη Μέρα',
-    clear: 'Επαναφορά'
+    clear: 'Επαναφορά',
+    aria: {
+        'colorpicker.OPEN': 'Άνοιγμα επιλογέα χρώματος',
+        'colorpicker.CLOSE': 'Κλείσιμο επιλογέα χρώματος',
+        'colorpicker.CLEAR': 'Διαγραφή του επιλογέα χρώματος',
+        'colorpicker.MARKER': 'Κορεσμός: {s}. Φωτεινότητα: {v}.',
+        'colorpicker.HUESLIDER': 'Ρύθμιση απόχρωσης',
+        'colorpicker.ALPHASLIDER': 'Ρύθμιση διαφάνειας',
+        'colorpicker.INPUT': 'Πεδίο τιμής χρώματος',
+        'colorpicker.FORMAT': 'Μορφή χρώματος',
+        'colorpicker.SWATCH': 'Δείγμα χρωμάτων',
+        'colorpicker.INSTRUCTION': 'Επιλογέας κορεσμού και φωτεινότητας. Χρησιμοποιήστε τα πλήκτρα πάνω, κάτω, αριστερά και δεξιά για να επιλέξετε.'
+    }
     messages: {
         'javax.faces.component.UIInput.CONVERSION': '{0}: Παρουσιάστηκε σφάλμα μετατροπής.',
         'javax.faces.component.UIInput.REQUIRED': '{0}: Σφάλμα επικύρωσης. Η τιμή είναι απαραίτητη.',

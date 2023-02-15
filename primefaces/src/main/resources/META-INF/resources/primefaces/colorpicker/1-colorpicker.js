@@ -138,17 +138,32 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         if (lang.aria) {
             PrimeFaces.localeSettings = lang;
             var a11y = {};
-            if (PrimeFaces.getAriaLabel('colorpicker.OPEN')) { a11y.open = PrimeFaces.getAriaLabel('colorpicker.OPEN'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.CLOSE')) { a11y.close = PrimeFaces.getAriaLabel('colorpicker.CLOSE'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.CLEAR')) { a11y.clear = PrimeFaces.getAriaLabel('colorpicker.CLEAR'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.MARKER')) { a11y.marker = PrimeFaces.getAriaLabel('colorpicker.MARKER'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.HUESLIDER')) { a11y.hueSlider = PrimeFaces.getAriaLabel('colorpicker.HUESLIDER'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.ALPHASLIDER')) { a11y.alphaSlider = PrimeFaces.getAriaLabel('colorpicker.ALPHASLIDER'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.INPUT')) { a11y.input = PrimeFaces.getAriaLabel('colorpicker.INPUT'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.FORMAT')) { a11y.format = PrimeFaces.getAriaLabel('colorpicker.FORMAT'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.SWATCH')) { a11y.swatch = PrimeFaces.getAriaLabel('colorpicker.SWATCH'); }
-            if (PrimeFaces.getAriaLabel('colorpicker.INSTRUCTION')) { a11y.instruction = PrimeFaces.getAriaLabel('colorpicker.INSTRUCTION'); }
+            this.configureAriaLabel('colorpicker.OPEN', a11y, 'open');
+            this.configureAriaLabel('colorpicker.CLOSE', a11y, 'close');
+            this.configureAriaLabel('colorpicker.CLEAR', a11y, 'clear');
+            this.configureAriaLabel('colorpicker.MARKER', a11y, 'marker');
+            this.configureAriaLabel('colorpicker.HUESLIDER', a11y, 'hueSlider');
+            this.configureAriaLabel('colorpicker.ALPHASLIDER', a11y, 'alphaSlider');
+            this.configureAriaLabel('colorpicker.INPUT', a11y, 'input');
+            this.configureAriaLabel('colorpicker.FORMAT', a11y, 'format');
+            this.configureAriaLabel('colorpicker.SWATCH', a11y, 'swatch');
+            this.configureAriaLabel('colorpicker.INSTRUCTION', a11y, 'instruction');
+            this.configureAriaLabel('colorpicker.OPEN', a11y, 'open');
             this.cfg.a11y = a11y;
+        }
+    },
+    
+    /**
+     * Configures a single ARIA label from PF locale to Coloris a11y.
+     * @param {string} label the PF label to lookup in locale.js
+     * @param {object} a11y the a11y JSON object for Coloris
+     * @param {string} property the JSON property to set in a11y
+     * @private
+     */
+    configureAriaLabel: function(label, a11y, property) {
+        var ariaLabel = PrimeFaces.getAriaLabel(label);
+        if (ariaLabel) {
+            a11y[property] = ariaLabel;
         }
     },
 

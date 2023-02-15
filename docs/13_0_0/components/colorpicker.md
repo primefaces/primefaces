@@ -1,6 +1,6 @@
 # Color Picker
 
-ColorPicker is an input component with a color palette. It features:
+ColorPicker is an input component with a color palette based on [Coloris](https://github.com/mdbassit/Coloris). It features:
 * Inline or Popup mode
 * Themes and dark mode
 * Multiple color formats (Hex, RGB, HSL)
