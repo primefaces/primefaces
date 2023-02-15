@@ -156,7 +156,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Configures a single ARIA label from PF locale to Coloris a11y.
      * @param {string} label the PF label to lookup in locale.js
-     * @param {object} a11y the a11y JSON object for Coloris
+     * @param {{key: string}} a11y the a11y JSON object for Coloris
      * @param {string} property the JSON property to set in a11y
      * @private
      */
