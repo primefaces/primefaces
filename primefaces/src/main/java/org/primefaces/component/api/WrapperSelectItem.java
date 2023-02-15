@@ -28,14 +28,14 @@ import javax.faces.component.UISelectItem;
 import javax.faces.model.SelectItem;
 
 /**
- * Wraps a SelectItem so its `<f:selectitem>` passthrough attributes can be used.
+ * Wraps a SelectItem so its {@code <f:selectitem>} passthrough attributes can be used.
  */
 public class WrapperSelectItem extends SelectItem {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Owning component like `<f:selectitem>` or `<f:selectitems>`
+     * Owning component like `{@code <f:selectitem>} or {@code <f:selectitems>}
      */
     private transient UIComponent component;
 
