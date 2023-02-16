@@ -25,6 +25,18 @@ PrimeFaces.locales['uk'] = {
     week: 'тиждень',
     day: 'День',
     allDayText: 'Весь день',
-    clear: 'Скинути'
+    clear: 'Скинути',
+    aria: {
+         'colorpicker.OPEN':  'Відкрити вибір кольору',
+         'colorpicker.CLOSE': 'Закрити вибір кольору',
+         'colorpicker.CLEAR': 'Очистити вибраний колір',
+         'colorpicker.MARKER': 'Насиченість: {s}. Яскравість: {v}.',
+         'colorpicker.HUESLIDER': 'Повзунок відтінку',
+         'colorpicker.ALPHASLIDER': 'Значення кольору',
+         'colorpicker.INPUT': 'Значения цвета',
+         'colorpicker.FORMAT': 'Формат кольору',
+         'colorpicker.SWATCH': 'Зразок кольору',
+         'colorpicker.INSTRUCTION': 'Селектор насиченості та яскравості. Використовуйте клавіші зі стрілками вгору, вниз, вліво та вправо для вибору.'
+     }
 };
 

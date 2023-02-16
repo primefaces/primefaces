@@ -37,9 +37,19 @@ PrimeFaces.locales['ru'] = {
         'datatable.sort.ASC': 'Сортировка столбца по возрастанию',
         'datatable.sort.DESC': 'Сортировка столбца по убыванию',
         'columntoggler.CLOSE': 'Закрыть',
-        'overlaypanel.CLOSE': 'Закрыть'
+        'overlaypanel.CLOSE': 'Закрыть',
+        'colorpicker.OPEN': 'Открыть выбор цвета',
+        'colorpicker.CLOSE': 'Закрыть выбор цвета',
+        'colorpicker.CLEAR': 'Очистить выбранный цвет',
+        'colorpicker.MARKER': 'Насыщенность: {s}. Яркость: {v}.',
+        'colorpicker.HUESLIDER': 'Ползунок оттенка',
+        'colorpicker.ALPHASLIDER': 'Ползунок непрозрачности',
+        'colorpicker.INPUT': 'Значения цвета',
+        'colorpicker.FORMAT': 'Формат цвета',
+        'colorpicker.SWATCH': 'Образец цвета',
+        'colorpicker.INSTRUCTION': 'Селектор насыщенности и яркости. Для выбора используйте клавиши со стрелками вверх, вниз, влево и вправо'.
     },
-         messages: {  //Опционально для стороны клиента
+    messages: {  //Опционально для стороны клиента
         'javax.faces.component.UIInput.REQUIRED': '{0}: Ошибка проверки: Требуется значение.',
         'javax.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' значение должно быть числом, состоящим из одной или нескольких цифр.',
         'javax.faces.converter.IntegerConverter.INTEGER_detail': '{2}: \'{0}\' значение должно быть числом между -2147483648 и 2147483647. Пример: {1}.',
