@@ -40,7 +40,7 @@ PrimeFaces.locales['nl'] = {
         'colorpicker.CLEAR': 'Wis de geselecteerde kleur',
         'colorpicker.MARKER': 'Verzadiging: {s}. Helderheid: {v}.',
         'colorpicker.HUESLIDER': 'Tintschuif',
-        'colorpicker.ALPHASLIDER': 'Ondoorzichtigheidschuif',
+        'colorpicker.ALPHASLIDER': 'Dekkingschuif',
         'colorpicker.INPUT': 'Kleurwaardeveld',
         'colorpicker.FORMAT': 'Kleurformaat',
         'colorpicker.SWATCH': 'Kleurstaal',
