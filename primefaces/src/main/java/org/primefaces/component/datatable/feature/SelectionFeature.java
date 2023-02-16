@@ -23,32 +23,20 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableBase;
-import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
     private static final String ALL_SELECTOR = "@all";
-
-    private static final SelectionFeature INSTANCE = new SelectionFeature();
-
-    private SelectionFeature() {
-    }
-
-    public static SelectionFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, DataTable table) {
@@ -198,11 +186,6 @@ public class SelectionFeature implements DataTableFeature {
 
             setSelection(context, table, true, selection, rowKeysTmp);
         }
-    }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new FacesException("SelectFeature should not encode.");
     }
 
     @Override

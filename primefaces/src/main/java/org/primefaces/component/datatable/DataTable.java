@@ -26,7 +26,6 @@ package org.primefaces.component.datatable;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -45,7 +44,8 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.component.datatable.feature.*;
+import org.primefaces.component.datatable.feature.DataTableFeatures;
+import org.primefaces.component.datatable.feature.FilterFeature;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.rowexpansion.RowExpansion;
@@ -141,20 +141,6 @@ public class DataTable extends DataTableBase {
     public static final String GRIDLINES_CLASS = "ui-datatable-gridlines";
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
-
-    public static final List<DataTableFeature> FEATURES = Collections.unmodifiableList(Arrays.asList(
-            DraggableColumnsFeature.getInstance(),
-            FilterFeature.getInstance(),
-            PageFeature.getInstance(),
-            SortFeature.getInstance(),
-            ResizableColumnsFeature.getInstance(),
-            SelectionFeature.getInstance(),
-            RowEditFeature.getInstance(),
-            CellEditFeature.getInstance(),
-            RowExpandFeature.getInstance(),
-            ScrollFeature.getInstance(),
-            DraggableRowsFeature.getInstance(),
-            AddRowFeature.getInstance()));
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
@@ -319,7 +305,7 @@ public class DataTable extends DataTableBase {
 
         //filters need to be decoded during PROCESS_VALIDATIONS phase,
         //so that local values of each filters are properly converted and validated
-        FilterFeature feature = FilterFeature.getInstance();
+        FilterFeature feature = DataTableFeatures.filterFeature();
         if (feature.shouldDecode(context, this)) {
             feature.decode(context, this);
             AjaxBehaviorEvent event = deferredEvents.get("filter");
@@ -1085,7 +1071,7 @@ public class DataTable extends DataTableBase {
         if (getFacesContext().isPostback()) {
             return;
         }
-        SelectionFeature.getInstance().decodeSelection(getFacesContext(), this, rowKeys);
+        DataTableFeatures.selectionFeature().decodeSelection(getFacesContext(), this, rowKeys);
     }
 
     public void updateExpansionWithMVS(Set<String> rowKeys) {
@@ -1186,8 +1172,8 @@ public class DataTable extends DataTableBase {
          */
         setDataModel(null); // for MyFaces 2.3 - compatibility
 
-        FilterFeature.getInstance().filter(FacesContext.getCurrentInstance(), this);
-        SortFeature.getInstance().sort(FacesContext.getCurrentInstance(), this);
+        DataTableFeatures.filterFeature().filter(FacesContext.getCurrentInstance(), this);
+        DataTableFeatures.sortFeature().sort(FacesContext.getCurrentInstance(), this);
     }
 
     public void selectRow(String rowKey) {
