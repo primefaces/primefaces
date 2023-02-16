@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -46,15 +45,6 @@ import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.util.ComponentUtils;
 
 public class FilterFeature implements DataTableFeature {
-
-    private static final FilterFeature INSTANCE = new FilterFeature();
-
-    private FilterFeature() {
-    }
-
-    public static FilterFeature getInstance() {
-        return INSTANCE;
-    }
 
     private boolean isFilterRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
@@ -121,7 +111,7 @@ public class FilterFeature implements DataTableFeature {
 
             // update filtered value accordingly to take account sorting
             if (table.isSortingCurrentlyActive()) {
-                SortFeature.getInstance().sort(context, table);
+                DataTableFeatures.sortFeature().sort(context, table);
             }
         }
 
