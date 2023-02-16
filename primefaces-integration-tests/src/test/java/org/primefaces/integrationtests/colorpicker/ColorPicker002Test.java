@@ -54,7 +54,7 @@ public class ColorPicker002Test extends AbstractColorPickerTest {
         assertAriaLabel(panel, "clr-close", "Sluit kleurkiezer");
         assertAriaLabel(panel, "clr-clear", "Wis de geselecteerde kleur");
         assertAriaLabel(panel, "clr-hue-slider", "Tintschuif");
-        assertAriaLabel(panel, "clr-alpha-slider", "Ondoorzichtigheidschuif");
+        assertAriaLabel(panel, "clr-alpha-slider", "Dekkingschuif");
         assertAriaLabel(panel, "clr-swatch-label", "Kleurstaal");
         assertAriaLabel(panel, "clr-color-area", "Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.");
         assertAriaLabel(panel, "clr-color-marker", "Verzadiging: 73. Helderheid: 62.");
