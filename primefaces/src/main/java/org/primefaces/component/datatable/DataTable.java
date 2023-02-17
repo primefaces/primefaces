@@ -481,64 +481,59 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyDataIfRequired() {
-        if (isLazy()) {
-            DataModel model = getDataModel();
-            if (model instanceof LazyDataModel && ((LazyDataModel) model).getWrappedData() == null) {
-                loadLazyData();
-            }
+        if (isLazy() && getDataModel().getWrappedData() == null) {
+           loadLazyDataIfEnabled();
         }
     }
 
-    public void loadLazyData() {
-        DataModel model = getDataModel();
+    public boolean loadLazyDataIfEnabled() {
+        boolean lazyLoadingEnabled = isLazy();
+        if (lazyLoadingEnabled) {
+            int first = 0;
+            int rows = 0;
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
-
-            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
-            lazyModel.setRowCount(lazyModel.count(filterBy));
-
-            calculateFirst();
+            if (isLiveScroll()) {
+                rows = getScrollRows();
+            } else if (isVirtualScroll()) {
+                rows = getRows();
+                int scrollRows = getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                rows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
+            } else {
+                calculateFirst();
+                first = getFirst();
+                rows = getRows();
+            }
 
             FacesContext context = getFacesContext();
-            int first = getFirst();
-            int rows = getRows();
-
             if (isClientCacheRequest(context)) {
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + rows;
+                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }
 
-            List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), filterBy);
-            lazyModel.setPageSize(rows);
-            // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
-            lazyModel.setWrappedData(data == null ? Collections.emptyList() : data);
-
-            //Update paginator/livescroller for callback
-            if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
+            loadLazyScrollData(first, rows);
         }
+
+        return lazyLoadingEnabled;
     }
 
     public void loadLazyScrollData(int offset, int rows) {
         DataModel model = getDataModel();
+        if (!(model instanceof LazyDataModel)) {
+            throw new FacesException("Unexpected call, datatable " + getClientId(getFacesContext()) + " is not lazy.");
+        }
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+        LazyDataModel lazyModel = (LazyDataModel) model;
 
-            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
-            lazyModel.setRowCount(lazyModel.count(filterBy));
+        List<?> data = lazyModel.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
+        lazyModel.setPageSize(rows);
+        // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
+        lazyModel.setWrappedData(data == null ? Collections.emptyList() : data);
 
-            List<?> data = lazyModel.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
-
-            lazyModel.setPageSize(rows);
-            lazyModel.setWrappedData(data);
-
-            //Update paginator/livescroller  for callback
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
+        //Update paginator/livescroller for callback
+        FacesContext context = getFacesContext();
+        if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
         }
     }
 

@@ -39,8 +39,8 @@ public class PageFeature implements DataTableFeature {
 
         boolean isPageState = table.isPageStateRequest(context);
 
-        if (table.isLazy() && !isPageState) {
-            table.loadLazyData();
+        if (!isPageState) {
+            table.loadLazyDataIfEnabled();
         }
 
         if (!isPageState && !table.isFullUpdateRequest(context)) {

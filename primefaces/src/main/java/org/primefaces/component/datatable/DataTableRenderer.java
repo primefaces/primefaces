@@ -123,23 +123,7 @@ public class DataTableRenderer extends DataRenderer {
             table.setScrollOffset(0);
         }
 
-        if (table.isLazy()) {
-            if (table.isLiveScroll()) {
-                table.loadLazyScrollData(0, table.getScrollRows());
-            }
-            else if (table.isVirtualScroll()) {
-                int rows = table.getRows();
-                int scrollRows = table.getScrollRows();
-                int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-
-                table.loadLazyScrollData(0, scrollRows);
-            }
-            else {
-                table.loadLazyData();
-            }
-        }
-        else {
+        if (!table.loadLazyDataIfEnabled()) {
             if (table.isFilteringCurrentlyActive()) {
                 DataTableFeatures.filterFeature().filter(context, table);
             }
