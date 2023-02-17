@@ -500,6 +500,10 @@ public class DataTable extends DataTableBase {
                 int virtualScrollRows = (scrollRows * 2);
                 rows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
             } else {
+                LazyDataModel<?> lazyModel = getLazyDataModel();
+                Map<String, FilterMeta> filterBy = getActiveFilterMeta();
+                lazyModel.setRowCount(lazyModel.count(filterBy));
+
                 calculateFirst();
                 first = getFirst();
                 rows = getRows();
@@ -531,8 +535,7 @@ public class DataTable extends DataTableBase {
         lazyModel.setWrappedData(data == null ? Collections.emptyList() : data);
 
         //Update paginator/livescroller for callback
-        FacesContext context = getFacesContext();
-        if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+        if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
             PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
         }
     }
