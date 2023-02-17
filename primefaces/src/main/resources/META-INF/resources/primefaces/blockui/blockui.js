@@ -92,9 +92,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         });
 
         // subscribe to all DOM update events so we can resize even if another DOM element changed
-        $(document).on('pfAjaxUpdated', function(e, xhr, settings) {
+        $(document).on('pfAjaxSend pfAjaxUpdated', function(e, xhr, settings) {
             if (!$this.cfg.blocked) {
-                $this.alignOverlay();
+                setTimeout(function() { $this.alignOverlay() }, 0);
             }
         });
     },
@@ -343,7 +343,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     isBlocking: function() {
         return this.blocker.is(':visible');
     },
-    
+
     /**
      * Clears the ste-timeout timer for the delay.
      * @private
