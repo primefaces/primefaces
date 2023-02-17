@@ -24,6 +24,7 @@ PrimeFaces.locales['iw'] = {
     month: 'חודש',
     week: 'שבוע',
     day: 'יום',
-    allDayText: 'כל היום'
+    allDayText: 'כל היום',
+    clear: 'אִתחוּל'
 };
 PrimeFaces.locales['he'] = PrimeFaces.locales['iw'];

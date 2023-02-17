@@ -24,11 +24,14 @@
 package org.primefaces.component.colorpicker;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -42,12 +45,14 @@ public class ColorPicker extends ColorPickerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColorPicker";
 
-    public static final String STYLE_CLASS = "ui-colorpicker";
+    public static final String POPUP_STYLE_CLASS = "ui-colorpicker ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String INLINE_STYLE_CLASS = "ui-colorpicker ui-widget ui-state-default";
 
     private static final String DEFAULT_EVENT = "change";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("change", null)
+            .put("open", null)
             .put("close", null)
             .build();
 
@@ -66,5 +71,9 @@ public class ColorPicker extends ColorPickerBase {
     @Override
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
+    }
+
+    Locale calculateLocale(FacesContext facesContext) {
+        return LocaleUtils.resolveLocale(facesContext, getLocale(), getClientId(facesContext));
     }
 }

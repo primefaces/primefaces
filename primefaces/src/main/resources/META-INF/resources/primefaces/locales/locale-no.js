@@ -25,6 +25,7 @@ PrimeFaces.locales['no'] = {
     week: 'uke',
     day: 'Dag',
     allDayText: 'Hele dagen',
+    clear: 'Nullstille',
     messages: {
         'javax.faces.component.UIInput.REQUIRED': '{0}: Valideringsfeil: Verdi kreves.'
     }

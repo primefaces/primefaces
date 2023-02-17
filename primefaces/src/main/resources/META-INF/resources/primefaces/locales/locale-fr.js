@@ -39,7 +39,17 @@ PrimeFaces.locales['fr'] = {
         'datatable.sort.DESC': 'activer pour trier la colonne dans l\'ordre décroissant',
         'datatable.sort.NONE': 'activer pour retirer le tri sur la colonne',
         'columntoggler.CLOSE': 'Fermer',
-        'overlaypanel.CLOSE': 'Fermer'
+        'overlaypanel.CLOSE': 'Fermer',
+        'colorpicker.OPEN': 'Ouvrir le sélecteur de couleur',
+        'colorpicker.CLOSE': 'Fermer le sélecteur de couleur',
+        'colorpicker.CLEAR': 'Effacer la couleur sélectionnée',
+        'colorpicker.MARKER': 'Saturation: {s}. Luminosité: {v}.',
+        'colorpicker.HUESLIDER': 'Curseur de teinte',
+        'colorpicker.ALPHASLIDER': 'Curseur d\'opacité',
+        'colorpicker.INPUT': 'Valeur du champ couleur',
+        'colorpicker.FORMAT': 'Format de couleur',
+        'colorpicker.SWATCH': 'Nauncier',
+        'colorpicker.INSTRUCTION': 'Sélecteur de saturation et de luminosité. Utilisez les touches fléchées haut, bas, gauche et droite pour sélectionner.'
     },
     messages: {
         // components

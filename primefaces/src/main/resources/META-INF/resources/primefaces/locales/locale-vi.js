@@ -24,5 +24,6 @@ PrimeFaces.locales['vi'] = {
     month: 'Tháng',
     week: 'Tuần',
     day: 'Ngày',
-    allDayText: 'Cả ngày'
+    allDayText: 'Cả ngày',
+    clear: 'Cài lại'
 };

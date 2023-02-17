@@ -38,7 +38,17 @@ PrimeFaces.locales['uk'] = {
          'datatable.sort.DESC': 'активувати сортування за спаданням стовпця',
          'datatable.sort.NONE': 'активувати, щоб вилучити сортування за стовпцем',
          'columntoggler.CLOSE': 'Закрити',
-         'overlaypanel.CLOSE': 'Закрити'
+         'overlaypanel.CLOSE': 'Закрити',
+         'colorpicker.OPEN':  'Відкрити вибір кольору',
+         'colorpicker.CLOSE': 'Закрити вибір кольору',
+         'colorpicker.CLEAR': 'Очистити вибраний колір',
+         'colorpicker.MARKER': 'Насиченість: {s}. Яскравість: {v}.',
+         'colorpicker.HUESLIDER': 'Повзунок відтінку',
+         'colorpicker.ALPHASLIDER': 'Значення кольору',
+         'colorpicker.INPUT': 'Значения цвета',
+         'colorpicker.FORMAT': 'Формат кольору',
+         'colorpicker.SWATCH': 'Зразок кольору',
+         'colorpicker.INSTRUCTION': 'Селектор насиченості та яскравості. Використовуйте клавіші зі стрілками вгору, вниз, вліво та вправо для вибору.'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Помилка валідації: Потрібно ввести значення.',

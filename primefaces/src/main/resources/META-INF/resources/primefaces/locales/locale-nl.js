@@ -34,7 +34,17 @@ PrimeFaces.locales['nl'] = {
         'datatable.sort.DESC': 'Kolom aflopend sorteren',
         'datatable.sort.NONE': 'Kolomsortering opheffen',
         'columntoggler.CLOSE': 'Sluit',
-        'overlaypanel.CLOSE': 'Sluit'
+        'overlaypanel.CLOSE': 'Sluit',
+        'colorpicker.OPEN': 'Open kleurkiezer',
+        'colorpicker.CLOSE': 'Sluit kleurkiezer',
+        'colorpicker.CLEAR': 'Wis de geselecteerde kleur',
+        'colorpicker.MARKER': 'Verzadiging: {s}. Helderheid: {v}.',
+        'colorpicker.HUESLIDER': 'Tintschuif',
+        'colorpicker.ALPHASLIDER': 'Dekkingschuif',
+        'colorpicker.INPUT': 'Kleurwaardeveld',
+        'colorpicker.FORMAT': 'Kleurformaat',
+        'colorpicker.SWATCH': 'Kleurstaal',
+        'colorpicker.INSTRUCTION': 'Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Validatiefout: Waarde is vereist.',

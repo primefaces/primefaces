@@ -24,5 +24,6 @@ PrimeFaces.locales['cs'] = {
     month: 'Měsíc',
     week: 'Týden',
     day: 'Den',
-    allDayText: 'Celý den'
+    allDayText: 'Celý den',
+    clear: 'Resetovat'
 };

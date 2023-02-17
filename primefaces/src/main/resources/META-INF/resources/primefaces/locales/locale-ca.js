@@ -24,5 +24,6 @@ PrimeFaces.locales['ca'] = {
     month: 'Mes',
     week: 'Setmana',
     day: 'Dia',
-    allDayText: 'Tot el dia'
+    allDayText: 'Tot el dia',
+    clear: 'Restableix'
 };

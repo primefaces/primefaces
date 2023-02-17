@@ -25,6 +25,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `ariaLabel` to all Charts to allow accessibility but defaults to the Charts title.
 * Column/Columns
     * Added attribute `exportTag` to allow finer grain control over XML export.
+* ColorPicker
+    * Brand new widget featuring full accessibility, RTL, Alpha support and more.
 * DataGrid
     * Added attribute `rowTitle` to support row-specific titles.
 * DatePicker
