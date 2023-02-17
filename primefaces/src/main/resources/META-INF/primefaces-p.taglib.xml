@@ -185,13 +185,13 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>When enabled, only visible data would be exported.</description>
+            <description>When enabled, only visible data would be exported. Default is false.</description>
             <name>visibleOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>When enabled, the header will be exported. Default is true</description>
+            <description>When enabled, the header will be exported. Default is true.</description>
             <name>exportHeader</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
