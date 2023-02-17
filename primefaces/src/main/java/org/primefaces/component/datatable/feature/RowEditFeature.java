@@ -25,8 +25,6 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
-
-import javax.faces.FacesException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -41,24 +39,10 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class RowEditFeature implements DataTableFeature {
 
-    private static final RowEditFeature INSTANCE = new RowEditFeature();
-
-    private RowEditFeature() {
-    }
-
-    public static RowEditFeature getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("RowEditFeature should not decode.");
-    }
-
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
-            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
+            DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

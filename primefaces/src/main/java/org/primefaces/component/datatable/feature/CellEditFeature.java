@@ -26,7 +26,6 @@ package org.primefaces.component.datatable.feature;
 import java.io.IOException;
 import java.util.Map;
 import javax.faces.FacesException;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -35,20 +34,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
 public class CellEditFeature implements DataTableFeature {
-
-    private static final CellEditFeature INSTANCE = new CellEditFeature();
-
-    private CellEditFeature() {
-    }
-
-    public static CellEditFeature getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("CellEditFeature should not decode.");
-    }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {

@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -47,15 +46,6 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements DataTableFeature {
-
-    private static final SortFeature INSTANCE = new SortFeature();
-
-    private SortFeature() {
-    }
-
-    public static SortFeature getInstance() {
-        return INSTANCE;
-    }
 
     private boolean isSortRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
@@ -132,7 +122,7 @@ public class SortFeature implements DataTableFeature {
             //update filtered value accordingly to take account sorting
             if (table.isFilteringCurrentlyActive()) {
                 if (table.isFullUpdateRequest(context)) {
-                    FilterFeature.getInstance().filter(context, table);
+                    DataTableFeatures.filterFeature().filter(context, table);
                 }
                 else {
                     table.setFilteredValue(resolveList(table.getValue()));

@@ -144,7 +144,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.5.0</version>
                 <configuration>
                     <sourcepath>${basedir}/src/main/java;</sourcepath>
                     <doclint>none</doclint>
@@ -366,7 +366,7 @@
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome</artifactId>
-                <version>1.18.0</version>
+                <version>1.19.0</version>
             </dependency>
 
             <!-- File Upload -->
