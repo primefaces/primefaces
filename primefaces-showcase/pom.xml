@@ -106,13 +106,6 @@
             <artifactId>mime-types</artifactId>
         </dependency>
 
-        <!-- Twitter API -->
-        <dependency>
-            <groupId>org.twitter4j</groupId>
-            <artifactId>twitter4j-core</artifactId>
-            <version>3.0.6</version>
-        </dependency>
-
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -121,11 +114,6 @@
         </dependency>
 
         <!-- GraphicImage -->
-        <dependency>
-            <groupId>net.sourceforge.barbecue</groupId>
-            <artifactId>barbecue</artifactId>
-            <version>1.5-beta1</version>
-        </dependency>
         <dependency>
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
