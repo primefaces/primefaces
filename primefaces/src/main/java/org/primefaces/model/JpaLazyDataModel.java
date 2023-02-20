@@ -33,6 +33,7 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -375,7 +376,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             // now convert the string to the required target
             return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
         }
-        catch (Exception e) {
+        catch (ELException | IllegalArgumentException e) {
+            LOG.info("Skip conversion due to exception caught converting " + value + " to type " + value.getClass()
+                    + ", exception: " + e.getMessage());
             return value;
         }
     }
