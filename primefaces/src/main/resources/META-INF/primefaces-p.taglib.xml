@@ -24944,11 +24944,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.]]>
+                <![CDATA[Calculates a fixed width based on the width of the maximum option label. Possible values: auto, true, false.]]>
             </description>
             <name>autoWidth</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
