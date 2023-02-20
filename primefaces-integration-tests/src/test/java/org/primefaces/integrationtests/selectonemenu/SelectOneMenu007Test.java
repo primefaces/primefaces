@@ -98,7 +98,7 @@ public class SelectOneMenu007Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
         Assertions.assertTrue(cfg.has("appendTo"));
-        Assertions.assertTrue(cfg.getBoolean("autoWidth"));
+        Assertions.assertEquals("auto", cfg.getString("autoWidth"));
         Assertions.assertTrue(cfg.getBoolean("renderPanelContentOnClient"));
         Assertions.assertEquals("Grouping", cfg.getString("label"));
     }
