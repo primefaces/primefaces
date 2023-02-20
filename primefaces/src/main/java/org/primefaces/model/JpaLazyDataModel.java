@@ -366,13 +366,18 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
         }
 
-        // first convert the object to string
-        String stringValue = sourceConverter == null
-                ? value.toString()
-                : sourceConverter.getAsString(context, UIComponent.getCurrentComponent(context), value);
+        try {
+            // first convert the object to string
+            String stringValue = sourceConverter == null
+                    ? value.toString()
+                    : sourceConverter.getAsString(context, UIComponent.getCurrentComponent(context), value);
 
-        // now convert the string to the required target
-        return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
+            // now convert the string to the required target
+            return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
+        }
+        catch (Exception e) {
+            return value;
+        }
     }
 
     protected Method getRowKeyGetter() {
