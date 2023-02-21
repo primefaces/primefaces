@@ -92,7 +92,7 @@ public class PanelGridRenderer extends CoreRenderer {
         String layout = grid.getLayout();
         int columns = grid.getColumns();
         if (columns <= 0 || columns > 12 || 12 % columns != 0) {
-            throw new FacesException("Columns of PanelGrid \"" + clientId + "\" must be a number that factors into 12. For example: 1,2,3,4,6,12");
+            throw new FacesException("PanelGrid \"" + clientId + "\" columns must be a number that factors into 12. For example: 1,2,3,4,6,12");
         }
 
         String style = grid.getStyle();
