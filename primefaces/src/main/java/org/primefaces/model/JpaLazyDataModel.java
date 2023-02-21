@@ -391,7 +391,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
         catch (ConverterException e) {
             if (LOG.isLoggable(Level.INFO)) {
-                LOG.log(Level.INFO, "Could not convert '" + stringValue + "' to " + valueType + " via !" + targetConverter.getClass().getName(), e);
+                LOG.log(Level.INFO, "Could not convert '" + stringValue + "' to " + valueType + " via " + targetConverter.getClass().getName(), e);
             }
             return value;
         }
