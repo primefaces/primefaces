@@ -39,6 +39,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
@@ -356,21 +357,27 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 return context.getELContext().convertToType(value, valueType);
             }
             catch (ELException elException) {
-                LOG.log(Level.FINE, "Could not convert '" + value + "' to " + valueType + " via ELContext!", elException);
+                if (LOG.isLoggable(Level.INFO)) {
+                    LOG.log(Level.INFO, "Could not convert '" + value + "' to " + valueType + " via ELContext!", elException);
+                }
             }
         }
 
         Converter targetConverter = context.getApplication().createConverter(valueType);
         if (targetConverter == null) {
-            LOG.info("Skip conversion as no converter was found for " + valueType
-                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+            if (LOG.isLoggable(Level.FINE)) {
+                LOG.fine("Skip conversion as no converter was found for " + valueType
+                        + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+            }
             return value;
         }
 
         Converter sourceConverter = context.getApplication().createConverter(value.getClass());
         if (sourceConverter == null) {
-            LOG.info("Skip conversion as no converter was found for " + value.getClass()
-                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+            if (LOG.isLoggable(Level.FINE)) {
+                LOG.fine("Skip conversion as no converter was found for " + value.getClass()
+                        + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+            }
         }
 
         // first convert the object to string
@@ -379,7 +386,15 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 : sourceConverter.getAsString(context, UIComponent.getCurrentComponent(context), value);
 
         // now convert the string to the required target
-        return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
+        try {
+            return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
+        }
+        catch (ConverterException e) {
+            if (LOG.isLoggable(Level.INFO)) {
+                LOG.log(Level.INFO, "Could not convert '" + stringValue + "' to " + valueType + " via !" + targetConverter.getClass().getName(), e);
+            }
+            return value;
+        }
     }
 
     protected Method getRowKeyGetter() {
