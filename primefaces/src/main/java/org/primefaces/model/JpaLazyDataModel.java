@@ -30,8 +30,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.el.ELException;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -348,9 +350,14 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         FacesContext context = FacesContext.getCurrentInstance();
 
-        // primivites dont need complex conversion
+        // primivites dont need complex conversion, try the ELContext first
         if (BeanUtils.isPrimitiveOrPrimitiveWrapper(valueType)) {
-            return context.getELContext().convertToType(value, valueType);
+            try {
+                return context.getELContext().convertToType(value, valueType);
+            }
+            catch (ELException elException) {
+                LOG.log(Level.FINE, "Could not convert '" + value + "' to " + valueType + " via ELContext!", elException);
+            }
         }
 
         Converter targetConverter = context.getApplication().createConverter(valueType);
