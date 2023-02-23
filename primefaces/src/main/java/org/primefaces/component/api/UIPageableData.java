@@ -24,7 +24,6 @@
 package org.primefaces.component.api;
 
 import java.util.Map;
-
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
@@ -244,7 +243,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         }
     }
 
-    public void calculateFirst() {
+    public boolean calculateFirst() {
         int rows = getRows();
 
         if (rows > 0) {
@@ -255,8 +254,12 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
                 int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
 
                 setFirst(Math.max((numberOfPages - 1) * rows, 0));
+
+                return true;
             }
         }
+
+        return false;
     }
 
     @Override
