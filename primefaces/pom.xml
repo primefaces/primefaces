@@ -149,7 +149,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.sf.barcode4j</groupId>
+            <groupId>org.primefaces.extensions</groupId>
             <artifactId>barcode4j-light</artifactId>
             <scope>provided</scope>
         </dependency>
