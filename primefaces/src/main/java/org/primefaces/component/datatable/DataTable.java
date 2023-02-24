@@ -500,7 +500,8 @@ public class DataTable extends DataTableBase {
                 int scrollRows = getScrollRows();
                 int virtualScrollRows = (scrollRows * 2);
                 rows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-            } else {
+            }
+            else {
                 rows = getRows();
             }
             loadLazyScrollData(first, rows);
