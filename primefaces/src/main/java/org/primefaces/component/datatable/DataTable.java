@@ -481,7 +481,7 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyDataIfRequired() {
-        if (isLazy() && getDataModel().getWrappedData() == null) {
+        if (getDataModel().getWrappedData() == null) {
             loadLazyDataIfEnabled();
         }
     }
@@ -489,7 +489,7 @@ public class DataTable extends DataTableBase {
     public boolean loadLazyDataIfEnabled() {
         LazyDataModel<?> lazyModel = getLazyDataModel();
         if (lazyModel != null) {
-            int first = 0;
+            int first = getFirst();
             int rows = 0;
 
             if (isLiveScroll()) {
@@ -501,7 +501,6 @@ public class DataTable extends DataTableBase {
                 int virtualScrollRows = (scrollRows * 2);
                 rows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
             } else {
-                first = getFirst();
                 rows = getRows();
             }
             loadLazyScrollData(first, rows);

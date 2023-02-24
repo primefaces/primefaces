@@ -109,7 +109,7 @@ public abstract class DataTableExporter extends TableExporter<DataTable> {
             if (rowCount > 0) {
                 table.setFirst(0);
                 table.setRows(rowCount);
-                table.clearLazyCache();
+                table.clearLazyCache(); // I think it is useless since wrappeddata gets intialize in DataTable#loadLazyScrollData
                 table.loadLazyDataIfEnabled();
             }
 
@@ -121,7 +121,7 @@ public abstract class DataTableExporter extends TableExporter<DataTable> {
             table.setFirst(first);
             table.setRows(rows);
             table.setRowIndex(-1);
-            table.clearLazyCache();
+            table.clearLazyCache(); // same here
             lazyDataModel.setWrappedData(wrappedData);
             lazyDataModel.setPageSize(rows);
             lazyDataModel.setRowIndex(-1);
