@@ -126,9 +126,9 @@
             <artifactId>qrcodegen</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.sf.barcode4j</groupId>
+            <groupId>org.primefaces.extensions</groupId>
             <artifactId>barcode4j-light</artifactId>
-            <version>2.1</version>
+            <version>2.3.0</version>
         </dependency>
 
         <!-- Cache -->

@@ -11,7 +11,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Apache POI | org.apache.poi | poi | 5.2.3 | Optional | DataExporter (Excel or XML) |
 | Rome | com.rometools | rome | 1.15.0 | Optional | FeedReader |
 | Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.4 | Optional | FileUpload |
-| barcode4j-light | net.sf.barcode4j | barcode4j-light | 2.1 | Optional | Barcode |
+| barcode4j-light | org.primefaces.extensions | barcode4j-light | 2.3.0 | Optional | Barcode |
 | qrcodegen | io.nayuki | qrcodegen | 1.8.0 | Optional | QR Code support for Barcode |
 | owasp-java-html-sanitizer | com.googlecode.owasp-java-html-sanitizer | owasp-java-html-sanitizer |  20220608.1 | Optional | TextEditor |
 

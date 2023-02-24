@@ -97,10 +97,8 @@ by **qrcodegen** library. Following versions are supported officially.
     <version>1.8.0</version>
 </dependency>
 <dependency>
-    <groupId>net.sf.barcode4j</groupId>
+    <groupId>org.primefaces.extensions</groupId>
     <artifactId>barcode4j-light</artifactId>
-    <version>2.1</version>
+    <version>2.3.0</version>
 </dependency>
 ```
-* barcode4j 2.1 does not exist in maven central repository so manual installation is necessary for
-maven users.
