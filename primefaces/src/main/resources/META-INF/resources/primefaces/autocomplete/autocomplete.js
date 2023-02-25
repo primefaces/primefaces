@@ -1292,24 +1292,24 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Disables the input field.
+     * Disables the component.
      */
     disable: function() {
+        this.jq.addClass("ui-state-disabled");
         PrimeFaces.utils.disableInputWidget(this.input);
-
         if (this.dropdown.length) {
-            this.dropdown.addClass('ui-state-disabled').prop('disabled', true);
+            this.disableDropdown();
         }
     },
 
     /**
-     * Enables the input field.
+     * Enables the component.
      */
     enable: function() {
+        this.jq.removeClass("ui-state-disabled");
         PrimeFaces.utils.enableInputWidget(this.input);
-
         if (this.dropdown.length) {
-            this.dropdown.removeClass('ui-state-disabled').prop('disabled', false);
+            this.enableDropdown();
         }
     },
 
