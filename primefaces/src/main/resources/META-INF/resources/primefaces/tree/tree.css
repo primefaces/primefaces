@@ -41,6 +41,7 @@
     display: inline-block;
     vertical-align: middle;
     padding: 0 3px;
+    cursor: default;
 }
 
 .ui-tree .ui-tree-selectable .ui-treenode-content {
