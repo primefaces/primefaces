@@ -31,9 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.CommandButton;
-import org.primefaces.selenium.component.Messages;
-import org.primefaces.selenium.component.SelectOneMenu;
+import org.primefaces.selenium.component.*;
 
 public class SelectOneMenu001Test extends AbstractPrimePageTest {
 
@@ -63,7 +61,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     @DisplayName("SelectOneMenu: Selecting a record by typing some letters #4682")
     public void testSelectingByTypingSomeLetters(Page page) {
         // Arrange
@@ -72,6 +70,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Act
         selectOneMenu.getLabel().sendKeys("La");
+//        selectOneMenu.getLabel().sendKeys(Keys.TAB);
         page.button.click();
 
         // Assert - part 1
@@ -80,6 +79,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Act
         selectOneMenu.getLabel().sendKeys("Le");
+//        selectOneMenu.getLabel().sendKeys(Keys.TAB);
         page.button.click();
 
         // Assert - part 2
@@ -88,7 +88,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     @DisplayName("SelectOneMenu: show panel")
     public void testShowPanel(Page page) {
         // Arrange
@@ -104,7 +104,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     @DisplayName("SelectOneMenu: hide panel")
     public void testHidePanel(Page page) {
         // Arrange
@@ -121,7 +121,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @DisplayName("SelectOneMenu: disable panel")
     public void testDisablePanel(Page page) {
         // Arrange
@@ -139,7 +139,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     @DisplayName("SelectOneMenu: enable panel")
     public void testEnablePanel(Page page) {
         // Arrange
@@ -158,7 +158,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     @DisplayName("SelectOneMenu: selectValue via JavaScript")
     public void testJsSelectValue(Page page) {
         // Arrange
@@ -175,7 +175,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(5)
+    @Order(8)
     @DisplayName("SelectOneMenu: itemSelect - event")
     public void testItemSelect(Page page) {
         // Arrange
@@ -192,7 +192,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     }
 
     @Test
-    @Order(6)
+    @Order(9)
     @DisplayName("SelectOneMenu: change - event")
     public void testChange(Page page) {
         // Arrange
@@ -205,6 +205,31 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         // Assert - part 1
         Assertions.assertEquals("2", page.messages.getMessage(0).getDetail());
         Assertions.assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
+        assertConfiguration(selectOneMenu.getWidgetConfiguration());
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("SelectOneMenu: alwaysDisplayLabel")
+    public void testAlwaysDisplayLabel(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu2;
+        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        page.alwaysDisplayLabel.check();
+        Assertions.assertEquals("Select a driver", selectOneMenu.getSelectedLabel());
+
+        // Act
+        selectOneMenu.select("Max");
+
+        // Assert
+        Assertions.assertEquals("2", page.messages.getMessage(0).getDetail());
+        Assertions.assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
+        Assertions.assertEquals("Select a driver", selectOneMenu.getSelectedLabel());
+
+        // Act
+        page.alwaysDisplayLabel.uncheck();
+        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
@@ -224,6 +249,9 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:selectonemenu2")
         SelectOneMenu selectOneMenu2;
+
+        @FindBy(id = "form:alwaysDisplayLabel")
+        SelectBooleanCheckbox alwaysDisplayLabel;
 
         @FindBy(id = "form:button")
         CommandButton button;

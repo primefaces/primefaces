@@ -52,11 +52,14 @@ public class SelectOneMenu001 implements Serializable {
 
     private int value2;
 
+    private boolean alwaysDisplayLabel;
+
     @PostConstruct
     public void init() {
         drivers = driverService.getDrivers();
         value = 1;
         value2 = 1;
+        alwaysDisplayLabel = false;
     }
 
     public void onAjaxItemSelect() {
