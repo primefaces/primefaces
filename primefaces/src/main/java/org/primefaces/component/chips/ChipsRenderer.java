@@ -133,7 +133,7 @@ public class ChipsRenderer extends InputRenderer {
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, chips);
 
-            Collection<Object> items = chips.isUnique() ? new HashSet<>(values) : values;
+            Collection<Object> items = chips.isUnique() ? new LinkedHashSet<>(values) : values;
             for (Object value : items) {
                 String tokenValue = converter != null ? converter.getAsString(context, chips, value) : String.valueOf(value);
 
