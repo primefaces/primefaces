@@ -97,8 +97,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
-        boolean flex = ComponentUtils.isFlex(context, radio);
+        boolean lineDirection = "lineDirection".equals(layout);
+        boolean flex = !lineDirection && ComponentUtils.isFlex(context, radio);
         String styleClass = getStyleClassBuilder(context)
+                .add(lineDirection, "layout-line-direction")
                 .add(GridLayoutUtils.getResponsiveClass(flex))
                 .add(radio.getStyleClass())
                 .add(radio.isPlain(), SelectOneRadio.NATIVE_STYLE_CLASS, SelectOneRadio.STYLE_CLASS)
@@ -122,7 +124,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         int columns = radio.getColumns();
-        if ("pageDirection".equals(layout)) {
+        if (lineDirection || "pageDirection".equals(layout)) {
             columns = 1;
         }
 
@@ -136,13 +138,15 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
                 boolean selected = isSelected(context, radio, selectItem, currentValue);
                 colMod = idx % columns;
-                if (colMod == 0) {
+                if (!lineDirection && colMod == 0) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
+                if (!lineDirection) {
+                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
+                }
                 writer.writeAttribute("role", "radio", null);
                 writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
@@ -151,7 +155,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 idx++;
                 colMod = idx % columns;
 
-                if (colMod == 0) {
+                if (!lineDirection && colMod == 0) {
                     writer.endElement("div");
                 }
             }

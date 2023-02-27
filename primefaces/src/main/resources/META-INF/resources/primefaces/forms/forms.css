@@ -185,6 +185,11 @@
     padding: .5em .5em .5em 0px;
 }
 
+.ui-selectoneradio.layout-line-direction > div,
+.ui-selectoneradio.layout-line-direction > div label {
+    display: inline;
+}
+
 /** RadioButton **/
 .ui-radiobutton {
     margin: 3px 0;
