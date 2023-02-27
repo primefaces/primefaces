@@ -73,7 +73,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             encodeLegacyTabularLayout(context, radio, layout);
         }
         else {
-            encodeResponsiveLayout(context, radio);
+            encodeResponsiveLayout(context, radio, layout);
         }
     }
 
@@ -92,7 +92,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 .finish();
     }
 
-    protected void encodeResponsiveLayout(FacesContext context, SelectOneRadio radio) throws IOException {
+    protected void encodeResponsiveLayout(FacesContext context, SelectOneRadio radio, String layout) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
@@ -119,8 +119,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
-        int columns = radio.getColumns();
         String currentValue = ComponentUtils.getValueToRender(context, radio);
+
+        int columns = radio.getColumns();
+        if ("pageDirection".equals(layout)) {
+            columns = 1;
+        }
 
         if (columns > 0) {
             int idx = 0;
@@ -197,6 +201,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("table");
     }
 
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout)
             throws IOException {
 
@@ -272,6 +280,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("span");
     }
 
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
     protected void encodeLineLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = radio.getConverter();
@@ -294,6 +306,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("tr");
     }
 
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
     protected void encodePageLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = radio.getConverter();
@@ -316,6 +332,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         }
     }
 
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
     protected void encodeGridLayout(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Converter converter = radio.getConverter();
