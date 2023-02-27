@@ -170,6 +170,11 @@ public class ComponentTraversalUtils {
         }
     }
 
+    @Deprecated
+    public static UIForm closestForm(FacesContext context, UIComponent component) {
+        return closest(UIForm.class, component);
+    }
+
     public static UIForm closestForm(UIComponent component) {
         return closest(UIForm.class, component);
     }
