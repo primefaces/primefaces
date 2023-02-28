@@ -80,6 +80,7 @@
  * 
  * @prop {string} cfg.appendTo The search expression for the element to which the overlay panel should be appended.
  * @prop {boolean} cfg.caseSensitive Defines if filtering would be case sensitive.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
  * @prop {string} cfg.emptyLabel Label to be shown in updateLabel mode when no item is selected. If not set the label is
@@ -686,7 +687,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemContainerWrapper.height();
-        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), !this.cfg.caseSensitive);
+        var lowercase = !this.cfg.caseSensitive,
+                normalize = this.cfg.filterNormalize,
+                filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if (filterValue === '') {
             this.items.filter(':hidden').show();
@@ -696,7 +699,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             for (var i = 0; i < this.inputs.length; i++) {
                 var input = this.inputs.eq(i),
                     label = input.next(),
-                    itemLabel = PrimeFaces.normalize(label.text(), !this.cfg.caseSensitive),
+                    itemLabel = PrimeFaces.toSearchable(label.text(), lowercase, normalize),
                     item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {

@@ -61,7 +61,7 @@
                 <h5>Advanced</h5>
                 <p:selectCheckboxMenu id="advanced"
                                       converter="#{countryConverter}"
-                                      filter="true" filterMatchMode="startsWith"
+                                      filter="true" filterMatchMode="startsWith" filterNormalize="true"
                                       label="Countries" multiple="true"
                                       scrollHeight="250"
                                       value="#{checkboxView.selectedCountries2}"
