@@ -58,6 +58,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 * SelectCheckboxMenu
     * Added attribute `var` to support custom content in overlay panel.
     * Added support for facet `footer` in overlay panel.
+    * Added attribute `filterNormalize` to allow normalized filtering (without accents).
 * SelectManyCheckbox
     * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * SelectManyMenu
