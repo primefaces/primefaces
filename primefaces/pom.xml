@@ -18,6 +18,7 @@
 
     <properties>
         <minify.disabled>true</minify.disabled>
+        <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
     </properties>
 
@@ -936,6 +937,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <skip>${jakarta.jar.skip}</skip>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>jakarta</shadedClassifierName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -1208,6 +1210,7 @@
                 <maven.test.skip>true</maven.test.skip>
                 <maven.javadoc.skip>true</maven.javadoc.skip>
                 <maven.source.skip>true</maven.source.skip>
+                <jakarta.jar.skip>true</jakarta.jar.skip>
                 <checkstyle.skip>true</checkstyle.skip>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
