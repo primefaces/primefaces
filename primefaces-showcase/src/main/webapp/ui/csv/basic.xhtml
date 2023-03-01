@@ -35,6 +35,11 @@
                     </p:inputMask>
                     <p:message for="number"/>
                     <h:outputText value="#{validationView.integer}"/>
+                    
+                    <h:outputLabel for="color" value="Color:"/>
+                    <p:colorPicker id="color" value="#{validationView.color}" required="true" label="Color"/>
+                    <p:message for="color"/>
+                    <h:outputText value="#{validationView.color}"/>
 
                     <h:outputLabel for="dd" value="Double:"/>
                     <p:inputText id="dd" value="#{validationView.doubleNumber}"

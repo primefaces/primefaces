@@ -136,7 +136,17 @@ Side Validation, messages property is used as the bundle for the locale.
          'datatable.sort.DESC': 'activate to sort column descending',
          'datatable.sort.NONE': 'activate to remove sorting on column',
          'columntoggler.CLOSE': 'Close',
-         'overlaypanel.CLOSE': 'Close'
+         'overlaypanel.CLOSE': 'Close',
+         'colorpicker.OPEN': 'Open color picker',
+         'colorpicker.CLOSE': 'Close color picker',
+         'colorpicker.CLEAR': 'Clear the selected color',
+         'colorpicker.MARKER': 'Saturation: {s}. Brightness: {v}.',
+         'colorpicker.HUESLIDER': 'Hue slider',
+         'colorpicker.ALPHASLIDER': 'Opacity slider',
+         'colorpicker.INPUT': 'Color value field',
+         'colorpicker.FORMAT': 'Color format',
+         'colorpicker.SWATCH': 'Color swatch',
+         'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',

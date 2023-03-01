@@ -139,7 +139,11 @@ public class AppMenu {
         formMenuItems.add(new MenuItem("Calendar", calendarMenuItems));*/
         formMenuItems.add(new MenuItem("CascadeSelect", "/ui/input/cascadeSelect"));
         formMenuItems.add(new MenuItem("Chips", "/ui/input/chips"));
-        formMenuItems.add(new MenuItem("ColorPicker", "/ui/input/colorPicker"));
+        
+        List<MenuItem> colorPickerMenuItems = new ArrayList<>();
+        colorPickerMenuItems.add(new MenuItem("Popup", "/ui/input/colorPicker"));
+        colorPickerMenuItems.add(new MenuItem("Inline", "/ui/input/colorPickerInline"));
+        formMenuItems.add(new MenuItem("ColorPicker", colorPickerMenuItems));
 
         //DatePicker Nested MenuItem
         List<MenuItem> datePickerMenuItems = new ArrayList<>();

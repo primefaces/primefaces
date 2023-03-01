@@ -63,8 +63,8 @@ public class PolarAreaChartRenderer extends ChartRenderer {
         PolarAreaChartOptions polarOptions = (PolarAreaChartOptions) options;
 
         writer.write(",\"options\":{");
-
-        writer.write("\"animation\":{");
+        encodeResponsive(context, polarOptions, false);
+        writer.write(",\"animation\":{");
         writer.write("\"animateRotate\":" + polarOptions.isAnimateRotate());
         writer.write(",\"animateScale\":" + polarOptions.isAnimateScale());
         writer.write("}");

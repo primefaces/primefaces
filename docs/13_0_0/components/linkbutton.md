@@ -29,6 +29,7 @@ fragment | null | String | Identifier of the target page which should be scrolle
 disabled | false | Boolean | Disables button.
 disableClientWindow | false | Boolean | Disable appending the ClientWindow on the rendering of this element.
 accesskey | null | String | Access key that when pressed transfers focus to button.
+ariaLabel | title | String | The aria-label attribute is used to define a string that labels the current element for accessibility.
 charset | null | String | Character encoding of the resource designated by this hyperlink.
 coords | null | String | Position and shape of the hot spot on the screen for client use in image maps.
 dir | null | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.

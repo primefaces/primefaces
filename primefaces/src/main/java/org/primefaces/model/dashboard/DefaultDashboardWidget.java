@@ -21,27 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.dashboard;
 
-import java.util.List;
+/**
+ * DashBoard widgets used in responsive mode only.
+ */
+public class DefaultDashboardWidget extends DefaultDashboardColumn {
 
-public interface DashboardColumn {
+    private static final long serialVersionUID = 1L;
 
-    void removeWidget(String widgetId);
+    public DefaultDashboardWidget() {
+        super();
+    }
 
-    List<String> getWidgets();
-
-    int getWidgetCount();
-
-    String getWidget(int index);
-
-    void addWidget(String widgetId);
-
-    void addWidget(int index, String widgetId);
-
-    void reorderWidget(int index, String widgetId);
-
-    String getStyle();
-
-    String getStyleClass();
+    public DefaultDashboardWidget(String widgetId, String styleClass) {
+        super(widgetId, styleClass);
+    }
 }

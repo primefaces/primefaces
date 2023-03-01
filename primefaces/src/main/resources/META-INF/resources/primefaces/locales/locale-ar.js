@@ -24,6 +24,7 @@ PrimeFaces.locales['ar'] = {
     month: 'الشهر',
     week: 'الأسبوع',
     day: 'اليوم',
-    allDayText: 'سا ئراليوم'
+    allDayText: 'سا ئراليوم',
+    clear: 'إعادة ضبط'
 };
 

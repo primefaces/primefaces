@@ -7,11 +7,11 @@ are many other third party libraries and plugins used to support features.
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.6.0 | https://github.com/autoNumeric/autoNumeric |
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.9.1 | https://www.chartjs.org |
-| [Color Picker](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#colorpicker) | (2012) | www.eyecon.ro |
+| [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.18.0 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
-| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.10.1 | https://fullcalendar.io/ |
+| [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.11.3 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#idleTimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
 | [Input Mask](../jsdocs/interfaces/node_modules__types_inputmask.default.Static.html) | 5.0.8 | https://github.com/RobinHerbots/Inputmask |
 | [jQuery Autosize](../jsdocs/modules/src_PrimeFaces.html#autosize-1) | 4.0.2 | http://www.jacklmoore.com/autosize |
@@ -24,7 +24,7 @@ are many other third party libraries and plugins used to support features.
 | [jQuery.print](../jsdocs/modules/src_PrimeFaces.html#printJS) | 1.6.2 | https://github.com/DoersGuild/jQuery.print |
 | [jQuery Rangy](../jsdocs/modules/src_PrimeFaces.JQueryRangy.html) | 0.1.205 | https://github.com/timdown/rangy |
 | [jQuery Timepicker Addon](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#timepicker) | 1.6.3 | http://trentrichardson.com/examples/timepicker |
-| jQuery UI Touch Punch | 1.0.8 | https://github.com/RWAP/jquery-ui-touch-punch |
+| jQuery UI Touch Punch | 1.0.9 | https://github.com/RWAP/jquery-ui-touch-punch |
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.2 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.6.3 | https://jquery.com/ |
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |

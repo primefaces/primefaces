@@ -62,8 +62,8 @@
  * input, `false` otherwise.
  * @prop {string} cfg.appendTo Appends the overlay to the element defined by search expression. Defaults to the document
  * body.
- * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Set to false
- * for custom width.
+ * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Possible values: `auto`,
+ * `true`, `false`.
  * @prop {boolean} cfg.caseSensitive Defines if filtering would be case sensitive.
  * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
@@ -105,7 +105,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effect = this.cfg.effect||'fade';
 
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
-        this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
+        this.cfg.autoWidth = this.cfg.autoWidth === undefined ? 'auto' : this.cfg.autoWidth;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
@@ -211,11 +211,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @inheritdoc
      */
     _render: function() {
-        var contentStyle = this.jq.attr('style'),
-        hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
+        if (this.cfg.autoWidth != 'false') {
+            var contentStyle = this.jq.attr('style');
+            var hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
 
-        if(this.cfg.autoWidth && !hasWidth) {
-            this.jq.css('min-width', this.input.outerWidth() + 'px');
+            if (!hasWidth) {
+                // 'true' -> always calculate min-width
+                var calculateMinWidth = true;
+
+                // 'auto' -> only calculate it without a ui-fluid parent
+                if (this.cfg.autoWidth == 'auto') {
+                    var hasFluidParent = this.jq[0].closest('.ui-fluid') != undefined;
+                    calculateMinWidth = !hasFluidParent;
+                }
+
+                if (calculateMinWidth) {
+                    this.jq.css('min-width', this.input.outerWidth() + 'px');
+                }
+            }
         }
     },
 

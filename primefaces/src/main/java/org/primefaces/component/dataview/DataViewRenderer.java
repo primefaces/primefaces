@@ -84,7 +84,7 @@ public class DataViewRenderer extends DataRenderer {
             encodeScript(context, dataview);
 
             if (dataview.isPaginator() && dataview.getRows() == 0) {
-                LOGGER.log(Level.WARNING, "DataView with paginator=true should also set the rows attribute. ClientId: " + dataview.getClientId());
+                LOGGER.log(Level.WARNING, "DataView with paginator=true should also set the rows attribute. ClientId: {0}", dataview.getClientId());
             }
         }
     }

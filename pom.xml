@@ -99,7 +99,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.11.0</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
@@ -144,7 +144,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.5.0</version>
                 <configuration>
                     <sourcepath>${basedir}/src/main/java;</sourcepath>
                     <doclint>none</doclint>
@@ -174,7 +174,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
             </plugin>
 
             <plugin>
@@ -313,13 +313,13 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.faces</artifactId>
-                <version>2.3.18</version>
+                <version>2.3.19</version>
             </dependency>
 
             <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
-                <version>20220924</version>
+                <version>20230227</version>
             </dependency>
             <dependency>
                 <groupId>org.owasp.encoder</groupId>
@@ -359,14 +359,14 @@
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
-                <version>1.4</version>
+                <version>1.5</version>
             </dependency>
 
             <!-- FeedReader -->
             <dependency>
                 <groupId>com.rometools</groupId>
                 <artifactId>rome</artifactId>
-                <version>1.18.0</version>
+                <version>1.19.0</version>
             </dependency>
 
             <!-- File Upload -->
@@ -383,9 +383,9 @@
                 <version>1.8.0</version>
             </dependency>
             <dependency>
-                <groupId>net.sf.barcode4j</groupId>
+                <groupId>org.primefaces.extensions</groupId>
                 <artifactId>barcode4j-light</artifactId>
-                <version>2.0</version>
+                <version>2.3.0</version>
             </dependency>
 
             <!-- JUnit -->

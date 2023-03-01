@@ -28,7 +28,7 @@ immediate | false | Boolean | When set true, process validations logic is execut
 required | false | Boolean | Marks component as required
 alwaysDisplayLabel | false | Boolean | Always display the `label` value instead of the selected item label.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
-autoWidth | true | Boolean | Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.
+autoWidth | auto | String | Calculates a fixed width based on the width of the maximum option label. If the value is "auto", it's only calculated when its not placed inside a ui-fluid and no width was specified on the component. "false" = never calculate, "true" = always calculate.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 converterMessage | null | String | Message to be displayed when conversion fails.
 dir | ltr | String | Direction indication for text that does not inherit directionality. Valid values are LTR and RTL.

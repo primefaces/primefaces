@@ -36,23 +36,20 @@ import org.primefaces.component.colorpicker.ColorPicker;
 public class ColorView {
 
     private String colorInline;
-    private String colorPopup;
-
-    public String getColorInline() {
-        return colorInline;
-    }
-
-    public void setColorInline(String colorInline) {
-        this.colorInline = colorInline;
-    }
-
-    public String getColorPopup() {
-        return colorPopup;
-    }
-
-    public void setColorPopup(String colorPopup) {
-        this.colorPopup = colorPopup;
-    }
+    private String ajax = "#2a9d8f";
+    private String swatches = "#e9c46a";
+    private String thumbnail = "#ecc30b";
+    private String pill = "#e76f51";
+    private String large = "#d62828";
+    private String polaroid = "#023e8a";
+    private String light = "#faf200";
+    private String dark = "#000000";
+    private String alpha = "#00b4d880";
+    private String hsl = "hsla(101, 85%, 40%, 1)";
+    private String rgb = "rgb(244,162,97)";
+    private String square = "rgb(0, 183, 255)";
+    private String circle = "#cc458faa";
+    private String rtl = "#A427AE";
 
     public void onColorChange(AjaxBehaviorEvent e) {
         ColorPicker picker = (ColorPicker) e.getComponent();
@@ -64,5 +61,136 @@ public class ColorView {
         ColorPicker picker = (ColorPicker) e.getComponent();
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Popup closed: " + picker.getValue(), null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onPopupOpened(AjaxBehaviorEvent e) {
+        ColorPicker picker = (ColorPicker) e.getComponent();
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Popup opened: " + picker.getValue(), null);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void save() {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Color saved: " + getAjax(), null);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public String getColorInline() {
+        return colorInline;
+    }
+
+    public void setColorInline(String colorInline) {
+        this.colorInline = colorInline;
+    }
+
+    public String getAjax() {
+        return ajax;
+    }
+
+    public void setAjax(String ajax) {
+        this.ajax = ajax;
+    }
+
+    public String getSwatches() {
+        return swatches;
+    }
+
+    public void setSwatches(String swatches) {
+        this.swatches = swatches;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getPill() {
+        return pill;
+    }
+
+    public void setPill(String pill) {
+        this.pill = pill;
+    }
+
+    public String getLarge() {
+        return large;
+    }
+
+    public void setLarge(String large) {
+        this.large = large;
+    }
+
+    public String getPolaroid() {
+        return polaroid;
+    }
+
+    public void setPolaroid(String polaroid) {
+        this.polaroid = polaroid;
+    }
+
+    public String getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(String alpha) {
+        this.alpha = alpha;
+    }
+
+    public String getHsl() {
+        return hsl;
+    }
+
+    public void setHsl(String hsl) {
+        this.hsl = hsl;
+    }
+
+    public String getRgb() {
+        return rgb;
+    }
+
+    public void setRgb(String rgb) {
+        this.rgb = rgb;
+    }
+
+    public String getSquare() {
+        return square;
+    }
+
+    public void setSquare(String square) {
+        this.square = square;
+    }
+
+    public String getCircle() {
+        return circle;
+    }
+
+    public void setCircle(String circle) {
+        this.circle = circle;
+    }
+
+    public String getDark() {
+        return dark;
+    }
+
+    public void setDark(String dark) {
+        this.dark = dark;
+    }
+
+    public String getLight() {
+        return light;
+    }
+
+    public void setLight(String light) {
+        this.light = light;
+    }
+
+    public String getRtl() {
+        return rtl;
+    }
+
+    public void setRtl(String rtl) {
+        this.rtl = rtl;
     }
 }

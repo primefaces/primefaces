@@ -157,9 +157,14 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         boolean isDropdown = ac.isDropdown();
-        String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
-        styleClass = isDropdown ? styleClass + " " + AutoComplete.DROPDOWN_SYLE_CLASS : styleClass;
+        boolean disabled = ac.isDisabled();
+
+        String styleClass = getStyleClassBuilder(context)
+                .add(AutoComplete.STYLE_CLASS)
+                .add(ac.getStyleClass())
+                .add(isDropdown, AutoComplete.DROPDOWN_SYLE_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -381,9 +386,14 @@ public class AutoCompleteRenderer extends InputRenderer {
         String title = ac.getTitle();
 
         String style = ac.getStyle();
-        String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
-        styleClass = isDropdown ? styleClass + " " + AutoComplete.DROPDOWN_SYLE_CLASS : styleClass;
+
+        String styleClass = getStyleClassBuilder(context)
+                .add(AutoComplete.MULTIPLE_STYLE_CLASS)
+                .add(ac.getStyleClass())
+                .add(isDropdown, AutoComplete.DROPDOWN_SYLE_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .build();
+
         String listClass = isDropdown ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         listClass = createStyleClass(ac, null, listClass);
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";

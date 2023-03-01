@@ -5,6 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.repository == 'primefaces/primefaces'
     name: Build
     strategy:
       fail-fast: false
@@ -19,7 +20,7 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -T1C -Psecurity-checks,jsdoc,minify -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+        run: mvn clean install -T1C -Pjsdoc,minify -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
       - name: Sonar Cloud
         if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master'
         run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
@@ -76,14 +77,13 @@ jobs:
 
 
   integration-tests-40:
-    if: ${{ false }}  # disable for now, wheter Mojarra nor MyFaces is stable enough
     runs-on: ubuntu-latest
     name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
     strategy:
       fail-fast: false
       matrix:
         java: [11, 19]
-        facesimpl: [ 'mojarra-4.0', 'myfaces-4.0']
+        facesimpl: [ 'mojarra-4.0', 'myfaces-4.0' ]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}

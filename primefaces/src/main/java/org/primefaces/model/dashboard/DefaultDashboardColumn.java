@@ -21,13 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.dashboard;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DefaultDashboardColumn implements DashboardColumn, Serializable {
+public class DefaultDashboardColumn implements DashboardWidget, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +39,24 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
 
     public DefaultDashboardColumn() {
         widgets = new LinkedList<>();
+    }
+
+    public DefaultDashboardColumn(String widgetId, String styleClass) {
+        this();
+        getWidgets().addAll(Arrays.asList(widgetId));
+        setStyleClass(styleClass);
+    }
+
+    public DefaultDashboardColumn(String style, String styleClass, Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
+        this.style = style;
+        this.styleClass = styleClass;
+    }
+
+    public DefaultDashboardColumn(Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
     }
 
     @Override
@@ -80,6 +100,7 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
         return style;
     }
 
+    @Override
     public void setStyle(String style) {
         this.style = style;
     }
@@ -89,7 +110,10 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
         return styleClass;
     }
 
+    @Override
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
+
+
 }

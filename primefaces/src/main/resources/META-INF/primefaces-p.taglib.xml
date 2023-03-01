@@ -185,13 +185,13 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>When enabled, only visible data would be exported.</description>
+            <description>When enabled, only visible data would be exported. Default is false.</description>
             <name>visibleOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description>When enabled, the header will be exported. Default is true</description>
+            <description>When enabled, the header will be exported. Default is true.</description>
             <name>exportHeader</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
@@ -2619,6 +2619,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -4804,14 +4812,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Disables the component.]]>
-            </description>
-            <name>disabled</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[A method expression referring to a method validating the input.]]>
             </description>
             <name>validator</name>
@@ -4852,6 +4852,374 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Access key to transfer focus to the input element.]]>
+            </description>
+            <name>accesskey</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Alternate textual description of the input element.]]>
+            </description>
+            <name>alt</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls browser autocomplete behavior.]]>
+            </description>
+            <name>autocomplete</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Direction indication for text that does not inherit directionality.]]>
+            </description>
+            <name>dir</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Disables the input element, default is false.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A localized user presentable name.]]>
+            </description>
+            <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Code describing the language used in the generated markup.]]>
+            </description>
+            <name>lang</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.]]>
+            </description>
+            <name>maxlength</name>
+            <required>false</required>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when input element loses focus.]]>
+            </description>
+            <name>onblur</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when input element loses focus and its value has been modified since gaining focus.]]>
+            </description>
+            <name>onchange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when input element is clicked.]]>
+            </description>
+            <name>onclick</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when input element is double clicked.]]>
+            </description>
+            <name>ondblclick</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when input element receives focus.]]>
+            </description>
+            <name>onfocus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a key is pressed down over input element.]]>
+            </description>
+            <name>onkeydown</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a key is pressed and released over input element.]]>
+            </description>
+            <name>onkeypress</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a key is released over input element.]]>
+            </description>
+            <name>onkeyup</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a pointer input element is pressed down over input element.]]>
+            </description>
+            <name>onmousedown</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a pointer input element is moved within input element.]]>
+            </description>
+            <name>onmousemove</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a pointer input element is moved away from input element.]]>
+            </description>
+            <name>onmouseout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a pointer input element is moved onto input element.]]>
+            </description>
+            <name>onmouseover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a pointer input element is released over input element.]]>
+            </description>
+            <name>onmouseup</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the mouse wheel rolls up or down over an element.]]>
+            </description>
+            <name>onwheel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when text within input element is selected by user.]]>
+            </description>
+            <name>onselect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user copies the content of an element.]]>
+            </description>
+            <name>oncut</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user cuts the content of an element.]]>
+            </description>
+            <name>oncopy</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user pastes some content in an element.]]>
+            </description>
+            <name>onpaste</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element gets user input.]]>
+            </description>
+            <name>oninput</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when a context menu is triggered.]]>
+            </description>
+            <name>oncontextmenu</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is invalid.]]>
+            </description>
+            <name>oninvalid</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the Reset button in a form is clicked.]]>
+            </description>
+            <name>onreset</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when the user writes something in a search field.]]>
+            </description>
+            <name>onsearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is dragged.]]>
+            </description>
+            <name>ondrag</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the end of a drag operation.]]>
+            </description>
+            <name>ondragend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element has been dragged to a valid drop target.]]>
+            </description>
+            <name>ondragenter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element leaves a valid drop target.]]>
+            </description>
+            <name>ondragleave</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element is being dragged over a valid drop target.]]>
+            </description>
+            <name>ondragover</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute at the start of a drag operation.]]>
+            </description>
+            <name>ondragstart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when dragged element is being dropped.]]>
+            </description>
+            <name>ondrop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Client side callback to execute when an element's scrollbar is being scrolled.]]>
+            </description>
+            <name>onscroll</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Flag indicating that this input element will prevent changes by the user.]]>
+            </description>
+            <name>readonly</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Number of characters used to determine the width of the input element.]]>
+            </description>
+            <name>size</name>
+            <required>false</required>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Inline style of the component.]]>
+            </description>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Style class of the component.]]>
+            </description>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Position of the element in the tabbing order.]]>
+            </description>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Advisory tooltip information.]]>
+            </description>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The placeholder attribute specifies a short hint that describes the expected value of an input field.]]>
+            </description>
+            <name>placeholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Name of the client side widget.]]>
             </description>
             <name>widgetVar</name>
@@ -4860,7 +5228,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Display mode, valid values are'popup' and 'inline'. Default is 'popup'.]]>
             </description>
             <name>mode</name>
             <required>false</required>
@@ -4868,27 +5236,99 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Available themes: default, large, polaroid, pill (horizontal).]]>
             </description>
-            <name>style</name>
+            <name>theme</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Set the theme to light, dark, or auto mode. Default to auto to detect your OS setting.]]>
             </description>
-            <name>styleClass</name>
+            <name>themeMode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Client side callback to execute on value change.]]>
+                <![CDATA[Set the preferred color string format: hex, rgb, hsl, auto, mixed.]]>
             </description>
-            <name>onchange</name>
+            <name>format</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Set to true to enable format toggle buttons in the color picker dialog. This will also force the "format" to auto.]]>
+            </description>
+            <name>formatToggle</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Enable or disable alpha support. When disabled, it will strip the alpha value from the existing color value in all formats. Default true.]]>
+            </description>
+            <name>alpha</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Set to true to always include the alpha value in the color value even if the opacity is 100%. Default false.]]>
+            </description>
+            <name>forceAlpha</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Set to true to hide all the color picker widgets (spectrum, hue, ...) except the swatches. Default false.]]>
+            </description>
+            <name>swatchesOnly</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[A comma separated list of the desired color swatches to display. If omitted or the array is empty, the color swatches will be disabled.]]>
+            </description>
+            <name>swatches</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Focus the color value input when the color picker dialog is opened. Default true.]]>
+            </description>
+            <name>focusInput</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Select and focus the color value input when the color picker dialog is opened. Default false.]]>
+            </description>
+            <name>selectInput</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Show an optional clear button. Default false.]]>
+            </description>
+            <name>clearButton</name>
+            <required>false</required>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Show an optional close button. Default false.]]>
+            </description>
+            <name>closeButton</name>
+            <required>false</required>
+            <type>boolean</type>
         </attribute>
     </tag>
     <tag>
@@ -7092,6 +7532,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[In responsive mode, PrimeFlex can be used to dynamically size columns and responsiveness. Default is false.]]>
+            </description>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -7280,7 +7728,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Layout approach to use, valid values are "tabular" (default) and "grid" for responsive grid.]]>
+                <![CDATA[Layout approach to use, valid values are "tabular" and "grid" (default) for responsive grid.]]>
             </description>
             <name>layout</name>
             <required>false</required>
@@ -16478,6 +16926,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -19297,7 +19753,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'tabular'.]]>
+                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
             </description>
             <name>layout</name>
             <required>false</required>
@@ -20514,6 +20970,22 @@
             <name>showTargetFilter</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for the source filter input element.]]>
+            </description>
+            <name>sourceFilterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for the target filter input element.]]>
+            </description>
+            <name>targetFilterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -22507,6 +22979,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -24472,11 +24952,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Calculates a fixed width based on the width of the maximum option label. Set to false for custom width.]]>
+                <![CDATA[Calculates a fixed width based on the width of the maximum option label. Possible values: auto, true, false.]]>
             </description>
             <name>autoWidth</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -26621,6 +27101,14 @@
             <name>disableOnAjax</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[The aria-label attribute is used to define a string that labels the current element for accessibility.]]>
+            </description>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>

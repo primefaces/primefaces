@@ -27,16 +27,11 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.regex.Pattern;
-
 import javax.faces.FacesException;
 import javax.xml.bind.DatatypeConverter;
 
@@ -48,6 +43,9 @@ public class LangUtils {
     private LangUtils() {
     }
 
+    /**
+     * @deprecated Use {@link LangUtils#isEmpty(String)}} instead
+     */
     @Deprecated
     public static boolean isValueEmpty(String value) {
         return isEmpty(value);
@@ -61,6 +59,9 @@ public class LangUtils {
         return !isEmpty(value);
     }
 
+    /**
+     * @deprecated Use {@link LangUtils#isBlank(String)} instead
+     */
     @Deprecated
     public static boolean isValueBlank(String str) {
         return isBlank(str);
@@ -278,11 +279,24 @@ public class LangUtils {
         return set;
     }
 
+    public static boolean isClassAvailable(String name) {
+        return tryToLoadClassForName(name) != null;
+    }
+
     public static Class tryToLoadClassForName(String name) {
         try {
             return loadClassForName(name);
         }
         catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    public static Method tryToLoadMethodForName(Class<?> clazz, String name, Class<?>... args) {
+        try {
+            return clazz.getDeclaredMethod(name, args);
+        }
+        catch (NoSuchMethodException e) {
             return null;
         }
     }

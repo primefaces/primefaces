@@ -37,7 +37,17 @@ PrimeFaces.locales ['it'] = {
         'datatable.sort.ASC': 'attiva per ordinare la colonna in senso crescente',
         'datatable.sort.DESC': 'attiva per ordinare la colonna in senso descrescente',
         'columntoggler.CLOSE': 'Chiudi',
-        'overlaypanel.CLOSE': 'Chiudi'
+        'overlaypanel.CLOSE': 'Chiudi',
+        'colorpicker.OPEN': 'Apri il selettore di colore',
+        'colorpicker.CLOSE': 'Chiudi il selettore di colore',
+        'colorpicker.CLEAR': 'Cancella il colore selezionato',
+        'colorpicker.MARKER': 'Saturazione: {s}. Luminosità: {v}.',
+        'colorpicker.HUESLIDER': 'Cursore tonalità',
+        'colorpicker.ALPHASLIDER': 'Cursore opacità',
+        'colorpicker.INPUT': 'Campo valore colore',
+        'colorpicker.FORMAT': 'Formato colore',
+        'colorpicker.SWATCH': 'Campione colore',
+        'colorpicker.INSTRUCTION': 'Selettore di saturazione e luminosità. Utilizzare i tasti freccia su, giù, sinistra e destra per selezionare.'
     },
     messages: {  //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Errore di validazione: Valore obbligatorio.',

@@ -32,28 +32,21 @@
                 </p:growl>
                 
                 <h5 style="margin-top:0px">Basic Layout</h5>
-                <p:selectManyCheckbox id="basic" value="#{checkboxView.selectedOptions}">
-                    <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
-                    <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
-                    <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
-                </p:selectManyCheckbox>
-                
-                <h5>Basic Layout - AJAX</h5>
                 <p:selectManyCheckbox id="basicAjax" value="#{checkboxView.selectedOptions}" widgetVar="blub">
                     <p:ajax listener="#{checkboxView.selectedOptionsChanged}" />
                     <f:selectItem itemLabel="Option 1" itemValue="Option 1"/>
                     <f:selectItem itemLabel="Option 2" itemValue="Option 2"/>
                     <f:selectItem itemLabel="Option 3" itemValue="Option 3"/>
                 </p:selectManyCheckbox>
-
-                <h5>Grid Layout</h5>
-                <p:selectManyCheckbox id="grid" value="#{checkboxView.selectedCities}" layout="grid" columns="3" styleClass="grid-checkbox">
-                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
-                </p:selectManyCheckbox>
-
+                
                 <h5>Responsive</h5>
                 <p:selectManyCheckbox id="grid2" value="#{checkboxView.selectedCities2}" layout="responsive"
                                       columns="3">
+                    <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectManyCheckbox>
+                
+                <h5>Grid Layout (deprecated)</h5>
+                <p:selectManyCheckbox id="grid" value="#{checkboxView.selectedCities}" layout="grid" columns="3" styleClass="grid-checkbox">
                     <f:selectItems value="#{checkboxView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectManyCheckbox>
 

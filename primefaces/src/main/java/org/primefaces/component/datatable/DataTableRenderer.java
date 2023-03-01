@@ -28,7 +28,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -46,7 +45,8 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.component.datatable.feature.*;
+import org.primefaces.component.datatable.feature.DataTableFeature;
+import org.primefaces.component.datatable.feature.DataTableFeatures;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
@@ -66,7 +66,7 @@ public class DataTableRenderer extends DataRenderer {
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
 
-        for (DataTableFeature feature : DataTable.FEATURES) {
+        for (DataTableFeature feature : DataTableFeatures.all()) {
             if (feature.shouldDecode(context, table)) {
                 feature.decode(context, table);
             }
@@ -80,7 +80,7 @@ public class DataTableRenderer extends DataRenderer {
         DataTable table = (DataTable) component;
 
         if (table.shouldEncodeFeature(context)) {
-            for (DataTableFeature feature : DataTable.FEATURES) {
+            for (DataTableFeature feature : DataTableFeatures.all()) {
                 if (feature.shouldEncode(context, table)) {
                     feature.encode(context, this, table);
                 }
@@ -104,7 +104,7 @@ public class DataTableRenderer extends DataRenderer {
         encodeScript(context, table);
 
         if (table.isPaginator() && table.getRows() == 0) {
-            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: " + table.getClientId());
+            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: {0}", table.getClientId());
         }
     }
 
@@ -139,17 +139,17 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             if (table.isFilteringCurrentlyActive()) {
-                FilterFeature.getInstance().filter(context, table);
+                DataTableFeatures.filterFeature().filter(context, table);
             }
 
             if (table.isSortingCurrentlyActive()) {
-                SortFeature.getInstance().sort(context, table);
+                DataTableFeatures.sortFeature().sort(context, table);
                 table.setRowIndex(-1); // why?
             }
         }
 
         if (table.isSelectionEnabled()) {
-            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
+            DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
         }
 
         if (table.isPaginator()) {
@@ -1286,7 +1286,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tr");
 
         if (expanded) {
-            RowExpandFeature.getInstance().encodeExpansion(context, this, table, rowIndex);
+            DataTableFeatures.rowExpandFeature().encodeExpansion(context, this, table, rowIndex);
         }
 
         return true;

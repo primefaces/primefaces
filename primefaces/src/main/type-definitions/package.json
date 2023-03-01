@@ -90,6 +90,7 @@
     "@fullcalendar/list": "^5.11.0",
     "@fullcalendar/moment": "^5.11.0",
     "@fullcalendar/timegrid": "^5.11.0",
+    "@melloware/coloris": "^0.18.0",
     "@types/chart.js": "^2.9.37",
     "@types/downloadjs": "^1.4.3",
     "@types/google.maps": "^3.49.2",

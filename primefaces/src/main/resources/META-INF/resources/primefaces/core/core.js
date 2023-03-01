@@ -1413,6 +1413,7 @@
             allDayText: 'All Day',
             moreLinkText: 'More...',
             noEventsText: 'No Events',
+            clear: 'Clear',
             aria: {
                 'paginator.PAGE': 'Page {0}',
                 'calendar.BUTTON': 'Show Calendar',
@@ -1420,7 +1421,17 @@
                 'datatable.sort.DESC': 'activate to sort column descending',
                 'datatable.sort.NONE': 'activate to remove sorting on column',
                 'columntoggler.CLOSE': 'Close',
-                'overlaypanel.CLOSE': 'Close'
+                'overlaypanel.CLOSE': 'Close',
+                'colorpicker.OPEN': 'Open color picker',
+                'colorpicker.CLOSE': 'Close color picker',
+                'colorpicker.CLEAR': 'Clear the selected color',
+                'colorpicker.MARKER': 'Saturation: {s}. Brightness: {v}.',
+                'colorpicker.HUESLIDER': 'Hue slider',
+                'colorpicker.ALPHASLIDER': 'Opacity slider',
+                'colorpicker.INPUT': 'Color value field',
+                'colorpicker.FORMAT': 'Color format',
+                'colorpicker.SWATCH': 'Color swatch',
+                'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
             }
         }
 

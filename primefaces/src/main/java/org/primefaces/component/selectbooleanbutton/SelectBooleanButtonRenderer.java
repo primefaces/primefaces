@@ -137,7 +137,8 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (isValueBlank(label)) {
-            writer.write("ui-button");
+            //For ScreenReader
+            writer.write(getIconOnlyButtonText(title, button.getAriaLabel()));
         }
         else {
             writer.writeText(label, "value");

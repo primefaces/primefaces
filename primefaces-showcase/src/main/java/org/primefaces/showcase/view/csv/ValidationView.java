@@ -23,16 +23,18 @@
  */
 package org.primefaces.showcase.view.csv;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import java.time.LocalDate;
 import java.util.Date;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 @Named
 @RequestScoped
 public class ValidationView {
 
     private String text;
+    private String color;
     private String description;
     private Integer integer;
     private Double doubleNumber;
@@ -139,5 +141,13 @@ public class ValidationView {
 
     public void setLocalDate3(LocalDate localDate) {
         this.localDate3 = localDate;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
