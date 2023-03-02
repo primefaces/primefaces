@@ -22,6 +22,7 @@ locales/locale-hu.js
 locales/locale-in.js
 locales/locale-it.js
 locales/locale-iw.js
+locales/locale-ja.js
 locales/locale-ka.js
 locales/locale-ko.js
 locales/locale-lt.js

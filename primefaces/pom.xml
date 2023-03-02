@@ -1022,6 +1022,9 @@
                                             <resource>META-INF/resources/primefaces/locales/locale-iw.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/locales/locale-ja.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/locales/locale-ka.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
