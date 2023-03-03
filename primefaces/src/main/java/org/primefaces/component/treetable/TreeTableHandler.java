@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.treetable;
 
+import java.util.Locale;
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
@@ -34,6 +35,8 @@ public class TreeTableHandler extends ComponentHandler {
 
     private static final MetaRule SORT_FUNCTION
             = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
+    private static final MetaRule GLOBAL_FILTER_FUNCTION
+            = new MethodRule("globalFilterFunction", Boolean.class, new Class[]{Object.class, Object.class, Locale.class});
 
     public TreeTableHandler(ComponentConfig config) {
         super(config);
@@ -45,6 +48,7 @@ public class TreeTableHandler extends ComponentHandler {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
         metaRuleset.addRule(SORT_FUNCTION);
+        metaRuleset.addRule(GLOBAL_FILTER_FUNCTION);
 
         return metaRuleset;
     }
