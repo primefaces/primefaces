@@ -33,10 +33,12 @@ import org.primefaces.facelets.MethodRule;
 
 public class TreeTableHandler extends ComponentHandler {
 
-    private static final MetaRule SORT_FUNCTION
-            = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
-    private static final MetaRule GLOBAL_FILTER_FUNCTION
-            = new MethodRule("globalFilterFunction", Boolean.class, new Class[]{Object.class, Object.class, Locale.class});
+    private static final MetaRule SORT_FUNCTION = new MethodRule("sortFunction", // TODO unused?
+            Integer.class,
+            new Class[]{Object.class, Object.class});
+    private static final MetaRule GLOBAL_FILTER_FUNCTION = new MethodRule(TreeTable.PropertyKeys.globalFilterFunction.name(),
+            Boolean.class,
+            new Class[]{Object.class, Object.class, Locale.class});
 
     public TreeTableHandler(ComponentConfig config) {
         super(config);
