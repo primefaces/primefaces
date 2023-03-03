@@ -35,8 +35,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class PhotoCamHandler extends ComponentHandler {
 
-    private static final MetaRule LISTENER
-            = new MethodRule("listener", List.class, new Class[]{CaptureEvent.class});
+    private static final MetaRule LISTENER = new MethodRule(PhotoCam.PropertyKeys.listener.name(),
+            List.class,
+            new Class[]{CaptureEvent.class});
 
     public PhotoCamHandler(ComponentConfig config) {
         super(config);

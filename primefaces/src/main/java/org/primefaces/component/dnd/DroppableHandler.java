@@ -33,8 +33,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class DroppableHandler extends ComponentHandler {
 
-    private static final MetaRule DROP_LISTENER
-            = new MethodRule("dropListener", null, new Class[]{DragDropEvent.class});
+    private static final MetaRule DROP_LISTENER = new MethodRule("dropListener", // TODO unused?
+            null,
+            new Class[]{DragDropEvent.class});
 
     public DroppableHandler(ComponentConfig config) {
         super(config);
