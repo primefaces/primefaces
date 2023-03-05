@@ -24,7 +24,6 @@
 package org.primefaces.component.column.renderer;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -36,6 +35,7 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
 import org.primefaces.util.ComponentUtils;
 
+@Deprecated
 public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
 
     @Override

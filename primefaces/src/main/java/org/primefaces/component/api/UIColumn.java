@@ -42,6 +42,11 @@ import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
 
+    enum Facet {
+        HEADER,
+        FOOTER
+    }
+
     MatchMode DEFAULT_FILTER_MATCH_MODE = MatchMode.STARTS_WITH;
 
     /**

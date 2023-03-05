@@ -32,9 +32,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -740,5 +737,35 @@ public class ComponentUtils {
 
     public static boolean isUIRepeat(UIComponent component) {
         return component.getClass().getName().endsWith("UIRepeat");
+    }
+
+    /**
+     * Method to check if component is a UIInstruction
+     * Since {@link javax.faces.component.search.UntargetableComponent} is introduced in 2.3
+     * Check is based on class name
+     */
+    public static boolean isUntargetableComponent(UIComponent component) {
+        String clazz = component.getClass().getSimpleName();
+        return clazz.contains("UIInstructions") && !clazz.contains("UILeaf");
+    }
+
+    /**
+     * Method to check if component is a UIInstruction
+     * Since {@link javax.faces.component.search.UntargetableComponent} is introduced in 2.3
+     * Check is based on class name
+     */
+    public static boolean isTargetableComponent(UIComponent component) {
+        return component.isRendered() && !isUntargetableComponent(component);
+    }
+
+    public static <T extends UIComponent> boolean hasComponentOfType(UIComponent parent, Class<T> clazz) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            UIComponent child = parent.getChildren().get(i);
+            if (child.isRendered() && child.getClass().isAssignableFrom(clazz)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
