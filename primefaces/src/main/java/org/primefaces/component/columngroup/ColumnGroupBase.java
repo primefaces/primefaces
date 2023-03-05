@@ -31,7 +31,11 @@ public abstract class ColumnGroupBase extends UIComponentBase {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public enum PropertyKeys {
-
+        style,
+        styleClass,
+        headerText,
+        footerText,
+        @Deprecated
         type
     }
 
@@ -44,10 +48,44 @@ public abstract class ColumnGroupBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+    public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+    public String getHeaderText() {
+        return (String) getStateHelper().eval(PropertyKeys.headerText, null);
+    }
+
+    public void setHeaderText(String headerText) {
+        getStateHelper().put(PropertyKeys.headerText, headerText);
+    }
+
+    public String getFooterText() {
+        return (String) getStateHelper().eval(PropertyKeys.footerText, null);
+    }
+
+    public void setFooterText(String headerText) {
+        getStateHelper().put(PropertyKeys.footerText, headerText);
+    }
+
+    @Deprecated
     public String getType() {
         return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
+    @Deprecated
     public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
     }
