@@ -44,6 +44,11 @@ import java.util.regex.Pattern;
 
 public interface UIColumn {
 
+    enum Facet {
+        HEADER,
+        FOOTER
+    }
+
     MatchMode DEFAULT_FILTER_MATCH_MODE = MatchMode.STARTS_WITH;
 
     /**

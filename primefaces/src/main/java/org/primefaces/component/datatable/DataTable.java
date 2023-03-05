@@ -24,8 +24,7 @@
 package org.primefaces.component.datatable;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ELContext;
@@ -442,6 +441,31 @@ public class DataTable extends DataTableBase {
         else {
             super.queueEvent(event);
         }
+    }
+
+    public boolean hasFooterColumn() {
+        return hasFooterColumn(this);
+    }
+
+    protected boolean hasFooterColumn(UIComponent component) {
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child.isRendered()) {
+                if ((child instanceof UIColumn)) {
+                    UIColumn column = (UIColumn) child;
+
+                    if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                        return true;
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    if (hasFooterColumn(child)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void loadLazyDataIfRequired() {
@@ -1130,5 +1154,31 @@ public class DataTable extends DataTableBase {
         // see https://github.com/primefaces/primefaces/issues/2154
         return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
                 && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
+    }
+
+    @Override
+    public List<UIColumn> collectColumns() {
+        List<UIColumn> columnsTmp = new ArrayList<>();
+        fetchColumnsRecursively(this, columnsTmp::add);
+        return columnsTmp;
+    }
+
+    protected void fetchColumnsRecursively(UIComponent root, Consumer<UIColumn> visitor) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            UIComponent child = root.getChildren().get(i);
+            if (child.isRendered()) {
+                if (child instanceof Columns) {
+                    Columns cols = (Columns) child;
+                    cols.getDynamicColumns().forEach(visitor);
+                }
+                else if (child instanceof Column) {
+                    UIColumn col = (UIColumn) child;
+                    visitor.accept(col);
+                }
+                else if (child instanceof ColumnGroup) {
+                    fetchColumnsRecursively(child, visitor);
+                }
+            }
+        }
     }
 }

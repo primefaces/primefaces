@@ -4,6 +4,18 @@
                 xmlns:f="jakarta.faces.core"
                 xmlns:p="primefaces" template="/WEB-INF/template.xhtml">
 
+    <ui:define name="head">
+        <style>
+            .ui-datatable-frozenlayout-left {
+                width: 20%;
+            }
+
+            .ui-datatable-frozenlayout-right {
+                width: 80%;
+            }
+        </style>
+    </ui:define>
+
     <ui:define name="title">
         DataTable <span class="subitem">Group</span>
     </ui:define>
@@ -17,114 +29,64 @@
 
     <ui:define name="implementation">
         <div class="card">
-            <h:form>
-                <div class="flex justify-content-between">
-                   <div>
-                   </div>
-                   <div>
-                      <p:commandButton value="XLSX" styleClass="mr-2 mb-2" >
-                          <p:dataExporter type="xlsxstream" target="tblSales tblPlayers" fileName="grouped"/>
-                      </p:commandButton>
-
-                      <p:commandButton value="PDF" styleClass="mr-2 mb-2" >
-                          <p:dataExporter type="pdf" target="tblSales tblPlayers" fileName="grouped"/>
-                      </p:commandButton>
-                   </div>
+            <div class="flex justify-content-between">
+                <div>
                 </div>
-                <p:dataTable id="tblSales" var="sale" value="#{dtGroupView.sales}">
+                <div>
+                    <p:commandButton value="XLSX" styleClass="mr-2 mb-2" >
+                        <p:dataExporter type="xlsxstream" target="tblSales tblPlayers" fileName="grouped"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="PDF" styleClass="mr-2 mb-2" >
+                        <p:dataExporter type="pdf" target="tblSales tblPlayers" fileName="grouped"/>
+                    </p:commandButton>
+                </div>
+            </div>
+
+            <h:form>
+                <p:dataTable id="tblSales" var="sale" value="#{dtGroupView.sales}" columnGroupLegacyEnabled="false" frozenColumns="1" scrollable="true" scrollWidth="500" >
                     <f:facet name="header">
                         <h:outputText value="Product Sales"/>
                     </f:facet>
 
-                    <p:columnGroup type="header">
-                        <p:row>
-                            <p:column rowspan="3" headerText="Product"/>
-                            <p:column colspan="4" headerText="Sale Rate"/>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="2" headerText="Sales"/>
-                            <p:column colspan="2" headerText="Profit"/>
-                        </p:row>
-                        <p:row>
-                            <p:column headerText="Last Year"/>
-                            <p:column headerText="This Year"/>
-                            <p:column headerText="Last Year"/>
-                            <p:column headerText="This Year"/>
-                        </p:row>
-                    </p:columnGroup>
+                    <p:column headerText="Product" field="manufacturer" />
 
-                    <p:column>
-                        <h:outputText value="#{sale.manufacturer}"/>
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{sale.lastYearProfit}%"/>
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{sale.thisYearProfit}%"/>
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{sale.lastYearSale}">
-                            <f:convertNumber type="currency" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{sale.thisYearSale}">
-                            <f:convertNumber type="currency" />
-                        </h:outputText>
-                    </p:column>
-
-                    <p:columnGroup type="footer">
-                        <p:row>
-                            <p:column colspan="3" style="text-align:right" footerText="Totals:"/>
-                            <p:column>
+                    <p:columnGroup headerText="Sale Rate">
+                        <p:columnGroup headerText="Sales">
+                            <p:column headerText="Last Year" field="lastYearSale" />
+                            <p:column headerText="This Year" field="thisYearSale"/>
+                        </p:columnGroup>
+                        <p:columnGroup headerText="Profit">
+                            <p:column headerText="Last Year" field="lastYearProfit">
                                 <f:facet name="footer">
                                     <h:outputText value="#{dtGroupView.lastYearTotal}">
                                         <f:convertNumber type="currency" currencySymbol="$"/>
                                     </h:outputText>
                                 </f:facet>
                             </p:column>
-                            <p:column>
+                            <p:column headerText="This Year" field="thisYearProfit">
                                 <f:facet name="footer">
                                     <h:outputText value="#{dtGroupView.thisYearTotal}">
                                         <f:convertNumber type="currency" currencySymbol="$"/>
                                     </h:outputText>
                                 </f:facet>
                             </p:column>
-                        </p:row>
+                        </p:columnGroup>
                     </p:columnGroup>
+
+                    <f:facet name="tfoot">
+                        <tr>
+                            <td class="ui-state-default" style="text-align:right" colspan="3">Totals:</td>
+                            <td class="ui-state-default">#{dtGroupView.lastYearTotal}</td>
+                            <td class="ui-state-default">#{dtGroupView.thisYearTotal}</td>
+                        </tr>
+                    </f:facet>
 
                     <f:facet name="footer">
                         <h:outputText value="Data between 2013-2014"/>
                     </f:facet>
                 </p:dataTable>
 
-                <p:dataTable id="tblPlayers" var="player" value="#{dtGroupView.players}" style="margin-top:40px">
-                    <f:facet name="header">
-                        <h:outputText value="Dynamic Columns"/>
-                    </f:facet>
-
-                    <p:columnGroup type="header">
-                        <p:row>
-                            <p:column rowspan="2" headerText="Player"/>
-                            <p:column colspan="#{dtGroupView.yearCount}" headerText="Goals"/>
-                        </p:row>
-                        <p:row>
-                            <p:columns var="year" value="#{dtGroupView.years}" sortBy="#{player.getGoals(year)}" filterBy="#{player.getGoals(year)}" headerText="#{year}"/>
-                        </p:row>
-                    </p:columnGroup>
-
-                    <p:column>
-                        <h:outputText value="#{player.name}"/>
-                    </p:column>
-
-                    <p:columns value="#{dtGroupView.years}" var="year">
-                        <h:outputText value="#{player.getGoals(year)}"/>
-                    </p:columns>
-
-                    <f:facet name="footer">
-                        <h:outputText value="Data between 2010-2014" styleClass="font-bold" />
-                    </f:facet>
-                </p:dataTable>
             </h:form>
         </div>
     </ui:define>

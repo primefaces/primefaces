@@ -47,6 +47,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         cellNavigation,
         cellSeparator,
         clientCache,
+        columnGroupLegacyEnabled,
         dataLocale,
         dir,
         disableContextMenuIfEmpty,
@@ -776,4 +777,14 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public void setCellNavigation(boolean cellNavigation) {
         getStateHelper().put(PropertyKeys.cellNavigation, cellNavigation);
     }
+}
+
+    public boolean isColumnGroupLegacyEnabled() {
+        return (boolean) getStateHelper().eval(PropertyKeys.columnGroupLegacyEnabled, true);
+    }
+
+    public void setColumnGroupLegacyEnabled(boolean columnGroupLegacyEnabled) {
+        getStateHelper().put(PropertyKeys.columnGroupLegacyEnabled, columnGroupLegacyEnabled);
+    }
+
 }

@@ -284,6 +284,7 @@ public interface ColumnAware {
         return null;
     }
 
+    @Deprecated
     default ColumnGroup getColumnGroup(String type) {
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
