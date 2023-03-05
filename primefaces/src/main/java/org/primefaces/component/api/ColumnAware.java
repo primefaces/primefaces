@@ -42,6 +42,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ColumnComparators;
 import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
@@ -325,30 +326,7 @@ public interface ColumnAware {
         Map<String, ColumnMeta> columnMeta = getColumnMeta();
 
         // sort by displayOrder
-        columns.sort((c1, c2) -> {
-            if (c1 instanceof DynamicColumn) {
-                ((DynamicColumn) c1).applyStatelessModel();
-            }
-
-            Integer dp1 = c1.getDisplayPriority();
-            ColumnMeta cm1 = columnMeta.get(c1.getColumnKey());
-            if (cm1 != null && cm1.getDisplayPriority() != null) {
-                dp1 = cm1.getDisplayPriority();
-            }
-
-            if (c2 instanceof DynamicColumn) {
-                ((DynamicColumn) c2).applyStatelessModel();
-            }
-
-            Integer dp2 = c2.getDisplayPriority();
-            ColumnMeta cm2 = columnMeta.get(c2.getColumnKey());
-            if (cm2 != null && cm2.getDisplayPriority() != null) {
-                dp2 = cm2.getDisplayPriority();
-            }
-
-            return dp1.compareTo(dp2);
-        });
-
+        columns.sort(ColumnComparators.displayOrder(columnMeta));
         return columns;
     }
 

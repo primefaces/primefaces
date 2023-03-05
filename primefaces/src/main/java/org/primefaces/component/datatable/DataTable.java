@@ -1160,6 +1160,7 @@ public class DataTable extends DataTableBase {
     public List<UIColumn> collectColumns() {
         List<UIColumn> columnsTmp = new ArrayList<>();
         fetchColumnsRecursively(this, columnsTmp::add);
+        columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
         return columnsTmp;
     }
 

@@ -23,17 +23,17 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
-import jakarta.faces.view.ViewScoped;
-import org.primefaces.showcase.domain.Player;
-import org.primefaces.showcase.domain.Sale;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import org.primefaces.showcase.domain.Player;
+import org.primefaces.showcase.domain.Sale;
 
 @Named("dtGroupView")
 @ViewScoped
@@ -41,6 +41,9 @@ public class GroupView implements Serializable {
 
     private static final String[] MANUFACTORS;
     private static final String[] PLAYER_NAMES;
+
+    private boolean frozenColumns = false;
+    private int nbFrozenColumns = 0;
 
     private List<Sale> sales;
     private Integer lastYearTotal;
@@ -143,5 +146,18 @@ public class GroupView implements Serializable {
 
     private int getRandomGoals() {
         return (int) (Math.random() * 50);
+    }
+
+    public boolean isFrozenColumns() {
+        return frozenColumns;
+    }
+
+    public void setFrozenColumns(boolean frozenColumns) {
+        this.nbFrozenColumns = frozenColumns ? 1 : 0;
+        this.frozenColumns = frozenColumns;
+    }
+
+    public int getNbFrozenColumns() {
+        return nbFrozenColumns;
     }
 }

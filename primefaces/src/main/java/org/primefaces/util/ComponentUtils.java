@@ -807,9 +807,7 @@ public class ComponentUtils {
     }
 
     /**
-     * Method to check if component is a UIInstruction
-     * Since {@link javax.faces.component.search.UntargetableComponent} is introduced in 2.3
-     * Check is based on class name
+     * Method to check if component is rendered and not a UntargetableComponent (see {@link #isUntargetableComponent(UIComponent)})
      */
     public static boolean isTargetableComponent(UIComponent component) {
         return component.isRendered() && !isUntargetableComponent(component);
