@@ -484,10 +484,6 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeFrozenScrollableTable(FacesContext context, DataTable table, int frozenColumns) throws IOException {
-
-    }
-
     protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass,
                                          String tableStyle, String tableStyleClass) throws IOException {
 
@@ -690,7 +686,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
+        if ("multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
             encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
@@ -1042,7 +1038,7 @@ public class DataTableRenderer extends DataRenderer {
 
         ColumnNode root = ColumnNode.root(table);
         AtomicInteger depth = new AtomicInteger();
-        createFlatColumnsFromColumnsTree(root, matrix, depth, columnStart, columnEnd);
+        flatTableColumns(root, matrix, depth, columnStart, columnEnd);
 
         for (List<ColumnNode> rows : matrix) {
             writer.startElement("tr", null);
@@ -1081,16 +1077,16 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tr");
     }
 
-    protected void createFlatColumnsFromColumnsTree(ColumnNode root, List<List<ColumnNode>> nodes, AtomicInteger depth, int columnStart, int columnEnd) {
+    protected void flatTableColumns(ColumnNode root, List<List<ColumnNode>> nodes, AtomicInteger depth, int columnStart, int columnEnd) {
         int idx = -1;
-        boolean traversed = false;
+        boolean gotThrough = false;
         for (UIComponent child : root.getChildren()) {
             if (ComponentUtils.isTargetableComponent(child)) {
                 idx++;
 
-                if (!traversed) {
+                if (!gotThrough) {
                     depth.incrementAndGet();
-                    traversed = true;
+                    gotThrough = true;
                 }
 
                 int level = root.level + 1;
@@ -1118,7 +1114,7 @@ public class DataTableRenderer extends DataRenderer {
                 else if (child instanceof ColumnGroup) {
                     ColumnNode column = new ColumnNode(root, child);
                     row.add(column);
-                    createFlatColumnsFromColumnsTree(column, nodes, depth, columnStart, columnEnd);
+                    flatTableColumns(column, nodes, depth, columnStart, columnEnd);
                 }
             }
         }
@@ -1493,7 +1489,7 @@ public class DataTableRenderer extends DataRenderer {
         String tfootClientId = (tfootId == null) ? table.getClientId(context) + "_foot" : tfootId;
 
         if (!table.isColumnGroupLegacyEnabled()) {
-            UIComponent tfooter = table.getFacet("tfoot");
+            UIComponent tfooter = table.getFacet("tfooter");
             boolean hasFooterColumn = table.hasFooterColumn();
             if (tfooter == null && !hasFooterColumn) {
                 return;
@@ -1541,16 +1537,12 @@ public class DataTableRenderer extends DataRenderer {
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
-
-                if (column instanceof Column) {
-                    encodeColumnFooter(context, table, column);
-                }
-                else if (column instanceof DynamicColumn) {
+                if (column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
-
-                    encodeColumnFooter(context, table, dynamicColumn);
                 }
+
+                encodeColumnFooter(context, table, column);
             }
 
             writer.endElement("tr");
