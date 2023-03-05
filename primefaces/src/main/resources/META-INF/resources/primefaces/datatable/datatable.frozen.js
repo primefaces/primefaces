@@ -136,13 +136,13 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         }
 
         if (this.hasColGroup()) {
-            const frozenLeftHeight = this.frozenThead.height();
-            const frozenRightHeight = this.scrollThead.height();
+            const frozenHeight = this.frozenThead.height();
+            const scrollHeight = this.scrollThead.height();
 
-            if (frozenLeftHeight > frozenRightHeight) {
-                this.scrollThead.height(frozenLeftHeight);
-            } else if (frozenLeftHeight < frozenRightHeight) {
-                this.frozenThead.height(frozenRightHeight);
+            if (frozenHeight > scrollHeight) {
+                this.scrollThead.height(frozenHeight);
+            } else if (frozenHeight < scrollHeight) {
+                this.frozenThead.height(scrollHeight);
             }
         }
 
