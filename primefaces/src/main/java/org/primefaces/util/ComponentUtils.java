@@ -50,6 +50,7 @@ import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.*;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
@@ -753,7 +754,9 @@ public class ComponentUtils {
      * Method to check if component is rendered and not a UntargetableComponent (see {@link #isUntargetableComponent(UIComponent)})
      */
     public static boolean isTargetableComponent(UIComponent component) {
-        return component.isRendered() && !isUntargetableComponent(component);
+        // ignore UIColumns#rendered since it can be conditioned by his own var attribute,
+        // only when UIColumn#applyStatelessModel is called it'll be possible to decide whether it's rendered or not
+        return component instanceof Columns || component.isRendered() && !isUntargetableComponent(component);
     }
 
     public static <T extends UIComponent> boolean hasComponentOfType(UIComponent parent, Class<T> clazz) {
