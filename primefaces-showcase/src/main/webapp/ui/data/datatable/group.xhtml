@@ -70,20 +70,20 @@
                     </p:columnGroup>
 
                     <f:facet name="tfooter">
-                        <tr>
-                            <td class="ui-state-default">Table footer (tfoot) using table tfooter facet with plain html</td>
-                            <td class="ui-state-default" style="text-align:right" colspan="2">Totals:</td>
-                            <td class="ui-state-default">
+                        <p:row >
+                            <p:column>Table footer (tfoot) using table tfooter</p:column>
+                            <p:column colspan="2" style="text-align:right">Totals:</p:column>
+                            <p:column>
                                 <h:outputText value="#{dtGroupView.lastYearTotal}">
                                     <f:convertNumber type="currency" currencySymbol="$"/>
                                 </h:outputText>
-                            </td>
-                            <td class="ui-state-default">
+                            </p:column>
+                            <p:column>
                                 <h:outputText value="#{dtGroupView.thisYearTotal}">
                                     <f:convertNumber type="currency" currencySymbol="$"/>
                                 </h:outputText>
-                            </td>
-                        </tr>
+                            </p:column>
+                        </p:row>
                     </f:facet>
 
                     <f:facet name="footer">
@@ -98,10 +98,10 @@
                         <h:outputText value="Dynamic Columns"/>
                     </f:facet>
 
-                    <p:column field="name"/>
+                    <p:column field="name" />
 
                     <p:columnGroup headerText="Goals">
-                        <p:columns value="#{dtGroupView.years}" var="year" headerText="#{year}">
+                        <p:columns value="#{dtGroupView.years}" var="year" headerText="#{year}" rendered="#{year ne 2010}">
                             <h:outputText value="#{player.getGoals(year)}"/>
                         </p:columns>
                     </p:columnGroup>

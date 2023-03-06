@@ -1158,16 +1158,20 @@ public class DataTable extends DataTableBase {
 
     @Override
     public List<UIColumn> collectColumns() {
-        List<UIColumn> columnsTmp = new ArrayList<>();
-        fetchColumnsRecursively(this, columnsTmp::add);
-        columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
-        return columnsTmp;
+        if (!isColumnGroupLegacyEnabled()) {
+            List<UIColumn> columnsTmp = new ArrayList<>();
+            fetchColumnsRecursively(this, columnsTmp::add);
+            columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
+            return columnsTmp;
+        }
+
+        return super.collectColumns();
     }
 
     protected void fetchColumnsRecursively(UIComponent root, Consumer<UIColumn> visitor) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
-            if (child.isRendered()) {
+            if (ComponentUtils.isTargetableComponent(child)) {
                 if (child instanceof Columns) {
                     Columns cols = (Columns) child;
                     cols.getDynamicColumns().forEach(visitor);

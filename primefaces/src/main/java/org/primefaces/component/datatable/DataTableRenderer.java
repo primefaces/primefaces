@@ -1051,15 +1051,62 @@ public class DataTableRenderer extends DataRenderer {
         context.getAttributes().remove(Constants.HELPER_RENDERER);
     }
 
+    protected void encodeColumnFooterUsingRowColumnComponent(FacesContext context, DataTable table, UIComponent footer, int columnStart, int columnEnd) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        List<UIComponent> children = footer instanceof Row ? Collections.singletonList(footer) : footer.getChildren();
+        for (UIComponent child : children) {
+            if (child.isRendered()) {
+                if (child instanceof Row) {
+                    Row row = (Row) child;
+                    String rowClass = row.getStyleClass();
+                    String rowStyle = row.getStyle();
+
+                    writer.startElement("tr", null);
+                    if (rowClass != null) {
+                        writer.writeAttribute("class", rowClass, null);
+                    }
+                    if (rowStyle != null) {
+                        writer.writeAttribute("style", rowStyle, null);
+                    }
+
+                    for (int i = columnStart; i < Math.min(row.getChildCount(), columnEnd); i++) {
+                        UIComponent column = row.getChildren().get(i);
+                        if (ComponentUtils.isTargetableComponent(column)) {
+                            if (column instanceof Column) {
+                                encodeCell(context, table, (UIColumn) column, false, false, i);
+                            }
+                            else if (column instanceof Columns) {
+                                List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
+                                for (DynamicColumn dynaColumn : dynamicColumns) {
+                                    dynaColumn.applyModel();
+                                    encodeCell(context, table, (UIColumn) column, false, false, i);
+                                }
+                            }
+                            else {
+                                column.encodeAll(context);
+                            }
+                        }
+                    }
+
+                    writer.endElement("tr");
+                }
+                else {
+                    child.encodeAll(context);
+                }
+            }
+        }
+    }
+
     protected void encodeColumnGroupHeaders(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         List<List<ColumnNode>> matrix = new ArrayList<>();
 
         ColumnNode root = ColumnNode.root(table);
-        AtomicInteger depth = new AtomicInteger();
-        flatTableColumns(root, matrix, depth, columnStart, columnEnd);
+        flatTableColumns(root, matrix, columnStart, columnEnd);
 
+        int depth = matrix.size();
         for (List<ColumnNode> rows : matrix) {
             writer.startElement("tr", null);
             writer.writeAttribute("role", "row", null);
@@ -1069,7 +1116,7 @@ public class DataTableRenderer extends DataRenderer {
                     if (column.uiComp instanceof DynamicColumn) {
                         ((DynamicColumn) column.uiComp).applyStatelessModel();
                     }
-                    encodeColumnHeader(context, table, (UIColumn) column.uiComp, (depth.get() - column.level) + 1, column.colspan);
+                    encodeColumnHeader(context, table, (UIColumn) column.uiComp, (depth- column.level) + 1, column.colspan);
                 }
                 else if (column.uiComp instanceof ColumnGroup) {
                     encodeColumnGroupHeader(context, table, (ColumnGroup) column.uiComp, 1, column.colspan);
@@ -1097,17 +1144,12 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tr");
     }
 
-    protected void flatTableColumns(ColumnNode root, List<List<ColumnNode>> nodes, AtomicInteger depth, int columnStart, int columnEnd) {
+    protected void flatTableColumns(ColumnNode root, List<List<ColumnNode>> nodes, int columnStart, int columnEnd) {
         int idx = -1;
-        boolean gotThrough = false;
-        for (UIComponent child : root.getChildren()) {
+        for (int i = 0; i < root.getChildren().size(); i++) {
+            UIComponent child = root.getChildren().get(i);
             if (ComponentUtils.isTargetableComponent(child)) {
                 idx++;
-
-                if (!gotThrough) {
-                    depth.incrementAndGet();
-                    gotThrough = true;
-                }
 
                 int level = root.level + 1;
                 if (level == 1 && idx < columnStart) { // frozen col start
@@ -1118,7 +1160,7 @@ public class DataTableRenderer extends DataRenderer {
                     break;
                 }
 
-                if (nodes.size() < root.level + 1) {
+                if (nodes.size() < level) {
                     nodes.add(new ArrayList<>());
                 }
 
@@ -1129,12 +1171,15 @@ public class DataTableRenderer extends DataRenderer {
                 }
                 else if (child instanceof Columns) {
                     Columns columns = (Columns) child;
-                    columns.getDynamicColumns().forEach(o -> row.add(new ColumnNode(root, o)));
+                    List<DynamicColumn> dynaColumns = columns.getDynamicColumns();
+                    if (!dynaColumns.isEmpty()) {
+                        dynaColumns.forEach(o -> row.add(new ColumnNode(root, o)));
+                    }
                 }
                 else if (child instanceof ColumnGroup) {
                     ColumnNode column = new ColumnNode(root, child);
                     row.add(column);
-                    flatTableColumns(column, nodes, depth, columnStart, columnEnd);
+                    flatTableColumns(column, nodes, columnStart, columnEnd);
                 }
             }
         }
@@ -1512,7 +1557,6 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
 
-
         String tfootClientId = (tfootId == null) ? table.getClientId(context) + "_foot" : tfootId;
 
         if (!table.isColumnGroupLegacyEnabled()) {
@@ -1528,7 +1572,7 @@ public class DataTableRenderer extends DataRenderer {
                 encodeColumnFooters(context, table, columnStart, columnEnd);
             }
             if (tfooter != null) {
-                tfooter.encodeAll(context);
+                encodeColumnFooterUsingRowColumnComponent(context, table, tfooter, columnStart, columnEnd);
             }
 
             writer.endElement("tfoot");

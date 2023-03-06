@@ -100,8 +100,13 @@ public class Columns extends ColumnsBase {
 
             for (int i = 0; i < getRowCount(); i++) {
                 DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
-                dynamicColumns.add(dynaColumn);
+                dynaColumn.applyStatelessModel();
+                if (dynaColumn.isRendered()) {
+                    dynamicColumns.add(dynaColumn);
+                }
             }
+
+            setRowIndex(-1);
         }
 
         return dynamicColumns;
