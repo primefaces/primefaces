@@ -175,6 +175,7 @@ public class DataTable extends DataTableBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
 
     private boolean reset = false;
     private List<UIColumn> columns;
@@ -519,8 +520,11 @@ public class DataTable extends DataTableBase {
         Map<String, FilterMeta> filterBy = getActiveFilterMeta();
         model.setRowCount(model.count(filterBy));
 
+        setFirst(offset);
+
         if (calculateFirst()) {
             offset = getFirst();
+            LOGGER.warning(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
         }
 
         FacesContext context = getFacesContext();
@@ -532,7 +536,7 @@ public class DataTable extends DataTableBase {
         List<?> data = model.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
         model.setPageSize(rows);
         // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
-        model.setWrappedData(Optional.ofNullable(data).orElse(Collections.emptyList()));
+        model.setWrappedData(data != null ? data : Collections.emptyList());
 
         //Update paginator/livescroller for callback
         if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
