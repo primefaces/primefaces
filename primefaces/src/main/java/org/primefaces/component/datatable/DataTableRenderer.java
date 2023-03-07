@@ -1116,7 +1116,7 @@ public class DataTableRenderer extends DataRenderer {
                     if (column.uiComp instanceof DynamicColumn) {
                         ((DynamicColumn) column.uiComp).applyStatelessModel();
                     }
-                    encodeColumnHeader(context, table, (UIColumn) column.uiComp, (depth- column.level) + 1, column.colspan);
+                    encodeColumnHeader(context, table, (UIColumn) column.uiComp, (depth - column.level) + 1, column.colspan);
                 }
                 else if (column.uiComp instanceof ColumnGroup) {
                     encodeColumnGroupHeader(context, table, (ColumnGroup) column.uiComp, 1, column.colspan);
