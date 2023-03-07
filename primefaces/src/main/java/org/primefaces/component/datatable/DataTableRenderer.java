@@ -1051,10 +1051,10 @@ public class DataTableRenderer extends DataRenderer {
         context.getAttributes().remove(Constants.HELPER_RENDERER);
     }
 
-    protected void encodeColumnFooterUsingRowColumnComponent(FacesContext context, DataTable table, UIComponent footer, int columnStart, int columnEnd) throws IOException {
+    protected void encodeTFooter(FacesContext context, DataTable table, UIComponent tfooter, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        List<UIComponent> children = footer instanceof Row ? Collections.singletonList(footer) : footer.getChildren();
+        List<UIComponent> children = tfooter instanceof Row ? Collections.singletonList(tfooter) : tfooter.getChildren();
         for (UIComponent child : children) {
             if (child.isRendered()) {
                 if (child instanceof Row) {
@@ -1572,7 +1572,7 @@ public class DataTableRenderer extends DataRenderer {
                 encodeColumnFooters(context, table, columnStart, columnEnd);
             }
             if (tfooter != null) {
-                encodeColumnFooterUsingRowColumnComponent(context, table, tfooter, columnStart, columnEnd);
+                encodeTFooter(context, table, tfooter, columnStart, columnEnd);
             }
 
             writer.endElement("tfoot");
