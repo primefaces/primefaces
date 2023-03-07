@@ -829,6 +829,13 @@ div.ui-button, .ui-splitbutton {
     position: absolute;
 }
 
+.ui-password-masked.ui-password > input::-ms-reveal,
+.ui-password-masked.ui-password > input::-ms-clear,
+.ui-password-unmasked.ui-password > input::-ms-reveal,
+.ui-password-unmasked.ui-password > input::-ms-clear {
+    display: none;
+}
+
 /* OutputLabel */
 .ui-outputlabel.ui-state-error {
     border:0 none;
