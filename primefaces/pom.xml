@@ -18,6 +18,7 @@
 
     <properties>
         <minify.disabled>true</minify.disabled>
+        <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
     </properties>
 
@@ -180,7 +181,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.72</version>
+            <version>9.0.73</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -936,6 +937,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <skip>${jakarta.jar.skip}</skip>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <shadedClassifierName>jakarta</shadedClassifierName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -1018,6 +1020,9 @@
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/locales/locale-iw.js</resource>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                            <resource>META-INF/resources/primefaces/locales/locale-ja.js</resource>
                                         </transformer>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                             <resource>META-INF/resources/primefaces/locales/locale-ka.js</resource>
@@ -1183,7 +1188,7 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>8.1.1</version>
+                        <version>8.1.2</version>
                         <configuration>
                             <skipProvidedScope>false</skipProvidedScope>
                             <skipRuntimeScope>false</skipRuntimeScope>
@@ -1208,11 +1213,19 @@
                 <maven.test.skip>true</maven.test.skip>
                 <maven.javadoc.skip>true</maven.javadoc.skip>
                 <maven.source.skip>true</maven.source.skip>
+                <jakarta.jar.skip>true</jakarta.jar.skip>
                 <checkstyle.skip>true</checkstyle.skip>
                 <license.skipCheckLicense>true</license.skipCheckLicense>
                 <license.skipAddThirdParty>true</license.skipAddThirdParty>
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
             </properties>
+        </profile>
+        <!-- Convenience profile to name the jar -debug -->
+        <profile>
+            <id>debug</id>
+            <build>
+                 <finalName>${project.artifactId}-debug-${project.version}</finalName>
+            </build>
         </profile>
         <!-- Generates the JavaScript Api docs in the target directory, to check whether the docs compile -->
         <!-- This DOES NOT update the docs in docs/jsdoc, use the profile "jsdoc-update" for that (see below) -->

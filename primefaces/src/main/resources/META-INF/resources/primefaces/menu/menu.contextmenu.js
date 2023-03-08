@@ -129,6 +129,46 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
     /**
      * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this._cleanup();
+        this._super(cfg);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this._super();
+        this._cleanup();
+    },
+
+    /**
+    * Clean up this widget and remove events from the DOM.
+    * @private
+    */
+    _cleanup: function() {
+        if (this.cfg.target === undefined) {
+            var event = 'contextmenu.' + this.id + '_contextmenu';
+            $(document).off(event);
+            if (PrimeFaces.env.isTouchable(this.cfg)) {
+                $(document).swipe().destroy();
+            }
+        }
+        else {
+            var event = this.cfg.event + '.' + this.id + '_contextmenu';
+            $(document).off(event, this.jqTargetId);
+            if (PrimeFaces.env.isTouchable(this.cfg)) {
+                this.jqTarget.swipe().destroy();
+            }
+        }
+    },
+
+    /**
+     * @override
      * @protected
      * @inheritdoc
      */

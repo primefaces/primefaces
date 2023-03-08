@@ -696,7 +696,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     .attr("filterMatchMode", menu.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", menu.getFilterFunction(), null)
                     .attr("caseSensitive", menu.isCaseSensitive(), false)
-                    .attr("filterPlaceholder", menu.getFilterPlaceholder(), null);
+                    .attr("filterPlaceholder", menu.getFilterPlaceholder(), null)
+                    .attr("filterNormalize", menu.isFilterNormalize(), false);
         }
 
         wb.attr("panelStyle", menu.getPanelStyle(), null).attr("panelStyleClass", menu.getPanelStyleClass(), null);
