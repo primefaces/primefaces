@@ -520,17 +520,21 @@ public class DataTable extends DataTableBase {
         Map<String, FilterMeta> filterBy = getActiveFilterMeta();
         model.setRowCount(model.count(filterBy));
 
+        FacesContext context = getFacesContext();
+        boolean clientCacheRequest = isClientCacheRequest(context);
+        if (clientCacheRequest) {
+            offset += rows;
+        }
+
         setFirst(offset);
 
         if (calculateFirst()) {
             offset = getFirst();
             LOGGER.warning(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
-        }
-
-        FacesContext context = getFacesContext();
-        if (isClientCacheRequest(context)) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            offset = Integer.parseInt(params.get(getClientId(context) + "_first")) + rows;
+            if (clientCacheRequest) {
+                LOGGER.warning(() -> "DataTable#loadLazyScrollData: fetching next page has been canceled due to overflow (first >= rowCount)");
+                return;
+            }
         }
 
         List<?> data = model.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
@@ -541,13 +545,6 @@ public class DataTable extends DataTableBase {
         //Update paginator/livescroller for callback
         if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
             PrimeFaces.current().ajax().addCallbackParam("totalRecords", model.getRowCount());
-        }
-    }
-
-    public void clearLazyCache() {
-        if (getDataModel() instanceof LazyDataModel) {
-            LazyDataModel model = (LazyDataModel) getDataModel();
-            model.setWrappedData(null);
         }
     }
 

@@ -331,11 +331,11 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public void updatePaginationData(FacesContext context) {
         setRowIndex(-1);
-        String componentClientId = getClientId(context);
+        String clientId = getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String firstParam = params.get(componentClientId + "_first");
-        String rowsParam = params.get(componentClientId + "_rows");
+        String firstParam = params.get(clientId + "_first");
+        String rowsParam = params.get(clientId + "_rows");
 
         if (!isRowsPerPageValid(rowsParam)) {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
