@@ -1220,6 +1220,13 @@
                 <license.skipAggregateDownloadLicenses>true</license.skipAggregateDownloadLicenses>
             </properties>
         </profile>
+        <!-- Convenience profile to name the jar -debug -->
+        <profile>
+            <id>debug</id>
+            <build>
+                 <finalName>${project.artifactId}-debug-${project.version}</finalName>
+            </build>
+        </profile>
         <!-- Generates the JavaScript Api docs in the target directory, to check whether the docs compile -->
         <!-- This DOES NOT update the docs in docs/jsdoc, use the profile "jsdoc-update" for that (see below) -->
         <!-- Use "-Djsdoc.skip.typedoc=true" if you only want to check and lint the declarations file -->
