@@ -24,7 +24,10 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +40,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -810,66 +812,6 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
         String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
 
-        if (hasFilterOptions(column)) {
-            encodeFilterInputSelect(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
-        }
-        else {
-            encodeFilterInputText(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
-        }
-    }
-
-    private boolean hasFilterOptions(UIColumn column) {
-        boolean hasFilterOptionsVE = column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) != null;
-        if (!hasFilterOptionsVE) {
-            return false;
-        }
-
-        SelectItem[] filterOptions = getFilterOptions(column);
-        return filterOptions != null && filterOptions.length != 0;
-    }
-
-    protected void encodeFilterInputSelect(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
-
-        filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
-
-        writer.startElement("select", null);
-        writer.writeAttribute("id", filterId, null);
-        writer.writeAttribute("name", filterId, null);
-        writer.writeAttribute("class", filterStyleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
-
-        if (disableTabbing) {
-            writer.writeAttribute("tabindex", "-1", null);
-        }
-
-        SelectItem[] itemsArray = getFilterOptions(column);
-
-        for (SelectItem item : itemsArray) {
-            Object itemValue = item.getValue();
-
-            writer.startElement("option", null);
-            writer.writeAttribute("value", item.getValue(), null);
-            if (itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
-                writer.writeAttribute("selected", "selected", null);
-            }
-
-            if (item.isEscape()) {
-                writer.writeText(item.getLabel(), "value");
-            }
-            else {
-                writer.write(item.getLabel());
-            }
-
-            writer.endElement("option");
-        }
-
-        writer.endElement("select");
-    }
-
-    protected void encodeFilterInputText(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
-
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
                            : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
@@ -918,20 +860,6 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         return filterValue;
-    }
-
-    protected SelectItem[] getFilterOptions(UIColumn column) {
-        Object options = column.getFilterOptions();
-
-        if (options instanceof SelectItem[]) {
-            return (SelectItem[]) options;
-        }
-        else if (options instanceof Collection<?>) {
-            return ((Collection<SelectItem>) column.getFilterOptions()).toArray(new SelectItem[]{});
-        }
-        else {
-            throw new FacesException("Filter options for column " + column.getClientId() + " should be a SelectItem array or collection");
-        }
     }
 
     public void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
