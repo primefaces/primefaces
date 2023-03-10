@@ -26,7 +26,6 @@ package org.primefaces.component.api;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
-
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -897,6 +896,7 @@ public class UIData extends javax.faces.component.UIData {
         return false;
     }
 
+    @Deprecated
     protected List<UIComponent> getIterableChildren() {
         return getChildren();
     }

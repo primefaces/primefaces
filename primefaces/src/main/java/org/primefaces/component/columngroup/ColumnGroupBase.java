@@ -34,7 +34,6 @@ public abstract class ColumnGroupBase extends UIComponentBase {
         style,
         styleClass,
         headerText,
-        footerText,
         @Deprecated
         type
     }
@@ -70,14 +69,6 @@ public abstract class ColumnGroupBase extends UIComponentBase {
 
     public void setHeaderText(String headerText) {
         getStateHelper().put(PropertyKeys.headerText, headerText);
-    }
-
-    public String getFooterText() {
-        return (String) getStateHelper().eval(PropertyKeys.footerText, null);
-    }
-
-    public void setFooterText(String headerText) {
-        getStateHelper().put(PropertyKeys.footerText, headerText);
     }
 
     @Deprecated
