@@ -163,9 +163,9 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void processPhase(FacesContext context, PhaseId phaseId) {
-        processFacets(context, phaseId);
+        processFacets(context, this, phaseId);
         if (requiresColumns()) {
-            processColumnFacets(context, phaseId);
+            processColumnFacets(context, this, phaseId);
         }
 
         if (shouldSkipChildren(context)) {
@@ -177,17 +177,17 @@ public class UIData extends javax.faces.component.UIData {
         setRowIndex(-1);
     }
 
-    protected void processFacets(FacesContext context, PhaseId phaseId) {
-        if (getFacetCount() > 0) {
-            for (UIComponent facet : getFacets().values()) {
+    protected void processFacets(FacesContext context, UIComponent root, PhaseId phaseId) {
+        if (root.getFacetCount() > 0 && root.isRendered()) {
+            for (UIComponent facet : root.getFacets().values()) {
                 process(context, facet, phaseId);
             }
         }
     }
 
-    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
+    protected void processColumnFacets(FacesContext context, UIComponent root, PhaseId phaseId) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            UIComponent child = root.getChildren().get(i);
             if (child.isRendered() && (child.getFacetCount() > 0)) {
                 for (UIComponent facet : child.getFacets().values()) {
                     process(context, facet, phaseId);
@@ -313,9 +313,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
-        String containerClientId = sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
-
-        return containerClientId;
+        return sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
     }
 
     @Override
@@ -679,7 +677,7 @@ public class UIData extends javax.faces.component.UIData {
                 }
 
                 Set<UIComponent> rejectedChildren = new HashSet<>();
-                if (requiresColumns() && visitColumnsAndColumnFacets(context, callback, visitRows, rejectedChildren)) {
+                if (requiresColumns() && visitColumnsAndColumnFacets(context, this, callback, visitRows, rejectedChildren)) {
                     return true;
                 }
 
@@ -716,14 +714,15 @@ public class UIData extends javax.faces.component.UIData {
         return false;
     }
 
-    protected boolean visitColumnsAndColumnFacets(VisitContext context, VisitCallback callback, boolean visitRows, Set<UIComponent> rejectedChildren) {
+    protected boolean visitColumnsAndColumnFacets(VisitContext context, UIComponent root, VisitCallback callback,
+                                                  boolean visitRows, Set<UIComponent> rejectedChildren) {
         if (visitRows) {
             setRowIndex(-1);
         }
 
-        if (getChildCount() > 0) {
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent child = getChildren().get(i);
+        if (root.getChildCount() > 0) {
+            for (int i = 0; i < root.getChildCount(); i++) {
+                UIComponent child = root.getChildren().get(i);
                 VisitResult result = context.invokeVisitCallback(child, callback); // visit the column directly
                 if (result == VisitResult.COMPLETE) {
                     return true;
@@ -756,44 +755,7 @@ public class UIData extends javax.faces.component.UIData {
                     }
                 }
                 else if (child instanceof ColumnGroup) {
-                    visitColumnGroup(context, callback, (ColumnGroup) child);
-                }
-            }
-        }
-
-        return false;
-    }
-
-    protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {
-        if (group.getChildCount() > 0) {
-            for (int i = 0; i < group.getChildCount(); i++) {
-                UIComponent row = group.getChildren().get(i);
-                if (row.getChildCount() > 0) {
-                    for (int j = 0; j < row.getChildCount(); j++) {
-                        UIComponent col = row.getChildren().get(j);
-                        if (col instanceof Column) {
-                            boolean value = visitColumnFacets(context, callback, col);
-                            if (value) {
-                                return true;
-                            }
-                        }
-                        else if (col instanceof Columns) {
-                            if (col.getFacetCount() > 0) {
-                                Columns columns = (Columns) col;
-                                for (int k = 0; k < columns.getRowCount(); k++) {
-                                    columns.setRowIndex(k);
-
-                                    boolean value = visitColumnFacets(context, callback, columns);
-                                    if (value) {
-                                        columns.setRowIndex(-1);
-                                        return true;
-                                    }
-                                }
-
-                                columns.setRowIndex(-1);
-                            }
-                        }
-                    }
+                    visitColumnsAndColumnFacets(context, child, callback, visitRows, rejectedChildren);
                 }
             }
         }

@@ -725,46 +725,40 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        if (getChildCount() > 0) {
-            for (UIComponent child : getChildren()) {
-                if (child.isRendered()) {
-                    if (child instanceof UIColumn) {
-                        if (child instanceof Column) {
-                            for (UIComponent facet : child.getFacets().values()) {
-                                process(context, facet, phaseId);
-                            }
-                        }
-                        else if (child instanceof Columns) {
-                            Columns uicolumns = (Columns) child;
-                            int f = uicolumns.getFirst();
-                            int r = uicolumns.getRows();
-                            int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
-
-                            for (int i = f; i < l; i++) {
-                                uicolumns.setRowIndex(i);
-
-                                if (!uicolumns.isRowAvailable()) {
-                                    break;
-                                }
-
-                                for (UIComponent facet : child.getFacets().values()) {
-                                    process(context, facet, phaseId);
-                                }
-                            }
-
-                            uicolumns.setRowIndex(-1);
-                        }
+    protected void processColumnFacets(FacesContext context, UIComponent root, PhaseId phaseId) {
+        if (root.getChildCount() > 0) {
+            for (UIComponent child : root.getChildren()) {
+                if (child instanceof UIColumn) {
+                    if (child instanceof Column) {
+                        processFacets(context, child, phaseId);
                     }
-                    else if (child instanceof ColumnGroup) {
+                    else if (child instanceof Columns) {
+                        Columns uicolumns = (Columns) child;
+                        int f = uicolumns.getFirst();
+                        int r = uicolumns.getRows();
+                        int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
+
+                        for (int i = f; i < l; i++) {
+                            uicolumns.setRowIndex(i);
+
+                            if (!uicolumns.isRowAvailable()) {
+                                break;
+                            }
+
+                            processFacets(context, child, phaseId);
+                        }
+
+                        uicolumns.setRowIndex(-1);
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    if (isColumnGroupLegacyEnabled()) {
                         if (child.getChildCount() > 0) {
                             for (UIComponent columnGroupChild : child.getChildren()) {
                                 if (columnGroupChild instanceof Row && columnGroupChild.getChildCount() > 0) {
                                     for (UIComponent rowChild : columnGroupChild.getChildren()) {
                                         if (rowChild instanceof Column && rowChild.getFacetCount() > 0) {
-                                            for (UIComponent facet : rowChild.getFacets().values()) {
-                                                process(context, facet, phaseId);
-                                            }
+                                            processFacets(context, rowChild, phaseId);
                                         }
                                         else {
                                             process(context, rowChild, phaseId);        //e.g. ui:repeat
@@ -777,6 +771,12 @@ public class DataTable extends DataTableBase {
                             }
                         }
                     }
+                    else {
+                        processColumnFacets(context, child, phaseId);
+                    }
+                }
+                else if (child instanceof Row) {
+                    processColumnFacets(context, child, phaseId);
                 }
             }
         }

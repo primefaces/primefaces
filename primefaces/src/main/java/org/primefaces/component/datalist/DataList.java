@@ -42,11 +42,15 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
+
+import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.IterationStatus;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.data.PageEvent;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -174,9 +178,9 @@ public class DataList extends DataListBase {
     }
 
     @Override
-    protected void processFacets(FacesContext context, PhaseId phaseId) {
-        if (getFacetCount() > 0) {
-            UIComponent descriptionFacet = getFacet("description");
+    protected void processFacets(FacesContext context, UIComponent root, PhaseId phaseId) {
+        if (root.getFacetCount() > 0) {
+            UIComponent descriptionFacet = root.getFacet("description");
             for (UIComponent facet : getFacets().values()) {
                 if (facet.equals(descriptionFacet)) {
                     continue;
