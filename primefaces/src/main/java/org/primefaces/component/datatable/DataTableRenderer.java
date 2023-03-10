@@ -729,8 +729,7 @@ public class DataTableRenderer extends DataRenderer {
         return sortIcon;
     }
 
-    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column,
-                SortMeta sortMeta) throws IOException {
+    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column, SortMeta sortMeta) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         UIComponent header = column.getFacet("header");
@@ -942,7 +941,7 @@ public class DataTableRenderer extends DataRenderer {
 
         // macro optimization in case no column group present, to avoid deep tree traversal
         // when building a 2D array columns representation while it's not really needed
-        boolean hasColumnGroup = ComponentUtils.hasComponentOfType(table, ColumnGroup.class);
+        boolean hasColumnGroup = ComponentUtils.hasChildOfType(table, ColumnGroup.class);
         if (!hasColumnGroup) {
             encodeColumnHeader(context, table, columnStart, columnEnd);
         }
@@ -1172,9 +1171,12 @@ public class DataTableRenderer extends DataRenderer {
                 else if (child instanceof Columns) {
                     Columns columns = (Columns) child;
                     List<DynamicColumn> dynaColumns = columns.getDynamicColumns();
-                    if (!dynaColumns.isEmpty()) {
-                        dynaColumns.forEach(o -> row.add(new ColumnNode(root, o)));
-                    }
+                    dynaColumns.forEach(col -> {
+                        col.applyStatelessModel();
+                        if (col.isRendered()) {
+                            row.add(new ColumnNode(root, col));
+                        }
+                    });
                 }
                 else if (child instanceof ColumnGroup) {
                     ColumnNode column = new ColumnNode(root, child);

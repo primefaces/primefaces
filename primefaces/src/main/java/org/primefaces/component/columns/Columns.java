@@ -95,18 +95,12 @@ public class Columns extends ColumnsBase {
     public List<DynamicColumn> getDynamicColumns() {
         if (dynamicColumns == null) {
             FacesContext context = getFacesContext();
-            setRowIndex(-1);
             dynamicColumns = new ArrayList<>(getRowCount());
 
             for (int i = 0; i < getRowCount(); i++) {
                 DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
-                dynaColumn.applyStatelessModel();
-                if (dynaColumn.isRendered()) {
-                    dynamicColumns.add(dynaColumn);
-                }
+                dynamicColumns.add(dynaColumn);
             }
-
-            setRowIndex(-1);
         }
 
         return dynamicColumns;

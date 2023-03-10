@@ -803,19 +803,14 @@ public class ComponentUtils {
      */
     public static boolean isUntargetableComponent(UIComponent component) {
         String clazz = component.getClass().getSimpleName();
-        return clazz.contains("UIInstructions") && !clazz.contains("UILeaf");
+        return clazz.contains("UIInstructions") || clazz.contains("UILeaf");
     }
 
-    /**
-     * Method to check if component is rendered and not a UntargetableComponent (see {@link #isUntargetableComponent(UIComponent)})
-     */
     public static boolean isTargetableComponent(UIComponent component) {
-        // ignore UIColumns#rendered since it can be conditioned by his own var attribute,
-        // only when UIColumn#applyStatelessModel is called it'll be possible to decide whether it's rendered or not
-        return component instanceof Columns || component.isRendered() && !isUntargetableComponent(component);
+        return !isUntargetableComponent(component);
     }
 
-    public static <T extends UIComponent> boolean hasComponentOfType(UIComponent parent, Class<T> clazz) {
+    public static <T extends UIComponent> boolean hasChildOfType(UIComponent parent, Class<T> clazz) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             UIComponent child = parent.getChildren().get(i);
             if (child.isRendered() && child.getClass().isAssignableFrom(clazz)) {
