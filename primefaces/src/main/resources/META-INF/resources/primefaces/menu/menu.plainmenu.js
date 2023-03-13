@@ -184,7 +184,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
     expandSubmenu: function(header, stateful) {
         var items = header.nextUntil('li.ui-widget-header');
 
-        header.attr('aria-expanded', false)
+        header.attr('aria-expanded', true)
                 .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
         items.filter('.ui-submenu-child').show();
@@ -218,7 +218,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             this.collapsedIds = collapsedIdsAsString.split(',');
 
             for(var i = 0 ; i < this.collapsedIds.length; i++) {
-                this.collapseSubmenu($(PrimeFaces.escapeClientId(this.collapsedIds[i])), false);
+                this.collapseSubmenu($(PrimeFaces.escapeClientId(this.collapsedIds[i]).replace(/\|/g,"\\|")), false);
             }
         }
     },
