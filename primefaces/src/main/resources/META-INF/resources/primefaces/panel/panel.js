@@ -29,6 +29,7 @@
  * @prop {boolean} cfg.hasMenu Whether this panel has a toggleable menu in the panel header. 
  * @prop {boolean} cfg.toggleable Whether the panel can be toggled (expanded and collapsed).
  * @prop {boolean} cfg.toggleableHeader Defines if the panel is toggleable by clicking on the whole panel header.
+ * @prop {boolean} cfg.multiViewState Whether to keep Panel state across views.
  * @prop {PrimeFaces.widget.Panel.ToggleOrientation} cfg.toggleOrientation Defines the orientation of the toggling.
  * @prop {number} cfg.toggleSpeed Speed of toggling in milliseconds.
  */
@@ -209,7 +210,23 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
 
-        this.callBehavior('toggle');
+        if (this.hasBehavior('toggle')) {
+            this.callBehavior('toggle');
+        }
+        else if (this.cfg.multiViewState) {
+            var options = {
+                source: this.id,
+                partialSubmit: true,
+                partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_collapsed'),
+                process: this.id,
+                ignoreAutoUpdate: true,
+                params: [
+                    {name: this.id + '_skipChildren', value: true}
+                ]
+            };
+
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**

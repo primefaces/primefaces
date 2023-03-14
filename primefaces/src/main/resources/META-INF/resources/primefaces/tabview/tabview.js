@@ -498,11 +498,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                     var options = {
                         source: this.id,
                         partialSubmit: true,
-                        partialSubmitFilter: this.id + '_activeIndex',
+                        partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_activeIndex'),
                         process: this.id,
                         ignoreAutoUpdate: true,
                         params: [
-                            {name: this.id + '_activeIndex', value: this.getActiveIndex()}
+                            {name: this.id + '_skipChildren', value: true}
                         ]
                     };
 
