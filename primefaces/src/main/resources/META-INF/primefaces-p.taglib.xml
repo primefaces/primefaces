@@ -27326,6 +27326,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines display mode, valid values are text, icon and both(default).]]>
+            </description>
+            <name>display</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines whether html would be escaped or not, defaults to true.]]>
             </description>
             <name>escape</name>
