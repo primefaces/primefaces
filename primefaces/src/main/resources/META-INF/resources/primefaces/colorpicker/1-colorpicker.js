@@ -286,7 +286,15 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         }
         var newColor = color.toLowerCase();
         var input = this.popup ? this.input : this.jq.find('#clr-color-value');
-        Coloris.setColor(newColor, input[0]);
+        var target = input[0];
+        var oldColor = target.value.toLowerCase();
+        var triggerInputEvent = !!this.popup;
+        
+        if (newColor !== oldColor) {
+            target.value = newColor;
+            triggerInputEvent && target.dispatchEvent(new Event('input', { bubbles: true }));
+            target.dispatchEvent(new Event('change', { bubbles: true }));
+        }
     },
 
     /**
