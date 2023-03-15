@@ -40,9 +40,12 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
+
+    private static final String SB_RESOLVE_ACTIVE_INDEX = AccordionPanelRenderer.class.getName() + "#resolveActiveIndex";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -116,6 +119,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String styleClass = acco.getStyleClass();
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 
+        String activeIndex = resolveActiveIndex(context, acco);
+        
         if (ComponentUtils.isRTL(context, acco)) {
             styleClass = styleClass + " ui-accordion-rtl";
         }
@@ -133,9 +138,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         renderDynamicPassThruAttributes(context, acco);
 
-        encodeTabs(context, acco);
+        encodeTabs(context, acco, activeIndex);
 
-        encodeStateHolder(context, acco);
+        encodeStateHolder(context, acco, activeIndex);
 
         writer.endElement("div");
     }
@@ -165,19 +170,18 @@ public class AccordionPanelRenderer extends CoreRenderer {
         wb.finish();
     }
 
-    protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel) throws IOException {
+    protected void encodeStateHolder(FacesContext context, AccordionPanel accordionPanel, String activeIndex) throws IOException {
         String clientId = accordionPanel.getClientId(context);
         String stateHolderId = clientId + "_active";
 
-        renderHiddenInput(context, stateHolderId, accordionPanel.getActiveIndex(), false);
+        renderHiddenInput(context, stateHolderId, activeIndex, false);
     }
 
-    protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
+    protected void encodeTabs(FacesContext context, AccordionPanel acco, String activeIndex) throws IOException {
         boolean dynamic = acco.isDynamic();
         boolean repeating = acco.isRepeating();
         boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
 
-        String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
                                      ? Collections.<String>emptyList()
                                      : Arrays.asList(activeIndex.split(","));
@@ -360,4 +364,38 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.endElement("a");
     }
 
+    protected String resolveActiveIndex(FacesContext context, AccordionPanel accordionPanel)
+    {
+        String activeIndex = accordionPanel.getActiveIndex();
+        if ("all".equals(activeIndex)) {
+            int childCount = 0;
+
+            String var = accordionPanel.getVar();
+            if (var == null) {
+                for (UIComponent child : accordionPanel.getChildren()) {
+                    if (child.isRendered() && child instanceof Tab) {
+                        childCount++;
+                    }
+                }
+            }
+            else {
+                childCount = accordionPanel.getRowCount();
+
+                // add some puffer for dynamic added tabs
+                childCount += childCount * 2;
+            }
+
+            StringBuilder sb = SharedStringBuilder.get(context, SB_RESOLVE_ACTIVE_INDEX);
+            for (int i = 0; i < childCount; i++) {
+                if (i > 0) {
+                    sb.append(",");
+                }
+                sb.append(i);
+            }
+
+            activeIndex = sb.toString();
+        }
+
+        return activeIndex;
+    }
 }

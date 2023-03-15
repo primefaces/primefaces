@@ -610,7 +610,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Index of the active tab or a comma separated string of indexes when multiple mode is on. Default is zero.]]>
+                <![CDATA[Index of the active tab or a comma separated string of indexes when multiple mode is on. Alternative: all. Default: 0.]]>
             </description>
             <name>activeIndex</name>
             <required>false</required>
