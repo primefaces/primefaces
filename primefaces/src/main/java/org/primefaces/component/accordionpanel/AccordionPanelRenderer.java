@@ -120,7 +120,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
 
         String activeIndex = resolveActiveIndex(context, acco);
-        
+
         if (ComponentUtils.isRTL(context, acco)) {
             styleClass = styleClass + " ui-accordion-rtl";
         }
@@ -364,8 +364,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.endElement("a");
     }
 
-    protected String resolveActiveIndex(FacesContext context, AccordionPanel accordionPanel)
-    {
+    protected String resolveActiveIndex(FacesContext context, AccordionPanel accordionPanel) {
+
         String activeIndex = accordionPanel.getActiveIndex();
         if ("all".equals(activeIndex)) {
             int childCount = 0;
