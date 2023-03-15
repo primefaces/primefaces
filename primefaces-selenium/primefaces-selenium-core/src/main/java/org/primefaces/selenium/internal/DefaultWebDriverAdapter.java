@@ -101,6 +101,10 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                 }
                 chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
                 chromeOptions.setLogLevel(ChromeDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
+
+                // Chrome 111 workaround: https://github.com/SeleniumHQ/selenium/issues/11750
+                chromeOptions.addArguments("--remote-allow-origins=*"); 
+
                 Map<String, Object> chromePrefs = new HashMap<>();
                 chromePrefs.put("download.prompt_for_download", false);
                 chromePrefs.put("download.directory_upgrade", true);
