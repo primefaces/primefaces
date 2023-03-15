@@ -39,6 +39,7 @@ AccordionPanel is a container component that displays content in stacked format.
 | tabController | null    | MethodExpr | Server side listener to decide whether a tab change or tab close should be allowed.
 | tabindex      | 0       | String     | Position of the headers in the tabbing order.
 | widgetVar     | null    | String     | Name of the client side widget.
+| multiViewState| false   | Boolean    | Whether to keep Panel state across views, defaults to false.
 
 ## Getting Started with Accordion Panel
 Accordion panel consists of one or more tabs and each tab can group any content. Titles can also be

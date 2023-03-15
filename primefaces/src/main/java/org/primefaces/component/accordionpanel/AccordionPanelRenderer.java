@@ -59,6 +59,11 @@ public class AccordionPanelRenderer extends CoreRenderer {
             else {
                 acco.setActiveIndex(active);
             }
+
+            if (acco.isMultiViewState()) {
+                AccordionState as = acco.getMultiViewState(true);
+                as.setActiveIndex(acco.getActiveIndex());
+            }
         }
 
         decodeBehaviors(context, component);
@@ -94,6 +99,10 @@ public class AccordionPanelRenderer extends CoreRenderer {
         }
         else {
             acco.resetLoadedTabsState();
+
+            if (acco.isMultiViewState()) {
+                acco.restoreMultiViewState();
+            }
 
             encodeMarkup(context, acco);
             encodeScript(context, acco);
@@ -144,7 +153,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
         wb.attr("multiple", multiple, false)
                 .callback("onTabChange", "function(panel)", acco.getOnTabChange())
                 .callback("onTabShow", "function(panel)", acco.getOnTabShow())
-                .callback("onTabClose", "function(panel)", acco.getOnTabClose());
+                .callback("onTabClose", "function(panel)", acco.getOnTabClose())
+                .attr("multiViewState", acco.isMultiViewState(), false);
 
         if (acco.getTabController() != null) {
             wb.attr("controlled", true);
