@@ -10,12 +10,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `primefaces.HTML5_COMPLIANCE` if you know your site is HTML5 doctype so PF won't render certain non-HTML5 compliant values like `text/javascript` on scripts.
 * BlockUI
     * Added attribute `delay` to delay displaying similar to AjaxStatus.
-* Button
-* CommandButton
-* LinkButton
-* MenuButton
-* SplitButton
-* SelectBooleanButton
+* Button, CommandButton, LinkButton, MenuButton, SplitButton, SelectBooleanButton
     * Added attribute `aria-label` for icon only buttons (will use `title` first if available).
 * Captcha
     * Added attribute `sourceUrl` to override the Google JS location for countries that do not have access to Google.
@@ -77,6 +72,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `appendTo` to support custom append of the menu instead of default `@(body)`.
 * MenuItem
     * Added attribute `ariaLabel` to allow screen reader support on menu items that do not have text or tooltip.
+    * Added attribute `badge` to add a badge to it.
 * VirusScan
     * Generalized ClamDeamonScanner such that the implementation of a custom ClamDeamonScanner can now access all virus scan parameters from the ClamDaemonClient.
 

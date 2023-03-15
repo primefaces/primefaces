@@ -81,6 +81,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String rel;
     private boolean ignoreComponentNotFound;
     private String ariaLabel;
+    private Object badge;
 
     /**
      * Creates a new menu item without value.
@@ -544,6 +545,15 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.ignoreComponentNotFound = ignoreComponentNotFound;
     }
 
+    @Override
+    public Object getBadge() {
+        return badge;
+    }
+
+    public void setBadge(Object badge) {
+        this.badge = badge;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -768,6 +778,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
 
         public Builder ariaLabel(String ariaLabel) {
             menuItem.setAriaLabel(ariaLabel);
+            return this;
+        }
+
+        public Builder badge(Object badge) {
+            menuItem.setBadge(badge);
             return this;
         }
 
