@@ -70,6 +70,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * SplitButton
     * Added attribute `filterNormalize` to allow normalized filtering (without accents).
+* StaticMessage
+    * Added attribute `display` with supported values `both` (default), `icon` and `text`.
 * Panel
     * Added `multiViewState` to keep panel state across views.
 * Menu

@@ -83,5 +83,5 @@ ui-messages-{severity}-summary | Summary text
 ui-messages-{severity}-detail | Detail text
 ui-messages-{severity}-icon | Icon of the message.
 
-* {severity} can be ‘info’, ‘error’, ‘warn’ and error.
+* {severity} can be `info`, `warn`, `error` and `fatal`.
 
