@@ -463,7 +463,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * Checks whether a date is selected.
-     * @returns {boolean}
+     * @returns {boolean} true if a date is selected.
      */
     hasDate: function() {
         return (this.getDate() instanceof Date);
