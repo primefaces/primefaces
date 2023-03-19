@@ -462,6 +462,14 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Checks whether a date is selected.
+     * @returns {boolean}
+     */
+    hasDate: function() {
+        return (this.getDate() instanceof Date);
+    },
+
+    /**
      * Sets the displayed visible calendar date. This refers to the currently displayed month page.
      * @param {string | Date | Date[]} date The date to be shown in the calendar.
      */
