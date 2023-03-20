@@ -146,6 +146,9 @@ access hidden headers.
 </p:tabView>
 ```
 
+## Actions
+Actions can be added through the `actions` facet on a specific tab.
+
 ## Client Side Callbacks
 TabView has three callbacks for client side. _onTabChange_ is executed when an inactive Tab is
 clicked, _onTabShow_ is executed when an inactive Tab becomes active to be shown and _onTabClose_
