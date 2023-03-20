@@ -47,10 +47,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.6.2
- * @date         2023-03-06 UTC 04:22
+ * @version      4.6.3
+ * @date         2023-03-18 UTC 00:38
  *
- * @authors      Alexandre Bonneau, Bob Knothe
+ * @authors      2009-2016 Bob Knothe <bob.knothe@gmail.com>
+ *               2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
  * @contributors Sokolov Yura and others, cf. AUTHORS
  * @copyright    2009 Robert J. Knothe
  * @since        2009-08-09
@@ -60,6 +61,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
  *               international numbers and currencies.
  *
  * @link         http://autonumeric.org
+ * @docs         https://docs.autonumeric.org
  *
  *               Note : Some functions are borrowed from big.js
  * @see          https://github.com/MikeMcl/big.js/
@@ -5056,7 +5058,7 @@ var AutoNumeric = /*#__PURE__*/function () {
       var isPasteNegative = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNegativeStrict(rawPastedText, this.settings.negativeSignCharacter);
       if (isPasteNegative) {
         // 1a. Remove the negative sign from the pasted text
-        rawPastedText = rawPastedText.slice(1, rawPastedText.length);
+        rawPastedText = rawPastedText.slice(1, rawPastedText.length); //TODO This can lead to an empty rawPastedText if only the negative sign character is pasted. This then complains about not being a valid paste content. Define which behaviour we want when this happens, then implement the solution.
       }
 
       // 2. Strip all thousand separators, brackets and currency sign, and convert the decimal character to a dot
@@ -6636,7 +6638,7 @@ var AutoNumeric = /*#__PURE__*/function () {
             return true;
           }
 
-          // Remove the decimal character is found on the far left of the right part
+          // Remove the decimal character if found on the far left of the right part
           if (right.indexOf(this.settings.decimalCharacter) === 0) {
             right = right.substr(1);
           }
@@ -6769,15 +6771,17 @@ var AutoNumeric = /*#__PURE__*/function () {
         }
         for (var i = 0; i < leftAr.length; i++) {
           if (!leftAr[i].match('\\d')) {
-            leftAr[i] = '\\' + leftAr[i];
+            leftAr[i] = '\\' + leftAr[i]; // Escapes the decimal character
           }
         }
+
+        // Generates the regex that will search for the cursor position in the formatted value
         var leftReg;
         if (this.settings.currencySymbolPlacement === AutoNumeric.options.currencySymbolPlacement.suffix) {
           leftReg = new RegExp("^.*?".concat(leftAr.join('.*?')));
         } else {
           // prefix is assumed
-          leftReg = new RegExp("^.*?[".concat(this.settings.currencySymbol, "]").concat(leftAr.join('.*?'))); // Fixes issue #647 when using a currency that has some characters in it that matches the value we just entered (i.e. numbers in the currency)
+          leftReg = new RegExp("^.*?[".concat(this.settings.currencySymbol, "]*").concat(leftAr.join('.*?'))); // Fixes issue #647 when using a currency that has some characters in it that matches the value we just entered (i.e. numbers in the currency)
         }
 
         // Search cursor position in formatted value
@@ -6839,7 +6843,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }], [{
     key: "version",
     value: function version() {
-      return '4.6.2';
+      return '4.6.3';
     }
 
     /**
@@ -9424,6 +9428,10 @@ var AutoNumeric = /*#__PURE__*/function () {
       if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNumber(Number(value))) {
         // if (settings.decimalCharacter === '.' && AutoNumericHelper.isNumber(Number(value))) {
         // The value has either already been stripped, or a 'real' javascript number is passed as a parameter
+        if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNumberStrict(value)) {
+          value = String(value).trim(); // cf. issue #721
+        }
+
         result = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].scientificToDecimal(value);
       } else {
         // Else if it's a string that `Number()` cannot typecast, then we try to convert the localized numeric string to a numeric one
