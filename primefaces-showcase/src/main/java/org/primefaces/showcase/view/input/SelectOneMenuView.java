@@ -74,7 +74,10 @@ public class SelectOneMenuView {
         SelectItemGroup europeCountries = new SelectItemGroup("Europe Countries");
         europeCountries.setSelectItems(new SelectItem[]{
             new SelectItem("Germany", "Germany"),
+            new SelectItem("Greece", "Greece"),
             new SelectItem("Turkey", "Turkey"),
+            new SelectItem("Slovakia", "Slovakia"),
+            new SelectItem("Slovenia", "Slovenia"),
             new SelectItem("Spain", "Spain")
         });
 
