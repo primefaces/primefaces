@@ -255,6 +255,7 @@ public interface ColumnAware {
         return 0;
     }
 
+    @Deprecated
     default UIColumn findColumnInGroup(String columnKey, ColumnGroup group) {
         if (group == null) {
             return null;
@@ -374,4 +375,5 @@ public interface ColumnAware {
                 .map(e -> e.getColumnKey())
                 .collect(Collectors.joining(","));
     }
+
 }

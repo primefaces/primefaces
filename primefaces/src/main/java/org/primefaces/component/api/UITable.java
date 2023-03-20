@@ -37,7 +37,10 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.component.column.Column;
 import org.primefaces.component.column.ColumnBase;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.columns.Columns;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
@@ -607,4 +610,50 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     int getChildCount();
 
     List<UIComponent> getChildren();
+
+    static void treeColumnsTo2DArray(ColumnNode root, List<List<ColumnNode>> nodes, int columnStart, int columnEnd) {
+        int idx = -1;
+        for (int i = 0; i < root.getChildren().size(); i++) {
+            UIComponent child = root.getChildren().get(i);
+            if (ComponentUtils.isTargetableComponent(child)) {
+                idx++;
+
+                int level = root.getLevel() + 1;
+                if (level == 1 && idx < columnStart) { // frozen col start
+                    continue;
+                }
+
+                if (level == 1 && idx >= columnEnd) { // frozen col end
+                    break;
+                }
+
+                if (nodes.size() < level) {
+                    nodes.add(new ArrayList<>());
+                }
+
+                List<ColumnNode> row = nodes.get(root.getLevel());
+
+                if (child instanceof Columns) {
+                    Columns columns = (Columns) child;
+                    List<DynamicColumn> dynaColumns = columns.getDynamicColumns();
+                    dynaColumns.forEach(col -> {
+                        col.applyStatelessModel();
+                        if (col.isRendered()) {
+                            row.add(new ColumnNode(root, col));
+                        }
+                    });
+                }
+                else if (child.isRendered()) {
+                    if (child instanceof Column) {
+                        row.add(new ColumnNode(root, child));
+                    }
+                    else if (child instanceof ColumnGroup) {
+                        ColumnNode column = new ColumnNode(root, child);
+                        row.add(column);
+                        treeColumnsTo2DArray(column, nodes, columnStart, columnEnd);
+                    }
+                }
+            }
+        }
+    }
 }
