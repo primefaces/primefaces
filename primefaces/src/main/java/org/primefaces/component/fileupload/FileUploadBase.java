@@ -344,7 +344,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getChooseIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "ui-icon-plusthick");
+        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "pi pi-plus");
     }
 
     public void setChooseIcon(String chooseIcon) {
@@ -352,7 +352,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getUploadIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "ui-icon-arrowreturnthick-1-n");
+        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "pi pi-upload");
     }
 
     public void setUploadIcon(String uploadIcon) {
@@ -360,7 +360,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getCancelIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "ui-icon-cancel");
+        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "pi pi-times");
     }
 
     public void setCancelIcon(String cancelIcon) {
