@@ -23,8 +23,7 @@
  */
 package org.primefaces.component.datatable;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.*;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -1053,48 +1052,32 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeTFooter(FacesContext context, DataTable table, UIComponent tfooter, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        List<UIComponent> children = tfooter instanceof Row ? Collections.singletonList(tfooter) : tfooter.getChildren();
-        for (UIComponent child : children) {
-            if (child.isRendered()) {
-                if (child instanceof Row) {
-                    Row row = (Row) child;
-                    String rowClass = row.getStyleClass();
-                    String rowStyle = row.getStyle();
+        ForEachRowColumn
+                .from(tfooter)
+                .columnStart(columnStart)
+                .columnEnd(columnEnd)
+                .invoke(new RowColumnVisitor.Adapter() {
 
-                    writer.startElement("tr", null);
-                    if (rowClass != null) {
-                        writer.writeAttribute("class", rowClass, null);
-                    }
-                    if (rowStyle != null) {
-                        writer.writeAttribute("style", rowStyle, null);
-                    }
+                    @Override
+                    public void visitRow(int index, Row row) throws IOException {
+                        // Row will have his own renderer once col group legacy gets removed
+                        String rowClass = row.getStyleClass();
+                        String rowStyle = row.getStyle();
 
-                    for (int i = columnStart; i < Math.min(row.getChildCount(), columnEnd); i++) {
-                        UIComponent column = row.getChildren().get(i);
-                        if (ComponentUtils.isTargetableComponent(column)) {
-                            if (column instanceof Column) {
-                                encodeCell(context, table, (UIColumn) column, false, false, i);
-                            }
-                            else if (column instanceof Columns) {
-                                List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
-                                for (DynamicColumn dynaColumn : dynamicColumns) {
-                                    dynaColumn.applyModel();
-                                    encodeCell(context, table, (UIColumn) column, false, false, i);
-                                }
-                            }
-                            else {
-                                column.encodeAll(context);
-                            }
+                        writer.startElement("tr", null);
+                        if (rowClass != null) {
+                            writer.writeAttribute("class", rowClass, null);
+                        }
+                        if (rowStyle != null) {
+                            writer.writeAttribute("style", rowStyle, null);
                         }
                     }
 
-                    writer.endElement("tr");
-                }
-                else {
-                    child.encodeAll(context);
-                }
-            }
-        }
+                    @Override
+                    public void visitColumn(int index, UIColumn column) throws IOException {
+                        encodeCell(context, table, column, false, false, index);
+                    }
+                });
     }
 
     protected void encodeColumnGroupHeaders(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
@@ -1102,8 +1085,8 @@ public class DataTableRenderer extends DataRenderer {
 
         List<List<ColumnNode>> matrix = new ArrayList<>();
 
-        ColumnNode root = ColumnNode.root(table);
-        flatTableColumns(root, matrix, columnStart, columnEnd);
+//        UITable.flatTableColumns(ColumnNode.root(table), matrix, columnStart, columnEnd, o -> true);
+        UITable.treeColumnsTo2DArray(ColumnNode.root(table), matrix, columnStart, columnEnd);
 
         int depth = matrix.size();
         for (List<ColumnNode> rows : matrix) {
@@ -1111,14 +1094,14 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("role", "row", null);
 
             for (ColumnNode column : rows) {
-                if (column.uiComp instanceof UIColumn) {
-                    if (column.uiComp instanceof DynamicColumn) {
-                        ((DynamicColumn) column.uiComp).applyStatelessModel();
+                if (column.getUiComp() instanceof UIColumn) {
+                    if (column.getUiComp() instanceof DynamicColumn) {
+                        ((DynamicColumn) column.getUiComp()).applyModel();
                     }
-                    encodeColumnHeader(context, table, (UIColumn) column.uiComp, (depth - column.level) + 1, column.colspan);
+                    encodeColumnHeader(context, table, (UIColumn) column.getUiComp(), (depth - column.getLevel()) + 1, column.getColspan());
                 }
-                else if (column.uiComp instanceof ColumnGroup) {
-                    encodeColumnGroupHeader(context, table, (ColumnGroup) column.uiComp, 1, column.colspan);
+                else if (column.getUiComp() instanceof ColumnGroup) {
+                    encodeColumnGroupHeader(context, table, (ColumnGroup) column.getUiComp(), 1, column.getColspan());
                 }
             }
 
@@ -1134,57 +1117,13 @@ public class DataTableRenderer extends DataRenderer {
         for (int i = columnStart; i < columnEnd; i++) {
             UIColumn column = columns.get(i);
             if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
+                ((DynamicColumn) column).applyModel();
             }
 
             encodeColumnFooter(context, table, column);
         }
 
         writer.endElement("tr");
-    }
-
-    protected void flatTableColumns(ColumnNode root, List<List<ColumnNode>> nodes, int columnStart, int columnEnd) {
-        int idx = -1;
-        for (int i = 0; i < root.getChildren().size(); i++) {
-            UIComponent child = root.getChildren().get(i);
-            if (ComponentUtils.isTargetableComponent(child)) {
-                idx++;
-
-                int level = root.level + 1;
-                if (level == 1 && idx < columnStart) { // frozen col start
-                    continue;
-                }
-
-                if (level == 1 && idx >= columnEnd) { // frozen col end
-                    break;
-                }
-
-                if (nodes.size() < level) {
-                    nodes.add(new ArrayList<>());
-                }
-
-                List<ColumnNode> row = nodes.get(root.level);
-
-                if (child instanceof Column) {
-                    row.add(new ColumnNode(root, child));
-                }
-                else if (child instanceof Columns) {
-                    Columns columns = (Columns) child;
-                    List<DynamicColumn> dynaColumns = columns.getDynamicColumns();
-                    dynaColumns.forEach(col -> {
-                        col.applyStatelessModel();
-                        if (col.isRendered()) {
-                            row.add(new ColumnNode(root, col));
-                        }
-                    });
-                }
-                else if (child instanceof ColumnGroup) {
-                    ColumnNode column = new ColumnNode(root, child);
-                    row.add(column);
-                    flatTableColumns(column, nodes, columnStart, columnEnd);
-                }
-            }
-        }
     }
 
     protected void encodeColumnGroupHeader(FacesContext context, DataTable table, ColumnGroup group, int rowspan, int colspan) throws IOException {
@@ -1905,43 +1844,5 @@ public class DataTableRenderer extends DataRenderer {
                 || table.getFilterByAsMap().containsKey(column.getColumnKey())
                 || LangUtils.isNotBlank(column.getField()));
 
-    }
-
-    private static class ColumnNode {
-        private final ColumnNode parent;
-        private final Object uiComp;
-        private int colspan = 0;
-        private int level = 0;
-
-        public ColumnNode(ColumnNode parent, Object uiComp) {
-            this.parent = parent;
-            this.uiComp = uiComp;
-            this.level = parent != null ? parent.level + 1 : 0;
-            if (isLeaf()) {
-                incrementColspan();
-            }
-        }
-
-        void incrementColspan() {
-            this.colspan++;
-            if (parent != null) {
-                parent.incrementColspan();
-            }
-        }
-
-        boolean isLeaf() {
-            return uiComp instanceof UIColumn;
-        }
-
-        List<UIComponent> getChildren() {
-            if (uiComp instanceof UIComponent) {
-                return ((UIComponent) uiComp).getChildren();
-            }
-            return Collections.emptyList();
-        }
-
-        static ColumnNode root(Object column) {
-            return new ColumnNode(null, column);
-        }
     }
 }

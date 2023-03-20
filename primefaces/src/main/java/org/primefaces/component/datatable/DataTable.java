@@ -24,7 +24,6 @@
 package org.primefaces.component.datatable;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ELContext;
@@ -40,6 +39,8 @@ import javax.faces.model.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -1164,30 +1165,17 @@ public class DataTable extends DataTableBase {
     public List<UIColumn> collectColumns() {
         if (!isColumnGroupLegacyEnabled()) {
             List<UIColumn> columnsTmp = new ArrayList<>();
-            fetchColumnsRecursively(this, columnsTmp::add);
+            ForEachRowColumn.from(this).invoke(new RowColumnVisitor.Adapter() {
+
+                @Override
+                public void visitColumn(int index, UIColumn column) {
+                    columnsTmp.add(column);
+                }
+            });
             columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
             return columnsTmp;
         }
 
         return super.collectColumns();
-    }
-
-    protected void fetchColumnsRecursively(UIComponent root, Consumer<UIColumn> visitor) {
-        for (int i = 0; i < root.getChildCount(); i++) {
-            UIComponent child = root.getChildren().get(i);
-            if (ComponentUtils.isTargetableComponent(child)) {
-                if (child instanceof Columns) {
-                    Columns cols = (Columns) child;
-                    cols.getDynamicColumns().forEach(visitor);
-                }
-                else if (child instanceof Column) {
-                    UIColumn col = (UIColumn) child;
-                    visitor.accept(col);
-                }
-                else if (child instanceof ColumnGroup) {
-                    fetchColumnsRecursively(child, visitor);
-                }
-            }
-        }
     }
 }
