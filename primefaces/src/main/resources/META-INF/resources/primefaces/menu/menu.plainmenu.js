@@ -218,7 +218,10 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             this.collapsedIds = collapsedIdsAsString.split(',');
 
             for(var i = 0 ; i < this.collapsedIds.length; i++) {
-                this.collapseSubmenu($(PrimeFaces.escapeClientId(this.collapsedIds[i]).replace(/\|/g,"\\|")), false);
+                var id = this.collapsedIds[i];
+                if (id) {
+                    this.collapseSubmenu($(PrimeFaces.escapeClientId(id).replace(/\|/g,"\\|")), false);
+                }
             }
         }
     },
