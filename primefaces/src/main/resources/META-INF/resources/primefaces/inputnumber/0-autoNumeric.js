@@ -47,8 +47,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.6.3
- * @date         2023-03-18 UTC 00:38
+ * @version      4.7.0
+ * @date         2023-03-21 UTC 03:35
  *
  * @authors      2009-2016 Bob Knothe <bob.knothe@gmail.com>
  *               2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
@@ -801,6 +801,11 @@ var AutoNumeric = /*#__PURE__*/function () {
         });
         return _this;
       },
+      modifyValueOnUpDownArrow: function modifyValueOnUpDownArrow(_modifyValueOnUpDownArrow) {
+        _this.settings.modifyValueOnUpDownArrow = _modifyValueOnUpDownArrow; //TODO test this with unit tests
+
+        return _this;
+      },
       modifyValueOnWheel: function modifyValueOnWheel(_modifyValueOnWheel) {
         _this.settings.modifyValueOnWheel = _modifyValueOnWheel; //TODO test this with unit tests
 
@@ -937,6 +942,11 @@ var AutoNumeric = /*#__PURE__*/function () {
       },
       unformatOnSubmit: function unformatOnSubmit(_unformatOnSubmit2) {
         _this.settings.unformatOnSubmit = _unformatOnSubmit2; //TODO test this with unit tests
+
+        return _this;
+      },
+      upDownStep: function upDownStep(_upDownStep) {
+        _this.settings.upDownStep = _upDownStep; //TODO test this with unit tests
 
         return _this;
       },
@@ -4580,9 +4590,15 @@ var AutoNumeric = /*#__PURE__*/function () {
 
         //TODO Manage the undo/redo events *while* editing a math expression
         //TODO Manage the cut/paste events *while* editing a math expression
-      } else if (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.Equal) {
-        this._enterFormulaMode();
-        return;
+      } else {
+        if (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.Equal) {
+          this._enterFormulaMode();
+          return;
+        }
+        if (this.settings.modifyValueOnUpDownArrow && (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.UpArrow || this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.DownArrow)) {
+          this.upDownArrowAction(e);
+          return;
+        }
       }
       if (this.domElement.readOnly || this.settings.readOnly || this.domElement.disabled) {
         this.processed = true;
@@ -5404,6 +5420,112 @@ var AutoNumeric = /*#__PURE__*/function () {
     }
 
     /**
+     * Helper function that DRY the similar behaviors of the mousewheel and up/down arrow keys, which increment/decrement the element value, either by a fixed value, or using the 'progressive' heuristic
+     *
+     * @param {WheelEvent|KeyboardEvent} e The `wheel` or keyboard event
+     * @param {boolean} isUp Defines if the event should increment the value
+     * @param {boolean} isDown Defines if the event should decrement the value
+     * @param {string|number} step The step to be applied to the increment/decrement action
+     * @private
+     */
+  }, {
+    key: "_wheelAndUpDownActions",
+    value: function _wheelAndUpDownActions(e, isUp, isDown, step) {
+      // 0) First, save the caret position so we can set it back once the value has been changed
+      var selectionStart = e.target.selectionStart || 0;
+      var selectionEnd = e.target.selectionEnd || 0;
+
+      // 1) Get the unformatted value
+      var currentUnformattedValue = this.rawValue;
+      var result;
+      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefinedOrNullOrEmpty(currentUnformattedValue)) {
+        // If by default the input is empty, start at '0'
+        if (this.settings.minimumValue > 0 || this.settings.maximumValue < 0) {
+          // or if '0' is not between min and max value, 'minimumValue' if the user does a wheelup, 'maximumValue' if the user does a wheeldown
+          if (isUp) {
+            result = this.settings.minimumValue;
+          } else {
+            result = this.settings.maximumValue;
+          }
+        } else {
+          result = 0;
+        }
+      } else {
+        result = currentUnformattedValue;
+      }
+      result = +result; // Typecast to a number needed for the following addition/subtraction
+
+      // 2) Increment/Decrement the value
+      // But first, choose the increment/decrement method ; fixed or progressive
+      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNumber(step)) {
+        var stepToUse = +step; // Typecast to a number needed for the following addition/subtraction
+        // Fixed method
+        // This is the simplest method, where a fixed offset in added/subtracted from the current value
+        if (isUp) {
+          // Increment
+          result += stepToUse;
+        } else if (isDown) {
+          // Decrement
+          result -= stepToUse;
+        }
+      } else {
+        // Progressive method
+        // For this method, we calculate an offset that is in relation to the size of the current number (using only the integer part size).
+        // The bigger the number, the bigger the offset (usually the number count in the integer part minus 3, except for small numbers where a different behavior is better for the user experience).
+        //TODO Known limitation : The progressive method does not play well with numbers between 0 and 1 where to modify the decimal places the rawValue first has to go from '1' to '0'
+        if (isUp) {
+          // Increment
+          result = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].addAndRoundToNearestAuto(result, this.settings.decimalPlacesRawValue);
+        } else if (isDown) {
+          // Decrement
+          result = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].subtractAndRoundToNearestAuto(result, this.settings.decimalPlacesRawValue);
+        }
+      }
+
+      // 3) Set the new value so it gets formatted
+      // First clamp the result if needed
+      result = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].clampToRangeLimits(result, this.settings);
+      if (result !== +currentUnformattedValue) {
+        // Only 'set' the value if it has changed. For instance 'set' should not happen if the user hits a limit and continue to try to go past it since we clamp the value.
+        this.set(result);
+
+        // Since we changed the input value, we send a native `input` event
+        this._triggerEvent(AutoNumeric.events["native"].input, e.target);
+      }
+
+      //XXX Do not prevent if the value is not modified? From a UX point of view, preventing the wheel event when the user use it on top of an autoNumeric element should always be done, even if the value does not change. Perhaps that could affect other scripts relying on this event to be sent though.
+      e.preventDefault(); // We prevent the page to scroll while we increment/decrement the value
+
+      // 4) Finally, we set back the caret position/selection
+      // There is no need to take into account the fact that the number count could be different at the end of the wheel event ; it would be too complex and most of the time unreliable
+      this._setSelection(selectionStart, selectionEnd);
+    }
+
+    /**
+     * Handler for up and down arrow keys
+     * Increment or decrement the element value according to the `upDownStep` option chosen
+     *
+     * @param {KeyboardEvent} e
+     */
+  }, {
+    key: "upDownArrowAction",
+    value: function upDownArrowAction(e) {
+      if (this.formulaMode || this.settings.readOnly || this.domElement.readOnly || this.domElement.disabled) {
+        return;
+      }
+      var isUp = false;
+      var isDown = false;
+      if (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.UpArrow) {
+        isUp = true;
+      } else if (this.eventKey === _AutoNumericEnum__WEBPACK_IMPORTED_MODULE_1__["default"].keyName.DownArrow) {
+        isDown = true;
+      } else {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError('Something has gone wrong since neither an Up or Down arrow key is detected, but the function was still called!');
+      }
+      this._wheelAndUpDownActions(e, isUp, isDown, this.settings.upDownStep);
+    }
+
+    /**
      * Handler for 'wheel' event
      *
      * @param {WheelEvent} e
@@ -5454,76 +5576,16 @@ var AutoNumeric = /*#__PURE__*/function () {
     value: function wheelAction(e) {
       this.isWheelEvent = true; // Keep the info that we are currently managing a mouse wheel event
 
-      // 0) First, save the caret position so we can set it back once the value has been changed
-      var selectionStart = e.target.selectionStart || 0;
-      var selectionEnd = e.target.selectionEnd || 0;
-
-      // 1) Get the unformatted value
-      var currentUnformattedValue = this.rawValue;
-      var result;
-      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefinedOrNullOrEmpty(currentUnformattedValue)) {
-        // If by default the input is empty, start at '0'
-        if (this.settings.minimumValue > 0 || this.settings.maximumValue < 0) {
-          // or if '0' is not between min and max value, 'minimumValue' if the user does a wheelup, 'maximumValue' if the user does a wheeldown
-          if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelUpEvent(e)) {
-            result = this.settings.minimumValue;
-          } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelDownEvent(e)) {
-            result = this.settings.maximumValue;
-          } else {
-            _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The event is not a 'wheel' event.");
-          }
-        } else {
-          result = 0;
-        }
+      var isUp = false;
+      var isDown = false;
+      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelUpEvent(e)) {
+        isUp = true;
+      } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelDownEvent(e)) {
+        isDown = true;
       } else {
-        result = currentUnformattedValue;
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The event is not a 'wheel' event.");
       }
-      result = +result; // Typecast to a number needed for the following addition/subtraction
-
-      // 2) Increment/Decrement the value
-      // But first, choose the increment/decrement method ; fixed or progressive
-      if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNumber(this.settings.wheelStep)) {
-        var step = +this.settings.wheelStep; // Typecast to a number needed for the following addition/subtraction
-        // Fixed method
-        // This is the simplest method, where a fixed offset in added/subtracted from the current value
-        if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelUpEvent(e)) {
-          // Increment
-          result += step;
-        } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelDownEvent(e)) {
-          // Decrement
-          result -= step;
-        }
-      } else {
-        // Progressive method
-        // For this method, we calculate an offset that is in relation to the size of the current number (using only the integer part size).
-        // The bigger the number, the bigger the offset (usually the number count in the integer part minus 3, except for small numbers where a different behavior is better for the user experience).
-        //TODO Known limitation : The progressive method does not play well with numbers between 0 and 1 where to modify the decimal places the rawValue first has to go from '1' to '0'
-        if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelUpEvent(e)) {
-          // Increment
-          result = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].addAndRoundToNearestAuto(result, this.settings.decimalPlacesRawValue);
-        } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isWheelDownEvent(e)) {
-          // Decrement
-          result = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].subtractAndRoundToNearestAuto(result, this.settings.decimalPlacesRawValue);
-        }
-      }
-
-      // 3) Set the new value so it gets formatted
-      // First clamp the result if needed
-      result = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].clampToRangeLimits(result, this.settings);
-      if (result !== +currentUnformattedValue) {
-        // Only 'set' the value if it has changed. For instance 'set' should not happen if the user hits a limit and continue to try to go past it since we clamp the value.
-        this.set(result);
-
-        // Since we changed the input value, we send a native `input` event
-        this._triggerEvent(AutoNumeric.events["native"].input, e.target);
-      }
-
-      //XXX Do not prevent if the value is not modified? From a UX point of view, preventing the wheel event when the user use it on top of an autoNumeric element should always be done, even if the value does not change. Perhaps that could affect other scripts relying on this event to be sent though.
-      e.preventDefault(); // We prevent the page to scroll while we increment/decrement the value
-
-      // 4) Finally, we set back the caret position/selection
-      // There is no need to take into account the fact that the number count could be different at the end of the wheel event ; it would be too complex and most of the time unreliable
-      this._setSelection(selectionStart, selectionEnd);
+      this._wheelAndUpDownActions(e, isUp, isDown, this.settings.wheelStep);
       this.isWheelEvent = false; // Set back the mouse wheel indicator to its default
     }
 
@@ -6843,7 +6905,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }], [{
     key: "version",
     value: function version() {
-      return '4.6.3';
+      return '4.7.0';
     }
 
     /**
@@ -7529,6 +7591,9 @@ var AutoNumeric = /*#__PURE__*/function () {
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isTrueOrFalseString(options.isCancellable) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(options.isCancellable)) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The cancellable behavior option 'isCancellable' is invalid ; it should be either 'true' or 'false', [".concat(options.isCancellable, "] given."));
       }
+      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isTrueOrFalseString(options.modifyValueOnUpDownArrow) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(options.modifyValueOnUpDownArrow)) {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The increment/decrement on up and down arrow keys 'modifyValueOnUpDownArrow' is invalid ; it should be either 'true' or 'false', [".concat(options.modifyValueOnUpDownArrow, "] given."));
+      }
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isTrueOrFalseString(options.modifyValueOnWheel) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(options.modifyValueOnWheel)) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The increment/decrement on mouse wheel option 'modifyValueOnWheel' is invalid ; it should be either 'true' or 'false', [".concat(options.modifyValueOnWheel, "] given."));
       }
@@ -7537,6 +7602,10 @@ var AutoNumeric = /*#__PURE__*/function () {
       }
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isInArray(options.wheelOn, [AutoNumeric.options.wheelOn.focus, AutoNumeric.options.wheelOn.hover])) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The wheel behavior option 'wheelOn' is invalid ; it should either be 'focus' or 'hover', [".concat(options.wheelOn, "] given."));
+      }
+      if (!(_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isString(options.upDownStep) || _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNumber(options.upDownStep)) || options.upDownStep !== 'progressive' && !testPositiveFloatOrInteger.test(options.upDownStep) || Number(options.upDownStep) === 0) {
+        // A step equal to '0' is rejected
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The up/down arrow step value option 'upDownStep' is invalid ; it should either be the string 'progressive', or a number or a string that represents a positive number (excluding zero), [".concat(options.upDownStep, "] given."));
       }
       if (!(_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isString(options.wheelStep) || _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNumber(options.wheelStep)) || options.wheelStep !== 'progressive' && !testPositiveFloatOrInteger.test(options.wheelStep) || Number(options.wheelStep) === 0) {
         // A step equal to '0' is rejected
@@ -9890,6 +9959,7 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].defaultSettings = {
   leadingZero: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.leadingZero.deny,
   maximumValue: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.maximumValue.tenTrillions,
   minimumValue: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.minimumValue.tenTrillions,
+  modifyValueOnUpDownArrow: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.modifyValueOnUpDownArrow.modifyValue,
   modifyValueOnWheel: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.modifyValueOnWheel.modifyValue,
   negativeBracketsTypeOnBlur: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.negativeBracketsTypeOnBlur.none,
   negativePositiveSignPlacement: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.negativePositiveSignPlacement.none,
@@ -9915,6 +9985,8 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].defaultSettings = {
   symbolWhenUnfocused: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.symbolWhenUnfocused.none,
   unformatOnHover: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.unformatOnHover.unformat,
   unformatOnSubmit: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.unformatOnSubmit.keepCurrentValue,
+  upDownStep: '1',
+  // To mimic the behavior of 'numeric'-typed input
   valuesToStrings: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.valuesToStrings.none,
   watchExternalChanges: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.watchExternalChanges.doNotWatch,
   wheelOn: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.wheelOn.focus,
@@ -12750,7 +12822,19 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
     oneBillion: '-1000000000',
     zero: '0'
   },
+  /* Allows the user to increment or decrement the element value with the up and down arrow keys.
+   * The behavior is similar to the mouse wheel one.
+   * The up and down arrow keys behavior can be modified by the `upDownStep` option.
+   * This `upDownStep` option can be used in two ways, either by setting:
+   * - a 'fixed' step value (`upDownStep : 1000`), or
+   * - the 'progressive' string (`upDownStep : 'progressive'`), which will then activate a special mode where the step is automatically calculated based on the element value size.
+   */
+  modifyValueOnUpDownArrow: {
+    modifyValue: true,
+    doNothing: false
+  },
   /* Allows the user to increment or decrement the element value with the mouse wheel.
+   * The behavior is similar to the up/down arrow one.
    * The wheel behavior can be modified by the `wheelStep` option.
    * This `wheelStep` option can be used in two ways, either by setting:
    * - a 'fixed' step value (`wheelStep : 1000`), or
@@ -13153,6 +13237,17 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
     unformat: true,
     keepCurrentValue: false
   },
+  /* That option is linked to the `modifyValueOnUpDownArrow` one and will only be used if the latter is set to `true`.
+   * This option will modify the up/down arrow behavior and can be used in two ways, either by setting :
+   * - a 'fixed' step value (a positive float or integer number (ex: `1000`)), or
+   * - the `'progressive'` string.
+   *
+   * The 'fixed' mode always increment/decrement the element value by that amount, while respecting the `minimumValue` and `maximumValue` settings.
+   * The 'progressive' mode will increment/decrement the element value based on its current value. The bigger the number, the bigger the step, and vice versa.
+   */
+  upDownStep: {
+    progressive: 'progressive'
+  },
   /* Provides a way for automatically replacing the formatted value with a pre-defined string, when the raw value is equal to a specific value
    * Here you can specify as many 'conversion' as needed.
    */
@@ -13188,7 +13283,7 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
   },
   /* That option is linked to the `modifyValueOnWheel` one and will only be used if the latter is set to `true`.
    * This option will modify the wheel behavior and can be used in two ways, either by setting :
-   * - a 'fixed' step value (a positive float or integer number `1000`), or
+   * - a 'fixed' step value (a positive float or integer (ex: number `1000`)), or
    * - the `'progressive'` string.
    *
    * The 'fixed' mode always increment/decrement the element value by that amount, while respecting the `minimumValue` and `maximumValue` settings.
