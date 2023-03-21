@@ -1533,7 +1533,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         content += '<li class="' + cssClass + '" tabindex="-1" role="option"';
         if (title) {
-            content += ' title="' + title + '"';
+            content += ' title="' + PrimeFaces.escapeHTML(title) + '"';
         }
         if ($item.is(':disabled')) {
             content += ' disabled';
