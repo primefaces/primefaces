@@ -258,7 +258,12 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('loadContent')) {
+            this.callBehavior('loadContent', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     }
 
 });
