@@ -219,12 +219,12 @@ public class TabViewRenderer extends CoreRenderer {
             }
         });
 
-        UIComponent optionsFacet = tabView.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+        UIComponent actionsFacet = tabView.getFacet("actions");
+        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions ui-tabs-actions-global", null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(withActiveFacet.get()), null);
-            optionsFacet.encodeAll(context);
+            actionsFacet.encodeAll(context);
             writer.endElement("li");
         }
 
