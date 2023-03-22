@@ -378,6 +378,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 partialSubmit: true,
                 process: this.id,
                 ignoreAutoUpdate: true,
+                global: false,
                 params: [
                     {name: this.id + '_skipChildren', value: true},
                     {name: this.id + '_newTab', value: panel.attr('id')},

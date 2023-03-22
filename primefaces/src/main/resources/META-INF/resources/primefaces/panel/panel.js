@@ -220,6 +220,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
                 partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_collapsed'),
                 process: this.id,
                 ignoreAutoUpdate: true,
+                global: false,
                 params: [
                     {name: this.id + '_skipChildren', value: true}
                 ]
