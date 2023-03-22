@@ -97,9 +97,11 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Brings up this sidebar in case is is not already visible.
+     * @override
      * @param {boolean} reload If the dynamic content should be reloaded.
      */
     show: function(reload = false) {
+        this._super();
         if(this.isVisible()) {
             return;
         }
@@ -144,8 +146,10 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Hides this sidebara in case it is not already hidden.
+     * @override
      */
     hide: function() {
+        this._super();
         if(!this.isVisible()) {
             return;
         }

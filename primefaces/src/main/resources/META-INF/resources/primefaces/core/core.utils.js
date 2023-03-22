@@ -931,6 +931,17 @@ if (!PrimeFaces.utils) {
                 return doc.documentElement.textContent;
             }
             return input;
+        },
+
+        /**
+         * Hide any currently displayed tooltips.
+         */
+        hideTooltips: function() {
+            PrimeFaces.getWidgetsByType(PrimeFaces.widget.Tooltip).forEach(
+                function(tooltip) {
+                    tooltip.hide();
+                }
+            );
         }
     };
 

@@ -289,8 +289,10 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
 
     /**
      * Brings up the overlay panel with the available options.
+     * @override
      */
     show: function() {
+        this._super();
         var $this = this;
 
         if (this.transition) {
@@ -317,8 +319,10 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
 
     /**
      * Hides the overlay panel with the available options.
+     * @override
      */
     hide: function() {
+        this._super();
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
 

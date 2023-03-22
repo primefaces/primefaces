@@ -142,9 +142,11 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     
     /**
      * Makes the popup visible.
+     * @override
      * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
      */
     show: function(target) {
+        this._super();
         if (this.transition) {
             var $this = this;
 
@@ -170,9 +172,11 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     
     /**
      * Hides the popup.
-     * @param {PrimeFaces.widget.ConfirmPopup.HideCallback} callback Callback that is invoked after this popup was closed.
+     * @override
+     * @param {PrimeFaces.widget.ConfirmPopup.HideCallback} [callback] Callback that is invoked after this popup was closed.
      */
     hide: function(callback) {
+        this._super();
         var $this = this;
 
         if (this.transition) {

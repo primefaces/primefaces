@@ -315,9 +315,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Brings up the overlay panel so that is displayed and visible.
+     * @override
      * @param {string | JQuery} [target] ID or DOM element of the target component that triggers this overlay panel.
      */
     show: function(target) {
+        this._super();
         if (this.isVisible()) {
             return;
         }
@@ -431,9 +433,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     /**
      * Hides this overlay panel so that it is not displayed anymore.
+     * @override
      * @param {() => void} [callback] Custom callback that is invoked after this overlay panel was closed.
      */
     hide: function(callback) {
+        this._super();
         if (this.transition) {
             var $this = this;
 

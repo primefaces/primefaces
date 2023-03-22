@@ -229,11 +229,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * in an AJAX request to the sever to retrieve the content. Also triggers the show behaviors registered for this
      * dialog.
      * 
+     * @override
      * @param {number | string} [duration] Durations are given in milliseconds; higher values indicate slower
      * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
      * milliseconds, respectively.
      */
     show: function(duration) {
+        this._super();
         if(this.isVisible()) {
             return;
         }
@@ -327,11 +329,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     /**
      * Hide the dialog with an optional animation lasting for the given duration.
      * 
+     * @override
      * @param {number | string} [duration] Durations are given in milliseconds; higher values indicate slower
      * animations, not faster ones. The strings `fast` and `slow` can be supplied to indicate durations of 200 and 600
      * milliseconds, respectively.
      */
     hide: function(duration) {
+        this._super();
         if(!this.isVisible()) {
             return;
         }
@@ -594,6 +598,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     moveToTop: function() {
         this.jq.css('z-index', PrimeFaces.nextZindex());
+        PrimeFaces.utils.hideTooltips();
     },
 
     /**

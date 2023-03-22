@@ -708,6 +708,20 @@ if (!PrimeFaces.widget) {
          */
         getModalTabbables: function(){
             return null;
+        },
+
+        /**
+         * Base method to brings up the overlay panel so that is displayed and visible. Overridden in each subclass.
+         */
+        show: function() {
+            PrimeFaces.utils.hideTooltips();
+        },
+
+        /**
+         * Base method to hide this overlay panel so that it is not displayed anymore. Overridden in each subclass.
+         */
+        hide: function() {
+            PrimeFaces.utils.hideTooltips();
         }
     });
 
