@@ -498,6 +498,7 @@ public class AppMenu {
         galleriaMenuItems.add(new MenuItem("FullScreen", "/ui/multimedia/galleria/fullscreen"));
         galleriaMenuItems.add(new MenuItem("AutoPlay", "/ui/multimedia/galleria/autoplay"));
         galleriaMenuItems.add(new MenuItem("Caption", "/ui/multimedia/galleria/caption"));
+        galleriaMenuItems.add(new MenuItem("Dynamic", "/ui/multimedia/galleria/dynamic"));
         multimediaMenuItems.add(new MenuItem("Galleria", galleriaMenuItems));
 
         multimediaMenuItems.add(new MenuItem("Media", "/ui/multimedia/media"));
