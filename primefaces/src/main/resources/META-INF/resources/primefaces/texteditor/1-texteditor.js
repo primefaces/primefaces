@@ -88,6 +88,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         if (this.disabled) {
             this.input.attr("disabled", "disabled");
             this.jq.addClass("ui-state-disabled");
+            this.cfg.readOnly = true;
         }
 
         this.renderDeferred();
