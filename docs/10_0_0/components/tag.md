@@ -22,7 +22,8 @@ Tag component is used to categorize content.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | value | null | String | Value to display inside the tag.
 | severity | null | String | Severity type of the tag.
-| size | null | String | Size of the tag, valid options are "large" and "xlarge".
+| rounded | false | Boolean | Whether the corners of the tag are rounded.
+| icon | null | String | Icon of the tag to display next to the value.
 | style | null | String | Style of the tag.
 | styleClass | null | String | StyleClass of the tag.
 
@@ -37,7 +38,7 @@ Content of the tag is specified using the ```value``` property.
 An icon can also be configured to be displayed next to the value with the ```icon``` property.
 
 ```xhtml
-<p:tag value="2" severity="success"></p:tag>
+<p:tag value="2" severity="success" icon="pi pi-check"></p:tag>
 ```
 
 ## Severities
