@@ -47,11 +47,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.7.0
- * @date         2023-03-21 UTC 03:35
+ * @version      4.8.1
+ * @date         2023-03-24 UTC 07:46
  *
- * @authors      2009-2016 Bob Knothe <bob.knothe@gmail.com>
- *               2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
+ * @authors      2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
+ *               2009-2016 Bob Knothe <bob.knothe@gmail.com>
  * @contributors Sokolov Yura and others, cf. AUTHORS
  * @copyright    2009 Robert J. Knothe
  * @since        2009-08-09
@@ -105,8 +105,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
  * An AutoNumeric element is an object wrapper that keeps a reference to the DOM element it manages (usually an <input> one), and provides autoNumeric-specific variables and functions.
  */
 var AutoNumeric = /*#__PURE__*/function () {
-  // Those static declarations are only used by the IDE, to prevent error messages not finding those fields declarations
-
   /**
    * Initialize the AutoNumeric object onto the given DOM element, and attach the settings and related event listeners to it.
    * The options passed as a parameter is an object that contains the settings (i.e. {digitGroupSeparator: ".", decimalCharacter: ",", currencySymbol: '€ '})
@@ -829,6 +827,11 @@ var AutoNumeric = /*#__PURE__*/function () {
         });
         return _this;
       },
+      negativePositiveSignBehavior: function negativePositiveSignBehavior(_negativePositiveSignBehavior) {
+        _this.settings.negativePositiveSignBehavior = _negativePositiveSignBehavior; //TODO test this with unit tests
+
+        return _this;
+      },
       noEventListeners: function noEventListeners(_noEventListeners) {
         //TODO test this with unit tests
         if (_noEventListeners === AutoNumeric.options.noEventListeners.noEvents && _this.settings.noEventListeners === AutoNumeric.options.noEventListeners.addEvents) {
@@ -986,9 +989,17 @@ var AutoNumeric = /*#__PURE__*/function () {
   }
 
   /**
-   * Return the autoNumeric version number (for debugging purpose)
+   * Take the parameters given to the AutoNumeric object, and output the three variables that are needed to finish initializing it :
+   * - domElement : The target DOM element
+   * - initialValue : The initial value, or `null` if none is given
+   * - userOptions : The option object
    *
-   * @returns {string}
+   * @param {object|Array|number|string} arg1
+   * @param {object|Array|number|string|null} arg2
+   * @param {object|Array|number|string|null} arg3
+   * @returns {{domElement: *, initialValue: *, userOptions: *}}
+   * @throws
+   * @private
    */
   _createClass(AutoNumeric, [{
     key: "_saveInitialValues",
@@ -6721,12 +6732,16 @@ var AutoNumeric = /*#__PURE__*/function () {
         // Here, the left and right parts have been normalized already, hence the minus sign usage
         if (left === '' && _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].contains(right, '-')) {
           // The value is originally negative (with a trailing negative sign)
-          right = right.replace('-', '');
+          if (this.settings.negativePositiveSignBehavior || !this.settings.negativePositiveSignBehavior && this.eventKey === '+') {
+            right = right.replace('-', '');
+          }
         } else if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNegativeStrict(left, '-')) {
           // The value is originally negative (with a leading negative sign)
           // Remove the negative sign, effectively converting the value to a positive one
-          left = left.replace('-', ''); //TODO replace with '+' if `showPositiveSign` too?
-        } else {
+          if (this.settings.negativePositiveSignBehavior || !this.settings.negativePositiveSignBehavior && this.eventKey === '+') {
+            left = left.replace('-', '');
+          }
+        } else if (this.settings.negativePositiveSignBehavior || !this.settings.negativePositiveSignBehavior && this.eventKey === '-') {
           // The value is originally positive, so we toggle the state to a negative one (unformatted, which means even with a trailing negative sign, we add the minus sign on the far left)
           left = "".concat(this.settings.negativeSignCharacter).concat(left);
         }
@@ -6904,23 +6919,17 @@ var AutoNumeric = /*#__PURE__*/function () {
      */
   }], [{
     key: "version",
-    value: function version() {
-      return '4.7.0';
-    }
+    value:
+    // Those static declarations are only used by the IDE, to prevent error messages not finding those fields declarations
 
     /**
-     * Take the parameters given to the AutoNumeric object, and output the three variables that are needed to finish initializing it :
-     * - domElement : The target DOM element
-     * - initialValue : The initial value, or `null` if none is given
-     * - userOptions : The option object
+     * Return the autoNumeric version number (for debugging purpose)
      *
-     * @param {object|Array|number|string} arg1
-     * @param {object|Array|number|string|null} arg2
-     * @param {object|Array|number|string|null} arg3
-     * @returns {{domElement: *, initialValue: *, userOptions: *}}
-     * @throws
-     * @private
+     * @returns {string}
      */
+    function version() {
+      return '4.8.1';
+    }
   }, {
     key: "_setArgumentsValues",
     value: function _setArgumentsValues(arg1, arg2, arg3) {
@@ -7463,10 +7472,13 @@ var AutoNumeric = /*#__PURE__*/function () {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The negative sign character option 'negativeSignCharacter' is invalid ; it should be a single character, and cannot be any numerical characters, [".concat(options.negativeSignCharacter, "] given."));
       }
       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isString(options.positiveSignCharacter) || options.positiveSignCharacter.length !== 1 || _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefinedOrNullOrEmpty(options.positiveSignCharacter) || testNumericalCharacters.test(options.positiveSignCharacter)) {
-        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The positive sign character option 'positiveSignCharacter' is invalid ; it should be a single character, and cannot be any numerical characters, [".concat(options.positiveSignCharacter, "] given.\nIf you want to hide the positive sign character, you need to set the `showPositiveSign` option to `true`."));
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The positive sign character option 'positiveSignCharacter' is invalid ; it should be a single character, and cannot be any numerical characters, [".concat(options.positiveSignCharacter, "] given.\nIf you want to show the positive sign character, you need to set the `showPositiveSign` option to `true`."));
       }
       if (options.negativeSignCharacter === options.positiveSignCharacter) {
         _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The positive 'positiveSignCharacter' and negative 'negativeSignCharacter' sign characters cannot be identical ; [".concat(options.negativeSignCharacter, "] given."));
+      }
+      if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isTrueOrFalseString(options.negativePositiveSignBehavior) && !_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(options.negativePositiveSignBehavior)) {
+        _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].throwError("The option 'negativePositiveSignBehavior' is invalid ; it should be either 'true' or 'false', [".concat(options.negativePositiveSignBehavior, "] given."));
       }
       var _ref5 = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(options.negativeBracketsTypeOnBlur) ? ['', ''] : options.negativeBracketsTypeOnBlur.split(','),
         _ref6 = _slicedToArray(_ref5, 2),
@@ -9404,10 +9416,12 @@ var AutoNumeric = /*#__PURE__*/function () {
         leadingZero: true,
         maximumValue: true,
         minimumValue: true,
+        modifyValueOnUpDownArrow: true,
         modifyValueOnWheel: true,
         negativeBracketsTypeOnBlur: true,
         negativePositiveSignPlacement: true,
         negativeSignCharacter: true,
+        negativePositiveSignBehavior: true,
         noEventListeners: true,
         onInvalidPaste: true,
         outputFormat: true,
@@ -9426,6 +9440,7 @@ var AutoNumeric = /*#__PURE__*/function () {
         styleRules: true,
         suffixText: true,
         symbolWhenUnfocused: true,
+        upDownStep: true,
         unformatOnHover: true,
         unformatOnSubmit: true,
         valuesToStrings: true,
@@ -9964,6 +9979,7 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].defaultSettings = {
   negativeBracketsTypeOnBlur: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.negativeBracketsTypeOnBlur.none,
   negativePositiveSignPlacement: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.negativePositiveSignPlacement.none,
   negativeSignCharacter: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.negativeSignCharacter.hyphen,
+  negativePositiveSignBehavior: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.negativePositiveSignBehavior.doNotToggle,
   noEventListeners: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.noEventListeners.addEvents,
   //TODO Shouldn't we use `truncate` as the default value?
   onInvalidPaste: _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options.onInvalidPaste.error,
@@ -12905,6 +12921,15 @@ _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__["default"].options = {
     dotMinus: '∸',
     minusTilde: '≂',
     not: '¬'
+  },
+  /*
+   * Defines if the negative sign should be toggled when hitting the negative or positive key multiple times.
+   * When `toggle` is used, using the same '-' on '+' key will toggle between a positive and negative value.
+   * When `doNotToggle` is used, using '-' will always set the value negative, and '+' will always set the value positive.
+   */
+  negativePositiveSignBehavior: {
+    toggle: true,
+    doNotToggle: false
   },
   /* Defines if the element should have event listeners activated on it.
    * By default, those event listeners are only added to <input> elements and html element with the `contenteditable` attribute set to `true`, but not on the other html tags.
