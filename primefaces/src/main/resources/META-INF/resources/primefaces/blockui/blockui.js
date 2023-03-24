@@ -299,10 +299,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var contentHeight = content.outerHeight();
             var contentWidth = content.outerWidth();
             // #9496 if display:none then we need to clone to get its dimensions
-            if (contentHeight === 0) {
+            if (content.height() === 0) {
                 var currentWidth = this.content[i].getBoundingClientRect().width;
+                var styleWidth = currentWidth ? 'width: ' + currentWidth + 'px' : '';
                 var clone = this.content[i].cloneNode(true);
-                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset; width: ' + currentWidth + 'px';
+                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset;' + styleWidth;
                 document.body.append(clone);
                 var jqClone = $(clone);
                 contentHeight = jqClone.outerHeight();
