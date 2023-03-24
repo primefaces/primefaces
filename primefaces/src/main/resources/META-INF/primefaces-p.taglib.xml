@@ -7412,6 +7412,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If true, prevents menu from being shown.]]>
+            </description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Type of tree nodes to get attached.]]>
             </description>
             <name>nodeType</name>
