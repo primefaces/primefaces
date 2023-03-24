@@ -40,6 +40,7 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
         style,
         styleClass,
         model,
+        disabled,
         nodeType,
         event,
         beforeShow,
@@ -110,6 +111,14 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget, To
 
     public void setModel(org.primefaces.model.menu.MenuModel model) {
         getStateHelper().put(PropertyKeys.model, model);
+    }
+
+    public Boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(Boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     public String getNodeType() {

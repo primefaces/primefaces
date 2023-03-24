@@ -49,6 +49,7 @@
  * @prop {string} cfg.target Client ID of the target widget.
  * @prop {string} cfg.targetFilter Selector to filter the elements to attach the menu.
  * @prop {string} cfg.targetWidgetVar Widget variable of the target widget.
+ * @prop {boolean} cfg.disabled If true, prevents menu from being shown.
  */
 PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
@@ -270,7 +271,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     show: function(e) {
         var $this = this;
 
-        if(this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
+        if(this.cfg.disabled || this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
             return;
         }
 
