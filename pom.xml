@@ -200,11 +200,15 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <version>4.2</version>
                 <configuration>
-                    <header>${project.basedir}/conf/header.txt</header>
-                    <includes>
-                        <include>src/main/java/**</include>
-                        <include>src/test/java/**</include>
-                    </includes>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>${project.basedir}/conf/header.txt</header>
+                            <includes>
+                                <include>src/main/java/**</include>
+                                <include>src/test/java/**</include>
+                            </includes>
+                        </licenseSet>
+                    </licenseSets>
                 </configuration>
                 <executions>
                     <execution>
