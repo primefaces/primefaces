@@ -4,8 +4,6 @@ on: [push, pull_request, workflow_dispatch]
 
 env:
     MAVEN_OPTS: >-
-        -Dhttp.keepAlive=false
-        -Dmaven.wagon.http.pool=false
         -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
 
 jobs:
@@ -51,7 +49,7 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
       - name: Integration Tests (serial)
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome-jsf22,theme-saga,csp,${{ matrix.facesimpl }}
 
@@ -73,7 +71,7 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
       - name: Integration Tests (serial)
         if: matrix.java == 8
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
@@ -99,6 +97,6 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Build
-        run: mvn clean install -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+        run: mvn clean install -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
       - name: Integration Tests (parallel)
         run: mvn -B -V clean install -fprimefaces-integration-tests-jakarta/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
