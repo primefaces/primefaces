@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -35,6 +34,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.lowagie.text.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -47,8 +47,6 @@ import org.primefaces.component.export.PDFOptions;
 import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
-
-import com.lowagie.text.*;
 
 @Named
 @RequestScoped
@@ -122,10 +120,10 @@ public class CustomizedDocumentsView implements Serializable {
         this.service = service;
     }
 
-    public void postProcessXLS(Object document) {
+    public void onRowExportXLS(Object document) {
         SXSSFWorkbook wb = (SXSSFWorkbook) document;
         SXSSFSheet sheet = wb.getSheetAt(0);
-        SXSSFRow header = sheet.getRow(0);
+        SXSSFRow header = sheet.getRow(sheet.getLastRowNum());
 
         CellStyle cellStyle = wb.createCellStyle();
         cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());

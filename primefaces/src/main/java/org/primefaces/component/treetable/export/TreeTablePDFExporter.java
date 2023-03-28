@@ -23,84 +23,81 @@
  */
 package org.primefaces.component.treetable.export;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
-import java.util.List;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIPanel;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.columngroup.ColumnGroup;
-import org.primefaces.component.export.ExportConfiguration;
-import org.primefaces.component.export.ExporterOptions;
-import org.primefaces.component.export.PDFOptions;
-import org.primefaces.component.export.PDFOrientationType;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-
+import com.lowagie.text.Font;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.PDFOptions;
+import org.primefaces.component.export.PDFOrientationType;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
-public class TreeTablePDFExporter extends TreeTableExporter {
+public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions> {
 
     private Font cellFont;
     private Font facetFont;
     private Color facetBgColor;
-    private Document document;
+    private PdfPTable pdfTable;
 
-    protected Document createDocument() {
-        return new Document();
-    }
-
-    protected Document getDocument() {
-        return document;
+    public TreeTablePDFExporter() {
+        super(new PDFOptions());
     }
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
-        document = createDocument();
+    protected Document createDocument(FacesContext context) throws IOException {
+        Document document = new Document();
+        PDFOptions options = (PDFOptions) exportConfiguration.getOptions();
+
+        if (options != null && PDFOrientationType.LANDSCAPE == options.getOrientation()) {
+            document.setPageSize(PageSize.A4.rotate());
+        }
 
         try {
-            PDFOptions options = (PDFOptions) exportConfiguration.getOptions();
-            if (options != null) {
-                if (PDFOrientationType.LANDSCAPE == options.getOrientation()) {
-                    document.setPageSize(PageSize.A4.rotate());
-                }
-            }
-
-            PdfWriter.getInstance(document, getOutputStream());
+            PdfWriter.getInstance(document, os());
         }
         catch (DocumentException e) {
             throw new IOException(e);
         }
 
-        if (exportConfiguration.getPreProcessor() != null) {
-            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{document});
-        }
-
         if (!document.isOpen()) {
             document.open();
         }
+
+        if (options != null) {
+            applyFont(options.getFontName(), exportConfiguration.getEncodingType());
+            applyFacetOptions(options);
+            applyCellOptions(options);
+        }
+        else {
+            applyFont(FontFactory.TIMES, exportConfiguration.getEncodingType());
+        }
+
+        return document;
     }
 
     @Override
-    protected void doExport(FacesContext context, TreeTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
+    protected void exportTable(FacesContext context, TreeTable table, int index) throws IOException {
         try {
             // Add empty paragraph between each exported tables
             if (index > 0) {
                 Paragraph preface = new Paragraph();
                 addEmptyLine(preface, 3);
-                getDocument().add(preface);
+                document.add(preface);
             }
 
-            getDocument().add(exportTable(context, table, exportConfiguration));
+            int columnsCount = getExportableColumns(table).size();
+            pdfTable = new PdfPTable(columnsCount);
+            super.exportTable(context, table, index);
+            document.add(pdfTable);
         }
         catch (DocumentException e) {
             throw new IOException(e.getMessage());
@@ -108,16 +105,34 @@ public class TreeTablePDFExporter extends TreeTableExporter {
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
-        if (exportConfiguration.getPostProcessor() != null) {
-            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{document});
-        }
-
-        getDocument().close();
-
-        document = null;
+    protected void exportTabletFacetValue(FacesContext context, TreeTable table, String textValue) {
+        int colspan = getExportableColumns(table).size();
+        addFacetValue(1, colspan, textValue);
     }
 
+    @Override
+    protected void exportColumnFacetValue(FacesContext context, TreeTable table, String text, int index) {
+        addFacetValue(1, 1, text);
+    }
+
+    @Override
+    protected void exportColumnGroupFacetValue(FacesContext context, TreeTable table, UIColumn column,
+                                               int rowIndex, AtomicInteger colIndex, String text, int i) {
+        int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
+        int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
+        addFacetValue(rowSpan, colSpan, text);
+
+        int total = getExportableColumns(table).size();
+        if (i == total) {
+            pdfTable.completeRow();
+        }
+    }
+
+    @Override
+    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, String text, int index) {
+        PdfPCell cell = createCell(col, new Paragraph(text, cellFont));
+        pdfTable.addCell(cell);
+    }
 
     @Override
     public String getContentType() {
@@ -129,210 +144,16 @@ public class TreeTablePDFExporter extends TreeTableExporter {
         return ".pdf";
     }
 
-    protected PdfPTable exportTable(FacesContext context, TreeTable table, ExportConfiguration config) {
-        int columnsCount = getColumnsCount(table);
-        PdfPTable pdfTable = new PdfPTable(columnsCount);
-
-        ExporterOptions options = config.getOptions();
-        if (options != null) {
-            applyFont(options.getFontName(), config.getEncodingType());
-            applyFacetOptions(options);
-            applyCellOptions(options);
-        }
-        else {
-            applyFont(FontFactory.TIMES, config.getEncodingType());
-        }
-
-        if (config.getOnTableRender() != null) {
-            config.getOnTableRender().invoke(context.getELContext(), new Object[]{pdfTable, table});
-        }
-
-        if (config.isExportHeader()) {
-            addTableFacets(context, table, pdfTable, ColumnType.HEADER);
-            boolean headerGroup = addColumnGroup(table, pdfTable, ColumnType.HEADER);
-            if (!headerGroup) {
-                addColumnFacets(table, pdfTable, ColumnType.HEADER);
-            }
-        }
-
-        if (config.isPageOnly()) {
-            exportPageOnly(context, table, pdfTable);
-        }
-        else if (config.isSelectionOnly()) {
-            exportSelectionOnly(context, table, pdfTable);
-        }
-        else {
-            exportAll(context, table, pdfTable);
-        }
-
-        if (config.isExportFooter()) {
-            addColumnGroup(table, pdfTable, ColumnType.FOOTER);
-            if (table.hasFooterColumn()) {
-                addColumnFacets(table, pdfTable, ColumnType.FOOTER);
-            }
-            addTableFacets(context, table, pdfTable, ColumnType.FOOTER);
-        }
-
-        return pdfTable;
-    }
-
-    protected void addTableFacets(FacesContext context, TreeTable table, PdfPTable pdfTable, ColumnType columnType) {
-        String facetText = null;
-        UIComponent facet = table.getFacet(columnType.facet());
-        if (ComponentUtils.shouldRenderFacet(facet)) {
-            if (facet instanceof UIPanel) {
-                for (UIComponent child : facet.getChildren()) {
-                    if (child.isRendered()) {
-                        String value = ComponentUtils.getValueToRender(context, child);
-
-                        if (value != null) {
-                            facetText = value;
-                            break;
-                        }
-                    }
-                }
-            }
-            else {
-                facetText = ComponentUtils.getValueToRender(context, facet);
-            }
-        }
-
-        if (facetText != null) {
-            int colspan = getExportableColumns(table).size();
-            PdfPCell cell = new PdfPCell(new Paragraph(facetText, facetFont));
-            if (facetBgColor != null) {
-                cell.setBackgroundColor(facetBgColor);
-            }
-
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setColspan(colspan);
-            pdfTable.addCell(cell);
-        }
-    }
-
     @Override
-    protected void exportCells(TreeTable table, Object document) {
-        PdfPTable pdfTable = (PdfPTable) document;
-        for (UIColumn col : getExportableColumns(table)) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            addColumnValue(table, pdfTable, col.getChildren(), cellFont, col);
-        }
+    protected Object[] getOnTableRenderArgs() {
+        return new Object[]{document, pdfTable};
     }
 
-    protected void addColumnFacets(TreeTable table, PdfPTable pdfTable, ColumnType columnType) {
-        for (UIColumn col : getExportableColumns(table)) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            UIComponent facet = col.getFacet(columnType.facet());
-            String textValue;
-            switch (columnType) {
-                case HEADER:
-                    textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
-                    break;
-
-                case FOOTER:
-                    textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
-                    break;
-
-                default:
-                    textValue = null;
-                    break;
-            }
-
-            if (textValue != null) {
-                addColumnValue(pdfTable, textValue, 1, 1);
-            }
-            else if (ComponentUtils.shouldRenderFacet(facet)) {
-                addColumnValue(pdfTable, facet);
-            }
-            else {
-                addColumnValue(pdfTable, Constants.EMPTY_STRING, 1, 1);
-            }
-        }
-    }
-
-    protected boolean addColumnGroup(TreeTable table, PdfPTable pdfTable,  ColumnType columnType) {
-        ColumnGroup cg = table.getColumnGroup(columnType.facet());
-        if (cg == null || cg.getChildCount() == 0) {
-            return false;
-        }
-        FacesContext context = FacesContext.getCurrentInstance();
-        table.forEachColumnGroupRow(context, cg, true, row -> {
-            table.forEachColumn(context, row, true, true, false, column -> {
-                if (column.isRendered() && column.isExportable()) {
-                    String textValue;
-                    switch (columnType) {
-                        case HEADER:
-                            textValue = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
-                            break;
-
-                        case FOOTER:
-                            textValue = (column.getExportFooterValue() != null) ? column.getExportFooterValue() : column.getFooterText();
-                            break;
-
-                        default:
-                            textValue = Constants.EMPTY_STRING;
-                            break;
-                    }
-
-                    int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
-                    int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
-                    addColumnValue(pdfTable, textValue, rowSpan, colSpan);
-                }
-                return true;
-            });
-
-            pdfTable.completeRow();
-            return true;
-        });
-        return true;
-    }
-
-    protected void addColumnValue(PdfPTable pdfTable, UIComponent component) {
-        String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
-        addColumnValue(pdfTable, value, 1, 1);
-    }
-
-    protected PdfPCell addColumnValue(PdfPTable pdfTable, String value, int rowSpan, int colSpan) {
-        PdfPCell cell = new PdfPCell(new Paragraph(value, facetFont));
-        if (facetBgColor != null) {
-            cell.setBackgroundColor(facetBgColor);
-        }
-        if (rowSpan > 1) {
-            cell.setVerticalAlignment(Element.ALIGN_CENTER);
-            cell.setRowspan(rowSpan);
-
-        }
-        if (colSpan > 1) {
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setColspan(colSpan);
-        }
-
-        pdfTable.addCell(cell);
-        return cell;
-    }
-
-    protected void addColumnValue(TreeTable table, PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        exportColumn(context, table, column, components, true, (s) -> {
-            PdfPCell cell = createCell(column, new Paragraph(s, font));
-            pdfTable.addCell(cell);
-        });
-    }
-
-    protected int getColumnsCount(TreeTable table) {
-        return getExportableColumns(table).size();
-    }
+    // -- UTILS --
 
     protected void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
-            paragraph.add(new Paragraph(" "));
+            paragraph.add(new Paragraph(Constants.SPACE));
         }
     }
 
@@ -349,7 +170,7 @@ public class TreeTablePDFExporter extends TreeTableExporter {
 
         String facetFontSize = options.getFacetFontSize();
         if (facetFontSize != null) {
-            facetFont.setSize(Integer.valueOf(facetFontSize));
+            facetFont.setSize(Integer.parseInt(facetFontSize));
         }
 
         String facetFontStyle = options.getFacetFontStyle();
@@ -364,7 +185,7 @@ public class TreeTablePDFExporter extends TreeTableExporter {
 
         String cellFontSize = options.getCellFontSize();
         if (cellFontSize != null) {
-            cellFont.setSize(Integer.valueOf(cellFontSize));
+            cellFont.setSize(Integer.parseInt(cellFontSize));
         }
 
         String cellFontStyle = options.getCellFontStyle();
@@ -413,5 +234,23 @@ public class TreeTablePDFExporter extends TreeTableExporter {
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         }
         return cell;
+    }
+
+    protected void addFacetValue(int rowSpan, int colSpan, String textValue) {
+        PdfPCell cell = new PdfPCell(new Paragraph(textValue, facetFont));
+        if (facetBgColor != null) {
+            cell.setBackgroundColor(facetBgColor);
+        }
+        if (rowSpan > 1) {
+            cell.setVerticalAlignment(Element.ALIGN_CENTER);
+            cell.setRowspan(rowSpan);
+
+        }
+        if (colSpan > 1) {
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setColspan(colSpan);
+        }
+
+        pdfTable.addCell(cell);
     }
 }

@@ -26,135 +26,67 @@ package org.primefaces.integrationtests.dataexporter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Serializable;
-import java.util.List;
-
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.export.DataTableExporter;
-import org.primefaces.component.export.ExportConfiguration;
+import org.primefaces.component.export.ExporterOptions;
+import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.EscapeUtils;
 
-public class TextExporter extends DataTableExporter implements Serializable {
+public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
 
-    private static final long serialVersionUID = 1L;
-    private OutputStreamWriter osw;
-    private PrintWriter writer;
+    protected TextExporter() {
+        super(null, Collections.emptySet(), false);
+    }
 
     @Override
-    protected void preExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
-
-        osw = new OutputStreamWriter(getOutputStream(), exportConfiguration.getEncodingType());
-        writer = new PrintWriter(osw);
-
-        if (exportConfiguration.getPreProcessor() != null) {
-            exportConfiguration.getPreProcessor().invoke(context.getELContext(), new Object[]{writer});
+    protected PrintWriter createDocument(FacesContext context) throws IOException {
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(os(), exportConfiguration.getEncodingType());
+            return new PrintWriter(osw);
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new FacesException(e);
         }
     }
 
     @Override
-    protected void doExport(FacesContext context, DataTable table, ExportConfiguration exportConfiguration, int index) throws IOException {
+    protected void exportTable(FacesContext context, DataTable table, int index) throws IOException {
+        document.append("").append(table.getId()).append("\n");
 
-        writer.append("" + table.getId() + "\n");
+        super.exportTable(context, table, index);
 
-        if (exportConfiguration.isPageOnly()) {
-            exportPageOnly(context, table, writer);
-        }
-        else if (exportConfiguration.isSelectionOnly()) {
-            exportSelectionOnly(context, table, writer);
-        }
-        else {
-            exportAll(context, table, writer);
-        }
-
-        writer.append("" + table.getId() + "");
-
-        table.setRowIndex(-1);
+        document.append("").append(table.getId());
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
-
-        if (exportConfiguration.getPostProcessor() != null) {
-            exportConfiguration.getPostProcessor().invoke(context.getELContext(), new Object[]{writer});
-        }
-
-        writer.flush();
-        writer.close();
-        writer = null;
-
-        osw.close();
-        osw = null;
+    protected void preRowExport(FacesContext context, DataTable table) {
+        (document).append("\t").append(table.getVar()).append("\n");
     }
 
     @Override
-    protected void preRowExport(DataTable table, Object document) {
-        ((PrintWriter) document).append("\t" + table.getVar() + "\n");
+    protected void postRowExport(FacesContext context, DataTable table) {
+        (document).append("\t").append(table.getVar()).append("\n");
+
+        super.postRowExport(context, table);
     }
 
     @Override
-    protected void postRowExport(DataTable table, Object document) {
-        ((PrintWriter) document).append("\t" + table.getVar() + "\n");
+    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
+        String columnTag = getColumnTag(context, col);
+        document.append("\t\t").append(columnTag)
+                .append(EscapeUtils.forXml(text))
+                .append("").append(columnTag).append("\n");
     }
 
-    @Override
-    protected void exportCells(DataTable table, Object document) {
-        PrintWriter writer = (PrintWriter) document;
-        for (UIColumn col : table.getColumns()) {
-            if (col instanceof DynamicColumn) {
-                ((DynamicColumn) col).applyStatelessModel();
-            }
-
-            if (col.isRendered() && col.isExportable()) {
-                String columnTag = getColumnTag(col);
-                addColumnValue(writer, col.getChildren(), columnTag, col);
-            }
-        }
-    }
-
-    protected String getColumnTag(UIColumn column) {
-        String headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
-        UIComponent facet = column.getFacet("header");
-        String columnTag;
-
-        if (headerText != null) {
-            columnTag = headerText.toLowerCase();
-        }
-        else if (facet != null) {
-            columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();
-        }
-        else {
-            throw new FacesException("No suitable xml tag found for " + column);
-        }
-
+    protected String getColumnTag(FacesContext context, UIColumn column) {
+        String columnTag = ExporterUtils.getColumnFacetValue(context, column, ColumnType.HEADER);
         return EscapeUtils.forXmlTag(columnTag);
-    }
-
-    protected void addColumnValue(PrintWriter writer, List<UIComponent> components, String tag, UIColumn column) {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        writer.append("\t\t" + tag + "");
-
-        if (column.getExportFunction() != null) {
-            writer.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
-        }
-        else {
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-                    if (value != null) {
-                        writer.append(EscapeUtils.forXml(value));
-                    }
-                }
-            }
-        }
-
-        writer.append("" + tag + "\n");
     }
 
     @Override
@@ -167,4 +99,8 @@ public class TextExporter extends DataTableExporter implements Serializable {
         return ".txt";
     }
 
+    @Override
+    protected void exportColumnFacetValue(FacesContext context, DataTable table, String text, int index) {
+        // NOOP
+    }
 }

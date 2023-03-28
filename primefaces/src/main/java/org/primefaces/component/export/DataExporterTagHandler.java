@@ -46,6 +46,7 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute options;
     private final TagAttribute onTableRender;
     private final TagAttribute exporter;
+    private final TagAttribute onRowExport;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -63,6 +64,7 @@ public class DataExporterTagHandler extends TagHandler {
         options = getAttribute("options");
         onTableRender = getAttribute("onTableRender");
         exporter = getAttribute("exporter");
+        onRowExport = getAttribute("onRowExport");
     }
 
     @Override
@@ -85,6 +87,7 @@ public class DataExporterTagHandler extends TagHandler {
         ValueExpression optionsVE = null;
         MethodExpression onTableRenderME = null;
         ValueExpression exporterVE = null;
+        MethodExpression onRowExportME = null;
 
         if (encoding != null) {
             encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -119,6 +122,9 @@ public class DataExporterTagHandler extends TagHandler {
         if (exporter != null) {
             exporterVE = exporter.getValueExpression(faceletContext, Object.class);
         }
+        if (onRowExport != null) {
+            onRowExportME = onRowExport.getMethodExpression(faceletContext, null, new Class[]{Object.class});
+        }
         ActionSource actionSource = (ActionSource) parent;
         DataExporter dataExporter = DataExporter.builder()
                     .target(targetVE)
@@ -135,6 +141,7 @@ public class DataExporterTagHandler extends TagHandler {
                     .preProcessor(preProcessorME)
                     .selectionOnly(selectionOnlyVE)
                     .visibleOnly(visibleOnlyVE)
+                    .onRowExport(onRowExportME)
                     .build();
         actionSource.addActionListener(dataExporter);
     }

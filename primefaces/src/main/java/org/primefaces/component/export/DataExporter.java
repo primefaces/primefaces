@@ -28,7 +28,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Base64;
 import java.util.List;
-
+import java.util.Objects;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -41,10 +44,6 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.export.DataTableExporterFactory;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.component.treetable.export.TreeTableExporterFactory;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
@@ -65,6 +64,7 @@ public class DataExporter implements ActionListener, StateHolder {
     private MethodExpression postProcessor;
     private ValueExpression options;
     private MethodExpression onTableRender;
+    private MethodExpression onRowExport;
     private ValueExpression exporter;
 
     public DataExporter() {
@@ -88,36 +88,36 @@ public class DataExporter implements ActionListener, StateHolder {
         boolean isPageOnly = false;
         if (pageOnly != null) {
             isPageOnly = pageOnly.isLiteralText()
-                        ? Boolean.parseBoolean(pageOnly.getValue(context.getELContext()).toString())
-                        : (Boolean) pageOnly.getValue(context.getELContext());
+                    ? Boolean.parseBoolean(pageOnly.getValue(context.getELContext()).toString())
+                    : (Boolean) pageOnly.getValue(context.getELContext());
         }
 
         boolean isSelectionOnly = false;
         if (selectionOnly != null) {
             isSelectionOnly = selectionOnly.isLiteralText()
-                        ? Boolean.parseBoolean(selectionOnly.getValue(context.getELContext()).toString())
-                        : (Boolean) selectionOnly.getValue(context.getELContext());
+                    ? Boolean.parseBoolean(selectionOnly.getValue(context.getELContext()).toString())
+                    : (Boolean) selectionOnly.getValue(context.getELContext());
         }
 
         boolean isVisibleOnly = false;
         if (visibleOnly != null) {
             isVisibleOnly = visibleOnly.isLiteralText()
-                        ? Boolean.parseBoolean(visibleOnly.getValue(context.getELContext()).toString())
-                        : (Boolean) visibleOnly.getValue(context.getELContext());
+                    ? Boolean.parseBoolean(visibleOnly.getValue(context.getELContext()).toString())
+                    : (Boolean) visibleOnly.getValue(context.getELContext());
         }
 
         boolean isExportHeader = true;
         if (exportHeader != null) {
             isExportHeader = exportHeader.isLiteralText()
-                        ? Boolean.parseBoolean(exportHeader.getValue(context.getELContext()).toString())
-                        : (Boolean) exportHeader.getValue(context.getELContext());
+                    ? Boolean.parseBoolean(exportHeader.getValue(context.getELContext()).toString())
+                    : (Boolean) exportHeader.getValue(context.getELContext());
         }
 
         boolean isExportFooter = true;
         if (exportFooter != null) {
             isExportFooter = exportFooter.isLiteralText()
-                        ? Boolean.parseBoolean(exportFooter.getValue(context.getELContext()).toString())
-                        : (Boolean) exportFooter.getValue(context.getELContext());
+                    ? Boolean.parseBoolean(exportFooter.getValue(context.getELContext()).toString())
+                    : (Boolean) exportFooter.getValue(context.getELContext());
         }
 
         ExporterOptions exporterOptions = null;
@@ -133,28 +133,15 @@ public class DataExporter implements ActionListener, StateHolder {
         try {
             List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
             Class<? extends UIComponent> targetClass = guessTargetClass(components);
-            Exporter exporterInstance = getExporter(exportAs, exporterOptions, customExporterInstance, targetClass);
-            ExportConfiguration config = ExportConfiguration.builder()
-                        .outputFileName(outputFileName)
-                        .encodingType(encodingType)
-                        .pageOnly(isPageOnly)
-                        .selectionOnly(isSelectionOnly)
-                        .visibleOnly(isVisibleOnly)
-                        .exportHeader(isExportHeader)
-                        .exportFooter(isExportFooter)
-                        .options(exporterOptions)
-                        .preProcessor(preProcessor)
-                        .postProcessor(postProcessor)
-                        .onTableRender(onTableRender)
-                        .build();
+            Exporter exporterInstance = getExporter(exportAs, customExporterInstance, targetClass);
 
             ExternalContext externalContext = context.getExternalContext();
-            String filenameWithExtension = config.getOutputFileName() + exporterInstance.getFileExtension();
+            String filenameWithExtension = outputFileName + exporterInstance.getFileExtension();
             OutputStream outputStream;
 
             String contentType = exporterInstance.getContentType();
-            if (contentType.startsWith("text/") && LangUtils.isNotBlank(config.getEncodingType())) {
-                contentType += "; charset=" + config.getEncodingType();
+            if (contentType.startsWith("text/") && LangUtils.isNotBlank(encodingType)) {
+                contentType += "; charset=" + encodingType;
             }
 
             if (PrimeFaces.current().isAjaxRequest()) {
@@ -167,8 +154,22 @@ public class DataExporter implements ActionListener, StateHolder {
                 addResponseCookie(context);
             }
 
-            exporterInstance.setExportConfiguration(config);
-            exporterInstance.export(context, components, outputStream, config);
+            ExportConfiguration config = ExportConfiguration.builder()
+                    .encodingType(encodingType)
+                    .pageOnly(isPageOnly)
+                    .selectionOnly(isSelectionOnly)
+                    .visibleOnly(isVisibleOnly)
+                    .exportHeader(isExportHeader)
+                    .exportFooter(isExportFooter)
+                    .options(exporterOptions)
+                    .preProcessor(preProcessor)
+                    .postProcessor(postProcessor)
+                    .onTableRender(onTableRender)
+                    .onRowExport(onRowExport)
+                    .outputStream(outputStream)
+                    .build();
+
+            exporterInstance.export(context, components, config);
 
             if (PrimeFaces.current().isAjaxRequest()) {
                 ajaxDownload(filenameWithExtension, ((ByteArrayOutputStream) outputStream).toByteArray(), contentType, context);
@@ -183,37 +184,32 @@ public class DataExporter implements ActionListener, StateHolder {
     }
 
     protected Class<? extends UIComponent> guessTargetClass(List<UIComponent> targets) {
-        Class<? extends UIComponent> targetClass = null;
-        if (targets != null) {
-            for (UIComponent current : targets) {
-                if (current instanceof DataTable) {
-                    targetClass = DataTable.class;
-                }
-                else if (current instanceof TreeTable) {
-                    targetClass = TreeTable.class;
-                }
-            }
+        Objects.requireNonNull(targets, DataExporter.class.getSimpleName() + " expects at least one target");
+        Set<Class<? extends UIComponent>> classes = targets.stream().map(UIComponent::getClass).collect(Collectors.toSet());
+
+        if (classes.size() > 1) {
+            throw new IllegalArgumentException(DataExporter.class.getSimpleName() + "#target should all be the same type");
         }
-        return targetClass;
+
+        return classes.iterator().next();
     }
 
-    protected Exporter getExporter(String exportAs, ExporterOptions exporterOptions, Object customExporterInstance, Class<? extends UIComponent> targetClass) {
-
+    @Deprecated
+    protected Exporter getExporter(String exportAs, Object customExporterInstance, Class<? extends UIComponent> targetClass) {
         if (customExporterInstance != null) {
+            Logger.getLogger(DataExporter.class.getName())
+                    .warning("DataExporter#exporter will be removed in future release. "
+                            + "Use DataExporter#register() method instead");
             if (customExporterInstance instanceof Exporter) {
                 return (Exporter) customExporterInstance;
             }
             else {
                 throw new FacesException("Component " + getClass().getName() + " customExporterInstance="
-                            + customExporterInstance.getClass().getName() + " does not implement Exporter!");
+                        + customExporterInstance.getClass().getName() + " does not implement Exporter!");
             }
         }
 
-        if (targetClass != null && TreeTable.class.isAssignableFrom(targetClass)) {
-            return TreeTableExporterFactory.getExporter(exportAs, exporterOptions);
-        }
-
-        return DataTableExporterFactory.getExporter(exportAs, exporterOptions);
+        return DataExporters.get(targetClass, exportAs);
     }
 
     private void ajaxDownload(String filenameWithExtension, byte[] content, String contentType, FacesContext context) {
@@ -222,7 +218,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, null);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                    data, contentType, filenameWithExtension, monitorKeyCookieName));
+                data, contentType, filenameWithExtension, monitorKeyCookieName));
     }
 
     protected void setResponseHeader(ExternalContext externalContext, String contentDisposition) {
@@ -263,11 +259,12 @@ public class DataExporter implements ActionListener, StateHolder {
         options = (ValueExpression) values[11];
         onTableRender = (MethodExpression) values[12];
         exporter = (ValueExpression) values[13];
+        onRowExport = (MethodExpression) values[14];
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[14];
+        Object[] values = new Object[15];
 
         values[0] = target;
         values[1] = type;
@@ -283,6 +280,7 @@ public class DataExporter implements ActionListener, StateHolder {
         values[11] = options;
         values[12] = onTableRender;
         values[13] = exporter;
+        values[14] = onRowExport;
 
         return (values);
     }
@@ -293,120 +291,90 @@ public class DataExporter implements ActionListener, StateHolder {
 
     public static class Builder {
 
-        private ValueExpression target;
-        private ValueExpression type;
-        private ValueExpression fileName;
-        private ValueExpression encoding;
-        private ValueExpression pageOnly;
-        private ValueExpression selectionOnly;
-        private ValueExpression visibleOnly;
-        private ValueExpression exportHeader;
-        private ValueExpression exportFooter;
-        private MethodExpression preProcessor;
-        private MethodExpression postProcessor;
-        private ValueExpression options;
-        private MethodExpression onTableRender;
-        private ValueExpression exporter;
+        private DataExporter exporter;
 
         Builder() {
+            exporter = new DataExporter();
         }
 
         public Builder target(ValueExpression target) {
-            this.target = target;
+            exporter.target = target;
             return this;
         }
 
         public Builder type(ValueExpression type) {
-            this.type = type;
+            exporter.type = type;
             return this;
         }
 
         public Builder fileName(ValueExpression fileName) {
-            this.fileName = fileName;
+            exporter.fileName = fileName;
             return this;
         }
 
         public Builder encoding(ValueExpression encoding) {
-            this.encoding = encoding;
+            exporter.encoding = encoding;
             return this;
         }
 
         public Builder pageOnly(ValueExpression pageOnly) {
-            this.pageOnly = pageOnly;
+            exporter.pageOnly = pageOnly;
             return this;
         }
 
         public Builder selectionOnly(ValueExpression selectionOnly) {
-            this.selectionOnly = selectionOnly;
+            exporter.selectionOnly = selectionOnly;
             return this;
         }
 
         public Builder visibleOnly(ValueExpression visibleOnly) {
-            this.visibleOnly = visibleOnly;
+            exporter.visibleOnly = visibleOnly;
             return this;
         }
 
         public Builder exportHeader(ValueExpression exportHeader) {
-            this.exportHeader = exportHeader;
+            exporter.exportHeader = exportHeader;
             return this;
         }
 
         public Builder exportFooter(ValueExpression exportFooter) {
-            this.exportFooter = exportFooter;
+            exporter.exportFooter = exportFooter;
             return this;
         }
 
         public Builder preProcessor(MethodExpression preProcessor) {
-            this.preProcessor = preProcessor;
+            exporter.preProcessor = preProcessor;
             return this;
         }
 
         public Builder postProcessor(MethodExpression postProcessor) {
-            this.postProcessor = postProcessor;
+            exporter.postProcessor = postProcessor;
             return this;
         }
 
         public Builder options(ValueExpression options) {
-            this.options = options;
+            exporter.options = options;
             return this;
         }
 
         public Builder onTableRender(MethodExpression onTableRender) {
-            this.onTableRender = onTableRender;
+            exporter.onTableRender = onTableRender;
             return this;
         }
 
+        @Deprecated
         public Builder exporter(ValueExpression exporter) {
-            this.exporter = exporter;
+            this.exporter.exporter = exporter;
+            return this;
+        }
+
+        public Builder onRowExport(MethodExpression onRowExport) {
+            exporter.onRowExport = onRowExport;
             return this;
         }
 
         public DataExporter build() {
-            DataExporter exporter = new DataExporter();
-            exporter.target = this.target;
-            exporter.type = this.type;
-            exporter.fileName = this.fileName;
-            exporter.encoding = this.encoding;
-            exporter.pageOnly = this.pageOnly;
-            exporter.selectionOnly = this.selectionOnly;
-            exporter.visibleOnly = this.visibleOnly;
-            exporter.exportHeader = this.exportHeader;
-            exporter.exportFooter = this.exportFooter;
-            exporter.preProcessor = this.preProcessor;
-            exporter.postProcessor = this.postProcessor;
-            exporter.options = this.options;
-            exporter.onTableRender = this.onTableRender;
-            exporter.exporter = this.exporter;
             return exporter;
-        }
-
-        @Override
-        public String toString() {
-            return "DataExporter.DataExporterBuilder(target=" + this.target + ", type=" + this.type + ", fileName=" + this.fileName + ", encoding="
-                        + this.encoding + ", pageOnly=" + this.pageOnly + ", selectionOnly=" + this.selectionOnly + ", visibleOnly=" + this.visibleOnly
-                        + ", exportHeader=" + this.exportHeader + ", exportFooter=" + this.exportFooter + ", preProcessor=" + this.preProcessor
-                        + ", postProcessor=" + this.postProcessor + ", options=" + this.options + ", onTableRender=" + this.onTableRender + ", exporter="
-                        + this.exporter + ")";
         }
     }
 }

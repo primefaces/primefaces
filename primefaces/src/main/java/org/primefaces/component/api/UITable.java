@@ -29,7 +29,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -37,8 +36,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.column.ColumnBase;
 
+import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
@@ -636,4 +635,23 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         setFilterByAsMap(null);
         setColumnMeta(null);
     }
+
+    default boolean hasFooterColumn() {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child.isRendered() && (child instanceof UIColumn)) {
+                UIColumn column = (UIColumn) child;
+
+                if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    int getChildCount();
+
+    List<UIComponent> getChildren();
 }
