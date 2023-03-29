@@ -24888,7 +24888,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Watermark displayed in the filter input field before the user enters a value in an HTML5 browser.]]>
+                <![CDATA[Watermark displayed in the filter input field before the user enters a value.]]>
             </description>
             <name>filterPlaceholder</name>
             <required>false</required>

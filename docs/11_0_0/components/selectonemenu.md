@@ -38,7 +38,7 @@ editable | false | Boolean | When true, input becomes editable.
 filter | false | Boolean | Renders an input field as a filter.
 filterFunction | null | String | Client side function to use in custom filtering.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
-filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value in an HTML5 browser.
+filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value.
 height | auto | Integer | Height of the overlay.
 hideNoSelectionOption | false | boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 label | null | String | User presentable name used in conjuction with `alwaysDisplayLabel` to display instead of selected item.
