@@ -46,7 +46,7 @@ editable | false | Boolean | When true, input becomes editable.
 filter | false | Boolean | Renders an input field as a filter.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filtering.
-filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value in an HTML5 browser.
+filterPlaceholder | null | String | Watermark displayed in the filter input field before the user enters a value.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
 maxlength | null | Integer | Number of maximum characters allowed in editable selectOneMenu.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
