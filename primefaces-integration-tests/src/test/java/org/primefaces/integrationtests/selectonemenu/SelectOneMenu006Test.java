@@ -81,6 +81,18 @@ public class SelectOneMenu006Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(3)
+    @DisplayName("SelectOneMenu: getAssignedLabelText editable=true")
+    public void testAssignedLabelText(SelectOneMenu001Test.Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+
+        // Test
+        Assertions.assertNotNull(selectOneMenu.getAssignedLabel());
+        Assertions.assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
+    }
+
     private void assertMessage(Page page, int index, String summary, String detail) {
         Msg message = page.messages.getMessage(index);
         Assertions.assertEquals(summary, message.getSummary());
