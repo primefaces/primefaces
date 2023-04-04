@@ -567,19 +567,22 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("tbody", ac);
 
         if (items != null) {
+            int rowNumber = 0;
             if (ac.isClientQueryMode() || items instanceof Map) {
                 for (Map.Entry<String, List<String>> entry : ((Map<String, List<String>>) items).entrySet()) {
                     String key = entry.getKey();
                     List<String> list = entry.getValue();
 
                     for (Object item : list) {
-                        encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, key);
+                        encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, key, rowNumber);
+                        rowNumber++;
                     }
                 }
             }
             else {
                 for (Object item : (List) items) {
-                    encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, null);
+                    encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, null, rowNumber);
+                    rowNumber++;
                 }
 
                 if (ac.hasMoreSuggestions()) {
@@ -642,7 +645,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("li", null);
-        writer.writeAttribute("id", ac.getId() + "_item_" + rowNumber, null);
+        writer.writeAttribute("id", ac.getClientId(context) + "_item_" + rowNumber, null);
         writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
 
         if (pojo) {
@@ -686,13 +689,14 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestionItemsAsTable(FacesContext context, AutoComplete ac, Object item, Converter converter,
-            boolean pojo, String var, String key) throws IOException {
+            boolean pojo, String var, String key, int rowNumber) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("tr", null);
+        writer.writeAttribute("id", ac.getClientId(context) + "_item_" + rowNumber, null);
         writer.writeAttribute("class", AutoComplete.ROW_CLASS, null);
 
         if (pojo) {
