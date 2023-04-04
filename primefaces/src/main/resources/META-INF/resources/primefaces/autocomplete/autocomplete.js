@@ -52,7 +52,6 @@
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {number} requestId Tracking number to make sure search requests match up in query mode
- * @prop {JQuery} status The DOM element for the autocomplete status ARIA element.
  * @prop {boolean} suppressInput Whether key input events should be ignored currently.
  * @prop {number} [timeout] Timeout ID for the timer used to clear the autocompletion cache in regular
  * intervals.
@@ -201,8 +200,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         //aria
         this.input.attr('aria-autocomplete', 'list');
-        this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
-        this.status = this.jq.children('.ui-autocomplete-status');
+        // this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
+        // this.status = this.jq.children('.ui-autocomplete-status');
     },
 
     /**
@@ -439,7 +438,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 else if (key === 'ArrowUp' || key === 'ArrowDown') {
                     var highlightedItem = $this.items.filter('.ui-state-highlight');
                     if (highlightedItem.length) {
-                        $this.displayAriaStatus(highlightedItem.data('item-label'));
+                        // $this.displayAriaStatus(highlightedItem.data('item-label'));
+                        $this.changeAriaValue(highlightedItem[0]);
                     }
                 }
             }
@@ -824,7 +824,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.showItemtip(firstItem);
             }
 
-            this.displayAriaStatus(this.items.length + this.cfg.resultsMessage);
+            // this.displayAriaStatus(this.items.length + this.cfg.resultsMessage);
         }
         else {
             if (this.cfg.emptyMessage) {
@@ -835,7 +835,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.panel.hide();
             }
 
-            this.displayAriaStatus(this.cfg.ariaEmptyMessage);
+            // this.displayAriaStatus(this.cfg.ariaEmptyMessage);
         }
     },
 
@@ -974,18 +974,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     dataType: 'json'
                 })
                     .done(function(suggestions) {
-                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
-                        suggestions.suggestions.forEach(function(suggestion) {
+                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+                        suggestions.suggestions.forEach(function(suggestion, index) {
                             var labelEncoded = $("<div>").text(suggestion.label).html();
                             var itemValue = labelEncoded;
                             if (!!suggestion.value) {
                                 itemValue = $("<div>").text(suggestion.value).html();
                             }
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
+                            html += '<li id="' + $this.jqId + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
                         });
                         if (suggestions.moreAvailable == true && $this.cfg.moreText) {
                             var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
+                            html += '<li id="' + $this.jqId + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
                         }
                         html += '</ul>';
 
@@ -1035,6 +1035,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onEntered: function() {
                     $this.bindPanelEvents();
+                    $this.input.attr('aria-expanded', true);
                 }
             });
         }
@@ -1057,6 +1058,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onExited: function() {
                     $this.panel.css('height', 'auto');
+                    $this.input.attr('aria-expanded', false);
                 }
             });
         }
@@ -1400,8 +1402,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      * @param {string} text Label text to display.
      */
-    displayAriaStatus: function(text) {
-        this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
+    // displayAriaStatus: function(text) {
+    //     this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
+    // },
+
+    /**
+     * Adjusts the value of the aria attributes for the given selectable option.
+     * @private
+     * @param {Element} item An option for which to set the aria attributes.
+     */
+    changeAriaValue: function (item) {
+        var itemId = item.id;
+
+        this.input.attr('aria-activedescendant', itemId);
     },
 
     /**
@@ -1587,12 +1600,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     findWrapperTag: function(wrapper) {
         if (wrapper.is('ul')) {
-            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
             this.wrapperEndTag = '</ul>';
         }
         else {
             var header = wrapper.find('> table > thead');
-            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset">' +
+            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">' +
                 (header.length ? header.eq(0).outherHTML : '') +
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';

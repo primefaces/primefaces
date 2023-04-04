@@ -206,6 +206,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("type", ac.getType(), null);
         writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
 
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
@@ -347,7 +349,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "listbox", null);
+//        writer.writeAttribute("role", "listbox", null);
         writer.writeAttribute("tabindex", "-1", null);
 
         if (ac.getPanelStyle() != null) {
@@ -598,21 +600,25 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (items != null) {
+            int rowNumber = 0;
             if (ac.isClientQueryMode() || items instanceof Map) {
                 for (Map.Entry<String, List<String>> entry : ((Map<String, List<String>>) items).entrySet()) {
                     String key = entry.getKey();
                     List<String> list = entry.getValue();
 
                     for (Object item : list) {
-                        encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, key);
+                        encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, key, rowNumber);
+                        rowNumber++;
                     }
                 }
             }
             else {
                 for (Object item : (List) items) {
-                    encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, null);
+                    encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, null, rowNumber);
+                    rowNumber++;
                 }
 
                 if (ac.hasMoreSuggestions()) {
@@ -629,13 +635,14 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestionItemsAsList(FacesContext context, AutoComplete ac, Object item, Converter converter,
-            boolean pojo, String var, String key) throws IOException {
+            boolean pojo, String var, String key, int rowNumber) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("li", null);
+        writer.writeAttribute("id", ac.getId() + "_item_" + rowNumber, null);
         writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
 
         if (pojo) {
