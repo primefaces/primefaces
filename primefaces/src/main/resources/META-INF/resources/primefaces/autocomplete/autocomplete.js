@@ -22,7 +22,7 @@
  * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
  * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout.
  * @prop {boolean} [checkMatchedItem] Whether the click event is fired on the selected items when a `blur` occurs.
- * @prop {number} [colspan] Column span count for the options in the overlay panel with the available completion items. 
+ * @prop {number} [colspan] Column span count for the options in the overlay panel with the available completion items.
  * @prop {string} [currentGroup] Current option group when creating the options in the overlay  with the available
  * completion items.
  * @prop {string} currentInputValue Current value in the input field where the user can search for completion items.
@@ -52,6 +52,7 @@
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {number} requestId Tracking number to make sure search requests match up in query mode
+ * @prop {JQuery} status The DOM element for the autocomplete status ARIA element.
  * @prop {boolean} suppressInput Whether key input events should be ignored currently.
  * @prop {number} [timeout] Timeout ID for the timer used to clear the autocompletion cache in regular
  * intervals.
@@ -200,8 +201,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         //aria
         this.input.attr('aria-autocomplete', 'list');
-        // this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
-        // this.status = this.jq.children('.ui-autocomplete-status');
+        this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
+        this.status = this.jq.children('.ui-autocomplete-status');
     },
 
     /**
@@ -438,7 +439,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 else if (key === 'ArrowUp' || key === 'ArrowDown') {
                     var highlightedItem = $this.items.filter('.ui-state-highlight');
                     if (highlightedItem.length) {
-                        // $this.displayAriaStatus(highlightedItem.data('item-label'));
+                        $this.displayAriaStatus(highlightedItem.data('item-label'));
                         $this.changeAriaValue(highlightedItem[0]);
                     }
                 }
@@ -457,7 +458,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var prev = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.prevAll('.ui-autocomplete-item:first');
 
                         if (prev.length == 1) {
+                            highlightedItem.attr('aria-selected', false);
                             highlightedItem.removeClass('ui-state-highlight');
+                            prev.attr('aria-selected', true);
                             prev.addClass('ui-state-highlight');
 
                             if ($this.cfg.scrollHeight) {
@@ -476,7 +479,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var next = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.nextAll('.ui-autocomplete-item:first');
 
                         if (next.length == 1) {
+                            highlightedItem.attr('aria-selected', false);
                             highlightedItem.removeClass('ui-state-highlight');
+                            next.attr('aria-selected', true);
                             next.addClass('ui-state-highlight');
 
                             if ($this.cfg.scrollHeight) {
@@ -792,6 +797,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             //highlight first item
             if (this.cfg.autoHighlight && firstItem.length) {
                 firstItem.addClass('ui-state-highlight');
+                firstItem.attr('aria-selected', true);
+                this.changeAriaValue(firstItem[0]);
             }
 
             //highlight query string
@@ -824,7 +831,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.showItemtip(firstItem);
             }
 
-            // this.displayAriaStatus(this.items.length + this.cfg.resultsMessage);
+            this.displayAriaStatus(this.items.length + this.cfg.resultsMessage);
         }
         else {
             if (this.cfg.emptyMessage) {
@@ -835,7 +842,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.panel.hide();
             }
 
-            // this.displayAriaStatus(this.cfg.ariaEmptyMessage);
+            this.input.removeAttr('aria-activedescendant');
+            this.displayAriaStatus(this.cfg.ariaEmptyMessage);
         }
     },
 
@@ -1402,9 +1410,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @private
      * @param {string} text Label text to display.
      */
-    // displayAriaStatus: function(text) {
-    //     this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
-    // },
+    displayAriaStatus: function(text) {
+        this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
+    },
 
     /**
      * Adjusts the value of the aria attributes for the given selectable option.
