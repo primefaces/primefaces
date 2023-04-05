@@ -80,11 +80,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
-        else if ("responsive".equals(layout)) {
-            encodeResponsiveLayout(context, checkbox);
+        else if ("grid".equals(layout)) {
+            encodeLegacyTabularLayout(context, checkbox, layout);
         }
         else {
-            encodeTabularLayout(context, checkbox, layout);
+            encodeResponsiveLayout(context, checkbox);
         }
     }
 
@@ -194,9 +194,15 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
+    protected void encodeLegacyTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
         String clientId = checkbox.getClientId(context);
+        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
+                + clientId);
+        ResponseWriter writer = context.getResponseWriter();
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
         styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;

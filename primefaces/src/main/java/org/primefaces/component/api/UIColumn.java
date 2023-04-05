@@ -37,9 +37,12 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
 import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
+
+    MatchMode DEFAULT_FILTER_MATCH_MODE = MatchMode.STARTS_WITH;
 
     /**
      * Used to extract bean's property from a value expression in dynamic columns
@@ -171,8 +174,6 @@ public interface UIColumn {
     String getFilterMatchMode();
 
     int getFilterMaxLength();
-
-    Object getFilterOptions();
 
     CellEditor getCellEditor();
 

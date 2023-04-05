@@ -346,7 +346,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.focusedItem) {
                     PrimeFaces.scrollInView(list, $this.focusedItem);
                     $this.focusedItem.addClass('ui-picklist-outline');
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                 }
             }, 100);
         })
@@ -380,7 +380,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
@@ -400,7 +400,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
-                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                    $this.updateAriaRegion();
                     e.preventDefault();
                 break;
 
@@ -414,25 +414,25 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
                 default:
                     // #3304 find first item matching the character typed
-                    var keyChar = key.toLowerCase();
-                    list.children('.ui-picklist-item').each(function() {
-                        var item = $(this),
-                            itemLabel = item.attr('data-item-label');
-                        if (itemLabel.toLowerCase().indexOf(keyChar) === 0) {
-                            $this.removeOutline();
-                            $this.unselectAll();
-                            $this.selectItem(item);
-                            $this.focusedItem = item;
-                            PrimeFaces.scrollInView(list, $this.focusedItem);
-                            $this.ariaRegion.text($this.focusedItem.data('item-label'));
-                            e.preventDefault();
-                            return false;
-                        }
-                    });
-                break;
+                    if (PrimeFaces.utils.isPrintableKey(e)) {
+                        var keyChar = key.toLowerCase();
+                        list.children('.ui-picklist-item').each(function() {
+                            var item = $(this),
+                                itemLabel = item.attr('data-item-label');
+                            if (itemLabel && itemLabel.toLowerCase().indexOf(keyChar) === 0) {
+                                $this.removeOutline();
+                                $this.unselectAll();
+                                $this.selectItem(item);
+                                $this.focusedItem = item;
+                                PrimeFaces.scrollInView(list, $this.focusedItem);
+                                $this.updateAriaRegion();
+                                e.preventDefault();
+                                return false;
+                            }
+                        });
+                    }
             };
         });
-
     },
 
     /**
@@ -1319,6 +1319,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     updateListRole: function() {
         this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
+    },
+    
+    /**
+     * Updates the `aria-grion` with the focused label text.
+     * @private
+     */
+    updateAriaRegion: function() {
+        var labelText = this.focusedItem.data('item-label');
+        this.ariaRegion.attr('aria-label', labelText)
+        this.ariaRegion.text(labelText);
     }
 
 });

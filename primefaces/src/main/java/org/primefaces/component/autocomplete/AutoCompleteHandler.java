@@ -32,8 +32,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class AutoCompleteHandler extends ComponentHandler {
 
-    private static final MetaRule COMPLETE_METHOD
-            = new MethodRule("completeMethod", Object.class, new Class[]{String.class});
+    private static final MetaRule COMPLETE_METHOD = new MethodRule(AutoComplete.PropertyKeys.completeMethod.name(),
+            Object.class,
+            new Class[]{String.class});
 
     public AutoCompleteHandler(ComponentConfig config) {
         super(config);

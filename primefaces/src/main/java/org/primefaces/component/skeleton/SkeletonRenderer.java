@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 
 public class SkeletonRenderer extends CoreRenderer {
 
@@ -49,15 +50,17 @@ public class SkeletonRenderer extends CoreRenderer {
         boolean hasSize = size != null;
         String style = getStyleBuilder(context)
                          .add(skeleton.getStyle())
-                         .add(hasSize,  "width", size, skeleton.getWidth())
-                         .add(hasSize,  "height", size, skeleton.getHeight())
-                         .add(borderRadius != null,  "border-radius", borderRadius)
+                         .add(hasSize, "width", size, skeleton.getWidth())
+                         .add(hasSize, "height", size, skeleton.getHeight())
+                         .add(borderRadius != null, "border-radius", borderRadius)
                          .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", skeleton.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        writer.writeAttribute("style", style, "style");
+        if (LangUtils.isNotBlank(style)) {
+            writer.writeAttribute("style", style, "style");
+        }
 
         writer.endElement("div");
     }

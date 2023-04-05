@@ -34,8 +34,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class InputTextareaHandler extends ComponentHandler {
 
-    private static final MetaRule COMPLETE_METHOD
-            = new MethodRule("completeMethod", List.class, new Class[]{String.class});
+    private static final MetaRule COMPLETE_METHOD = new MethodRule(InputTextarea.PropertyKeys.completeMethod.name(),
+            List.class,
+            new Class[]{String.class});
 
     public InputTextareaHandler(ComponentConfig config) {
         super(config);

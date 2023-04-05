@@ -54,6 +54,7 @@ public class PrimeConfiguration {
     private final boolean interpolateClientSideValidationMessages;
     private final boolean earlyPostParamEvaluation;
     private final boolean moveScriptsToBottom;
+    private final boolean html5Compliance;
     private boolean csp;
     private boolean policyProvided;
     private String cspPolicy;
@@ -124,6 +125,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = Boolean.parseBoolean(value);
+
+        value = externalContext.getInitParameter(Constants.ContextParams.HTML5_COMPLIANCE);
+        html5Compliance = Boolean.parseBoolean(value);
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
         switch (value) {
@@ -252,6 +256,10 @@ public class PrimeConfiguration {
 
     public boolean isMoveScriptsToBottom() {
         return moveScriptsToBottom;
+    }
+
+    public boolean isHtml5Compliant() {
+        return html5Compliance;
     }
 
     public boolean isStringConverterAvailable() {

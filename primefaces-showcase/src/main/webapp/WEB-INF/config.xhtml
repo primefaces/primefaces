@@ -32,7 +32,7 @@
                         </p:column>
                     </p:selectOneMenu>
                     <h4>Input Style</h4>
-                    <p:selectOneRadio value="#{app.inputStyle}" onchange="App.updateInputStyle(event.target.value)">
+                    <p:selectOneRadio value="#{app.inputStyle}" onchange="App.updateInputStyle(event.target.value)" columns="2">
                         <f:selectItem itemLabel="Outlined" itemValue="outlined"/>
                         <f:selectItem itemLabel="Filled" itemValue="filled"/>
                         <p:ajax/>

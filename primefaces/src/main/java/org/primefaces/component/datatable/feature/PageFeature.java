@@ -24,8 +24,6 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import javax.faces.FacesException;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -34,20 +32,6 @@ import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
-
-    private static final PageFeature INSTANCE = new PageFeature();
-
-    private PageFeature() {
-    }
-
-    public static PageFeature getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void decode(FacesContext context, DataTable table) {
-        throw new FacesException("PageFeature should not encode.");
-    }
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {

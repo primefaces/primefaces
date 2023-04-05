@@ -27,11 +27,11 @@ powered rich solution with graceful degradation for legacy browsers.
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean.
 | cancelButtonTitle | null | String | Native title tooltip for cancel button
 | cancelButtonStyleClass | null | String | Style class for cancel button.
-| cancelIcon | ui-icon-cancel | String | The icon of cancel button
+| cancelIcon | pi pi-times | String | The icon of cancel button
 | cancelLabel | Cancel | String | Label of the cancel button.
 | chooseButtonTitle | null | String | Native title tooltip for choose button
 | chooseButtonStyleClass | null | String | Style class for choose button.
-| chooseIcon | ui-icon-plusthick | String | The icon of choose button
+| chooseIcon | pi pi-plus | String | The icon of choose button
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | disabled | false | Boolean | Disables component when set true.
@@ -72,7 +72,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | update | @none | String | Component(s) to update after fileupload completes.
 | uploadButtonStyleClass | null | String | Style class for upload button.
 | uploadButtonTitle | null | String | Native title tooltip for upload button
-| uploadIcon | ui-icon-arrowreturnthick-1-n | String | The icon of upload button
+| uploadIcon | pi pi-upload | String | The icon of upload button
 | uploadLabel | Upload | String | Label of the upload button.
 | validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
 | validator | null | MethodExpr | A method expression that refers to a method validating the input.

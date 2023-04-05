@@ -22,7 +22,11 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <header>../../conf/header.txt</header>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>../../conf/header.txt</header>
+                        </licenseSet>
+                    </licenseSets>
                 </configuration>
             </plugin>
         </plugins>
@@ -52,7 +56,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.8.0</version>
+            <version>4.8.3</version>
         </dependency>
 
         <!-- org.seleniumhq.selenium and com.googlecode.owasp-java-html-sanitizer need guava; resolved version-conflicts -->
@@ -71,7 +75,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.12.22</version>
+            <version>1.14.3</version>
         </dependency>
     </dependencies>
 </project>

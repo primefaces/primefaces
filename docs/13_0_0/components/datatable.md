@@ -285,9 +285,9 @@ Or
 
 ## Filtering
 Ajax based filtering is enabled by setting _field_ or _filterBy_ at column level and providing a list to keep the
-filtered sublist. It is suggested to use a scope longer than request like viewscope to keep the
+filtered sublist. It is suggested to use a scope longer than request like `@ViewScoped` to keep the
 filteredValue so that filtered list is still accessible after filtering.
-(Attention: Please be aware sessionscope is not supported for this. Instead set multiViewState="true" to keep table state including filter across views.)
+(Attention: Please be aware `@SessionScoped` is not supported for this. Instead set multiViewState="true" to keep table state including filter across views.)
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}">
@@ -299,9 +299,7 @@ filteredValue so that filtered list is still accessible after filtering.
 ```
 
 Filtering is triggered with keyup event and filter inputs can be styled using _filterStyle_ ,
-_filterStyleClass_ attributes. If you’d like to use a dropdown instead of an input field to only allow
-predefined filter values use _filterOptions_ attribute and a collection/array of selectitems as value. In
-addition, _filterMatchMode_ defines the built-in matcher which is _startsWith_ by default.
+_filterStyleClass_ attributes. In addition, _filterMatchMode_ defines the built-in matcher which is _startsWith_ by default.
 
 Following is a basic filtering datatable with these options demonstrated:
 
@@ -317,7 +315,14 @@ Following is a basic filtering datatable with these options demonstrated:
 
     <p:column field="year" headerText="Year" footerText="startsWith" />
 
-    <p:column field="manufacturer" headerText="Manufacturer" filterOptions="#{carBean.manufacturerOptions}" filterMatchMode="exact" />
+    <p:column field="manufacturer" headerText="Manufacturer" filterMatchMode="exact">
+        <f:facet name="filter">
+            <p:selectOneMenu onchange="PF('carsTable').filter()" styleClass="ui-custom-filter">
+                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItems value="#{carBean.manufacturerOptions}" />
+            </p:selectOneMenu>
+        </f:facet>
+    </p:column>
 
     <p:column field="color" headerText="Color" filterMatchMode="endsWith" />
 

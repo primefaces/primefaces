@@ -119,4 +119,6 @@ public interface MenuItem extends MenuElement, Confirmable {
 
     String getAriaLabel();
 
+    Object getBadge();
+
 }

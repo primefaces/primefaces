@@ -337,7 +337,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.addRefreshListener(function() {
 			
             // update error highlighting and set focusIndex
-            $(this.jqId + '>ul>li').each(function() {
+            this.headerContainer.each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
                 if ($(tabId + ' .ui-state-error').length > 0 || $(tabId + ' .ui-message-error-detail').length > 0) {
@@ -498,11 +498,12 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                     var options = {
                         source: this.id,
                         partialSubmit: true,
-                        partialSubmitFilter: this.id + '_activeIndex',
+                        partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_activeIndex'),
                         process: this.id,
                         ignoreAutoUpdate: true,
+                        global: false,
                         params: [
-                            {name: this.id + '_activeIndex', value: this.getActiveIndex()}
+                            {name: this.id + '_skipChildren', value: true}
                         ]
                     };
 
@@ -521,19 +522,29 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      */
     show: function(newPanel) {
         var headers = this.headerContainer,
+        actionsQuery = '.ui-tabs-actions:not(.ui-tabs-actions-global)',
         oldHeader = headers.filter('.ui-state-active'),
-        oldActions = oldHeader.next('.ui-tabs-actions'),
+        oldActions = oldHeader.next(actionsQuery),
+        hasOldActions = oldActions.length,
         newHeader = headers.eq(newPanel.index()),
-        newActions = newHeader.next('.ui-tabs-actions'),
+        newActions = newHeader.next(actionsQuery),
+        hasNewActions = newActions.length,
+        globalActions = this.navContainer.children('.ui-tabs-actions.ui-tabs-actions-global'),
         oldPanel = this.panelContainer.children('.ui-tabs-panel:visible'),
         $this = this;
+
+        globalActions.hide();
+        if(!hasNewActions){
+            newActions = globalActions;
+            hasNewActions = newActions.length;
+        }
 
         //aria
         oldPanel.attr('aria-hidden', true);
         oldPanel.addClass('ui-helper-hidden');
         oldHeader.attr('aria-expanded', false);
         oldHeader.attr('aria-selected', false);
-        if(oldActions.length != 0) {
+        if(hasOldActions) {
             oldActions.attr('aria-hidden', true);
         }
 
@@ -541,14 +552,14 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         newPanel.removeClass('ui-helper-hidden');
         newHeader.attr('aria-expanded', true);
         newHeader.attr('aria-selected', true);
-        if(newActions.length != 0) {
+        if(hasNewActions) {
             newActions.attr('aria-hidden', false);
         }
 
         if(this.cfg.effect && oldPanel.length) {
             oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
                 oldHeader.removeClass('ui-tabs-selected ui-state-active');
-                if(oldActions.length != 0) {
+                if(hasOldActions) {
                     oldActions.hide($this.cfg.effect, null, $this.cfg.effectDuration);
                 }
 
@@ -556,7 +567,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 newPanel.show($this.cfg.effect, null, $this.cfg.effectDuration, function() {
                     $this.postTabShow(newPanel);
                 });
-                if(newActions.length != 0) {
+                if(hasNewActions) {
                     newActions.show($this.cfg.effect, null, $this.cfg.effectDuration);
                 }
             });
@@ -564,13 +575,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         else {
             oldHeader.removeClass('ui-tabs-selected ui-state-active');
             oldPanel.hide();
-            if(oldActions.length != 0) {
+            if(hasOldActions) {
                 oldActions.hide();
             }
 
             newHeader.addClass('ui-tabs-selected ui-state-active');
             newPanel.show();
-            if(newActions.length != 0) {
+            if(hasNewActions) {
                 newActions.show();
             }
 
@@ -590,6 +601,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
+            ignoreAutoUpdate: true,
             params: [
                 {name: this.id + '_contentLoad', value: true},
                 {name: this.id + '_newTab', value: newPanel.attr('id')},

@@ -49,6 +49,11 @@ public class PanelRenderer extends CoreRenderer {
         String collapsedParam = params.get(clientId + "_collapsed");
         if (collapsedParam != null) {
             panel.setCollapsed(Boolean.parseBoolean(collapsedParam));
+
+            if (panel.isMultiViewState()) {
+                PanelState ps = panel.getMultiViewState(true);
+                ps.setCollapsed(panel.isCollapsed());
+            }
         }
 
         //Restore visibility state
@@ -65,6 +70,10 @@ public class PanelRenderer extends CoreRenderer {
         Panel panel = (Panel) component;
         Menu optionsMenu = panel.getOptionsMenu();
 
+        if (panel.isMultiViewState()) {
+            panel.restoreMultiViewState();
+        }
+
         encodeMarkup(facesContext, panel, optionsMenu);
         encodeScript(facesContext, panel, optionsMenu);
     }
@@ -78,7 +87,8 @@ public class PanelRenderer extends CoreRenderer {
                     .attr("toggleSpeed", panel.getToggleSpeed())
                     .attr("collapsed", panel.isCollapsed())
                     .attr("toggleOrientation", panel.getToggleOrientation())
-                    .attr("toggleableHeader", panel.isToggleableHeader());
+                    .attr("toggleableHeader", panel.isToggleableHeader())
+                    .attr("multiViewState", panel.isMultiViewState(), false);
         }
 
         if (panel.isClosable()) {

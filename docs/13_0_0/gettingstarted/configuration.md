@@ -6,7 +6,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 ```xml
 <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>nova-light</param-value>
+    <param-value>saga</param-value>
 </context-param>
 ```
 
@@ -24,6 +24,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | EXCEPTION_TYPES_TO_IGNORE_IN_LOGGING | null | Comma separated list of exceptions for PrimeExceptionHandler to ignore e.g. `javax.faces.application.ViewExpiredException,javax.persistence.RollbackException`. |
 | FLEX | false | Use PrimeFlex instead of Grid CSS in components with responsive-modes. (not implemented by all components yet) |
 | HIDE_RESOURCE_VERSION | false | Determines whether to hide version information in resource paths. |
+| HTML5_COMPLIANCE | false | Mark true if you know your site is HTML5 doctype so PF won't render certain non-HTML5 compliant values like `text/javascript` on scripts |
 | INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validation (CSV) from server via the MessageInterpolator. |
 | LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
 | MARK_INPUT_AS_INVALID_ON_ERROR_MSG | false | Marks a input as invalid, when a FacesMessage is added for a UIInput with 'SEVERITY_ERROR'. This will show the red border on the client side, when the input is updated. |
@@ -32,7 +33,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | PRIME_ICONS | true | Auto includes PrimeIcons font based icons. True by default for most themes use PrimeIcons. Only disable if you know you do not use PrimeIcons. |
 | RESET_VALUES | false | When enabled, AJAX updated inputs are always reset. |
 | SUBMIT | full | Defines ajax submit mode; 'full' or 'partial'. |
-| THEME | nova-light | Theme of the application. |
+| THEME | saga | Theme of the application. |
 | TOUCHABLE | true | Globally enables/disables touch support on browsers that support touch. |
 | TRANSFORM_METADATA | false | Transforms bean validation metadata to HTML attributes. |
 | UPLOADER | auto | Defines uploader mode; 'auto', 'native' or 'commons'. 'auto' means 'native' on JSF2.2+, otherwise 'commons'. |

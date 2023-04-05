@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.model.dashboard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,35 +31,64 @@ public class DefaultDashboardModel implements DashboardModel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<DashboardColumn> columns;
+    private List<DashboardWidget> widgets;
 
     public DefaultDashboardModel() {
-        columns = new ArrayList<>();
+        widgets = new ArrayList<>();
     }
 
     @Override
-    public List<DashboardColumn> getColumns() {
-        return columns;
+    public List<DashboardWidget> getWidgets() {
+        return widgets;
     }
 
     @Override
-    public void addColumn(DashboardColumn column) {
-        columns.add(column);
+    public void addWidget(DashboardWidget widget) {
+        widgets.add(widget);
+    }
+
+    @Override
+    public void addColumn(DashboardWidget column) {
+        widgets.add(column);
     }
 
     @Override
     public int getColumnCount() {
-        return columns.size();
+        return widgets.size();
     }
 
     @Override
-    public DashboardColumn getColumn(int index) {
-        return columns.get(index);
+    public DashboardWidget getColumn(int index) {
+        return widgets.get(index);
     }
 
     @Override
-    public void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index) {
-        fromColumn.removeWidget(widgetId);
-        toColumn.addWidget(index, widgetId);
+    public DashboardWidget getWidget(String widgetId) {
+        return widgets.stream().filter(w -> w.getWidget(0).equalsIgnoreCase(widgetId))
+                .findFirst().orElse(null);
     }
+
+    @Override
+    public void transferWidget(DashboardWidget fromWidget, DashboardWidget toWidget, String widgetId, int index, boolean responsive) {
+        if (responsive) {
+            String fromWidgetId = fromWidget.getWidget(0);
+            String toWidgetId = toWidget.getWidget(0);
+            String fromCss = fromWidget.getStyleClass();
+            String toCss = toWidget.getStyleClass();
+            fromWidget.removeWidget(fromWidgetId);
+            fromWidget.addWidget(index, toWidgetId);
+            toWidget.removeWidget(toWidgetId);
+            toWidget.addWidget(index, fromWidgetId);
+            fromWidget.setStyleClass(toCss);
+            toWidget.setStyleClass(fromCss);
+        }
+        else {
+            fromWidget.removeWidget(widgetId);
+            toWidget.addWidget(index, widgetId);
+        }
+    }
+
+
+
+
 }

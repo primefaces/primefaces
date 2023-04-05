@@ -6,7 +6,7 @@ StaticMessage component can be used to display a message without the use of a Fa
 
 | Name | Value |
 | --- | --- |
-| Tag | inputText
+| Tag | staticMessage
 | Component Class | org.primefaces.component.staticmessage.StaticMessage
 | Component Type | org.primefaces.component.StaticMessage
 | Component Family | org.primefaces.component |

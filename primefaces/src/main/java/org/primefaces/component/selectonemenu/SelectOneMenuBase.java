@@ -229,11 +229,11 @@ public abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Wid
         getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public boolean isAutoWidth() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoWidth, true);
+    public String getAutoWidth() {
+        return (String) getStateHelper().eval(PropertyKeys.autoWidth, "auto");
     }
 
-    public void setAutoWidth(boolean autoWidth) {
+    public void setAutoWidth(String autoWidth) {
         getStateHelper().put(PropertyKeys.autoWidth, autoWidth);
     }
 

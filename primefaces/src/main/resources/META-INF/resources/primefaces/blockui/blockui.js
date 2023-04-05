@@ -92,9 +92,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         });
 
         // subscribe to all DOM update events so we can resize even if another DOM element changed
-        $(document).on('pfAjaxUpdated', function(e, xhr, settings) {
+        $(document).on('pfAjaxSend pfAjaxUpdated', function(e, xhr, settings) {
             if (!$this.cfg.blocked) {
-                $this.alignOverlay();
+                setTimeout(function() { $this.alignOverlay() }, 0);
             }
         });
     },
@@ -299,10 +299,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var contentHeight = content.outerHeight();
             var contentWidth = content.outerWidth();
             // #9496 if display:none then we need to clone to get its dimensions
-            if (contentHeight === 0) {
+            if (content.height() <= 0) {
                 var currentWidth = this.content[i].getBoundingClientRect().width;
+                var styleWidth = currentWidth ? 'width: ' + currentWidth + 'px' : '';
                 var clone = this.content[i].cloneNode(true);
-                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset; width: ' + currentWidth + 'px';
+                clone.style.cssText = 'position: fixed; top: 0; left: 0; overflow: auto; visibility: hidden; pointer-events: none; height: unset; max-height: unset;' + styleWidth;
                 document.body.append(clone);
                 var jqClone = $(clone);
                 contentHeight = jqClone.outerHeight();
@@ -343,7 +344,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     isBlocking: function() {
         return this.blocker.is(':visible');
     },
-    
+
     /**
      * Clears the ste-timeout timer for the delay.
      * @private

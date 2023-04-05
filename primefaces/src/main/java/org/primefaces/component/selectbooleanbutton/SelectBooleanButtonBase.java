@@ -42,7 +42,8 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
         onLabel,
         offLabel,
         onIcon,
-        offIcon;
+        offIcon,
+        ariaLabel;
     }
 
     public SelectBooleanButtonBase() {
@@ -92,5 +93,13 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     public void setOffIcon(String offIcon) {
         getStateHelper().put(PropertyKeys.offIcon, offIcon);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

@@ -28,8 +28,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
 import javax.el.PropertyNotFoundException;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.*;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -144,7 +144,6 @@ public abstract class CoreRenderer extends Renderer {
             return;
         }
 
-        ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
 
         for (int i = 0; i < eventAttrs.size(); i++) {
@@ -209,10 +208,8 @@ public abstract class CoreRenderer extends Renderer {
                         }
                     }
                 }
-                else if (hasEventValue) {
-                    if (shouldRenderAttribute(eventValue)) {
-                        builder.append(eventValue);
-                    }
+                else if (shouldRenderAttribute(eventValue)) {
+                    builder.append(eventValue);
                 }
 
                 if (builder.length() > 0) {
@@ -225,8 +222,6 @@ public abstract class CoreRenderer extends Renderer {
 
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs)
             throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
         //pre-defined attributes
         for (String attribute : attrs) {
             if (isIgnoredAttribute(attribute, ignoredAttrs)) {
@@ -250,7 +245,7 @@ public abstract class CoreRenderer extends Renderer {
 
         if (shouldRenderAttribute(value)) {
             String stringValue = value.toString();
-            if (Boolean.valueOf(stringValue)) {
+            if (Boolean.parseBoolean(stringValue)) {
                 writer.writeAttribute(attribute, true, attribute);
             }
             else {
@@ -866,5 +861,27 @@ public abstract class CoreRenderer extends Renderer {
                 || val.endsWith("em") || val.endsWith("ex") || val.endsWith("ch") || val.endsWith("rem")
                 || val.endsWith("vw") || val.endsWith("vh")
                 || val.endsWith("vmin") || val.endsWith("vmax");
+    }
+
+    /**
+     * Gets the ARIA text for an icon only button for screen readers.
+     * @param title the tooltip for the button
+     * @param ariaLabel the ARIA label for the button
+     * @return either title, or ARIA label, or fallback "ui-button"
+     */
+    protected String getIconOnlyButtonText(String title, String ariaLabel) {
+        String text = (title != null) ? title : ariaLabel;
+        return (text != null) ? text : "ui-button";
+    }
+
+    /**
+     * Logs a WARN log message in ProjectStage == DEVELOPMENT.
+     * @param context the FacesContext
+     * @param message the message to log
+     */
+    protected void logDevelopmentWarning(FacesContext context, String message) {
+        if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
+            LOGGER.log(Level.WARNING, message);
+        }
     }
 }

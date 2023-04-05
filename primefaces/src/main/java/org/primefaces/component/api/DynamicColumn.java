@@ -170,11 +170,6 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public Object getFilterOptions() {
-        return columns.getFilterOptions();
-    }
-
-    @Override
     public CellEditor getCellEditor() {
         return columns.getCellEditor();
     }

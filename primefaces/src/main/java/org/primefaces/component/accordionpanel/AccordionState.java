@@ -21,19 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.component.accordionpanel;
 
-import java.util.List;
+import java.io.Serializable;
 
-public interface DashboardModel {
+public class AccordionState implements Serializable {
 
-    void addColumn(DashboardColumn column);
+    private static final long serialVersionUID = 1L;
 
-    List<DashboardColumn> getColumns();
+    private String activeIndex;
 
-    int getColumnCount();
+    public String getActiveIndex() {
+        return activeIndex;
+    }
 
-    DashboardColumn getColumn(int index);
-
-    void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index);
+    public void setActiveIndex(String activeIndex) {
+        this.activeIndex = activeIndex;
+    }
 }

@@ -54,6 +54,7 @@ public class MenuView implements Serializable {
         //First submenu
         DefaultSubMenu firstSubmenu = DefaultSubMenu.builder()
                 .label("Options")
+                .expanded(true)
                 .build();
 
         DefaultMenuItem item = DefaultMenuItem.builder()
@@ -86,6 +87,7 @@ public class MenuView implements Serializable {
         //Second submenu
         DefaultSubMenu secondSubmenu = DefaultSubMenu.builder()
                 .label("Navigations")
+                .expanded(false)
                 .build();
 
         item = DefaultMenuItem.builder()

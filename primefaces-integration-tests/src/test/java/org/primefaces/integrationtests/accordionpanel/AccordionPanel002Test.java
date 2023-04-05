@@ -21,32 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.component.dnd;
+package org.primefaces.integrationtests.accordionpanel;
 
-import javax.faces.view.facelets.ComponentConfig;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.MetaRule;
-import javax.faces.view.facelets.MetaRuleset;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.AccordionPanel;
 
-import org.primefaces.event.DragDropEvent;
-import org.primefaces.facelets.MethodRule;
+public class AccordionPanel002Test extends AbstractPrimePageTest {
 
-public class DroppableHandler extends ComponentHandler {
+    @Test
+    @DisplayName("AccordionPanel: keep closed tab in MVS")
+    public void test(Page page) {
+        // Arrange
+        AccordionPanel accordionPanel = page.accordionPanel;
 
-    private static final MetaRule DROP_LISTENER
-            = new MethodRule("dropListener", null, new Class[]{DragDropEvent.class});
+        // Act
+        accordionPanel.toggleTab(0);
+        getWebDriver().get(getWebDriver().getCurrentUrl()); // refresh current page
 
-    public DroppableHandler(ComponentConfig config) {
-        super(config);
+        // Assert
+        Assertions.assertEquals(0, accordionPanel.getSelectedTabs().size());
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected MetaRuleset createMetaRuleset(Class type) {
-        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+    public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:accordionpanel")
+        AccordionPanel accordionPanel;
 
-        metaRuleset.addRule(DROP_LISTENER);
-
-        return metaRuleset;
+        @Override
+        public String getLocation() {
+            return "accordionpanel/accordionPanel002.xhtml";
+        }
     }
 }

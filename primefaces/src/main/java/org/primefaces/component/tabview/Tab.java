@@ -39,7 +39,7 @@ public class Tab extends TabBase {
     }
 
     public void setLoaded(boolean value) {
-        if (value == false) {
+        if (!value) {
             getStateHelper().remove("loaded");
         }
         else {
@@ -67,7 +67,7 @@ public class Tab extends TabBase {
      * @param value The loaded state.
      */
     public void setLoaded(int index, boolean value) {
-        if (value == false) {
+        if (!value) {
             getStateHelper().remove("loaded_" + index);
         }
         else {

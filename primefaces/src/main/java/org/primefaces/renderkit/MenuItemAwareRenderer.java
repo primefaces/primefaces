@@ -28,7 +28,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehavior;
@@ -86,7 +85,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
         if (isCommand) {
             String menuClientId = source.getClientId(context);
-            UIForm form = ComponentTraversalUtils.closestForm(context, source);
+            UIForm form = ComponentTraversalUtils.closestForm(source);
             if (form == null) {
                 LOGGER.log(Level.FINE, "Menu '" + menuClientId
                             + "' should be inside a form or should reference a form via its form attribute."
@@ -114,7 +113,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
             if (isLink) {
                 // allow CTRL+CLICK link to open new tab
-                command = "if(event.ctrlKey||event.metaKey){return true};" + command;
+                command = "if(PF.metaKey(event)){return true};" + command;
             }
             onclick = (onclick == null) ? command : onclick + ";" + command;
         }

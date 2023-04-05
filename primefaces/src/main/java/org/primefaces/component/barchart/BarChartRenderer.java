@@ -65,8 +65,9 @@ public class BarChartRenderer extends ChartRenderer {
         BarChartOptions barOptions = (BarChartOptions) options;
 
         writer.write(",\"options\":{");
+        encodeResponsive(context, barOptions, false);
 
-        writer.write("\"barPercentage\":" + barOptions.getBarPercentage());
+        writer.write(",\"barPercentage\":" + barOptions.getBarPercentage());
 
         if (LangUtils.isNotBlank(barOptions.getIndexAxis())) {
             writer.write(",\"indexAxis\":\"" + barOptions.getIndexAxis() + "\"");

@@ -45,6 +45,7 @@ public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widg
         target,
         escape,
         inline,
+        ariaLabel,
         disableClientWindow
     }
 
@@ -141,5 +142,13 @@ public abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widg
     @Override
     public void setDisableClientWindow(boolean disableClientWindow) {
         getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

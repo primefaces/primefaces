@@ -1,4 +1,13 @@
 if (!PrimeFaces.utils) {
+    
+   /**
+    * Shortcut for is this CMD on MacOs or CTRL key on other OSes. 
+    * @param {JQuery.TriggeredEvent} e The key event that occurred.
+    * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
+    */
+    PF.metaKey = function(e) {
+        return PrimeFaces.utils.isMetaKey(e);
+    };
 
     /**
      * The object with various utilities needed by PrimeFaces.
@@ -561,6 +570,15 @@ if (!PrimeFaces.utils) {
                 e.preventDefault();
             }
         },
+        
+        /**
+         * Is this CMD on MacOs or CTRL key on other OSes. 
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
+         */
+        isMetaKey: function(e) {
+            return PrimeFaces.env.browser.mac ? e.metaKey : e.ctrlKey;
+        },
 
         /**
          * Is this SPACE or ENTER key. Used throughout codebase to trigger and action.
@@ -641,8 +659,8 @@ if (!PrimeFaces.utils) {
             }
             if (input.is(':disabled')) {
                 input.prop('disabled', false);
-                jq.removeClass('ui-state-disabled');
             }
+            jq.removeClass('ui-state-disabled');
         },
 
         /**
@@ -657,8 +675,8 @@ if (!PrimeFaces.utils) {
             }
             if (!input.is(':disabled')) {
                 input.prop('disabled', true);
-                jq.addClass('ui-state-disabled');
             }
+            jq.addClass('ui-state-disabled');
         },
 
         /**

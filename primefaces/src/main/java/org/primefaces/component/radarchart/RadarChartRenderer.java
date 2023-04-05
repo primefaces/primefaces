@@ -63,13 +63,11 @@ public class RadarChartRenderer extends ChartRenderer {
         RadarChartOptions radarOptions = (RadarChartOptions) options;
 
         writer.write(",\"options\":{");
-
-        encodeScales(context, type, radarOptions.getScales(), false);
-        encodeElements(context, radarOptions.getElements(), radarOptions.getScales() != null);
-        encodeAnimation(context, radarOptions.getAnimation(), radarOptions.getScales() != null
-                    || radarOptions.getElements() != null);
-        encodePlugins(context, radarOptions, radarOptions.getScales() != null
-                    || radarOptions.getElements() != null || radarOptions.getAnimation() != null);
+        encodeResponsive(context, radarOptions, false);
+        encodeScales(context, type, radarOptions.getScales(), true);
+        encodeElements(context, radarOptions.getElements(), true);
+        encodeAnimation(context, radarOptions.getAnimation(), true);
+        encodePlugins(context, radarOptions, true);
 
         writer.write("}");
     }

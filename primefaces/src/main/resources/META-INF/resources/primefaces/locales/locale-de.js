@@ -39,7 +39,17 @@ PrimeFaces.locales ['de'] = {
         'datatable.sort.DESC': 'Spalten absteigend sortieren',
         'datatable.sort.NONE': 'Spaltensortierung entfernen',
         'columntoggler.CLOSE': 'Schließen',
-        'overlaypanel.CLOSE': 'Schließen'
+        'overlaypanel.CLOSE': 'Schließen',
+        'colorpicker.OPEN': 'Farbauswahl öffnen',
+        'colorpicker.CLOSE': 'Farbauswahl schließen',
+        'colorpicker.CLEAR': 'Die ausgewählte Farbe löschen',
+        'colorpicker.MARKER': 'Sättigung: {s}. Helligkeit: {v}.',
+        'colorpicker.HUESLIDER': 'Schieberegler Farbton',
+        'colorpicker.ALPHASLIDER': 'Schieberegler Deckkraft',
+        'colorpicker.INPUT': 'Farbwertfeld',
+        'colorpicker.FORMAT': 'Farbformat',
+        'colorpicker.SWATCH': 'Farbmuster',
+        'colorpicker.INSTRUCTION': 'Sättigungs- und Helligkeitsauswahl. Verwenden Sie die Pfeiltasten oben, unten, links und rechts zur Auswahl.'
     },
     messages: {  //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Eingabe erforderlich.',

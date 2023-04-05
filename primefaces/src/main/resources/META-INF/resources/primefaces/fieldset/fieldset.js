@@ -132,6 +132,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
+            ignoreAutoUpdate: true,
             params: [
                 {name: this.id + '_contentLoad', value: true}
             ],

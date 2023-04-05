@@ -24,9 +24,11 @@
 package org.primefaces.component.button;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
@@ -50,6 +52,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         String clientId = button.getClientId(context);
         String value = (String) button.getValue();
         String icon = button.getIcon();
+        String title = button.getTitle();
 
         writer.startElement("button", button);
         writer.writeAttribute("id", clientId, "id");
@@ -80,7 +83,8 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (value == null) {
-            writer.write("ui-button");
+            //For ScreenReader
+            writer.write(getIconOnlyButtonText(title, button.getAriaLabel()));
         }
         else {
             if (button.isEscape()) {

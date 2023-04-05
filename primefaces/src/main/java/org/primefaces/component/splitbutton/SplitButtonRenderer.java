@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -136,7 +135,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         // GitHub #9381 ignore style as its applied to parent div
-        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITH_CLICK_ATTRS);
+        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITHOUT_CLICK_ATTRS);
         attrs.remove("style");
         renderPassThruAttributes(context, button, attrs);
 
@@ -159,7 +158,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (value == null) {
-            writer.write("ui-button");
+            //For ScreenReader
+            writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
         }
         else {
             writer.writeText(value, "value");
@@ -195,7 +195,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write("ui-button");
+        writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
         writer.endElement("span");
 
         writer.endElement("button");
@@ -229,7 +229,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             onclick.append(buildAjaxRequest(context, button));
         }
         else {
-            UIForm form = ComponentTraversalUtils.closestForm(context, button);
+            UIForm form = ComponentTraversalUtils.closestForm(button);
             if (form == null) {
                 throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
             }
