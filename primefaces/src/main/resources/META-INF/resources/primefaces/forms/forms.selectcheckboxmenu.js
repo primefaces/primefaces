@@ -148,9 +148,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.bindEvents();
             this.bindKeyEvents();
 
-            //mark trigger and descandants of trigger as a trigger for a primefaces overlay
-            this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-
             if (!this.cfg.multiple) {
                 this.label.attr('id', this.labelId);
                 this.keyboardTarget.attr('aria-labelledby', this.labelId);
@@ -239,6 +236,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
      */
     renderLabel: function() {
         if (!this.cfg.updateLabel) {
+            this.registerTrigger();
             return;
         }
         if (this.cfg.multiple) {
@@ -257,6 +255,18 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             });
 
             this.updateLabel();
+        }
+        
+        this.registerTrigger();
+    },
+    
+    /**
+     * Mark trigger and descandants of trigger as a trigger for a primefaces overlay.
+     * @private
+     */
+    registerTrigger: function() {
+        if (!this.disabled) {
+            this.triggers.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
         }
     },
 
