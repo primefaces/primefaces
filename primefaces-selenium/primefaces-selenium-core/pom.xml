@@ -75,7 +75,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.3</version>
+            <version>1.14.4</version>
         </dependency>
     </dependencies>
 </project>
