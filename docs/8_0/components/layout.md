@@ -3,7 +3,7 @@
 Layout component features a highly customizable borderLayout model making it very easy to
 create complex layouts even if you’re not familiar with web design.
 
-> Layout and LayoutUnit are deprecated, use  [FlexGrid](https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml) or [GridCSS](/components/gridcss.md) instead.
+> Layout and LayoutUnit are deprecated, use  [FlexGrid](https://www.primefaces.org/showcase-v8/ui/panel/flexGrid.xhtml) or [GridCSS](/components/gridcss.md) instead.
 
 ## Info
 
