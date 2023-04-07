@@ -356,7 +356,7 @@ screen size change to optimize their content.
 ```
 For a detailed example of a responsive page that uses all of the parts above, visit;
 
-http://www.primefaces.org/showcase/ui/misc/responsive.xhtml
+https://www.primefaces.org/showcase-v8/ui/misc/responsive.xhtml
 
 Source code is available at GitHub.
 

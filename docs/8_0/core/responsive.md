@@ -14,7 +14,7 @@ typical grid framework usually consists of columns with varying widths and since
 responsive, containers adjust themselves according to the screen size. There are 3rd party grid
 frameworks you can use whereas PrimeFaces also provides Grid CSS as a solution.
 
-Showcase Example: https://www.primefaces.org/showcase/ui/panel/grid.xhtml
+Showcase Example: https://www.primefaces.org/showcase-v8/ui/panel/grid.xhtml
 
 ## FlexGrid CSS Framework
 Flex Grid CSS is a lightweight flex based responsive layout utility optimized for mobile phones, 
@@ -26,7 +26,7 @@ download and include a separate CSS file.
 <h:outputStylesheet name="css/primeflex.css" />
 ```
 
-Showcase Example: https://www.primefaces.org/showcase/ui/panel/flexGrid.xhtml
+Showcase Example: https://www.primefaces.org/showcase-v8/ui/panel/flexGrid.xhtml
 
 ## Components
 Components also must be flexible enough to use within a responsive layout, if a component has
@@ -55,6 +55,6 @@ screen size change to optimize their content.
 ```
 For a detailed example of a responsive page that uses all of the parts above, visit;
 
-http://www.primefaces.org/showcase/ui/misc/responsive.xhtml
+https://www.primefaces.org/showcase-v8/ui/misc/responsive.xhtml
 
 Source code is available at GitHub.
