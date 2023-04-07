@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.calendar;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -51,6 +52,25 @@ public class Calendar002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNotDisplayed(messages);
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("Calendar: AJAX on leaving input after changes")
+    public void testLeaveInputWithChange(Page page) {
+        // Arrange
+        Calendar datePicker = page.datePicker;
+        WebElement outside = page.outside;
+        Messages messages = page.messages;
+
+        // Act
+        datePicker.getInput().click();
+        datePicker.getInput().sendKeys(Keys.chord(PrimeSelenium.isSafari() ? Keys.COMMAND : Keys.CONTROL, "a"));
+        datePicker.getInput().sendKeys("01/01/2023");
+        PrimeSelenium.guardAjax(outside).click();
+
+        // Assert
+        assertDisplayed(messages);
     }
 
     public static class Page extends AbstractPrimePage {
