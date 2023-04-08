@@ -220,7 +220,7 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             }
-            else if ("select".equals(eventName) || "contextMenu".equals(eventName)) {
+            else if ("select".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantSelection");
                 setRowKey(root, nodeKey);
                 TreeNode node = getRowNode();
@@ -228,6 +228,15 @@ public class TreeTable extends TreeTableBase {
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
+            else if ("contextMenu".equals(eventName)) {
+                String nodeKey = params.get(clientId + "_instantSelection");
+                setRowKey(root, nodeKey);
+                TreeNode node = getRowNode();
+
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), node, true);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+
             else if ("unselect".equals(eventName)) {
                 String nodeKey = params.get(clientId + "_instantUnselection");
                 setRowKey(root, nodeKey);
