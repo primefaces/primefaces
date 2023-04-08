@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:treeTable value="#{treeTable006.root}" var="document" id="treeTable" widgetVar="treeTable"
+                         sortMode="single" allowUnsorting="true" filterEvent="enter"
+                         editable="true">
+
+                <p:ajax event="rowEdit" listener="#{treeTable006.onRowEdit}"/>
+                <p:ajax event="rowEditCancel" listener="#{treeTable006.onRowCancel}"/>
+
+                <p:column headerText="Name" sortBy="#{document.name}" filterBy="#{document.name}" filterMatchMode="contains">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{document.name}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{document.name}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Size" sortBy="#{document.size}">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{document.size}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{document.size}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Type" sortBy="#{document.type}" filterBy="#{document.type}" filterMatchMode="exact">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('treeTable').filter()" styleClass="custom-filter">
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Folder" itemValue="Folder"/>
+                            <f:selectItem itemLabel="Application" itemValue="Application"/>
+                            <f:selectItem itemLabel="Zip" itemValue="Zip"/>
+                            <f:selectItem itemLabel="Text" itemValue="Text"/>
+                            <f:selectItem itemLabel="Document" itemValue="Document"/>
+                            <f:selectItem itemLabel="Resume" itemValue="Resume"/>
+                            <f:selectItem itemLabel="Excel" itemValue="Excel"/>
+                            <f:selectItem itemLabel="PDF" itemValue="PDF"/>
+                            <f:selectItem itemLabel="Link" itemValue="Link"/>
+                            <f:selectItem itemLabel="Picture" itemValue="Picture"/>
+                            <f:selectItem itemLabel="Video" itemValue="Video"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{document.type}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{document.type}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column style="width:3rem">
+                    <p:commandButton title="View Detail" icon="pi pi-search" action="#{treeTable006.showSelectedDocument}">
+                        <f:setPropertyActionListener value="#{document}" target="#{treeTable006.selectedDocument}"/>
+                    </p:commandButton>
+                </p:column>
+                <p:column style="width:4rem">
+                    <p:rowEditor/>
+                </p:column>
+            </p:treeTable>
+
+            <p:commandButton id="button" value="Submit" update="@form"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="treeTable"/>
+            <p:commandButton id="buttonResetTable" value="Reset" update="@form" action="#{treeTable006.resetTable()}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
