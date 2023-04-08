@@ -1025,7 +1025,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.isSingleSelection() || !selected ) {
                 this.unselectAllNodes();
             }
-            this.selectNode(node);
+            this.selectNode(node, true);
         }
 
         this.fireSelectEvent(nodeKey, 'contextMenu');
