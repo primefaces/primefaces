@@ -241,11 +241,15 @@ public class CalendarUtils {
     }
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value) {
+        return getValueAsString(context, calendar, value, false);
+    }
+
+    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, boolean ignoreConverter) {
         if (value == null) {
             return null;
         }
 
-        return getValueAsString(context, calendar, value, calendar.calculatePattern());
+        return getValueAsString(context, calendar, value, calendar.calculatePattern(), ignoreConverter);
     }
 
     public static final String getTimeOnlyValueAsString(FacesContext context, UICalendar calendar) {
@@ -258,6 +262,10 @@ public class CalendarUtils {
     }
 
     public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern) {
+        return getValueAsString(context, calendar, value, pattern, false);
+    }
+
+    public static final String getValueAsString(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
         if (value == null) {
             return null;
         }
@@ -272,22 +280,28 @@ public class CalendarUtils {
                     valuesAsString.append(separator);
                 }
 
-                valuesAsString.append(getValue(context, calendar, values.get(i), pattern));
+                valuesAsString.append(getValue(context, calendar, values.get(i), pattern, ignoreConverter));
             }
 
             return valuesAsString.toString();
         }
         else {
-            return getValue(context, calendar, value, pattern);
+            return getValue(context, calendar, value, pattern, ignoreConverter);
         }
     }
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
-        //first ask the converter
-        Converter converter = calendar.getConverter();
-        // always use the user-applied converter first
-        if (converter != null) {
-            return converter.getAsString(context, calendar, value);
+        return getValue(context, calendar, value, pattern, false);
+    }
+
+    public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern, boolean ignoreConverter) {
+        if (!ignoreConverter) {
+            //first ask the converter
+            Converter converter = calendar.getConverter();
+            // always use the user-applied converter first
+            if (converter != null) {
+                return converter.getAsString(context, calendar, value);
+            }
         }
 
         if (value instanceof String) {
@@ -323,7 +337,7 @@ public class CalendarUtils {
             Class<?> type = ELUtils.getType(context, calendar.getValueExpression("value"));
             if (type != null && type != Object.class && type != Date.class &&
                     type != LocalDate.class && type != LocalDateTime.class && type != LocalTime.class && type != YearMonth.class) {
-                converter = context.getApplication().createConverter(type);
+                Converter converter = context.getApplication().createConverter(type);
                 if (converter != null) {
                     return converter.getAsString(context, calendar, value);
                 }

@@ -54,6 +54,7 @@ public class Sidebar extends SidebarBase implements ClientBehaviorHolder, PrimeC
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("close", CloseEvent.class)
             .put("open", null)
+            .put("loadContent", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

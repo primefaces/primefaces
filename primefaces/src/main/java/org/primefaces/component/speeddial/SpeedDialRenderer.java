@@ -25,7 +25,6 @@ package org.primefaces.component.speeddial;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -80,7 +79,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", containerStyle, "style");
         }
 
-        BadgeRenderer.encode(context, speedDial.getBadge(), this::encodeButton, speedDial);
+        BadgeRenderer.encodeOverlayed(context, speedDial.getBadge(), this::encodeButton, speedDial);
         encodeList(context, speedDial);
 
         writer.endElement("div");
@@ -267,7 +266,7 @@ public class SpeedDialRenderer extends BaseMenuRenderer {
         SpeedDial speedDial = (SpeedDial) abstractMenu;
         String clientId = speedDial.getClientId(context);
 
-        UIForm form = ComponentTraversalUtils.closestForm(context, speedDial);
+        UIForm form = ComponentTraversalUtils.closestForm(speedDial);
         if (form == null) {
             throw new FacesException("SpeedDial : \"" + clientId + "\" must be inside a form element");
         }

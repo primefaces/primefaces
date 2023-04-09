@@ -25,7 +25,6 @@ package org.primefaces.component.menubutton;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
@@ -156,7 +155,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
 
-        UIForm form = ComponentTraversalUtils.closestForm(context, button);
+        UIForm form = ComponentTraversalUtils.closestForm(button);
         if (form == null) {
             throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
         }

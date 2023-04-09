@@ -55,7 +55,7 @@
 
                     <div class="field col-12 md:col-4">
                         <p:outputLabel value="Label"/>
-                        <p:selectOneMenu id="labeled" value="#{selectOneMenuView.labeled}" label="Always Show Label"
+                        <p:selectOneMenu id="labeled" value="#{selectOneMenuView.labeled}" label="Always Display Label"
                                         alwaysDisplayLabel="true">
                             <f:selectItems value="#{selectOneMenuView.cities}"/>
                         </p:selectOneMenu>
@@ -137,12 +137,12 @@
                     </div>
 
                     <div class="field col-12 md:col-4">
-                        <p:outputLabel value="Icons" />
+                        <p:outputLabel for="selectOneMenuIcon" value="Icons" />
                         <h:panelGroup styleClass="ui-inputgroup">
                             <h:panelGroup id="icon" styleClass="ui-inputgroup-addon">
                                 <i class="pi pi-#{selectOneMenuView.icon}"/>
                             </h:panelGroup>
-                            <p:selectOneMenu value="#{selectOneMenuView.icon}" var="item">
+                            <p:selectOneMenu id="selectOneMenuIcon" value="#{selectOneMenuView.icon}" var="item">
                                 <f:selectItems value="#{['flag','wallet','map','link']}" var="item" itemLabel="#{item}"
                                     itemValue="#{item}" />
                                 <p:column><i class="pi pi-#{item}" /> #{item} </p:column>

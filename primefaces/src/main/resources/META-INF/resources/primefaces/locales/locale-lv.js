@@ -35,7 +35,17 @@ PrimeFaces.locales['lv'] = {
         'datatable.sort.ASC': 'aktivizēt, lai kārtotu kolonnu augošā secībā',
         'datatable.sort.DESC': 'aktivizēt, lai kārtotu kolonnu dilstošā secībā',
         'columntoggler.CLOSE': 'Aizvērt',
-        'overlaypanel.CLOSE': 'Aizvērt'
+        'overlaypanel.CLOSE': 'Aizvērt',
+        'colorpicker.OPEN': 'Atvērt krāsu atlasītāju',
+        'colorpicker.CLOSE': 'Aizvērt krāsu atlasītāju',
+        'colorpicker.CLEAR': 'Notīrīt atlasīto krāsu',
+        'colorpicker.MARKER': 'Piesātinājums: {s}. Spilgtums: {v}.',
+        'colorpicker.HUESLIDER': 'Krāsu toņa slīdnis',
+        'colorpicker.ALPHASLIDER': 'Necaurspīdības slīdnis',
+        'colorpicker.INPUT': 'Krāsas vērtības lauks',
+        'colorpicker.FORMAT': 'Krāsu formāts',
+        'colorpicker.SWATCH': 'Krāsu palete',
+        'colorpicker.INSTRUCTION': 'Piesātinājuma un spilgtuma atlasītājs. Lai atlasītu, izmantojiet augšup, lejup, pa kreisi un pa labi vērsto bulttaustiņu.'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Validācijas kļūda: nepieciešama vērtība.',

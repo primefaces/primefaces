@@ -150,7 +150,7 @@ public abstract class AbstractFileUploadDecoder<T extends HttpServletRequest> im
     }
 
     protected void writeChunk(UploadedFile uploadedFile, Path path, ContentRange contentRange) throws IOException {
-        if (Files.notExists(path)) {
+        if (!path.toFile().exists()) {
             Files.createDirectory(path);
         }
 

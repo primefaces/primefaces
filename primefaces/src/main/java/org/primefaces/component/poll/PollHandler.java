@@ -32,8 +32,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class PollHandler extends ComponentHandler {
 
-    private static final MetaRule LISTENER
-            = new MethodRule("listener", null, new Class[0]);
+    private static final MetaRule LISTENER = new MethodRule(Poll.PropertyKeys.listener.name(),
+            null,
+            new Class[0]);
 
     public PollHandler(ComponentConfig config) {
         super(config);

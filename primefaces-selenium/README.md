@@ -93,6 +93,7 @@ Currently, only the following components are implemented (partially):
 - Calendar
 - CascadeSelect
 - Chips
+- ColorPicker
 - CommandButton
 - CommandLink
 - ConfirmDialog

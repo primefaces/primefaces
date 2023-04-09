@@ -35,14 +35,17 @@ import org.primefaces.facelets.MethodRule;
 
 public class ColumnsHandler extends ComponentHandler {
 
-    private static final MetaRule SORT_FUNCTION
-            = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
+    private static final MetaRule SORT_FUNCTION = new MethodRule(Columns.PropertyKeys.sortFunction.name(),
+            Integer.class,
+            new Class[]{Object.class, Object.class});
 
-    private static final MetaRule FILTER_FUNCTION
-            = new MethodRule("filterFunction", Integer.class, new Class[]{Object.class, Object.class, Locale.class});
+    private static final MetaRule FILTER_FUNCTION = new MethodRule(Columns.PropertyKeys.filterFunction.name(),
+            Integer.class,
+            new Class[]{Object.class, Object.class, Locale.class});
 
-    private static final MetaRule EXPORT_FUNCTION
-            = new MethodRule("exportFunction", Integer.class, new Class[]{UIColumn.class});
+    private static final MetaRule EXPORT_FUNCTION = new MethodRule(Columns.PropertyKeys.exportFunction.name(),
+            Integer.class,
+            new Class[]{UIColumn.class});
 
     public ColumnsHandler(ComponentConfig config) {
         super(config);

@@ -37,6 +37,8 @@ public class StaticMessageRenderer extends UINotificationRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
 
+        String display = staticMessage.getDisplay();
+        boolean iconOnly = "icon".equals(display);
         boolean escape = staticMessage.isEscape();
         String summary = staticMessage.getSummary();
         String detail = staticMessage.getDetail();
@@ -44,9 +46,13 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         severity = severity == null ? "info" : severity.toLowerCase();
 
         String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
+        if (iconOnly) {
+            styleClass += " ui-message-icon-only ui-helper-clearfix";
+        }
         if (staticMessage.getStyleClass() != null) {
             styleClass += " " + staticMessage.getStyleClass();
         }
+
         String style = staticMessage.getStyle();
 
         writer.startElement("div", staticMessage);
@@ -57,9 +63,13 @@ public class StaticMessageRenderer extends UINotificationRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeIcon(writer, severity, null, false);
-        encodeText(writer, summary, severity + "-summary", escape);
-        encodeText(writer, detail, severity + "-detail", escape);
+        if (!"text".equals(display)) {
+            encodeIcon(writer, severity, detail, iconOnly);
+        }
+        if (!iconOnly) {
+            encodeText(writer, summary, severity + "-summary", escape);
+            encodeText(writer, detail, severity + "-detail", escape);
+        }
 
         writer.endElement("div");
     }

@@ -204,6 +204,11 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     @Override
+    public WebElement getAssignedLabel() {
+        return getWebDriver().findElement(By.cssSelector("label[for='" + getId() + (isEditable() ? "_focus" : "_label") + "']"));
+    }
+
+    @Override
     public WebElement getInput() {
         return input;
     }
@@ -235,5 +240,9 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
 
     public WebElement getFilterInput() {
         return filterInput;
+    }
+
+    public boolean isEditable() {
+        return getWidgetConfiguration().optBoolean("editable");
     }
 }

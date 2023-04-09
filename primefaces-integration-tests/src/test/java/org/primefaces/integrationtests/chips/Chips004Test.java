@@ -26,11 +26,7 @@ package org.primefaces.integrationtests.chips;
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
@@ -65,9 +61,9 @@ public class Chips004Test extends AbstractPrimePageTest {
         Assertions.assertEquals("apple, orange, banana", page.messages.getMessage(0).getSummary());
         values = chips.getValues();
         Assertions.assertEquals(3, values.size());
-        Assertions.assertEquals("orange", values.get(0));
-        Assertions.assertEquals("banana", values.get(1));
-        Assertions.assertEquals("apple", values.get(2));
+        Assertions.assertEquals("apple", values.get(0));
+        Assertions.assertEquals("orange", values.get(1));
+        Assertions.assertEquals("banana", values.get(2));
         assertConfiguration(chips.getWidgetConfiguration());
     }
 
@@ -100,8 +96,8 @@ public class Chips004Test extends AbstractPrimePageTest {
         values = chips.getValues();
         Assertions.assertEquals(3, values.size());
         Assertions.assertEquals("Excel", values.get(0));
-        Assertions.assertEquals("Word", values.get(1));
-        Assertions.assertEquals("Outlook", values.get(2));
+        Assertions.assertEquals("Outlook", values.get(1));
+        Assertions.assertEquals("Word", values.get(2));
         assertConfiguration(chips.getWidgetConfiguration());
     }
 

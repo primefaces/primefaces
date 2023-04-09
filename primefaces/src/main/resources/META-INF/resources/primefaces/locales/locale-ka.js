@@ -25,6 +25,7 @@ PrimeFaces.locales['ka'] = {
     week: 'კვირა',
     day: 'დღე',
     allDayText: 'ყველა დღე',
+    clear: 'გადატვირთვა',
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: შეცდომა: ველის შევსება აუცილებელია.'
     }

@@ -106,25 +106,28 @@ public class ClamDaemonScanner implements VirusScanner {
         if (client != null) {
             return client;
         }
-        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String host = ClamDaemonClient.DEFAULT_HOST;
-        if (ctx.getInitParameter(CONTEXT_PARAM_HOST) != null) {
-            host = ctx.getInitParameter(CONTEXT_PARAM_HOST);
-        }
         int port = ClamDaemonClient.DEFAULT_PORT;
-        if (ctx.getInitParameter(CONTEXT_PARAM_PORT) != null) {
-            port = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_PORT));
-        }
         int timeout = ClamDaemonClient.DEFAULT_TIMEOUT;
-        if (ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT) != null) {
-            timeout = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT));
-        }
         int bufferSize = ClamDaemonClient.DEFAULT_BUFFER;
-        if (ctx.getInitParameter(CONTEXT_PARAM_BUFFER) != null) {
-            bufferSize = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
+        if (FacesContext.getCurrentInstance() != null) {
+            ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+            if (ctx != null) {
+                if (ctx.getInitParameter(CONTEXT_PARAM_HOST) != null) {
+                    host = ctx.getInitParameter(CONTEXT_PARAM_HOST);
+                }
+                if (ctx.getInitParameter(CONTEXT_PARAM_PORT) != null) {
+                    port = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_PORT));
+                }
+                if (ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT) != null) {
+                    timeout = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_TIMEOUT));
+                }
+                if (ctx.getInitParameter(CONTEXT_PARAM_BUFFER) != null) {
+                    bufferSize = Integer.parseInt(ctx.getInitParameter(CONTEXT_PARAM_BUFFER));
+                }
+            }
         }
         client = new ClamDaemonClient(host, port, timeout, bufferSize);
         return client;
     }
-
 }

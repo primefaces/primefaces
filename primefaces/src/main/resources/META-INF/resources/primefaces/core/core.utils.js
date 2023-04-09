@@ -659,8 +659,8 @@ if (!PrimeFaces.utils) {
             }
             if (input.is(':disabled')) {
                 input.prop('disabled', false);
-                jq.removeClass('ui-state-disabled');
             }
+            jq.removeClass('ui-state-disabled');
         },
 
         /**
@@ -675,8 +675,8 @@ if (!PrimeFaces.utils) {
             }
             if (!input.is(':disabled')) {
                 input.prop('disabled', true);
-                jq.addClass('ui-state-disabled');
             }
+            jq.addClass('ui-state-disabled');
         },
 
         /**

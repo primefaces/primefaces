@@ -28,7 +28,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
 import javax.el.PropertyNotFoundException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.*;
@@ -145,7 +144,6 @@ public abstract class CoreRenderer extends Renderer {
             return;
         }
 
-        ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
 
         for (int i = 0; i < eventAttrs.size(); i++) {
@@ -210,10 +208,8 @@ public abstract class CoreRenderer extends Renderer {
                         }
                     }
                 }
-                else if (hasEventValue) {
-                    if (shouldRenderAttribute(eventValue)) {
-                        builder.append(eventValue);
-                    }
+                else if (shouldRenderAttribute(eventValue)) {
+                    builder.append(eventValue);
                 }
 
                 if (builder.length() > 0) {
@@ -226,8 +222,6 @@ public abstract class CoreRenderer extends Renderer {
 
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs)
             throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
         //pre-defined attributes
         for (String attribute : attrs) {
             if (isIgnoredAttribute(attribute, ignoredAttrs)) {
@@ -251,7 +245,7 @@ public abstract class CoreRenderer extends Renderer {
 
         if (shouldRenderAttribute(value)) {
             String stringValue = value.toString();
-            if (Boolean.valueOf(stringValue)) {
+            if (Boolean.parseBoolean(stringValue)) {
                 writer.writeAttribute(attribute, true, attribute);
             }
             else {

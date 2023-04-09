@@ -44,6 +44,7 @@ filter | false | Boolean | Renders an input field as a filter.
 filterMatchMode | startsWith | String | Match mode for filtering, valid values are startsWith, contains, endsWith and custom.
 filterFunction | null | String | Client side function to use in custom filtering.
 caseSensitive | false | Boolean | Defines if filtering would be case sensitive.
+filterNormalize | false | Boolean | Defines if filtering would be done using normalized values (accents will be removed from characters).
 panelStyle | null | String | Inline style of the overlay.
 panelStyleClass | null | String | Style class of the overlay.
 appendTo | null | String | Appends the overlay to the element defined by search expression. Defaults to document body.
@@ -74,9 +75,9 @@ displays item as a comma separated list and for an advanced display use _multipl
 which renders the items as separate tokens similar to the chips component.
 
 ## Filtering
-When filtering is enabled with setting _filter_ on, an input field is rendered at overlay header and on
-keyup event filtering is executed on client side using _filterMatchMode_. Default modes of
-filterMatchMode are startsWith, contains, endsWith and custom. Custom mode requires a javascript
+When filtering is enabled with setting `filter` on, an input field is rendered at overlay header and on
+keyup event filtering is executed on client side using `filterMatchMode`. Default modes of
+filterMatchMode are `startsWith`, `contains`, `endsWith` and `custom`. Custom mode requires a javascript
 function to do the filtering.
 
 ```xhtml

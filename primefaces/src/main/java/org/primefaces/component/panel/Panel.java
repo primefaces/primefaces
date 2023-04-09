@@ -34,6 +34,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+import org.primefaces.PrimeFaces;
 
 import org.primefaces.component.menu.Menu;
 import org.primefaces.el.ValueExpressionAnalyzer;
@@ -155,5 +156,27 @@ public class Panel extends PanelBase {
             expr.setValue(elContext, isCollapsed());
             getStateHelper().remove(PropertyKeys.collapsed);
         }
+    }
+
+    @Override
+    public void restoreMultiViewState() {
+        PanelState ps = getMultiViewState(false);
+        if (ps != null) {
+            setCollapsed(ps.isCollapsed());
+        }
+    }
+
+    @Override
+    public PanelState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, PanelState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setCollapsed(false);
     }
 }

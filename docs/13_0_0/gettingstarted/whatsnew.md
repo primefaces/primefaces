@@ -8,14 +8,11 @@ This page contains a list of big features. Please check the GitHub issues for al
 
 * Core
     * Added attribute `primefaces.HTML5_COMPLIANCE` if you know your site is HTML5 doctype so PF won't render certain non-HTML5 compliant values like `text/javascript` on scripts.
+* AccordionPanel
+    * Added `multiViewState` to keep panel state across views.
 * BlockUI
     * Added attribute `delay` to delay displaying similar to AjaxStatus.
-* Button
-* CommandButton
-* LinkButton
-* MenuButton
-* SplitButton
-* SelectBooleanButton
+* Button, CommandButton, LinkButton, MenuButton, SplitButton, SelectBooleanButton
     * Added attribute `aria-label` for icon only buttons (will use `title` first if available).
 * Captcha
     * Added attribute `sourceUrl` to override the Google JS location for countries that do not have access to Google.
@@ -25,6 +22,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `ariaLabel` to all Charts to allow accessibility but defaults to the Charts title.
 * Column/Columns
     * Added attribute `exportTag` to allow finer grain control over XML export.
+* ColorPicker
+    * Brand new widget featuring full accessibility, RTL, Alpha support and more.
 * DataGrid
     * Added attribute `rowTitle` to support row-specific titles.
 * DatePicker
@@ -46,7 +45,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attributes `sourceFilterPlaceholder` and `targetFilterPlaceholder` for accessibility.
 * TabView
     * Added `focusOnLastActiveTab` if you want to focus on the tab that the user last activated.
-    * Added `footer` facet to add a footer to the whole TabView not per tab.
+    * Added `footer` facet to add a footer to the whole TabView (not per tab).
+    * Added `actions` facet to add actions to the whole TabView (not per tab).
 * TreeTable
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
@@ -56,6 +56,7 @@ This page contains a list of big features. Please check the GitHub issues for al
 * SelectCheckboxMenu
     * Added attribute `var` to support custom content in overlay panel.
     * Added support for facet `footer` in overlay panel.
+    * Added attribute `filterNormalize` to allow normalized filtering (without accents).
 * SelectManyCheckbox
     * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * SelectManyMenu
@@ -70,10 +71,15 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * SplitButton
     * Added attribute `filterNormalize` to allow normalized filtering (without accents).
+* StaticMessage
+    * Added attribute `display` with supported values `both` (default), `icon` and `text`.
+* Panel
+    * Added `multiViewState` to keep panel state across views.
 * Menu
     * Added attribute `appendTo` to support custom append of the menu instead of default `@(body)`.
 * MenuItem
     * Added attribute `ariaLabel` to allow screen reader support on menu items that do not have text or tooltip.
+    * Added attribute `badge` to add a badge to it.
 * VirusScan
     * Generalized ClamDeamonScanner such that the implementation of a custom ClamDeamonScanner can now access all virus scan parameters from the ClamDaemonClient.
 

@@ -192,4 +192,26 @@ public class AccordionPanel extends AccordionPanelBase {
             }
         }
     }
+
+    @Override
+    public void restoreMultiViewState() {
+        AccordionState as = getMultiViewState(false);
+        if (as != null) {
+            setActiveIndex(as.getActiveIndex());
+        }
+    }
+
+    @Override
+    public AccordionState getMultiViewState(boolean create) {
+        FacesContext fc = getFacesContext();
+        String viewId = fc.getViewRoot().getViewId();
+
+        return PrimeFaces.current().multiViewState()
+                .get(viewId, getClientId(fc), create, AccordionState::new);
+    }
+
+    @Override
+    public void resetMultiViewState() {
+        setActiveIndex(null);
+    }
 }

@@ -748,6 +748,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
+            ignoreAutoUpdate: true,
             params: [
                 {name: this.id + '_contentLoad', value: true}
             ],
@@ -950,8 +951,13 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             PrimeFaces.csp.eval(msg.beforeShow);
         }
 
-        var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
-        this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + icon);
+        if (msg.icon) {
+            this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + msg.icon);
+            this.icon.show();
+        }
+        else {
+            this.icon.hide();
+        }
 
         if(msg.header)
             this.title.text(msg.header);

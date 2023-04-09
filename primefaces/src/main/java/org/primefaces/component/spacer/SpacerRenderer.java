@@ -30,7 +30,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.Constants;
 
 public class SpacerRenderer extends CoreRenderer {
 
@@ -39,12 +38,12 @@ public class SpacerRenderer extends CoreRenderer {
         Spacer spacer = (Spacer) component;
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("img", spacer);
+        // <svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>
+        writer.startElement("svg", spacer);
+        writer.writeAttribute("xmlns", "http://www.w3.org/2000/svg", null);
         writer.writeAttribute("id", spacer.getClientId(context), "id");
         writer.writeAttribute("width", spacer.getWidth(), "width");
         writer.writeAttribute("height", spacer.getHeight(), "height");
-        writer.writeAttribute("alt", Constants.EMPTY_STRING, null);
-        writer.writeAttribute("src", "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==", null);
 
         if (spacer.getStyle() != null) {
             writer.writeAttribute("style", spacer.getStyle(), "style");
@@ -56,6 +55,6 @@ public class SpacerRenderer extends CoreRenderer {
             writer.writeAttribute("title", spacer.getTitle(), "title");
         }
 
-        writer.endElement("img");
+        writer.endElement("svg");
     }
 }

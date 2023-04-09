@@ -414,25 +414,25 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
                 default:
                     // #3304 find first item matching the character typed
-                    var keyChar = key.toLowerCase();
-                    list.children('.ui-picklist-item').each(function() {
-                        var item = $(this),
-                            itemLabel = item.attr('data-item-label');
-                        if (itemLabel.toLowerCase().indexOf(keyChar) === 0) {
-                            $this.removeOutline();
-                            $this.unselectAll();
-                            $this.selectItem(item);
-                            $this.focusedItem = item;
-                            PrimeFaces.scrollInView(list, $this.focusedItem);
-                            $this.updateAriaRegion();
-                            e.preventDefault();
-                            return false;
-                        }
-                    });
-                break;
+                    if (PrimeFaces.utils.isPrintableKey(e)) {
+                        var keyChar = key.toLowerCase();
+                        list.children('.ui-picklist-item').each(function() {
+                            var item = $(this),
+                                itemLabel = item.attr('data-item-label');
+                            if (itemLabel && itemLabel.toLowerCase().indexOf(keyChar) === 0) {
+                                $this.removeOutline();
+                                $this.unselectAll();
+                                $this.selectItem(item);
+                                $this.focusedItem = item;
+                                PrimeFaces.scrollInView(list, $this.focusedItem);
+                                $this.updateAriaRegion();
+                                e.preventDefault();
+                                return false;
+                            }
+                        });
+                    }
             };
         });
-
     },
 
     /**
