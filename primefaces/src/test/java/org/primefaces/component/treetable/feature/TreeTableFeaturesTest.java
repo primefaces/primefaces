@@ -25,22 +25,24 @@ package org.primefaces.component.treetable.feature;
 
 import javax.faces.context.FacesContext;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.primefaces.component.treetable.TreeTable;
 
-public class ResizableColumnsFeature implements TreeTableFeature {
+public class TreeTableFeaturesTest {
 
-    @Override
-    public void decode(FacesContext context, TreeTable table) {
-        table.decodeColumnResizeState(context);
-    }
+    @Test
+    public void testReplace() {
+        FilterFeature mockFeature = new FilterFeature() {
+            @Override
+            public boolean shouldDecode(FacesContext context, TreeTable table) {
+                return false;
+            }
+        };
 
-    @Override
-    public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_resizableColumnState");
-    }
-
-    @Override
-    public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return false;
+        FilterFeature oldFilter = TreeTableFeatures.replace(FilterFeature.class, mockFeature);
+        Assertions.assertNotEquals(oldFilter, TreeTableFeatures.get(FilterFeature.class));
+        Assertions.assertEquals(mockFeature, TreeTableFeatures.get(FilterFeature.class));
+        Assertions.assertEquals(mockFeature, TreeTableFeatures.filterFeature());
     }
 }

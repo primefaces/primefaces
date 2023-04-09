@@ -24,23 +24,33 @@
 package org.primefaces.component.treetable.feature;
 
 import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Map;
 
 import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.TreeTableRenderer;
+import org.primefaces.model.TreeNode;
 
-public class ResizableColumnsFeature implements TreeTableFeature {
+public class CollapseFeature implements TreeTableFeature {
 
     @Override
-    public void decode(FacesContext context, TreeTable table) {
-        table.decodeColumnResizeState(context);
+    public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable tt) throws IOException {
+        TreeNode root = tt.getValue();
+        String clientId = tt.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String nodeKey = params.get(clientId + "_collapse");
+        tt.setRowKey(root, nodeKey);
+        TreeNode node = tt.getRowNode();
+        node.setExpanded(false);
     }
 
     @Override
     public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_resizableColumnState");
+        return false;
     }
 
     @Override
     public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return false;
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_collapse");
     }
 }

@@ -24,23 +24,29 @@
 package org.primefaces.component.treetable.feature;
 
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.TreeTableRenderer;
+import org.primefaces.model.TreeNode;
 
-public class ResizableColumnsFeature implements TreeTableFeature {
+public class PageFeature implements TreeTableFeature {
 
     @Override
-    public void decode(FacesContext context, TreeTable table) {
-        table.decodeColumnResizeState(context);
+    public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable tt) throws IOException {
+        TreeNode root = tt.getValue();
+        tt.updatePaginationData(context);
+        renderer.encodeNodeChildren(context, tt, root, root, tt.getFirst(), tt.getRows());
     }
 
     @Override
     public boolean shouldDecode(FacesContext context, TreeTable table) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_resizableColumnState");
+        return false;
     }
 
     @Override
     public boolean shouldEncode(FacesContext context, TreeTable table) {
-        return false;
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_pagination");
     }
+
 }

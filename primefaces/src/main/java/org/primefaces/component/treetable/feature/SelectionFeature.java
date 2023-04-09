@@ -23,14 +23,12 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
@@ -43,15 +41,6 @@ import org.primefaces.util.SharedStringBuilder;
 public class SelectionFeature implements TreeTableFeature {
 
     private static final String SB_DECODE_SELECTION = TreeTableRenderer.class.getName() + "#decodeSelection";
-
-    private static final SelectionFeature INSTANCE = new SelectionFeature();
-
-    private SelectionFeature() {
-    }
-
-    public static SelectionFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, TreeTable table) {
@@ -100,7 +89,7 @@ public class SelectionFeature implements TreeTableFeature {
             table.setRowKey(root, null); //cleanup
         }
 
-        if (table.isCheckboxSelectionMode() && table.isSelectionRequest(context)) {
+        if (table.isCheckboxSelectionMode() && isSelectionRequest(context, clientId)) {
             String selectedNodeRowKey = params.get(clientId + "_instantSelection");
             table.setRowKey(root, selectedNodeRowKey);
             TreeNode selectedNode = table.getRowNode();
@@ -122,11 +111,6 @@ public class SelectionFeature implements TreeTableFeature {
     }
 
     @Override
-    public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
-        throw new FacesException("SelectFeature should not encode.");
-    }
-
-    @Override
     public boolean shouldDecode(FacesContext context, TreeTable table) {
         return table.isSelectionEnabled();
     }
@@ -136,4 +120,7 @@ public class SelectionFeature implements TreeTableFeature {
         return false;
     }
 
+    private boolean isSelectionRequest(FacesContext context, String clientId) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_instantSelection");
+    }
 }
