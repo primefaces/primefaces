@@ -24,6 +24,8 @@
 package org.primefaces.component.datatable;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ELContext;
@@ -141,6 +143,8 @@ public class DataTable extends DataTableBase {
     public static final String GRIDLINES_CLASS = "ui-datatable-gridlines";
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
+
+    private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
@@ -1188,12 +1192,12 @@ public class DataTable extends DataTableBase {
     }
 
     public void unselectRow(String rowKey) {
-        if (getSelectedRowKeys().contains(rowKey)) {
-            getSelectedRowKeys().remove(rowKey);
+        if (!getSelectedRowKeys().remove(rowKey)) {
+            LOGGER.log(Level.INFO, "No existing row with key {0}", rowKey);
         }
         if (isMultiViewState()) {
             DataTableState mvs = getMultiViewState(false);
-            if (mvs != null && mvs.getSelectedRowKeys() != null && mvs.getSelectedRowKeys().contains(rowKey)) {
+            if (mvs != null && mvs.getSelectedRowKeys() != null) {
                 mvs.getSelectedRowKeys().remove(rowKey);
             }
         }
@@ -1211,12 +1215,12 @@ public class DataTable extends DataTableBase {
     }
 
     public void collapseRow(String rowKey) {
-        if (getExpandedRowKeys().contains(rowKey)) {
-            getExpandedRowKeys().remove(rowKey);
+        if (!getExpandedRowKeys().remove(rowKey)) {
+            LOGGER.log(Level.INFO, "No existing row with key {0}", rowKey);
         }
         if (isMultiViewState()) {
             DataTableState mvs = getMultiViewState(false);
-            if (mvs != null && mvs.getExpandedRowKeys() != null && mvs.getExpandedRowKeys().contains(rowKey)) {
+            if (mvs != null && mvs.getExpandedRowKeys() != null) {
                 mvs.getExpandedRowKeys().remove(rowKey);
             }
         }
