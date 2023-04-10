@@ -135,6 +135,8 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_header", null);
 
         renderDynamicPassThruAttributes(context, panel);
 
@@ -176,6 +178,10 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
         writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
+        if (panel.isToggleable()) {
+            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!panel.isCollapsed()), null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_content", null);
+        }
 
         //Title
         writer.startElement("span", null);
