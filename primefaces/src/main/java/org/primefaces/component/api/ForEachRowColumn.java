@@ -132,7 +132,7 @@ public class ForEachRowColumn {
             boolean columnContainer = isColumnContainer(target);
             int offset = columnContainer ? columnStart : 0;
             int end = columnContainer ? Math.min(columnEnd, target.getChildCount()) : target.getChildCount();
-            int idx = 0; // relative position of target to his parent
+            int idx = 0; // relative position of child to his parent
 
             for (int i = offset; idx < end; i++) {
                 UIComponent child = target.getChildren().get(i);
