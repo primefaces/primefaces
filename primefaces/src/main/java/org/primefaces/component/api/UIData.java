@@ -69,11 +69,13 @@ public class UIData extends javax.faces.component.UIData {
     private Object oldVar;
 
     public enum PropertyKeys {
+        @Deprecated
+        columnGroupLegacyEnabled,
         rowIndex,
         rowIndexVar,
         saved,
         lazy,
-        rowStatePreserved
+        rowStatePreserved,
     }
 
     public boolean isLazy() {
@@ -755,7 +757,50 @@ public class UIData extends javax.faces.component.UIData {
                     }
                 }
                 else if (child instanceof ColumnGroup) {
-                    visitColumnsAndColumnFacets(context, child, callback, visitRows, rejectedChildren);
+                    if (isColumnGroupLegacyEnabled()) {
+                        visitColumnGroup(context, callback, (ColumnGroup) child);
+                    }
+                    else {
+                        visitColumnsAndColumnFacets(context, child, callback, false, rejectedChildren);
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Deprecated
+    protected boolean visitColumnGroup(VisitContext context, VisitCallback callback, ColumnGroup group) {
+        if (group.getChildCount() > 0) {
+            for (int i = 0; i < group.getChildCount(); i++) {
+                UIComponent row = group.getChildren().get(i);
+                if (row.getChildCount() > 0) {
+                    for (int j = 0; j < row.getChildCount(); j++) {
+                        UIComponent col = row.getChildren().get(j);
+                        if (col instanceof Column) {
+                            boolean value = visitColumnFacets(context, callback, col);
+                            if (value) {
+                                return true;
+                            }
+                        }
+                        else if (col instanceof Columns) {
+                            if (col.getFacetCount() > 0) {
+                                Columns columns = (Columns) col;
+                                for (int k = 0; k < columns.getRowCount(); k++) {
+                                    columns.setRowIndex(k);
+
+                                    boolean value = visitColumnFacets(context, callback, columns);
+                                    if (value) {
+                                        columns.setRowIndex(-1);
+                                        return true;
+                                    }
+                                }
+
+                                columns.setRowIndex(-1);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1198,5 +1243,13 @@ public class UIData extends javax.faces.component.UIData {
         preEncode(context);
 
         super.encodeBegin(context);
+    }
+
+    public boolean isColumnGroupLegacyEnabled() {
+        return (boolean) getStateHelper().eval(PropertyKeys.columnGroupLegacyEnabled, true);
+    }
+
+    public void setColumnGroupLegacyEnabled(boolean columnGroupLegacyEnabled) {
+        getStateHelper().put(PropertyKeys.columnGroupLegacyEnabled, columnGroupLegacyEnabled);
     }
 }

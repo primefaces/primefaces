@@ -47,15 +47,24 @@ import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
+    /**
+     * Use {@link ForEachRowColumn#invoke(RowColumnVisitor)} instead
+     */
+    @Deprecated
     default void forEachColumn(Predicate<UIColumn> callback) {
         forEachColumn(true, true, false, callback);
     }
 
+    /**
+     * Use {@link ForEachRowColumn#invoke(RowColumnVisitor)} instead
+     */
     default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, boolean skipColumnGroups, Predicate<UIColumn> callback) {
         forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, skipColumnGroups, callback);
     }
 
     /**
+     * Use {@link ForEachRowColumn#invoke(RowColumnVisitor)} instead
+     *
      * NOTE: this is for internal usage only!
      *
      * @param context the {@link FacesContext}
@@ -67,6 +76,7 @@ public interface ColumnAware {
      * @param callback The callback, which will be invoked for each column. If it returns false, the algorithm will be cancelled
      * @return false when the algorithm was cancelled
      */
+    @Deprecated
     default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, boolean skipUnrendered, boolean skipColumnGroups,
             Predicate<UIColumn> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
@@ -161,6 +171,7 @@ public interface ColumnAware {
      * @param callback The callback, which will be invoked for each row. If it returns false, the algorithm will be cancelled
      * @return false when the algorithm was cancelled
      */
+    @Deprecated
     default boolean forEachColumnGroupRow(FacesContext context, ColumnGroup cg, boolean skipUnrendered, Predicate<Row> callback) {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
