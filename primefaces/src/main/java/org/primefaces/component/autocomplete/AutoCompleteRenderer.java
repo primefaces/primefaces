@@ -208,6 +208,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("autocomplete", autocompleteProp, null);
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
 
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
