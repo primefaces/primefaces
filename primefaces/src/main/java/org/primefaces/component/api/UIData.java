@@ -571,8 +571,7 @@ public class UIData extends javax.faces.component.UIData {
     protected boolean isDefaultAndEmpty(EditableValueHolder input) {
         return input.getLocalValue() == null
                 && input.isValid()
-                && input.getSubmittedValue() == null
-                && !input.isLocalValueSet();
+                && input.getSubmittedValue() == null;
     }
 
     protected void restoreDescendantState() {
