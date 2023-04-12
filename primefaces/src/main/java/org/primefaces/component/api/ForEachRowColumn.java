@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Predicate;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitResult;
 
@@ -106,7 +107,10 @@ public class ForEachRowColumn {
             }
         }
         catch (Exception e) {
-            LangUtils.rethrow(e);
+            throw new FacesException(e);
+        }
+        finally {
+            this.callback = null;
         }
     }
 
@@ -152,7 +156,7 @@ public class ForEachRowColumn {
 
     private VisitResult handleRow(int index, Row target) throws IOException {
         if (shouldIgnoreUnRendered(target)) {
-            visitRow(index, target);
+            callback.visitRow(index, target);
             visitChildren(target);
             return completeIfRoot(target);
         }
@@ -162,7 +166,7 @@ public class ForEachRowColumn {
 
     private VisitResult handleColumnGroup(int index, ColumnGroup target) throws IOException {
         if (shouldIgnoreUnRendered(target)) {
-            visitColumnGroup(index, target);
+            callback.visitColumnGroup(index, target);
             visitChildren(target);
             return completeIfRoot(target);
         }
@@ -190,7 +194,7 @@ public class ForEachRowColumn {
 
     private void applyPredicateAndVisitIfPossible(int index, UIColumn column) throws IOException {
         boolean eligible = true;
-        if (hints.contains(ColumnHint.RENDERED) || hints.contains(ColumnHint.EXPORTABLE) ) {
+        if (!hints.isEmpty()) {
             if (column instanceof DynamicColumn) {
                 ((DynamicColumn) column).applyStatelessModel();
             }
@@ -198,7 +202,7 @@ public class ForEachRowColumn {
         }
 
         if (eligible) {
-            visitColumn(index, column);
+            callback.visitColumn(index, column);
         }
     }
 
@@ -208,17 +212,5 @@ public class ForEachRowColumn {
 
     private static boolean isColumnContainer(UIComponent component) {
         return component instanceof ColumnAware || component instanceof Row || component instanceof ColumnGroup;
-    }
-
-    protected void visitColumn(int index, UIColumn column) throws IOException {
-        callback.visitColumn(index, column);
-    }
-
-    protected void visitRow(int index, Row row) throws IOException {
-        callback.visitRow(index, row);
-    }
-
-    protected void visitColumnGroup(int index, ColumnGroup colGroup) throws IOException {
-        callback.visitColumnGroup(index, colGroup);
     }
 }
