@@ -414,6 +414,9 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", listClass, null);
+        writer.writeAttribute("tabindex", -1, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
+        writer.writeAttribute(HTML.ARIA_ORIENTATION, HTML.ARIA_ORIENTATION_HORIZONTAL, null);
 
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, ac);
@@ -444,6 +447,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
                 writer.writeAttribute("class", itemStyleClass, null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_OPTION, null);
+                writer.writeAttribute(HTML.ARIA_LABEL, itemLabel, null);
 
                 String labelClass = disabled ? AutoComplete.TOKEN_LABEL_DISABLED_CLASS : AutoComplete.TOKEN_LABEL_CLASS;
                 writer.startElement("span", null);
@@ -454,6 +459,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 if (!disabled) {
                     writer.startElement("span", null);
                     writer.writeAttribute("class", AutoComplete.TOKEN_ICON_CLASS, null);
+                    writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
                     writer.endElement("span");
                 }
 
@@ -472,6 +478,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("autocomplete", autocompleteProp, null);
 
         renderAccessibilityAttributes(context, ac);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
 

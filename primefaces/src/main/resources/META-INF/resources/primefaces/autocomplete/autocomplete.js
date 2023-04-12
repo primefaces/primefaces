@@ -1067,6 +1067,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 onExited: function() {
                     $this.panel.css('height', 'auto');
                     $this.input.attr('aria-expanded', false);
+                    $this.input.removeAttr('aria-activedescendant', false);
                 }
             });
         }
@@ -1182,8 +1183,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
                 var itemDisplayMarkup = '<li data-token-value="' + PrimeFaces.escapeHTML(itemValue);
                 itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
-                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '">';
-                itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close"></span>';
+                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" role="option" aria-label="' + PrimeFaces.escapeHTML(itemLabel) + '">';
+                itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" aria-hidden="true"></span>';
                 itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + PrimeFaces.escapeHTML(itemLabel) + '</span></li>';
 
                 $this.inputContainer.before(itemDisplayMarkup);
