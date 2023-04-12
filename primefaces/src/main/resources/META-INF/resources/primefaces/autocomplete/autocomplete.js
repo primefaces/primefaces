@@ -1183,7 +1183,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
                 var itemDisplayMarkup = '<li data-token-value="' + PrimeFaces.escapeHTML(itemValue);
                 itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
-                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" role="option" aria-label="' + PrimeFaces.escapeHTML(itemLabel) + '">';
+                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" '
+                itemDisplayMarkup += 'role="option" aria-label="' + PrimeFaces.escapeHTML(itemLabel) + '" ';
+                itemDisplayMarkup += 'aria-selected="true">';
                 itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" aria-hidden="true"></span>';
                 itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + PrimeFaces.escapeHTML(itemLabel) + '</span></li>';
 

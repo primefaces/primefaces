@@ -449,6 +449,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.writeAttribute("class", itemStyleClass, null);
                 writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_OPTION, null);
                 writer.writeAttribute(HTML.ARIA_LABEL, itemLabel, null);
+                writer.writeAttribute(HTML.ARIA_SELECTED, "true", null);
 
                 String labelClass = disabled ? AutoComplete.TOKEN_LABEL_DISABLED_CLASS : AutoComplete.TOKEN_LABEL_CLASS;
                 writer.startElement("span", null);
