@@ -550,7 +550,6 @@ public class UIData extends javax.faces.component.UIData {
 
         if (saved == null) {
             state = new SavedState();
-            getStateHelper().put(PropertyKeys.saved, componentClientId, state);
         }
 
         if (state == null) {
@@ -558,7 +557,6 @@ public class UIData extends javax.faces.component.UIData {
 
             if (state == null) {
                 state = new SavedState();
-                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
             }
         }
 
@@ -566,6 +564,7 @@ public class UIData extends javax.faces.component.UIData {
         state.setValid(input.isValid());
         state.setSubmittedValue(input.getSubmittedValue());
         state.setLocalValueSet(input.isLocalValueSet());
+        getStateHelper().put(PropertyKeys.saved, componentClientId, state);
     }
 
     protected boolean isDefaultAndEmpty(EditableValueHolder input) {
