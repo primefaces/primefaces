@@ -591,21 +591,12 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void restoreDescendantState(UIComponent component, FacesContext context) {
-        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-        if (saved == null) {
-            return;
-        }
         String id = component.getId();
         component.setId(id); //reset the client id
 
         if (component instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) component;
-            String componentClientId = component.getClientId(context);
-
-            SavedState state = saved.get(componentClientId);
-            if (state == null) {
-                state = new SavedState();
-            }
+            SavedState state = getSavedState(component, context);
 
             input.setValue(state.getValue());
             input.setValid(state.isValid());
@@ -614,11 +605,7 @@ public class UIData extends javax.faces.component.UIData {
         }
         else if (component instanceof UIForm) {
             UIForm form = (UIForm) component;
-            String componentClientId = component.getClientId(context);
-            SavedState state = saved.get(componentClientId);
-            if (state == null) {
-                state = new SavedState();
-            }
+            SavedState state = getSavedState(component, context);
 
             form.setSubmitted(state.getSubmitted());
             state.setSubmitted(form.isSubmitted());
@@ -638,7 +625,18 @@ public class UIData extends javax.faces.component.UIData {
                 restoreDescendantState(facet, context);
             }
         }
+    }
 
+    protected SavedState getSavedState(UIComponent component, FacesContext context) {
+        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
+        if (saved == null) {
+            return new SavedState();
+        }
+        String componentClientId = component.getClientId(context);
+        SavedState state = saved.get(componentClientId);
+        return state == null
+                ? new SavedState()
+                : state;
     }
 
     @Override
