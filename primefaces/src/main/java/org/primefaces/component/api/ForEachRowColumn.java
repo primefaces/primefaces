@@ -36,9 +36,8 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
 
-// Initial plan was to use VisitCallback API but not optimal for partial visit as it requires to know
+// Initial plan was to use VisitCallback API but not optimal for progressive visit. Partial visit requires to know
 // in advance what are the component to be visited
 public class ForEachRowColumn {
 

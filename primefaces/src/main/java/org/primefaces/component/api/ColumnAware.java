@@ -58,6 +58,7 @@ public interface ColumnAware {
     /**
      * Use {@link ForEachRowColumn#invoke(RowColumnVisitor)} instead
      */
+    @Deprecated
     default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, boolean skipColumnGroups, Predicate<UIColumn> callback) {
         forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, skipColumnGroups, callback);
     }
