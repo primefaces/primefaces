@@ -548,19 +548,9 @@ public class UIData extends javax.faces.component.UIData {
             return;
         }
 
-        SavedState state = null;
-
-        if (saved == null) {
-            state = new SavedState();
-        }
-
-        if (state == null) {
-            state = saved.get(componentClientId);
-
-            if (state == null) {
-                state = new SavedState();
-            }
-        }
+        SavedState state = saved != null
+                ? saved.computeIfAbsent(componentClientId, key -> new SavedState())
+                : new SavedState();
 
         state.setValue(input.getLocalValue());
         state.setValid(input.isValid());
