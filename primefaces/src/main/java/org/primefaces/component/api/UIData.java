@@ -64,7 +64,6 @@ public class UIData extends javax.faces.component.UIData {
 
     private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
     private static final String SB_ID = UIData.class.getName() + "#id";
-    private static final SavedState EMPTY_SAVED_STATE = new SavedState();
 
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
@@ -632,11 +631,11 @@ public class UIData extends javax.faces.component.UIData {
     protected SavedState getSavedState(UIComponent component, FacesContext context) {
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
         if (saved == null) {
-            return EMPTY_SAVED_STATE;
+            return SavedState.NULL_STATE;
         }
         String componentClientId = component.getClientId(context);
         SavedState state = saved.get(componentClientId);
-        return state == null ? EMPTY_SAVED_STATE : state;
+        return state == null ? SavedState.NULL_STATE : state;
     }
 
     @Override
