@@ -540,13 +540,15 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void saveInputState(EditableValueHolder input, FacesContext context) {
+        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
         String componentClientId = ((UIComponent) input).getClientId(context);
         if (isDefaultAndEmpty(input)) {
-            getStateHelper().remove(PropertyKeys.saved, componentClientId);
+            if (saved != null) {
+                saved.remove(componentClientId);
+            }
             return;
         }
 
-        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
         SavedState state = null;
 
         if (saved == null) {
