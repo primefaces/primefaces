@@ -27,6 +27,8 @@ import javax.faces.component.EditableValueHolder;
 
 public class ImmutableSavedState extends SavedState {
 
+    public static final SavedState NULL_STATE = new ImmutableSavedState();
+
     public ImmutableSavedState() {
         super();
     }
