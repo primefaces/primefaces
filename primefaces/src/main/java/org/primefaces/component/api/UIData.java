@@ -634,8 +634,7 @@ public class UIData extends javax.faces.component.UIData {
             return SavedState.NULL_STATE;
         }
         String componentClientId = component.getClientId(context);
-        SavedState state = saved.get(componentClientId);
-        return state == null ? SavedState.NULL_STATE : state;
+        return saved.getOrDefault(componentClientId, SavedState.NULL_STATE);
     }
 
     @Override
