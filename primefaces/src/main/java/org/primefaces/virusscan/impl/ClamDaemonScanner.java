@@ -74,12 +74,12 @@ public class ClamDaemonScanner implements VirusScanner {
             final byte[] reply = client.scan(inputStream);
             final String message = new String(reply, StandardCharsets.US_ASCII).trim();
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.log(Level.INFO, "Scanner replied with message:" + message);
+                LOGGER.log(Level.INFO, "Scanner replied with message: {0}", message);
             }
             if (!ClamDaemonClient.isCleanReply(reply)) {
                 String error = createErrorMessage(file, message);
                 if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, "ClamAV Error:" + error);
+                    LOGGER.log(Level.WARNING, "ClamAV Error: {0}", error);
                 }
                 throw new VirusException(error);
             }
