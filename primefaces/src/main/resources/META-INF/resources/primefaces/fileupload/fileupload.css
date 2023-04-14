@@ -94,10 +94,6 @@
     border: none;
 }
 
-.ui-state-disabled input {
-    cursor: default;
-}
-
 /** Simple **/
 .ui-fileupload-simple {
     position: relative;
