@@ -94,11 +94,6 @@
     border: none;
 }
 
-.ui-state-disabled .ui-state-disabled {
-    opacity: 1;
-    filter: alpha(opacity=100);
-}
-
 .ui-state-disabled input {
     cursor: default;
 }
