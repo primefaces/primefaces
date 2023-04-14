@@ -4697,6 +4697,38 @@
         </component>
         <attribute>
             <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Datetime format.]]>
             </description>
             <name>pattern</name>
@@ -4750,14 +4782,6 @@
             <name>value</name>
             <required>false</required>
             <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
     </tag>
     <tag>
