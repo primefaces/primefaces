@@ -299,7 +299,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         else {
             Object imageObject = cropper.getImage();
             if (imageObject instanceof String) {
-                imagePath = imageObject.toString();
+                imagePath = (String) imageObject;
 
                 boolean isExternal = imagePath.startsWith("http");
 
