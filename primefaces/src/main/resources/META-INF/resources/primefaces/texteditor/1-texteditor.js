@@ -151,6 +151,15 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
+        // QuillJS doesn't handle blurring when focus is lost to e.g. a button, handle blur event separately here as a workaround
+        // See https://github.com/quilljs/quill/issues/1397
+        this.editor.root.addEventListener('blur', function(e) {
+            if (e.relatedTarget === $this.editor.clipboard.container) {
+                return; // Ignore pasting
+            }
+
+            $this.editor.blur(); // Triggers selection-change event above
+        });
     },
 
     /**
