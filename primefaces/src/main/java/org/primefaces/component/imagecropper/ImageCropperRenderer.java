@@ -32,12 +32,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.el.ValueExpression;
-import javax.faces.application.Application;
 import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -53,11 +49,6 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
 
 public class ImageCropperRenderer extends CoreRenderer {
-
-    /**
-     * Used to extract resource name (e.g "#{resource['picture.png'}")
-     */
-    private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -223,40 +214,6 @@ public class ImageCropperRenderer extends CoreRenderer {
     }
 
     /**
-     * Attempt to obtain the resource from the server by parsing the valueExpression of the image attribute. Returns null
-     * if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}. Otherwise
-     * returns the value obtained by ResourceHandler.createResource().
-     */
-    private Resource getImageResource(FacesContext facesContext, ImageCropper imageCropper) {
-        Resource resource = null;
-        ValueExpression imageVE = imageCropper.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
-
-        if (imageVE != null) {
-            String imageExprStr = imageVE.getExpressionString();
-
-            Matcher matcher = RESOURCE_PATTERN.matcher(imageExprStr);
-            if (matcher.find()) {
-                String[] resourceInfo = matcher.group(1).split(":");
-
-                Application application = facesContext.getApplication();
-                ResourceHandler resourceHandler = application.getResourceHandler();
-
-                if (resourceInfo.length == 2) {
-                    String resourceLibrary = resourceInfo[0];
-                    String resourceName = resourceInfo[1];
-                    resource = resourceHandler.createResource(resourceName, resourceLibrary);
-                }
-                else {
-                    String resourceName = resourceInfo[0];
-                    resource = resourceHandler.createResource(resourceName);
-                }
-            }
-        }
-
-        return !ResourceUtils.isResourceNotFound(resource) ? resource : null;
-    }
-
-    /**
      * Attempt to obtain the image format used to write the image from the contentType or the image's file extension.
      */
     private String guessImageFormat(String contentType, String imagePath) {
@@ -291,7 +248,10 @@ public class ImageCropperRenderer extends CoreRenderer {
         InputStream inputStream = null;
         String contentType = null;
         String imagePath = null;
-        Resource resource = getImageResource(context, cropper);
+
+        ValueExpression imageVE = cropper.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
+
+        Resource resource = ResourceUtils.evaluateResourceExpression(context, imageVE);
         if (resource != null) {
             inputStream = resource.getInputStream();
             contentType = resource.getContentType();
