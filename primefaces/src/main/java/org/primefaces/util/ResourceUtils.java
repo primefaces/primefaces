@@ -323,9 +323,9 @@ public class ResourceUtils {
         Resource resource = null;
 
         if (valueExpression != null) {
-            String imageExprStr = valueExpression.getExpressionString();
+            String expressionString = valueExpression.getExpressionString();
 
-            Matcher matcher = RESOURCE_PATTERN.matcher(imageExprStr);
+            Matcher matcher = RESOURCE_PATTERN.matcher(expressionString);
             if (matcher.find()) {
                 String[] resourceInfo = matcher.group(1).split(":");
 

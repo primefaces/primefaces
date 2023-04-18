@@ -249,8 +249,8 @@ public class ImageCropperRenderer extends CoreRenderer {
         String contentType = null;
         String imagePath = null;
 
+        // try to evaluate as Resource object, otherwise we would need to handle the Resource#resourcePath which would be more awkward
         ValueExpression imageVE = cropper.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
-
         Resource resource = ResourceUtils.evaluateResourceExpression(context, imageVE);
         if (resource != null) {
             inputStream = resource.getInputStream();
