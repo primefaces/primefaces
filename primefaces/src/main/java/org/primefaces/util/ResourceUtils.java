@@ -315,7 +315,7 @@ public class ResourceUtils {
      *
      * @param facesContext The {@link FacesContext}
      * @param valueExpression The {@link ValueExpression}
-     * 
+     *
      * @return Null if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}.
      * Otherwise the value obtained by {@link ResourceHandler#createResource(java.lang.String)}.
      */
