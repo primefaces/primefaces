@@ -26,7 +26,6 @@ package org.primefaces.util;
 import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -44,6 +43,7 @@ public class ResourceUtils {
 
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
+    public static final String RES_NOT_FOUND = "RES_NOT_FOUND";
 
     private ResourceUtils() {
     }
@@ -295,6 +295,11 @@ public class ResourceUtils {
             }
         }
         return monitorKeyCookieName;
+    }
+
+
+    public static boolean isResourceNotFound(Resource resource) {
+        return resource != null && RES_NOT_FOUND.equals(resource.toString());
     }
 
     public static class ResourceInfo implements Serializable {
