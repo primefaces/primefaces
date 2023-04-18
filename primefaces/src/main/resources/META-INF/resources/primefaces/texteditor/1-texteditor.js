@@ -19,7 +19,6 @@
  * @extends {PrimeFaces.widget.TextEditor.QuillOptionsStatic} cfg
  * 
  * @prop {boolean} cfg.disabled Whether this text editor is initially disabled.
- * @prop {number} cfg.height The height of the editor.
  * @prop {boolean} cfg.toolbarVisible Whether the editor toolbar should be displayed.
  */
 PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
@@ -112,9 +111,6 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //configuration
-        if(this.cfg.height) {
-            this.editorContainer.height(this.cfg.height);
-        }
 
         this.cfg.theme = 'snow';
         this.cfg.modules = {

@@ -28431,11 +28431,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Height of the editor. Default is min integer value.]]>
+                <![CDATA[Height of the editor.]]>
             </description>
             <name>height</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>

@@ -82,13 +82,17 @@ public class TextEditorRenderer extends InputRenderer {
         String editorId = clientId + "_editor";
         UIComponent toolbar = editor.getFacet("toolbar");
 
-        String style = editor.getStyle();
+        String style = getStyleBuilder(context)
+                .add(editor.getStyle())
+                .add("height", editor.getHeight())
+                .build();
+
         String styleClass = createStyleClass(editor, TextEditor.EDITOR_CLASS);
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
@@ -121,8 +125,7 @@ public class TextEditorRenderer extends InputRenderer {
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("disabled", editor.isDisabled(), false)
-                .attr("placeholder", editor.getPlaceholder(), null)
-                .attr("height", editor.getHeight(), Integer.MIN_VALUE);
+                .attr("placeholder", editor.getPlaceholder(), null);
 
         List formats = editor.getFormats();
         if (formats != null) {
