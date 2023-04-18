@@ -1206,6 +1206,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
              this.label.text(labelText);
              this.labelContainer.attr('title', labelText);
         }
+        this.registerTrigger();
     },
 
     /**
