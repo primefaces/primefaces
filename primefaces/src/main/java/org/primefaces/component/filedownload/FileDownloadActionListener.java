@@ -104,8 +104,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         ResourceUtils.addNoCacheControl(externalContext);
 
         if (content.getContentLength() != null) {
-            // GitHub #9485 Faces 4 will switch from int to long contentLength
-            // externalContext.setResponseContentLength(content.getContentLength());
+            // we can't use externalContext.setResponseContentLength as our contentLength is a long
             externalContext.setResponseHeader("Content-Length", String.valueOf(content.getContentLength()));
         }
 
