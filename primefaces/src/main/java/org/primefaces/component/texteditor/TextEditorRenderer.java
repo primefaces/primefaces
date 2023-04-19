@@ -84,7 +84,6 @@ public class TextEditorRenderer extends InputRenderer {
 
         String style = getStyleBuilder(context)
                 .add(editor.getStyle())
-                .add("height", editor.getHeight())
                 .build();
 
         String styleClass = createStyleClass(editor, TextEditor.EDITOR_CLASS);
@@ -107,8 +106,15 @@ public class TextEditorRenderer extends InputRenderer {
             writer.endElement("div");
         }
 
+        String innerStyle = getStyleBuilder(context)
+                .add("height", editor.getHeight())
+                .build();
+
         writer.startElement("div", editor);
         writer.writeAttribute("id", editorId, null);
+        if (LangUtils.isNotBlank(innerStyle)) {
+            writer.writeAttribute("style", innerStyle, null);
+        }
         if (valueToRender != null) {
             writer.write(valueToRender);
         }
