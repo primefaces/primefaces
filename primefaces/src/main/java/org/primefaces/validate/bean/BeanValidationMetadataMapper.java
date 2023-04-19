@@ -165,8 +165,6 @@ public class BeanValidationMetadataMapper {
         }
 
         try {
-            // TODO AppScoped instances? CDI?
-            // instantiate ClientValidationConstraint
             return (ClientValidationConstraint) clazz.getConstructor().newInstance();
         }
         catch (Exception e) {
