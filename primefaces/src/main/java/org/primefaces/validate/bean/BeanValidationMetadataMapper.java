@@ -108,20 +108,8 @@ public class BeanValidationMetadataMapper {
                     if (clientValidationConstraint == null) {
                         // custom constraint must use @ClientConstraint to map the ClientValidationConstraint
                         ClientConstraint clientConstraint = annotationType.getAnnotation(ClientConstraint.class);
-
                         if (clientConstraint != null) {
-                            Class<?> resolvedBy = clientConstraint.resolvedBy();
-
-                            if (resolvedBy != null) {
-                                try {
-                                    // TODO AppScoped instances? CDI?
-                                    // instantiate ClientValidationConstraint
-                                    clientValidationConstraint = (ClientValidationConstraint) resolvedBy.getConstructor().newInstance();
-                                }
-                                catch (Exception e) {
-                                    throw new FacesException("Could not instantiate ClientValidationConstraint!", e);
-                                }
-                            }
+                            clientValidationConstraint = getClientValidationConstraintInstance(clientConstraint.resolvedBy());
                         }
                     }
 
@@ -169,6 +157,21 @@ public class BeanValidationMetadataMapper {
         }
 
         return new BeanValidationMetadata(metadata, validatorIds);
+    }
+
+    protected static ClientValidationConstraint getClientValidationConstraintInstance(Class<? extends ClientValidationConstraint> clazz) {
+        if (clazz == null) {
+            return null;
+        }
+
+        try {
+            // TODO AppScoped instances? CDI?
+            // instantiate ClientValidationConstraint
+            return (ClientValidationConstraint) clazz.getConstructor().newInstance();
+        }
+        catch (Exception e) {
+            throw new FacesException("Could not instantiate ClientValidationConstraint!", e);
+        }
     }
 
     public static void registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint) {
