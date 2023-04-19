@@ -526,8 +526,6 @@ public class TreeTable extends TreeTableBase {
                 updateFilterByWithMVS(getFacesContext(), ts.getFilterBy());
             }
 
-            // TODO selection
-
             setColumnMeta(ts.getColumnMeta());
         }
     }
