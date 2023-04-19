@@ -165,7 +165,7 @@ public class BeanValidationMetadataMapper {
         }
 
         try {
-            return (ClientValidationConstraint) clazz.getConstructor().newInstance();
+            return clazz.getConstructor().newInstance();
         }
         catch (Exception e) {
             throw new FacesException("Could not instantiate ClientValidationConstraint!", e);
