@@ -307,9 +307,12 @@ input.clr-color:focus {
   margin: 0;
   padding: 0;
   border: 0;
+  border-radius: 50%;
+  outline-offset: -2px;
   background-color: transparent;
   text-indent: -9999px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .clr-marker,
