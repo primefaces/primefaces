@@ -8481,7 +8481,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+                <![CDATA[Defines sorting mode, valid values are "single" and "multiple" (default).]]>
             </description>
             <name>sortMode</name>
             <required>false</required>
@@ -30618,7 +30618,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+                <![CDATA[Defines sorting mode, valid values are "single" and "multiple" (default).]]>
             </description>
             <name>sortMode</name>
             <required>false</required>
