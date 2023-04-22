@@ -98,6 +98,8 @@ public void view() {
 ```
 
 !> If you use `contentWidth` you cannot use `contentWidth="auto"` because the dialog is displayed inside an IFrame. See: https://github.com/primefaces/primefaces/issues/2831
+!> If you use `contentWidth` you should not use `contentWidth="100%"` because the dialog is displayed inside an IFrame. See: https://github.com/primefaces/primefaces/issues/9831
+
 
 Here is the full list of configuration options:
 
@@ -109,7 +111,7 @@ Here is the full list of configuration options:
 | draggable | true | Boolean | When enabled, makes dialog draggable. |
 | width | auto | String | Width of the dialog. |
 | height | auto | String | Height of the dialog. |
-| contentWidth | 640 | String | Width of the dialog content. NOTE: 'auto' cannot be used because the dialog is displayed in an IFrame. |
+| contentWidth | 640 | String | Width of the dialog content. NOTE: `auto` cannot be used because the dialog is displayed in an IFrame. Also `100%` may cause issues it is recommended to give the content a width in pixels. |
 | contentHeight | auto | String | Height of the dialog content. |
 | closable | true | Boolean | Whether the dialog can be closed or not. |
 | includeViewParams | false | Boolean | When enabled, includes the view parameters. |
