@@ -175,7 +175,7 @@ public class DataView extends DataViewBase {
 
     public void reset() {
         setFirst(0);
-        //resetRows(); //TODO: do resetRows the "right" way
+        resetRows();
         setLayout(null);
     }
 
