@@ -194,12 +194,15 @@ public class DataExporter implements ActionListener, StateHolder {
         return classes.iterator().next();
     }
 
+    /**
+     * @deprecated use {@link DataExporters#get(Class, String)} instead
+     */
     @Deprecated
     protected Exporter getExporter(String exportAs, Object customExporterInstance, Class<? extends UIComponent> targetClass) {
         if (customExporterInstance != null) {
             Logger.getLogger(DataExporter.class.getName())
                     .warning("DataExporter#exporter will be removed in future release. "
-                            + "Use DataExporter#register() method instead");
+                            + "Use DataExporters#register() method instead");
             if (customExporterInstance instanceof Exporter) {
                 return (Exporter) customExporterInstance;
             }

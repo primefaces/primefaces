@@ -173,6 +173,12 @@
             <type>javax.el.MethodExpression</type>
         </attribute>
         <attribute>
+            <description>Row processor for the exported document.</description>
+            <name>onRowExport</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+        </attribute>
+        <attribute>
             <description>Character encoding to use.</description>
             <name>encoding</name>
             <required>false</required>

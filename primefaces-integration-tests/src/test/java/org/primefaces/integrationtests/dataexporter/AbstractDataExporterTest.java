@@ -85,8 +85,6 @@ public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
             default:
                 Reader reader1 = new BufferedReader(new FileReader(expected));
                 Reader reader2 = new BufferedReader(new FileReader(actual));
-                System.err.println("Expected: " + IOUtils.toString(reader1) + "END");
-                System.err.println("Actual: " + IOUtils.toString(reader2) + "END");
                 Assertions.assertTrue(IOUtils.contentEqualsIgnoreEOL(reader1, reader2), message);
                 break;
         }
