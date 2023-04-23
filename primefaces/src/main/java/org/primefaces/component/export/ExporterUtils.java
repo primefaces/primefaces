@@ -156,9 +156,10 @@ public final class ExporterUtils {
             return column.getChildren()
                     .stream()
                     .filter(UIComponent::isRendered)
-                    .limit(!joinComponents ? 1 : column.getChildren().size())
                     .map(c -> getComponentValue(context, c))
-                    .collect(Collectors.joining());
+                    .filter(LangUtils::isNotBlank)
+                    .limit(!joinComponents ? 1 : column.getChildren().size())
+                    .collect(Collectors.joining(Constants.SPACE));
         }
     }
 
