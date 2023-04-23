@@ -28,7 +28,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.EnumSet;
-import java.util.Objects;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
@@ -49,7 +48,6 @@ public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOpti
         super.postExport(context);
 
         if (document != null) {
-            document.append(options().getEndOfLineSymbols());
             document.flush();
         }
     }
@@ -93,7 +91,7 @@ public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOpti
         }
 
         document.append(options().getQuoteChar())
-                .append(escapeQuotes(Objects.toString(text, Constants.EMPTY_STRING)))
+                .append(escapeQuotes(text))
                 .append(options().getQuoteChar());
     }
 

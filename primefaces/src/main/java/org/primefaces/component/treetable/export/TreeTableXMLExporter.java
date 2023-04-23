@@ -97,7 +97,7 @@ public class TreeTableXMLExporter extends TreeTableExporter<PrintWriter, Exporte
 
     protected String getColumnTag(FacesContext context, UIColumn column) {
         String columnTag = ExporterUtils.getColumnFacetValue(context, column, ColumnType.HEADER);
-        return EscapeUtils.forXmlTag(columnTag);
+        return EscapeUtils.forXmlTag(columnTag.toLowerCase());
     }
 
     @Override

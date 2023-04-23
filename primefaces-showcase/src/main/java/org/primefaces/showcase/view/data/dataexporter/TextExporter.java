@@ -40,7 +40,7 @@ import org.primefaces.util.EscapeUtils;
 
 public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
 
-    protected TextExporter() {
+    public TextExporter() {
         super(null, Collections.emptySet(), false);
     }
 
@@ -70,23 +70,18 @@ public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions
     }
 
     @Override
-    protected void postRowExport(FacesContext context, DataTable table) {
-        (document).append("\t").append(table.getVar()).append("\n");
-
-        super.postRowExport(context, table);
-    }
-
-    @Override
     protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
         String columnTag = getColumnTag(context, col);
-        document.append("\t\t").append(columnTag)
+        document.append("\t\t")
+                .append(columnTag)
+                .append(": ")
                 .append(EscapeUtils.forXml(text))
-                .append("").append(columnTag).append("\n");
+                .append("\n");
     }
 
     protected String getColumnTag(FacesContext context, UIColumn column) {
         String columnTag = ExporterUtils.getColumnFacetValue(context, column, ColumnType.HEADER);
-        return EscapeUtils.forXmlTag(columnTag);
+        return EscapeUtils.forXmlTag(columnTag.toLowerCase());
     }
 
     @Override
@@ -97,10 +92,5 @@ public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions
     @Override
     public String getFileExtension() {
         return ".txt";
-    }
-
-    @Override
-    protected void exportColumnFacetValue(FacesContext context, DataTable table, String text, int index) {
-        // NOOP
     }
 }
