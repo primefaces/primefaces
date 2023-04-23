@@ -89,15 +89,10 @@ public class DataTableXMLExporter extends DataTableExporter<PrintWriter, Exporte
 
     @Override
     protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
-        String tag = getColumnTag(context, col);
+        String tag = ExporterUtils.getColumnExportTag(context, col);
         document.append("\t\t<").append(tag).append(">")
                 .append(EscapeUtils.forXml(text))
                 .append("</").append(tag).append(">\n");
-    }
-
-    protected String getColumnTag(FacesContext context, UIColumn column) {
-        String columnTag = ExporterUtils.getColumnFacetValue(context, column, ColumnType.HEADER);
-        return EscapeUtils.forXmlTag(columnTag.toLowerCase());
     }
 
     @Override

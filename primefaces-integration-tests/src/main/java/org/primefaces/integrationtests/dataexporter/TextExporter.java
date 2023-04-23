@@ -71,17 +71,12 @@ public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions
 
     @Override
     protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
-        String columnTag = getColumnTag(context, col);
+        String columnTag = ExporterUtils.getColumnExportTag(context, col);
         document.append("\t\t")
                 .append(columnTag)
                 .append(": ")
                 .append(EscapeUtils.forXml(text))
                 .append("\n");
-    }
-
-    protected String getColumnTag(FacesContext context, UIColumn column) {
-        String columnTag = ExporterUtils.getColumnFacetValue(context, column, ColumnType.HEADER);
-        return EscapeUtils.forXmlTag(columnTag.toLowerCase());
     }
 
     @Override

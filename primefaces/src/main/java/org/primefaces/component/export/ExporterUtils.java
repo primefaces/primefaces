@@ -42,6 +42,7 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.LangUtils;
 
 public final class ExporterUtils {
@@ -198,5 +199,15 @@ public final class ExporterUtils {
         }
 
         return textValue;
+    }
+
+    public static String getColumnExportTag(FacesContext context, UIColumn column) {
+        String columnTag = column.getExportTag();
+        if (LangUtils.isNotBlank(columnTag)) {
+            return columnTag;
+        }
+
+        columnTag = getColumnFacetValue(context, column, TableExporter.ColumnType.HEADER);
+        return EscapeUtils.forXmlTag(columnTag.toLowerCase()); // lowerCase really? camelCase at best
     }
 }
