@@ -26,6 +26,9 @@ package org.primefaces.integrationtests.dataexporter;
 import java.io.*;
 import java.net.URL;
 
+import com.google.common.base.Objects;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.parser.PdfTextExtractor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -34,10 +37,6 @@ import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Assertions;
 import org.primefaces.selenium.AbstractPrimePageTest;
-
-import com.google.common.base.Objects;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.parser.PdfTextExtractor;
 
 public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
 
@@ -86,6 +85,8 @@ public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
             default:
                 Reader reader1 = new BufferedReader(new FileReader(expected));
                 Reader reader2 = new BufferedReader(new FileReader(actual));
+                System.err.println("Expected: " + IOUtils.toString(reader1) + "END");
+                System.err.println("Actual: " + IOUtils.toString(reader2) + "END");
                 Assertions.assertTrue(IOUtils.contentEqualsIgnoreEOL(reader1, reader2), message);
                 break;
         }

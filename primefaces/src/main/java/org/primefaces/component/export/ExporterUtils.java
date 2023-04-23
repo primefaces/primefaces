@@ -198,16 +198,15 @@ public final class ExporterUtils {
             textValue = getComponentValue(context, facet);
         }
 
-        return textValue;
+        return Objects.toString(textValue, Constants.EMPTY_STRING);
     }
 
     public static String getColumnExportTag(FacesContext context, UIColumn column) {
+        // lowerCase really? camelCase at best
         String columnTag = column.getExportTag();
-        if (LangUtils.isNotBlank(columnTag)) {
-            return columnTag;
+        if (LangUtils.isBlank(columnTag)) {
+            columnTag = getColumnFacetValue(context, column, TableExporter.ColumnType.HEADER);
         }
-
-        columnTag = getColumnFacetValue(context, column, TableExporter.ColumnType.HEADER);
-        return EscapeUtils.forXmlTag(columnTag.toLowerCase()); // lowerCase really? camelCase at best
+        return EscapeUtils.forXmlTag(columnTag.toLowerCase());
     }
 }

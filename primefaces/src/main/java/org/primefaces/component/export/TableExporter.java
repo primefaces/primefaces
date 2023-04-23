@@ -44,7 +44,6 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.model.ColumnMeta;
-import org.primefaces.util.Constants;
 import org.primefaces.util.IOUtils;
 import org.primefaces.util.LangUtils;
 
@@ -177,7 +176,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
         addRow(context, table, (col, i) -> {
             String textValue = ExporterUtils.getColumnFacetValue(context, col, columnType);
-            exportColumnFacetValue(context, table, Objects.toString(textValue, Constants.EMPTY_STRING), i);
+            exportColumnFacetValue(context, table, textValue, i);
         });
     }
 
