@@ -478,7 +478,7 @@ public class TreeTableRenderer extends DataRenderer {
     public void encodeNode(FacesContext context, TreeTable tt, TreeNode root, TreeNode treeNode) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowKey = treeNode.getRowKey();
-        String parentRowKey = treeNode.getParent().getRowKey();
+        String parentRowKey = treeNode.getParent() != null ? treeNode.getParent().getRowKey() : null;
         tt.setRowKey(root, rowKey);
         String icon = treeNode.isExpanded() ? TreeTable.COLLAPSE_ICON : TreeTable.EXPAND_ICON;
         int depth = rowKey.split(UITree.SEPARATOR).length - 1;
