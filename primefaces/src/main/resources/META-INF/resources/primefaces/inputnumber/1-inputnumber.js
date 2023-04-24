@@ -12,7 +12,7 @@
  * @prop {JQuery} hiddenInput The DOM element for the hidden input field with the current value of this widget.
  * @prop {JQuery} input The DOM element for the visible input field with autoNumeric.
  * @prop {undefined} plugOptArray Always `undefined`.
- * @prop {string} valueToRender The initial, numerical value that is displayed, such as `0.0` or `5.3`.
+ * @prop {string} initialValue The initial, numerical value that is displayed, such as `0.0` or `5.3`.
  * 
  * @interface {PrimeFaces.widget.InputNumberCfg} cfg The configuration for the {@link  InputNumber| InputNumber widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -36,7 +36,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input = $(this.jqId + '_input');
         this.hiddenInput = $(this.jqId + '_hinput');
         this.plugOptArray = cfg.pluginOptions;
-        this.valueToRender = cfg.valueToRender;
+        this.initialValue = cfg.valueToRender;
         this.disabled = cfg.disabled;
 
         // GitHub #8125 minValue>0 shows js warning and quirky behavior
@@ -59,11 +59,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         this.autonumeric = new AutoNumeric(this.jqId + '_input', this.cfg);
 
-        if (this.valueToRender !== "") {
+        if (this.initialValue !== "") {
             //set the value to the input the plugin will format it.
-            this.autonumeric.set(this.valueToRender);
+            this.autonumeric.set(this.initialValue);
             // GitHub #6940 blur firing too many change events
-            this.autonumeric.rawValueOnFocus = this.valueToRender;
+            this.autonumeric.rawValueOnFocus = this.initialValue;
         }
 
         this.setValueToHiddenInput(this.getValue());
@@ -71,6 +71,35 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hiddenInput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this._cleanup();
+        this._super(cfg);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this._super();
+        this._cleanup();
+    },
+    
+   /**
+    * Clean up this widget and remove events from the DOM.
+    * @private
+    */
+    _cleanup: function() {
+        if (this.autonumeric) {
+            this.autonumeric.remove();
+        }
     },
 
     /**
@@ -112,9 +141,14 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         }
         this.input.prop('onchange', null).off('change').on('change.inputnumber', function(e) {
 
-            var oldValue = $this.copyValueToHiddenInput();
+            var newValue = $this.copyValueToHiddenInput();
+            if (Number(newValue) === Number($this.initialValue)) {
+                // #10046 do not call on Change if the value has not changed
+                return false;
+            }
+            
             if (originalOnchange && originalOnchange.call(this, e) === false) {
-                $this.setValueToHiddenInput(oldValue);
+                $this.setValueToHiddenInput(newValue);
                 return false;
             }
         });
