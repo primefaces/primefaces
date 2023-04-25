@@ -39,9 +39,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InputNumber007Test extends AbstractPrimePageTest {
 
-    // @Test
-    // @Order(1)
-    // @DisplayName("InputNumber: no valueChange event after it has been updated, is blurred and NO inputs were made")
+    @Test
+    @Order(1)
+    @DisplayName("InputNumber: no valueChange event after it has been updated, is blurred and NO inputs were made")
     public void testNoValueChangeEventAfterUpdate(Page page) {
         // Arrange
         Messages messages = page.messages;
