@@ -27,6 +27,8 @@ if (!PrimeFaces.ajax) {
             }
         }
 
+        console.trace(cfg, ext);
+
         return PrimeFaces.ajax.Request.handle(cfg, ext);
     };
 
