@@ -27,7 +27,9 @@ if (!PrimeFaces.ajax) {
             }
         }
 
-        console.trace(cfg, ext);
+        console.trace(cfg, ext); // seems like we can´t get this with Selenium / ChromeDriver
+        var err = new Error();
+        console.log(err.stack);
 
         return PrimeFaces.ajax.Request.handle(cfg, ext);
     };
