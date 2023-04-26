@@ -55,6 +55,8 @@ public class InputNumber007Test extends AbstractPrimePageTest {
         otherInput.getInput().click();
         TestUtils.wait(100);
 
+        printConsole();
+
         // Assert
         assertNotDisplayed(messages);
     }

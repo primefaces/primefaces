@@ -37,6 +37,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.hiddenInput = $(this.jqId + '_hinput');
         this.plugOptArray = cfg.pluginOptions;
         this.initialValue = cfg.valueToRender;
+        console.log('initialValue: ' + this.initialValue);
         this.disabled = cfg.disabled;
 
         // GitHub #8125 minValue>0 shows js warning and quirky behavior
@@ -60,6 +61,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.autonumeric = new AutoNumeric(this.jqId + '_input', this.cfg);
 
         if (this.initialValue !== "") {
+            console.log('set autonumeric to: ' + this.initialValue);
+
             //set the value to the input the plugin will format it.
             this.autonumeric.set(this.initialValue);
             // GitHub #6940 blur firing too many change events
@@ -142,12 +145,18 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input.prop('onchange', null).off('change').on('change.inputnumber', function(e) {
 
             var newValue = $this.copyValueToHiddenInput();
+
+            console.log('onchange - initialValue: ' + $this.initialValue + ', newValue: ' + newValue);
+            console.log('onchange - Number(initialValue): ' + Number($this.initialValue) + ', Number(newValue): ' + Number(newValue));
+
             if (Number(newValue) === Number($this.initialValue)) {
                 // #10046 do not call on Change if the value has not changed
+                console.log('return false - A');
                 return false;
             }
             
             if (originalOnchange && originalOnchange.call(this, e) === false) {
+                console.log('return false - B');
                 $this.setValueToHiddenInput(newValue);
                 return false;
             }
