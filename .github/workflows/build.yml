@@ -62,6 +62,7 @@ jobs:
       matrix:
         java: [20]
         facesimpl: [ 'myfaces-2.3']
+        browser: [ 'chrome', 'firefox' ]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
@@ -77,7 +78,7 @@ jobs:
         run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }}
       - name: Integration Tests (parallel)
         if: matrix.java != 8
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,chrome,theme-saga,csp,${{ matrix.facesimpl }} -Dit.test=InputNumber007Test
+        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,parallel-execution,headless,{{ matrix.browser }},theme-saga,csp,${{ matrix.facesimpl }} -Dit.test=InputNumber007Test
 
 
 #  integration-tests-40:
