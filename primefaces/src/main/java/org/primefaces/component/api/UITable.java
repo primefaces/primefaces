@@ -29,7 +29,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -37,8 +36,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.column.ColumnBase;
 
+import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
@@ -204,7 +203,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            UIComponent filterFacet = getFilterComponent(column);
+            UIComponent filterFacet = column.getFilterComponent();
             boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
 
             Object filterValue;
@@ -548,26 +547,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default boolean isFilteringCurrentlyActive() {
         return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
-    }
-
-    default <C extends UIComponent & ValueHolder> C getFilterComponent(UIColumn column) {
-        UIComponent filterFacet = column.getFacet("filter");
-        if (filterFacet != null) {
-            if (filterFacet instanceof ValueHolder) {
-                return (C) filterFacet;
-            }
-
-            for (UIComponent child : filterFacet.getChildren()) {
-                if (!child.isRendered()) {
-                    continue;
-                }
-
-                if (child instanceof ValueHolder) {
-                    return (C) child;
-                }
-            }
-        }
-        return null;
     }
 
     default int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,

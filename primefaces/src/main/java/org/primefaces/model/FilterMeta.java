@@ -25,10 +25,10 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
@@ -108,11 +108,19 @@ public class FilterMeta implements Serializable {
             constraint = new FunctionFilterConstraint(column.getFilterFunction());
         }
 
+        Object filterValue = column.getFilterValue();
+        if (filterValue == null) {
+            ValueHolder valueHolder = column.getFilterComponent();
+            if (valueHolder != null) {
+                filterValue = valueHolder.getValue();
+            }
+        }
+
         return new FilterMeta(column.getColumnKey(),
                               field,
                               constraint,
                               filterByVE,
-                              column.getFilterValue(),
+                              filterValue,
                               matchMode);
     }
 
