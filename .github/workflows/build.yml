@@ -56,7 +56,7 @@ jobs:
 
   integration-tests-23:
     runs-on: ubuntu-latest
-    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
+    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.browser }} - ${{ matrix.facesimpl }})
     strategy:
       fail-fast: false
       matrix:
