@@ -701,8 +701,6 @@
                                 <include>core/core.widget.js</include>
                                 <include>core/core.resources.js</include>
                                 <include>core/core.clientwindow.js</include>
-                                <include>core/core.polyfills.js</include>
-                                <include>core/core.polyfill.replaceall.min.js</include>
                                 <include>ajaxstatus/ajaxstatus.js</include>
                                 <include>poll/poll.js</include>
                             </includes>
