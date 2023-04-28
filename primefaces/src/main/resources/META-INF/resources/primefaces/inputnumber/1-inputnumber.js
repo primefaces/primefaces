@@ -54,9 +54,6 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         //Visual effects
         PrimeFaces.skinInput(this.input);
 
-        this.wrapEvents();
-        this.bindInputEvents();
-
         this.autonumeric = new AutoNumeric(this.jqId + '_input', this.cfg);
 
         if (this.initialValue !== "") {
@@ -71,6 +68,10 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
         this.hiddenInput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+
+        // GitHub #10046 delay registering events until CSP has registered
+        var $this = this;
+        setTimeout(function () {$this.wrapEvents();}, 0);
     },
 
     /**
@@ -142,11 +143,11 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         this.input.prop('onchange', null).off('change').on('change.inputnumber', function(e) {
 
             var newValue = $this.copyValueToHiddenInput();
-            if (Number(newValue) === Number($this.initialValue)) {
-                // #10046 do not call on Change if the value has not changed
+            // #10046 do not call on Change if the value has not changed
+            if (newValue === $this.initialValue || 
+                ($this.initialValue !== '' && newValue !== '' && Number(newValue) === Number($this.initialValue))) {
                 return false;
             }
-            
             if (originalOnchange && originalOnchange.call(this, e) === false) {
                 $this.setValueToHiddenInput(newValue);
                 return false;
@@ -166,6 +167,8 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                 return false;
             }
         });
+
+        this.bindInputEvents();
     },
 
     /**
