@@ -1423,9 +1423,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      * @param {Element} item An option for which to set the aria attributes.
      */
     changeAriaValue: function (item) {
-        var itemId = item.id;
-
-        this.input.attr('aria-activedescendant', itemId);
+        if (item) {
+            this.input.attr('aria-activedescendant', item.id);
+        }
     },
 
     /**
