@@ -458,10 +458,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var prev = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.prevAll('.ui-autocomplete-item:first');
 
                         if (prev.length == 1) {
-                            highlightedItem.attr('aria-selected', false);
-                            highlightedItem.removeClass('ui-state-highlight');
-                            prev.attr('aria-selected', true);
-                            prev.addClass('ui-state-highlight');
+                            $this.highlightItem(highlightedItem, false);
+                            $this.highlightItem(prev, true);
 
                             if ($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, prev);
@@ -479,10 +477,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var next = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.nextAll('.ui-autocomplete-item:first');
 
                         if (next.length == 1) {
-                            highlightedItem.attr('aria-selected', false);
-                            highlightedItem.removeClass('ui-state-highlight');
-                            next.attr('aria-selected', true);
-                            next.addClass('ui-state-highlight');
+                            $this.highlightItem(highlightedItem, false);
+                            $this.highlightItem(next, true);
 
                             if ($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, next);
@@ -609,8 +605,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 var item = $(this);
 
                 if (!item.hasClass('ui-state-highlight')) {
-                    $this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-                    item.addClass('ui-state-highlight');
+                    $this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false);
+                    $this.highlightItem(item, true);
 
                     if ($this.cfg.itemtip) {
                         $this.showItemtip(item);
@@ -796,8 +792,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             //highlight first item
             if (this.cfg.autoHighlight && firstItem.length) {
-                firstItem.addClass('ui-state-highlight');
-                firstItem.attr('aria-selected', true);
+                this.highlightItem(firstItem, true);
                 this.changeAriaValue(firstItem[0]);
             }
 
@@ -1426,6 +1421,22 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if (item) {
             this.input.attr('aria-activedescendant', item.id);
         }
+    },
+
+    /**
+     * Adjusts the highlighting and aria attributes for the given selectable option.
+     * @private
+     * @param {Element} item An option for which to set the aria attributes.
+     * @param {boolean} highlight Flag to indicate to highlight or not
+     */
+    highlightItem: function (item, highlight) {
+        if (highlight) {
+            item.addClass('ui-state-highlight');
+        }
+        else {
+            item.removeClass('ui-state-highlight');
+        }
+        item.attr('aria-selected', highlight);
     },
 
     /**
