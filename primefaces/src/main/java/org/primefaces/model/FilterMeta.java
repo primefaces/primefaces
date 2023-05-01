@@ -141,10 +141,11 @@ public class FilterMeta implements Serializable {
     }
 
     public static <T> T resetToNullIfEmpty(T filterValue) {
-        if ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
+        if (filterValue != null
+                && ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
                 || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
                 || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
-                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
+                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0))) {
             filterValue = null;
         }
         return filterValue;
