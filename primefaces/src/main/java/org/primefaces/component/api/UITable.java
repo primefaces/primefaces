@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.api;
 
-import java.lang.reflect.Array;
 import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -219,11 +218,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
             // returns null if empty string/collection/array/object
             if (filterValue != null) {
-                if ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
-                    || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
-                    || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
-                    || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-                    filterValue = null;
+                filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
+            }
+
+            if (filterValue != null) {
+                ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
+                if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
+                    filterValue = Arrays.asList((Object[]) filterValue);
                 }
             }
 

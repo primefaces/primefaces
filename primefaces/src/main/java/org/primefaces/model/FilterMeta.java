@@ -24,6 +24,8 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.Objects;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -38,6 +40,7 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.util.LangUtils;
 
 public class FilterMeta implements Serializable {
 
@@ -112,7 +115,7 @@ public class FilterMeta implements Serializable {
         if (filterValue == null) {
             ValueHolder valueHolder = column.getFilterComponent();
             if (valueHolder != null) {
-                filterValue = valueHolder.getValue();
+                filterValue = resetToNullIfEmpty(valueHolder.getValue());
             }
         }
 
@@ -135,6 +138,16 @@ public class FilterMeta implements Serializable {
                               null,
                               globalFilterValue,
                               MatchMode.GLOBAL);
+    }
+
+    public static <T> T resetToNullIfEmpty(T filterValue) {
+        if ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
+                || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
+                || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
+                || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
+            filterValue = null;
+        }
+        return filterValue;
     }
 
     public String getField() {
