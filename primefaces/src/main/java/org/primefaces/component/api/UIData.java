@@ -553,15 +553,16 @@ public class UIData extends javax.faces.component.UIData {
                 : new SavedState();
 
         state.setValue(input.getLocalValue());
+        state.setLocalValueSet(input.isLocalValueSet());
         state.setValid(input.isValid());
         state.setSubmittedValue(input.getSubmittedValue());
-        state.setLocalValueSet(input.isLocalValueSet());
         getStateHelper().put(PropertyKeys.saved, componentClientId, state);
     }
 
     protected boolean isDefaultAndEmpty(EditableValueHolder input) {
         return input.getLocalValue() == null
                 && input.isValid()
+                && !input.isLocalValueSet()
                 && input.getSubmittedValue() == null;
     }
 
@@ -591,9 +592,9 @@ public class UIData extends javax.faces.component.UIData {
             SavedState state = getSavedState(component, context);
 
             input.setValue(state.getValue());
+            input.setLocalValueSet(state.isLocalValueSet());
             input.setValid(state.isValid());
             input.setSubmittedValue(state.getSubmittedValue());
-            input.setLocalValueSet(state.isLocalValueSet());
         }
         else if (component instanceof UIForm) {
             UIForm form = (UIForm) component;

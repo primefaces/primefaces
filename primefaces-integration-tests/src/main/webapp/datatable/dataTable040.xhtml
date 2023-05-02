@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+
+            <p:dataTable id="datatable" value="#{dataTable040.cars}" var="car">
+                <p:column headerText="Number">
+                    <h:outputText id="number" value="#{car.number}" />
+                </p:column>
+
+                <p:column headerText="Car Name">
+                    <h:outputText id="name" value="#{car.name}" />
+                </p:column>
+
+                <p:column headerText="Price">
+                    <h:selectOneMenu id="price" value="#{car.price}">
+                        <p:ajax process="@this" update="@form" />
+                        <f:selectItem itemLabel="1000$" itemValue="#{1000}" />
+                        <f:selectItem itemLabel="1500$" itemValue="#{1500}" />
+                        <f:selectItem itemLabel="2000$" itemValue="#{2000}" />
+                        <f:selectItem itemLabel="2500$" itemValue="#{2500}" />
+                        <f:selectItem itemLabel="3000$" itemValue="#{3000}" />
+                        <f:selectItem itemLabel="Sold" itemValue="" />
+                    </h:selectOneMenu>
+                </p:column>
+            </p:dataTable>
+
+            
+            <h:dataTable id="hDatatable" value="#{dataTable040.cars2}" var="car">
+                <h:column>
+                    <h:outputText id="number" value="#{car.number}" />
+                </h:column>
+
+                <h:column>
+                    <h:outputText id="name" value="#{car.name}" />
+                </h:column>
+
+                <h:column>
+                    <h:selectOneMenu id="price" value="#{car.price}">
+                        <p:ajax process="@this" update="@form" />
+                        <f:selectItem itemLabel="1000$" itemValue="#{1000}" />
+                        <f:selectItem itemLabel="1500$" itemValue="#{1500}" />
+                        <f:selectItem itemLabel="2000$" itemValue="#{2000}" />
+                        <f:selectItem itemLabel="2500$" itemValue="#{2500}" />
+                        <f:selectItem itemLabel="3000$" itemValue="#{3000}" />
+                        <f:selectItem itemLabel="Sold" itemValue="" />
+                    </h:selectOneMenu>
+                </h:column>
+            </h:dataTable>
+            
+            
+            <p:commandButton update="@form" value="Update Form"/>
+            
+        </h:form>
+    </h:body>
+</html>
