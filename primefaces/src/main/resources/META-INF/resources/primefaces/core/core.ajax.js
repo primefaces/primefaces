@@ -1477,7 +1477,8 @@ if (!PrimeFaces.ajax) {
         }
     };
 
-    $(window).on('unload', function() {
+    var unloadEvent = ("onpagehide" in window) ? "pagehide" : "unload";
+    $(window).on(unloadEvent, function() {
         PrimeFaces.ajax.Queue.abortAll();
     });
 
