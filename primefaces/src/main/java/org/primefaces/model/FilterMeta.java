@@ -51,7 +51,7 @@ public class FilterMeta implements Serializable {
     private String field;
     private String columnKey;
     private ValueExpression filterBy;
-    private Object filterValue;
+    private Object filterValue; // should be null if empty string/collection/array/object
     private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
 
@@ -65,21 +65,8 @@ public class FilterMeta implements Serializable {
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
-        this.filterValue = filterValue;
+        this.filterValue = resetToNullIfEmpty(filterValue);
         this.matchMode = matchMode;
-    }
-
-    /**
-     * @deprecated Use FilterMeta#builder() instead
-     */
-    @Deprecated
-    public FilterMeta(String field, String columnKey, ValueExpression filterByVE, MatchMode filterMatchMode, Object filterValue) {
-        this.field = field;
-        this.columnKey = columnKey;
-        this.filterBy = filterByVE;
-        this.constraint = FilterConstraints.of(filterMatchMode);
-        this.filterValue = filterValue;
-        this.matchMode = filterMatchMode;
     }
 
     public static FilterMeta of(FacesContext context, String var, UIColumn column) {
@@ -115,7 +102,7 @@ public class FilterMeta implements Serializable {
         if (filterValue == null) {
             ValueHolder valueHolder = column.getFilterComponent();
             if (valueHolder != null) {
-                filterValue = resetToNullIfEmpty(valueHolder.getValue());
+                filterValue = valueHolder.getValue();
             }
         }
 
@@ -172,7 +159,7 @@ public class FilterMeta implements Serializable {
     }
 
     public void setFilterValue(Object filterValue) {
-        this.filterValue = filterValue;
+        this.filterValue = resetToNullIfEmpty(filterValue);
     }
 
     public FilterConstraint getConstraint() {
@@ -247,6 +234,7 @@ public class FilterMeta implements Serializable {
             if (filterBy.matchMode != null) {
                 filterBy.constraint = FilterConstraints.of(filterBy.matchMode);
             }
+            filterBy.filterValue = resetToNullIfEmpty(filterBy.filterValue);
             Objects.requireNonNull(filterBy.constraint, "Filter constraint is required");
             Objects.requireNonNull(filterBy.field, "Field is required");
             return filterBy;
