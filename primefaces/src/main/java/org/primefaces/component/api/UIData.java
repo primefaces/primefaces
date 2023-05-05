@@ -124,6 +124,14 @@ public class UIData extends javax.faces.component.UIData {
         getStateHelper().put(PropertyKeys.rowStatePreserved, rowStatePreserved);
     }
 
+    public boolean isColumnGroupLegacyEnabled() {
+        return (boolean) getStateHelper().eval(PropertyKeys.columnGroupLegacyEnabled, true);
+    }
+
+    public void setColumnGroupLegacyEnabled(boolean columnGroupLegacyEnabled) {
+        getStateHelper().put(PropertyKeys.columnGroupLegacyEnabled, columnGroupLegacyEnabled);
+    }
+
     @Override
     public void processDecodes(FacesContext context) {
         if (!isRendered()) {
