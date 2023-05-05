@@ -212,4 +212,5 @@ public class ForEachRowColumn {
     private static boolean isColumnContainer(UIComponent component) {
         return component instanceof ColumnAware || component instanceof Row || component instanceof ColumnGroup;
     }
+
 }
