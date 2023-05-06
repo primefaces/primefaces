@@ -98,10 +98,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.getElementsCount() > 0) {
-            encodeMenuIcon(context, button, menuButtonId);
-            encodeMenu(context, button, menuId);
-        }
+        encodeMenuIcon(context, button, menuButtonId);
+        encodeMenu(context, button, menuId);
 
         writer.endElement("div");
     }

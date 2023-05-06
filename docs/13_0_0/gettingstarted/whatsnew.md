@@ -38,6 +38,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `gridRowTitle` to support row-specific titles.
 * OverlayPanel
     * Added attribute `cache` similar to Dialog when `dynamic=true`.
+    * Improved `SplitButton` support.
 * OrderList
     * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * PickList
