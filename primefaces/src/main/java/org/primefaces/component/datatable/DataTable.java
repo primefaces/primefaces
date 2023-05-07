@@ -175,7 +175,6 @@ public class DataTable extends DataTableBase {
             .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
 
     private boolean reset = false;
     private List<UIColumn> columns;
