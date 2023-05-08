@@ -1799,7 +1799,7 @@
             });
         },
 
-        onInputClick: function (event) {
+        onInputClick: function (event) {    
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
@@ -2166,6 +2166,8 @@
                     },
                     onEntered: function() {
                         if (!$this.options.touchUI) {
+                            $this.datepickerClick = true;
+                            setTimeout(function () {$this.datepickerClick = false;}, 200);
                             $this.bindDocumentClickListener();
                             $this.bindWindowResizeListener();
 
