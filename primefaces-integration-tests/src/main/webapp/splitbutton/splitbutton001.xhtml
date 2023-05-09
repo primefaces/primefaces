@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:splitButton id="children" value="Children">
+                <p:menuitem value="Rendered"/>
+            </p:splitButton>
+
+            <hr/>
+
+            <p:splitButton id="noChildren" value="No children"/>
+
+            <hr/>
+
+            <p:splitButton id="noRenderedChildren" value="No rendered children">
+                <p:menuitem value="Rendered false" rendered="false"/>
+            </p:splitButton>
+
+            <hr/>
+
+            <p:splitButton id="allwaysShowDropdown" value="Allways show dropdown" allwaysShowDropdown="true"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

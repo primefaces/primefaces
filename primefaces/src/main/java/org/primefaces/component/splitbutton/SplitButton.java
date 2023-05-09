@@ -26,6 +26,7 @@ package org.primefaces.component.splitbutton;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -123,6 +124,7 @@ public class SplitButton extends SplitButtonBase {
         }
         else {
             return getChildren().stream()
+                        .filter(UIComponent::isRendered)
                         .filter(MenuElement.class::isInstance)
                         .map(MenuElement.class::cast)
                         .collect(Collectors.toList());
