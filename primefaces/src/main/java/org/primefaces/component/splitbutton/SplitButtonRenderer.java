@@ -98,7 +98,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.isAllwaysShowDropdown() || button.getElementsCount() > 0) {
+        if (button.isAlwaysShowDropdown() || button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }

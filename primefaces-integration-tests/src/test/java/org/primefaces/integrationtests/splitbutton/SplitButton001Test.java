@@ -47,7 +47,7 @@ public class SplitButton001Test extends AbstractPrimePageTest {
                 () -> page.splitButtonNoChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
         Assertions.assertThrows(NoSuchElementException.class,
                 () -> page.splitButtonNoRenderedChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
-        Assertions.assertNotNull(page.splitButtonAllwaysShowDropdown.findElement(By.className(CLASS_NAME_MENUBUTTON)));
+        Assertions.assertNotNull(page.splitButtonAlwaysShowDropdown.findElement(By.className(CLASS_NAME_MENUBUTTON)));
     }
 
     public static class Page extends AbstractPrimePage {
@@ -60,8 +60,8 @@ public class SplitButton001Test extends AbstractPrimePageTest {
         @FindBy(id = "form:noRenderedChildren")
         SplitButton splitButtonNoRenderedChildren;
 
-        @FindBy(id = "form:allwaysShowDropdown")
-        SplitButton splitButtonAllwaysShowDropdown;
+        @FindBy(id = "form:alwaysShowDropdown")
+        SplitButton splitButtonAlwaysShowDropdown;
 
         @Override
         public String getLocation() {
