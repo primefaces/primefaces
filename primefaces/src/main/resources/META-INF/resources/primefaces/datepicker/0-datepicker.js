@@ -1799,7 +1799,7 @@
             });
         },
 
-        onInputClick: function (event) {    
+        onInputClick: function (event) {
             if (this.documentClickListener) {
                 this.datepickerClick = true;
             }
