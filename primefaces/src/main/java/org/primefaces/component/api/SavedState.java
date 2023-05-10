@@ -33,8 +33,6 @@ import javax.faces.component.EditableValueHolder;
 @SuppressWarnings({"SerializableHasSerializationMethods", "NonSerializableFieldInSerializableClass"})
 public class SavedState implements Serializable {
 
-    public static final SavedState NULL_STATE = new SavedState();
-
     private static final long serialVersionUID = 4325654657465654768L;
 
     private Object submittedValue;

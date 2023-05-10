@@ -233,6 +233,18 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
+    @Test
+    @Order(11)
+    @DisplayName("SelectOneMenu: getAssignedLabelText")
+    public void testAssignedLabelText(Page page) {
+        // Arrange
+        SelectOneMenu selectOneMenu = page.selectOneMenu;
+
+        // Test
+        Assertions.assertNotNull(selectOneMenu.getAssignedLabel());
+        Assertions.assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);

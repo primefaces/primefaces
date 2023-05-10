@@ -65,11 +65,6 @@ screen size change to optimize their content.
 ```xhtml
 <p:dialog responsive="true"...
 ```
-For a detailed example of a responsive page that uses all of the parts above, visit;
-
-http://www.primefaces.org/showcase/ui/misc/responsive.xhtml
-
-Source code is available at GitHub.
 
 ## Touch Support
 Some components are mobile aware and support mobile concepts such as Swipe on TabView or Long Press to bring up the Context Menu.

@@ -339,11 +339,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (menu.getPanelStyleClass() != null) {
             panelStyleClass += " " + menu.getPanelStyleClass();
         }
-        // TODO: "RTLAware"!
-//        if (ComponentUtils.isRTL(context, menu)) {
-//            panelStyleClass+= " " + SelectCheckboxMenu.RTL_PANEL_CLASS;
-//        }
-//
+
         String maxScrollHeight = getMaxScrollHeight(menu);
 
         writer.startElement("div", null);

@@ -397,9 +397,9 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} index 0-based index of the closed tab.
      */
     fireTabCloseEvent : function(index) {
+        var panel = this.panels.eq(index);
         if(this.hasBehavior('tabClose')) {
-            var panel = this.panels.eq(index),
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_tabId', value: panel.attr('id')},
                     {name: this.id + '_tabindex', value: parseInt(index)}
@@ -416,6 +416,22 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             }
 
             this.callBehavior('tabClose', ext);
+        }
+        else if (this.cfg.multiViewState) {
+            var options = {
+                source: this.id,
+                partialSubmit: true,
+                process: this.id,
+                ignoreAutoUpdate: true,
+                global: false,
+                params: [
+                    {name: this.id + '_skipChildren', value: true},
+                    {name: this.id + '_newTab', value: panel.attr('id')},
+                    {name: this.id + '_tabindex', value: parseInt(index)}
+                ]
+            };
+
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 

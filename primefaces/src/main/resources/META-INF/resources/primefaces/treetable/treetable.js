@@ -411,6 +411,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             update: this.id,
             process: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_pagination', value: true},
                 {name: this.id + '_first', value: newState.first},
                 {name: this.id + '_rows', value: newState.rows}
@@ -797,6 +798,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             formId: this.getParentFormId(),
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_sorting', value: true}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -869,6 +871,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_expand', value: nodeKey}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -939,6 +942,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             params: [
+                {name: this.id + '_encodeFeature', value: true},
                 {name: this.id + '_collapse', value: nodeKey}
             ],
             onsuccess: function(responseXML, status, xhr) {
@@ -1025,7 +1029,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.isSingleSelection() || !selected ) {
                 this.unselectAllNodes();
             }
-            this.selectNode(node);
+            this.selectNode(node, true);
         }
 
         this.fireSelectEvent(nodeKey, 'contextMenu');
@@ -1992,7 +1996,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             update: this.id,
             formId: this.getParentFormId(),
             params: [{name: this.id + '_rowEditIndex', value: rowKey},
-                     {name: this.id + '_rowEditAction', value: action}],
+                     {name: this.id + '_rowEditAction', value: action},
+                     {name: this.id + '_encodeFeature', value: true}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
@@ -2276,7 +2281,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            params: [{name: this.id + '_cellInfo', value: cellInfo},
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellInfo', value: cellInfo},
                      {name: cellEditorId, value: cellEditorId}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -2322,7 +2328,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
-            params: [{name: this.id + '_cellEditCancel', value: true},
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellEditCancel', value: true},
                      {name: this.id + '_cellInfo', value: cellInfo}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -2364,7 +2371,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             process: this.id,
             update: this.id,
             global: false,
-            params: [{name: this.id + '_cellEditInit', value: true},
+            params: [{name: this.id + '_encodeFeature', value: true},
+                     {name: this.id + '_cellEditInit', value: true},
                      {name: this.id + '_cellInfo', value: cellInfo}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {

@@ -40,7 +40,7 @@
 }
 
 .ui-chips-input-token {
-    display: inline-flex;
+    display: inline;
     align-items: center;
     flex: 1 1 auto;
 }

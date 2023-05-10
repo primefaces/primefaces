@@ -24,16 +24,26 @@
 package org.primefaces.component.autoupdate;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ELException;
 import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.*;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.Lazy;
 
 public class AutoUpdateTagHandler extends TagHandler {
 
+    private static final Logger LOGGER = Logger.getLogger(AutoUpdateTagHandler.class.getName());
+
     private final TagAttribute disabledAttribute;
     private final TagAttribute onAttribute;
+
+    private Lazy<ProjectStage> projectStage = new Lazy<>(() -> FacesContext.getCurrentInstance().getApplication().getProjectStage());
 
     public AutoUpdateTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -45,6 +55,14 @@ public class AutoUpdateTagHandler extends TagHandler {
     @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (!ComponentHandler.isNew(parent)) {
+            return;
+        }
+
+        if (LangUtils.isBlank(parent.getRendererType())) {
+            if (projectStage.get() == ProjectStage.Development) {
+                LOGGER.log(Level.WARNING, "Can not auto-update component \"{0}\" with id \"{1}\" without an attached renderer.",
+                        new Object[] {parent.getClass().getName(), parent.getClientId()});
+            }
             return;
         }
 

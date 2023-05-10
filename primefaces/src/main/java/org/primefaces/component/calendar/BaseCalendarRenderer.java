@@ -247,7 +247,6 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             }
         }
 
-        //TODO: implement if necessary
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, type.getName() + " not supported", null);
         throw new ConverterException(message);
     }

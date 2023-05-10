@@ -19,7 +19,6 @@
  * @extends {PrimeFaces.widget.TextEditor.QuillOptionsStatic} cfg
  * 
  * @prop {boolean} cfg.disabled Whether this text editor is initially disabled.
- * @prop {number} cfg.height The height of the editor.
  * @prop {boolean} cfg.toolbarVisible Whether the editor toolbar should be displayed.
  */
 PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
@@ -112,9 +111,6 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         //configuration
-        if(this.cfg.height) {
-            this.editorContainer.height(this.cfg.height);
-        }
 
         this.cfg.theme = 'snow';
         this.cfg.modules = {
@@ -151,6 +147,15 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
+        // QuillJS doesn't handle blurring when focus is lost to e.g. a button, handle blur event separately here as a workaround
+        // See https://github.com/quilljs/quill/issues/1397
+        this.editor.root.addEventListener('blur', function(e) {
+            if (e.relatedTarget === $this.editor.clipboard.container) {
+                return; // Ignore pasting
+            }
+
+            $this.editor.blur(); // Triggers selection-change event above
+        });
     },
 
     /**

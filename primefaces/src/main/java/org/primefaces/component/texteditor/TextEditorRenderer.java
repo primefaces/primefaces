@@ -82,13 +82,16 @@ public class TextEditorRenderer extends InputRenderer {
         String editorId = clientId + "_editor";
         UIComponent toolbar = editor.getFacet("toolbar");
 
-        String style = editor.getStyle();
+        String style = getStyleBuilder(context)
+                .add(editor.getStyle())
+                .build();
+
         String styleClass = createStyleClass(editor, TextEditor.EDITOR_CLASS);
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) {
+        if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
@@ -103,8 +106,15 @@ public class TextEditorRenderer extends InputRenderer {
             writer.endElement("div");
         }
 
+        String innerStyle = getStyleBuilder(context)
+                .add("height", editor.getHeight())
+                .build();
+
         writer.startElement("div", editor);
         writer.writeAttribute("id", editorId, null);
+        if (LangUtils.isNotBlank(innerStyle)) {
+            writer.writeAttribute("style", innerStyle, null);
+        }
         if (valueToRender != null) {
             writer.write(valueToRender);
         }
@@ -121,8 +131,7 @@ public class TextEditorRenderer extends InputRenderer {
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("disabled", editor.isDisabled(), false)
-                .attr("placeholder", editor.getPlaceholder(), null)
-                .attr("height", editor.getHeight(), Integer.MIN_VALUE);
+                .attr("placeholder", editor.getPlaceholder(), null);
 
         List formats = editor.getFormats();
         if (formats != null) {

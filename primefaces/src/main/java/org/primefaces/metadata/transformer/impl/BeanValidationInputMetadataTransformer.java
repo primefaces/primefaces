@@ -110,7 +110,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     spinner.setMax(Double.parseDouble(max.value()));
                 }
                 catch (NumberFormatException ex) {
-                    LOGGER.log(Level.WARNING, "Failed setting Spinner max value: " + ex.getMessage());
+                    LOGGER.log(Level.WARNING, () -> "Failed setting Spinner max value: " + ex.getMessage());
                 }
             }
             if (annotationType.equals(DecimalMin.class) && spinner.getMin() == Double.MIN_VALUE) {
@@ -119,7 +119,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     spinner.setMin(Double.parseDouble(min.value()));
                 }
                 catch (NumberFormatException ex) {
-                    LOGGER.log(Level.WARNING, "Failed setting Spinner min value: " + ex.getMessage());
+                    LOGGER.log(Level.WARNING, () -> "Failed setting Spinner min value: " + ex.getMessage());
                 }
             }
         }

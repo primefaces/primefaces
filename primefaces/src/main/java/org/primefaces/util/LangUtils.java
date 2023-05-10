@@ -43,28 +43,12 @@ public class LangUtils {
     private LangUtils() {
     }
 
-    /**
-     * @deprecated Use {@link LangUtils#isEmpty(String)}} instead
-     */
-    @Deprecated
-    public static boolean isValueEmpty(String value) {
-        return isEmpty(value);
-    }
-
     public static boolean isEmpty(String value) {
         return value == null || value.isEmpty();
     }
 
     public static boolean isNotEmpty(String value) {
         return !isEmpty(value);
-    }
-
-    /**
-     * @deprecated Use {@link LangUtils#isBlank(String)} instead
-     */
-    @Deprecated
-    public static boolean isValueBlank(String str) {
-        return isBlank(str);
     }
 
     public static boolean isBlank(String str) {

@@ -30,7 +30,7 @@
                         <p:selectCheckboxMenu id="filterType" multiple="true" updateLabel="true"
                             value="#{dataTable039.selectedProgrammingLanguageTypes}">
                             <f:selectItems value="#{dataTable039.types}"/>
-                            <p:ajax event="change" process="@this" update="datatable"/>
+                            <p:ajax oncomplete="PF('datatable').filter()"/>
                         </p:selectCheckboxMenu>
                     </f:facet>
                 </p:column>

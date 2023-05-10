@@ -24,7 +24,6 @@
 package org.primefaces.component.api;
 
 import java.util.Map;
-
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
@@ -244,7 +243,7 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         }
     }
 
-    public void calculateFirst() {
+    public boolean calculateFirst() {
         int rows = getRows();
 
         if (rows > 0) {
@@ -253,10 +252,15 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
             if (rowCount > 0 && first >= rowCount) {
                 int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+                int newFirst = Math.max((numberOfPages - 1) * rows, 0);
 
-                setFirst(Math.max((numberOfPages - 1) * rows, 0));
+                setFirst(newFirst);
+
+                return first != newFirst;
             }
         }
+
+        return false;
     }
 
     @Override
@@ -327,11 +331,11 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public void updatePaginationData(FacesContext context) {
         setRowIndex(-1);
-        String componentClientId = getClientId(context);
+        String clientId = getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String firstParam = params.get(componentClientId + "_first");
-        String rowsParam = params.get(componentClientId + "_rows");
+        String firstParam = params.get(clientId + "_first");
+        String rowsParam = params.get(clientId + "_rows");
 
         if (!isRowsPerPageValid(rowsParam)) {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);

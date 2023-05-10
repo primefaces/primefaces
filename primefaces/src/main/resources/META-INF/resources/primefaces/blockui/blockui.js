@@ -299,7 +299,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             var contentHeight = content.outerHeight();
             var contentWidth = content.outerWidth();
             // #9496 if display:none then we need to clone to get its dimensions
-            if (content.height() === 0) {
+            if (content.height() <= 0) {
                 var currentWidth = this.content[i].getBoundingClientRect().width;
                 var styleWidth = currentWidth ? 'width: ' + currentWidth + 'px' : '';
                 var clone = this.content[i].cloneNode(true);

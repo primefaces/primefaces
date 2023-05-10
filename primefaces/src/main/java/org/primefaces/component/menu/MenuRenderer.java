@@ -154,7 +154,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         String styleClass = submenu.getStyleClass();
         styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
         boolean toggleable = menu.isToggleable();
-        boolean expanded = toggleable ? submenu.isExpanded() : true;
+        boolean expanded = !toggleable || submenu.isExpanded();
 
         //title
         writer.startElement("li", null);

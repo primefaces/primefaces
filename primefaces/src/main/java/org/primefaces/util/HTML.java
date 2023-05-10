@@ -287,12 +287,16 @@ public class HTML {
     public static final String ARIA_READONLY = "aria-readonly";
     public static final String ARIA_REQUIRED = "aria-required";
     public static final String ARIA_SELECTED = "aria-selected";
+    public static final String ARIA_ORIENTATION = "aria-orientation";
+    public static final String ARIA_ORIENTATION_HORIZONTAL = "horizontal";
     public static final String ARIA_ROLE = "role";
     public static final String ARIA_ROLE_NONE = "none";
     public static final String ARIA_ROLE_COMBOBOX = "combobox";
+    public static final String ARIA_ROLE_LISTBOX = "listbox";
     public static final String ARIA_ROLE_MENU = "menu";
     public static final String ARIA_ROLE_MENUITEM = "menuitem";
     public static final String ARIA_ROLE_MENUBAR = "menubar";
+    public static final String ARIA_ROLE_OPTION = "option";
     public static final String ARIA_ROLE_SEPARATOR = "separator";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";

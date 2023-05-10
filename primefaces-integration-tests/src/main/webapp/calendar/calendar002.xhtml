@@ -16,7 +16,7 @@
 
             <h:outputText id="outside" value="Click me"/>
             <p:calendar id="datepicker" value="#{calendar002.localDate}"
-                        pattern="MM/dd/yyyy" mask="99/99/9999">
+                        pattern="MM/dd/yyyy" mask="true">
                 <p:ajax event="change" process="@this" listener="#{calendar002.select}" update="@form"/>
             </p:calendar>
 
