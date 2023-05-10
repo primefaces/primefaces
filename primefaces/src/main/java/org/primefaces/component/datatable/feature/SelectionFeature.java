@@ -42,8 +42,6 @@ public class SelectionFeature implements DataTableFeature {
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        Object originalValue = table.getValue();
-        boolean isFiltered = table.isFilteringCurrentlyActive();
 
         String selection = params.get(clientId + "_selection");
         Set<String> rowKeys = Collections.emptySet();
@@ -56,15 +54,7 @@ public class SelectionFeature implements DataTableFeature {
             table.setSelectAll(false);
         }
 
-        if (isFiltered) {
-            table.setValue(null);
-        }
-
         decodeSelection(context, table, rowKeys);
-
-        if (isFiltered) {
-            table.setValue(originalValue);
-        }
 
         if (table.isMultiViewState()) {
             DataTableState ts = table.getMultiViewState(true);
