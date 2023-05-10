@@ -24,6 +24,7 @@
 package org.primefaces.component.treetable.feature;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 
 public final class TreeTableFeatures {
 
+    // order matters: filter should be decoded before selection
     private static final Map<Class<? extends TreeTableFeature>, TreeTableFeature> ALL_FEATURES = Stream.of(
                     new CellEditFeature(),
                     new CollapseFeature(),
@@ -42,7 +44,7 @@ public final class TreeTableFeatures {
                     new RowEditFeature(),
                     new SelectionFeature(),
                     new SortFeature())
-            .collect(Collectors.toMap(TreeTableFeature::getClass, Function.identity()));
+            .collect(Collectors.toMap(TreeTableFeature::getClass, Function.identity(), (u, v) -> u, LinkedHashMap::new));
 
     private TreeTableFeatures() {
         // NOOP
