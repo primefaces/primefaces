@@ -69,8 +69,7 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         ignoreComponentNotFound,
         disableOnAjax,
         filterNormalize,
-        ariaLabel,
-        alwaysShowDropdown
+        ariaLabel
     }
 
     public SplitButtonBase() {
@@ -344,13 +343,5 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
-    }
-
-    public boolean isAlwaysShowDropdown() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.alwaysShowDropdown, false);
-    }
-
-    public void setAlwaysShowDropdown(boolean alwaysShowDropdown) {
-        getStateHelper().put(PropertyKeys.alwaysShowDropdown, alwaysShowDropdown);
     }
 }

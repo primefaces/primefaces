@@ -72,7 +72,7 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * SplitButton
     * Added attribute `filterNormalize` to allow normalized filtering (without accents).
-    * Added attribute `alwaysShowDropdown` to force the dropdown to button always be displayed (even if there are no menuitems), to attach a `OverlayPanel` to it.
+    * `OverlayPanel` can be added as child component to use as the overlay instead of `MenuItem`s.
 * StaticMessage
     * Added attribute `display` with supported values `both` (default), `icon` and `text`.
 * Panel

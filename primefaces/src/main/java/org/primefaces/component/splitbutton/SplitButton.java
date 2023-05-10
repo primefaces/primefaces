@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
+import org.primefaces.component.overlaypanel.OverlayPanel;
 
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
@@ -135,6 +136,15 @@ public class SplitButton extends SplitButtonBase {
         List elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
+    }
+
+    public OverlayPanel getCustomOverlay() {
+        return getChildren().stream()
+                    .filter(UIComponent::isRendered)
+                    .filter(OverlayPanel.class::isInstance)
+                    .map(OverlayPanel.class::cast)
+                    .findAny()
+                    .orElse(null);
     }
 
     @Override

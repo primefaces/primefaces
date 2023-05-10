@@ -27174,14 +27174,6 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
-        <attribute>
-            <description>
-                <![CDATA[If true, the dropdown button will always be displayed (even if there are no menuitems). Default is 'false'.]]>
-            </description>
-            <name>alwaysShowDropdown</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
     </tag>
     <tag>
         <description>

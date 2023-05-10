@@ -37,6 +37,8 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.component.overlaypanel.OverlayPanelRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.*;
@@ -63,6 +65,11 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             if (params.containsKey(param)) {
                 component.queueEvent(new ActionEvent(component));
             }
+        }
+
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null) {
+            new OverlayPanelRenderer().decode(context, customOverlay);
         }
     }
 
@@ -98,12 +105,18 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.isAlwaysShowDropdown() || button.getElementsCount() > 0) {
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null || button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }
 
         writer.endElement("div");
+
+        if (customOverlay != null) {
+            customOverlay.setFor(clientId);
+            new OverlayPanelRenderer().encodeEnd(context, customOverlay);
+        }
     }
 
     protected void encodeDefaultButton(FacesContext context, SplitButton button, String id) throws IOException {
