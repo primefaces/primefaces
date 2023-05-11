@@ -699,7 +699,7 @@
          * @param {string} [context] The ID of a container with an element to focus
          */
         focus: function(id, context) {
-            var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
+            var selector = ':not(:submit):not(:button):input:visible:enabled[name], a:first';
 
             setTimeout(function() {
                 if(id) {
