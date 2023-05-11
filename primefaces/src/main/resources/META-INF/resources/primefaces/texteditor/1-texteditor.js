@@ -130,17 +130,18 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         //set initial value
         this.input.val(this.getEditorValue());
 
-        //update input on change
-        this.editor.on('text-change', function(delta, oldDelta, source) {
-            $this.input.val($this.getEditorValue());
-            $this.callBehavior('change');
-        });
         this.editor.on('selection-change', function(range, oldRange, source) {
             if(range && !oldRange) {
                 $this.callBehavior('focus');
             }
             if(!range && oldRange) {
                 $this.callBehavior('blur');
+
+                // Handle change event here, quilljs text-change behaves more like an 'input' event
+                if ($this.input.val() !== $this.getEditorValue()) {
+                    $this.input.val($this.getEditorValue());
+                    $this.callBehavior('change');
+                }
             }
             if(range && oldRange) {
                 $this.callBehavior('select');
