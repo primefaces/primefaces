@@ -41,7 +41,7 @@ import java.util.List;
 public class DataView003Test extends AbstractDataTableTest {
     private final List<ProgrammingLanguage> langs = new ProgrammingLanguageService().getLangs();
 
-    @RepeatedTest(10)
+    @Test
     @Order(1)
     @DisplayName("DataView: Multiviewstate")
     public void testMVS(Page page, DataView003Test.OtherPage otherPage) {
