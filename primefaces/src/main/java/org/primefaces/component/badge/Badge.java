@@ -27,6 +27,7 @@ import org.primefaces.model.badge.BadgeModel;
 import org.primefaces.model.badge.DefaultBadgeModel;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class Badge extends BadgeBase {
@@ -45,6 +46,10 @@ public class Badge extends BadgeBase {
 
     public BadgeRenderer getRenderer() {
         return (BadgeRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());
+    }
+
+    public static Badge create(FacesContext context) {
+        return (Badge) context.getApplication().createComponent(Badge.COMPONENT_TYPE);
     }
 
     public BadgeModel toBadgeModel() {
