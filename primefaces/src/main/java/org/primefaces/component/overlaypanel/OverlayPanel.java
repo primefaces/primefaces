@@ -28,6 +28,8 @@ import java.util.Map;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
+import static org.primefaces.component.overlaypanel.OverlayPanelBase.COMPONENT_FAMILY;
+import static org.primefaces.component.overlaypanel.OverlayPanelBase.DEFAULT_RENDERER;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MapBuilder;
@@ -52,6 +54,10 @@ public class OverlayPanel extends OverlayPanelBase {
             .put("loadContent", null)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    public static OverlayPanelRenderer getDefaultRenderer(FacesContext context) {
+        return (OverlayPanelRenderer) context.getRenderKit().getRenderer(COMPONENT_FAMILY, DEFAULT_RENDERER);
+    }
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {

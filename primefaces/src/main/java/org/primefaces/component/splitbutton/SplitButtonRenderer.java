@@ -38,7 +38,6 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.component.overlaypanel.OverlayPanelRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.*;
@@ -69,7 +68,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         OverlayPanel customOverlay = button.getCustomOverlay();
         if (customOverlay != null) {
-            new OverlayPanelRenderer().decode(context, customOverlay);
+            OverlayPanel.getDefaultRenderer(context).decode(context, customOverlay);
         }
     }
 
@@ -115,7 +114,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         if (customOverlay != null) {
             customOverlay.setFor(clientId);
-            new OverlayPanelRenderer().encodeEnd(context, customOverlay);
+            OverlayPanel.getDefaultRenderer(context).encodeEnd(context, customOverlay);
         }
     }
 
