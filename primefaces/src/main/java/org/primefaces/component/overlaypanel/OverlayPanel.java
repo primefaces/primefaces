@@ -28,8 +28,6 @@ import java.util.Map;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
-import static org.primefaces.component.overlaypanel.OverlayPanelBase.COMPONENT_FAMILY;
-import static org.primefaces.component.overlaypanel.OverlayPanelBase.DEFAULT_RENDERER;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MapBuilder;
