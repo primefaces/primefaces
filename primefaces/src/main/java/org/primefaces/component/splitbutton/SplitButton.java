@@ -125,8 +125,8 @@ public class SplitButton extends SplitButtonBase {
         }
         else {
             return getChildren().stream()
-                        .filter(UIComponent::isRendered)
                         .filter(MenuElement.class::isInstance)
+                        .filter(UIComponent::isRendered)
                         .map(MenuElement.class::cast)
                         .collect(Collectors.toList());
         }
@@ -140,8 +140,8 @@ public class SplitButton extends SplitButtonBase {
 
     public OverlayPanel getCustomOverlay() {
         return getChildren().stream()
-                    .filter(UIComponent::isRendered)
                     .filter(OverlayPanel.class::isInstance)
+                    .filter(UIComponent::isRendered)
                     .map(OverlayPanel.class::cast)
                     .findAny()
                     .orElse(null);
