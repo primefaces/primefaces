@@ -23,87 +23,64 @@
  */
 package org.primefaces.integrationtests.texteditor;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
-import org.primefaces.selenium.component.Button;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TextEditor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TextEditor003Test extends AbstractPrimePageTest {
-
+public class TextEditor004Test extends AbstractPrimePageTest {
     @Test
-    public void testFocusLostToButton(Page page) {
+    @DisplayName("TextEditor: change event not fired if editor is not blurred")
+    public void testNoChange(Page page) {
         // Arrange
         Messages messages = page.messages;
-        TextEditor textEditor = page.editor;
-        Button doNothing = page.doNothing;
+        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
 
         // Act
-        textEditor.getEditor().click();
-        textEditor.setValue("Hello world");
-        PrimeSelenium.guardAjax(doNothing).click();
+        quillEditor.sendKeys("Hello world");
+
+        // Assert
+        assertEquals(0, messages.getAllMessages().size());
+    }
+
+    @Test
+    @DisplayName("TextEditor: change event fired if editor is blurred")
+    public void testChangeEvent(Page page) {
+        // Arrange
+        Messages messages = page.messages;
+        WebElement outside = page.outside;
+        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
+
+        // Act
+        quillEditor.sendKeys("Hello world");
+        PrimeSelenium.guardAjax(outside).click();
 
         // Assert
         assertEquals(1, messages.getAllMessages().size());
         assertEquals("<p>Hello world</p>", messages.getMessage(0).getSummary());
     }
 
-    @Test
-    public void testNoBlurOnPaste(Page page) {
-        // Arrange
-        Messages messages = page.messages;
-        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
-        Keys command = PrimeSelenium.isSafari() ? Keys.COMMAND : Keys.CONTROL;
-
-        // Act
-        quillEditor.sendKeys("Hello world");
-        quillEditor.sendKeys(Keys.chord(command, "a"));
-        quillEditor.sendKeys(Keys.chord(command, "c"));
-        quillEditor.sendKeys(Keys.DELETE);
-        quillEditor.sendKeys(Keys.chord(command, "v"));
-
-        // Assert
-        assertEquals(0, messages.getAllMessages().size());
-    }
-
-    @Test
-    public void testNoBlurOnToolbar(Page page) {
-        // Arrange
-        Messages messages = page.messages;
-        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
-        WebElement formatBold = page.editor.findElement(By.className("ql-bold"));
-
-        // Act
-        quillEditor.sendKeys("Hello world");
-        quillEditor.sendKeys(Keys.chord(PrimeSelenium.isSafari() ? Keys.COMMAND : Keys.CONTROL, "a"));
-        formatBold.click();
-
-        // Assert
-        assertEquals(0, messages.getAllMessages().size());
-    }
-
-
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:msgs")
         Messages messages;
 
+        @FindBy(id = "form:outside")
+        WebElement outside;
+
         @FindBy(id = "form:textEditor")
         TextEditor editor;
 
-        @FindBy(id = "form:doNothing")
-        Button doNothing;
-
         @Override
         public String getLocation() {
-            return "texteditor/textEditor003.xhtml";
+            return "texteditor/textEditor004.xhtml";
         }
     }
 }
