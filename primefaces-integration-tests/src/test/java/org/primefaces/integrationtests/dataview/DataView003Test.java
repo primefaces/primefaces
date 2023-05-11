@@ -25,13 +25,13 @@ package org.primefaces.integrationtests.dataview;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.datatable.AbstractDataTableTest;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataView;
@@ -47,8 +47,8 @@ public class DataView003Test extends AbstractDataTableTest {
     public void testMVS(Page page, DataView003Test.OtherPage otherPage) {
         // Arrange
         PrimeSelenium.goTo(page);
-//        DataView dataView = page.dataView;
-        DataView dataView = PrimeSelenium.createFragment(DataView.class, By.id("form:dataview"));
+        DataView dataView = page.dataView;
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataView));
 
         // Assert
         Assertions.assertEquals(3, dataView.getPaginator().getPages().size());
@@ -69,9 +69,9 @@ public class DataView003Test extends AbstractDataTableTest {
         // Act
         PrimeSelenium.goTo(otherPage);
         PrimeSelenium.goTo(page);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataView));
 
         // Assert - Part 2
-        dataView = PrimeSelenium.createFragment(DataView.class, By.id("form:dataview"));
         Assertions.assertEquals(2, dataView.getPaginator().getPages().size());
         firstRowElt = dataView.getRowWebElement(0);
         Assertions.assertTrue(firstRowElt.getText().contains(langs.get(4).getId().toString()));
