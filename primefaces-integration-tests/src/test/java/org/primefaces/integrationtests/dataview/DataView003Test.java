@@ -24,10 +24,8 @@
 package org.primefaces.integrationtests.dataview;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.datatable.AbstractDataTableTest;
@@ -43,13 +41,14 @@ import java.util.List;
 public class DataView003Test extends AbstractDataTableTest {
     private final List<ProgrammingLanguage> langs = new ProgrammingLanguageService().getLangs();
 
-    @Test
+    @RepeatedTest(10)
     @Order(1)
     @DisplayName("DataView: Multiviewstate")
     public void testMVS(Page page, DataView003Test.OtherPage otherPage) {
         // Arrange
         PrimeSelenium.goTo(page);
-        DataView dataView = page.dataView;
+//        DataView dataView = page.dataView;
+        DataView dataView = PrimeSelenium.createFragment(DataView.class, By.id("form:dataview"));
 
         // Assert
         Assertions.assertEquals(3, dataView.getPaginator().getPages().size());
@@ -72,6 +71,7 @@ public class DataView003Test extends AbstractDataTableTest {
         PrimeSelenium.goTo(page);
 
         // Assert - Part 2
+        dataView = PrimeSelenium.createFragment(DataView.class, By.id("form:dataview"));
         Assertions.assertEquals(2, dataView.getPaginator().getPages().size());
         firstRowElt = dataView.getRowWebElement(0);
         Assertions.assertTrue(firstRowElt.getText().contains(langs.get(4).getId().toString()));
