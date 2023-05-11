@@ -47,7 +47,7 @@ public class BadgeRenderer extends CoreRenderer {
             IOBiConsumer<FacesContext, T> contentRenderer, T component) throws IOException {
         BadgeModel badgeModel = Badge.getBadgeModel(badge);
         if (badgeModel != null) {
-            BadgeRenderer badgeRenderer = Badge.getDefaultRenderer(context);
+            BadgeRenderer badgeRenderer = new Badge().getRenderer();
             badgeRenderer.encodeOverlayBegin(context, null);
             contentRenderer.accept(context, component);
             badgeRenderer.encode(context, null, badgeModel, false);
@@ -61,7 +61,7 @@ public class BadgeRenderer extends CoreRenderer {
     public static void encode(FacesContext context, Object badge) throws IOException {
         BadgeModel badgeModel = Badge.getBadgeModel(badge);
         if (badgeModel != null) {
-            BadgeRenderer badgeRenderer = Badge.getDefaultRenderer(context);
+            BadgeRenderer badgeRenderer = new Badge().getRenderer();
             badgeRenderer.encode(context, null, badgeModel, false);
         }
     }

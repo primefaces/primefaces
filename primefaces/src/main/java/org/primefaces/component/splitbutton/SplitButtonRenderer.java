@@ -68,7 +68,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         OverlayPanel customOverlay = button.getCustomOverlay();
         if (customOverlay != null) {
-            OverlayPanel.getDefaultRenderer(context).decode(context, customOverlay);
+            customOverlay.getRenderer().decode(context, customOverlay);
         }
     }
 
@@ -114,7 +114,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         if (customOverlay != null) {
             customOverlay.setFor(clientId);
-            OverlayPanel.getDefaultRenderer(context).encodeEnd(context, customOverlay);
+            customOverlay.getRenderer().encodeEnd(context, customOverlay);
         }
     }
 
