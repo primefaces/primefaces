@@ -150,8 +150,9 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         // QuillJS doesn't handle blurring when focus is lost to e.g. a button, handle blur event separately here as a workaround
         // See https://github.com/quilljs/quill/issues/1397
         this.editor.root.addEventListener('blur', function(e) {
-            if (e.relatedTarget === $this.editor.clipboard.container) {
-                return; // Ignore pasting
+            // Ignore if focus has been lost to the toolbar or user pasting
+            if ($this.cfg.toolbarVisible && $this.toolbar[0].contains(e.relatedTarget) || e.relatedTarget === $this.editor.clipboard.container) {
+                return;
             }
 
             $this.editor.blur(); // Triggers selection-change event above
