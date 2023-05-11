@@ -24,16 +24,14 @@
 package org.primefaces.integrationtests.dataview;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.datatable.AbstractDataTableTest;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguage;
 import org.primefaces.integrationtests.datatable.ProgrammingLanguageService;
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataView;
@@ -50,6 +48,7 @@ public class DataView003Test extends AbstractDataTableTest {
         // Arrange
         PrimeSelenium.goTo(page);
         DataView dataView = page.dataView;
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataView));
 
         // Assert
         Assertions.assertEquals(3, dataView.getPaginator().getPages().size());
@@ -70,6 +69,7 @@ public class DataView003Test extends AbstractDataTableTest {
         // Act
         PrimeSelenium.goTo(otherPage);
         PrimeSelenium.goTo(page);
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataView));
 
         // Assert - Part 2
         Assertions.assertEquals(2, dataView.getPaginator().getPages().size());
