@@ -161,6 +161,16 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     /**
+     * Sets the content of the editor, the hidden input and calls the change behavior.
+     * @param {string} value New value to be set
+     */
+    setValue: function(value) {
+        this.editor.setText(value);
+        this.input.val(this.getEditorValue());
+        this.callBehavior('change');
+    },
+
+    /**
      * Finds an returns the current contents of the editor.
      * @return {string} The current contents of the editor, as an HTML string.
      */
