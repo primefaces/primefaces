@@ -65,7 +65,12 @@ public class TextEditor004Test extends AbstractPrimePageTest {
 
         // Assert
         assertEquals(1, messages.getAllMessages().size());
-        assertEquals("<p>Hello world</p>", messages.getMessage(0).getSummary());
+        if (PrimeSelenium.isFirefox()) {
+            assertEquals("<p><br></p><p>Hello world</p>", messages.getMessage(0).getSummary());
+        }
+        else {
+            assertEquals("<p>Hello world</p>", messages.getMessage(0).getSummary());
+        }
     }
 
     public static class Page extends AbstractPrimePage {
