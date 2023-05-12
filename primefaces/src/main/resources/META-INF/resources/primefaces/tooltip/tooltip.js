@@ -320,10 +320,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      */
     align: function() {
         var $this = this;
+        // #10100 make sure z-Index is above any dynamically changing zindex like dialogs.
+        var zIndex = (PrimeFaces.nextZindex() + 1000);
         this.jq.css({
             left: '',
             top: '',
-            'z-index': PrimeFaces.nextZindex()
+            'z-index': zIndex
         });
 
         if (this.cfg.trackMouse && this.mouseEvent) {
