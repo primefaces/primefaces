@@ -9000,6 +9000,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When enabled, toggle select will only apply on filtered items]]>
+            </description>
+            <name>toggleSelectFilteredOnly</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <description>
