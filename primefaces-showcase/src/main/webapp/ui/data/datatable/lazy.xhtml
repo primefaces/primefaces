@@ -1,7 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -23,11 +22,15 @@
             <h:form id="form">
                 <p:dataTable var="customer" value="#{dtLazyView.lazyModel}" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                             rowsPerPageTemplate="5,10,15" selectionMode="single"
+                             rowsPerPageTemplate="5,10,15"
                              selection="#{dtLazyView.selectedCustomer}"
+                             filteredValue="#{dtLazyView.filteredProducts}"
+                             rowKey="#{customer.id}"
                              id="customerTable">
-                    <p:ajax event="rowSelect" listener="#{dtLazyView.onRowSelect}" update=":form:customerDetail"
-                            oncomplete="PF('customerDialog').show()"/>
+                    <p:column selectionMode="multiple" ></p:column>
+                    <p:ajax event="toggleSelect"  process="@this" update=":form:countSelect"/>
+                    <p:ajax event="filter" process="@this"
+                            update=":form:countFilter"/>
                     <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}">
                         <h:outputText value="#{customer.name}"/>
                     </p:column>
@@ -47,6 +50,10 @@
                                       value="#{customer.representative.name}"/>
                     </p:column>
                 </p:dataTable>
+
+                <p:outputLabel id="countSelect" value="Selected products: #{dtLazyView.count}"/>
+                <br />
+                <p:outputLabel id="countFilter" value="Filtered products: #{dtLazyView.filterCount}"/>
 
                 <p:dialog header="Customer Detail" widgetVar="customerDialog" modal="true" showEffect="fade"
                           hideEffect="fade" resizable="false">
