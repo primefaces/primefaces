@@ -747,20 +747,13 @@ public class DataTable extends DataTableBase {
     }
 
     public String resolveSelectionMode() {
-        String tableSelectionMode = getSelectionMode();
-        String selectionMode = null;
-
-        if (LangUtils.isNotBlank(tableSelectionMode)) {
-            selectionMode = tableSelectionMode;
+        String columnSelectionMode = getColumnSelectionMode();
+        if (LangUtils.isNotBlank(columnSelectionMode)) {
+            return "single".equals(columnSelectionMode) ? "radio" : "checkbox";
         }
         else {
-            String columnSelectionMode = getColumnSelectionMode();
-            if (LangUtils.isNotBlank(columnSelectionMode)) {
-                selectionMode = "single".equals(columnSelectionMode) ? "radio" : "checkbox";
-            }
+            return getSelectionMode();
         }
-
-        return selectionMode;
     }
 
     @Override
