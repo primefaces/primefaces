@@ -31,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.spi.FileTypeDetector;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -50,6 +51,7 @@ import org.primefaces.cache.DefaultCacheProvider;
 import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.metadata.transformer.MetadataTransformer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
@@ -77,6 +79,7 @@ public class PrimeApplicationContext {
     private final Map<Class<?>, Map<String, Object>> enumCacheMap;
     private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
     private final Map<String, ClientValidationConstraint> beanValidationClientConstraintMapping;
+    private final List<MetadataTransformer> metadataTransformers;
 
     private final Lazy<ValidatorFactory> validatorFactory;
     private final Lazy<Validator> validator;
@@ -93,6 +96,7 @@ public class PrimeApplicationContext {
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
         beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
+        metadataTransformers = new CopyOnWriteArrayList<>();
 
         ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
@@ -314,5 +318,9 @@ public class PrimeApplicationContext {
 
     public Map<String, ClientValidationConstraint> getBeanValidationClientConstraintMapping() {
         return beanValidationClientConstraintMapping;
+    }
+
+    public List<MetadataTransformer> getMetadataTransformers() {
+        return metadataTransformers;
     }
 }
