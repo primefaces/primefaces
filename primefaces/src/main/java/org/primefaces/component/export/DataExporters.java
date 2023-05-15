@@ -30,36 +30,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.export.*;
-import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.component.treetable.export.*;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.context.PrimeApplicationContext;
 
 public final class DataExporters {
 
     private static final Logger LOGGER = Logger.getLogger(DataExporters.class.getName());
-
-    private static final Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> ALL_EXPORTERS =
-            MapBuilder.<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>>builder()
-            .put(DataTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
-                    .put("xls", DataTableExcelExporter.class)
-                    .put("pdf", DataTablePDFExporter.class)
-                    .put("csv", DataTableCSVExporter.class)
-                    .put("xml", DataTableXMLExporter.class)
-                    .put("xlsx", DataTableExcelXExporter.class)
-                    .put("xlsxstream", DataTableExcelXStreamExporter.class)
-                    .build())
-            .put(TreeTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
-                    .put("xls", TreeTableExcelExporter.class)
-                    .put("pdf", TreeTablePDFExporter.class)
-                    .put("csv", TreeTableCSVExporter.class)
-                    .put("xml", TreeTableXMLExporter.class)
-                    .put("xlsx", TreeTableExcelXExporter.class)
-                    .put("xlsxstream", TreeTableExcelXStreamExporter.class)
-                    .build())
-            .build();
 
     private DataExporters() {
         // NOOP
@@ -67,7 +44,8 @@ public final class DataExporters {
 
     public static <T extends UIComponent> Exporter<T> get(Class<T> targetClass, String type) {
         String newType = type.toLowerCase();
-        Map<String, Class<? extends Exporter<?>>> supportedExporters = Optional.ofNullable(ALL_EXPORTERS.get(targetClass))
+        PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+        Map<String, Class<? extends Exporter<?>>> supportedExporters = Optional.ofNullable(primeAppContext.getExporters().get(targetClass))
                 .orElseThrow(() -> new UnsupportedOperationException(
                         "Component " + targetClass + " not supported. Use DataExporter#register()"));
 
@@ -85,7 +63,8 @@ public final class DataExporters {
 
     public static <T extends UIComponent, E extends Exporter<T>> void register(Class<T> targetClass, Class<E> exporter, String type) {
         String newType = type.toLowerCase();
-        Map<String, Class<? extends Exporter<?>>> supportedExporters = ALL_EXPORTERS.computeIfAbsent(targetClass, o -> new HashMap<>());
+        PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+        Map<String, Class<? extends Exporter<?>>> supportedExporters = primeAppContext.getExporters().computeIfAbsent(targetClass, o -> new HashMap<>());
         Class<? extends Exporter<?>> old = supportedExporters.put(newType, exporter);
         if (old != null) {
             LOGGER.log(Level.INFO, "Exporter {0} of type {1} has been replaced by {2}", new Object[]{old.getName(), newType, exporter.getName()});
