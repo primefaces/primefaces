@@ -402,6 +402,9 @@
             if(this.logger) {
                 this.logger.info(log);
             }
+            if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
+                console.info(log);
+            }
         },
 
         /**
@@ -411,6 +414,9 @@
         debug: function(log) {
             if(this.logger) {
                 this.logger.debug(log);
+            }
+            if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
+                console.debug(log);
             }
         },
 
@@ -424,7 +430,7 @@
             }
 
             if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
-                console.log(log);
+                console.warn(log);
             }
         },
 

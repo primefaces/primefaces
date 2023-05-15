@@ -21,62 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.integrationtests.selectonemenu;
-
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
+package org.primefaces.integrationtests.splitbutton;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.logging.LogEntries;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
-import org.primefaces.selenium.component.SelectOneMenu;
+import org.primefaces.selenium.component.SplitButton;
 
-public class SelectOneMenu012Test extends AbstractPrimePageTest {
+public class SplitButton001Test extends AbstractPrimePageTest {
+
+    private static final String CLASS_NAME_MENUBUTTON = "ui-splitbutton-menubutton";
 
     @Test
     @Order(1)
-    @DisplayName("SelectOneMenu: GitHub #8765 menu is generating duplicate IDs")
+    @DisplayName("SplitButton: dropdown visibility #2690 #10086")
     public void testBasic(Page page) {
-        // Arrange
-        SelectOneMenu menu = page.selectOneMenu;
-
-        // Act (do nothing)
-        menu.show();
-
-        // Assert (when fixed there should no longer be JS errors about duplicate ids)
-        assertNoJavascriptErrors();
-    }
-
-   /**
-     * Checks the browse console and asserts there are SEVERE level messages.
-     */
-    protected void assertJavascriptErrors() {
-        LogEntries logEntries = getLogsForType(LogType.BROWSER);
-        if (logEntries == null) {
-            return;
-        }
-        System.out.println(logEntries.toJson());
-        List<LogEntry> severe = logEntries.getAll().stream()
-                    .filter(l -> l.getLevel() == Level.SEVERE)
-                    .collect(Collectors.toList());
-        Assertions.assertFalse(severe.isEmpty(), "No Javascript errors were found but they were expected. Was bug #8765 fixed???.\r\n" + severe.toString());
+        Assertions.assertNotNull(page.splitButtonChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
+        Assertions.assertThrows(NoSuchElementException.class,
+                () -> page.splitButtonNoChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
+        Assertions.assertThrows(NoSuchElementException.class,
+                () -> page.splitButtonNoRenderedChildren.findElement(By.className(CLASS_NAME_MENUBUTTON)));
+        Assertions.assertNotNull(page.splitButtonOverlayPanel.findElement(By.className(CLASS_NAME_MENUBUTTON)));
     }
 
     public static class Page extends AbstractPrimePage {
-        @FindBy(id = "form:selectonemenu")
-        SelectOneMenu selectOneMenu;
+        @FindBy(id = "form:children")
+        SplitButton splitButtonChildren;
+
+        @FindBy(id = "form:noChildren")
+        SplitButton splitButtonNoChildren;
+
+        @FindBy(id = "form:noRenderedChildren")
+        SplitButton splitButtonNoRenderedChildren;
+
+        @FindBy(id = "form:overlayPanel")
+        SplitButton splitButtonOverlayPanel;
 
         @Override
         public String getLocation() {
-            return "selectonemenu/selectOneMenu012.xhtml";
+            return "splitbutton/splitbutton001.xhtml";
         }
     }
 }

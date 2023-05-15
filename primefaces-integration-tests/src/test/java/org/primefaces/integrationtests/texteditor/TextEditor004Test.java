@@ -60,17 +60,13 @@ public class TextEditor004Test extends AbstractPrimePageTest {
         WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
 
         // Act
+        quillEditor.click();
         quillEditor.sendKeys("Hello world");
         PrimeSelenium.guardAjax(outside).click();
 
         // Assert
         assertEquals(1, messages.getAllMessages().size());
-        if (PrimeSelenium.isFirefox()) {
-            assertEquals("<p><br></p><p>Hello world</p>", messages.getMessage(0).getSummary());
-        }
-        else {
-            assertEquals("<p>Hello world</p>", messages.getMessage(0).getSummary());
-        }
+        assertEquals("<p>Hello world</p>", messages.getMessage(0).getSummary());
     }
 
     public static class Page extends AbstractPrimePage {
