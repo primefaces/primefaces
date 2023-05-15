@@ -18,7 +18,7 @@ DataTable displays data in tabular format.
 ## Attributes
 
 | Name                      | Default            | Type             | Description
-|---------------------------| ------------------ | ---------------- | ------------------ |
+|---------------------------|--------------------| ---------------- | ------------------ |
 | allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is false.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
@@ -91,6 +91,7 @@ DataTable displays data in tabular format.
 | scrollRows                | 0                  | Integer          | Number of rows to load on live scroll.
 | scrollWidth               | null               | Integer          | Scroll viewport width.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
+| selectAllFilteredOnly     | false              | Boolean          | When enabled, toggle select will only apply on filtered items. Default is false.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
 | selectionPageOnly         | true               | Boolean          | When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
@@ -112,7 +113,7 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
-| touchable                 | null              | Boolean           | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
+| touchable                 | null               | Boolean          | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
 | showSelectAll             | true               | Boolean          | Whether to show the select all checkbox inside the column's header.
 
