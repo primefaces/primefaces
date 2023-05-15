@@ -1,9 +1,28 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+.square .clr-field button, .circle .clr-field button {
+    width: 22px;
+    height: 22px;
+    left: 5px;
+    right: auto;
+    border-radius: 5px;
+}
+
+.square .clr-field input, .circle .clr-field input {
+    padding-left: 36px;
+}
+
+.circle .clr-field button {
+    border-radius: 50%;
+}
+</style>
+    </ui:define>
 
     <ui:define name="title">
         Color Picker
@@ -13,19 +32,159 @@
         Gone are the days to manually enter in hex codes to select colors.
     </ui:define>
 
-    <ui:param name="documentationLink" value="/components/colorpicker"/>
-    <ui:param name="widgetLink" value="ColorPicker-1"/>
+    <ui:param name="documentationLink" value="/components/colorpicker" />
+    <ui:param name="widgetLink" value="ColorPicker-1" />
 
     <ui:define name="implementation">
-        <div class="card">
-            <h:form>
-                <h5 class="mt-0">Inline</h5>
-                <p:colorPicker value="#{colorView.colorInline}" mode="inline" />
+        <h:form>
+            <div class="card">
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
 
                 <h5>Popup</h5>
-                <p:colorPicker value="#{colorView.colorPopup}" />
-            </h:form>
-        </div>
+                <div class="ui-fluid grid formgrid">
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Ajax" />
+                        <p:colorPicker id="ajax" value="#{colorView.ajax}"
+                            clearButton="true" closeButton="true" alpha="false">
+                            <p:ajax event="open" listener="#{colorView.onPopupOpened}" />
+                            <p:ajax event="close" listener="#{colorView.onPopupClosed}" update="@this" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="pill" value="Pill (horizontal)" />
+                        <p:colorPicker id="pill" value="#{colorView.pill}" theme="pill"
+                            formatToggle="true" clearButton="true" closeButton="true"
+                            alpha="false">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Polaroid (skinny)" />
+                        <p:colorPicker id="polaroid" value="#{colorView.polaroid}"
+                            theme="polaroid" formatToggle="true" clearButton="true"
+                            closeButton="true" alpha="false">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Large" />
+                        <p:colorPicker id="large" value="#{colorView.large}" theme="large"
+                            formatToggle="true" clearButton="true" closeButton="true"
+                            forceAlpha="true">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Swatches Only" />
+                        <p:colorPicker id="swatches" value="#{colorView.swatches}"
+                            swatchesOnly="true" theme="polaroid" clearButton="false"
+                            closeButton="false"
+                            swatches="#264653, #2a9d8f, #e9c46a, #f4a261, #e76f51, #d62828, #023e8a, #0077b6, #0096c7, #00b4d8, #48cae4">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2 thumbnail">
+                        <p:outputLabel for="@next" value="Thumbnail" />
+                        <p:colorPicker id="thumbnail" value="#{colorView.thumbnail}"
+                            swatchesOnly="true" theme="polaroid" clearButton="true"
+                            closeButton="true"
+                            swatches="#264653, #2a9d8f, #e9c46a, #f4a261, #e76f51, #d62828, #023e8a, #0077b6, #0096c7, #00b4d8, #48cae4">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Dark Mode" />
+                        <p:colorPicker id="dark" value="#{colorView.dark}" theme="pill"
+                            themeMode="dark" clearButton="true" closeButton="true"
+                            formatToggle="true"
+                            swatches="#067bc2, #84bcda, #80e377,  #ecc30b, #f37748, #d56062">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Light Mode" />
+                        <p:colorPicker id="light" value="#{colorView.light}" theme="pill"
+                            themeMode="light" clearButton="true" closeButton="true"
+                            formatToggle="true"
+                            swatches="#067bc2, #84bcda, #80e377,  #ecc30b, #f37748, #d56062">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Alpha" />
+                        <p:colorPicker id="alpha" value="#{colorView.alpha}"
+                            clearButton="true" closeButton="true" alpha="true"
+                            forceAlpha="true">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="rgb" value="RGB" />
+                        <p:colorPicker id="rgb" value="#{colorView.rgb}" theme="large"
+                            clearButton="true" closeButton="true" format="rgb">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="HSL" />
+                        <p:colorPicker id="hsl" value="#{colorView.hsl}" theme="large"
+                            clearButton="true" closeButton="true" format="hsl">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2 circle">
+                        <p:outputLabel for="@next" value="Circle" />
+                        <p:colorPicker id="circle" value="#{colorView.circle}"
+                            format="auto">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2 square">
+                        <p:outputLabel for="@next" value="Square" />
+                        <p:colorPicker id="square" value="#{colorView.square}"
+                            format="auto">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="RTL" />
+                        <p:colorPicker id="rtl" value="#{colorView.rtl}" theme="large"
+                            dir="rtl" formatToggle="true" clearButton="true"
+                            closeButton="true" forceAlpha="true">
+                            <p:ajax event="change" listener="#{colorView.onColorChange}" />
+                        </p:colorPicker>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Disabled" />
+                        <p:colorPicker disabled="true" value="#000000" />
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <p:outputLabel for="@next" value="Error" />
+                        <p:colorPicker value="#FFFFFF" class="ui-state-error" />
+                    </div>
+                    <div class="field col-12 md:col-2 mt-5">
+                        <span class="ui-float-label"> 
+                            <p:colorPicker clearButton="true" closeButton="true" alpha="false" /> 
+                            <p:outputLabel for="@previous" value="Float Label" />
+                        </span>
+                    </div>
+                </div>
+                
+                 <p:commandButton value="Open Dialog" type="button" icon="pi pi-external-link" onclick="PF('dlg').show()"/>
+            </div>
+
+            <p:dialog header="Pick Color" widgetVar="dlg" minHeight="50" width="350" showEffect="fade" modal="true">
+                <div style="height: 300px">
+                <p:outputLabel for="@next" value="Pick Color:" />
+                <p:colorPicker id="dialogPicker" clearButton="true" closeButton="true" alpha="false" />
+                </div>
+                <f:facet name="footer">
+                    <p:commandButton type="button" value="Close" style="width: 5rem" onclick="PF('dlg').hide()"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
     </ui:define>
 
 </ui:composition>

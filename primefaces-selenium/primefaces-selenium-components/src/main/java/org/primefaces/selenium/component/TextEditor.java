@@ -71,7 +71,7 @@ public abstract class TextEditor extends InputText {
             value = "\"\"";
         }
 
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".editor.setText('" + value.toString() + "');");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue('" + value.toString() + "');");
     }
 
     /**

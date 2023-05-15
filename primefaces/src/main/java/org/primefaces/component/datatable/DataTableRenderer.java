@@ -24,11 +24,13 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -38,7 +40,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.SelectItem;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -46,7 +47,8 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.component.datatable.feature.*;
+import org.primefaces.component.datatable.feature.DataTableFeature;
+import org.primefaces.component.datatable.feature.DataTableFeatures;
 import org.primefaces.component.headerrow.HeaderRow;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.subtable.SubTable;
@@ -66,7 +68,7 @@ public class DataTableRenderer extends DataRenderer {
     public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
 
-        for (DataTableFeature feature : DataTable.FEATURES) {
+        for (DataTableFeature feature : DataTableFeatures.all()) {
             if (feature.shouldDecode(context, table)) {
                 feature.decode(context, table);
             }
@@ -80,7 +82,7 @@ public class DataTableRenderer extends DataRenderer {
         DataTable table = (DataTable) component;
 
         if (table.shouldEncodeFeature(context)) {
-            for (DataTableFeature feature : DataTable.FEATURES) {
+            for (DataTableFeature feature : DataTableFeatures.all()) {
                 if (feature.shouldEncode(context, table)) {
                     feature.encode(context, this, table);
                 }
@@ -104,7 +106,7 @@ public class DataTableRenderer extends DataRenderer {
         encodeScript(context, table);
 
         if (table.isPaginator() && table.getRows() == 0) {
-            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: " + table.getClientId());
+            LOGGER.log(Level.WARNING, "DataTable with paginator=true should also set the rows attribute. ClientId: {0}", table.getClientId());
         }
     }
 
@@ -121,35 +123,19 @@ public class DataTableRenderer extends DataRenderer {
             table.setScrollOffset(0);
         }
 
-        if (table.isLazy()) {
-            if (table.isLiveScroll()) {
-                table.loadLazyScrollData(0, table.getScrollRows());
-            }
-            else if (table.isVirtualScroll()) {
-                int rows = table.getRows();
-                int scrollRows = table.getScrollRows();
-                int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-
-                table.loadLazyScrollData(0, scrollRows);
-            }
-            else {
-                table.loadLazyData();
-            }
-        }
-        else {
+        if (!table.loadLazyDataIfEnabled()) {
             if (table.isFilteringCurrentlyActive()) {
-                FilterFeature.getInstance().filter(context, table);
+                DataTableFeatures.filterFeature().filter(context, table);
             }
 
             if (table.isSortingCurrentlyActive()) {
-                SortFeature.getInstance().sort(context, table);
+                DataTableFeatures.sortFeature().sort(context, table);
                 table.setRowIndex(-1); // why?
             }
         }
 
         if (table.isSelectionEnabled()) {
-            SelectionFeature.getInstance().decodeSelectionRowKeys(context, table);
+            DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
         }
 
         if (table.isPaginator()) {
@@ -765,16 +751,14 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent filterFacet = table.getFilterComponent(column);
+        UIComponent filterFacet = column.getFilterComponent();
 
         if (!ComponentUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            if (filterValue != null) {
-                ((ValueHolder) filterFacet).setValue(filterValue);
-            }
+            ((ValueHolder) filterFacet).setValue(filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);
@@ -808,66 +792,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
-
-        if (hasFilterOptions(column)) {
-            encodeFilterInputSelect(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
-        }
-        else {
-            encodeFilterInputText(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
-        }
-    }
-
-    private boolean hasFilterOptions(UIColumn column) {
-        boolean hasFilterOptionsVE = column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) != null;
-        if (!hasFilterOptionsVE) {
-            return false;
-        }
-
-        SelectItem[] filterOptions = getFilterOptions(column);
-        return filterOptions != null && filterOptions.length != 0;
-    }
-
-    protected void encodeFilterInputSelect(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
-
-        filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
-
-        writer.startElement("select", null);
-        writer.writeAttribute("id", filterId, null);
-        writer.writeAttribute("name", filterId, null);
-        writer.writeAttribute("class", filterStyleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
-
-        if (disableTabbing) {
-            writer.writeAttribute("tabindex", "-1", null);
-        }
-
-        SelectItem[] itemsArray = getFilterOptions(column);
-
-        for (SelectItem item : itemsArray) {
-            Object itemValue = item.getValue();
-
-            writer.startElement("option", null);
-            writer.writeAttribute("value", item.getValue(), null);
-            if (itemValue != null && String.valueOf(itemValue).equals(filterValue)) {
-                writer.writeAttribute("selected", "selected", null);
-            }
-
-            if (item.isEscape()) {
-                writer.writeText(item.getLabel(), "value");
-            }
-            else {
-                writer.write(item.getLabel());
-            }
-
-            writer.endElement("option");
-        }
-
-        writer.endElement("select");
-    }
-
-    protected void encodeFilterInputText(UIColumn column, ResponseWriter writer, boolean disableTabbing,
         String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
 
         filterStyleClass = filterStyleClass == null
@@ -918,20 +842,6 @@ public class DataTableRenderer extends DataRenderer {
             }
         }
         return filterValue;
-    }
-
-    protected SelectItem[] getFilterOptions(UIColumn column) {
-        Object options = column.getFilterOptions();
-
-        if (options instanceof SelectItem[]) {
-            return (SelectItem[]) options;
-        }
-        else if (options instanceof Collection<?>) {
-            return ((Collection<SelectItem>) column.getFilterOptions()).toArray(new SelectItem[]{});
-        }
-        else {
-            throw new FacesException("Filter options for column " + column.getClientId() + " should be a SelectItem array or collection");
-        }
     }
 
     public void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
@@ -1286,7 +1196,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tr");
 
         if (expanded) {
-            RowExpandFeature.getInstance().encodeExpansion(context, this, table, rowIndex);
+            DataTableFeatures.rowExpandFeature().encodeExpansion(context, this, table, rowIndex);
         }
 
         return true;

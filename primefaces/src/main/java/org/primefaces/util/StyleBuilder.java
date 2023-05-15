@@ -35,6 +35,16 @@ public class StyleBuilder {
         sb = SharedStringBuilder.get(context, KEY);
     }
 
+    public StyleBuilder add(String style) {
+        add(LangUtils.isNotBlank(style), style);
+        return this;
+    }
+
+    public StyleBuilder add(String attribute, String value) {
+        add(LangUtils.isNotBlank(value), attribute, value);
+        return this;
+    }
+
     public StyleBuilder add(boolean condition, String style) {
         if (condition) {
             if (sb.length() != 0) {
@@ -56,17 +66,12 @@ public class StyleBuilder {
     }
 
     public StyleBuilder add(boolean condition, String attribute, String trueValue, String falseValue) {
-        add(condition, attribute, trueValue).add(!condition, attribute, falseValue);
-        return this;
-    }
-
-    public StyleBuilder add(String style) {
-        add(LangUtils.isNotBlank(style), style);
-        return this;
-    }
-
-    public StyleBuilder add(String defaultStyle, String userStyle) {
-        add(defaultStyle).add(userStyle);
+        if (condition) {
+            add(attribute, trueValue);
+        }
+        else {
+            add(attribute, falseValue);
+        }
         return this;
     }
 

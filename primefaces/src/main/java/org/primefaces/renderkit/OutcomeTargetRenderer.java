@@ -24,7 +24,6 @@
 package org.primefaces.renderkit;
 
 import java.util.*;
-
 import javax.faces.FacesException;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
@@ -49,13 +48,12 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            if (outcomeTarget instanceof UIComponent) {
-                String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
+        if (outcomeTarget instanceof UIComponent
+                && PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
+            String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
-                if (toFlowDocumentId != null) {
-                    return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);
-                }
+            if (toFlowDocumentId != null) {
+                return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);
             }
         }
 
@@ -199,7 +197,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
         finally {
-            if (clientWindowRenderingModeEnabled && clientWindow != null) {
+            if (clientWindowRenderingModeEnabled) {
                 ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
             }
         }

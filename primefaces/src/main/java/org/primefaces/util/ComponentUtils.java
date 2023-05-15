@@ -60,8 +60,8 @@ public class ComponentUtils {
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
             EnumSet.of(VisitHint.SKIP_UNRENDERED));
 
-    public static final Set<VisitHint> VISIT_HINTS_SKIP_ITERATION = Collections.unmodifiableSet(
-            EnumSet.of(VisitHint.SKIP_ITERATION));
+    public static final Lazy<Set<VisitHint>> VISIT_HINTS_SKIP_ITERATION = new Lazy<>(() ->
+            Collections.unmodifiableSet(EnumSet.of(VisitHint.SKIP_ITERATION)));
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
@@ -716,5 +716,10 @@ public class ComponentUtils {
         }
 
         return renderedChildCount;
+    }
+
+    public static boolean isDisabledOrReadonly(UIInput component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
+                || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
     }
 }

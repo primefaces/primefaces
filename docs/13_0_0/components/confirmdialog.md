@@ -79,11 +79,11 @@ At the moment p:confirm is supported by p:commandButton, p:commandLink and p:men
 ```xhtml
 <p:growl id="messages" />
 <p:commandButton value="Save" action="#{bean.save}" update="messages">
-    <p:confirm header="Confirmation" message="Sure?" icon="ui-icon-alert"/>
+    <p:confirm header="Confirmation" message="Sure?" icon="pi pi-exclamation-triangle"/>
 </p:commandButton>
 <p:confirmDialog global="true">
-    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
 </p:confirmDialog>
 ```
 ## Client Side API

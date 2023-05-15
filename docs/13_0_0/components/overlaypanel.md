@@ -69,6 +69,7 @@ _showEvent_ and _hideEvent_ options.
 | --- | --- | --- |
 | show | javax.faces.event.AjaxBehaviorEvent | On show.
 | hide | javax.faces.event.AjaxBehaviorEvent | On hide.
+| loadContent | javax.faces.event.AjaxBehaviorEvent | On dynamic content load.
 
 ## Positioning
 By default, left top corner of panel is aligned to left bottom corner of the target if there is enough

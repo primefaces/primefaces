@@ -35,7 +35,8 @@ widgetVar | null | String | Name of the client side widget.
 disabled | false | Boolean | Disables the component.
 label | null | String | User presentable name.
 layout | lineDirection | String | Layout of the checkboxes, valid values are lineDirection , pageDirection, grid, responsive and custom.
-columns | 0 | Integer | Number of columns in grid layout.
+flex | false | Boolean | Use modern PrimeFlex-Grid in responsive mode instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)
+columns | 12 | Integer | Number of columns in responsive layout.
 onchange | null | String | Callback to execute on value change.
 style | null | String | Inline style of the component.
 styleClass | null | String | Style class of the container.

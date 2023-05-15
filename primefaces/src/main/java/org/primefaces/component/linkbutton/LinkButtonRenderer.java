@@ -118,7 +118,8 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
                 renderChildren(context, linkButton);
             }
             else {
-                writer.write("ui-button");
+                //For ScreenReader
+                writer.write(getIconOnlyButtonText(linkButton.getTitle(), linkButton.getAriaLabel()));
             }
         }
         else {

@@ -65,15 +65,13 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             });
 
             this.trigger.on('keydown.ui-menu', function(e) {
-                var keyCode = $.ui.keyCode;
-
-                switch(e.which) {
-                    case keyCode.DOWN:
+                switch(e.key) {
+                    case 'ArrowDown':
                         $this.keyboardTarget.trigger('focus.menu');
                         e.preventDefault();
                     break;
 
-                    case keyCode.TAB:
+                    case 'Tab':
                         if($this.jq.is(':visible')) {
                             $this.hide();
                         }
@@ -109,11 +107,9 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             $this.menuitemLinks.filter('.ui-state-hover').removeClass('ui-state-hover');
         })
         .on('keydown.menu', function(e) {
-            var currentLink = $this.menuitemLinks.filter('.ui-state-hover'),
-            keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                    case keyCode.UP:
+            var currentLink = $this.menuitemLinks.filter('.ui-state-hover');
+            switch(e.key) {
+                    case 'ArrowUp':
                         var prevItem = currentLink.parent().prevAll('.ui-menuitem:first');
                         if(prevItem.length) {
                             currentLink.removeClass('ui-state-hover');
@@ -123,7 +119,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         var nextItem = currentLink.parent().nextAll('.ui-menuitem:first');
                         if(nextItem.length) {
                             currentLink.removeClass('ui-state-hover');
@@ -133,13 +129,13 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                         e.preventDefault();
                     break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         currentLink.trigger('click');
                         $this.jq.trigger("blur");
                         PrimeFaces.utils.openLink(e, currentLink);
                     break;
 
-                    case keyCode.ESCAPE:
+                    case 'Escape':
                         $this.hide();
 
                         if($this.cfg.overlay) {
@@ -188,7 +184,7 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
     expandSubmenu: function(header, stateful) {
         var items = header.nextUntil('li.ui-widget-header');
 
-        header.attr('aria-expanded', false)
+        header.attr('aria-expanded', true)
                 .find('> h3 > .ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
 
         items.filter('.ui-submenu-child').show();
@@ -222,7 +218,10 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
             this.collapsedIds = collapsedIdsAsString.split(',');
 
             for(var i = 0 ; i < this.collapsedIds.length; i++) {
-                this.collapseSubmenu($(PrimeFaces.escapeClientId(this.collapsedIds[i])), false);
+                var id = this.collapsedIds[i];
+                if (id) {
+                    this.collapseSubmenu($(PrimeFaces.escapeClientId(id).replace(/\|/g,"\\|")), false);
+                }
             }
         }
     },

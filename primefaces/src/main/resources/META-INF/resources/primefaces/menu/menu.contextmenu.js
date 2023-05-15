@@ -49,6 +49,7 @@
  * @prop {string} cfg.target Client ID of the target widget.
  * @prop {string} cfg.targetFilter Selector to filter the elements to attach the menu.
  * @prop {string} cfg.targetWidgetVar Widget variable of the target widget.
+ * @prop {boolean} cfg.disabled If true, prevents menu from being shown.
  */
 PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
@@ -129,6 +130,46 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
     /**
      * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this._cleanup();
+        this._super(cfg);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this._super();
+        this._cleanup();
+    },
+
+    /**
+    * Clean up this widget and remove events from the DOM.
+    * @private
+    */
+    _cleanup: function() {
+        if (this.cfg.target === undefined) {
+            var event = 'contextmenu.' + this.id + '_contextmenu';
+            $(document).off(event);
+            if (PrimeFaces.env.isTouchable(this.cfg)) {
+                $(document).swipe().destroy();
+            }
+        }
+        else {
+            var event = this.cfg.event + '.' + this.id + '_contextmenu';
+            $(document).off(event, this.jqTargetId);
+            if (PrimeFaces.env.isTouchable(this.cfg)) {
+                this.jqTarget.swipe().destroy();
+            }
+        }
+    },
+
+    /**
+     * @override
      * @protected
      * @inheritdoc
      */
@@ -136,7 +177,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var $this = this;
 
         this.hideOverlayHandler = PrimeFaces.utils.registerHideOverlayHandler(this, 'click.' + this.id + '_hide', this.jq,
-            function(e) { return e.which == 3 ? $this.jqTarget : null; },
+            function(e) { return e.key === 'Cancel' ? $this.jqTarget : null; },
             function(e, eventTarget) {
                 if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                     $this.hide();
@@ -230,7 +271,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     show: function(e) {
         var $this = this;
 
-        if(this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
+        if(this.cfg.disabled || this.cfg.targetFilter && $(e.target).is(':not(' + this.cfg.targetFilter + ')')) {
             return;
         }
 

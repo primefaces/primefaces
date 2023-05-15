@@ -81,12 +81,14 @@ public class ConfirmBehavior extends AbstractBehavior {
 
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null || "this".equals(source)) ? "source:this" : "source:\"" + source + "\"";
+            String icon = getIcon();
+
             String script = "PrimeFaces.confirm({" + sourceProperty
                                                    + ",type:" + type
                                                    + ",escape:" + isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
-                                                   + ",icon:\"" + getIcon()
+                                                   + ",icon:\"" + (icon == null ? "" : icon)
                                                    + "\",beforeShow:" + beforeShow
                                                    + "});return false;";
             ((Confirmable) component).setConfirmationScript(script);

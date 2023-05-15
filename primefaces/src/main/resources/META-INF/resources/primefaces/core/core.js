@@ -360,7 +360,7 @@
             }).on("blur", function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).on("keydown", function(e) {
-                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
+                if(e.key === ' ' || e.key === 'Enter') {
                     $(this).addClass('ui-state-active');
                 }
             }).on("keyup", function() {
@@ -699,7 +699,7 @@
          * @param {string} [context] The ID of a container with an element to focus
          */
         focus: function(id, context) {
-            var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
+            var selector = ':not(:submit):not(:button):input:visible:enabled[name], a:first';
 
             setTimeout(function() {
                 if(id) {
@@ -1170,15 +1170,17 @@
         },
 
         /**
-         * Normalizes the provided string.
+         * Converts the provided string to searchable form.
          * 
          * @param {string} string to normalize.
          * @param {boolean} lowercase flag indicating whether the string should be lower cased.
-         * @returns {string} normalized string.
+         * @param {boolean} normalize flag indicating whether the string should be normalized (accents to be removed
+         * from characters).
+         * @returns {string} searchable string.
          */
-        normalize: function(string, lowercase) {
-            if (!string) return string;
-            var result = string.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        toSearchable: function(string, lowercase, normalize) {
+            if (!string) return '';
+            var result = normalize ? string.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : string;
             return lowercase ? result.toLowerCase() : result;
         },
 
@@ -1411,6 +1413,7 @@
             allDayText: 'All Day',
             moreLinkText: 'More...',
             noEventsText: 'No Events',
+            clear: 'Clear',
             aria: {
                 'paginator.PAGE': 'Page {0}',
                 'calendar.BUTTON': 'Show Calendar',
@@ -1418,7 +1421,17 @@
                 'datatable.sort.DESC': 'activate to sort column descending',
                 'datatable.sort.NONE': 'activate to remove sorting on column',
                 'columntoggler.CLOSE': 'Close',
-                'overlaypanel.CLOSE': 'Close'
+                'overlaypanel.CLOSE': 'Close',
+                'colorpicker.OPEN': 'Open color picker',
+                'colorpicker.CLOSE': 'Close color picker',
+                'colorpicker.CLEAR': 'Clear the selected color',
+                'colorpicker.MARKER': 'Saturation: {s}. Brightness: {v}.',
+                'colorpicker.HUESLIDER': 'Hue slider',
+                'colorpicker.ALPHASLIDER': 'Opacity slider',
+                'colorpicker.INPUT': 'Color value field',
+                'colorpicker.FORMAT': 'Color format',
+                'colorpicker.SWATCH': 'Color swatch',
+                'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
             }
         }
 

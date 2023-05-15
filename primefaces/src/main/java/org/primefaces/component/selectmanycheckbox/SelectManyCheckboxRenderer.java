@@ -80,11 +80,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
-        else if ("responsive".equals(layout)) {
-            encodeResponsiveLayout(context, checkbox);
+        else if ("grid".equals(layout)) {
+            encodeLegacyTabularLayout(context, checkbox, layout);
         }
         else {
-            encodeTabularLayout(context, checkbox, layout);
+            encodeResponsiveLayout(context, checkbox);
         }
     }
 
@@ -101,9 +101,12 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
         String style = checkbox.getStyle();
-        String styleClass = checkbox.getStyleClass();
-        styleClass = (styleClass == null) ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
-        styleClass = styleClass + " ui-grid ui-grid-responsive";
+        boolean flex = ComponentUtils.isFlex(context, checkbox);
+        String styleClass = getStyleClassBuilder(context)
+                .add(SelectManyCheckbox.STYLE_CLASS)
+                .add(GridLayoutUtils.getResponsiveClass(flex))
+                .add(checkbox.getStyleClass())
+                .build();
         int columns = checkbox.getColumns();
 
         if (columns <= 0) {
@@ -139,13 +142,13 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                     colMod = idx % columns;
                     if (colMod == 0) {
                         writer.startElement("div", null);
-                        writer.writeAttribute("class", "ui-g", null);
+                        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                     }
 
                     groupIdx++;
 
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
                     encodeOption(context, checkbox, values, submittedValues, converter, childSelectItem, groupIdx);
                     writer.endElement("div");
 
@@ -167,11 +170,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                 colMod = idx % columns;
                 if (colMod == 0) {
                     writer.startElement("div", null);
-                    writer.writeAttribute("class", "ui-g", null);
+                    writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
 
                 writer.startElement("div", null);
-                writer.writeAttribute("class", GridLayoutUtils.getColumnClass(columns), null);
+                writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
                 encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
                 writer.endElement("div");
 
@@ -191,9 +194,15 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    /**
+     * @deprecated in 13.0.0 remove in 14.0.0
+     */
+    @Deprecated
+    protected void encodeLegacyTabularLayout(FacesContext context, SelectManyCheckbox checkbox, String layout) throws IOException {
         String clientId = checkbox.getClientId(context);
+        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
+                + clientId);
+        ResponseWriter writer = context.getResponseWriter();
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
         styleClass = styleClass == null ? SelectManyCheckbox.STYLE_CLASS : SelectManyCheckbox.STYLE_CLASS + " " + styleClass;
@@ -484,7 +493,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             return;
         }
 
-        writer.startElement("div", null);
+        writer.startElement("div", getSelectItemComponent(option));
         writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
 
         encodeOptionInput(context, checkbox, id, name, selected, disabled, itemValueAsString);

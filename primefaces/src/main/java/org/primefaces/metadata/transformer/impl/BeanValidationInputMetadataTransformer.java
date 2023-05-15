@@ -46,6 +46,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 import org.primefaces.util.CalendarUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.validate.bean.*;
 
@@ -55,7 +56,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
     @Override
     public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
-        if (input.isRequired() && isMaxlenghtSet(input)) {
+        if (ComponentUtils.isDisabledOrReadonly(input) || (input.isRequired() && isMaxlenghtSet(input))) {
             return;
         }
 
@@ -109,7 +110,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     spinner.setMax(Double.parseDouble(max.value()));
                 }
                 catch (NumberFormatException ex) {
-                    LOGGER.log(Level.WARNING, "Failed setting Spinner max value: " + ex.getMessage());
+                    LOGGER.log(Level.WARNING, () -> "Failed setting Spinner max value: " + ex.getMessage());
                 }
             }
             if (annotationType.equals(DecimalMin.class) && spinner.getMin() == Double.MIN_VALUE) {
@@ -118,7 +119,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                     spinner.setMin(Double.parseDouble(min.value()));
                 }
                 catch (NumberFormatException ex) {
-                    LOGGER.log(Level.WARNING, "Failed setting Spinner min value: " + ex.getMessage());
+                    LOGGER.log(Level.WARNING, () -> "Failed setting Spinner min value: " + ex.getMessage());
                 }
             }
         }

@@ -1,4 +1,13 @@
 if (!PrimeFaces.utils) {
+    
+   /**
+    * Shortcut for is this CMD on MacOs or CTRL key on other OSes. 
+    * @param {JQuery.TriggeredEvent} e The key event that occurred.
+    * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
+    */
+    PF.metaKey = function(e) {
+        return PrimeFaces.utils.isMetaKey(e);
+    };
 
     /**
      * The object with various utilities needed by PrimeFaces.
@@ -165,7 +174,7 @@ if (!PrimeFaces.utils) {
             });
             $document.on('keydown.' + id, function(event) {
                 var target = $(event.target);
-                if (event.which === $.ui.keyCode.TAB) {
+                if (event.key === 'Tab') {
                     var tabbables = tabbablesCallback();
                     if (tabbables.length) {
                         var first = tabbables.filter(':first'),
@@ -557,47 +566,53 @@ if (!PrimeFaces.utils) {
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
          */
         blockEnterKey: function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode;
-
-            if((key === keyCode.ENTER)) {
+            if(e.key === 'Enter') {
                 e.preventDefault();
             }
         },
+        
+        /**
+         * Is this CMD on MacOs or CTRL key on other OSes. 
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
+         */
+        isMetaKey: function(e) {
+            return PrimeFaces.env.browser.mac ? e.metaKey : e.ctrlKey;
+        },
 
         /**
-         * Ignores certain keys on filter input text box. Useful in filter input events in many components.
+         * Is this SPACE or ENTER key. Used throughout codebase to trigger and action.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the key is an action key, or `false` otherwise.
+         */
+        isActionKey: function(e) {
+            return e.key === ' ' || e.key === 'Enter';
+        },
+
+        /**
+         * Checks if the key pressed is a printable key like 'a' or '4' etc.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the key is a printable key, or `false` otherwise.
+         */
+        isPrintableKey: function(e) {
+            return e.key.length === 1 || e.key === 'Unidentified';
+        },
+
+        /**
+         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
          * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
          */
         ignoreFilterKey: function(e) {
-            var key = e.which,
-            keyCode = $.ui.keyCode,
-            ignoredKeys = [
-                keyCode.END,
-                keyCode.HOME,
-                keyCode.LEFT,
-                keyCode.RIGHT,
-                keyCode.UP,
-                keyCode.DOWN,
-                keyCode.TAB,
-                16/*Shift*/,
-                17/*Ctrl*/,
-                18/*Alt*/,
-                91, 92, 93/*left/right Win/Cmd*/,
-                keyCode.ESCAPE,
-                keyCode.PAGE_UP,
-                keyCode.PAGE_DOWN,
-                19/*pause/break*/,
-                20/*caps lock*/,
-                44/*print screen*/,
-                144/*num lock*/,
-                145/*scroll lock*/];
-
-            if (ignoredKeys.indexOf(key) > -1) {
-                return true;
+            switch (e.key) {
+                case 'Backspace':
+                case 'Enter':
+                case 'Delete':
+                    return false;
+                    break;
+                default:
+                    return !PrimeFaces.utils.isPrintableKey(e);
             }
-            return false;
         },
 
         /**
@@ -644,8 +659,8 @@ if (!PrimeFaces.utils) {
             }
             if (input.is(':disabled')) {
                 input.prop('disabled', false);
-                jq.removeClass('ui-state-disabled');
             }
+            jq.removeClass('ui-state-disabled');
         },
 
         /**
@@ -660,8 +675,8 @@ if (!PrimeFaces.utils) {
             }
             if (!input.is(':disabled')) {
                 input.prop('disabled', true);
-                jq.addClass('ui-state-disabled');
             }
+            jq.addClass('ui-state-disabled');
         },
 
         /**

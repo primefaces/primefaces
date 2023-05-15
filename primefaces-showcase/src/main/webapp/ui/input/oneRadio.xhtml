@@ -34,22 +34,31 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form>
-                <h5 class="mt-0">Basic</h5>
-                <p:selectOneRadio id="console" value="#{radioView.console}">
+                <h5 class="mt-0">Line Direction</h5>
+                <p:selectOneRadio id="console" value="#{radioView.console}" layout="lineDirection">
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
                     <f:selectItem itemLabel="Option2" itemValue="Option2"/>
                     <f:selectItem itemLabel="Option3" itemValue="Option3"/>
                 </p:selectOneRadio>
 
-                <h5>Grid</h5>
-                <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
-                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                <h5>Page Direction</h5>
+                <p:selectOneRadio id="page" value="#{radioView.console}" layout="pageDirection">
+                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
+                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="Option3" itemValue="Option3"/>
                 </p:selectOneRadio>
-
+                
                 <h5>Responsive + Unselectable</h5>
                 <p:selectOneRadio id="city2" value="#{radioView.city2}" layout="responsive" columns="3" unselectable="true">
                     <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
                 </p:selectOneRadio>
+                
+                
+                <h5>Grid (deprecated)</h5>
+                <p:selectOneRadio id="city" value="#{radioView.city}" layout="grid" columns="3" styleClass="grid-radio">
+                    <f:selectItems value="#{radioView.cities}" var="city" itemLabel="#{city}" itemValue="#{city}"/>
+                </p:selectOneRadio>
+                
 
                 <h5>Custom Layout (Facet)</h5>
                 <p:selectOneRadio id="customRadio" value="#{radioView.color}">
@@ -58,19 +67,19 @@
                     <f:selectItem itemLabel="Blue" itemValue="Blue"/>
 
                     <f:facet name="custom">
-                        <span class="field-radiobutton" role="radio">
+                        <span class="field-radiobutton">
                             <p:radioButton id="facet1" for="customRadio" itemIndex="0"/>
                             <p:outputLabel for="facet1">
                                 <span class="legend" style="background:red"/> Red
                             </p:outputLabel>
                         </span>
-                        <span class="field-radiobutton" role="radio">
+                        <span class="field-radiobutton">
                             <p:radioButton id="facet2" for="customRadio" itemIndex="1"/>
                             <p:outputLabel for="facet2">
                                 <span class="legend" style="background:green"/> Green
                             </p:outputLabel>
                         </span>
-                        <span class="field-radiobutton" role="radio">
+                        <span class="field-radiobutton">
                             <p:radioButton id="facet3" for="customRadio" itemIndex="2"/>
                             <p:outputLabel for="facet3">
                                 <span class="legend" style="background:blue"/> Blue

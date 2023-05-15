@@ -33,7 +33,6 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -43,8 +42,9 @@ import javax.faces.lifecycle.ClientWindow;
 import javax.faces.render.Renderer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.clientwindow.PrimeClientWindowUtils;
+
 import org.primefaces.clientwindow.PrimeClientWindow;
+import org.primefaces.clientwindow.PrimeClientWindowUtils;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.ComponentUtils;
@@ -133,7 +133,7 @@ public class HeadRenderer extends Renderer {
         encodeSettingScripts(context, applicationContext, requestContext, writer, csvEnabled);
 
         // encode initialization scripts
-        encodeInitScripts(writer);
+        encodeInitScripts(context, writer);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class HeadRenderer extends Renderer {
         ProjectStage projectStage = context.getApplication().getProjectStage();
 
         writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
+        RendererUtils.encodeScriptTypeIfNecessary(context);
         writer.write("if(window.PrimeFaces){");
 
         writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
@@ -256,12 +256,12 @@ public class HeadRenderer extends Renderer {
         writer.endElement("script");
     }
 
-    protected void encodeInitScripts(ResponseWriter writer) throws IOException {
+    protected void encodeInitScripts(FacesContext context, ResponseWriter writer) throws IOException {
         List<String> scripts = PrimeRequestContext.getCurrentInstance().getInitScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
+            RendererUtils.encodeScriptTypeIfNecessary(context);
 
             boolean moveScriptsToBottom = PrimeRequestContext.getCurrentInstance().getApplicationContext().getConfig().isMoveScriptsToBottom();
 

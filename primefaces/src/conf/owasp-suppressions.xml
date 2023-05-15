@@ -2,22 +2,19 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
         <notes>
-            <![CDATA[file name: guava.jar PrimeFaces does not use the temp directory functionality that is vulnerable]]>
-        </notes>
+            <![CDATA[file name: guava.jar PrimeFaces does not use the temp directory functionality that is vulnerable]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
         <cve>CVE-2020-8908</cve>
     </suppress>
     <suppress>
         <notes>
-            <![CDATA[file name: jdom2.jar Unit test proving we don't use this functionality https://github.com/primefaces/primefaces/pull/7513]]>
-        </notes>
+            <![CDATA[file name: jdom2.jar Unit test proving we don't use this functionality https://github.com/primefaces/primefaces/pull/7513]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.jdom/jdom2@.*$</packageUrl>
         <cve>CVE-2021-33813</cve>
     </suppress>
     <suppress>
         <notes>
-            <![CDATA[file name: javaee-api-8.0-5.jar Tomee 8.0.9 fixes this issue but marking as OK for now since this is a provided dependency. ]]>
-        </notes>
+            <![CDATA[file name: javaee-api-8.0-5.jar Tomee 8.0.9 fixes this issue but marking as OK for now since this is a provided dependency. ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.apache\.tomee/javaee\-api@.*$</packageUrl>
         <cve>CVE-2021-40690</cve>
     </suppress>
@@ -27,12 +24,8 @@
         <cve>CVE-2021-41568</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-            https://github.com/jeremylong/DependencyCheck/issues/5213
-            The 'utils_project' is a personal collection of scripts from someones /bin/ directory, not a maven project
-            https://github.com/fredsmith/utils
-       ]]></notes>
-       <packageUrl regex="true">^pkg:maven/.*/.*@.*$</packageUrl>
-       <cpe>cpe:/a:utils_project:utils</cpe>
-</suppress>
+        <notes><![CDATA[ file name: json-20230227.jar JSON has been fixed but is still being reported. ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
 </suppressions>

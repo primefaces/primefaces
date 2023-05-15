@@ -29,6 +29,7 @@
  * @prop {boolean} cfg.hasMenu Whether this panel has a toggleable menu in the panel header. 
  * @prop {boolean} cfg.toggleable Whether the panel can be toggled (expanded and collapsed).
  * @prop {boolean} cfg.toggleableHeader Defines if the panel is toggleable by clicking on the whole panel header.
+ * @prop {boolean} cfg.multiViewState Whether to keep Panel state across views.
  * @prop {PrimeFaces.widget.Panel.ToggleOrientation} cfg.toggleOrientation Defines the orientation of the toggling.
  * @prop {number} cfg.toggleSpeed Speed of toggling in milliseconds.
  */
@@ -111,6 +112,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * Expands this panel, if not already expanded.
      */
     expand: function() {
+        this.header.attr('aria-expanded', true);
         this.toggleState(false, 'ui-icon-plusthick', 'ui-icon-minusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
@@ -123,6 +125,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
      * Collapses this panel, if not already collapsed.
      */
     collapse: function() {
+        this.header.attr('aria-expanded', false);
         this.toggleState(true, 'ui-icon-minusthick', 'ui-icon-plusthick');
 
         if(this.cfg.toggleOrientation === 'vertical')
@@ -209,7 +212,24 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
 
-        this.callBehavior('toggle');
+        if (this.hasBehavior('toggle')) {
+            this.callBehavior('toggle');
+        }
+        else if (this.cfg.multiViewState) {
+            var options = {
+                source: this.id,
+                partialSubmit: true,
+                partialSubmitFilter: PrimeFaces.escapeClientId(this.id + '_collapsed'),
+                process: this.id,
+                ignoreAutoUpdate: true,
+                global: false,
+                params: [
+                    {name: this.id + '_skipChildren', value: true}
+                ]
+            };
+
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**

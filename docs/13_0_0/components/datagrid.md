@@ -44,7 +44,7 @@ rowStyleClass | null | String | Style class of each row (grid-cell).
 rowIndexVar | null | String | Name of the iterator to refer each row index.
 lazy | false | Boolean | Defines if lazy loading is enabled for the data component. In most cases this is detected automatically based on value-binding to LazyDataModel. So no need to set this explicit.
 emptyMessage | No records found. | String | Text to display when there is no data to display.
-layout | tabular | String | Layout approach to use, valid values are "tabular" and "grid" for responsive grid.
+layout | grid | String | Layout approach to use, valid values are "tabular" and "grid" for responsive grid.
 multiViewState | false | Boolean | Whether to keep DataGrid state across views, defaults to false.
 touchable | null | Boolean | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 flex | false | Boolean | Use modern PrimeFlex-Grid instead of classic Grid CSS. (primeflex.css must be included into the template.xhtml)

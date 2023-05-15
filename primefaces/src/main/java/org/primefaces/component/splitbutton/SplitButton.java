@@ -23,18 +23,20 @@
  */
 package org.primefaces.component.splitbutton;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import org.primefaces.component.overlaypanel.OverlayPanel;
+
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-
-import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -66,22 +68,22 @@ public class SplitButton extends SplitButtonBase {
             if (!valueBlank && iconBlank) {
                 styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
             }
-            else if (!valueBlank && !iconBlank) {
+            else if (!valueBlank) {
                 styleClass = getIconPos().equals("left")
                              ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS
                              : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
             }
-            else if (valueBlank && !iconBlank) {
+            else if (!iconBlank) {
                 styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
             }
         }
         else if (!valueBlank && iconBlank) {
             styleClass = BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if (!valueBlank && !iconBlank) {
+        else if (!valueBlank) {
             styleClass = getIconPos().equals("left") ? BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if (valueBlank && !iconBlank) {
+        else if (!iconBlank) {
             styleClass = BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
 
@@ -124,6 +126,7 @@ public class SplitButton extends SplitButtonBase {
         else {
             return getChildren().stream()
                         .filter(MenuElement.class::isInstance)
+                        .filter(UIComponent::isRendered)
                         .map(MenuElement.class::cast)
                         .collect(Collectors.toList());
         }
@@ -133,6 +136,15 @@ public class SplitButton extends SplitButtonBase {
         List elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
+    }
+
+    public OverlayPanel getCustomOverlay() {
+        return getChildren().stream()
+                    .filter(OverlayPanel.class::isInstance)
+                    .filter(UIComponent::isRendered)
+                    .map(OverlayPanel.class::cast)
+                    .findAny()
+                    .orElse(null);
     }
 
     @Override

@@ -21,6 +21,7 @@ ContextMenu provides an overlay menu displayed on mouse right-click event.
 | --- | --- | --- | --- |
 | id | null | String | Unique identifier of the component
 | rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| disabled | false | Boolean | If true, prevents menu from being shown
 | binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 | widgetVar | null | String | Name of the client side widget.
 | for | null | String | Id of the component to attach to

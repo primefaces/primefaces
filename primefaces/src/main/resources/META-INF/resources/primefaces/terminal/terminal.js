@@ -47,10 +47,8 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.input.on('keydown.terminal', function(e) {
-            var keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     if($this.commandIndex > 0) {
                         $this.input.val($this.commands[--$this.commandIndex]);
                     }
@@ -58,7 +56,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     if($this.commandIndex < ($this.commands.length - 1)) {
                         $this.input.val($this.commands[++$this.commandIndex]);
                     }
@@ -70,13 +68,13 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
                     $this.processCommand();
 
                     e.preventDefault();
                 break;
                 
-                case keyCode.TAB:
+                case 'Tab':
                     $this.autoCompleteCommand();
                     
                     e.preventDefault();

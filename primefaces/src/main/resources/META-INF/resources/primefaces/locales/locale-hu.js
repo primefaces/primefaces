@@ -24,5 +24,6 @@ PrimeFaces.locales['hu'] = {
     month: 'Hónap',
     week: 'Hét',
     day: 'Nap',
-    allDayText: 'Egész nap'
+    allDayText: 'Egész nap',
+    clear: 'Visszaállítás'
 };

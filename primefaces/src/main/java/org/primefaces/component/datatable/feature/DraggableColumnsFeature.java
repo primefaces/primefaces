@@ -23,33 +23,15 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
-import javax.faces.FacesException;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.datatable.DataTableRenderer;
 
 public class DraggableColumnsFeature implements DataTableFeature {
-
-    private static final DraggableColumnsFeature INSTANCE = new DraggableColumnsFeature();
-
-    private DraggableColumnsFeature() {
-    }
-
-    public static DraggableColumnsFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, DataTable table) {
         table.decodeColumnDisplayOrderState(context);
-    }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new FacesException("DraggableColumns Feature should not encode.");
     }
 
     @Override

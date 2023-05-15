@@ -43,11 +43,11 @@ public class BadgeRenderer extends CoreRenderer {
         encode(context, badge, null, hasChildren);
     }
 
-    public static <T extends UIComponent> void encode(FacesContext context, Object badge,
+    public static <T extends UIComponent> void encodeOverlayed(FacesContext context, Object badge,
             IOBiConsumer<FacesContext, T> contentRenderer, T component) throws IOException {
         BadgeModel badgeModel = Badge.getBadgeModel(badge);
         if (badgeModel != null) {
-            BadgeRenderer badgeRenderer = new BadgeRenderer();
+            BadgeRenderer badgeRenderer = Badge.create(context).getRenderer();
             badgeRenderer.encodeOverlayBegin(context, null);
             contentRenderer.accept(context, component);
             badgeRenderer.encode(context, null, badgeModel, false);
@@ -55,6 +55,14 @@ public class BadgeRenderer extends CoreRenderer {
         }
         else {
             contentRenderer.accept(context, component);
+        }
+    }
+
+    public static void encode(FacesContext context, Object badge) throws IOException {
+        BadgeModel badgeModel = Badge.getBadgeModel(badge);
+        if (badgeModel != null) {
+            BadgeRenderer badgeRenderer = Badge.create(context).getRenderer();
+            badgeRenderer.encode(context, null, badgeModel, false);
         }
     }
 

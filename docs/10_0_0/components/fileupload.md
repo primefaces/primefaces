@@ -317,6 +317,7 @@ exist, threshold size and temporary file upload location.
 | --- | --- |
 | thresholdSize | Maximum file size in bytes to keep uploaded files in memory. If a file exceeds this limit, it’ll be temporarily written to disk.
 | uploadDirectory | Disk repository path to keep temporary files that exceeds the threshold size. By default it is System.getProperty("java.io.tmpdir")
+| fileCountMax | Sets the maximum number of files allowed per request. Default is unlimited.
 
 An example configuration below defined thresholdSize to be 50kb and uploads to users temporary
 folder.
@@ -332,6 +333,10 @@ folder.
     <init-param>
         <param-name>uploadDirectory</param-name>
         <param-value>/Users/primefaces/temp</param-value>
+    </init-param>
+    <init-param>
+        <param-name>fileCountMax</param-name>
+        <param-value>5</param-value>
     </init-param>
 </filter>
 ```

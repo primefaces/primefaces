@@ -226,6 +226,11 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 });
         }
         else {
+            // GitHub #9941 Helper to remove tooltips when elements are removed
+            this.target.off('remove.tooltip').on('remove.tooltip', function() {
+                $this.hide();
+            });      
+
             this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
                 .on(this.cfg.showEvent, function(e) {
                     if ($this.cfg.trackMouse) {
@@ -320,10 +325,12 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      */
     align: function() {
         var $this = this;
+        // #10100 make sure z-Index is above any dynamically changing zindex like dialogs.
+        var zIndex = (PrimeFaces.nextZindex() + 1000);
         this.jq.css({
             left: '',
             top: '',
-            'z-index': PrimeFaces.nextZindex()
+            'z-index': zIndex
         });
 
         if (this.cfg.trackMouse && this.mouseEvent) {

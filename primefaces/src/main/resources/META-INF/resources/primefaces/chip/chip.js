@@ -38,10 +38,7 @@ PrimeFaces.widget.Chip = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.removeIcon.on("keydown.chip", function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $this.close();
                 e.preventDefault();
             }

@@ -21,7 +21,7 @@ theming and colspan-rowspan.
 id | null | String | Unique identifier of the component
 rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-columns | 0 | Integer | Number of columns in grid.
+columns | 12 | Integer | Number of columns in responsive layout.
 style | null | String | Inline style of the panel/table.
 contentStyle | null | String | Inline style of the panel-content.
 styleClass | null | String | Style class of the panel/table.

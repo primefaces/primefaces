@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.component.api.UIChart;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
@@ -44,7 +45,10 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
 public class ChartRenderer extends CoreRenderer {
 
@@ -53,8 +57,11 @@ public class ChartRenderer extends CoreRenderer {
         super.decodeBehaviors(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, String clientId, String style, String styleClass) throws IOException {
+    protected void encodeMarkup(FacesContext context, UIChart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = chart.getClientId(context);
+        String style = chart.getStyle();
+        String styleClass = chart.getStyleClass();
         styleClass = (styleClass != null) ? "ui-chart " + styleClass : "ui-chart";
 
         writer.startElement("div", null);
@@ -63,6 +70,18 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.startElement("canvas", null);
         writer.writeAttribute("id", clientId + "_canvas", null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "img", null);
+        String ariaLabel = chart.getAriaLabel();
+        if (LangUtils.isBlank(ariaLabel)) {
+            ChartOptions options = (ChartOptions) chart.getModel().getOptions();
+            if (options != null) {
+                Title title = options.getTitle();
+                if (title != null) {
+                    ariaLabel = String.valueOf(title.getText());
+                }
+            }
+        }
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         if (style != null) writer.writeAttribute("style", style, "style");
         writer.endElement("canvas");
 
@@ -129,7 +148,7 @@ public class ChartRenderer extends CoreRenderer {
 
         if (isList) {
             ResponseWriter writer = context.getResponseWriter();
-            List labelList = (List) labels;
+            List<?> labelList = (List<?>) labels;
 
             writer.write("[");
             for (int i = 0; i < labelList.size(); i++) {
@@ -247,6 +266,18 @@ public class ChartRenderer extends CoreRenderer {
             writer.write(elements.encode());
             writer.write("}");
         }
+    }
+
+    protected void encodeResponsive(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (hasComma) {
+            writer.write(",");
+        }
+
+        ChartUtils.writeDataValue(writer, "responsive", options.isResponsive(), false);
+        ChartUtils.writeDataValue(writer, "maintainAspectRatio", options.isMaintainAspectRatio(), true);
+        ChartUtils.writeDataValue(writer, "aspectRatio", options.getAspectRatio(), true);
     }
 
     protected void encodePlugins(FacesContext context, ChartOptions options, boolean hasComma) throws IOException {

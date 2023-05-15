@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -39,15 +38,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 public class RowExpandFeature implements DataTableFeature {
-
-    private static final RowExpandFeature INSTANCE = new RowExpandFeature();
-
-    private RowExpandFeature() {
-    }
-
-    public static RowExpandFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, DataTable table) {

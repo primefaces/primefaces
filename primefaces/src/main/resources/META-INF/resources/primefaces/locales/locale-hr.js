@@ -24,6 +24,7 @@ PrimeFaces.locales['hr'] = {
     month: 'Mjesec',
     week: 'Tjedan',
     day: 'Dan',
-    allDayText: 'Cijeli dan'
+    allDayText: 'Cijeli dan',
+    clear: 'Resetiraj'
 };
 

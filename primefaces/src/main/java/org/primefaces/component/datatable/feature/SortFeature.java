@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -47,15 +46,6 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements DataTableFeature {
-
-    private static final SortFeature INSTANCE = new SortFeature();
-
-    private SortFeature() {
-    }
-
-    public static SortFeature getInstance() {
-        return INSTANCE;
-    }
 
     private boolean isSortRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
@@ -101,23 +91,7 @@ public class SortFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.setFirst(0);
 
-        if (table.isLazy()) {
-            if (table.isLiveScroll()) {
-                table.loadLazyScrollData(0, table.getScrollRows());
-            }
-            else if (table.isVirtualScroll()) {
-                int rows = table.getRows();
-                int scrollRows = table.getScrollRows();
-                int virtualScrollRows = (scrollRows * 2);
-                scrollRows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
-
-                table.loadLazyScrollData(0, scrollRows);
-            }
-            else {
-                table.loadLazyData();
-            }
-        }
-        else {
+        if (!table.loadLazyDataIfEnabled()) {
             //reset the value given in the filter feature property before sorting
             if (table.isFullUpdateRequest(context)) {
                 table.setValue(null);
@@ -132,7 +106,7 @@ public class SortFeature implements DataTableFeature {
             //update filtered value accordingly to take account sorting
             if (table.isFilteringCurrentlyActive()) {
                 if (table.isFullUpdateRequest(context)) {
-                    FilterFeature.getInstance().filter(context, table);
+                    DataTableFeatures.filterFeature().filter(context, table);
                 }
                 else {
                     table.setFilteredValue(resolveList(table.getValue()));

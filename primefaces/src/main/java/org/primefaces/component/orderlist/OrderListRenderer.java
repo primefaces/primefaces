@@ -37,6 +37,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -66,13 +67,15 @@ public class OrderListRenderer extends CoreRenderer {
         String clientId = ol.getClientId(context);
         String controlsLocation = ol.getControlsLocation();
         String style = ol.getStyle();
+        boolean flex = ComponentUtils.isFlex(context, ol);
 
         //style class
         String containerClass = getStyleClassBuilder(context)
                 .add(OrderList.CONTAINER_CLASS)
+                .add(flex, GridLayoutUtils.getResponsiveClass(flex))
+                .add(ol.isResponsive() && !flex, GridLayoutUtils.getResponsiveClass(false))
                 .add(ol.getStyleClass())
                 .add(ol.isDisabled(), "ui-state-disabled")
-                .add(ol.isResponsive(), "ui-grid-responsive")
                 .add("right".equals(ol.getControlsLocation()), OrderList.CONTROLS_RIGHT_CLASS)
                 .build();
 
@@ -84,28 +87,30 @@ public class OrderListRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-g", null);
+        writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
 
         if ("left".equals(controlsLocation)) {
-            encodeControls(context, ol);
+            encodeControls(context, ol, flex);
         }
 
-        encodeList(context, ol);
+        encodeList(context, ol, flex);
 
         if ("right".equals(controlsLocation)) {
-            encodeControls(context, ol);
+            encodeControls(context, ol, flex);
         }
 
         writer.endElement("div");
         writer.endElement("div");
     }
 
-    protected void encodeList(FacesContext context, OrderList ol) throws IOException {
+    protected void encodeList(FacesContext context, OrderList ol, boolean flex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ol.getClientId(context);
         UIComponent caption = ol.getFacet("caption");
         String listStyleClass = OrderList.LIST_CLASS;
-        String columnGridClass = ol.getControlsLocation().equals("none") ? "ui-g-12 ui-md-12" : "ui-g-12 ui-md-10";
+        String columnGridClass = ol.getControlsLocation().equals("none")
+                ? GridLayoutUtils.getColumnClass(flex, 1)
+                : (flex ? "col-12 md:col-10" : "ui-g-12 ui-md-10");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", columnGridClass, null);
@@ -143,11 +148,12 @@ public class OrderListRenderer extends CoreRenderer {
         writer.endElement("select");
     }
 
-    protected void encodeControls(FacesContext context, OrderList ol) throws IOException {
+    protected void encodeControls(FacesContext context, OrderList ol, boolean flex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        String css = OrderList.CONTROLS_CLASS + " " + GridLayoutUtils.getColumnClass(flex, 6);
         writer.startElement("div", null);
-        writer.writeAttribute("class", OrderList.CONTROLS_CLASS, null);
+        writer.writeAttribute("class", css, null);
         encodeButton(context, ol.getMoveUpLabel(), OrderList.MOVE_UP_BUTTON_CLASS, OrderList.MOVE_UP_BUTTON_ICON_CLASS);
         encodeButton(context, ol.getMoveTopLabel(), OrderList.MOVE_TOP_BUTTON_CLASS, OrderList.MOVE_TOP_BUTTON_ICON_CLASS);
         encodeButton(context, ol.getMoveDownLabel(), OrderList.MOVE_DOWN_BUTTON_CLASS, OrderList.MOVE_DOWN_BUTTON_ICON_CLASS);

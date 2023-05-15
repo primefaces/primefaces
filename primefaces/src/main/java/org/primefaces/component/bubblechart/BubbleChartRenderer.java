@@ -38,11 +38,7 @@ public class BubbleChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         BubbleChart chart = (BubbleChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 
@@ -67,13 +63,11 @@ public class BubbleChartRenderer extends ChartRenderer {
         BubbleChartOptions bubbleOptions = (BubbleChartOptions) options;
 
         writer.write(",\"options\":{");
-
-        encodeScales(context, type, bubbleOptions.getScales(), false);
-        encodeElements(context, bubbleOptions.getElements(), bubbleOptions.getScales() != null);
-        encodeAnimation(context, bubbleOptions.getAnimation(), (bubbleOptions.getScales() != null
-                    || bubbleOptions.getElements() != null));
-        encodePlugins(context, bubbleOptions, (bubbleOptions.getScales() != null
-                    || bubbleOptions.getElements() != null || bubbleOptions.getAnimation() != null));
+        encodeResponsive(context, bubbleOptions, false);
+        encodeScales(context, type, bubbleOptions.getScales(), true);
+        encodeElements(context, bubbleOptions.getElements(), true);
+        encodeAnimation(context, bubbleOptions.getAnimation(), true);
+        encodePlugins(context, bubbleOptions, true);
 
         writer.write("}");
     }

@@ -177,7 +177,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         //input
-        writer.startElement("input", null);
+        writer.startElement("input", getSelectItemComponent(option));
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
@@ -339,11 +339,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (menu.getPanelStyleClass() != null) {
             panelStyleClass += " " + menu.getPanelStyleClass();
         }
-        // TODO: "RTLAware"!
-//        if (ComponentUtils.isRTL(context, menu)) {
-//            panelStyleClass+= " " + SelectCheckboxMenu.RTL_PANEL_CLASS;
-//        }
-//
+
         String maxScrollHeight = getMaxScrollHeight(menu);
 
         writer.startElement("div", null);
@@ -619,7 +615,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         //item as row
-        writer.startElement("tr", null);
+        writer.startElement("tr", getSelectItemComponent(selectItem));
         writer.writeAttribute("class", rowStyleClass, null);
         writer.writeAttribute("data-label", itemLabel, null);
         if ((itemValueAsString != null) && menu.isMultiple()) {
@@ -696,7 +692,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     .attr("filterMatchMode", menu.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", menu.getFilterFunction(), null)
                     .attr("caseSensitive", menu.isCaseSensitive(), false)
-                    .attr("filterPlaceholder", menu.getFilterPlaceholder(), null);
+                    .attr("filterPlaceholder", menu.getFilterPlaceholder(), null)
+                    .attr("filterNormalize", menu.isFilterNormalize(), false);
         }
 
         wb.attr("panelStyle", menu.getPanelStyle(), null).attr("panelStyleClass", menu.getPanelStyleClass(), null);

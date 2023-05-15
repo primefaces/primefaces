@@ -75,15 +75,27 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testDefaultStyle() {
+    void testAttribute() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
         // Act
-        builder.add("default:none", "width:10px");
+        builder.add("width", "10px");
 
         // Assert
-        assertEquals("default:none;width:10px", builder.build());
+        assertEquals("width:10px", builder.build());
+    }
+
+    @Test
+    void testNullAttribute() {
+        // Arrange
+        StyleBuilder builder = getStyleBuilder();
+
+        // Act
+        builder.add("width", null);
+
+        // Assert
+        assertEquals("", builder.build());
     }
 
     @Test
@@ -116,10 +128,11 @@ class StyleBuilderTest {
         StyleBuilder builder = getStyleBuilder();
 
         // Act
-        builder.add("default:none", "user:some")
-                    .add("height:33px")
-                    .add(false, "width", "8px", "100vh")
-                    .add(true, "visibility", "visible", "hidden");
+        builder.add("default", "none")
+                .add("user", "some")
+                .add("height:33px")
+                .add(false, "width", "8px", "100vh")
+                .add(true, "visibility", "visible", "hidden");
 
         // Assert
         assertEquals("default:none;user:some;height:33px;width:100vh;visibility:visible", builder.build());

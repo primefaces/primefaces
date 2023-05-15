@@ -30,7 +30,7 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.7.0</version>
+            <version>4.7.3</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -59,7 +59,11 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <header>../conf/header.txt</header>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>../conf/header.txt</header>
+                        </licenseSet>
+                    </licenseSets>
                 </configuration>
             </plugin>
         </plugins>

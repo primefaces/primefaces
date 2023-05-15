@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.galleria;
 
+import java.util.Collection;
+import java.util.Collections;
 import javax.faces.application.ResourceDependency;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
@@ -50,4 +52,8 @@ public class Galleria extends GalleriaBase {
     public static final String THUMBNAIL_ITEM_CLASS = "ui-galleria-thumbnail-item";
     public static final String THUMBNAIL_ITEM_CONTENT_CLASS = "ui-galleria-thumbnail-item-content";
 
+    @Override
+    public Collection<String> getEventNames() {
+        return Collections.emptyList();
+    }
 }

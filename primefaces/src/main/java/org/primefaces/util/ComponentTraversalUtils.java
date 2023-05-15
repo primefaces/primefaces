@@ -23,11 +23,11 @@
  */
 package org.primefaces.util;
 
-import javax.faces.component.*;
-import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.faces.component.*;
+import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
 
@@ -60,7 +60,7 @@ public class ComponentTraversalUtils {
         T result = null;
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
-        while (kids.hasNext() && (result == null)) {
+        while (kids.hasNext()) {
             UIComponent kid = kids.next();
             if (type.isAssignableFrom(kid.getClass())) {
                 result = (T) kid;
@@ -126,7 +126,7 @@ public class ComponentTraversalUtils {
         UIComponent result = null;
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
-        while (kids.hasNext() && (result == null)) {
+        while (kids.hasNext()) {
             UIComponent kid = kids.next();
             if (id.equals(kid.getId())) {
                 result = kid;
@@ -170,7 +170,15 @@ public class ComponentTraversalUtils {
         }
     }
 
+    /**
+     * @deprecated use closestForm(UIComponent component)
+     */
+    @Deprecated
     public static UIForm closestForm(FacesContext context, UIComponent component) {
+        return closest(UIForm.class, component);
+    }
+
+    public static UIForm closestForm(UIComponent component) {
         return closest(UIForm.class, component);
     }
 

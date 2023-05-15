@@ -23,17 +23,14 @@
  */
 package org.primefaces.component.datatable.feature;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableBase;
-import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.util.LangUtils;
 
@@ -41,21 +38,12 @@ public class SelectionFeature implements DataTableFeature {
 
     private static final String ALL_SELECTOR = "@all";
 
-    private static final SelectionFeature INSTANCE = new SelectionFeature();
-
-    private SelectionFeature() {
-    }
-
-    public static SelectionFeature getInstance() {
-        return INSTANCE;
-    }
-
     @Override
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Object originalValue = table.getValue();
-        boolean isFiltered = table.isFilteringCurrentlyActive();
+        boolean allEligibleToSelection = table.isFilteringCurrentlyActive() && !table.isSelectAllFilteredOnly();
 
         String selection = params.get(clientId + "_selection");
         Set<String> rowKeys = Collections.emptySet();
@@ -68,13 +56,13 @@ public class SelectionFeature implements DataTableFeature {
             table.setSelectAll(false);
         }
 
-        if (isFiltered) {
+        if (allEligibleToSelection) {
             table.setValue(null);
         }
 
         decodeSelection(context, table, rowKeys);
 
-        if (isFiltered) {
+        if (allEligibleToSelection) {
             table.setValue(originalValue);
         }
 
@@ -198,11 +186,6 @@ public class SelectionFeature implements DataTableFeature {
 
             setSelection(context, table, true, selection, rowKeysTmp);
         }
-    }
-
-    @Override
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        throw new FacesException("SelectFeature should not encode.");
     }
 
     @Override

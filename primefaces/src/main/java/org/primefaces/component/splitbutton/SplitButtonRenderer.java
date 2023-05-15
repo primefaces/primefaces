@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -38,6 +37,7 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.*;
@@ -64,6 +64,11 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             if (params.containsKey(param)) {
                 component.queueEvent(new ActionEvent(component));
             }
+        }
+
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null) {
+            customOverlay.getRenderer().decode(context, customOverlay);
         }
     }
 
@@ -99,12 +104,18 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.getElementsCount() > 0) {
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null || button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }
 
         writer.endElement("div");
+
+        if (customOverlay != null) {
+            customOverlay.setFor(clientId);
+            customOverlay.getRenderer().encodeEnd(context, customOverlay);
+        }
     }
 
     protected void encodeDefaultButton(FacesContext context, SplitButton button, String id) throws IOException {
@@ -136,7 +147,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         // GitHub #9381 ignore style as its applied to parent div
-        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITH_CLICK_ATTRS);
+        List<String> attrs = new ArrayList<>(HTML.BUTTON_WITHOUT_CLICK_ATTRS);
         attrs.remove("style");
         renderPassThruAttributes(context, button, attrs);
 
@@ -159,7 +170,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
         if (value == null) {
-            writer.write("ui-button");
+            //For ScreenReader
+            writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
         }
         else {
             writer.writeText(value, "value");
@@ -195,7 +207,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write("ui-button");
+        writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
         writer.endElement("span");
 
         writer.endElement("button");
@@ -210,7 +222,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         if (button.isFilter()) {
             wb.attr("filter", true)
                     .attr("filterMatchMode", button.getFilterMatchMode(), null)
-                    .nativeAttr("filterFunction", button.getFilterFunction(), null);
+                    .nativeAttr("filterFunction", button.getFilterFunction(), null)
+                    .attr("filterNormalize", button.isFilterNormalize(), false);
         }
 
         wb.attr("disableOnAjax", button.isDisableOnAjax(), true)
@@ -228,7 +241,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             onclick.append(buildAjaxRequest(context, button));
         }
         else {
-            UIForm form = ComponentTraversalUtils.closestForm(context, button);
+            UIForm form = ComponentTraversalUtils.closestForm(button);
             if (form == null) {
                 throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
             }

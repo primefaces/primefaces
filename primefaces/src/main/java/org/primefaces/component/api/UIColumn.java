@@ -27,19 +27,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
 import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
+
+    MatchMode DEFAULT_FILTER_MATCH_MODE = MatchMode.STARTS_WITH;
 
     /**
      * Used to extract bean's property from a value expression in dynamic columns
@@ -172,8 +175,6 @@ public interface UIColumn {
 
     int getFilterMaxLength();
 
-    Object getFilterOptions();
-
     CellEditor getCellEditor();
 
     boolean isDynamic();
@@ -239,4 +240,24 @@ public interface UIColumn {
     boolean isCaseSensitiveSort();
 
     int getDisplayPriority();
+
+    default <C extends UIComponent & ValueHolder> C getFilterComponent() {
+        UIComponent filterFacet = getFacet("filter");
+        if (filterFacet != null) {
+            if (filterFacet instanceof ValueHolder) {
+                return (C) filterFacet;
+            }
+
+            for (UIComponent child : filterFacet.getChildren()) {
+                if (!child.isRendered()) {
+                    continue;
+                }
+
+                if (child instanceof ValueHolder) {
+                    return (C) child;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -135,7 +135,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
 
         //button
-        writer.startElement("div", null);
+        writer.startElement("div", getSelectItemComponent(option));
         writer.writeAttribute("class", buttonStyle, null);
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);

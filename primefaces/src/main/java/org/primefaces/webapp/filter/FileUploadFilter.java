@@ -51,11 +51,11 @@ public class FileUploadFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(FileUploadFilter.class.getName());
 
     private static final String THRESHOLD_SIZE_PARAM = "thresholdSize";
-
+    private static final String FILE_COUNT_MAX_PARAM = "fileCountMax";
     private static final String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
 
     private String thresholdSize;
-
+    private String fileCountMax;
     private String uploadDir;
 
     private boolean bypass;
@@ -76,6 +76,7 @@ public class FileUploadFilter implements Filter {
         }
 
         thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
+        fileCountMax = filterConfig.getInitParameter(FILE_COUNT_MAX_PARAM);
         uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
 
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -99,6 +100,9 @@ public class FileUploadFilter implements Filter {
             }
 
             ServletFileUpload servletFileUpload = new ServletFileUpload(createFileItemFactory(httpServletRequest));
+            if (fileCountMax != null) {
+                servletFileUpload.setFileCountMax(Long.parseLong(fileCountMax));
+            }
             MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
 
             if (LOGGER.isLoggable(Level.FINE)) {

@@ -3,20 +3,20 @@
  * 
  * ColorPicker is an input component with a color palette.
  * 
- * This uses a color picker plugin for jQuery. To interact with the color picker, you can use the following code.
+ * This uses Coloris written in vanilla ES6. To interact with the color picker, you can use the following code.
  * 
  * ```javascript
  * // Assuming the widget variable of the color picker was set to "myColorPicker"
  * const colorPicker = PF("myColorPicker");
  * 
  * // Brings up the color picker (if "mode" was set to "popup")
- * colorPicker.jqEl.ColorPickerShow();
+ * colorPicker.show();
  * 
  * // Hides up the color picker (if "mode" was set to "popup")
- * colorPicker.jqEl.ColorPickerHide();
+ * colorPicker.hide();
  * 
  * // Sets the currently selected color to "green"
- * colorPicker.jqEl.ColorPickerSetColor("00FF00");
+ * colorPicker.setColor("00FF00");
  * ```
  * 
  * @typedef {"inline" | "popup"} PrimeFaces.widget.ColorPicker.DisplayMode Display mode of a color picker. `inline`
@@ -24,24 +24,18 @@
  * clicks on the color.
  * 
  * @prop {JQuery} input DOM element of the INPUT element
- * @prop {JQuery} overlay DOM element of the OVERLAY container.
- * @prop {JQuery} livePreview DOM element of the live color preview.
- * @prop {JQuery} jqEl DOM element on which the JQuery ColorPicker plugin was initialized. You can use this element to
- * interact with the ColorPicker.
- * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
- * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {boolean} popup True if popup mode, else inline mode
+ * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
  * 
- * @interface {PrimeFaces.widget.ColorPickerCfg} cfg The configuration for the {@link  ColorPicker| ColorPicker widget}.
+ * @interface {PrimeFaces.widget.ColorPickerCfg} cfg The configuration for the {@link  Coloris}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
  * configuration is usually meant to be read-only and should not be modified.
  * @extends {PrimeFaces.widget.BaseWidgetCfg} cfg
  * 
  * @prop {PrimeFaces.widget.ColorPicker.DisplayMode} cfg.mode Whether the color picker is displayed inline or as a popup.
- * @prop {string} cfg.color Initial color to be displayed.
- * @prop {boolean} cfg.flat `true` if `mode` is not `popup`, `false` otherwise.
- * @prop {boolean} cfg.livePreview Whether the live preview of the selected color is enabled.
+ * @prop {string} cfg.instance The instance of for configuring in popup mode
  */
- PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
 
     /**
      * @override
@@ -50,147 +44,216 @@
      */
     init: function(cfg) {
         this._super(cfg);
+        this.setupGlobalDefaults();
+        this.setupPopup();
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh: function(cfg) {
+        this._cleanup();
+        this._super(cfg);
+    },
+
+    /**
+     * @override
+     * @inheritdoc
+     */
+    destroy: function() {
+        this._super();
+        this._cleanup();
+    },
+
+    /**
+    * Clean up this widget and remove events from the DOM.
+    * @private
+    */
+    _cleanup: function() {
+        if (this.input) {
+            this.input.removeClass('ui-colorpicker');
+            this.input.parent().find('button').remove();
+            Coloris.removeInstance('.' + this.cfg.instance);
+        }
+        else {
+            // remove the inline from the DOM
+            this.jq.empty();
+        }
+    },
+
+    /**
+     * Only one instance of Coloris is allowed so ensure it only loads defaults once.
+     * @private
+     */
+    setupGlobalDefaults: function() {
+        this.popup = this.cfg.mode === 'popup';
+        if (colorisInitialized) {
+            return;
+        }
+
+        var $this = this;
+        this.configureLocale();
+        this.cfg.inline = !this.popup;
+        var settings = this.cfg;
+        if (this.popup) {
+            colorisInitialized = true;
+            settings = {
+                el: '.ui-colorpicker',
+                inline: this.cfg.inline,
+                a11y: this.cfg.a11y,
+                clearLabel: this.cfg.clearLabel,
+                closeLabel: this.cfg.closeLabel
+            };
+        }
+        else {
+            colorisInitialized = false;
+            settings.el = null;
+            settings.parent = this.jqId;
+            this.bindInlineCallbacks();
+        }
+        $(document).ready(function() {
+            Coloris.init();
+            Coloris(settings);
+            if ($this.cfg.inline) {
+                Coloris.updatePosition();
+            }
+            colorisInitialized = false;
+        });
+    },
+
+    /**
+     * Localizes the ARIA accessibility labels for the color picker.
+     * @private
+     */
+    configureLocale: function() {
+        var lang = PrimeFaces.getLocaleSettings(this.cfg.locale);
+        if (!lang) {
+            return;
+        }
+        if (lang.closeText) { this.cfg.closeLabel = lang.closeText; }
+        if (lang.clear) { this.cfg.clearLabel = lang.clear; }
+        if (lang.isRTL) { this.cfg.rtl = true; }
+        if (lang.aria) {
+            PrimeFaces.localeSettings = lang;
+            var a11y = {};
+            this.configureAriaLabel('colorpicker.OPEN', a11y, 'open');
+            this.configureAriaLabel('colorpicker.CLOSE', a11y, 'close');
+            this.configureAriaLabel('colorpicker.CLEAR', a11y, 'clear');
+            this.configureAriaLabel('colorpicker.MARKER', a11y, 'marker');
+            this.configureAriaLabel('colorpicker.HUESLIDER', a11y, 'hueSlider');
+            this.configureAriaLabel('colorpicker.ALPHASLIDER', a11y, 'alphaSlider');
+            this.configureAriaLabel('colorpicker.INPUT', a11y, 'input');
+            this.configureAriaLabel('colorpicker.FORMAT', a11y, 'format');
+            this.configureAriaLabel('colorpicker.SWATCH', a11y, 'swatch');
+            this.configureAriaLabel('colorpicker.INSTRUCTION', a11y, 'instruction');
+            this.configureAriaLabel('colorpicker.OPEN', a11y, 'open');
+            this.cfg.a11y = a11y;
+        }
+    },
+    
+    /**
+     * Configures a single ARIA label from PF locale to Coloris a11y.
+     * @param {string} label the PF label to lookup in locale.js
+     * @param {{key: string}} a11y the a11y JSON object for Coloris
+     * @param {string} property the JSON property to set in a11y
+     * @private
+     */
+    configureAriaLabel: function(label, a11y, property) {
+        var ariaLabel = PrimeFaces.getAriaLabel(label);
+        if (ariaLabel) {
+            a11y[property] = ariaLabel;
+        }
+    },
+
+    /**
+     * Configure the color picker for popup mode.
+     * @private
+     */
+    setupPopup: function() {
+        if (!this.popup) {
+            return;
+        }
         var $this = this;
 
-        this.input = $(this.jqId + '_input');
-        this.cfg.popup = this.cfg.mode == 'popup';
-        this.jqEl = this.cfg.popup ? $(this.jqId + '_button') : $(this.jqId + '_inline');
-        this.cfg.flat = !this.cfg.popup;
-        this.cfg.livePreview = false;
-
-        this.bindCallbacks();
-
-        //ajax update check
-        if(this.cfg.popup) {
-            this.clearOrphanOverlay();
-        }
-
-        //create colorpicker
-        this.jqEl.ColorPicker(this.cfg);
-
-        //popup ui
-        if (this.cfg.popup) {
-            PrimeFaces.skinButton(this.jqEl);
-            this.overlay = $(PrimeFaces.escapeClientId(this.jqEl.data('colorpickerId')));
-            this.livePreview = $(this.jqId + '_livePreview');
-        }
-
-        //pfs metadata
+        // input and pfs metadata
+        this.input = this.jq;
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        PrimeFaces.skinInput(this.input);
+        this.hasFloatLabel = PrimeFaces.utils.hasFloatLabel(this.input);
+
+        // check if being used in dialog and set the parent
+        this.setupDialogSupport();
+
+        // setup event callbacks
+        this.bindInputCallbacks();
+
+        // configure Coloris for this instance
+        Coloris.setInstance('.' + this.cfg.instance, this.cfg);
+
+        // add error styling to thumbnail button if necessary
+        $(document).ready(function() {
+            var triggerButton = $this.input.prev();
+            if ($this.input.hasClass('ui-state-error')) {
+                triggerButton.addClass('ui-inputfield ui-state-error');
+            }
+        });
+    },
+
+    /**
+     * Sets up the event listeners required by this widget for inline mode.
+     * @private
+     */
+    bindInlineCallbacks: function() {
+        var $this = this;
+        if ($this.hasBehavior('change')) {
+            $(document).on('coloris:pick', function(e) {
+                var ext = {
+                    params: [
+                        { name: $this.id + '_color', value: e.detail.color }
+                    ]
+                };
+                $this.callBehavior('change', ext);
+            });
+        }
     },
 
     /**
      * Sets up the event listeners required by this widget.
      * @private
      */
-    bindCallbacks: function() {
+    bindInputCallbacks: function() {
         var $this = this;
-
-        this.cfg.onChange = function(hsb, hex, rgb) {
-            $this.input.val(hex);
-
-
-            if($this.cfg.popup) {
-                $this.livePreview.css('backgroundColor', '#' + hex);
-            }
-
-            $this.input.trigger('change');
-
-            $this.callBehavior('change');
-        };
-
-        this.cfg.onShow = function() {
-            if ($this.cfg.popup) {
-                $this.overlay.css({
-                    'z-index': PrimeFaces.nextZindex(),
-                    'display':'block',
-                    'opacity':'0',
-                    'pointer-events': 'none'
-                });
-
-                $this.bindPanelEvents();
-            }
-
-            $this.setupDialogSupport();
-
-            //position the overlay relative to the button
-            $this.alignPanel();
-
-            if ($this.cfg.popup) {
-                $this.overlay.css({
-                    'display':'none',
-                    'opacity':'',
-                    'pointer-events': ''
-                });
-            }
-        };
-
-        this.cfg.onHide = function(cp) {
-            if ($this.cfg.popup) {
-                $this.unbindPanelEvents();
-            }
-
-            $this.overlay.css('z-index', PrimeFaces.nextZindex());
-            $(cp).fadeOut('fast');
-            $this.callBehavior('close');
-            return false;
-        };
-    },
-
-    /**
-     * Sets up all panel event listeners
-     * @private
-     */
-    bindPanelEvents: function() {
-        var $this = this;
-
-        //popup ui
-        if (this.cfg.popup && this.overlay) {
-            this.scrollHandler = PrimeFaces.utils.registerConnectedOverlayScrollHandler(this, 'scroll.' + this.id + '_hide', this.jqEl, function() {
-                if (PrimeFaces.hideOverlaysOnViewportChange === true) {
-                    $this.overlay.hide();
-                }
-            });
-
-            this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_hide', this.overlay, function() {
-                if (PrimeFaces.hideOverlaysOnViewportChange === true) {
-                    $this.overlay.hide();
-                }
+        if ($this.hasBehavior('change')) {
+            $this.input.on('coloris:pick', function(e) {
+                $this.callBehavior('change');
             });
         }
-    },
-
-    /**
-     * Unbind all panel event listeners
-     * @private
-     */
-    unbindPanelEvents: function() {
-        if (this.resizeHandler) {
-            this.resizeHandler.unbind();
+        if ($this.hasBehavior('open')) {
+            $this.input.on('open.colorpicker', function(e) {
+                $this.callBehavior('open');
+            });
         }
-    
-        if (this.scrollHandler) {
-            this.scrollHandler.unbind();
-        }
-    },
 
-    /**
-     * When a popup colorpicker is updated via AJAX, a new overlay is appended to body and the old overlay would be
-     * orphaned. We need to remove the old overlay to prevent memory leaks.
-     * @private
-     */
-    clearOrphanOverlay: function() {
-        var $this = this;
-
-        $(document.body).children('.ui-colorpicker-container').each(function(i, element) {
-            var overlay = $(element),
-            options = overlay.data('colorpicker');
-
-            if(options.id == $this.id) {
-                overlay.remove();
-                return false;   //break;
+        $this.input.on('close.colorpicker', function(e) {
+            if ($this.hasBehavior('close')) {
+                $this.callBehavior('close');
+            }
+            if ($this.hasFloatLabel) {
+                var container = $this.input.parent();
+                setTimeout(function() {
+                    container.removeClass('ui-inputwrapper-focus');
+                    PrimeFaces.utils.updateFloatLabel(container, $this.input, $this.hasFloatLabel);
+                }, 0);
             }
         });
+
+        if ($this.hasFloatLabel) {
+            $this.input.on('focus.colorpicker', function() {
+                $this.input.parent().addClass('ui-inputwrapper-focus');
+            });
+        }
     },
 
     /**
@@ -198,24 +261,51 @@
      * @private
      */
     setupDialogSupport: function() {
-        this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jqEl, this.overlay);
+        var dialog = this.input[0].closest('.ui-dialog');
+        if (dialog) {
+            this.cfg.parent = PrimeFaces.escapeClientId(dialog.id);
+        }
     },
 
     /**
-     * Aligns the overlay panel with the color picker according to the current configuration. It is usually positioned
-     * next to or below the input field to which it is attached.
+      * Gets the current color
+      * @return {string} the current color
+      */
+    getColor: function() {
+        var input = this.popup ? this.input : this.jq.find('#clr-color-value');
+        return input.val();
+    },
+
+    /**
+      * Sets the current color
+      * @param {string} color the color to set
+      */
+    setColor: function(color) {
+        if (!color) {
+            return;
+        }
+        var newColor = color.toLowerCase();
+        var input = this.popup ? this.input : this.jq.find('#clr-color-value');
+        Coloris.setColor(newColor, input[0]);
+    },
+
+    /**
+     * Shows the popup panel.
      */
-    alignPanel: function() {
-        this.overlay.css({
-                left: '',
-                top: ''
-            })
-            .position({
-                my: 'left top',
-                at: 'left bottom',
-                of: this.jqEl,
-                collision: 'flipfit'
-            });
+    show: function() {
+        if (this.input) {
+            this.input.trigger('click');
+        }
+    },
+
+    /**
+     * Close the dialog and revert the color to its original value.
+     * @param {boolean | undefined} revert true to revert the color to its original value
+     */
+    hide: function(revert) {
+        if (this.input) {
+            Coloris.close(revert);
+        }
     },
 
     /**
@@ -232,3 +322,7 @@
         PrimeFaces.utils.enableInputWidget(this.jq, this.input);
     }
 });
+
+// Global variable so Coloris is only initialized once
+var colorisInitialized = false;
+

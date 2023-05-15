@@ -24,13 +24,15 @@
 package org.primefaces.component.accordionpanel;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.MultiViewStateAware;
 
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.component.api.Widget;
 
-public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
+public abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder,
+        MultiViewStateAware<AccordionState> {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -49,7 +51,8 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         multiple,
         dir,
         tabindex,
-        tabController
+        tabController,
+        multiViewState
     }
 
     public AccordionPanelBase() {
@@ -155,5 +158,14 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public void setTabController(javax.el.MethodExpression tabController) {
         getStateHelper().put(PropertyKeys.tabController, tabController);
+    }
+
+    @Override
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 }

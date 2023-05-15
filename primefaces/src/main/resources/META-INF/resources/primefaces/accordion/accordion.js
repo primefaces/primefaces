@@ -24,6 +24,7 @@
  * @prop {boolean} cfg.multiple `true` if multiple tabs may be open at the same time; or `false` if opening one tab
  * closes all other tabs.
  * @prop {boolean} cfg.rtl `true` if the current text direction `rtl` (right-to-left); or `false` otherwise.
+ * @prop {boolean} cfg.multiViewState Whether to keep AccordionPanel state across views.
  */
 PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
@@ -130,10 +131,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-tabs-outline');
         })
         .on('keydown.accordion', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -317,6 +315,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             source: this.id,
             process: this.id,
             update: this.id,
+            ignoreAutoUpdate: true,
             params: [
                 {name: this.id + '_contentLoad', value: true},
                 {name: this.id + '_newTab', value: panel.attr('id')},
@@ -374,6 +373,22 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
             this.callBehavior('tabChange', ext);
         }
+        else if (this.cfg.multiViewState) {
+            var options = {
+                source: this.id,
+                partialSubmit: true,
+                process: this.id,
+                ignoreAutoUpdate: true,
+                global: false,
+                params: [
+                    {name: this.id + '_skipChildren', value: true},
+                    {name: this.id + '_newTab', value: panel.attr('id')},
+                    {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+                ]
+            };
+
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**
@@ -382,9 +397,9 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} index 0-based index of the closed tab.
      */
     fireTabCloseEvent : function(index) {
+        var panel = this.panels.eq(index);
         if(this.hasBehavior('tabClose')) {
-            var panel = this.panels.eq(index),
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_tabId', value: panel.attr('id')},
                     {name: this.id + '_tabindex', value: parseInt(index)}
@@ -401,6 +416,22 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             }
 
             this.callBehavior('tabClose', ext);
+        }
+        else if (this.cfg.multiViewState) {
+            var options = {
+                source: this.id,
+                partialSubmit: true,
+                process: this.id,
+                ignoreAutoUpdate: true,
+                global: false,
+                params: [
+                    {name: this.id + '_skipChildren', value: true},
+                    {name: this.id + '_newTab', value: panel.attr('id')},
+                    {name: this.id + '_tabindex', value: parseInt(index)}
+                ]
+            };
+
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 

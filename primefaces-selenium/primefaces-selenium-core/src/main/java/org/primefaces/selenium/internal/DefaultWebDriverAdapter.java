@@ -87,16 +87,24 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                firefoxOptions.setHeadless(config.isWebdriverHeadless());
+                if (config.isWebdriverHeadless()) {
+                    firefoxOptions.addArguments("-headless");
+                }
                 firefoxOptions.setLogLevel(FirefoxDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
                 firefoxOptions.addPreference("browser.helperApps.neverAsk.openFile", "application/octet-stream");
                 return new FirefoxDriver(firefoxOptions);
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                chromeOptions.setHeadless(config.isWebdriverHeadless());
+                if (config.isWebdriverHeadless()) {
+                    chromeOptions.addArguments("--headless=new");
+                }
                 chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
                 chromeOptions.setLogLevel(ChromeDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
+
+                // Chrome 111 workaround: https://github.com/SeleniumHQ/selenium/issues/11750
+                chromeOptions.addArguments("--remote-allow-origins=*");
+
                 Map<String, Object> chromePrefs = new HashMap<>();
                 chromePrefs.put("download.prompt_for_download", false);
                 chromePrefs.put("download.directory_upgrade", true);

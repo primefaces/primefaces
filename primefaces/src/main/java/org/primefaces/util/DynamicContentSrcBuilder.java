@@ -94,10 +94,6 @@ public class DynamicContentSrcBuilder {
         return "";
     }
 
-    public static String buildStreaming(FacesContext context, ValueExpression valueExpression, boolean cache) {
-        return buildStreaming(context, null, valueExpression, cache);
-    }
-
     public static String buildStreaming(FacesContext context, UIComponent component, ValueExpression valueExpression, boolean cache) {
 
         // just a dummy file for streaming

@@ -31,22 +31,25 @@
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the hidden input with the current value.
  * @prop {boolean} isDynamicLoaded Whether the contents of the overlay panel were loaded.
- * @prop {JQuery} [items] The DOM elements for the the available selectable options.
+ * @prop {JQuery} [items] The DOM elements for the available selectable options.
  * @prop {JQuery} [itemsContainer] The DOM element for the container with the available selectable options.
  * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable options.
- * @prop {JQuery} focusInput The hidden input that can be focused via the tab key etc.
+ * @prop {JQuery} focusInput The hidden input that can be focused via the tab key etc. (only used with editable="true")
  * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
  * @prop {JQuery} label The DOM element for the label indicating the currently selected option.
+ * @prop {JQuery} keyboardTarget The DOM element used as target for keyboard - events.
  * @prop {JQuery} menuIcon The DOM element for the icon for bringing up the overlay panel.
  * @prop {JQuery} options The DOM elements for the available selectable options.
  * @prop {number} optGroupsSize The number of option groups.
  * @prop {JQuery} panel The DOM element for the overlay panel with the available selectable options.
  * @prop {JQuery} panelId ID of the DOM element for the overlay panel with the available selectable options.
  * @prop {number} panelWidthAdjusted The adjusted width of the overlay panel.
- * @prop {JQuery} preShowValue The DOM element for the selected option that is shown before the overlay panel is brought
+ * @prop {JQuery} preShowValue The DOM element for the selected option that is shown before the overlay panel is brought.
+ * @prop {JQuery} labeledBy The DOM element for the label connected to he SelectOneMenu.
  * up.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
+ * @prop {number} searchValue Letters typed for selection. (#4682, only used with editable="false")
  * @prop {number} searchTimer ID of the timeout for the delay of the filter input in the overlay panel.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
@@ -62,9 +65,10 @@
  * input, `false` otherwise.
  * @prop {string} cfg.appendTo Appends the overlay to the element defined by search expression. Defaults to the document
  * body.
- * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Set to false
- * for custom width.
+ * @prop {boolean} cfg.autoWidth Calculates a fixed width based on the width of the maximum option label. Possible values: `auto`,
+ * `true`, `false`.
  * @prop {boolean} cfg.caseSensitive Defines if filtering would be case sensitive.
+ * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
  * @prop {boolean} cfg.editable When true, the input field becomes editable.
@@ -92,9 +96,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panelId = this.jqId + '_panel';
         this.input = $(this.jqId + '_input');
-        this.focusInput = $(this.jqId + '_focus');
+        if (this.cfg.editable) {
+            this.focusInput = $(this.jqId + '_focus');
+        }
         this.label = this.jq.find('.ui-selectonemenu-label');
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
+
+        this.keyboardTarget = this.cfg.editable ? this.focusInput : this.label;
 
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
@@ -104,11 +112,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effect = this.cfg.effect||'fade';
 
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
-        this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
+        this.cfg.autoWidth = this.cfg.autoWidth === undefined ? 'auto' : this.cfg.autoWidth;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
+
+        this.searchValue = '';
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -141,8 +151,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.bindFloatLabel();
 
         // see #7602
-        if (PrimeFaces.env.isTouchable(this.cfg)) {
+        if (this.focusInput && PrimeFaces.env.isTouchable(this.cfg)) {
             this.focusInput.attr('readonly', true);
+        }
+
+        if (!this.cfg.editable) {
+            // work-around because clicking a label referring to a div/span (not input) via for-attribute does focus this div/span
+            var labeledBy = this.label.attr('aria-labelledby');
+            this.labeledBy = null;
+            if (labeledBy) {
+                var eltLabeledBy = document.getElementById(labeledBy);
+                if (eltLabeledBy) {
+                    var $this = this;
+                    this.labeledBy = $(eltLabeledBy);
+                    this.labeledBy.on('click', function (e) {
+                        $this.keyboardTarget.focus();
+                    });
+                }
+            }
         }
 
         this.renderDeferred();
@@ -195,11 +221,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var highlightedItemId = highlightedItem.attr('id'),
             itemsContainerId = this.itemsContainer.attr('id');
         this.jq.attr('aria-owns', itemsContainerId);
-        this.focusInput.attr('aria-autocomplete', 'list')
-            .attr('aria-owns', itemsContainerId)
+        this.keyboardTarget
             .attr('aria-activedescendant', highlightedItemId)
-            .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
+
         this.itemsContainer.attr('aria-activedescendant', highlightedItemId);
     },
 
@@ -210,11 +235,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @inheritdoc
      */
     _render: function() {
-        var contentStyle = this.jq.attr('style'),
-        hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
+        if (this.cfg.autoWidth != 'false') {
+            var contentStyle = this.jq.attr('style');
+            var hasWidth = contentStyle && contentStyle.indexOf('width') != -1;
 
-        if(this.cfg.autoWidth && !hasWidth) {
-            this.jq.css('min-width', this.input.outerWidth() + 'px');
+            if (!hasWidth) {
+                // 'true' -> always calculate min-width
+                var calculateMinWidth = true;
+
+                // 'auto' -> only calculate it without a ui-fluid parent
+                if (this.cfg.autoWidth == 'auto') {
+                    var hasFluidParent = this.jq[0].closest('.ui-fluid') != undefined;
+                    calculateMinWidth = !hasFluidParent;
+                }
+
+                if (calculateMinWidth) {
+                    this.jq.css('min-width', this.input.outerWidth() + 'px');
+                }
+            }
         }
     },
 
@@ -265,15 +303,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        // Screen Reader(JAWS) hack on Chrome
-        if(PrimeFaces.env.browser.webkit) {
-            this.input.on('focus', function(){
-                setTimeout(function(){
-                    $this.focusInput.trigger('focus.ui-selectonemenu');
-                },2);
-            });
-        }
-
         //Triggers
         this.triggers.on("mouseenter", function() {
             if(!$this.jq.hasClass('ui-state-focus')) {
@@ -298,11 +327,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.jq.removeClass('ui-state-hover');
             $this.menuIcon.removeClass('ui-state-hover');
-            $this.focusInput.trigger('focus.ui-selectonemenu');
+            $this.focusInput ? $this.focusInput.trigger('focus.ui-selectonemenu') : null;
             e.preventDefault();
+            e.stopPropagation();
         });
 
-        this.focusInput.on('focus.ui-selectonemenu', function(e) {
+        this.keyboardTarget.on('focus.ui-selectonemenu', function(e) {
             $this.jq.addClass('ui-state-focus');
             $this.menuIcon.addClass('ui-state-focus');
             if(!$this.cfg.dynamic && !$this.items) {
@@ -471,8 +501,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         this.triggers.off();
         this.input.off();
-        this.focusInput.off();
+        if (this.focusInput) {
+            this.focusInput.off();
+        }
         this.label.off();
+        if (this.labeledBy) {
+            this.labeledBy.off();
+        }
     },
 
     /**
@@ -558,7 +593,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!silent) {
             this.callBehavior('itemSelect');
-            this.focusInput.trigger('focus');
+            this.focusInput ? this.focusInput.trigger('focus') : null;
         }
 
         if(this.panel.is(':visible')) {
@@ -599,144 +634,112 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     bindKeyEvents: function() {
         var $this = this;
 
-        this.focusInput.on('keydown.ui-selectonemenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
+        this.keyboardTarget.on('keydown.ui-selectonemenu', function(e) {
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'ArrowLeft':
                     $this.callHandleMethod($this.highlightPrev, e);
                 break;
 
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
+                case 'ArrowDown':
+                case 'ArrowRight':
                     $this.callHandleMethod($this.highlightNext, e);
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
                     $this.handleEnterKey(e);
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     $this.handleTabKey();
                 break;
 
-                case keyCode.ESCAPE:
+                case 'Escape':
                     $this.handleEscapeKey(e);
                 break;
 
-                case keyCode.SPACE:
+                case ' ':
                     $this.handleSpaceKey(e);
                 break;
             }
         })
         .on('keyup.ui-selectonemenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                return;
+            }
 
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
-                case keyCode.ENTER:
-                case keyCode.TAB:
-                case keyCode.ESCAPE:
-                case keyCode.SPACE:
-                case keyCode.HOME:
-                case keyCode.PAGE_DOWN:
-                case keyCode.PAGE_UP:
-                case keyCode.END:
-                case keyCode.DELETE:
-                case 16: //shift
-                case 17: //keyCode.CONTROL:
-                case 18: //keyCode.ALT:
-                case 19: //Pause/Break:
-                case 20: //capslock:
-                case 44: //Print Screen:
-                case 45: //Insert:
-                case 91: //left window or cmd:
-                case 92: //right window:
-                case 93: //right cmd:
-                case 144: //num lock:
-                case 145: //scroll lock:
-                break;
+            var matchedOptions = null,
+            metaKey = e.metaKey||e.ctrlKey||e.altKey;
 
-                default:
-                    //function keys (F1,F2 etc.)
-                    if(key >= 112 && key <= 123) {
-                        break;
+            if(!metaKey) {
+                clearTimeout($this.searchTimer);
+
+                // #4682: check for word match
+                var text = $(this).val();
+                if (!$this.focusInput) {
+                    $this.searchValue += e.key;
+                    text = $this.searchValue;
+                }
+
+                matchedOptions = $this.matchOptions(text);
+                if(matchedOptions.length) {
+                    var matchIndex = matchedOptions[0].index;
+                    if($this.panel.is(':hidden')) {
+                        $this.callHandleMethod(function() {
+                            var highlightItem = $this.items.eq(matchIndex);
+                            $this.selectItem(highlightItem);
+                        }, e);
                     }
-
-                    var matchedOptions = null,
-                    metaKey = e.metaKey||e.ctrlKey||e.altKey;
-
-                    if(!metaKey) {
-                        clearTimeout($this.searchTimer);
-
-                        // #4682: check for word match
-                        var text = $(this).val();
-                        matchedOptions = $this.matchOptions(text);
-                        if(matchedOptions.length) {
-                            var matchIndex = matchedOptions[0].index;
-                            if($this.panel.is(':hidden')) {
-                                $this.callHandleMethod(function() {
-                                    var highlightItem = $this.items.eq(matchIndex);
-                                    $this.selectItem(highlightItem);
-                                }, e);
-                            }
-                            else {
-                                var highlightItem = $this.items.eq(matchIndex);
-                                $this.highlightItem(highlightItem);
-                                PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                            }
-                        } else {
-                            // #4682: check for first letter match
-                            text = String.fromCharCode(key).toLowerCase();
-                            // find all options with the same first letter
-                            matchedOptions = $this.matchOptions(text);
-                            if(matchedOptions.length) {
-                                $this.callHandleMethod(function() {
-                                    var selectedIndex = -1;
-
-                                    // is current selection one of our matches?
-                                    matchedOptions.each(function() {
-                                       var option = $(this);
-                                       var currentIndex = option[0].index;
-                                       var currentItem = $this.items.eq(currentIndex);
-                                       if (currentItem.hasClass('ui-state-highlight')) {
-                                           selectedIndex = currentIndex;
-                                           return false;
-                                       }
-                                    });
-
-                                    matchedOptions.each(function() {
-                                        var option = $(this);
-                                        var currentIndex = option[0].index;
-                                        var currentItem = $this.items.eq(currentIndex);
-
-                                        // select next item after the current selection
-                                        if (currentIndex > selectedIndex) {
-                                             if($this.panel.is(':hidden')) {
-                                                 $this.selectItem(currentItem);
-                                             }
-                                             else {
-                                                 $this.highlightItem(currentItem);
-                                                 PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
-                                             }
-                                             return false;
-                                         }
-                                    });
-                                }, e);
-                            }
-                        }
-
-                        $this.searchTimer = setTimeout(function(){
-                            $this.focusInput.val('');
-                        }, 1000);
+                    else {
+                        var highlightItem = $this.items.eq(matchIndex);
+                        $this.highlightItem(highlightItem);
+                        PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
                     }
-                break;
+                } else {
+                    // #4682: check for first letter match
+                    text = e.key.toLowerCase();
+                    // find all options with the same first letter
+                    matchedOptions = $this.matchOptions(text);
+                    if(matchedOptions.length) {
+                        $this.callHandleMethod(function() {
+                            var selectedIndex = -1;
+
+                            // is current selection one of our matches?
+                            matchedOptions.each(function() {
+                               var option = $(this);
+                               var currentIndex = option[0].index;
+                               var currentItem = $this.items.eq(currentIndex);
+                               if (currentItem.hasClass('ui-state-highlight')) {
+                                   selectedIndex = currentIndex;
+                                   return false;
+                               }
+                            });
+
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option[0].index;
+                                var currentItem = $this.items.eq(currentIndex);
+
+                                // select next item after the current selection
+                                if (currentIndex > selectedIndex) {
+                                     if($this.panel.is(':hidden')) {
+                                         $this.selectItem(currentItem);
+                                     }
+                                     else {
+                                         $this.highlightItem(currentItem);
+                                         PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                     }
+                                     return false;
+                                 }
+                            });
+                        }, e);
+                    }
+                }
+
+                $this.searchTimer = setTimeout(function(){
+                    $this.searchValue = '';
+                    $this.focusInput ? $this.focusInput.val('') : null;
+                }, 1000);
             }
         });
     },
@@ -771,71 +774,39 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.filterInput.on('keyup.ui-selectonemenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                return;
+            }
+            var metaKey = e.metaKey||e.ctrlKey;
 
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.LEFT:
-                case keyCode.DOWN:
-                case keyCode.RIGHT:
-                case keyCode.ENTER:
-                case keyCode.TAB:
-                case keyCode.ESCAPE:
-                case keyCode.SPACE:
-                case keyCode.HOME:
-                case keyCode.PAGE_DOWN:
-                case keyCode.PAGE_UP:
-                case keyCode.END:
-                case 16: //shift
-                case 17: //keyCode.CONTROL:
-                case 18: //keyCode.ALT:
-                case 91: //left window or cmd:
-                case 92: //right window:
-                case 93: //right cmd:
-                case 20: //capslock:
-                break;
-
-                default:
-                    //function keys (F1,F2 etc.)
-                    if(key >= 112 && key <= 123) {
-                        break;
-                    }
-
-                    var metaKey = e.metaKey||e.ctrlKey;
-
-                    if(!metaKey) {
-                        $this.filter($(this).val());
-                    }
-                break;
+            if(!metaKey) {
+                $this.filter($(this).val());
             }
         })
         .on('keydown.ui-selectonemenu',function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
 
-            switch(key) {
-                case keyCode.UP:
+            switch(e.key) {
+                case 'ArrowUp':
                     $this.highlightPrev(e);
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     $this.highlightNext(e);
                 break;
 
-                case keyCode.ENTER:
+                case 'Enter':
                     $this.handleEnterKey(e);
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     $this.handleTabKey();
                 break;
 
-                case keyCode.ESCAPE:
+                case 'Escape':
                     $this.handleEscapeKey(e);
                 break;
 
-                case keyCode.SPACE:
+                case ' ':
                     $this.handleSpaceKey(e);
                 break;
 
@@ -1004,7 +975,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                     //value before panel is shown
                     $this.preShowValue = $this.options.filter(':selected');
-                    $this.jq.attr('aria-expanded', true);
+                    $this.keyboardTarget.attr('aria-expanded', true);
 
                     PrimeFaces.scrollInView($this.itemsWrapper, $this.getActiveItem());
 
@@ -1022,6 +993,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     hide: function() {
         if (this.panel.is(':visible') && this.transition) {
             var $this = this;
+            this.searchValue = '';
 
             this.transition.hide({
                 onExit: function() {
@@ -1029,7 +1001,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 },
                 onExited: function() {
                     $this.panel.css('z-index', '');
-                    $this.jq.attr('aria-expanded', false);
+                    $this.keyboardTarget.attr('aria-expanded', false);
                 }
             });
         }
@@ -1039,7 +1011,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Puts focus on this widget.
      */
     focus: function() {
-        this.focusInput.trigger('focus');
+        this.keyboardTarget.trigger('focus');
     },
 
     /**
@@ -1062,7 +1034,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * Removes focus from this widget.
      */
     blur: function() {
-        this.focusInput.trigger("blur");
+        this.keyboardTarget.trigger("blur");
+        this.searchValue = '';
 
         this.callBehavior('blur');
     },
@@ -1276,7 +1249,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      */
     filter: function(value) {
         this.cfg.initialHeight = this.cfg.initialHeight||this.itemsWrapper.height();
-        var filterValue = PrimeFaces.normalize(PrimeFaces.trim(value), !this.cfg.caseSensitive);
+        var lowercase = !this.cfg.caseSensitive,
+                normalize = this.cfg.filterNormalize,
+                filterValue = PrimeFaces.toSearchable(PrimeFaces.trim(value), lowercase, normalize);
 
         if(filterValue === '') {
             this.items.filter(':hidden').show();
@@ -1288,7 +1263,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             for(var i = 0; i < this.options.length; i++) {
                 var option = this.options.eq(i),
-                itemLabel = PrimeFaces.normalize(option.text(), !this.cfg.caseSensitive),
+                itemLabel = PrimeFaces.toSearchable(option.text(), lowercase, normalize),
                 item = this.items.eq(i);
 
                 if(item.hasClass('ui-noselection-option')) {
@@ -1302,7 +1277,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         hide.push(item);
                     }
                     else {
-                        itemLabel = PrimeFaces.normalize(option.parent().attr('label'), !this.cfg.caseSensitive);
+                        itemLabel = PrimeFaces.toSearchable(option.parent().attr('label'), lowercase, normalize);
                         if (this.filterMatcher(itemLabel, filterValue)) {
                             show.push(item);
                         }
@@ -1394,8 +1369,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     changeAriaValue: function (item) {
         var itemId = item.attr('id');
 
-        this.focusInput.attr('aria-activedescendant', itemId)
-                .attr('aria-describedby', itemId);
+        this.keyboardTarget.attr('aria-activedescendant', itemId);
         this.itemsContainer.attr('aria-activedescendant', itemId);
     },
 
@@ -1560,7 +1534,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         content += '<li class="' + cssClass + '" tabindex="-1" role="option"';
         if (title) {
-            content += ' title="' + title + '"';
+            content += ' title="' + PrimeFaces.escapeHTML(title) + '"';
         }
         if ($item.is(':disabled')) {
             content += ' disabled';

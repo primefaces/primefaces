@@ -26,7 +26,8 @@ package org.primefaces.util;
 import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -44,6 +45,12 @@ public class ResourceUtils {
 
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
+    public static final String RES_NOT_FOUND = "RES_NOT_FOUND";
+
+    /**
+     * Used to extract resource name (e.g "#{resource['picture.png'}")
+     */
+    private static final Pattern RESOURCE_PATTERN = Pattern.compile("^#\\{resource\\['(.+)']}$");
 
     private ResourceUtils() {
     }
@@ -295,6 +302,49 @@ public class ResourceUtils {
             }
         }
         return monitorKeyCookieName;
+    }
+
+
+    public static boolean isResourceNotFound(Resource resource) {
+        return resource != null && (RES_NOT_FOUND.equals(resource.toString()) || RES_NOT_FOUND.equals(resource.getRequestPath()));
+    }
+
+    /**
+     * Per default the JSF implementation evaluates resource expressions as String and returns {@link Resource#getRequestPath()}.
+     * This method resolves the expression to the {@link Resource} itself.
+     *
+     * @param facesContext The {@link FacesContext}
+     * @param valueExpression The {@link ValueExpression}
+     *
+     * @return Null if the valueExpression is not of the form #{resource['path/to/resource']} or #{resource['library:name']}.
+     * Otherwise the value obtained by {@link ResourceHandler#createResource(java.lang.String)}.
+     */
+    public static Resource evaluateResourceExpression(FacesContext facesContext, ValueExpression valueExpression) {
+        Resource resource = null;
+
+        if (valueExpression != null) {
+            String expressionString = valueExpression.getExpressionString();
+
+            Matcher matcher = RESOURCE_PATTERN.matcher(expressionString);
+            if (matcher.find()) {
+                String[] resourceInfo = matcher.group(1).split(":");
+
+                Application application = facesContext.getApplication();
+                ResourceHandler resourceHandler = application.getResourceHandler();
+
+                if (resourceInfo.length == 2) {
+                    String resourceLibrary = resourceInfo[0];
+                    String resourceName = resourceInfo[1];
+                    resource = resourceHandler.createResource(resourceName, resourceLibrary);
+                }
+                else {
+                    String resourceName = resourceInfo[0];
+                    resource = resourceHandler.createResource(resourceName);
+                }
+            }
+        }
+
+        return !isResourceNotFound(resource) ? resource : null;
     }
 
     public static class ResourceInfo implements Serializable {

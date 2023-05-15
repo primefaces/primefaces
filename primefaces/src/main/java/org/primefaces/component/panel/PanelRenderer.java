@@ -49,6 +49,11 @@ public class PanelRenderer extends CoreRenderer {
         String collapsedParam = params.get(clientId + "_collapsed");
         if (collapsedParam != null) {
             panel.setCollapsed(Boolean.parseBoolean(collapsedParam));
+
+            if (panel.isMultiViewState()) {
+                PanelState ps = panel.getMultiViewState(true);
+                ps.setCollapsed(panel.isCollapsed());
+            }
         }
 
         //Restore visibility state
@@ -65,6 +70,10 @@ public class PanelRenderer extends CoreRenderer {
         Panel panel = (Panel) component;
         Menu optionsMenu = panel.getOptionsMenu();
 
+        if (panel.isMultiViewState()) {
+            panel.restoreMultiViewState();
+        }
+
         encodeMarkup(facesContext, panel, optionsMenu);
         encodeScript(facesContext, panel, optionsMenu);
     }
@@ -78,7 +87,8 @@ public class PanelRenderer extends CoreRenderer {
                     .attr("toggleSpeed", panel.getToggleSpeed())
                     .attr("collapsed", panel.isCollapsed())
                     .attr("toggleOrientation", panel.getToggleOrientation())
-                    .attr("toggleableHeader", panel.isToggleableHeader());
+                    .attr("toggleableHeader", panel.isToggleableHeader())
+                    .attr("multiViewState", panel.isMultiViewState(), false);
         }
 
         if (panel.isClosable()) {
@@ -125,6 +135,8 @@ public class PanelRenderer extends CoreRenderer {
         }
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_header", null);
 
         renderDynamicPassThruAttributes(context, panel);
 
@@ -166,6 +178,10 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
         writer.writeAttribute("class", Panel.PANEL_TITLEBAR_CLASS, null);
+        if (panel.isToggleable()) {
+            writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(!panel.isCollapsed()), null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_content", null);
+        }
 
         //Title
         writer.startElement("span", null);

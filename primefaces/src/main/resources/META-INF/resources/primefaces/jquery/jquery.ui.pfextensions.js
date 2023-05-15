@@ -110,3 +110,12 @@ $.widget( "ui.sortable", $.ui.sortable, {
     };
 })();
 
+// GitHub #9941 tooltip removal fix
+(function() {
+    var ev = new $.Event('remove'),
+        orig = $.fn.remove;
+    $.fn.remove = function() {
+        $(this).trigger(ev);
+        return orig.apply(this, arguments);
+    }
+})();

@@ -26,11 +26,11 @@ This is the open source code and issue tracker of the PrimeFaces master (a.k.a. 
 Please check the following link for informations about Elite and Pro: [PrimeFaces Support](https://www.primefaces.org/support/)  
 
 What does that mean?
-- PrimeFaces is developed by PrimeTek and the open source community
-- The most contributers here on GitHub are working on PrimeFaces in their spare time
-- PrimeTek pushes fixes and new features from their closed source Elite and Pro repositories to the community edition
-- We, the community on GitHub, only provide support for issues, which are reproducable with the current SNAPSHOT (scroll down for more informations how to use it!)
-- We are NOT able to port bugfixes to elite releases, this is up to PrimeTek and can e.g. be triggered with PrimeFaces PRO
+- PrimeFaces is developed by PrimeTek and the open source community.
+- The most contributers here on GitHub are working on PrimeFaces in their spare time.
+- PrimeTek pushes fixes and new features from their closed source Elite and Pro repositories to the community edition.
+- We, the community on GitHub, only provide support for issues, which are reproducable with the current SNAPSHOT (scroll down for more information on how to use it).
+- We are NOT able to port bugfixes to elite releases. This is up to PrimeTek and can e.g. be triggered with PrimeFaces PRO.
 
 ### Versions
 ***

@@ -37,6 +37,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -74,6 +75,16 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex, Entry<String, String> aria) throws IOException {
+        boolean isMenuItemComponent = menuitem instanceof UIComponent;
+        if (isMenuItemComponent) {
+            UIComponent uiMenuItem = (UIComponent) menuitem;
+            UIComponent custom = uiMenuItem.getFacet("custom");
+            if (ComponentUtils.shouldRenderFacet(custom)) {
+                custom.encodeAll(context);
+                return;
+            }
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
@@ -120,6 +131,10 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
             encodeOnClick(context, menu, menuitem);
         }
 
+        if (isMenuItemComponent) {
+            renderPassThruAttributes(context, (UIComponent) menuitem);
+        }
+
         encodeMenuItemContent(context, menu, menuitem);
 
         writer.endElement("a");
@@ -138,8 +153,9 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object value = menuitem.getValue();
+        String iconPos = menuitem.getIconPos();
 
-        boolean isIconLeft = "left".equals(menuitem.getIconPos());
+        boolean isIconLeft = "left".equals(iconPos) || LangUtils.isBlank(iconPos);
         if (isIconLeft) {
             encodeIcon(writer, menu, menuitem, isIconLeft);
         }

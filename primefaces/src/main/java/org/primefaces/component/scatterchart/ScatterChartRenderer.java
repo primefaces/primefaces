@@ -38,11 +38,7 @@ public class ScatterChartRenderer extends ChartRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ScatterChart chart = (ScatterChart) component;
-        String clientId = chart.getClientId(context);
-        String style = chart.getStyle();
-        String styleClass = chart.getStyleClass();
-
-        encodeMarkup(context, clientId, style, styleClass);
+        encodeMarkup(context, chart);
         encodeScript(context, chart);
     }
 
@@ -67,7 +63,8 @@ public class ScatterChartRenderer extends ChartRenderer {
         LineChartOptions lineOptions = (LineChartOptions) options;
 
         writer.write(",\"options\":{");
-        writer.write("\"showLines\":" + lineOptions.isShowLines());
+        encodeResponsive(context, lineOptions, false);
+        writer.write(",\"showLines\":" + lineOptions.isShowLines());
         writer.write(",\"spanGaps\":" + lineOptions.isSpanGaps());
 
         encodeScales(context, type, lineOptions.getScales(), true);

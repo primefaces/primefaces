@@ -33,8 +33,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class AccordionPanelComponentHandler extends ComponentHandler {
 
-    private static final MetaRule TABCHANGE_CONTROLLER
-            = new MethodRule("tabController", Boolean.class, new Class[]{TabEvent.class});
+    private static final MetaRule TABCHANGE_CONTROLLER = new MethodRule(AccordionPanel.PropertyKeys.tabController.name(),
+            Boolean.class,
+            new Class[]{TabEvent.class});
 
     public AccordionPanelComponentHandler(ComponentConfig config) {
         super(config);

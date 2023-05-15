@@ -28,7 +28,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehavior;
@@ -41,11 +40,13 @@ import javax.faces.event.PhaseId;
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.*;
 import org.primefaces.component.divider.Divider;
+import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.*;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
 public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
 
@@ -61,9 +62,15 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         setConfirmationScript(context, menuitem);
 
         String onclick = menuitem.getOnclick();
+        boolean isLink = LangUtils.isNotBlank(menuitem.getUrl()) || LangUtils.isNotBlank(menuitem.getOutcome());
+        boolean isCommand = LangUtils.isNotBlank(menuitem.getCommand());
+        if (!isCommand && menuitem instanceof UIMenuItem) {
+            UIMenuItem uim = (UIMenuItem) menuitem;
+            isCommand = uim.getActionExpression() != null || uim.getActionListeners().length > 0;
+        }
 
         //GET
-        if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
+        if (isLink) {
             String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
             writer.writeAttribute("href", targetURL, null);
 
@@ -73,12 +80,14 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         }
         //POST
         else {
-            writer.writeAttribute("href", "#", null);
-            String menuClientId = source.getClientId(context);
+            writer.writeAttribute("href", "javascript:void(0)", null);
+        }
 
-            UIForm form = ComponentTraversalUtils.closestForm(context, source);
+        if (isCommand) {
+            String menuClientId = source.getClientId(context);
+            UIForm form = ComponentTraversalUtils.closestForm(source);
             if (form == null) {
-                LOGGER.log(Level.FINE, "Menu '" + menuClientId
+                LOGGER.log(Level.FINE, () -> "Menu '" + menuClientId
                             + "' should be inside a form or should reference a form via its form attribute."
                             + " We will try to find a fallback form on the client side.");
             }
@@ -102,6 +111,10 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                         : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
             }
 
+            if (isLink) {
+                // allow CTRL+CLICK link to open new tab
+                command = "if(PF.metaKey(event)){return true};" + command;
+            }
             onclick = (onclick == null) ? command : onclick + ";" + command;
         }
 

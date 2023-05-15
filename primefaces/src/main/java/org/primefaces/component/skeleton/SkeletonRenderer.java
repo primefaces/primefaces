@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 
 public class SkeletonRenderer extends CoreRenderer {
 
@@ -38,7 +39,6 @@ public class SkeletonRenderer extends CoreRenderer {
         Skeleton skeleton = (Skeleton) component;
         ResponseWriter writer = context.getResponseWriter();
         String size = skeleton.getSize();
-        String borderRadius = skeleton.getBorderRadius();
         String styleClass = getStyleClassBuilder(context)
                     .add(Skeleton.STYLE_CLASS)
                     .add(skeleton.getStyleClass())
@@ -46,18 +46,19 @@ public class SkeletonRenderer extends CoreRenderer {
                     .add("none".equals(skeleton.getAnimation()), Skeleton.NONE_ANIMATION_CLASS)
                     .build();
 
-        boolean hasSize = size != null;
         String style = getStyleBuilder(context)
                          .add(skeleton.getStyle())
-                         .add(hasSize,  "width", size, skeleton.getWidth())
-                         .add(hasSize,  "height", size, skeleton.getHeight())
-                         .add(borderRadius != null,  "border-radius", borderRadius)
+                         .add(size != null, "width", size, skeleton.getWidth())
+                         .add(size != null, "height", size, skeleton.getHeight())
+                         .add("border-radius", skeleton.getBorderRadius())
                          .build();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", skeleton.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        writer.writeAttribute("style", style, "style");
+        if (LangUtils.isNotBlank(style)) {
+            writer.writeAttribute("style", style, "style");
+        }
 
         writer.endElement("div");
     }

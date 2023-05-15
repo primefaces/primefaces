@@ -24,22 +24,34 @@
 package org.primefaces.showcase.domain;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Photo implements Serializable {
 
+    private String id;
     private String itemImageSrc;
     private String thumbnailImageSrc;
     private String alt;
     private String title;
 
     public Photo() {
+        this.id = UUID.randomUUID().toString().substring(0, 8);
     }
 
     public Photo(String itemImageSrc, String thumbnailImageSrc, String alt, String title) {
+        this();
         this.itemImageSrc = itemImageSrc;
         this.thumbnailImageSrc = thumbnailImageSrc;
         this.alt = alt;
         this.title = title;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getItemImageSrc() {

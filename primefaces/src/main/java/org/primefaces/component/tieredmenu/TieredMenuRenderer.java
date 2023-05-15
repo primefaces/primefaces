@@ -29,6 +29,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.badge.BadgeRenderer;
 
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -112,14 +113,20 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                 if (element instanceof MenuItem) {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
-                    String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                    String containerStyleClass = getStyleClassBuilder(context)
+                            .add(Menu.MENUITEM_CLASS)
+                            .add(menuItem.getContainerStyleClass())
+                            .add(menuItem.getBadge() != null, "ui-overlay-badge")
+                            .build();
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
                     writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_NONE, null);
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
+                    }
+                    if (menuItem.getBadge() != null) {
+                        BadgeRenderer.encode(context, menuItem.getBadge());
                     }
                     encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");

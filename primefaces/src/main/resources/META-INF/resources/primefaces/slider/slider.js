@@ -45,9 +45,9 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.displayTemplate = this.cfg.displayTemplate||(this.cfg.range === true ? '{min} - {max}' : '{value}');
+        this.cfg.displayTemplate = this.cfg.displayTemplate || (this.cfg.range === true ? '{min} - {max}' : '{value}');
 
-        if(this.cfg.range === true) {
+        if (this.cfg.range === true) {
             var inputIds = this.cfg.input.split(',');
             this.input = $(PrimeFaces.escapeClientId(inputIds[0]) + ',' + PrimeFaces.escapeClientId(inputIds[1]));
         }
@@ -55,7 +55,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.input = $(PrimeFaces.escapeClientId(this.cfg.input));
         }
 
-        if(this.cfg.display) {
+        if (this.cfg.display) {
             this.output = $(PrimeFaces.escapeClientId(this.cfg.display));
         }
 
@@ -81,7 +81,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             $this.onSlide(event, ui);
         });
 
-        if(this.cfg.onSlideStart) {
+        if (this.cfg.onSlideStart) {
             this.jq.on('slidestart', function(event, ui) {
                 $this.cfg.onSlideStart.call(this, event, ui);
             });
@@ -92,71 +92,55 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (this.input.parent().hasClass('ui-inputnumber')) {
-            this.input.parent().find('input:hidden').off('input.slider').on('input.slider', function () {
+            this.input.parent().find('input:hidden').off('input.slider').on('input.slider', function() {
                 $this.setValue($(this).val());
             });
         }
         else if (this.input.hasClass('ui-spinner-input')) {
-            this.input.off('change.slider').on('change.slider', function () {
+            this.input.off('change.slider').on('change.slider', function() {
                 var spinnerId = $this.input.closest('.ui-spinner').attr('id');
                 var spinnerWidget = PrimeFaces.getWidgetById(spinnerId);
                 $this.setValue(spinnerWidget.getValue());
             });
         }
         else {
-            this.input.on('keydown.slider', function (e) {
-                var keyCode = $.ui.keyCode,
-                key = e.which;
-
-                switch(key) {
-                    case keyCode.UP:
-                    case keyCode.DOWN:
-                    case keyCode.LEFT:
-                    case keyCode.RIGHT:
-                    case keyCode.BACKSPACE:
-                    case keyCode.DELETE:
-                    case keyCode.END:
-                    case keyCode.HOME:
-                    case keyCode.TAB:
-                    break;
-
-                    default:
-                        if (key < 32) return true; // Control chars (charcode)
-                        var character = e.key;
-                        var current = $(this).val();
-
-                         // don't allow duplicate decimal separators
-                        var separatorRegex ='';
-                        if($this.decimalStep) {
-                            if (character === ',') {
-                                if(current.indexOf(',') !== -1) {
-                                    return false;
-                                }
-                                else {
-                                    separatorRegex = ',';
-                                }
-                            } 
-                            if (character === '.') {
-                                if(current.indexOf('.') !== -1) {
-                                    return false;
-                                }
-                                else {
-                                    separatorRegex = '\\.';
-                                }
-                            } 
-                        }
-
-                        // #6319 only allow negative once and if min < 0
-                        var negativeRegex = '';
-                        if ($this.cfg.min < 0) {
-                            if (character === '-' && current.indexOf('-') !== -1) return false;
-                            negativeRegex = '-';
-                        }
-                        var regex = new RegExp('[^0-9' + separatorRegex + negativeRegex + ']', 'g');
-                        return !character.match(regex);
-                    break;
+            this.input.on('keydown.slider', function(e) {
+                if (PrimeFaces.utils.ignoreFilterKey(e)) {
+                    return;
                 }
-            }).on('keyup.slider', function (e) {
+                var character = e.key;
+                var current = $(this).val();
+
+                // don't allow duplicate decimal separators
+                var separatorRegex = '';
+                if ($this.decimalStep) {
+                    if (character === ',') {
+                        if (current.indexOf(',') !== -1) {
+                            return false;
+                        }
+                        else {
+                            separatorRegex = ',';
+                        }
+                    }
+                    if (character === '.') {
+                        if (current.indexOf('.') !== -1) {
+                            return false;
+                        }
+                        else {
+                            separatorRegex = '\\.';
+                        }
+                    }
+                }
+
+                // #6319 only allow negative once and if min < 0
+                var negativeRegex = '';
+                if ($this.cfg.min < 0) {
+                    if (character === '-' && current.indexOf('-') !== -1) return false;
+                    negativeRegex = '-';
+                }
+                var regex = new RegExp('[^0-9' + separatorRegex + negativeRegex + ']', 'g');
+                return !character.match(regex);
+            }).on('keyup.slider', function(e) {
                 $this.setValue($this.input.val());
             });
         }
@@ -178,22 +162,22 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             var targetEvent = document.createEvent('MouseEvent');
 
             targetEvent.initMouseEvent(
-                    eventMapping[e.originalEvent.type],
-                    true, // canBubble
-                    true, // cancelable
-                    window, // view
-                    1, // detail
-                    touch.screenX,
-                    touch.screenY,
-                    touch.clientX,
-                    touch.clientY,
-                    false, // ctrlKey
-                    false, // altKey
-                    false, // shiftKey
-                    false, // metaKey
-                    0, // button
-                    null // relatedTarget
-                );
+                eventMapping[e.originalEvent.type],
+                true, // canBubble
+                true, // cancelable
+                window, // view
+                1, // detail
+                touch.screenX,
+                touch.screenY,
+                touch.clientX,
+                touch.clientY,
+                false, // ctrlKey
+                false, // altKey
+                false, // shiftKey
+                false, // metaKey
+                0, // button
+                null // relatedTarget
+            );
 
             touch.target.dispatchEvent(targetEvent);
             e.preventDefault();
@@ -207,22 +191,22 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQueryUI.SliderUIParams} ui Details about the slider.
      */
     onSlide: function(event, ui) {
-        if(this.cfg.onSlide) {
+        if (this.cfg.onSlide) {
             this.cfg.onSlide.call(this, event, ui);
         }
 
-        if(this.cfg.range === true) {
+        if (this.cfg.range === true) {
             this.setInputValue(this.input.eq(0), ui.values[0]);
             this.setInputValue(this.input.eq(1), ui.values[1]);
 
-            if(this.output) {
+            if (this.output) {
                 this.output.text(this.cfg.displayTemplate.replace('{min}', ui.values[0]).replace('{max}', ui.values[1]));
             }
         }
         else {
             this.setInputValue(this.input, ui.value);
 
-            if(this.output) {
+            if (this.output) {
                 this.output.text(this.cfg.displayTemplate.replace('{value}', ui.value));
             }
         }
@@ -238,7 +222,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         if (input.parent().hasClass('ui-inputnumber') || (this.cfg.range === true && input.hasClass('ui-inputnumber'))) {
             var inputNumberId = input.closest('.ui-inputnumber').attr('id');
             var inputNumberWidget = PrimeFaces.getWidgetById(inputNumberId);
-            inputNumberWidget.autonumeric.set(inputValue);
+            inputNumberWidget.setValue(inputValue);
         }
         else if (input.hasClass('ui-spinner-input')) {
             var spinnerId = input.closest('.ui-spinner').attr('id');
@@ -271,11 +255,11 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQueryUI.SliderUIParams} ui Details about the slider.
      */
     onSlideEnd: function(event, ui) {
-        if(this.cfg.onSlideEnd) {
+        if (this.cfg.onSlideEnd) {
             this.cfg.onSlideEnd.call(this, event, ui);
         }
 
-        if(this.cfg.range === true) {
+        if (this.cfg.range === true) {
             this.triggerOnchange(this.input.eq(0));
             this.triggerOnchange(this.input.eq(1));
         }
@@ -283,10 +267,10 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.triggerOnchange(this.input);
         }
 
-        if(this.hasBehavior('slideEnd')) {
+        if (this.hasBehavior('slideEnd')) {
             var ext = {
                 params: [
-                    {name: this.id + '_slideValue', value: ui.value}
+                    { name: this.id + '_slideValue', value: ui.value }
                 ]
             };
 

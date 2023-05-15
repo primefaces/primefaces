@@ -60,8 +60,11 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
      */
     init: function(cfg) {
-       if (cfg.target) {
+        if (cfg.target) {
             this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.target);
+            if (this.target.hasClass('ui-splitbutton')) {
+                this.target = this.target.find('.ui-splitbutton-menubutton');
+            }
         }
         this._super(cfg, null, null, this.target);
 
@@ -181,9 +184,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel')
             .on('keydown.ui-overlaypanel', PrimeFaces.utils.blockEnterKey)
             .on('keyup.ui-overlaypanel', function(e) {
-                var keyCode = $.ui.keyCode, key = e.which;
-
-                if (key === keyCode.ENTER) {
+                if (e.key === 'Enter') {
                     $this.toggle();
                     e.preventDefault();
                 }
@@ -404,6 +405,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             allowedNegativeValuesByParentOffset = this.jq.offsetParent().offset();
 
         this.targetElement = this.getTarget(target);
+        if (this.targetElement.hasClass('ui-splitbutton-menubutton')) {
+            this.targetElement = this.targetElement.parent();
+        }
         if (this.targetElement) {
             this.targetZindex = this.targetElement.zIndex();
         }
@@ -506,6 +510,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 source: this.id,
                 process: this.id,
                 update: this.id,
+                ignoreAutoUpdate: true,
                 params: [
                     { name: this.id + '_contentLoad', value: true }
                 ],
@@ -525,7 +530,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 }
             };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('loadContent')) {
+            this.callBehavior('loadContent', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**

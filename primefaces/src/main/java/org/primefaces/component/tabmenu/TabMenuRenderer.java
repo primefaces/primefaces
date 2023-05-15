@@ -29,6 +29,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.badge.BadgeRenderer;
 
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
@@ -96,6 +97,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
                 .add(active, TabMenu.ACTIVE_TAB_HEADER_CLASS, TabMenu.INACTIVE_TAB_HEADER_CLASS)
                 .add(item.isDisabled(), "ui-state-disabled", "ui-state-default")
                 .add(item.getIcon() != null, "ui-tabmenuitem-hasicon")
+                .add(item.getBadge() != null, "ui-overlay-badge")
                 .build();
 
         //header container
@@ -107,6 +109,10 @@ public class TabMenuRenderer extends BaseMenuRenderer {
 
         if (containerStyle != null) {
             writer.writeAttribute("style", containerStyle, null);
+        }
+
+        if (item.getBadge() != null) {
+            BadgeRenderer.encode(context, item.getBadge());
         }
 
         encodeMenuItem(context, menu, item);

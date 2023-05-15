@@ -200,7 +200,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
 
     @Override
     public String getInputClientId() {
-        return getClientId(getFacesContext()) + "_focus";
+        return getClientId(getFacesContext()) + (isEditable() ? "_focus" : "_label");
     }
 
     @Override

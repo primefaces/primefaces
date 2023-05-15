@@ -157,9 +157,14 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         boolean isDropdown = ac.isDropdown();
-        String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
-        styleClass = isDropdown ? styleClass + " " + AutoComplete.DROPDOWN_SYLE_CLASS : styleClass;
+        boolean disabled = ac.isDisabled();
+
+        String styleClass = getStyleClassBuilder(context)
+                .add(AutoComplete.STYLE_CLASS)
+                .add(ac.getStyleClass())
+                .add(isDropdown, AutoComplete.DROPDOWN_SYLE_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .build();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -201,6 +206,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("type", ac.getType(), null);
         writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
 
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
@@ -342,7 +351,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("role", "listbox", null);
         writer.writeAttribute("tabindex", "-1", null);
 
         if (ac.getPanelStyle() != null) {
@@ -381,9 +389,14 @@ public class AutoCompleteRenderer extends InputRenderer {
         String title = ac.getTitle();
 
         String style = ac.getStyle();
-        String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
-        styleClass = isDropdown ? styleClass + " " + AutoComplete.DROPDOWN_SYLE_CLASS : styleClass;
+
+        String styleClass = getStyleClassBuilder(context)
+                .add(AutoComplete.MULTIPLE_STYLE_CLASS)
+                .add(ac.getStyleClass())
+                .add(isDropdown, AutoComplete.DROPDOWN_SYLE_CLASS)
+                .add(disabled, "ui-state-disabled")
+                .build();
+
         String listClass = isDropdown ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         listClass = createStyleClass(ac, null, listClass);
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
@@ -400,6 +413,9 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", listClass, null);
+        writer.writeAttribute("tabindex", -1, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
+        writer.writeAttribute(HTML.ARIA_ORIENTATION, HTML.ARIA_ORIENTATION_HORIZONTAL, null);
 
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, ac);
@@ -430,6 +446,9 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.startElement("li", null);
                 writer.writeAttribute("data-token-value", tokenValue, null);
                 writer.writeAttribute("class", itemStyleClass, null);
+                writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_OPTION, null);
+                writer.writeAttribute(HTML.ARIA_LABEL, itemLabel, null);
+                writer.writeAttribute(HTML.ARIA_SELECTED, "true", null);
 
                 String labelClass = disabled ? AutoComplete.TOKEN_LABEL_DISABLED_CLASS : AutoComplete.TOKEN_LABEL_CLASS;
                 writer.startElement("span", null);
@@ -440,6 +459,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 if (!disabled) {
                     writer.startElement("span", null);
                     writer.writeAttribute("class", AutoComplete.TOKEN_ICON_CLASS, null);
+                    writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
                     writer.endElement("span");
                 }
 
@@ -458,6 +478,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("autocomplete", autocompleteProp, null);
 
         renderAccessibilityAttributes(context, ac);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_COMBOBOX, null);
+        writer.writeAttribute(HTML.ARIA_CONTROLS, clientId + "_panel", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "listbox", null);
+
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
 
@@ -555,20 +580,20 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("tbody", ac);
 
         if (items != null) {
-            int index = 0;
+            int rowNumber = 0;
             if (ac.isClientQueryMode() || items instanceof Map) {
                 for (Map.Entry<String, List<String>> entry : ((Map<String, List<String>>) items).entrySet()) {
                     String key = entry.getKey();
                     List<String> list = entry.getValue();
 
                     for (Object item : list) {
-                        encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, key, index++);
+                        encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, key, rowNumber++);
                     }
                 }
             }
             else {
                 for (Object item : (List) items) {
-                    encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, null, index++);
+                    encodeSuggestionItemsAsTable(context, ac, item, converter, pojo, var, null, rowNumber++);
                 }
 
                 if (ac.hasMoreSuggestions()) {
@@ -589,21 +614,25 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         writer.startElement("ul", ac);
         writer.writeAttribute("class", AutoComplete.LIST_CLASS, null);
+        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (items != null) {
+            int rowNumber = 0;
             if (ac.isClientQueryMode() || items instanceof Map) {
                 for (Map.Entry<String, List<String>> entry : ((Map<String, List<String>>) items).entrySet()) {
                     String key = entry.getKey();
                     List<String> list = entry.getValue();
 
                     for (Object item : list) {
-                        encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, key);
+                        encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, key, rowNumber);
+                        rowNumber++;
                     }
                 }
             }
             else {
                 for (Object item : (List) items) {
-                    encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, null);
+                    encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, null, rowNumber);
+                    rowNumber++;
                 }
 
                 if (ac.hasMoreSuggestions()) {
@@ -620,13 +649,14 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestionItemsAsList(FacesContext context, AutoComplete ac, Object item, Converter converter,
-            boolean pojo, String var, String key) throws IOException {
+            boolean pojo, String var, String key, int rowNumber) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("li", null);
+        writer.writeAttribute("id", ac.getClientId(context) + "_item_" + rowNumber, null);
         writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
 
         if (pojo) {
@@ -670,13 +700,14 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestionItemsAsTable(FacesContext context, AutoComplete ac, Object item, Converter converter,
-            boolean pojo, String var, String key, int index) throws IOException {
+            boolean pojo, String var, String key, int rowNumber) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         UIComponent itemtip = ac.getFacet("itemtip");
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
         writer.startElement("tr", null);
+        writer.writeAttribute("id", ac.getClientId(context) + "_item_" + rowNumber, null);
         writer.writeAttribute("class", AutoComplete.ROW_CLASS, null);
 
         if (pojo) {

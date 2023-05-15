@@ -18,7 +18,7 @@ DataTable displays data in tabular format.
 ## Attributes
 
 | Name                      | Default            | Type             | Description
-|---------------------------| ------------------ | ---------------- | ------------------ |
+|---------------------------|--------------------| ---------------- | ------------------ |
 | allowUnsorting            | false              | Boolean          | Defines whether columns are allowed to be unsorted. Default is false.
 | ariaRowLabel              | null               | String           | Label to read by screen readers on checkbox selection.
 | binding                   | null               | Object           | An el expression that maps to a server side UIComponent instance in a backing bean
@@ -91,6 +91,7 @@ DataTable displays data in tabular format.
 | scrollRows                | 0                  | Integer          | Number of rows to load on live scroll.
 | scrollWidth               | null               | Integer          | Scroll viewport width.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
+| selectAllFilteredOnly     | false              | Boolean          | When enabled, toggle select will only apply on filtered items. Default is false.
 | selection                 | null               | Object           | Reference to the selection data.
 | selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
 | selectionPageOnly         | true               | Boolean          | When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
@@ -112,7 +113,7 @@ DataTable displays data in tabular format.
 | var                       | null               | String           | Name of the request-scoped variable used to refer each data.
 | virtualScroll             | false              | Boolean          | Loads data on demand as the scrollbar gets close to the bottom. Default is false.
 | widgetVar                 | null               | String           | Name of the client side widget.
-| touchable                 | null              | Boolean           | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
+| touchable                 | null               | Boolean          | Enable touch support (if the browser supports it). Default is the global primefaces.TOUCHABLE, which can be overwritten on component level.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
 | showSelectAll             | true               | Boolean          | Whether to show the select all checkbox inside the column's header.
 
@@ -284,10 +285,10 @@ Or
 ```
 
 ## Filtering
-Ajax based filtering is enabled by setting _field_ or _filterBy_ at column level and providing a list to keep the
-filtered sublist. It is suggested to use a scope longer than request like viewscope to keep the
+Ajax based filtering is enabled by setting `field` or `filterBy` at column level and providing a list to keep the
+filtered sublist. It is suggested to use a scope longer than request like `@ViewScoped` to keep the
 filteredValue so that filtered list is still accessible after filtering.
-(Attention: Please be aware sessionscope is not supported for this. Instead set multiViewState="true" to keep table state including filter across views.)
+(Attention: Please be aware `@SessionScoped` is not supported for this. Instead, set `multiViewState` to `true` to keep table state including filter across views.)
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filteredValue="#{carBean.filteredCars}">
@@ -298,10 +299,8 @@ filteredValue so that filtered list is still accessible after filtering.
 </p:dataTable>
 ```
 
-Filtering is triggered with keyup event and filter inputs can be styled using _filterStyle_ ,
-_filterStyleClass_ attributes. If you’d like to use a dropdown instead of an input field to only allow
-predefined filter values use _filterOptions_ attribute and a collection/array of selectitems as value. In
-addition, _filterMatchMode_ defines the built-in matcher which is _startsWith_ by default.
+Filtering is triggered with keyup event and filter inputs can be styled using `filterStyle` ,
+`filterStyleClass` attributes. In addition, `filterMatchMode` defines the built-in matcher which is `startsWith` by default.
 
 Following is a basic filtering datatable with these options demonstrated:
 
@@ -317,7 +316,14 @@ Following is a basic filtering datatable with these options demonstrated:
 
     <p:column field="year" headerText="Year" footerText="startsWith" />
 
-    <p:column field="manufacturer" headerText="Manufacturer" filterOptions="#{carBean.manufacturerOptions}" filterMatchMode="exact" />
+    <p:column field="manufacturer" headerText="Manufacturer" filterMatchMode="exact">
+        <f:facet name="filter">
+            <p:selectOneMenu onchange="PF('carsTable').filter()" styleClass="ui-custom-filter">
+                <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                <f:selectItems value="#{carBean.manufacturerOptions}" />
+            </p:selectOneMenu>
+        </f:facet>
+    </p:column>
 
     <p:column field="color" headerText="Color" filterMatchMode="endsWith" />
 
@@ -326,12 +332,13 @@ Following is a basic filtering datatable with these options demonstrated:
 </p:dataTable>
 ```
 Filter located at header is a global one applying on all fields, this is implemented by calling client
-side API method called _filter(),_ important part is to specify the id of the input text as _globalFilter_
+side API method called `filter()`, important part is to specify the id of the input text as `globalFilter`
 which is a reserved identifier for datatable.
 
-In addition to default filtering with generated elements, custom elements can also be used as a filter
-facet. Example below uses custom filter components in combination with generated elements.
-When a custom component is used as a filter facet, filtering needs to be called manually from a
+### Custom filters
+
+By default, `<input type="text" />` are used as filters, but you can display your own filters using `filter` facet _(see example below)_.
+When a custom filter is used, filtering needs to be called manually from a
 preferred event such as `onchange="PF('carsTable').filter()"`. Also defining a converter might be
 necessary if the value of the filter facet is not defined.
 
@@ -390,7 +397,9 @@ component.
 </p:dataTable>
 ```
 
-_filterMatchMode_ defines which built-in filtering algorithm would be used per column, valid values
+### Constraints
+
+`filterMatchMode` defines which built-in filtering algorithm would be used per column, valid values
 for this attribute are;
 
 - **startsWith** : Checks if column value starts with the filter value.
@@ -422,7 +431,7 @@ filterFunction approach.
     </h:outputText>
 </p:column>
 ```
-_filterFunction_ should be a method with three parameters; column value, filter value and locale.
+`filterFunction` should be a method with three parameters; column value, filter value and locale.
 Return value is a boolean, true accepts the value and false rejects it.
 
 ```java
@@ -431,13 +440,18 @@ public boolean filterByPrice(Object value, Object filter, Locale locale) {
 }
 ```
 Locale is provided as optional in case you need to use a locale aware method like
-_toLowerCase(Locale locale)._ Note that | String | based filters like startsWith, endsWith uses
-toLowerCase already and _dataLocale_ attribute is used to provide the locale to use when filtering.
+`toLowerCase(Locale locale)`. Note that String based filters like `startsWith`, `endsWith` use
+`toLowerCase()` already and `dataLocale` attribute is used to provide the locale to use when filtering.
 
-This same principle can be applied globally by implementing a globalFilterFunction. It takes the
+This same principle can be applied globally by implementing a `globalFilterFunction`. It takes the
 same parameters of which the first parameter is the row value.
 
-Default filtering can be set up with markup or programmatically. Here is two ways to go about it:
+### Default filtering
+
+You might want your `DataTable` to be filtered by default. This can be set up with markup or programmatically. Here are two ways to go about it:
+
+By using `Column#filterValue`:
+
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
     <p:column field="model" headerText="Model"  />
@@ -445,7 +459,7 @@ Default filtering can be set up with markup or programmatically. Here is two way
 </p:dataTable>
 ```
 
-Or using _DataTable#filterBy_ and _FilterMeta#builder_:
+Or using `DataTable#filterBy` and `FilterMeta#builder`:
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" filterBy="#{carBean.filterBy}">
@@ -465,6 +479,8 @@ public void init() {
             .build());
 }
 ```
+
+In case of custom filters (e.g `SelectOneMenu`), you have the possibilites to use either `Column#filterValue` or custom filter value attribute (e.g `SelectOneMenu#value`)
 
 ## Row Selection
 There are several ways to select row(s) from datatable. Let’s begin by adding a Car reference for

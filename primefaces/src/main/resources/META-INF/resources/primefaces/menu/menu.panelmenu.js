@@ -130,10 +130,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             $(this).removeClass('ui-menuitem-outline ui-state-hover');
         })
         .on('keydown.panelmenu', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -154,10 +151,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            var keyCode = $.ui.keyCode;
-
-            switch(e.which) {
-                case keyCode.LEFT:
+            switch(e.key) {
+                case 'ArrowLeft':
                     if($this.isExpanded($this.focusedItem)) {
                         $this.focusedItem.children('.ui-menuitem-link').trigger('click');
                     }
@@ -172,14 +167,14 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.RIGHT:
+                case 'ArrowRight':
                     if($this.focusedItem.hasClass('ui-menu-parent') && !$this.isExpanded($this.focusedItem)) {
                         $this.focusedItem.children('.ui-menuitem-link').trigger('click');
                     }
                     e.preventDefault();
                 break;
 
-                case keyCode.UP:
+                case 'ArrowUp':
                     var itemToFocus = null,
                     prevItem = $this.focusedItem.prev();
 
@@ -200,7 +195,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.DOWN:
+                case 'ArrowDown':
                     var itemToFocus = null,
                     firstVisibleChildItem = $this.focusedItem.find('> ul > li:visible:first');
 
@@ -223,8 +218,8 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.ENTER:
-                case keyCode.SPACE:
+                case 'Enter':
+                case ' ':
                     var currentLink = $this.focusedItem.children('.ui-menuitem-link');
                     //IE fix
                     setTimeout(function(){
@@ -239,7 +234,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                     e.preventDefault();
                 break;
 
-                case keyCode.TAB:
+                case 'Tab':
                     if($this.focusedItem) {
                         $(this).trigger('focus');
                     }

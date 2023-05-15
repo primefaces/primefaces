@@ -33,8 +33,9 @@ import javax.faces.view.facelets.MetaRuleset;
 
 public class FileUploadHandler extends ComponentHandler {
 
-    private static final MetaRule FILE_UPLOAD_LISTENER
-            = new MethodRule("listener", null, new Class<?>[]{FileUploadEvent.class});
+    private static final MetaRule FILE_UPLOAD_LISTENER = new MethodRule(FileUpload.PropertyKeys.listener.name(),
+            null,
+            new Class<?>[]{FileUploadEvent.class});
 
     public FileUploadHandler(ComponentConfig config) {
         super(config);

@@ -31,4 +31,4 @@ jquery.ui.pfextensions:
 - Datepicker Position Fix (https://github.com/primefaces/primefaces/issues/4719)
 - Datepicker style fix (https://github.com/primefaces/primefaces/issues/5374)
 - Slider step min max fix (https://github.com/primefaces/primefaces/issues/8619)
-
+- Tooltip removal fix (https://github.com/primefaces/primefaces/issues/9941)

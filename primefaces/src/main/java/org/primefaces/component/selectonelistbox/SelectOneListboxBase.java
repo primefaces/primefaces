@@ -42,7 +42,8 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight
+        scrollHeight,
+        filterNormalize
     }
 
     public SelectOneListboxBase() {
@@ -108,5 +109,13 @@ public abstract class SelectOneListboxBase extends HtmlSelectOneListbox implemen
 
     public void setScrollHeight(int scrollHeight) {
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+    public boolean isFilterNormalize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterNormalize, false);
+    }
+
+    public void setFilterNormalize(boolean filterNormalize) {
+        getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
     }
 }

@@ -33,7 +33,7 @@
                 <h5>Advanced</h5>
                 <div class="col-12 md:col-6 lg:col-4 xl:col-3">
                     <p:selectOneListbox id="advanced" value="#{selectOneView.country}" converter="#{countryConverter}"
-                        var="c" filter="true" filterMatchMode="contains">
+                                        var="c" filter="true" filterMatchMode="contains" filterNormalize="true">
                         <f:selectItems value="#{selectOneView.countries}" var="country" itemLabel="#{country.name}" itemValue="#{country}"/>
                         <p:column>
                             <span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>

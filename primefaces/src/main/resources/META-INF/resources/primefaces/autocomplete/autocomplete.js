@@ -22,7 +22,7 @@
  * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
  * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout.
  * @prop {boolean} [checkMatchedItem] Whether the click event is fired on the selected items when a `blur` occurs.
- * @prop {number} [colspan] Column span count for the options in the overlay panel with the available completion items. 
+ * @prop {number} [colspan] Column span count for the options in the overlay panel with the available completion items.
  * @prop {string} [currentGroup] Current option group when creating the options in the overlay  with the available
  * completion items.
  * @prop {string} currentInputValue Current value in the input field where the user can search for completion items.
@@ -366,10 +366,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.input.trigger('focus');
             }
         }).on("keyup", function(e) {
-            var keyCode = $.ui.keyCode,
-                key = e.which;
-
-            if (key === keyCode.SPACE || key === keyCode.ENTER) {
+            if (PrimeFaces.utils.isActionKey(e)) {
                 $this.searchWithDropdown();
                 $this.input.trigger('focus');
                 e.preventDefault();
@@ -426,10 +423,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.input.on('keyup.autoComplete', function(e) {
-            var keyCode = $.ui.keyCode,
-                key = e.which;
+            var key = e.key;
 
-            if ($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER)) {
+            if ($this.cfg.queryEvent === 'enter' && (key === 'Enter')) {
                 if ($this.itemSelectedWithEnter)
                     $this.itemSelectedWithEnter = false;
                 else
@@ -437,13 +433,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if ($this.panel.is(':visible')) {
-                if (key === keyCode.ESCAPE) {
+                if (key === 'Escape') {
                     $this.hide();
                 }
-                else if (key === keyCode.UP || key === keyCode.DOWN) {
+                else if (key === 'ArrowUp' || key === 'ArrowDown') {
                     var highlightedItem = $this.items.filter('.ui-state-highlight');
                     if (highlightedItem.length) {
                         $this.displayAriaStatus(highlightedItem.data('item-label'));
+                        $this.changeAriaValue(highlightedItem[0]);
                     }
                 }
             }
@@ -452,19 +449,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             $this.isTabPressed = false;
 
         }).on('keydown.autoComplete', function(e) {
-            var keyCode = $.ui.keyCode;
-
             $this.suppressInput = false;
             if ($this.panel.is(':visible')) {
                 var highlightedItem = $this.items.filter('.ui-state-highlight');
 
-                switch (e.which) {
-                    case keyCode.UP:
+                switch (e.key) {
+                    case 'ArrowUp':
                         var prev = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.prevAll('.ui-autocomplete-item:first');
 
                         if (prev.length == 1) {
-                            highlightedItem.removeClass('ui-state-highlight');
-                            prev.addClass('ui-state-highlight');
+                            $this.highlightItem(highlightedItem, false);
+                            $this.highlightItem(prev, true);
 
                             if ($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, prev);
@@ -478,12 +473,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                         break;
 
-                    case keyCode.DOWN:
+                    case 'ArrowDown':
                         var next = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.nextAll('.ui-autocomplete-item:first');
 
                         if (next.length == 1) {
-                            highlightedItem.removeClass('ui-state-highlight');
-                            next.addClass('ui-state-highlight');
+                            $this.highlightItem(highlightedItem, false);
+                            $this.highlightItem(next, true);
 
                             if ($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, next);
@@ -497,7 +492,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         e.preventDefault();
                         break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
@@ -513,11 +508,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                         break;
 
-                    case 18: //keyCode.ALT:
-                    case 224:
+                    case 'Alt':
                         break;
 
-                    case keyCode.TAB:
+                    case 'Tab':
                         if (highlightedItem.length && $this.cfg.autoSelection) {
                             highlightedItem.trigger('click');
                         } else {
@@ -531,15 +525,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
             else {
-                switch (e.which) {
-                    case keyCode.TAB:
+                switch (e.key) {
+                    case 'Tab':
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
                         $this.isTabPressed = true;
                         break;
 
-                    case keyCode.ENTER:
+                    case 'Enter':
                         var itemValue = $(this).val();
                         var valid = true;
                         if ($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
@@ -563,7 +557,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         }
                         break;
 
-                    case keyCode.BACKSPACE:
+                    case 'Backspace':
                         if ($this.cfg.multiple && !$this.input.val().length) {
 
                             if (e.metaKey || e.ctrlKey || e.shiftKey) {
@@ -611,8 +605,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 var item = $(this);
 
                 if (!item.hasClass('ui-state-highlight')) {
-                    $this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-                    item.addClass('ui-state-highlight');
+                    $this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false);
+                    $this.highlightItem(item, true);
 
                     if ($this.cfg.itemtip) {
                         $this.showItemtip(item);
@@ -798,7 +792,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             //highlight first item
             if (this.cfg.autoHighlight && firstItem.length) {
-                firstItem.addClass('ui-state-highlight');
+                this.highlightItem(firstItem, true);
+                this.changeAriaValue(firstItem[0]);
             }
 
             //highlight query string
@@ -842,6 +837,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.panel.hide();
             }
 
+            this.input.removeAttr('aria-activedescendant');
             this.displayAriaStatus(this.cfg.ariaEmptyMessage);
         }
     },
@@ -981,18 +977,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     dataType: 'json'
                 })
                     .done(function(suggestions) {
-                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
-                        suggestions.suggestions.forEach(function(suggestion) {
+                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+                        suggestions.suggestions.forEach(function(suggestion, index) {
                             var labelEncoded = $("<div>").text(suggestion.label).html();
                             var itemValue = labelEncoded;
                             if (!!suggestion.value) {
                                 itemValue = $("<div>").text(suggestion.value).html();
                             }
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
+                            html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
                         });
                         if (suggestions.moreAvailable == true && $this.cfg.moreText) {
                             var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
+                            html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
                         }
                         html += '</ul>';
 
@@ -1042,6 +1038,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onEntered: function() {
                     $this.bindPanelEvents();
+                    $this.input.attr('aria-expanded', true);
                 }
             });
         }
@@ -1064,6 +1061,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onExited: function() {
                     $this.panel.css('height', 'auto');
+                    $this.input.attr('aria-expanded', false);
+                    $this.input.removeAttr('aria-activedescendant', false);
                 }
             });
         }
@@ -1179,8 +1178,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
                 var itemDisplayMarkup = '<li data-token-value="' + PrimeFaces.escapeHTML(itemValue);
                 itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
-                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '">';
-                itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close"></span>';
+                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" '
+                itemDisplayMarkup += 'role="option" aria-label="' + PrimeFaces.escapeHTML(itemLabel) + '" ';
+                itemDisplayMarkup += 'aria-selected="true">';
+                itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" aria-hidden="true"></span>';
                 itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + PrimeFaces.escapeHTML(itemLabel) + '</span></li>';
 
                 $this.inputContainer.before(itemDisplayMarkup);
@@ -1299,24 +1300,24 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
-     * Disables the input field.
+     * Disables the component.
      */
     disable: function() {
+        this.jq.addClass("ui-state-disabled");
         PrimeFaces.utils.disableInputWidget(this.input);
-
         if (this.dropdown.length) {
-            this.dropdown.addClass('ui-state-disabled').prop('disabled', true);
+            this.disableDropdown();
         }
     },
 
     /**
-     * Enables the input field.
+     * Enables the component.
      */
     enable: function() {
+        this.jq.removeClass("ui-state-disabled");
         PrimeFaces.utils.enableInputWidget(this.input);
-
         if (this.dropdown.length) {
-            this.dropdown.removeClass('ui-state-disabled').prop('disabled', false);
+            this.enableDropdown();
         }
     },
 
@@ -1409,6 +1410,33 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     displayAriaStatus: function(text) {
         this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
+    },
+
+    /**
+     * Adjusts the value of the aria attributes for the given selectable option.
+     * @private
+     * @param {Element} item An option for which to set the aria attributes.
+     */
+    changeAriaValue: function (item) {
+        if (item) {
+            this.input.attr('aria-activedescendant', item.id);
+        }
+    },
+
+    /**
+     * Adjusts the highlighting and aria attributes for the given selectable option.
+     * @private
+     * @param {Element} item An option for which to set the aria attributes.
+     * @param {boolean} highlight Flag to indicate to highlight or not
+     */
+    highlightItem: function (item, highlight) {
+        if (highlight) {
+            item.addClass('ui-state-highlight');
+        }
+        else {
+            item.removeClass('ui-state-highlight');
+        }
+        item.attr('aria-selected', highlight);
     },
 
     /**
@@ -1594,12 +1622,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     findWrapperTag: function(wrapper) {
         if (wrapper.is('ul')) {
-            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
             this.wrapperEndTag = '</ul>';
         }
         else {
             var header = wrapper.find('> table > thead');
-            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset">' +
+            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">' +
                 (header.length ? header.eq(0).outherHTML : '') +
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';

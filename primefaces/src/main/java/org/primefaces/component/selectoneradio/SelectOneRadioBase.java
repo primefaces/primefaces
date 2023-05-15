@@ -25,9 +25,10 @@ package org.primefaces.component.selectoneradio;
 
 import javax.faces.component.html.HtmlSelectOneRadio;
 
+import org.primefaces.component.api.FlexAware;
 import org.primefaces.component.api.Widget;
 
-public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
+public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget, FlexAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,7 +39,8 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
         widgetVar,
         columns,
         plain,
-        unselectable
+        unselectable,
+        flex
     }
 
     public SelectOneRadioBase() {
@@ -59,7 +61,7 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
     }
 
     public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 12);
     }
 
     public void setColumns(int columns) {
@@ -80,5 +82,14 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
 
     public void setUnselectable(boolean unselectable) {
         getStateHelper().put(PropertyKeys.unselectable, unselectable);
+    }
+
+    @Override
+    public boolean isFlex() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.flex, false);
+    }
+
+    public void setFlex(boolean flex) {
+        getStateHelper().put(PropertyKeys.flex, flex);
     }
 }

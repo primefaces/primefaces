@@ -1459,7 +1459,8 @@ body .fc a {
 }
 
 .ui-tooltip:not([role]) {
-    background: var(--surface-a, '#fff');
+    background: '#fff';
     padding: 5px;
     font-size: .85em;
 }
+

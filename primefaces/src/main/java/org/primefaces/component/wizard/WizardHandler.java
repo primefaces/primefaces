@@ -33,8 +33,9 @@ import org.primefaces.facelets.MethodRule;
 
 public class WizardHandler extends ComponentHandler {
 
-    private static final MetaRule FLOW_LISTENER
-            = new MethodRule("flowListener", String.class, new Class[]{FlowEvent.class});
+    private static final MetaRule FLOW_LISTENER = new MethodRule(Wizard.PropertyKeys.flowListener.name(),
+            String.class,
+            new Class[]{FlowEvent.class});
 
     public WizardHandler(ComponentConfig config) {
         super(config);

@@ -165,7 +165,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
 
         if (datePicker.isConversionFailed()) {
             Class<?> dateType = resolveDateType(context, datePicker);
-            defaultDate = CalendarUtils.getValueAsString(context, datePicker, CalendarUtils.now(uicalendar, dateType));
+            defaultDate = CalendarUtils.getValueAsString(context, datePicker, CalendarUtils.now(uicalendar, dateType), true);
         }
         else if (!isValueBlank(value)) {
             defaultDate = value;
@@ -178,6 +178,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         wb.attr("defaultDate", defaultDate, null)
             .attr("inline", datePicker.isInline())
             .attr("userLocale", locale.toString())
+            .attr("flex", ComponentUtils.isFlex(context, datePicker), false)
             .attr("localeAm", ampm[0], "AM")
             .attr("localePm", ampm[1], "PM")
             .attr("dateFormat", CalendarUtils.convertPattern(pattern))

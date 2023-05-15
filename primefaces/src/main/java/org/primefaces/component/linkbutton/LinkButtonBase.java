@@ -42,7 +42,8 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
         href,
         escape,
         icon,
-        iconPos
+        iconPos,
+        ariaLabel
     }
 
     public LinkButtonBase() {
@@ -112,5 +113,13 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
 
     public void setIconPos(String iconPos) {
         getStateHelper().put(PropertyKeys.iconPos, iconPos);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }
