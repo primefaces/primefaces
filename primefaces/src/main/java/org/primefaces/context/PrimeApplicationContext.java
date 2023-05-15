@@ -53,6 +53,7 @@ import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
+import org.primefaces.validate.bean.ClientValidationConstraint;
 import org.primefaces.virusscan.VirusScannerService;
 import org.primefaces.webapp.FileUploadChunksServlet;
 
@@ -75,6 +76,7 @@ public class PrimeApplicationContext {
     private final ClassLoader applicationClassLoader;
     private final Map<Class<?>, Map<String, Object>> enumCacheMap;
     private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
+    private final Map<String, ClientValidationConstraint> beanValidationClientConstraintMapping;
 
     private final Lazy<ValidatorFactory> validatorFactory;
     private final Lazy<Validator> validator;
@@ -90,6 +92,7 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
+        beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
 
         ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
@@ -307,5 +310,9 @@ public class PrimeApplicationContext {
 
     public String getFileUploadResumeUrl() {
         return fileUploadResumeUrl;
+    }
+
+    public Map<String, ClientValidationConstraint> getBeanValidationClientConstraintMapping() {
+        return beanValidationClientConstraintMapping;
     }
 }

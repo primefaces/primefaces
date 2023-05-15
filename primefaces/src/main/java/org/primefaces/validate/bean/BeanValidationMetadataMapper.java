@@ -102,7 +102,13 @@ public class BeanValidationMetadataMapper {
                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
 
                     // lookup ClientValidationConstraint by constraint annotation (e.g. @NotNull)
-                    ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType.getName());
+                    ClientValidationConstraint clientValidationConstraint =
+                            applicationContext.getBeanValidationClientConstraintMapping().get(annotationType.getName());
+
+                    // defaults fallback
+                    if (clientValidationConstraint == null) {
+                        clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType.getName());
+                    }
 
                     // mapping available? Otherwise try to lookup custom constraint
                     if (clientValidationConstraint == null) {
@@ -173,10 +179,12 @@ public class BeanValidationMetadataMapper {
     }
 
     public static void registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint) {
-        CONSTRAINT_MAPPING.put(constraint.getName(), clientValidationConstraint);
+        PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getBeanValidationClientConstraintMapping().put(constraint.getName(), clientValidationConstraint);
     }
 
     public static ClientValidationConstraint removeConstraintMapping(Class<? extends Annotation> constraint) {
-        return CONSTRAINT_MAPPING.remove(constraint.getName());
+        return PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getBeanValidationClientConstraintMapping().remove(constraint.getName());
     }
 }
