@@ -123,16 +123,19 @@ public class CustomizedDocumentsView implements Serializable {
     public void onRowExportXLS(Object document) {
         SXSSFWorkbook wb = (SXSSFWorkbook) document;
         SXSSFSheet sheet = wb.getSheetAt(0);
-        SXSSFRow header = sheet.getRow(sheet.getLastRowNum());
+        int rowIndex = sheet.getLastRowNum();
+        if (rowIndex % 2 == 0) { //striped rows
+            SXSSFRow header = sheet.getRow(rowIndex);
 
-        CellStyle cellStyle = wb.createCellStyle();
-        cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
-        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            CellStyle cellStyle = wb.createCellStyle();
+            cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
+            cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-        for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
-            SXSSFCell cell = header.getCell(i);
+            for (int i = 0; i < header.getPhysicalNumberOfCells(); i++) {
+                SXSSFCell cell = header.getCell(i);
 
-            cell.setCellStyle(cellStyle);
+                cell.setCellStyle(cellStyle);
+            }
         }
     }
 
