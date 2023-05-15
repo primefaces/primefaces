@@ -51,9 +51,8 @@ public class SelectOneMenu012Test extends AbstractPrimePageTest {
         // Act (do nothing)
         menu.show();
 
-        // Assert (when fixed there should no longer be JS error)
-        assertJavascriptErrors();
-        // assertNoJavascriptErrors(); uncomment when fixed
+        // Assert (when fixed there should no longer be JS errors about duplicate ids)
+        assertNoJavascriptErrors();
     }
 
    /**

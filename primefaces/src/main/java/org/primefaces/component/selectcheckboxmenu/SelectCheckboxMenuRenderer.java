@@ -548,19 +548,19 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
-                encodeTableOption(context, menu, selectItemGroup, columns);
+                encodeTableOption(context, menu, selectItemGroup, columns, i);
 
                 for (SelectItem groupSelectItem : selectItemGroup.getSelectItems()) {
-                    encodeTableOption(context, menu, groupSelectItem, columns);
+                    encodeTableOption(context, menu, groupSelectItem, columns, i);
                 }
             }
             else {
-                encodeTableOption(context, menu, selectItem, columns);
+                encodeTableOption(context, menu, selectItem, columns, i);
             }
         }
     }
 
-    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu menu, SelectItem selectItem, List<Column> columns) throws IOException {
+    protected void encodeTableOption(FacesContext context, SelectCheckboxMenu menu, SelectItem selectItem, List<Column> columns, int index) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean checked = false;
         String rowStyleClass;
@@ -662,7 +662,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                     writer.writeAttribute("class", styleClass, null);
                 }
 
-                renderChildren(context, column);
+                encodeIndexedId(context, column, index);
                 writer.endElement("td");
             }
         }
