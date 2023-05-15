@@ -9004,7 +9004,7 @@
             <description>
                 <![CDATA[When enabled, toggle select will only apply on filtered items]]>
             </description>
-            <name>toggleSelectFilteredOnly</name>
+            <name>selectAllFilteredOnly</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

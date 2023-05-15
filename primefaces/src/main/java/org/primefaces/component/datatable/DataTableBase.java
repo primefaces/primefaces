@@ -96,7 +96,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         selection,
         selectionMode,
         selectionPageOnly,
-        toggleSelectFilteredOnly,
+        selectAllFilteredOnly,
         skipChildren,
         sortBy,
         sortMode,
@@ -738,11 +738,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.exportTag, exportTag);
     }
 
-    public boolean isToggleSelectFilteredOnly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toggleSelectFilteredOnly, false);
+    public boolean isSelectAllFilteredOnly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectAllFilteredOnly, false);
     }
 
-    public void setToggleSelectFilteredOnly(boolean toggleSelectFilteredOnly) {
-        getStateHelper().put(PropertyKeys.toggleSelectFilteredOnly, toggleSelectFilteredOnly);
+    public void setSelectAllFilteredOnly(boolean selectAllFilteredOnly) {
+        getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
     }
 }
