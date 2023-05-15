@@ -47,16 +47,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 /**
  *               AutoNumeric.js
  *
- * @version      4.8.1
- * @date         2023-03-24 UTC 07:46
+ * @version      4.8.3
+ * @date         2023-05-05 UTC 21:42
  *
  * @authors      2016-2023 Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
  *               2009-2016 Bob Knothe <bob.knothe@gmail.com>
  * @contributors Sokolov Yura and others, cf. AUTHORS
- * @copyright    2009 Robert J. Knothe
+ * @copyright    Alexandre Bonneau & Robert J. Knothe
  * @since        2009-08-09
  *
- * @summary      autoNumeric is a standalone Javascript library
+ * @summary      AutoNumeric is a standalone Javascript library
  *               that provides live *as-you-type* formatting for
  *               international numbers and currencies.
  *
@@ -198,12 +198,14 @@ var AutoNumeric = /*#__PURE__*/function () {
           case AutoNumeric.options.emptyInputBehavior.zero:
             valueToSet = '0';
             break;
-          // In order to stay consistent when `formatOnPageLoad` is set to `true`, it's still impossible to set the `null` value as the initial value
           case AutoNumeric.options.emptyInputBehavior.focus:
           case AutoNumeric.options.emptyInputBehavior.press:
           case AutoNumeric.options.emptyInputBehavior.always:
-          case AutoNumeric.options.emptyInputBehavior["null"]:
             valueToSet = '';
+            break;
+          // It's possible to set the `null` value as the initial value
+          case AutoNumeric.options.emptyInputBehavior["null"]:
+            valueToSet = null;
             break;
           // When `emptyInputBehavior` is a number or a string representing a number
           default:
@@ -2180,6 +2182,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_setRawValue",
     value: function _setRawValue(rawValue) {
+      var _this8 = this;
       var saveChangeToHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       // Only set the raw value if the given value is different from the current one
       if (this.rawValue !== rawValue) {
@@ -2210,7 +2213,9 @@ var AutoNumeric = /*#__PURE__*/function () {
         this._parseStyleRules();
         if (saveChangeToHistory) {
           // Save in the history the last known raw value and formatted result selection
-          this._historyTableAdd();
+          window.requestAnimationFrame(function () {
+            return _this8._historyTableAdd();
+          }); // The use of `requestAnimationFrame` fixes PR #731 by avoiding "Forced reflow"
         }
       }
     }
@@ -2916,7 +2921,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "init",
     value: function init(domElementOrArrayOrString) {
-      var _this8 = this;
+      var _this9 = this;
       var attached = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var returnASingleAutoNumericObject = false; // By default, this function returns an array of AutoNumeric objects
       var domElementsArray = [];
@@ -2940,12 +2945,12 @@ var AutoNumeric = /*#__PURE__*/function () {
       // Instantiate (and link depending on `attached`) each AutoNumeric objects
       domElementsArray.forEach(function (domElement) {
         // Initialize the new AutoNumeric element
-        var originalCreateLocalListSetting = _this8.settings.createLocalList;
+        var originalCreateLocalListSetting = _this9.settings.createLocalList;
         if (attached) {
           // Temporary variable to know if we should create the local list during the initialization (since we'll remove it afterward)
-          _this8.settings.createLocalList = false;
+          _this9.settings.createLocalList = false;
         }
-        var newAutoNumericElement = new AutoNumeric(domElement, _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(domElement), _this8.settings);
+        var newAutoNumericElement = new AutoNumeric(domElement, _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].getElementValue(domElement), _this9.settings);
 
         // Set the common shared local list if needed
         // If the user wants to create a detached new AutoNumeric element, then skip the following step that bind the two elements together by default
@@ -2954,8 +2959,8 @@ var AutoNumeric = /*#__PURE__*/function () {
           newAutoNumericElement._setLocalList(currentLocalList);
 
           // 2) Add the new element to that existing list
-          _this8._addToLocalList(domElement, newAutoNumericElement); // Here we use the *new* AutoNumeric object reference to add to the local list, since we'll need the reference to `this` in the methods to points to that new AutoNumeric object.
-          _this8.settings.createLocalList = originalCreateLocalListSetting;
+          _this9._addToLocalList(domElement, newAutoNumericElement); // Here we use the *new* AutoNumeric object reference to add to the local list, since we'll need the reference to `this` in the methods to points to that new AutoNumeric object.
+          _this9.settings.createLocalList = originalCreateLocalListSetting;
         }
         autoNumericObjectsArray.push(newAutoNumericElement);
       });
@@ -3087,12 +3092,12 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_getFormAutoNumericChildren",
     value: function _getFormAutoNumericChildren(formElement) {
-      var _this9 = this;
+      var _this10 = this;
       // Search for all the child AutoNumeric elements in that parent form
       //TODO This only search for <input> elements, not contenteditable non-input tag ones, for now. Add a parameter to allow this function to search on every tags.
       var inputList = _toConsumableArray(formElement.querySelectorAll('input'));
       return inputList.filter(function (input) {
-        return _this9.constructor.isManagedByAutoNumeric(input);
+        return _this10.constructor.isManagedByAutoNumeric(input);
       });
     }
 
@@ -5624,8 +5629,17 @@ var AutoNumeric = /*#__PURE__*/function () {
       }
       var droppedText = e.dataTransfer.getData(format);
       var cleanedValue = this.unformatOther(droppedText);
+      var previousValue = this.rawValue;
       this.set(cleanedValue);
       this.isDropEvent = false;
+
+      // Test if a change event must be sent (if the dropped value is different from before)
+      var newValue = this.constructor._toNumericValue(cleanedValue, this.settings);
+      if (!isNaN(Number(newValue))) {
+        if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].trimPaddedZerosFromDecimalPlaces(previousValue) !== _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].trimPaddedZerosFromDecimalPlaces(newValue)) {
+          this._triggerEvent(AutoNumeric.events["native"].change, this.domElement);
+        }
+      }
     }
 
     /**
@@ -5637,11 +5651,11 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_onFormSubmit",
     value: function _onFormSubmit() {
-      var _this10 = this;
+      var _this11 = this;
       // Search for all the AutoNumeric children of the form element and call the `_unformatOnSubmit()` function
       var inputElements = this._getFormAutoNumericChildren(this.parentForm);
       var aNElements = inputElements.map(function (aNElement) {
-        return _this10.constructor.getAutoNumericElement(aNElement);
+        return _this11.constructor.getAutoNumericElement(aNElement);
       });
       aNElements.forEach(function (aNElement) {
         return aNElement._unformatOnSubmit();
@@ -5658,14 +5672,14 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_onFormReset",
     value: function _onFormReset() {
-      var _this11 = this;
+      var _this12 = this;
       var inputElements = this._getFormAutoNumericChildren(this.parentForm);
       var aNElements = inputElements.map(function (aNElement) {
-        return _this11.constructor.getAutoNumericElement(aNElement);
+        return _this12.constructor.getAutoNumericElement(aNElement);
       });
       // Tell all the AutoNumeric children to format their default value
       aNElements.forEach(function (aNElement) {
-        var val = _this11._getDefaultValue(aNElement.node());
+        var val = _this12._getDefaultValue(aNElement.node());
         // aNElement.set(val); //XXX If I use that line, the format is first correctly done, but the form reset is still not finished and will overwrite the formatting. This is why we need to use the following setTimeout line.
         setTimeout(function () {
           return aNElement.set(val);
@@ -5865,7 +5879,6 @@ var AutoNumeric = /*#__PURE__*/function () {
         if (currentValue === '') {
           switch (this.settings.emptyInputBehavior) {
             case AutoNumeric.options.emptyInputBehavior.focus:
-            case AutoNumeric.options.emptyInputBehavior["null"]:
             case AutoNumeric.options.emptyInputBehavior.press:
               break;
             case AutoNumeric.options.emptyInputBehavior.always:
@@ -5879,6 +5892,10 @@ var AutoNumeric = /*#__PURE__*/function () {
               break;
             case AutoNumeric.options.emptyInputBehavior.zero:
               this.set('0');
+              break;
+            // It's possible to set the `null` value as the initial value
+            case AutoNumeric.options.emptyInputBehavior["null"]:
+              this.set(null);
               break;
             // When `emptyInputBehavior` is a number or a string representing a number
             default:
@@ -6928,7 +6945,7 @@ var AutoNumeric = /*#__PURE__*/function () {
      * @returns {string}
      */
     function version() {
-      return '4.8.1';
+      return '4.8.3';
     }
   }, {
     key: "_setArgumentsValues",
@@ -7098,11 +7115,11 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "mergeOptions",
     value: function mergeOptions(optionsArray) {
-      var _this12 = this;
+      var _this13 = this;
       // This allows the user to use multiple options (strings or objects) in an array, and overwrite the previous one with the next option element ; this is useful to tune the wanted format
       var mergedOptions = {};
       optionsArray.forEach(function (optionObjectOrPredefinedOptionString) {
-        _extends(mergedOptions, _this12._getOptionObject(optionObjectOrPredefinedOptionString));
+        _extends(mergedOptions, _this13._getOptionObject(optionObjectOrPredefinedOptionString));
       });
       return mergedOptions;
     }
@@ -7223,7 +7240,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_getChildANInputElement",
     value: function _getChildANInputElement(formNode) {
-      var _this13 = this;
+      var _this14 = this;
       //FIXME test this
       var inputList = formNode.getElementsByTagName('input');
 
@@ -7231,7 +7248,7 @@ var AutoNumeric = /*#__PURE__*/function () {
       var autoNumericInputs = [];
       var inputElements = Array.prototype.slice.call(inputList, 0);
       inputElements.forEach(function (input) {
-        if (_this13.test(input)) {
+        if (_this14.test(input)) {
           autoNumericInputs.push(input);
         }
       });
@@ -7733,7 +7750,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_generateOptionsObjectFromOptionsArray",
     value: function _generateOptionsObjectFromOptionsArray(options) {
-      var _this14 = this;
+      var _this15 = this;
       var optionsResult;
       if (_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefinedOrNullOrEmpty(options) || options.length === 0) {
         optionsResult = null;
@@ -7742,11 +7759,11 @@ var AutoNumeric = /*#__PURE__*/function () {
         if (options.length === 1 && Array.isArray(options[0])) {
           options[0].forEach(function (optionObject) {
             // Using `_getOptionObject()` allows using pre-defined names in the `options` array
-            _extends(optionsResult, _this14._getOptionObject(optionObject));
+            _extends(optionsResult, _this15._getOptionObject(optionObject));
           });
         } else if (options.length >= 1) {
           options.forEach(function (optionObject) {
-            _extends(optionsResult, _this14._getOptionObject(optionObject));
+            _extends(optionsResult, _this15._getOptionObject(optionObject));
           });
         }
       }
@@ -9550,7 +9567,7 @@ var AutoNumeric = /*#__PURE__*/function () {
   }, {
     key: "_serialize",
     value: function _serialize(form) {
-      var _this15 = this;
+      var _this16 = this;
       var intoAnArray = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var formatType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'unformatted';
       var serializedSpaceCharacter = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '+';
@@ -9576,24 +9593,24 @@ var AutoNumeric = /*#__PURE__*/function () {
               });
             } else if (['checkbox', 'radio'].indexOf(element.type) === -1 || element.checked) {
               var valueResult;
-              if (_this15.isManagedByAutoNumeric(element)) {
+              if (_this16.isManagedByAutoNumeric(element)) {
                 var anObject;
                 switch (formatType) {
                   case 'unformatted':
-                    anObject = _this15.getAutoNumericElement(element);
+                    anObject = _this16.getAutoNumericElement(element);
                     if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(anObject)) {
-                      valueResult = _this15.unformat(element, anObject.getSettings());
+                      valueResult = _this16.unformat(element, anObject.getSettings());
                     }
                     break;
                   case 'localized':
-                    anObject = _this15.getAutoNumericElement(element);
+                    anObject = _this16.getAutoNumericElement(element);
                     if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(anObject)) {
                       // Here I need to clone the setting object, otherwise I would modify it when changing the `outputFormat` option value
                       var currentSettings = _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].cloneObject(anObject.getSettings());
                       if (!_AutoNumericHelper__WEBPACK_IMPORTED_MODULE_0__["default"].isNull(forcedOutputFormat)) {
                         currentSettings.outputFormat = forcedOutputFormat;
                       }
-                      valueResult = _this15.localize(element, currentSettings);
+                      valueResult = _this16.localize(element, currentSettings);
                     }
                     break;
                   case 'formatted':
@@ -9906,9 +9923,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
 /* harmony import */ var _AutoNumericOptions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericOptions */ "./src/AutoNumericOptions.js");
 /**
- * Default settings for autoNumeric.js
+ * Default settings for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -10028,9 +10045,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /**
- * Enumerations for autoNumeric.js
+ * Enumerations for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -10572,9 +10589,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
 /**
- * Options for autoNumeric.js
+ * Options for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -10661,9 +10678,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /**
- * Helper functions for autoNumeric.js
+ * Helper functions for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -12424,9 +12441,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
 /* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
 /**
- * Options for autoNumeric.js
+ * Options for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -13369,9 +13386,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumeric__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AutoNumeric */ "./src/AutoNumeric.js");
 /* harmony import */ var _AutoNumericHelper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AutoNumericHelper */ "./src/AutoNumericHelper.js");
 /**
- * Pre-defined options for autoNumeric.js
+ * Pre-defined options for AutoNumeric.js
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
@@ -14285,10 +14302,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AutoNumericDefaultSettings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AutoNumericDefaultSettings */ "./src/AutoNumericDefaultSettings.js");
 /* harmony import */ var _AutoNumericPredefinedOptions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AutoNumericPredefinedOptions */ "./src/AutoNumericPredefinedOptions.js");
 /**
- * Babel + Webpack workaround for autoNumeric
+ * Babel + Webpack workaround for AutoNumeric
  *
  * @author Alexandre Bonneau <alexandre.bonneau@linuxfr.eu>
- * @copyright © 2019 Alexandre Bonneau
+ * @copyright © 2023 Alexandre Bonneau
  *
  * The MIT License (http://www.opensource.org/licenses/mit-license.php)
  *

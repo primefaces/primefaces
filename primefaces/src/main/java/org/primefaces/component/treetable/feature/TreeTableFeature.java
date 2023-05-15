@@ -23,9 +23,8 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.TreeTableRenderer;
@@ -36,7 +35,15 @@ public interface TreeTableFeature {
 
     boolean shouldEncode(FacesContext context, TreeTable table);
 
-    void decode(FacesContext context, TreeTable table);
+    default void decode(FacesContext context, TreeTable table) {
+        if (!shouldDecode(context, table)) {
+            throw new UnsupportedOperationException(getClass().getSimpleName() + " should not decode.");
+        }
+    }
 
-    void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException;
+    default void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
+        if (!shouldEncode(context, table)) {
+            throw new UnsupportedOperationException(getClass().getSimpleName() + " should not encode.");
+        }
+    }
 }

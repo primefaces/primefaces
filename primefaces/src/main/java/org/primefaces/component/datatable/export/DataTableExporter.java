@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -105,8 +106,7 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             if (rowCount > 0) {
                 table.setFirst(0);
                 table.setRows(rowCount);
-                table.clearLazyCache();
-                table.loadLazyData();
+                table.loadLazyDataIfEnabled();
             }
 
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
@@ -117,7 +117,6 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             table.setFirst(first);
             table.setRows(rows);
             table.setRowIndex(-1);
-            table.clearLazyCache();
             lazyDataModel.setWrappedData(wrappedData);
             lazyDataModel.setPageSize(rows);
             lazyDataModel.setRowIndex(-1);

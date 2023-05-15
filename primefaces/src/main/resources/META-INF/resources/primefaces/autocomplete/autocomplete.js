@@ -22,7 +22,7 @@
  * @prop {Record<string, string>} [cache] The cache for the results of an autocomplete search.
  * @prop {number} [cacheTimeout] The set-interval timer ID for the cache timeout.
  * @prop {boolean} [checkMatchedItem] Whether the click event is fired on the selected items when a `blur` occurs.
- * @prop {number} [colspan] Column span count for the options in the overlay panel with the available completion items. 
+ * @prop {number} [colspan] Column span count for the options in the overlay panel with the available completion items.
  * @prop {string} [currentGroup] Current option group when creating the options in the overlay  with the available
  * completion items.
  * @prop {string} currentInputValue Current value in the input field where the user can search for completion items.
@@ -440,6 +440,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     var highlightedItem = $this.items.filter('.ui-state-highlight');
                     if (highlightedItem.length) {
                         $this.displayAriaStatus(highlightedItem.data('item-label'));
+                        $this.changeAriaValue(highlightedItem[0]);
                     }
                 }
             }
@@ -457,8 +458,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var prev = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.prevAll('.ui-autocomplete-item:first');
 
                         if (prev.length == 1) {
-                            highlightedItem.removeClass('ui-state-highlight');
-                            prev.addClass('ui-state-highlight');
+                            $this.highlightItem(highlightedItem, false);
+                            $this.highlightItem(prev, true);
 
                             if ($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, prev);
@@ -476,8 +477,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var next = highlightedItem.length == 0 ? $this.items.eq(0) : highlightedItem.nextAll('.ui-autocomplete-item:first');
 
                         if (next.length == 1) {
-                            highlightedItem.removeClass('ui-state-highlight');
-                            next.addClass('ui-state-highlight');
+                            $this.highlightItem(highlightedItem, false);
+                            $this.highlightItem(next, true);
 
                             if ($this.cfg.scrollHeight) {
                                 PrimeFaces.scrollInView($this.panel, next);
@@ -604,8 +605,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 var item = $(this);
 
                 if (!item.hasClass('ui-state-highlight')) {
-                    $this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight');
-                    item.addClass('ui-state-highlight');
+                    $this.items.filter('.ui-state-highlight').removeClass('ui-state-highlight').attr('aria-selected', false);
+                    $this.highlightItem(item, true);
 
                     if ($this.cfg.itemtip) {
                         $this.showItemtip(item);
@@ -791,7 +792,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             //highlight first item
             if (this.cfg.autoHighlight && firstItem.length) {
-                firstItem.addClass('ui-state-highlight');
+                this.highlightItem(firstItem, true);
+                this.changeAriaValue(firstItem[0]);
             }
 
             //highlight query string
@@ -835,6 +837,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.panel.hide();
             }
 
+            this.input.removeAttr('aria-activedescendant');
             this.displayAriaStatus(this.cfg.ariaEmptyMessage);
         }
     },
@@ -974,18 +977,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     dataType: 'json'
                 })
                     .done(function(suggestions) {
-                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
-                        suggestions.suggestions.forEach(function(suggestion) {
+                        var html = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
+                        suggestions.suggestions.forEach(function(suggestion, index) {
                             var labelEncoded = $("<div>").text(suggestion.label).html();
                             var itemValue = labelEncoded;
                             if (!!suggestion.value) {
                                 itemValue = $("<div>").text(suggestion.value).html();
                             }
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
+                            html += '<li id="' + $this.id + '_item_' + index + '" class="ui-autocomplete-item ui-autocomplete-list-item ui-corner-all" data-item-value="' + PrimeFaces.escapeHTML(itemValue) + '" data-item-label="' + PrimeFaces.escapeHTML(labelEncoded) + '" role="option">' + PrimeFaces.escapeHTML(labelEncoded) + '</li>';
                         });
                         if (suggestions.moreAvailable == true && $this.cfg.moreText) {
                             var moreTextEncoded = $("<div>").text($this.cfg.moreText).html();
-                            html += '<li class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
+                            html += '<li id="' + $this.id + '_item_more' + '" class="ui-autocomplete-item ui-autocomplete-moretext ui-corner-all" role="option">' + PrimeFaces.escapeHTML(moreTextEncoded) + '</li>';
                         }
                         html += '</ul>';
 
@@ -1035,6 +1038,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onEntered: function() {
                     $this.bindPanelEvents();
+                    $this.input.attr('aria-expanded', true);
                 }
             });
         }
@@ -1057,6 +1061,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onExited: function() {
                     $this.panel.css('height', 'auto');
+                    $this.input.attr('aria-expanded', false);
+                    $this.input.removeAttr('aria-activedescendant', false);
                 }
             });
         }
@@ -1172,8 +1178,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
                 var itemDisplayMarkup = '<li data-token-value="' + PrimeFaces.escapeHTML(itemValue);
                 itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
-                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '">';
-                itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close"></span>';
+                itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" '
+                itemDisplayMarkup += 'role="option" aria-label="' + PrimeFaces.escapeHTML(itemLabel) + '" ';
+                itemDisplayMarkup += 'aria-selected="true">';
+                itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" aria-hidden="true"></span>';
                 itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + PrimeFaces.escapeHTML(itemLabel) + '</span></li>';
 
                 $this.inputContainer.before(itemDisplayMarkup);
@@ -1405,6 +1413,33 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Adjusts the value of the aria attributes for the given selectable option.
+     * @private
+     * @param {Element} item An option for which to set the aria attributes.
+     */
+    changeAriaValue: function (item) {
+        if (item) {
+            this.input.attr('aria-activedescendant', item.id);
+        }
+    },
+
+    /**
+     * Adjusts the highlighting and aria attributes for the given selectable option.
+     * @private
+     * @param {Element} item An option for which to set the aria attributes.
+     * @param {boolean} highlight Flag to indicate to highlight or not
+     */
+    highlightItem: function (item, highlight) {
+        if (highlight) {
+            item.addClass('ui-state-highlight');
+        }
+        else {
+            item.removeClass('ui-state-highlight');
+        }
+        item.attr('aria-selected', highlight);
+    },
+
+    /**
      * Takes the available suggestion items and groups them.
      * @private
      */
@@ -1587,12 +1622,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     findWrapperTag: function(wrapper) {
         if (wrapper.is('ul')) {
-            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">';
+            this.wrapperStartTag = '<ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">';
             this.wrapperEndTag = '</ul>';
         }
         else {
             var header = wrapper.find('> table > thead');
-            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset">' +
+            this.wrapperStartTag = '<table class="ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset" role="listbox">' +
                 (header.length ? header.eq(0).outherHTML : '') +
                 '<tbody>';
             this.wrapperEndTag = '</tbody></table>';

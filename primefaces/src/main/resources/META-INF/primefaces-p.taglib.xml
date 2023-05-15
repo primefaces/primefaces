@@ -4703,6 +4703,38 @@
         </component>
         <attribute>
             <description>
+                <![CDATA[Unique identifier of the component in a namingContainer.]]>
+            </description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
+            </description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
+            </description>
+            <name>binding</name>
+            <required>false</required>
+            <type>javax.faces.component.UIComponent</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Name of the client side widget.]]>
+            </description>
+            <name>widgetVar</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Datetime format.]]>
             </description>
             <name>pattern</name>
@@ -8455,7 +8487,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+                <![CDATA[Defines sorting mode, valid values are "single" and "multiple" (default).]]>
             </description>
             <name>sortMode</name>
             <required>false</required>
@@ -24894,7 +24926,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Watermark displayed in the filter input field before the user enters a value in an HTML5 browser.]]>
+                <![CDATA[Watermark displayed in the filter input field before the user enters a value.]]>
             </description>
             <name>filterPlaceholder</name>
             <required>false</required>
@@ -28405,11 +28437,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Height of the editor. Default is min integer value.]]>
+                <![CDATA[Height of the editor.]]>
             </description>
             <name>height</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -29697,7 +29729,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "left center".]]>
+                <![CDATA[Defines which position on the element being positioned to align with the target element: "horizontal vertical" alignment. A single value such as "right" will be normalized to "right center", "top" will be normalized to "center top" (following CSS convention). Acceptable horizontal values: "left", "center", "right". Acceptable vertical values: "top", "center", "bottom". Example: "left top" or "center center". Each dimension can also contain offsets, in pixels or percent, e.g., "right+10 top-25%". Percentage offsets are relative to the element being positioned. If set overrides the 'position' attribute. Example "left center".]]>
             </description>
             <name>my</name>
             <required>false</required>
@@ -29705,7 +29737,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Position of tooltip with respect to target. If set overrides the 'position' attribute. Example "right center".]]>
+                <![CDATA[Defines which position on the target element to align the positioned element against: "horizontal vertical" alignment. See the my option for full details on possible values. Percentage offsets are relative to the target element. If set overrides the 'position' attribute. Example "right center".]]>
             </description>
             <name>at</name>
             <required>false</required>
@@ -30592,7 +30624,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines sorting mode, valid values are "single" (default) and "multiple".]]>
+                <![CDATA[Defines sorting mode, valid values are "single" and "multiple" (default).]]>
             </description>
             <name>sortMode</name>
             <required>false</required>

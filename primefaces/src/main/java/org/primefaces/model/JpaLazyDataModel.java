@@ -356,28 +356,22 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             try {
                 return context.getELContext().convertToType(value, valueType);
             }
-            catch (ELException elException) {
-                if (LOG.isLoggable(Level.INFO)) {
-                    LOG.log(Level.INFO, "Could not convert '" + value + "' to " + valueType + " via ELContext!", elException);
-                }
+            catch (ELException e) {
+                LOG.log(Level.INFO, e, () -> "Could not convert '" + value + "' to " + valueType + " via ELContext!");
             }
         }
 
         Converter targetConverter = context.getApplication().createConverter(valueType);
         if (targetConverter == null) {
-            if (LOG.isLoggable(Level.FINE)) {
-                LOG.fine("Skip conversion as no converter was found for " + valueType
-                        + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
-            }
+            LOG.log(Level.FINE, () -> "Skip conversion as no converter was found for " + valueType
+                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
             return value;
         }
 
         Converter sourceConverter = context.getApplication().createConverter(value.getClass());
         if (sourceConverter == null) {
-            if (LOG.isLoggable(Level.FINE)) {
-                LOG.fine("Skip conversion as no converter was found for " + value.getClass()
-                        + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
-            }
+            LOG.log(Level.FINE, () -> "Skip conversion as no converter was found for " + value.getClass()
+                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
         }
 
         // first convert the object to string
@@ -390,9 +384,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
         }
         catch (ConverterException e) {
-            if (LOG.isLoggable(Level.INFO)) {
-                LOG.log(Level.INFO, "Could not convert '" + stringValue + "' to " + valueType + " via " + targetConverter.getClass().getName(), e);
-            }
+            LOG.log(Level.INFO, e, () -> "Could not convert '" + stringValue + "' to " + valueType + " via " + targetConverter.getClass().getName());
             return value;
         }
     }

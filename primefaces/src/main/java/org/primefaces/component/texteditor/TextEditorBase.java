@@ -71,11 +71,11 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.height, Integer.MIN_VALUE);
+    public String getHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         getStateHelper().put(PropertyKeys.height, height);
     }
 

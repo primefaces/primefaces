@@ -23,33 +23,15 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import java.io.IOException;
-import javax.faces.FacesException;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.treetable.TreeTable;
-import org.primefaces.component.treetable.TreeTableRenderer;
 
 public class ResizableColumnsFeature implements TreeTableFeature {
-
-    private static final ResizableColumnsFeature INSTANCE = new ResizableColumnsFeature();
-
-    private ResizableColumnsFeature() {
-    }
-
-    public static ResizableColumnsFeature getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public void decode(FacesContext context, TreeTable table) {
         table.decodeColumnResizeState(context);
-    }
-
-    @Override
-    public void encode(FacesContext context, TreeTableRenderer renderer, TreeTable table) throws IOException {
-        throw new FacesException("ResizableColumnsFeature should not encode.");
     }
 
     @Override

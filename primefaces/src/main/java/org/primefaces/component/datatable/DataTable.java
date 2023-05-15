@@ -24,6 +24,8 @@
 package org.primefaces.component.datatable;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ELContext;
@@ -141,6 +143,8 @@ public class DataTable extends DataTableBase {
     public static final String GRIDLINES_CLASS = "ui-datatable-gridlines";
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
     public static final String LARGE_SIZE_CLASS = "ui-datatable-lg";
+
+    private static final Logger LOGGER = Logger.getLogger(DataTable.class.getName());
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
@@ -462,71 +466,69 @@ public class DataTable extends DataTableBase {
     }
 
     public void loadLazyDataIfRequired() {
-        if (isLazy()) {
-            DataModel model = getDataModel();
-            if (model instanceof LazyDataModel && ((LazyDataModel) model).getWrappedData() == null) {
-                loadLazyData();
-            }
+        if (getDataModel().getWrappedData() == null) {
+            loadLazyDataIfEnabled();
         }
     }
 
-    public void loadLazyData() {
-        DataModel model = getDataModel();
-
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
-
-            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
-            lazyModel.setRowCount(lazyModel.count(filterBy));
-
-            calculateFirst();
-
-            FacesContext context = getFacesContext();
+    public boolean loadLazyDataIfEnabled() {
+        LazyDataModel<?> lazyModel = getLazyDataModel();
+        if (lazyModel != null) {
             int first = getFirst();
-            int rows = getRows();
+            int rows = 0;
 
-            if (isClientCacheRequest(context)) {
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + rows;
+            if (isLiveScroll()) {
+                rows = getScrollRows();
             }
-
-            List<?> data = lazyModel.load(first, rows, getActiveSortMeta(), filterBy);
-            lazyModel.setPageSize(rows);
-            // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
-            lazyModel.setWrappedData(data == null ? Collections.emptyList() : data);
-
-            //Update paginator/livescroller for callback
-            if (ComponentUtils.isRequestSource(this, context) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+            else if (isVirtualScroll()) {
+                rows = getRows();
+                int scrollRows = getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                rows = (rows == 0) ? virtualScrollRows : Math.min(virtualScrollRows, rows);
             }
+            else {
+                rows = getRows();
+            }
+            loadLazyScrollData(first, rows);
         }
+
+        return lazyModel != null;
     }
 
     public void loadLazyScrollData(int offset, int rows) {
-        DataModel model = getDataModel();
+        LazyDataModel<?> model = getLazyDataModel();
+        if (model == null) {
+            throw new FacesException("Unexpected call, datatable " + getClientId(getFacesContext()) + " is not lazy.");
+        }
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
+        Map<String, FilterMeta> filterBy = getActiveFilterMeta();
+        model.setRowCount(model.count(filterBy));
 
-            Map<String, FilterMeta> filterBy = getActiveFilterMeta();
-            lazyModel.setRowCount(lazyModel.count(filterBy));
+        FacesContext context = getFacesContext();
+        boolean clientCacheRequest = isClientCacheRequest(context);
+        if (clientCacheRequest) {
+            offset += rows;
+        }
 
-            List<?> data = lazyModel.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
+        setFirst(offset);
 
-            lazyModel.setPageSize(rows);
-            lazyModel.setWrappedData(data);
-
-            //Update paginator/livescroller  for callback
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+        if (calculateFirst()) {
+            offset = getFirst();
+            LOGGER.warning(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
+            if (clientCacheRequest) {
+                LOGGER.warning(() -> "DataTable#loadLazyScrollData: fetching next page has been canceled due to overflow (first >= rowCount)");
+                return;
             }
         }
-    }
 
-    public void clearLazyCache() {
-        if (getDataModel() instanceof LazyDataModel) {
-            LazyDataModel model = (LazyDataModel) getDataModel();
-            model.setWrappedData(null);
+        List<?> data = model.load(offset, rows, getActiveSortMeta(), getActiveFilterMeta());
+        model.setPageSize(rows);
+        // set empty list if model returns null; this avoids multiple calls while visiting the component+rows
+        model.setWrappedData(data != null ? data : Collections.emptyList());
+
+        //Update paginator/livescroller for callback
+        if (ComponentUtils.isRequestSource(this, getFacesContext()) && (isPaginator() || isLiveScroll() || isVirtualScroll())) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", model.getRowCount());
         }
     }
 
@@ -1173,12 +1175,12 @@ public class DataTable extends DataTableBase {
     }
 
     public void unselectRow(String rowKey) {
-        if (getSelectedRowKeys().contains(rowKey)) {
-            getSelectedRowKeys().remove(rowKey);
+        if (!getSelectedRowKeys().remove(rowKey)) {
+            LOGGER.log(Level.INFO, "No existing row with key {0}", rowKey);
         }
         if (isMultiViewState()) {
             DataTableState mvs = getMultiViewState(false);
-            if (mvs != null && mvs.getSelectedRowKeys() != null && mvs.getSelectedRowKeys().contains(rowKey)) {
+            if (mvs != null && mvs.getSelectedRowKeys() != null) {
                 mvs.getSelectedRowKeys().remove(rowKey);
             }
         }
@@ -1196,12 +1198,12 @@ public class DataTable extends DataTableBase {
     }
 
     public void collapseRow(String rowKey) {
-        if (getExpandedRowKeys().contains(rowKey)) {
-            getExpandedRowKeys().remove(rowKey);
+        if (!getExpandedRowKeys().remove(rowKey)) {
+            LOGGER.log(Level.INFO, "No existing row with key {0}", rowKey);
         }
         if (isMultiViewState()) {
             DataTableState mvs = getMultiViewState(false);
-            if (mvs != null && mvs.getExpandedRowKeys() != null && mvs.getExpandedRowKeys().contains(rowKey)) {
+            if (mvs != null && mvs.getExpandedRowKeys() != null) {
                 mvs.getExpandedRowKeys().remove(rowKey);
             }
         }

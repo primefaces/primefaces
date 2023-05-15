@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.api;
 
-import java.lang.reflect.Array;
 import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -203,7 +202,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            UIComponent filterFacet = getFilterComponent(column);
+            UIComponent filterFacet = column.getFilterComponent();
             boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
 
             Object filterValue;
@@ -217,13 +216,15 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 filterValue = params.get(valueHolderClientId);
             }
 
-            // returns null if empty string/collection/array/object
             if (filterValue != null) {
-                if ((filterValue instanceof String && LangUtils.isBlank((String) filterValue))
-                    || (filterValue instanceof Collection && ((Collection) filterValue).isEmpty())
-                    || (filterValue instanceof Iterable && !((Iterable) filterValue).iterator().hasNext())
-                    || (filterValue.getClass().isArray() && Array.getLength(filterValue) == 0)) {
-                    filterValue = null;
+                // this is not absolutely necessary, but in case the result is null, it prevents to execution of the next statement
+                filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
+            }
+
+            if (filterValue != null) {
+                ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
+                if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
+                    filterValue = Arrays.asList((Object[]) filterValue);
                 }
             }
 
@@ -547,26 +548,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default boolean isFilteringCurrentlyActive() {
         return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
-    }
-
-    default <C extends UIComponent & ValueHolder> C getFilterComponent(UIColumn column) {
-        UIComponent filterFacet = column.getFacet("filter");
-        if (filterFacet != null) {
-            if (filterFacet instanceof ValueHolder) {
-                return (C) filterFacet;
-            }
-
-            for (UIComponent child : filterFacet.getChildren()) {
-                if (!child.isRendered()) {
-                    continue;
-                }
-
-                if (child instanceof ValueHolder) {
-                    return (C) child;
-                }
-            }
-        }
-        return null;
     }
 
     default int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,

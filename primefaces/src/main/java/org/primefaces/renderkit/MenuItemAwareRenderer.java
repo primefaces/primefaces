@@ -87,7 +87,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
             String menuClientId = source.getClientId(context);
             UIForm form = ComponentTraversalUtils.closestForm(source);
             if (form == null) {
-                LOGGER.log(Level.FINE, "Menu '" + menuClientId
+                LOGGER.log(Level.FINE, () -> "Menu '" + menuClientId
                             + "' should be inside a form or should reference a form via its form attribute."
                             + " We will try to find a fallback form on the client side.");
             }

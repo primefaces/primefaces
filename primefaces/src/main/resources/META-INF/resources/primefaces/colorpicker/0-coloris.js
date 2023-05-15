@@ -2,7 +2,7 @@
  * Copyright (c) 2021-2023 Momo Bassit.
  * Licensed under the MIT License (MIT)
  * https://github.com/mdbassit/Coloris
- * Version: 0.18.0
+ * Version: 0.19.0
  * NPM: https://github.com/melloware/coloris-npm
  */
 
@@ -10,7 +10,7 @@ window.Coloris = ((window, document, Math) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-      closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor;
+      closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor, keyboardNav;
   
   //***** PF: Prevent binding events multiple times
   let bound;
@@ -89,7 +89,7 @@ window.Coloris = ((window, document, Math) => {
             container.appendChild(picker);
             settings.parent = options.parent;
 
-            // Treat document.body is special
+            // document.body is special
             if (container === document.body) {
               container = null;
             }
@@ -334,6 +334,11 @@ window.Coloris = ((window, document, Math) => {
         colorValue.select();
       }
 
+      // Always focus the first element when using keyboard navigation
+      if (keyboardNav || settings.swatchesOnly) {
+        getFocusableElements().shift().focus();
+      }
+
       // Trigger an "open" event
       currentEl.dispatchEvent(new Event('open', { bubbles: true }));
     });
@@ -353,7 +358,7 @@ window.Coloris = ((window, document, Math) => {
    * Update the color picker's position and the color gradient's offset
    */
   function updatePickerPosition() {
-    if (!picker || (!currentEl && !settings.inline)) return; //***** DO NOT REMOVE: in case called before initialized
+    if (!picker || (!currentEl && !settings.inline)) return; //** DO NOT REMOVE: in case called before initialized
     const parent = container;
     const scrollY = window.scrollY;
     const pickerWidth = picker.offsetWidth;
@@ -925,7 +930,7 @@ window.Coloris = ((window, document, Math) => {
    * Init the color picker.
    */
   function init() {
-    if (document.getElementById('clr-picker')) return; //***** DO NOT REMOVE: Prevent binding events multiple times
+    if (document.getElementById('clr-picker')) return; //** DO NOT REMOVE: Prevent binding events multiple times
     // Render the UI
     container = null;
     picker = document.createElement('div');
@@ -1046,19 +1051,39 @@ window.Coloris = ((window, document, Math) => {
     });
 
     addListener(document, 'mousedown', event => {
+      keyboardNav = false;
       picker.classList.remove('clr-keyboard-nav');
       closePicker();
     });
 
     addListener(document, 'keydown', event => {
+      const key = event.key;
+      const target = event.target;
+      const shiftKey = event.shiftKey;
       const navKeys = ['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
-      if (event.key === 'Escape') {
+      if (key === 'Escape') {
         closePicker(true);
 
       // Display focus rings when using the keyboard
-      } else if (navKeys.includes(event.key)) {
+      } else if (navKeys.includes(key)) {
+        keyboardNav = true;
         picker.classList.add('clr-keyboard-nav');
+      }
+
+      // Trap the focus within the color picker while it's open
+      if (key === 'Tab' && target.matches('.clr-picker *')) {
+        const focusables = getFocusableElements();
+        const firstFocusable = focusables.shift();
+        const lastFocusable = focusables.pop();
+
+        if (shiftKey && target === firstFocusable) {
+          lastFocusable.focus();
+          event.preventDefault();
+        } else if (!shiftKey && target === lastFocusable) {
+          firstFocusable.focus();
+          event.preventDefault();
+        }
       }
     });
 
@@ -1092,6 +1117,17 @@ window.Coloris = ((window, document, Math) => {
   }
 
   /**
+   * Return a list of focusable elements within the color picker.
+   * @return {array} The list of focusable DOM elemnts.
+   */
+  function getFocusableElements() {
+    const controls = Array.from(picker.querySelectorAll('input, button'));
+    const focusables = controls.filter(node => !!node.offsetWidth);
+
+    return focusables;
+  }
+
+  /**
    * Shortcut for getElementById to optimize the minified JS.
    * @param {string} id The element id.
    * @return {object} The DOM element with the provided id.
@@ -1119,7 +1155,7 @@ window.Coloris = ((window, document, Math) => {
       });
 
     // If the selector is not a string then it's a function
-    // in which case we need regular event listener
+    // in which case we need a regular event listener
     } else {
       fn = selector;
       context.addEventListener(type, fn);
@@ -1147,10 +1183,10 @@ window.Coloris = ((window, document, Math) => {
   if (NodeList !== undefined && NodeList.prototype && !NodeList.prototype.forEach) {
       NodeList.prototype.forEach = Array.prototype.forEach;
   }
-  
-  //***************************************************
-  //***** NPM: Custom code starts here ****************
-  //***************************************************
+
+  //*****************************************************
+  //******* NPM: Custom code starts here ****************
+  //*****************************************************
   
   /**
    * Copy the active color to the linked input field and set the color.
@@ -1201,7 +1237,7 @@ window.Coloris = ((window, document, Math) => {
       };
     }
     
-    // Handle window resize events re-aligning the panel
+    // handle window resize events re-aligning the panel
     DOMReady(() => {
         window.addEventListener('resize', event => { Coloris.updatePosition(); });
         window.addEventListener('scroll', event => { Coloris.updatePosition(); });
