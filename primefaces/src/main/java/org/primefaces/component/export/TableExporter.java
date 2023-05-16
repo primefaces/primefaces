@@ -87,11 +87,9 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     }
 
     protected enum FacetType {
-        TABLE_FACET,
-
-        COLUMN_GROUP_FACET,
-
-        COLUMN_FACET
+        TABLE,
+        COLUMN_GROUP,
+        COLUMN
     }
 
     protected TableExporter(O defaultOptions) {
@@ -155,7 +153,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     }
 
     protected void addTableFacets(FacesContext context, T table, ColumnType columnType) {
-        if (!supportedFacetTypes.contains(FacetType.TABLE_FACET)) {
+        if (!supportedFacetTypes.contains(FacetType.TABLE)) {
             return;
         }
 
@@ -170,7 +168,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     }
 
     protected void addColumnFacets(FacesContext context, T table, ColumnType columnType) throws IOException {
-        if (!supportedFacetTypes.contains(FacetType.COLUMN_FACET)) {
+        if (!supportedFacetTypes.contains(FacetType.COLUMN)) {
             return;
         }
 
@@ -181,7 +179,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     }
 
     protected boolean addColumnGroupFacets(FacesContext context, T table, ColumnType columnType) {
-        if (!supportedFacetTypes.contains(FacetType.COLUMN_GROUP_FACET)) {
+        if (!supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             return false;
         }
 
@@ -224,19 +222,19 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     }
 
     protected void exportTabletFacetValue(FacesContext context, T table, String textValue) {
-        if (supportedFacetTypes.contains(FacetType.TABLE_FACET)) {
+        if (supportedFacetTypes.contains(FacetType.TABLE)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportTabletFacetValue() must be implemented");
         }
     }
 
     protected void exportColumnFacetValue(FacesContext context, T table, String text, int index) {
-        if (supportedFacetTypes.contains(FacetType.COLUMN_FACET)) {
+        if (supportedFacetTypes.contains(FacetType.COLUMN)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportColumnFacetValue() must be implemented");
         }
     }
 
     protected void exportColumnGroupFacetValue(FacesContext context, T table, UIColumn column, int rowIndex, AtomicInteger colIndex, String text, int i) {
-        if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP_FACET)) {
+        if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportColumnGroupFacetValue() must be implemented");
         }
     }

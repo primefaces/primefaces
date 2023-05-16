@@ -40,7 +40,7 @@ import org.primefaces.util.LangUtils;
 public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOptions> {
 
     public DataTableCSVExporter() {
-        super(CSVOptions.EXCEL, EnumSet.of(FacetType.COLUMN_FACET), false);
+        super(CSVOptions.EXCEL, EnumSet.of(FacetType.COLUMN), false);
     }
 
     @Override
