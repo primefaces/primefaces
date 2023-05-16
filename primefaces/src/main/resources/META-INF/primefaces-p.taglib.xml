@@ -983,15 +983,39 @@
         </attribute>
        <attribute>
             <description>
+                <![CDATA[When specified, helps the browser select what controls to show. The allowed values are nodownload, nofullscreen and noremoteplayback.]]>
+            </description>
+            <name>controlslist</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[This enumerated attribute indicates whether to use CORS to fetch the related audio/video file. The allowed values are anonymous and user-credentials.]]>
+            </description>
+            <name>crossorigin</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+       <attribute>
+            <description>
                 <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
             </description>
             <name>autoplay</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Used to disable the capability of remote playback in devices that are attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA, AirPlay, etc.)]]>
+            </description>
+            <name>disableremoteplayback</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
+                <![CDATA[Specifies that the audio/video will start over again, every time it is finished.)]]>
             </description>
             <name>loop</name>
             <required>false</required>
@@ -999,7 +1023,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Specifies that the audio output of the video should be muted.)]]>
+                <![CDATA[Specifies that the audio output should be muted.)]]>
             </description>
             <name>muted</name>
             <required>false</required>
@@ -31061,6 +31085,22 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[When specified, helps the browser select what controls to show. The allowed values are nodownload, nofullscreen and noremoteplayback.]]>
+            </description>
+            <name>controlslist</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[This enumerated attribute indicates whether to use CORS to fetch the related audio/video file. The allowed values are anonymous and user-credentials.]]>
+            </description>
+            <name>crossorigin</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
        <attribute>
             <description>
                 <![CDATA[Specifies that the video will start playing as soon as it is ready.)]]>
@@ -31069,11 +31109,35 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Used to disable the capability of remote playback in devices that are attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA, AirPlay, etc.)]]>
+            </description>
+            <name>disableremoteplayback</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+       <attribute>
+            <description>
+                <![CDATA[Prevents the browser from suggesting a Picture-in-Picture context menu or to request Picture-in-Picture automatically in some cases.]]>
+            </description>
+            <name>disablepictureinpicture</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
         <attribute>
             <description>
                 <![CDATA[Specifies that the video will start over again, every time it is finished.)]]>
             </description>
             <name>loop</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Specifies that the video is to be played "inline", that is within the element's playback area. Note that the absence of this attribute does not imply that the video will always be played in fullscreen.)]]>
+            </description>
+            <name>playsinline</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

@@ -196,13 +196,17 @@ public class HTML {
     public static final List<String> MEDIA_ATTRS = LangUtils.unmodifiableList(
         "autoplay",
         "controls",
-        "crossOrigin",
+        "controlslist",
+        "crossorigin",
         "currentTime",
         "defaultMuted",
         "defaultPlaybackRate",
+        "disableremoteplayback",
+        "disablepictureinpicture",
         "loop",
         "muted",
         "playbackRate",
+        "playsinline",
         "preload",
         "volume"
     );
