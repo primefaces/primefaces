@@ -169,7 +169,7 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
                     this::getSelection);
             if (type != null) {
                 String selectionMode = "single";
-                if (Collection.class.isAssignableFrom(type)) {
+                if (Collection.class.isAssignableFrom(type) || type.isArray()) {
                     selectionMode = "multiple";
                 }
 
