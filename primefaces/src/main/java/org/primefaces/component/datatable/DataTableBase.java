@@ -23,10 +23,13 @@
  */
 package org.primefaces.component.datatable;
 
+import java.util.Collection;
 import javax.el.MethodExpression;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
 import org.primefaces.component.api.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ELUtils;
 
 public abstract class DataTableBase extends UIPageableData implements Widget, RTLAware, ClientBehaviorHolder,
         PrimeClientBehaviorHolder, UITable<DataTableState> {
@@ -159,7 +162,26 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     }
 
     public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.selectionMode, () -> {
+            // if not set by xhtml, we need to check the type of the value binding
+            Class<?> type = ELUtils.getType(getFacesContext(),
+                    getValueExpression(PropertyKeys.selection.toString()),
+                    this::getSelection);
+            if (type != null) {
+                String selectionMode = "single";
+                if (Collection.class.isAssignableFrom(type)) {
+                    selectionMode = "multiple";
+                }
+
+                // remember in ViewState, to not do the same check again
+                setSelectionMode(selectionMode);
+
+                return selectionMode;
+            }
+            else {
+                return null;
+            }
+        });
     }
 
     public void setSelectionMode(String selectionMode) {
@@ -745,4 +767,5 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
     public void setSelectAllFilteredOnly(boolean selectAllFilteredOnly) {
         getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
     }
+
 }

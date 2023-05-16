@@ -93,7 +93,7 @@ DataTable displays data in tabular format.
 | scrollable                | false              | Boolean          | Makes data scrollable with fixed header.
 | selectAllFilteredOnly     | false              | Boolean          | When enabled, toggle select will only apply on filtered items. Default is false.
 | selection                 | null               | Object           | Reference to the selection data.
-| selectionMode             | null               | String           | Enables row selection, valid values are “single" and “multiple".
+| selectionMode             | null               | String           | Enables row selection, valid values are "single" and "multiple". Automatically detected based on value-binding to `selection` property. So no need to set this explicit.
 | selectionPageOnly         | true               | Boolean          | When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
 | showGridlines             | false              | Boolean          | When enabled, cell borders are displayed.
 | size                      | regular            | String           | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
