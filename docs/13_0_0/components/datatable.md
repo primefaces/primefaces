@@ -27,7 +27,7 @@ DataTable displays data in tabular format.
 | clientCache               | false              | Boolean          | Caches the next page asynchronously, default is false.
 | currentPageReportTemplate | null               | String           | Template of the currentPageReport UI.
 | dataLocale                | null               | Object           | Locale to be used in features such as filtering and sorting, defaults to view locale.
-| dir                       | ltr                | String           | Defines text direction, valid values are _ltr_ and _rtl_.
+| dir                       | ltr                | String           | Defines text direction, valid values are `ltr` and `rtl`.
 | disableContextMenuIfEmpty | false              | Boolean          | Decides whether to disable context menu or not if a table has no records.
 | disabledSelection         | false              | Boolean          | Disables row selection when true. Overrides p:column's disabledSelection attr. Example: var="xxx" disabledSelection="#{xxx.year > 1960}"
 | disabledTextSelection     | true               | Boolean          | Disables text selection on row click.
@@ -35,7 +35,7 @@ DataTable displays data in tabular format.
 | draggableRows             | false              | Boolean          | When enabled, rows can be reordered using dragdrop.
 | draggableRowsFunction     | null               | MethodExpression | Method expression to execute after dragging row.
 | editInitEvent             | null               | String           | Defines a client side event to open cell on editable table.
-| editMode                  | row                | String           | Defines edit mode, valid values are _row_ and _cell_.
+| editMode                  | row                | String           | Defines edit mode, valid values are `row` and `cell`.
 | editable                  | false              | Boolean          | Controls incell editing.
 | editingRow                | false              | Boolean          | Defines if cell editors of row should be displayed as editable or not.
 | emptyMessage              | No records found.  | String           | Text to display when there is no data to display. Alternative is emptyMessage facet.
@@ -97,7 +97,7 @@ DataTable displays data in tabular format.
 | selectionPageOnly         | true               | Boolean          | When using a paginator and selection mode is `checkbox`, the select all checkbox in the header will select all rows on the current page if `true`, or all rows on all pages if `false`. Default is `true`.
 | showGridlines             | false              | Boolean          | When enabled, cell borders are displayed.
 | size                      | regular            | String           | Size of the table content, valid values are "small" and "large". Leave empty for regular size.
-| sortMode                  | multiple           | String           | Defines sorting mode, valid values are _single_ and _multiple_.
+| sortMode                  | multiple           | String           | Defines sorting mode, valid values are `single` and `multiple`.
 | sortBy                    | null               | SortMeta / Collection<SortMeta> | Property to be used for default sorting. Expects a single or a collection of SortMeta.
 | skipChildren              | false              | Boolean          | Ignores processing of children during lifecycle, improves performance if table only has output components.
 | stickyHeader              | false              | Boolean          | Sticky header stays in window viewport during scrolling.
@@ -209,7 +209,7 @@ Here are more examples based on different templates;
 - _{PreviousPageLink} {CurrentPageReport} {NextPageLink}_
 
 ## Paginator Position
-Paginator can be positoned using _paginatorPosition_ attribute in three different locations, "top",
+Paginator can be positoned using `paginatorPosition` attribute in three different locations, "top",
 "bottom" or "both" (default).
 
 ## Custom Content in Paginator
@@ -226,7 +226,7 @@ template.
 ```
 
 ## Sorting
-Defining _field_ or _sortBy_ attribute enables ajax based sorting on that particular column. Sorting cycles through ascending,
+Defining `field` or `sortBy` attribute enables ajax based sorting on that particular column. Sorting cycles through ascending,
 descending and unsorted upon clicking on the column header.
 
 ```xhtml
@@ -258,14 +258,14 @@ public int sortByModel(Object car1, Object car2) {
 </p:dataTable>
 ```
 Multiple sorting is enabled by default. In this mode, clicking a sort column
-while metakey is on adds sort column to the order group. Change attribute _sortMode_ to _single_ to allow only one column.
+while metakey is on adds sort column to the order group. Change attribute `sortMode` to `single` to allow only one column.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" sortMode="multiple">
     //columns
 </p:dataTable>
 ```
-DataTable can display data sorted by default, by either setting default attributes on `p:column` or using _sortBy_ attribute of datatable.
+DataTable can display data sorted by default, by either setting default attributes on `p:column` or using `sortBy` attribute of datatable.
 Table below would be initially displayed as sorted by model.
 
 ```xhtml
@@ -499,10 +499,11 @@ public class CarBean {
     //getters and setters
 }
 ```
+
 #### Single Selection with a Command Component
 This method is implemented with a command component such as commandLink or
 commandButton. Selected row can be set to a server side instance by passing as a parameter if you
-are using EL 2.2 or using f:setPropertyActionListener.
+are using EL 2.2 or using `<f:setPropertyActionListener />`.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
@@ -517,7 +518,7 @@ are using EL 2.2 or using f:setPropertyActionListener.
 
 #### Single Selection with Row Click
 Previous method works when the button is clicked, if you’d like to enable selection wherever the
-row is clicked, use _selectionMode_ option.
+row is clicked, use `selectionMode` option.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" selectionMode="single" selection="#{carBean.selectedCar}" rowKey="#{car.id}">
@@ -537,7 +538,7 @@ of the domain object displayed and user needs to use press modifier key(e.g. ctr
 #### Single Selection with RadioButton
 Selection a row with a radio button placed on each row is a common case, datatable has built-in
 support for this method so that you don’t need to deal with h:selectOneRadios and low level bits. In
-order to enable this feature, define a column with _selectionMode_ set as single.
+order to enable this feature, define a column with `selectionMode` set as single.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" selection="#{carBean.selectedCar}" rowKey="#{car.id}">
@@ -556,21 +557,20 @@ DataTable will also provide a selectAll checkbox at column header.
 </p:dataTable>
 ```
 
-**Tip**: Use rowSelectMode option to customize the default behavior on row click of a
+?> **Tip**: Use rowSelectMode option to customize the default behavior on row click of a
 selection enabled datatable. Default value is "new" that clears previous selections, "add" mode
 keeps previous selections same as selecting a row with mouse click when metakey is on and
 "none" completely disables selection when clicking on the row itself.
 
 ## RowKey
-RowKey should a unique identifier from your data model and used by datatable to find the selected
+RowKey should be a unique identifier from your data model and used by datatable to find the selected
 rows. You must define this key by using the `rowKey` attribute.
     
 !> RowKey must not contain a comma `,` as it will break row selection. See [`GitHub #8932`](https://github.com/primefaces/primefaces/issues/8932).
 
 ## Dynamic Columns
-Dynamic columns is handy in case you can’t know how many columns to render. Columns
-component is used to define the columns programmatically. It requires a collection as the value, two
-iterator variables called _var_ and _columnIndexVar_.
+`Columns` component is used to define the columns programmatically. It requires a collection as the value, two
+iterator variables called `var` and `columnIndexVar`.
 
 ```xhtml
 <p:dataTable var="car" value="#{tableBean.cars}">
@@ -671,7 +671,7 @@ public class CarBean {
     }
 }
 ```
-For frozen columns, use _frozenHeader_ , _frozenFooter_ , _scrollableHeader_ and _scrollableFooter_ types.
+For frozen columns, use `frozenHeader` , `frozenFooter` , `scrollableHeader` and `scrollableFooter` types.
 
 
 ## Row Grouping
@@ -719,8 +719,8 @@ group. To enable this method, set groupRow to true on the grouping column.
 
 ## Scrolling
 Scrolling makes the header-footer of the table fixed and the body part scrollable. Scrolling is
-enabled using _scrollable_ property and has 3 modes; x, y and x-y scrolling that are defined by
-_scrollHeight_ and _scrollWidth._ These two scroll attributes can be specified using integer values
+enabled using `scrollable` property and has 3 modes; x, y and x-y scrolling that are defined by
+`scrollHeight` and _scrollWidth._ These two scroll attributes can be specified using integer values
 indicating fixed pixels or percentages relative to the container dimensions.
 
 ```xhtml
@@ -730,7 +730,7 @@ indicating fixed pixels or percentages relative to the container dimensions.
 </p:dataTable>
 ```
 Simple scrolling renders all data to client whereas virtual scrolling combined with lazy loading is
-useful to deal with huge data, in this case data is fetched on-demand. Set _virtualScroll_ to enable this
+useful to deal with huge data, in this case data is fetched on-demand. Set `virtualScroll` to enable this
 option and provide LazyDataModel;
 
 ```xhtml
@@ -740,7 +740,7 @@ option and provide LazyDataModel;
 </p:dataTable>
 ```
 ## Frozen Rows
-Certain rows can be fixed in a scrollable table by using the _frozenRows_ attribute that defines the
+Certain rows can be fixed in a scrollable table by using the `frozenRows` attribute that defines the
 number of rows to freeze from the start.
 
 ```xhtml
@@ -750,7 +750,7 @@ number of rows to freeze from the start.
 </p:dataTable>
 ```
 ## Frozen Columns
-Specific columns can be fixed while the rest of them remain as scrollable. _frozenColumns_ defines
+Specific columns can be fixed while the rest of them remain as scrollable. `frozenColumns` defines
 the number of columns to freeze from the start.
 
 
@@ -761,7 +761,7 @@ the number of columns to freeze from the start.
 </p:dataTable>
 ```
 ## Expandable Rows
-_RowToggler_ and _RowExpansion_ facets are used to implement expandable rows.
+`RowToggler` and `RowExpansion` facets are used to implement expandable rows.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}">
@@ -778,14 +778,14 @@ _RowToggler_ and _RowExpansion_ facets are used to implement expandable rows.
 </p:dataTable>
 ```
 p:rowToggler component places an expand/collapse icon, clicking on a collapsed row loads
-expanded content with ajax. If you need to display a row as expanded by default, use _expandedRow_
+expanded content with ajax. If you need to display a row as expanded by default, use `expandedRow`
 attribute which is evaluated before rendering of each row so value expressions are supported.
 Additionally, rowExpandMode attribute defines if multiple rows can be expanded at the same time
 or not, valid values are "single" and "multiple" (default).
 
 ## Editing
 Incell editing provides an easy way to display editable data. _p:cellEditor_ is used to define the cell
-editor of a particular column. There are two types of editing, _row_ and _cell_. Row editing is the
+editor of a particular column. There are two types of editing, `row` and `cell`. Row editing is the
 default mode and used by adding a _p:rowEditor_ component as row controls.
 
 
@@ -821,9 +821,9 @@ clicked, losing focus triggers an ajax event to save the change value.
 Lazy Loading is an approach to deal with huge datasets efficiently, regular AJAX based pagination
 works by rendering only a particular page but still requires all data to be loaded into memory.
 Lazy loading DataTable renders a particular page similarly but also only loads the page data into memory not the whole dataset.
-In order to implement this, you’d need to bind a _org.primefaces.model.LazyDataModel_ as the value and
-implement _load_ and _count_ method.
-If you have selection enabled, you either need to implement _getRowData_ and _getRowKey_, or pass a existing JSF `Converter` to the constructor.
+In order to implement this, you’d need to bind a `org.primefaces.model.LazyDataModel` as the value and
+implement `load` and `count` method.
+If you have selection enabled, you either need to implement `getRowData` and `getRowKey`, or pass a existing JSF `Converter` to the constructor.
 
 
 ```xhtml
@@ -864,10 +864,10 @@ following parameters:
 - **sortBy**: Active sorters map (field as key)
 - **filterBy**: Active filters map (field as key).
 
-In addition to _load_ method, _count_ method needs to be implemented, so that paginator can display itself
+In addition to `load` method, `count` method needs to be implemented, so that paginator can display itself
 according to the logical number of rows to display.
 
-It is suggested to use _field_ attribute of column component to define the field names passed as
+It is suggested to use `field` attribute of column component to define the field names passed as
 sortBy and filterBy, otherwise these fields would be tried to get extracted from the value
 expression which is not possible in cases like composite components.
 
@@ -937,24 +937,24 @@ public class CarBean {
 
 PrimeFaces provides a OOTB implementation for JPA users, which supports basic features.
 
-```
+```java
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
 ```
 
 If you have selection enabled, you can either pass the rowKey field name in the constructor:
 
-```
+```java
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, "id");
 ```
 
 or provide a existing JSF `Converter`:
 
-```
+```java
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, myConverter);
 ```
 
 Also you can add global filters via:
-```
+```java
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager) {
     @Override
     protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<MyEntity> root, List<Predicate> predicates) {
@@ -998,15 +998,15 @@ Visibility of columns can be toggled using the column toggler helper component.
 ```
 
 On page load, column chooser finds all columns of datatable and generates the ui. If you'd like
-some of the columns to be ignored, set _toggleable_ option of a column as false and for certain ones to
-be hidden by default, set _visible_ as false. Optional _toggle_ ajax behavior is provided by
+some of the columns to be ignored, set `toggleable` option of a column as false and for certain ones to
+be hidden by default, set `visible` as false. Optional `toggle` ajax behavior is provided by
 columnChooser component to listen to toggle events at server side. Listener of this behavior gets an
 _org.primefaces.event.ToggleEvent_ as a parameter that gives the visibility and index of the column
 being toggled.
 
 ## Add Row
 When a new data needs to be added to the datatable, instead of updating the whole table to show it,
-just call addRow() client side method and it will append the tr element only.
+just call `addRow()` client side method and it will append the `tr` element only.
 
 ```xhtml
 <p:dataTable var="car" value="#{dtBasicView.cars}" widgetVar="dt">
@@ -1027,8 +1027,8 @@ just call addRow() client side method and it will append the tr element only.
 Rows of the table can be reordered using drag&drop. Set draggableRows attribute to true to enable
 this feature.
 
-Optional _rowReorder_ ajax behavior is provided to listen to reorder events at server side. Listener of
-this behavior gets an _org.primefaces.event.ReorderEvent_ as a parameter that gives the past and
+Optional `rowReorder` ajax behavior is provided to listen to reorder events at server side. Listener of
+this behavior gets an `org.primefaces.event.ReorderEvent` as a parameter that gives the past and
 current index of the row being moved.
 
 ```xhtml
@@ -1052,7 +1052,7 @@ public class TableBean {
 
 ## Reordering Columns
 Columns of the table can be reordered using drag&drop as well. Set draggableColumns attribute to
-true to enable this feature. Optional _colReorder_ ajax behavior is provided to listen to reorder events
+true to enable this feature. Optional `colReorder` ajax behavior is provided to listen to reorder events
 at server side.
 
 ```xhtml
@@ -1065,7 +1065,7 @@ at server side.
 ```
 
 ## Column Order / Priorities
-Columns can be ordered via _displayPriority_. Lower value means higher priority.
+Columns can be ordered via `displayPriority`. Lower value means higher priority.
 
 ```xhtml
 <p:dataTable var="car" value="#{tableBean.cars}" draggableColumns="true">
@@ -1081,7 +1081,7 @@ Columns can be ordered via _displayPriority_. Lower value means higher priority.
 
 ## Responsive DataTable
 DataTable has two responsive modes: `responsivePriority` and `reflow`.
-In priority mode, responsiveness is based on column _responsivePriority_ that vary between 1 and 6. Lower value means higher priority.
+In priority mode, responsiveness is based on column `responsivePriority` that vary between 1 and 6. Lower value means higher priority.
 On the other hand in reflow mode that is enabled by setting reflow to true, all columns will be visible but displayed as stacked.
 
 
@@ -1121,12 +1121,12 @@ For example, datatable below makes an ajax request when a row is selected with a
     //columns
 </p:dataTable>
 ```
-Moreover _org.primefaces.event.data.PostSortEvent, org.primefaces.event.data.PostFilterEvent_ and
-_org.primefaces.event.data.PostPageEvent,_ are available to be used with f:event tag.
+Moreover `org.primefaces.event.data.PostSortEvent`, `org.primefaces.event.data.PostFilterEvent` and
+`org.primefaces.event.data.PostPageEvent`, are available to be used with `f:event` tag.
 
 
 ## Client Side API
-Widget: _PrimeFaces.widget.DataTable_
+Widget: `PrimeFaces.widget.DataTable`
 
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
@@ -1145,7 +1145,7 @@ Widget: _PrimeFaces.widget.DataTable_
 
 
 ## Server Side API
-Class: _org.primefaces.component.datatable.DataTable_
+Class: `org.primefaces.component.datatable.DataTable`
 
 | Method |  Return Type | Description |
 | --- | --- | --- |
@@ -1155,7 +1155,7 @@ Class: _org.primefaces.component.datatable.DataTable_
 | collapseRow(String rowKey) | void | Collapse a row
 
 ## Skinning
-DataTable resides in a main container element which _style_ and _styleClass_ options apply. As skinning
+DataTable resides in a main container element which `style` and `styleClass` options apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
 structural style classes;
 
