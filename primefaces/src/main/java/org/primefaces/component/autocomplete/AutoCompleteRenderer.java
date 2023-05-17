@@ -617,22 +617,20 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_LISTBOX, null);
 
         if (items != null) {
-            int rowNumber = 0;
+            int index = 0;
             if (ac.isClientQueryMode() || items instanceof Map) {
                 for (Map.Entry<String, List<String>> entry : ((Map<String, List<String>>) items).entrySet()) {
                     String key = entry.getKey();
                     List<String> list = entry.getValue();
 
                     for (Object item : list) {
-                        encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, key, rowNumber);
-                        rowNumber++;
+                        encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, key, index++);
                     }
                 }
             }
             else {
                 for (Object item : (List) items) {
-                    encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, null, rowNumber);
-                    rowNumber++;
+                    encodeSuggestionItemsAsList(context, ac, item, converter, pojo, var, null, index++);
                 }
 
                 if (ac.hasMoreSuggestions()) {
@@ -662,8 +660,9 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (pojo) {
             requestMap.put(var, item);
             String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
+            String itemLabel = ac.getItemLabel();
             writer.writeAttribute("data-item-value", value, null);
-            writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+            writer.writeAttribute("data-item-label", itemLabel, null);
             writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
             writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
@@ -675,18 +674,29 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.writeAttribute("data-item-group-tooltip", ac.getGroupByTooltip(), null);
             }
 
-            writer.writeText(ac.getItemLabel(), null);
+            if (ac.isEscape()) {
+                writer.writeText(itemLabel, null);
+            }
+            else {
+                writer.write(itemLabel);
+            }
         }
         else {
-            writer.writeAttribute("data-item-label", item.toString(), null);
-            writer.writeAttribute("data-item-value", item.toString(), null);
+            String itemAsString = item.toString();
+            writer.writeAttribute("data-item-label", itemAsString, null);
+            writer.writeAttribute("data-item-value", itemAsString, null);
             writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
 
             if (key != null) {
                 writer.writeAttribute("data-item-key", key, null);
             }
 
-            writer.writeText(item, null);
+            if (ac.isEscape()) {
+                writer.writeText(item, null);
+            }
+            else {
+                writer.write(itemAsString);
+            }
         }
 
         writer.endElement("li");
