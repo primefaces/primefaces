@@ -69,6 +69,7 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
         ignoreComponentNotFound,
         disableOnAjax,
         filterNormalize,
+        filterInputAutoFocus,
         ariaLabel
     }
 
@@ -335,6 +336,14 @@ public abstract class SplitButtonBase extends HtmlCommandButton implements AjaxS
 
     public void setFilterNormalize(boolean filterNormalize) {
         getStateHelper().put(PropertyKeys.filterNormalize, filterNormalize);
+    }
+
+    public boolean isFilterInputAutoFocus() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterInputAutoFocus, true);
+    }
+
+    public void setFilterInputAutoFocus(boolean filterInputAutoFocus) {
+        getStateHelper().put(PropertyKeys.filterInputAutoFocus, filterInputAutoFocus);
     }
 
     public String getAriaLabel() {
