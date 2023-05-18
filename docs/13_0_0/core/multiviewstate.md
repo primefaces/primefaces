@@ -4,11 +4,14 @@ MultiViewState feature enables components to maintain their state across pages b
 
 Following components support MultiViewState:
 
-- [DataTable](/components/datatable.md)
-- [DataList](/components/datalist.md)
+- [AccordionPanel](/components/accordionpanel.md)
 - [DataGrid](/components/datagrid.md)
+- [DataList](/components/datalist.md)
+- [DataTable](/components/datatable.md)
 - [DataView](/components/dataview.md)
+- [Panel](/components/panel.md)
 - [TabView](/components/tabview.md)
+- [TreeTable](/components/treetable.md) (partial support)
 
 Per default MultiViewState is stored per session. As an alternative it can be stored per client window to support multi-window usage.
 
