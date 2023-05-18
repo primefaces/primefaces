@@ -42,6 +42,7 @@
  * @prop {boolean} cfg.disabled Whether this input is currently disabled.
  * @prop {boolean} cfg.filter Whether client side filtering feature is enabled.
  * @prop {boolean} cfg.filterNormalize Defines if filtering would be done using normalized values.
+ * @prop {boolean} cfg.filterInputAutoFocus Defines if the filter should receive focus on overlay popup.
  * @prop {PrimeFaces.widget.SplitButton.FilterFunction} cfg.filterFunction Custom JavaScript function for filtering the
  * available split button actions.
  */
@@ -61,6 +62,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuitemContainer = this.menu.find('.ui-menu-list');
         this.menuitems = this.menuitemContainer.children('.ui-menuitem:not(.ui-state-disabled)');
         this.cfg.disabled = this.button.is(':disabled');
+        this.cfg.filterInputAutoFocus = (this.cfg.filterInputAutoFocus === undefined) ? true : this.cfg.filterInputAutoFocus;
 
         this.bindEvents();
 
@@ -528,7 +530,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
                     $this.jq.attr('aria-expanded', true);
 
-                    if ($this.cfg.filter) {
+                    if ($this.cfg.filter && $this.cfg.filterInputAutoFocus) {
                         $this.filterInput.trigger('focus');
                     }
                     else {

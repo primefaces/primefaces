@@ -223,7 +223,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             wb.attr("filter", true)
                     .attr("filterMatchMode", button.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", button.getFilterFunction(), null)
-                    .attr("filterNormalize", button.isFilterNormalize(), false);
+                    .attr("filterNormalize", button.isFilterNormalize(), false)
+                    .attr("filterInputAutoFocus", button.isFilterInputAutoFocus(), true);
         }
 
         wb.attr("disableOnAjax", button.isDisableOnAjax(), true)

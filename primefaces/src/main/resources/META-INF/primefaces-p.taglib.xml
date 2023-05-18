@@ -27184,6 +27184,22 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Defines if filtering would be done using normalized values (accents will be removed from characters). Default is false.]]>
+            </description>
+            <name>filterNormalize</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Defines if filter input should receive focus when overlay popup is displayed. Default is true.]]>
+            </description>
+            <name>filterInputAutoFocus</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[If true, unresolvable components referenced in the update/process attribute are ignored. Default is 'false' and therefore a ComponentNotFoundException will be thrown.]]>
             </description>
             <name>ignoreComponentNotFound</name>
