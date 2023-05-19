@@ -134,7 +134,7 @@ public class HeadRenderer extends Renderer {
                 encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
             }
             catch (FacesException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
+                if (context.isProjectStage(ProjectStage.Development)) {
                     LOGGER.log(Level.WARNING,
                             "Failed to load client side locale.js. {0}", e.getMessage());
                 }
