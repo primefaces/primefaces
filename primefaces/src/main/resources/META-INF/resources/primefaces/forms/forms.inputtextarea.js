@@ -445,6 +445,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
             my: 'left top'
             ,at: 'left' + posLeft + 'px' +  ' top' + posTop + 'px'
             ,of: this.jq
+            ,collision: 'flipfit'
         });
     },
 
