@@ -201,7 +201,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-triangle-1-s", null);
         writer.endElement("span");
 
         //text
