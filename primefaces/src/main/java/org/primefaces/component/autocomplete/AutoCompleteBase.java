@@ -26,6 +26,7 @@ package org.primefaces.component.autocomplete;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.MessageFactory;
@@ -37,6 +38,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AutoCompleteRenderer";
 
     public static final String DROPDOWN_LABEL = "primefaces.autocomplete.aria.DROPDOWN_LABEL";
+    public static final String RESULTS_MESSAGE = "primefaces.autocomplete.RESULTS_MESSAGE";
 
     public enum PropertyKeys {
 
@@ -258,7 +260,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
     }
 
     public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(UIPageableData.EMPTY_MESSAGE));
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -274,7 +276,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
     }
 
     public String getResultsMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.resultsMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.resultsMessage, " " + MessageFactory.getMessage(RESULTS_MESSAGE));
     }
 
     public void setResultsMessage(String resultsMessage) {
