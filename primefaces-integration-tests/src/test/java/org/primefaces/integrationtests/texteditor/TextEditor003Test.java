@@ -74,6 +74,23 @@ public class TextEditor003Test extends AbstractPrimePageTest {
         assertEquals(0, messages.getAllMessages().size());
     }
 
+    @Test
+    public void testNoBlurOnToolbar(Page page) {
+        // Arrange
+        Messages messages = page.messages;
+        WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
+        WebElement formatBold = page.editor.findElement(By.className("ql-bold"));
+
+        // Act
+        quillEditor.sendKeys("Hello world");
+        quillEditor.sendKeys(Keys.chord(PrimeSelenium.isSafari() ? Keys.COMMAND : Keys.CONTROL, "a"));
+        formatBold.click();
+
+        // Assert
+        assertEquals(0, messages.getAllMessages().size());
+    }
+
+
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:msgs")
         Messages messages;

@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -52,8 +54,6 @@ import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
 
@@ -607,6 +607,35 @@ public class ComponentUtils {
 
         return false;
     }
+
+    /**
+     * GitHub #7763 Renders an in memory UIComponent and updates its ID with an index.
+     * For example id="form:test" becomes id="form:test:0".
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the {@link UIComponent} to render.
+     * @param index the index number to append to the ID
+     * @throws IOException if any IO error occurs
+     */
+    public static void encodeIndexedId(FacesContext context, UIComponent component, int index) throws IOException {
+        // swap writers
+        ResponseWriter writer = context.getResponseWriter();
+        FastStringWriter fsw = new FastStringWriter();
+        context.setResponseWriter(writer.cloneWithWriter(fsw));
+
+        // encode the component
+        component.encodeAll(context);
+
+        // restore the original writer
+        context.setResponseWriter(writer);
+
+        // append index to all id's
+        char separator = UINamingContainer.getSeparatorChar(context);
+        String encodedComponent = fsw.toString();
+        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
+        writer.write(encodedComponent);
+    }
+
 
     public static Object getDynamicColumnValue(UIComponent component) {
         org.primefaces.component.api.UIColumn column =

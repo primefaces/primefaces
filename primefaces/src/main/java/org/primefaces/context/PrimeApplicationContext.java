@@ -31,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.spi.FileTypeDetector;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -55,10 +56,12 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.component.treetable.export.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.metadata.transformer.MetadataTransformer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.util.MapBuilder;
+import org.primefaces.validate.bean.ClientValidationConstraint;
 import org.primefaces.virusscan.VirusScannerService;
 import org.primefaces.webapp.FileUploadChunksServlet;
 
@@ -82,6 +85,9 @@ public class PrimeApplicationContext {
     private final Map<Class<?>, Map<String, Object>> enumCacheMap;
     private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
     private final Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> exporters;
+    private final Map<String, ClientValidationConstraint> beanValidationClientConstraintMapping;
+    private final List<MetadataTransformer> metadataTransformers;
+
 
     private final Lazy<ValidatorFactory> validatorFactory;
     private final Lazy<Validator> validator;
@@ -97,7 +103,10 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
+
         exporters = new ConcurrentHashMap<>();
+        beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
+        metadataTransformers = new CopyOnWriteArrayList<>();
 
         ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
@@ -341,5 +350,13 @@ public class PrimeApplicationContext {
 
     public Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> getExporters() {
         return exporters;
+    }
+
+    public Map<String, ClientValidationConstraint> getBeanValidationClientConstraintMapping() {
+        return beanValidationClientConstraintMapping;
+    }
+
+    public List<MetadataTransformer> getMetadataTransformers() {
+        return metadataTransformers;
     }
 }

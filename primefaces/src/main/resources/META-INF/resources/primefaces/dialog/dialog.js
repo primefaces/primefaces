@@ -712,7 +712,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.state = {
             width: this.jq.width(),
             height: this.jq.height(),
-            contentWidth: this.content.width(),
+            contentWidth: parseInt(this.content[0].style.width) || this.content.width(),
             contentHeight: this.content.height()
         };
 

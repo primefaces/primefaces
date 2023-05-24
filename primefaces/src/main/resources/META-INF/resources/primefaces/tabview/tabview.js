@@ -337,7 +337,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.addRefreshListener(function() {
 			
             // update error highlighting and set focusIndex
-            this.headerContainer.each(function() {
+            $(this.jqId + '>ul>li.ui-tabs-header').each(function() {
                 var tabId = $('a', this).attr('href').slice(1);
                 tabId = PrimeFaces.escapeClientId(tabId);
                 if ($(tabId + ' .ui-state-error').length > 0 || $(tabId + ' .ui-message-error-detail').length > 0) {

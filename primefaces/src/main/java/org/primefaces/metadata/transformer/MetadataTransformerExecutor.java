@@ -25,9 +25,7 @@ package org.primefaces.metadata.transformer;
 
 import org.primefaces.metadata.transformer.impl.BeanValidationInputMetadataTransformer;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -38,8 +36,6 @@ import javax.faces.event.SystemEventListener;
 import org.primefaces.context.PrimeApplicationContext;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
-
-    private static final List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<>();
 
     private static final MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 
@@ -72,20 +68,22 @@ public class MetadataTransformerExecutor implements SystemEventListener {
                 BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
             }
 
-            if (!METADATA_TRANSFORMERS.isEmpty()) {
-                for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
-                    METADATA_TRANSFORMERS.get(i).transform(context, applicationContext, component);
+            if (!applicationContext.getMetadataTransformers().isEmpty()) {
+                for (int i = 0; i < applicationContext.getMetadataTransformers().size(); i++) {
+                    applicationContext.getMetadataTransformers().get(i).transform(context, applicationContext, component);
                 }
             }
         }
     }
 
-    public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
-        METADATA_TRANSFORMERS.add(metadataTransformer);
+    public static void registerMetadataTransformer(MetadataTransformer metadataTransformer) {
+        PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getMetadataTransformers().add(metadataTransformer);
     }
 
     public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
-        Iterator<MetadataTransformer> iterator = METADATA_TRANSFORMERS.iterator();
+        Iterator<MetadataTransformer> iterator = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance())
+                .getMetadataTransformers().iterator();
         while (iterator.hasNext()) {
             MetadataTransformer metadataTransformer = iterator.next();
             if (metadataTransformer.getClass().equals(clazz)) {

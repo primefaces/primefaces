@@ -130,17 +130,18 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         //set initial value
         this.input.val(this.getEditorValue());
 
-        //update input on change
-        this.editor.on('text-change', function(delta, oldDelta, source) {
-            $this.input.val($this.getEditorValue());
-            $this.callBehavior('change');
-        });
         this.editor.on('selection-change', function(range, oldRange, source) {
             if(range && !oldRange) {
                 $this.callBehavior('focus');
             }
             if(!range && oldRange) {
                 $this.callBehavior('blur');
+
+                // Handle change event here, quilljs text-change behaves more like an 'input' event
+                if ($this.input.val() !== $this.getEditorValue()) {
+                    $this.input.val($this.getEditorValue());
+                    $this.callBehavior('change');
+                }
             }
             if(range && oldRange) {
                 $this.callBehavior('select');
@@ -150,12 +151,23 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         // QuillJS doesn't handle blurring when focus is lost to e.g. a button, handle blur event separately here as a workaround
         // See https://github.com/quilljs/quill/issues/1397
         this.editor.root.addEventListener('blur', function(e) {
-            if (e.relatedTarget === $this.editor.clipboard.container) {
-                return; // Ignore pasting
+            // Ignore if focus has been lost to the toolbar or user pasting
+            if ($this.cfg.toolbarVisible && $this.toolbar[0].contains(e.relatedTarget) || e.relatedTarget === $this.editor.clipboard.container) {
+                return;
             }
 
             $this.editor.blur(); // Triggers selection-change event above
         });
+    },
+
+    /**
+     * Sets the content of the editor, the hidden input and calls the change behavior.
+     * @param {string} value New value to be set
+     */
+    setValue: function(value) {
+        this.editor.setText(value);
+        this.input.val(this.getEditorValue());
+        this.callBehavior('change');
     },
 
     /**

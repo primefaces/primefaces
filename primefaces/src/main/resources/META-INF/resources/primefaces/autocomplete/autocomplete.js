@@ -121,7 +121,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pojo = this.hinput.length == 1;
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
         this.cfg.cache = this.cfg.cache || false;
-        this.cfg.resultsMessage = this.cfg.resultsMessage || ' results are available, use up and down arrow keys to navigate';
         this.cfg.ariaEmptyMessage = this.cfg.emptyMessage || 'No search results are available.';
         this.cfg.dropdownMode = this.cfg.dropdownMode || 'blank';
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;

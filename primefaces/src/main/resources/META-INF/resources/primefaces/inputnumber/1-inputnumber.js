@@ -152,6 +152,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                 $this.setValueToHiddenInput(newValue);
                 return false;
             }
+            $this.initialValue = newValue;
         });
 
         // use DOM if non-CSP and JQ event if CSP 

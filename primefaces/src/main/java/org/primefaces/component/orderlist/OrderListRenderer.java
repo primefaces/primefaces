@@ -166,6 +166,7 @@ public class OrderListRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String var = old.getVar();
         Converter converter = old.getConverter();
+        int index = 0;
 
         for (Object item : model) {
             context.getExternalContext().getRequestMap().put(var, item);
@@ -193,7 +194,7 @@ public class OrderListRenderer extends CoreRenderer {
                             writer.writeAttribute("class", column.getStyleClass(), null);
                         }
 
-                        renderChildren(context, column);
+                        encodeIndexedId(context, column, index++);
                         writer.endElement("td");
                     }
                 }

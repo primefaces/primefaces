@@ -37,6 +37,7 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.*;
@@ -63,6 +64,11 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             if (params.containsKey(param)) {
                 component.queueEvent(new ActionEvent(component));
             }
+        }
+
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null) {
+            customOverlay.getRenderer().decode(context, customOverlay);
         }
     }
 
@@ -98,12 +104,18 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.getElementsCount() > 0) {
+        OverlayPanel customOverlay = button.getCustomOverlay();
+        if (customOverlay != null || button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }
 
         writer.endElement("div");
+
+        if (customOverlay != null) {
+            customOverlay.setFor(clientId);
+            customOverlay.getRenderer().encodeEnd(context, customOverlay);
+        }
     }
 
     protected void encodeDefaultButton(FacesContext context, SplitButton button, String id) throws IOException {
@@ -189,7 +201,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-triangle-1-s", null);
         writer.endElement("span");
 
         //text
@@ -211,7 +223,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             wb.attr("filter", true)
                     .attr("filterMatchMode", button.getFilterMatchMode(), null)
                     .nativeAttr("filterFunction", button.getFilterFunction(), null)
-                    .attr("filterNormalize", button.isFilterNormalize(), false);
+                    .attr("filterNormalize", button.isFilterNormalize(), false)
+                    .attr("filterInputAutoFocus", button.isFilterInputAutoFocus(), true);
         }
 
         wb.attr("disableOnAjax", button.isDisableOnAjax(), true)

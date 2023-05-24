@@ -53,6 +53,10 @@ public class OverlayPanel extends OverlayPanelBase {
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
+    public OverlayPanelRenderer getRenderer() {
+        return (OverlayPanelRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());
+    }
+
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
         return BEHAVIOR_EVENT_MAPPING;

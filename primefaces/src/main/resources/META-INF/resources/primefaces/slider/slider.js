@@ -222,7 +222,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         if (input.parent().hasClass('ui-inputnumber') || (this.cfg.range === true && input.hasClass('ui-inputnumber'))) {
             var inputNumberId = input.closest('.ui-inputnumber').attr('id');
             var inputNumberWidget = PrimeFaces.getWidgetById(inputNumberId);
-            inputNumberWidget.autonumeric.set(inputValue);
+            inputNumberWidget.setValue(inputValue);
         }
         else if (input.hasClass('ui-spinner-input')) {
             var spinnerId = input.closest('.ui-spinner').attr('id');

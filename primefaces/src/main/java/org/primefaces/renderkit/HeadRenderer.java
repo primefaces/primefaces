@@ -26,6 +26,8 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -65,6 +67,7 @@ import org.primefaces.util.LocaleUtils;
  */
 public class HeadRenderer extends Renderer {
 
+    private static final Logger LOGGER = Logger.getLogger(HeadRenderer.class.getName());
     private static final String LIBRARY = "primefaces";
 
     @Override
@@ -126,8 +129,16 @@ public class HeadRenderer extends Renderer {
         }
 
         if (applicationContext.getConfig().isClientSideLocalizationEnabled()) {
-            Locale locale = LocaleUtils.getCurrentLocale(context);
-            encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
+            try {
+                Locale locale = LocaleUtils.getCurrentLocale(context);
+                encodeJS(context, LIBRARY, "locales/locale-" + locale.getLanguage() + ".js");
+            }
+            catch (FacesException e) {
+                if (context.isProjectStage(ProjectStage.Development)) {
+                    LOGGER.log(Level.WARNING,
+                            "Failed to load client side locale.js. {0}", e.getMessage());
+                }
+            }
         }
 
         encodeSettingScripts(context, applicationContext, requestContext, writer, csvEnabled);

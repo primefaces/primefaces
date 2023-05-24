@@ -34,6 +34,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.component.rowexpansion.RowExpansion;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 public class RowExpandFeature implements DataTableFeature {
@@ -90,7 +91,7 @@ public class RowExpandFeature implements DataTableFeature {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumnsCount(), null);
 
-            table.getRowExpansion().encodeAll(context);
+            ComponentUtils.encodeIndexedId(context, table.getRowExpansion(), rowIndex);
 
             writer.endElement("td");
 

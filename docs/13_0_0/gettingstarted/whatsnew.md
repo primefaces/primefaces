@@ -34,10 +34,13 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `rowTitle` to support row-specific titles.
     * Added attribute `title` column/columns to support cell specific titles.
     * Added attribute `exportTag` and `exportRowTag` to allow finer grain control over XML export.
+    * Attribute `selectionMode` becomes optional as it is automatically detected based on value-binding to `selection` property
+
 * DataView
     * Added attribute `gridRowTitle` to support row-specific titles.
 * OverlayPanel
     * Added attribute `cache` similar to Dialog when `dynamic=true`.
+    * Improved `SplitButton` support.
 * OrderList
     * Added attribute `flex` to support PrimeFlex CSS instead of legacy Grid CSS.
 * PickList
@@ -71,6 +74,8 @@ This page contains a list of big features. Please check the GitHub issues for al
     * Added attribute `ariaLabel` to allow screen reader support on button and `title` for tooltip.
 * SplitButton
     * Added attribute `filterNormalize` to allow normalized filtering (without accents).
+    * Added attribute `filterInputAutoFocus` to control filter input should receive focus when overlay popup is displayed.
+    * `OverlayPanel` can be added as child component to use as the overlay instead of `MenuItem`s.
 * StaticMessage
     * Added attribute `display` with supported values `both` (default), `icon` and `text`.
 * Panel
