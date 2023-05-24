@@ -88,7 +88,6 @@ public class PrimeApplicationContext {
     private final Map<String, ClientValidationConstraint> beanValidationClientConstraintMapping;
     private final List<MetadataTransformer> metadataTransformers;
 
-
     private final Lazy<ValidatorFactory> validatorFactory;
     private final Lazy<Validator> validator;
     private final Lazy<CacheProvider> cacheProvider;
@@ -103,7 +102,6 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
-
         exporters = new ConcurrentHashMap<>();
         beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
         metadataTransformers = new CopyOnWriteArrayList<>();
