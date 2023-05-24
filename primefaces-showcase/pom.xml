@@ -20,7 +20,7 @@
         <owb.version>2.0.27</owb.version>
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
         <mojarra.version>2.3.19</mojarra.version>
-        <myfaces.version>4.0.1</myfaces.version>
+        <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M7</myfaces-next.version>
         <resteasy.version>5.0.7.Final</resteasy.version>
         <jetty.version>9.4.51.v20230217</jetty.version>
