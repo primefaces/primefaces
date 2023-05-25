@@ -31,7 +31,7 @@
         <!-- dependency versions -->
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
         <lombok.version>1.18.26</lombok.version>
-        <myfaces.version>2.3.10</myfaces.version>
+        <myfaces.version>4.0.1</myfaces.version>
         <myfaces-next.version>2.3-next-M7</myfaces-next.version>
         <tomcat.version>9.0.75</tomcat.version>
         <resteasy.version>5.0.7.Final</resteasy.version>
@@ -537,13 +537,13 @@
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-api</artifactId>
-                    <version>2.2.15</version>
+                    <version>4.0.1</version>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
-                    <version>2.2.15</version>
+                    <version>4.0.1</version>
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
