@@ -1906,6 +1906,7 @@
 
         onMonthDropdownChange: function (event) {
             var newViewDate = new Date(this.viewDate.getTime());
+            newViewDate.setDate(1); //always set to first of month
             newViewDate.setMonth(parseInt(event.target.value, 10));
 
             if (this.options.onMonthChange) {
