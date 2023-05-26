@@ -578,7 +578,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             this.menu.position({
                 my: 'left top'
                 ,at: 'left bottom'
-                ,of: this.button
+                ,of: this.jq
                 ,collision: 'flipfit'
                 ,using: function(pos, directions) {
                     $(this).css('transform-origin', 'center ' + directions.vertical).css(pos);
