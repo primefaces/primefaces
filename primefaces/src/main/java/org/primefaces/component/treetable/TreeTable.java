@@ -23,13 +23,13 @@
  */
 package org.primefaces.component.treetable;
 
+import java.util.*;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
-import java.util.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
@@ -445,9 +445,10 @@ public class TreeTable extends TreeTableBase {
 
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
+        int newRowsValue = "*".equals(rowsParam) ? getRowCount() : Integer.parseInt(rowsParam);
 
-        setFirst(Integer.valueOf(firstParam));
-        setRows(Integer.valueOf(rowsParam));
+        setFirst(Integer.parseInt(firstParam));
+        setRows(newRowsValue);
 
         ValueExpression firstVe = getValueExpression("first");
         ValueExpression rowsVe = getValueExpression("rows");
