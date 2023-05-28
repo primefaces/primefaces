@@ -374,6 +374,9 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
+                        <manifestEntries>
+                            <Automatic-Module-Name>org.primefaces</Automatic-Module-Name>
+                        </manifestEntries>
                     </archive>
                     <excludes>
                         <!-- Remove all Typescript files as not needed -->
