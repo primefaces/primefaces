@@ -23,14 +23,14 @@
  */
 package org.primefaces.component.card;
 
-import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
-
+import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
+
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class CardRenderer extends CoreRenderer {
 
@@ -43,87 +43,34 @@ public class CardRenderer extends CoreRenderer {
                 .add(card.getStyleClass())
                 .build();
 
-        UIComponent headerFacet = card.getFacet("header");
-        UIComponent titleFacet = card.getFacet("title");
-        UIComponent subtitleFacet = card.getFacet("subtitle");
-        UIComponent footerFacet = card.getFacet("footer");
-
         writer.startElement("div", card);
         writer.writeAttribute("id", card.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if (card.getStyle() != null) {
+        if (LangUtils.isNotBlank(card.getStyle())) {
             writer.writeAttribute("style", card.getStyle(), "style");
         }
 
         //header
-        String header = card.getHeader();
-        if (LangUtils.isNotBlank(header)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.HEADER_CLASS, null);
-            writer.writeText(header, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(headerFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.HEADER_CLASS, null);
-            headerFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, card, card.getHeader(), "header", Card.HEADER_CLASS);
 
         //BODY START
-        writer.startElement("div", card);
+        writer.startElement("div", null);
         writer.writeAttribute("class", Card.BODY_CLASS, null);
 
         //title
-        String title = card.getTitle();
-        if (LangUtils.isNotBlank(title)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.TITLE_CLASS, null);
-            writer.writeText(title, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(titleFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.TITLE_CLASS, null);
-            titleFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, card, card.getTitle(), "title", Card.TITLE_CLASS);
 
         //subtitle
-        String subtitle = card.getSubtitle();
-        if (LangUtils.isNotBlank(subtitle)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
-            writer.writeText(subtitle, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(subtitleFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.SUBTITLE_CLASS, null);
-            subtitleFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, card, card.getSubtitle(), "subtitle", Card.SUBTITLE_CLASS);
 
         //content
-        writer.startElement("div", card);
+        writer.startElement("div", null);
         writer.writeAttribute("class", Card.CONTENT_CLASS, null);
         renderChildren(context, card);
         writer.endElement("div");
 
         //footer
-        String footer = card.getFooter();
-        if (LangUtils.isNotBlank(footer)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.FOOTER_CLASS, null);
-            writer.writeText(footer, null);
-            writer.endElement("div");
-        }
-        else if (ComponentUtils.shouldRenderFacet(footerFacet)) {
-            writer.startElement("div", card);
-            writer.writeAttribute("class", Card.FOOTER_CLASS, null);
-            footerFacet.encodeAll(context);
-            writer.endElement("div");
-        }
+        encodeCardTextOrFacet(context, card, card.getFooter(), "footer", Card.FOOTER_CLASS);
 
         writer.endElement("div");
         //BODY END
@@ -139,6 +86,26 @@ public class CardRenderer extends CoreRenderer {
     @Override
     public void encodeChildren(final FacesContext fc, final UIComponent component) {
         // nothing to do
+    }
+
+    protected void encodeCardTextOrFacet(FacesContext context, Card card, String value, String facetName, String cssClass) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (LangUtils.isNotBlank(value)) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", cssClass, null);
+            writer.writeText(value, null);
+            writer.endElement("div");
+        }
+        else {
+            UIComponent facet = card.getFacet(facetName);
+            if (ComponentUtils.shouldRenderFacet(facet)) {
+                writer.startElement("div", null);
+                writer.writeAttribute("class", cssClass, null);
+                facet.encodeAll(context);
+                writer.endElement("div");
+            }
+        }
     }
 
 }
