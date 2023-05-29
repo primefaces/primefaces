@@ -64,12 +64,10 @@ public class OutputLabelRenderer extends CoreRenderer {
         final String clientId = label.getClientId(context);
         final String value = ComponentUtils.getValueToRender(context, label);
 
-        final StringBuilder styleClass = SharedStringBuilder.get(context, SB_STYLE_CLASS);
-        styleClass.append(OutputLabel.STYLE_CLASS);
-        if (label.getStyleClass() != null) {
-            styleClass.append(" ");
-            styleClass.append(label.getStyleClass());
-        }
+        final StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
+                .add(SB_STYLE_CLASS)
+                .add(OutputLabel.STYLE_CLASS)
+                .add(label.getStyleClass());
 
         final EditableValueHolderState state = new EditableValueHolderState();
 
@@ -115,7 +113,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                         }
 
                         if (!input.isValid()) {
-                            styleClass.append(" ui-state-error");
+                            styleClassBuilder.add("ui-state-error");
                         }
 
                         if (isAuto) {
@@ -152,9 +150,15 @@ public class OutputLabelRenderer extends CoreRenderer {
             }
         }
 
+        boolean withRequiredIndicator = "true".equals(indicateRequired)
+                || (isAuto && !isValueBlank(_for) && state.isRequired());
+        if (withRequiredIndicator) {
+            styleClassBuilder.add("ui-required");
+        }
+
         writer.startElement("label", label);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", styleClass.toString(), "id");
+        writer.writeAttribute("class", styleClassBuilder.build(), "styleClass");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
         renderDomEvents(context, label, HTML.LABEL_EVENTS);
 
@@ -163,17 +167,20 @@ public class OutputLabelRenderer extends CoreRenderer {
         }
 
         if (value != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "ui-outputlabel-label", null);
             if (label.isEscape()) {
                 writer.writeText(value, "value");
             }
             else {
                 writer.write(value);
             }
+            writer.endElement("span");
         }
 
         renderChildren(context, label);
 
-        if ("true".equals(indicateRequired) || (isAuto && !isValueBlank(_for) && state.isRequired())) {
+        if (withRequiredIndicator) {
             encodeRequiredIndicator(writer, label);
         }
 

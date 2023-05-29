@@ -20,39 +20,25 @@
         <div class="card">
             <h:form>
                 <p:messages id="messages"/>
-                <h:panelGrid columns="2" cellpadding="7">
-                    <h:outputLabel for="name" value="Standard Label"/>
-                    <p:inputText id="name" required="true"/>
-
-                    <p:outputLabel for="@next" value="Extended Label"/>
-                    <p:inputText id="extended" required="true"/>
-
-                    <p:outputLabel for="@next" value="Number"/>
-                    <p:spinner id="number" value="0"/>
-
-                    <p:commandButton value="Submit" update="@form" styleClass="mt-3"/>
-                    <p:spacer />
-
-                    <!-- For testing, don't remove!
-                    <p:outputLabel for="@next" value="Label which considers @NotNull:" />
-                    <p:inputText id="nullable" value="#{outputLabelView.nullableValue}" />
-
-                    <p:outputLabel for="@next" value="Label which considers @NotNull:" />
-                    <p:inputText id="notNull" value="#{outputLabelView.value}" />
-
-                    <p:outputLabel for="@next" value="Label for input wrapped in composite:" />
-                    <composite:inputTextWrapper id="nullableInComposite" value="#{outputLabelView.nullableValue}" required="true" />
-
-                    <p:outputLabel for="@next" value="Label for input wrapped in composite, considering @NotNull:" />
-                    <composite:inputTextWrapper id="notNullInComposite" value="#{outputLabelView.value}" />
-
-                    <p:outputLabel for="@next" value="Label for input wrapped wrapped in composite:" />
-                    <composite:inputTextWrapper id="nullableInCompositeComposite" value="#{outputLabelView.nullableValue}" required="true" />
-
-                    <p:outputLabel for="@next" value="Label for input wrapped wrapped in composite, considering @NotNull:" />
-                    <composite:inputTextWrapper id="notNullInCompositeComposite" value="#{outputLabelView.value}" />
-                    -->
-                </h:panelGrid>
+                <div class="field grid">
+                    <h:outputLabel for="name" value="Standard Label" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                    <div class="col-12 md:col-10">
+                        <p:inputText id="name" required="true"/>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <p:outputLabel for="@next" value="Extended Label" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                    <div class="col-12 md:col-10">
+                        <p:inputText id="extended" required="true"/>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <p:outputLabel for="@next" value="Number" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                    <div class="col-12 md:col-10">
+                        <p:spinner id="number" value="0"/>
+                    </div>
+                </div>
+                <p:commandButton value="Submit" update="@form"/>
             </h:form>
         </div>
     </ui:define>
