@@ -47,7 +47,7 @@ Columns is used by datatable to create columns dynamically.
 | headerText | null | String | Shortcut for header facet.
 | nullSortOrder             | 1                  | Integer          |  Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | resizable | true | Boolean | Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.
-| responsivePriority | 0 | Integer | Responsive rriority of the column, lower values have more priority.
+| responsivePriority | 0 | Integer | Responsive priority of the column, lower values have more priority.
 | rowspan | 1 | Integer | Defines the number of rows the column spans.
 | selectRow | true | Boolean | Whether clicking the column selects the row when parent component has row selection enabled, default is true.
 | sortBy | null | ValueExpr | ValueExpression to be used for sorting.

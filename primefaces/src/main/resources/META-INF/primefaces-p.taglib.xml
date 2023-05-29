@@ -6117,7 +6117,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Responive priority of the column, lower values have more priority.]]>
+                <![CDATA[Responsive priority of the column, lower values have more priority.]]>
             </description>
             <name>responsivePriority</name>
             <required>false</required>
