@@ -844,6 +844,11 @@ div.ui-button, .ui-splitbutton {
 .ui-outputlabel .ui-outputlabel-rfi {
     margin-left: 0.4em;
 }
+
+.ui-outputlabel .ui-outputlabel-label {
+    overflow: hidden;
+}
+
 /* SelectOneButton */
 .ui-selectonebutton{
     display: inline-block;
