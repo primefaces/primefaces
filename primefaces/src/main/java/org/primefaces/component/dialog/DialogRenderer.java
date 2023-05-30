@@ -99,7 +99,7 @@ public class DialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
         String positionType = dialog.getPositionType();
-        String style = dialog.getStyle();
+        String style = getStyleBuilder(context).add(dialog.getStyle()).add("display", "none").build();
         String styleClass = dialog.getStyleClass();
         styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
 
