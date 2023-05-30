@@ -35,6 +35,6 @@ are many other third party libraries and plugins used to support features.
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
-| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.7.0 | https://github.com/visjs/vis-timeline |
+| [Timeline](../jsdocs/modules/node_modules_vis_timeline_declarations.html) | 7.7.2 | https://github.com/visjs/vis-timeline |
 | [TouchSwipe](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#swipe) | 1.6.18 | https://github.com/mattbryson/TouchSwipe-Jquery-Plugin |
 | [WebcamJS](../jsdocs/modules/src_PrimeFaces.Webcam.html) | 1.0.26 | http://github.com/jhuckaby |
