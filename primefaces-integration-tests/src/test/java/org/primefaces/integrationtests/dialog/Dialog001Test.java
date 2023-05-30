@@ -43,6 +43,7 @@ public class Dialog001Test extends AbstractPrimePageTest {
     public void testShowWidget(Page page) {
         // Arrange
         Dialog dialog = page.dialog;
+        Assertions.assertFalse(dialog.isVisible());
 
         // Act
         dialog.show();
