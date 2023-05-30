@@ -11,6 +11,6 @@ Notes on updating Timeline
 
 Example: /*# sourceMappingURL=vis-timeline-graph2d.min.css.map */
 
-3. Remove this last line of 0-timeline.js to remove the source mapping URL
+3. Remove this last line of 0-vis-timeline.js to remove the source mapping URL
 
 //# sourceMappingURL=vis-timeline-graph2d.min.js.map
