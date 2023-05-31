@@ -44,7 +44,9 @@ PrimeFaces.locales['nl'] = {
         'colorpicker.INPUT': 'Kleurwaardeveld',
         'colorpicker.FORMAT': 'Kleurformaat',
         'colorpicker.SWATCH': 'Kleurstaal',
-        'colorpicker.INSTRUCTION': 'Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.'
+        'colorpicker.INSTRUCTION': 'Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.',
+        'spinner.INCREASE': 'Verhoog waarde',
+        'spinner.DECREASE': 'Verlaag waarde'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Validatiefout: Waarde is vereist.',

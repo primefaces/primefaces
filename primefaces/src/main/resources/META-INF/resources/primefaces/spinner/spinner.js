@@ -43,8 +43,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.input = this.jq.children('.ui-spinner-input');
-        this.upButton = this.jq.children('a.ui-spinner-up');
-        this.downButton = this.jq.children('a.ui-spinner-down');
+        this.upButton = this.jq.children('button.ui-spinner-up');
+        this.downButton = this.jq.children('button.ui-spinner-down');
         this.cfg.step = this.cfg.step || 1;
         if (this.cfg.thousandSeparator == undefined) {
           this.cfg.thousandSeparator = '';
@@ -382,6 +382,9 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.input.prop('readonly'))
             this.input.attr('aria-readonly', true);
+        
+        this.upButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.INCREASE'));
+        this.downButton.attr('aria-label', PrimeFaces.getAriaLabel('spinner.DECREASE'));
     },
 
     /**

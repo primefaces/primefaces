@@ -48,7 +48,9 @@ PrimeFaces.locales['tr'] = {
         'colorpicker.INPUT': 'Renk değeri alanı',
         'colorpicker.FORMAT': 'Renk formatı',
         'colorpicker.SWATCH': 'Renk örneği',
-        'colorpicker.INSTRUCTION': 'Doygunluk ve parlaklık seçici. Seçmek için yukarı, aşağı, sol ve sağ ok tuşlarını kullanın.'
+        'colorpicker.INSTRUCTION': 'Doygunluk ve parlaklık seçici. Seçmek için yukarı, aşağı, sol ve sağ ok tuşlarını kullanın.',
+        'spinner.INCREASE': 'Değer artışı',
+        'spinner.DECREASE': 'Değer düşüşü'
     },
     messages: {  //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Doğrulama Hatası: Değer gerekli.',

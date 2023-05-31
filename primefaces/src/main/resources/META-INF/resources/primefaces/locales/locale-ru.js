@@ -47,7 +47,9 @@ PrimeFaces.locales['ru'] = {
         'colorpicker.INPUT': 'Значения цвета',
         'colorpicker.FORMAT': 'Формат цвета',
         'colorpicker.SWATCH': 'Образец цвета',
-        'colorpicker.INSTRUCTION': 'Селектор насыщенности и яркости. Для выбора используйте клавиши со стрелками вверх, вниз, влево и вправо'.
+        'colorpicker.INSTRUCTION': 'Селектор насыщенности и яркости. Для выбора используйте клавиши со стрелками вверх, вниз, влево и вправо',
+        'spinner.INCREASE': 'Увеличение стоимости',
+        'spinner.DECREASE': 'Уменьшение стоимости'
     },
     messages: {  //Опционально для стороны клиента
         'javax.faces.component.UIInput.REQUIRED': '{0}: Ошибка проверки: Требуется значение.',
