@@ -200,7 +200,7 @@ public class SpinnerRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("href", "javascript:void(0)", null);
         writer.writeAttribute("class", styleClass, null);
 
         writer.startElement("span", null);
