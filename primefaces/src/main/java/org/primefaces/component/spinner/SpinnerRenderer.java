@@ -136,7 +136,7 @@ public class SpinnerRenderer extends InputRenderer {
                 stacked ? Spinner.STACKED_DOWN_ICON_CLASS : Spinner.HORIZONTAL_DOWN_ICON_CLASS);
 
         encodeButton(context, clientId + "-up", upButtonClass, upIconClass);
-        encodeButton(context,clientId + "-down", downButtonClass, downIconClass);
+        encodeButton(context, clientId + "-down", downButtonClass, downIconClass);
 
         writer.endElement("span");
     }
