@@ -1437,7 +1437,9 @@
                 'colorpicker.INPUT': 'Color value field',
                 'colorpicker.FORMAT': 'Color format',
                 'colorpicker.SWATCH': 'Color swatch',
-                'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.'
+                'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.',
+                'spinner.INCREASE': 'Increase Value',
+                'spinner.DECREASE': 'Decrease Value'
             }
         }
 
