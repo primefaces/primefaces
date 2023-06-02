@@ -48,7 +48,9 @@ PrimeFaces.locales['uk'] = {
          'colorpicker.INPUT': 'Значения цвета',
          'colorpicker.FORMAT': 'Формат кольору',
          'colorpicker.SWATCH': 'Зразок кольору',
-         'colorpicker.INSTRUCTION': 'Селектор насиченості та яскравості. Використовуйте клавіші зі стрілками вгору, вниз, вліво та вправо для вибору.'
+         'colorpicker.INSTRUCTION': 'Селектор насиченості та яскравості. Використовуйте клавіші зі стрілками вгору, вниз, вліво та вправо для вибору.',
+         'spinner.INCREASE': 'Збільшити вартість',
+         'spinner.DECREASE': 'Зменшити значення'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Помилка валідації: Потрібно ввести значення.',

@@ -36,7 +36,9 @@ PrimeFaces.locales['el'] = {
         'colorpicker.INPUT': 'Πεδίο τιμής χρώματος',
         'colorpicker.FORMAT': 'Μορφή χρώματος',
         'colorpicker.SWATCH': 'Δείγμα χρωμάτων',
-        'colorpicker.INSTRUCTION': 'Επιλογέας κορεσμού και φωτεινότητας. Χρησιμοποιήστε τα πλήκτρα πάνω, κάτω, αριστερά και δεξιά για να επιλέξετε.'
+        'colorpicker.INSTRUCTION': 'Επιλογέας κορεσμού και φωτεινότητας. Χρησιμοποιήστε τα πλήκτρα πάνω, κάτω, αριστερά και δεξιά για να επιλέξετε.',
+        'spinner.INCREASE': 'Αύξηση της αξίας',
+        'spinner.DECREASE': 'Μείωση της αξίας'
     }
     messages: {
         'javax.faces.component.UIInput.CONVERSION': '{0}: Παρουσιάστηκε σφάλμα μετατροπής.',

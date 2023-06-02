@@ -49,7 +49,9 @@
          'colorpicker.INPUT': '値フィールド',
          'colorpicker.FORMAT': '色フォーマット',
          'colorpicker.SWATCH': '色スイッチ',
-         'colorpicker.INSTRUCTION': '彩度と明度セレクターは上下左右キーで選択することができます。'
+         'colorpicker.INSTRUCTION': '彩度と明度セレクターは上下左右キーで選択することができます。',
+         'spinner.INCREASE': '価値を高める',
+         'spinner.DECREASE': '減少値'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: 検証エラー: 必須入力です。',

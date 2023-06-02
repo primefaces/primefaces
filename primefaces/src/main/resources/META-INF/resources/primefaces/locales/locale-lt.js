@@ -49,7 +49,9 @@
          'colorpicker.INPUT': 'Spalvos kodo laukas',
          'colorpicker.FORMAT': 'Spalvos formatas',
          'colorpicker.SWATCH': 'Spalvos atspalviai',
-         'colorpicker.INSTRUCTION': 'Sodrumo ir ryškumo parinkiklis. Parinkimui naudokite rodyklės klavišus: aukštyn, žemyn, kairėn, dešinėn.'
+         'colorpicker.INSTRUCTION': 'Sodrumo ir ryškumo parinkiklis. Parinkimui naudokite rodyklės klavišus: aukštyn, žemyn, kairėn, dešinėn.',
+         'spinner.INCREASE': 'Vertės didinimas',
+         'spinner.DECREASE': 'Vertės sumažėjimas'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Patikros klaida: Privaloma reikšmė.',

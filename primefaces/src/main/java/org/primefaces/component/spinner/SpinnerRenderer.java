@@ -135,8 +135,8 @@ public class SpinnerRenderer extends InputRenderer {
                 spinner.getDownIcon(),
                 stacked ? Spinner.STACKED_DOWN_ICON_CLASS : Spinner.HORIZONTAL_DOWN_ICON_CLASS);
 
-        encodeButton(context, upButtonClass, upIconClass);
-        encodeButton(context, downButtonClass, downIconClass);
+        encodeButton(context, spinner, "increase", upButtonClass, upIconClass);
+        encodeButton(context, spinner, "decrease", downButtonClass, downIconClass);
 
         writer.endElement("span");
     }
@@ -196,11 +196,17 @@ public class SpinnerRenderer extends InputRenderer {
         writer.endElement("input");
     }
 
-    protected void encodeButton(FacesContext context, String styleClass, String iconClass) throws IOException {
+    protected void encodeButton(FacesContext context, Spinner spinner, String direction, String styleClass, String iconClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("a", null);
+        writer.startElement("button", null);
+        writer.writeAttribute("id", spinner.getClientId(context) + "-" + direction, "id");
+        writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", styleClass, null);
+
+        if (spinner.getTabindex() != null) {
+            writer.writeAttribute("tabindex", spinner.getTabindex(), null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-button-text", null);
@@ -211,7 +217,7 @@ public class SpinnerRenderer extends InputRenderer {
 
         writer.endElement("span");
 
-        writer.endElement("a");
+        writer.endElement("button");
     }
 
     @Override

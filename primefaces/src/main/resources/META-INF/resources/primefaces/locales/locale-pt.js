@@ -49,7 +49,9 @@ PrimeFaces.locales['pt_PT'] = {
         'colorpicker.INPUT': 'Campo de valor da cor',
         'colorpicker.FORMAT': 'Formato da cor',
         'colorpicker.SWATCH': 'Amostras de cores',
-        'colorpicker.INSTRUCTION': 'Seletor de saturação e luminosidade. Utilze as teclas de seta para cima, baixo, esquerda e direita para selecionar.'
+        'colorpicker.INSTRUCTION': 'Seletor de saturação e luminosidade. Utilze as teclas de seta para cima, baixo, esquerda e direita para selecionar.',
+        'spinner.INCREASE': 'Aumentar Valor',
+        'spinner.DECREASE': 'Reduzir Valor'
     },
     messages: {  //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Erro de validação: é necessário um valor.',
@@ -161,7 +163,19 @@ PrimeFaces.locales['pt_BR'] = {
         'datatable.sort.DESC': 'ative para classificar a coluna em ordem decrescente',
         'datatable.sort.NONE': 'ativar para remover ordenação na coluna',
         'columntoggler.CLOSE': 'Fechar',
-        'overlaypanel.CLOSE': 'Fechar'
+        'overlaypanel.CLOSE': 'Fechar',
+        'colorpicker.OPEN': 'Abrir seletor de cores',
+        'colorpicker.CLOSE': 'Fechar seletor de cores',
+        'colorpicker.CLEAR': 'Limpar cor selecionada',
+        'colorpicker.MARKER': 'Saturação : {s}. Luminosidade: {v}.',
+        'colorpicker.HUESLIDER': 'Controle de matiz',
+        'colorpicker.ALPHASLIDER': 'Controle de opacidade',
+        'colorpicker.INPUT': 'Campo de valor da cor',
+        'colorpicker.FORMAT': 'Formato da cor',
+        'colorpicker.SWATCH': 'Amostras de cores',
+        'colorpicker.INSTRUCTION': 'Seletor de saturação e luminosidade. Utilze as teclas de seta para cima, baixo, esquerda e direita para selecionar.',
+        'spinner.INCREASE': 'Aumentar Valor',
+        'spinner.DECREASE': 'Reduzir Valor'
     },
     messages: {
         'javax.faces.component.UIInput.REQUIRED': '{0}: Erro de validação: é necessário um valor.',

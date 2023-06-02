@@ -45,7 +45,9 @@ PrimeFaces.locales['lv'] = {
         'colorpicker.INPUT': 'Krāsas vērtības lauks',
         'colorpicker.FORMAT': 'Krāsu formāts',
         'colorpicker.SWATCH': 'Krāsu palete',
-        'colorpicker.INSTRUCTION': 'Piesātinājuma un spilgtuma atlasītājs. Lai atlasītu, izmantojiet augšup, lejup, pa kreisi un pa labi vērsto bulttaustiņu.'
+        'colorpicker.INSTRUCTION': 'Piesātinājuma un spilgtuma atlasītājs. Lai atlasītu, izmantojiet augšup, lejup, pa kreisi un pa labi vērsto bulttaustiņu.',
+        'spinner.INCREASE': 'Palielināt vērtību',
+        'spinner.DECREASE': 'Samazināt vērtību'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Validācijas kļūda: nepieciešama vērtība.',

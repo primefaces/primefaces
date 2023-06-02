@@ -47,7 +47,9 @@ PrimeFaces.locales ['it'] = {
         'colorpicker.INPUT': 'Campo valore colore',
         'colorpicker.FORMAT': 'Formato colore',
         'colorpicker.SWATCH': 'Campione colore',
-        'colorpicker.INSTRUCTION': 'Selettore di saturazione e luminosità. Utilizzare i tasti freccia su, giù, sinistra e destra per selezionare.'
+        'colorpicker.INSTRUCTION': 'Selettore di saturazione e luminosità. Utilizzare i tasti freccia su, giù, sinistra e destra per selezionare.',
+        'spinner.INCREASE': 'Incremento del valore',
+        'spinner.DECREASE': 'Diminuzione del valore'
     },
     messages: {  //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Errore di validazione: Valore obbligatorio.',

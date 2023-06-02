@@ -49,7 +49,9 @@ PrimeFaces.locales['fr'] = {
         'colorpicker.INPUT': 'Valeur du champ couleur',
         'colorpicker.FORMAT': 'Format de couleur',
         'colorpicker.SWATCH': 'Nauncier',
-        'colorpicker.INSTRUCTION': 'Sélecteur de saturation et de luminosité. Utilisez les touches fléchées haut, bas, gauche et droite pour sélectionner.'
+        'colorpicker.INSTRUCTION': 'Sélecteur de saturation et de luminosité. Utilisez les touches fléchées haut, bas, gauche et droite pour sélectionner.',
+        'spinner.INCREASE': 'Augmenter la valeur',
+        'spinner.DECREASE': 'Diminuer la valeur'
     },
     messages: {
         // components
