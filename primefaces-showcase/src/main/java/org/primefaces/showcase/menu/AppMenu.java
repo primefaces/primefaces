@@ -93,8 +93,7 @@ public class AppMenu {
         //PRIMEFLEX CATEGORY START
         List<MenuItem> primeFlexMenuItems = new ArrayList<>();
         primeFlexMenuItems.add(new MenuItem("Setup", "/primeflex/setup"));
-        primeFlexMenuItems.add(new MenuItem("PrimeFlex v3", "https://www.primefaces.org/primeflex"));
-        primeFlexMenuItems.add(new MenuItem("PrimeFlex v2", "https://github.com/primefaces/primeflex/wiki/PrimeFlex-v2"));
+        primeFlexMenuItems.add(new MenuItem("PrimeFlex Site", "https://primeflex.org/"));
         menuCategories.add(new MenuCategory("PrimeFlex", primeFlexMenuItems));
         //PRIMEFLEX CATEGORY END
 
