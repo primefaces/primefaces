@@ -276,7 +276,7 @@ public abstract class TimelineBase extends UIComponentBase implements Widget, RT
     }
 
     public void setEditableAdd(boolean editableAdd) {
-        getStateHelper().put(PropertyKeys.editable, editableAdd);
+        getStateHelper().put(PropertyKeys.editableAdd, editableAdd);
     }
 
     public boolean isEditableRemove() {
