@@ -54,7 +54,7 @@ public final class DataExporters {
                         "Exporter for " + targetClass +  " of " + newType + " not supported. Use DataExporter#register()"));
 
         try {
-            return (Exporter<T>) exportClass.newInstance();
+            return (Exporter<T>) exportClass.getConstructor().newInstance();
         }
         catch (ReflectiveOperationException e) {
             throw new FacesException(e);
