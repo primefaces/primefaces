@@ -616,4 +616,23 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         setFilterByAsMap(null);
         setColumnMeta(null);
     }
+
+    default boolean hasFooterColumn() {
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (child.isRendered() && (child instanceof UIColumn)) {
+                UIColumn column = (UIColumn) child;
+
+                if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    int getChildCount();
+
+    List<UIComponent> getChildren();
 }

@@ -24,15 +24,13 @@
 package org.primefaces.component.treetable.export;
 
 import java.io.IOException;
+import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.primefaces.component.export.ExcelOptions;
-import org.primefaces.component.export.ExportConfiguration;
-
-import javax.faces.context.FacesContext;
 
 /**
  * Different implementation of ExcelXExporter using the POI streaming API:
@@ -44,29 +42,29 @@ import javax.faces.context.FacesContext;
 public class TreeTableExcelXStreamExporter extends TreeTableExcelXExporter {
 
     @Override
-    protected Workbook createWorkBook() {
+    protected Workbook createDocument(FacesContext context) throws IOException {
         SXSSFWorkbook sxssfWorkbook = new SXSSFWorkbook(100);
         sxssfWorkbook.setCompressTempFiles(true);
         return sxssfWorkbook;
     }
 
     @Override
-    protected void postExport(FacesContext context, ExportConfiguration exportConfiguration) throws IOException {
-        SXSSFWorkbook sxssfWorkbook =  ((SXSSFWorkbook) wb);
-        super.postExport(context, exportConfiguration);
+    protected void postExport(FacesContext context) throws IOException {
+        super.postExport(context);
+        SXSSFWorkbook sxssfWorkbook = ((SXSSFWorkbook) document);
         sxssfWorkbook.dispose();
     }
 
     @Override
-    protected Sheet createSheet(Workbook wb, String sheetName, ExcelOptions options) {
-        SXSSFWorkbook workbook = (SXSSFWorkbook) wb;
-        SXSSFSheet sheet =  workbook.createSheet(sheetName);
+    protected void applyOptions(Sheet sheet) {
+        super.applyOptions(sheet);
+        SXSSFSheet sxssfSheet = (SXSSFSheet) sheet;
+        ExcelOptions options = (ExcelOptions) exportConfiguration.getOptions();
         if (options == null || options.isAutoSizeColumn()) {
-            sheet.trackAllColumnsForAutoSizing();
+            sxssfSheet.trackAllColumnsForAutoSizing();
         }
         else {
-            sheet.untrackAllColumnsForAutoSizing();
+            sxssfSheet.untrackAllColumnsForAutoSizing();
         }
-        return sheet;
     }
 }

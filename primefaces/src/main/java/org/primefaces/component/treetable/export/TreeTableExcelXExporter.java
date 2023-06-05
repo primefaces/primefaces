@@ -24,13 +24,16 @@
 package org.primefaces.component.treetable.export;
 
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.*;
+import java.io.IOException;
+import javax.faces.context.FacesContext;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class TreeTableExcelXExporter extends TreeTableExcelExporter {
 
     @Override
-    protected Workbook createWorkBook() {
+    protected Workbook createDocument(FacesContext context) throws IOException {
         return new XSSFWorkbook();
     }
 

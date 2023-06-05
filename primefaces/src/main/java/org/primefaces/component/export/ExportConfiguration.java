@@ -23,11 +23,11 @@
  */
 package org.primefaces.component.export;
 
+import java.io.OutputStream;
 import javax.el.MethodExpression;
 
 public class ExportConfiguration {
 
-    private String outputFileName;
     private boolean pageOnly;
     private boolean selectionOnly;
     private boolean visibleOnly;
@@ -38,6 +38,8 @@ public class ExportConfiguration {
     private MethodExpression postProcessor;
     private ExporterOptions options;
     private MethodExpression onTableRender;
+    private MethodExpression onRowExport;
+    private OutputStream outputStream;
 
     public ExportConfiguration() {
         // NOOP
@@ -49,111 +51,93 @@ public class ExportConfiguration {
 
     public static class Builder {
 
-        private String outputFileName;
-        private boolean pageOnly;
-        private boolean selectionOnly;
-        private boolean visibleOnly;
-        private boolean exportHeader;
-        private boolean exportFooter;
-        private String encodingType;
-        private MethodExpression preProcessor;
-        private MethodExpression postProcessor;
-        private ExporterOptions options;
-        private MethodExpression onTableRender;
+        private final ExportConfiguration config;
 
         Builder() {
-        }
-
-        public Builder outputFileName(String outputFileName) {
-            this.outputFileName = outputFileName;
-            return this;
+            config = new ExportConfiguration();
         }
 
         public Builder pageOnly(boolean pageOnly) {
-            this.pageOnly = pageOnly;
+            this.config.pageOnly = pageOnly;
             return this;
         }
 
         public Builder selectionOnly(boolean selectionOnly) {
-            this.selectionOnly = selectionOnly;
+            this.config.selectionOnly = selectionOnly;
             return this;
         }
 
         public Builder visibleOnly(boolean visibleOnly) {
-            this.visibleOnly = visibleOnly;
+            this.config.visibleOnly = visibleOnly;
             return this;
         }
 
         public Builder exportHeader(boolean exportHeader) {
-            this.exportHeader = exportHeader;
+            this.config.exportHeader = exportHeader;
             return this;
         }
 
         public Builder exportFooter(boolean exportFooter) {
-            this.exportFooter = exportFooter;
+            this.config.exportFooter = exportFooter;
             return this;
         }
 
         public Builder encodingType(String encodingType) {
-            this.encodingType = encodingType;
+            this.config.encodingType = encodingType;
             return this;
         }
 
         public Builder preProcessor(MethodExpression preProcessor) {
-            this.preProcessor = preProcessor;
+            this.config.preProcessor = preProcessor;
             return this;
         }
 
         public Builder postProcessor(MethodExpression postProcessor) {
-            this.postProcessor = postProcessor;
+            this.config.postProcessor = postProcessor;
             return this;
         }
 
         public Builder options(ExporterOptions options) {
-            this.options = options;
+            this.config.options = options;
             return this;
         }
 
         public Builder onTableRender(MethodExpression onTableRender) {
-            this.onTableRender = onTableRender;
+            this.config.onTableRender = onTableRender;
+            return this;
+        }
+
+        public Builder onRowExport(MethodExpression onRowExport) {
+            this.config.onRowExport = onRowExport;
+            return this;
+        }
+
+        public Builder outputStream(OutputStream os) {
+            this.config.outputStream = os;
             return this;
         }
 
         public ExportConfiguration build() {
-            ExportConfiguration config = new ExportConfiguration();
-            config.outputFileName = this.outputFileName;
-            config.pageOnly = this.pageOnly;
-            config.selectionOnly = this.selectionOnly;
-            config.visibleOnly = this.visibleOnly;
-            config.exportHeader = this.exportHeader;
-            config.exportFooter = this.exportFooter;
-            config.encodingType = this.encodingType;
-            config.preProcessor = this.preProcessor;
-            config.postProcessor = this.postProcessor;
-            config.options = this.options;
-            config.onTableRender = this.onTableRender;
             return config;
-        }
-
-        @Override
-        public String toString() {
-            return "ExportConfiguration.ExportConfigurationBuilder(outputFileName=" + this.outputFileName + ", pageOnly=" + this.pageOnly + ", selectionOnly="
-                        + this.selectionOnly + ", visibleOnly=" + this.visibleOnly + ", exportHeader=" + this.exportHeader + ", exportFooter="
-                        + this.exportFooter + ", encodingType=" + this.encodingType + ", preProcessor=" + this.preProcessor + ", postProcessor="
-                        + this.postProcessor + ", options=" + this.options + ", onTableRender=" + this.onTableRender + ")";
         }
     }
 
     @Override
     public String toString() {
-        return "ExportConfiguration(outputFileName=" + this.outputFileName + ", pageOnly=" + this.pageOnly + ", selectionOnly=" + this.selectionOnly
-                    + ", visibleOnly=" + this.visibleOnly + ", exportHeader=" + this.exportHeader + ", exportFooter=" + this.exportFooter + ", encodingType="
-                    + this.encodingType + ", preProcessor=" + this.preProcessor + ", postProcessor=" + this.postProcessor + ", options=" + this.options
-                    + ", onTableRender=" + this.onTableRender + ")";
-    }
-
-    public String getOutputFileName() {
-        return outputFileName;
+        return "ExportConfiguration{" +
+                "pageOnly=" + pageOnly +
+                ", selectionOnly=" + selectionOnly +
+                ", visibleOnly=" + visibleOnly +
+                ", exportHeader=" + exportHeader +
+                ", exportFooter=" + exportFooter +
+                ", encodingType='" + encodingType + '\'' +
+                ", preProcessor=" + preProcessor +
+                ", postProcessor=" + postProcessor +
+                ", options=" + options +
+                ", onTableRender=" + onTableRender +
+                ", onRowExport=" + onRowExport +
+                ", outputStream=" + outputStream +
+                '}';
     }
 
     public boolean isPageOnly() {
@@ -196,4 +180,11 @@ public class ExportConfiguration {
         return onTableRender;
     }
 
+    public MethodExpression getOnRowExport() {
+        return onRowExport;
+    }
+
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
 }

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.export;
 
+@Deprecated
 public enum ExporterType {
     XLS,
     PDF,

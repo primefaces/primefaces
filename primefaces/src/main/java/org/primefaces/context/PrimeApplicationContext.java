@@ -36,8 +36,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -48,13 +48,19 @@ import javax.validation.ValidatorFactory;
 
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.datatable.export.*;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.component.fileupload.FileUploadDecoder;
+import org.primefaces.component.treetable.TreeTable;
+import org.primefaces.component.treetable.export.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.metadata.transformer.MetadataTransformer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
+import org.primefaces.util.MapBuilder;
 import org.primefaces.validate.bean.ClientValidationConstraint;
 import org.primefaces.virusscan.VirusScannerService;
 import org.primefaces.webapp.FileUploadChunksServlet;
@@ -78,6 +84,7 @@ public class PrimeApplicationContext {
     private final ClassLoader applicationClassLoader;
     private final Map<Class<?>, Map<String, Object>> enumCacheMap;
     private final Map<Class<?>, Map<String, Object>> constantsCacheMap;
+    private final Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> exporters;
     private final Map<String, ClientValidationConstraint> beanValidationClientConstraintMapping;
     private final List<MetadataTransformer> metadataTransformers;
 
@@ -95,6 +102,7 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
+        exporters = new ConcurrentHashMap<>();
         beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
         metadataTransformers = new CopyOnWriteArrayList<>();
 
@@ -164,6 +172,28 @@ public class PrimeApplicationContext {
         resolveFileUploadResumeUrl(facesContext);
 
         resolveFileTypeDetector();
+
+        registerDefaultExporters();
+    }
+
+    private void registerDefaultExporters() {
+        MapBuilder.builder(exporters)
+                .put(DataTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
+                        .put("xls", DataTableExcelExporter.class)
+                        .put("pdf", DataTablePDFExporter.class)
+                        .put("csv", DataTableCSVExporter.class)
+                        .put("xml", DataTableXMLExporter.class)
+                        .put("xlsx", DataTableExcelXExporter.class)
+                        .put("xlsxstream", DataTableExcelXStreamExporter.class)
+                        .build())
+                .put(TreeTable.class, MapBuilder.<String, Class<? extends Exporter<?>>>builder()
+                        .put("xls", TreeTableExcelExporter.class)
+                        .put("pdf", TreeTablePDFExporter.class)
+                        .put("csv", TreeTableCSVExporter.class)
+                        .put("xml", TreeTableXMLExporter.class)
+                        .put("xlsx", TreeTableExcelXExporter.class)
+                        .put("xlsxstream", TreeTableExcelXStreamExporter.class)
+                        .build());
     }
 
     private void resolveFileTypeDetector() {
@@ -314,6 +344,10 @@ public class PrimeApplicationContext {
 
     public String getFileUploadResumeUrl() {
         return fileUploadResumeUrl;
+    }
+
+    public Map<Class<? extends UIComponent>, Map<String, Class<? extends Exporter<?>>>> getExporters() {
+        return exporters;
     }
 
     public Map<String, ClientValidationConstraint> getBeanValidationClientConstraintMapping() {

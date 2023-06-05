@@ -26,6 +26,9 @@ package org.primefaces.integrationtests.dataexporter;
 import java.io.*;
 import java.net.URL;
 
+import com.google.common.base.Objects;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.parser.PdfTextExtractor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -34,10 +37,6 @@ import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Assertions;
 import org.primefaces.selenium.AbstractPrimePageTest;
-
-import com.google.common.base.Objects;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.parser.PdfTextExtractor;
 
 public abstract class AbstractDataExporterTest extends AbstractPrimePageTest {
 

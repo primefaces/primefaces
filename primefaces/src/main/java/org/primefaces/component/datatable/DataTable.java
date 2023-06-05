@@ -465,21 +465,6 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public boolean hasFooterColumn() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child.isRendered() && (child instanceof UIColumn)) {
-                UIColumn column = (UIColumn) child;
-
-                if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public void loadLazyDataIfRequired() {
         if (getDataModel().getWrappedData() == null) {
             loadLazyDataIfEnabled();
