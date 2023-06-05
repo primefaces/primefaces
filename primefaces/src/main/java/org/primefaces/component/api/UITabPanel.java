@@ -919,8 +919,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 try {
                     pushComponentToEL(context.getFacesContext(), this);
 
-                    if (context.invokeVisitCallback(this, callback) == VisitResult.COMPLETE) {
+                    VisitResult res = context.invokeVisitCallback(this, callback);
+
+                    if (res == VisitResult.COMPLETE) {
                         return true;
+                    }
+                    else if (res == VisitResult.REJECT) {
+                        return false;
                     }
 
                     for (int i = 0; i < getChildCount(); i++) {
