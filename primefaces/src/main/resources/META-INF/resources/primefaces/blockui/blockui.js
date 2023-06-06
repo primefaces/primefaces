@@ -78,7 +78,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.blocker.remove();
         this.jq.remove();
         this.target.attr('aria-busy', false);
-        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxComplete.' + this.id);
+        $(document).off('pfAjaxSend.' + this.id + ' pfAjaxUpdated.' + this.id + ' pfAjaxComplete.' + this.id);
     },
 
     /**
@@ -89,13 +89,6 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.resizeHandler = PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_resize', this.target, function() {
             $this.alignOverlay();
-        });
-
-        // subscribe to all DOM update events so we can resize even if another DOM element changed
-        $(document).on('pfAjaxSend pfAjaxUpdated', function(e, xhr, settings) {
-            if (!$this.cfg.blocked) {
-                setTimeout(function() { $this.alignOverlay() }, 0);
-            }
         });
     },
 
@@ -111,9 +104,18 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
                 $this.show();
             }
+            else {
+                // subscribe to all DOM update events so we can resize even if another DOM element changed
+                setTimeout(function() { $this.alignOverlay() }, 0);
+            }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
                 $this.hide();
+            }
+        }).on('pfAjaxUpdated.' + this.id, function(e, xhr, settings) {
+            // subscribe to all DOM update events so we can resize even if another DOM element changed
+            if (!$this.cfg.blocked && !$this.isXhrSourceATrigger(settings)) {
+                setTimeout(function() { $this.alignOverlay() }, 0);
             }
         });
     },
