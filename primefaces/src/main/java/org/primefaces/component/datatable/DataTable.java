@@ -1229,7 +1229,7 @@ public class DataTable extends DataTableBase {
                 }
             }
             catch (ReflectiveOperationException e) {
-                Logger.getLogger(DataTable.class.getName()).log(Level.SEVERE, e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage());
             }
         }
 
