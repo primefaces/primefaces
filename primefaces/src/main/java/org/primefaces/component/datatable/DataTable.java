@@ -291,7 +291,7 @@ public class DataTable extends DataTableBase {
             if (ve != null) {
                 List<?> filteredValue = getFilteredValue();
                 if (filteredValue != null) {
-                    setValue(convertFilteredValueIfNecessary(getFacesContext(), this, filteredValue));
+                    setValue(convertIntoObjectValueType(getFacesContext(), this, filteredValue));
                 }
             }
             else {
@@ -1211,21 +1211,21 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    public static Object convertFilteredValueIfNecessary(FacesContext context, DataTable table, List<?> filtered) {
+    public static Object convertIntoObjectValueType(FacesContext context, DataTable table, List<?> value) {
         Class<?> expectedType = ELUtils.getType(context, table.getValueExpression("value"));
         if (expectedType != null && DataModel.class.isAssignableFrom(expectedType)) {
             try {
                 if (ListDataModel.class.isAssignableFrom(expectedType)) {
-                    return expectedType.getConstructor(List.class).newInstance(filtered);
+                    return expectedType.getConstructor(List.class).newInstance(value);
                 }
                 else if (CollectionDataModel.class.isAssignableFrom(expectedType)) {
-                    return expectedType.getConstructor(Collection.class).newInstance(filtered);
+                    return expectedType.getConstructor(Collection.class).newInstance(value);
                 }
                 else if (IterableDataModel.class.isAssignableFrom(expectedType)) {
-                    return expectedType.getConstructor(Iterable.class).newInstance(filtered);
+                    return expectedType.getConstructor(Iterable.class).newInstance(value);
                 }
                 else if (ArrayDataModel.class.isAssignableFrom(expectedType)) {
-                    return expectedType.getConstructor(Object[].class).newInstance(filtered.toArray());
+                    return expectedType.getConstructor(Object[].class).newInstance(value.toArray());
                 }
             }
             catch (ReflectiveOperationException e) {
@@ -1233,6 +1233,6 @@ public class DataTable extends DataTableBase {
             }
         }
 
-        return filtered;
+        return value;
     }
 }
