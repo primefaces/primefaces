@@ -67,6 +67,7 @@
             userLocale: null,
             locale: {
                 firstDayOfWeek: 0,
+                showMonthAfterYear: false,
                 dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
                 dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
                 dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
@@ -1371,7 +1372,7 @@
                 return '<select class="ui-datepicker-month" aria-label="'+this.options.locale.month+'">' + this.renderTitleOptions('month', this.options.locale.monthNamesShort, month) + '</select>';
             }
             else {
-                return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>' + '&#xa0;';
+                return '<span class="ui-datepicker-month">' + this.escapeHTML(this.options.locale.monthNames[month]) + '</span>';
             }
         },
 
@@ -1420,14 +1421,15 @@
 
         renderTitle: function (monthMetadata) {
             var month = this.renderTitleMonthElement(monthMetadata.month, monthMetadata.index),
-                year = this.renderTitleYearElement(monthMetadata.year, monthMetadata.index);
+                year = this.renderTitleYearElement(monthMetadata.year, monthMetadata.index),
+                whitespace = '&#xa0;';
+                
+            var content = month + whitespace +  year; 
+            if (this.options.locale.showMonthAfterYear) { 
+                content = year + whitespace + month; 
+            }
 
-            return (
-                '<div class="ui-datepicker-title">' +
-                month +
-                year +
-                '</div>'
-            );
+            return '<div class="ui-datepicker-title">' + content + '</div>';
         },
 
         renderDayNames: function (weekDaysMin, weekDays) {
