@@ -38,7 +38,9 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
+import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
@@ -287,9 +289,9 @@ public class DataTable extends DataTableBase {
 
             ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
             if (ve != null) {
-                Object filteredValue = getFilteredValue();
+                List<?> filteredValue = getFilteredValue();
                 if (filteredValue != null) {
-                    setValue(filteredValue);
+                    setValue(convertIntoObjectValueType(getFacesContext(), this, filteredValue));
                 }
             }
             else {
@@ -951,15 +953,15 @@ public class DataTable extends DataTableBase {
         return iterableChildren;
     }
 
-    public java.util.List<?> getFilteredValue() {
+    public List<?> getFilteredValue() {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
         if (ve != null) {
-            return (java.util.List<?>) ve.getValue(getFacesContext().getELContext());
+            return (List<?>) ve.getValue(getFacesContext().getELContext());
         }
         return null;
     }
 
-    public void setFilteredValue(java.util.List<?> filteredValue) {
+    public void setFilteredValue(List<?> filteredValue) {
         ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
         if (ve != null) {
             ve.setValue(getFacesContext().getELContext(), filteredValue);
@@ -1207,5 +1209,30 @@ public class DataTable extends DataTableBase {
             return (LazyDataModel<?>) getDataModel();
         }
         return null;
+    }
+
+    public static Object convertIntoObjectValueType(FacesContext context, DataTable table, List<?> value) {
+        Class<?> expectedType = ELUtils.getType(context, table.getValueExpression("value"));
+        if (expectedType != null && DataModel.class.isAssignableFrom(expectedType)) {
+            try {
+                if (ListDataModel.class.isAssignableFrom(expectedType)) {
+                    return expectedType.getConstructor(List.class).newInstance(value);
+                }
+                else if (CollectionDataModel.class.isAssignableFrom(expectedType)) {
+                    return expectedType.getConstructor(Collection.class).newInstance(value);
+                }
+                else if (IterableDataModel.class.isAssignableFrom(expectedType)) {
+                    return expectedType.getConstructor(Iterable.class).newInstance(value);
+                }
+                else if (ArrayDataModel.class.isAssignableFrom(expectedType)) {
+                    return expectedType.getConstructor(Object[].class).newInstance(value.toArray());
+                }
+            }
+            catch (ReflectiveOperationException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage());
+            }
+        }
+
+        return value;
     }
 }
