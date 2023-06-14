@@ -33,7 +33,8 @@ import java.util.List;
 @RequestScoped
 public class RadioView {
 
-    private String console;
+    private String line;
+    private String page;
     private String city;
     private String city2;
     private List<String> cities;
@@ -42,7 +43,7 @@ public class RadioView {
 
     @PostConstruct
     public void init() {
-        cities = new ArrayList<String>();
+        cities = new ArrayList<>();
         cities.add("Miami");
         cities.add("London");
         cities.add("Paris");
@@ -54,12 +55,20 @@ public class RadioView {
         cities.add("Amsterdam");
     }
 
-    public String getConsole() {
-        return console;
+    public String getLine() {
+        return line;
     }
 
-    public void setConsole(String console) {
-        this.console = console;
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
 
     public String getCity() {
