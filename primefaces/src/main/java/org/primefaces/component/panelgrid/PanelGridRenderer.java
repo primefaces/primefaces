@@ -53,7 +53,7 @@ public class PanelGridRenderer extends CoreRenderer {
         }
         else {
             throw new FacesException("The value of 'layout' attribute of PanelGrid \"" + grid.getClientId(
-                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'tabular'.");
+                context) + "\" must be 'grid', 'tabular' or 'flex'. Default value is 'grid'.");
         }
     }
 
