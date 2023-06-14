@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.selectoneradio.SelectOneRadio;
+import org.primefaces.component.selectoneradio.SelectOneRadioRenderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -85,12 +86,24 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
+        // #10227
+        String suffix = (radio.isPlain() ? "" : "_clone");
         writer.startElement("input", null);
-        writer.writeAttribute("id", id + "_clone", null);
-        writer.writeAttribute("name", name + "_clone", null);
+        writer.writeAttribute("id", id + suffix, null);
+        writer.writeAttribute("name", name + suffix, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
+
+        // #10227
+        if (radio.isPlain()) {
+            SelectOneRadioRenderer selectOneRadioRenderer = new SelectOneRadioRenderer();
+            String value = selectOneRadioRenderer.getValue(context, radio, button.getItemIndex());
+            writer.writeAttribute("value", value, null);
+            if (selectOneRadioRenderer.isSelected(context, radio, button.getItemIndex())) {
+                writer.writeAttribute("checked", "checked", null);
+            }
+        }
 
         renderAccessibilityAttributes(context, radio, disabled, radio.isReadonly());
 

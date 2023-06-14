@@ -477,6 +477,24 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
+    // #10227
+    public boolean isSelected(FacesContext context, SelectOneRadio radio, int index) {
+        List<SelectItem> selectItems = getSelectItems(context, radio);
+        SelectItem selectItem = selectItems.get(index);
+        String currentValue = ComponentUtils.getValueToRender(context, radio);
+        return isSelected(context, radio, selectItem, currentValue);
+    }
+
+    // #10227
+    public String getValue(FacesContext context, SelectOneRadio radio, int index) {
+        List<SelectItem> selectItems = getSelectItems(context, radio);
+        SelectItem selectItem = selectItems.get(index);
+        Converter converter = radio.getConverter();
+        return converter == null
+                ? (String) selectItem.getValue()
+                : converter.getAsString(context, radio, selectItem.getValue());
+    }
+
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
         String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
         return LangUtils.isBlank(itemStrValue)
