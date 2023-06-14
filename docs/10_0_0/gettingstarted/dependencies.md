@@ -8,7 +8,8 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | --- | --- | --- | --- | --- | --- |
 | JSF runtime | | |  2.0, 2.1, 2.2, 2.3, 3.0 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
 | Libre OpenPDF | com.github.librepdf | openpdf | 1.3.23 | Optional | DataExporter (PDF) |
-| Apache POI | org.apache.poi | poi | 5.0.0 | Optional | DataExporter (Excel or XML) |
+| Apache POI | org.apache.poi | poi | 5.0.0 | Optional | DataExporter (Excel XLS or XML) |
+| Apache POI | org.apache.poi | poi-ooxml | 5.0.0 | Optional | DataExporter (Excel XLSX Office 2003) |
 | Rome | com.rometools | rome | 1.15.0 | Optional | FeedReader |
 | Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.4 | Optional | FileUpload |
 | barcode4j-light | org.primefaces.extensions | barcode4j-light | 2.3.0 | Optional | Barcode |
