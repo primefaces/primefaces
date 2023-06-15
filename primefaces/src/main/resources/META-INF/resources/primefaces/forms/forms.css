@@ -253,10 +253,6 @@
 	display: inline-block;
 	position: relative;
 	width: auto;
-	-moz-transform: scaleX(1);
-	-o-transform: scaleX(1);
-	-webkit-transform: scaleX(1);
-	transform: scaleX(1);
 	cursor: pointer;
 	padding-right: 22px;
 	vertical-align: top;
