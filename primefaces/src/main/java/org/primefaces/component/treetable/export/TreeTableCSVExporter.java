@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -55,8 +56,13 @@ public class TreeTableCSVExporter extends TreeTableExporter<PrintWriter, CSVOpti
     @Override
     protected PrintWriter createDocument(FacesContext context) throws IOException {
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(os(), exportConfiguration.getEncodingType());
-            return new PrintWriter(osw);
+            String encoding = exportConfiguration.getEncodingType();
+            OutputStreamWriter osw = new OutputStreamWriter(os(), encoding);
+            PrintWriter writer = new PrintWriter(osw);
+            if (StandardCharsets.UTF_8.name().equals(encoding)) {
+                writer.write("\ufeff"); // byte order mark for UTF-8
+            }
+            return writer;
         }
         catch (UnsupportedEncodingException e) {
             throw new FacesException(e);

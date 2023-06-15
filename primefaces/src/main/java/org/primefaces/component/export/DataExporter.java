@@ -26,6 +26,7 @@ package org.primefaces.component.export;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -80,7 +81,7 @@ public class DataExporter implements ActionListener, StateHolder {
         String exportAs = (String) type.getValue(elContext);
         String outputFileName = (String) fileName.getValue(elContext);
 
-        String encodingType = "UTF-8";
+        String encodingType = StandardCharsets.UTF_8.name();
         if (encoding != null) {
             encodingType = (String) encoding.getValue(elContext);
         }
