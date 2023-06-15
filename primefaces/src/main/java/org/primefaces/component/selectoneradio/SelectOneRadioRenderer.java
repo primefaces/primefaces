@@ -103,7 +103,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 .add(lineDirection, "layout-line-direction")
                 .add(GridLayoutUtils.getResponsiveClass(flex))
                 .add(radio.getStyleClass())
-                .add(radio.isPlain(), SelectOneRadio.NATIVE_STYLE_CLASS, SelectOneRadio.STYLE_CLASS)
+                .add(SelectOneRadio.STYLE_CLASS)
                 .build();
         String labelledBy = radio.getLabel();
 
@@ -184,7 +184,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String style = radio.getStyle();
         String styleClass = getStyleClassBuilder(context)
                 .add(radio.getStyleClass())
-                .add(radio.isPlain(), SelectOneRadio.NATIVE_STYLE_CLASS, SelectOneRadio.STYLE_CLASS)
+                .add(SelectOneRadio.STYLE_CLASS)
                 .build();
         String labelledBy = radio.getLabel();
 
@@ -386,7 +386,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
-        String styleClass = radio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
+        String styleClass = HTML.RADIOBUTTON_CLASS;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
@@ -475,24 +475,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
-    }
-
-    // #10227
-    public boolean isSelected(FacesContext context, SelectOneRadio radio, int index) {
-        List<SelectItem> selectItems = getSelectItems(context, radio);
-        SelectItem selectItem = selectItems.get(index);
-        String currentValue = ComponentUtils.getValueToRender(context, radio);
-        return isSelected(context, radio, selectItem, currentValue);
-    }
-
-    // #10227
-    public String getValue(FacesContext context, SelectOneRadio radio, int index) {
-        List<SelectItem> selectItems = getSelectItems(context, radio);
-        SelectItem selectItem = selectItems.get(index);
-        Converter converter = radio.getConverter();
-        return converter == null
-                ? (String) selectItem.getValue()
-                : converter.getAsString(context, radio, selectItem.getValue());
     }
 
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
