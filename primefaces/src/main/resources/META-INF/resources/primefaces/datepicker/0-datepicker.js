@@ -167,6 +167,9 @@
             this.value = parsedDefaultDate;
             if (this.options.viewDate) {
                 this.viewDate = this.parseValue(this.options.viewDate);
+                if (!this.viewDate) {
+                    this.viewDate = new Date();
+                }
             }
             else {
                 if ((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) {
@@ -974,23 +977,27 @@
             }
 
             var value;
+            try {
+                if (this.isSingleSelection()) {
+                    value = this.parseDateTime(text);
+                }
+                else if (this.isMultipleSelection()) {
+                    var tokens = text.split(',');
+                    value = [];
+                    for (var i = 0; i < tokens.length; i++) {
+                        value.push(this.parseDateTime(tokens[i].trim()));
+                    }
+                }
+                else if (this.isRangeSelection()) {
+                    var tokens = text.split(new RegExp(this.options.rangeSeparator + '| ' + this.options.rangeSeparator + ' ', 'g'));
+                    value = [];
+                    for (var i = 0; i < tokens.length; i++) {
+                        value[i] = this.parseDateTime(tokens[i].trim());
+                    }
+                }
+            } catch (error) {
+                PrimeFaces.error("DatePicker Error: " + error);
 
-            if (this.isSingleSelection()) {
-                value = this.parseDateTime(text);
-            }
-            else if (this.isMultipleSelection()) {
-                var tokens = text.split(',');
-                value = [];
-                for (var i = 0; i < tokens.length; i++) {
-                    value.push(this.parseDateTime(tokens[i].trim()));
-                }
-            }
-            else if (this.isRangeSelection()) {
-                var tokens = text.split(new RegExp(this.options.rangeSeparator + '| ' + this.options.rangeSeparator + ' ', 'g'));
-                value = [];
-                for (var i = 0; i < tokens.length; i++) {
-                    value[i] = this.parseDateTime(tokens[i].trim());
-                }
             }
 
             return value;
