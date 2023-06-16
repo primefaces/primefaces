@@ -25282,7 +25282,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Plain mode displays radiobuttons using native browser rendering instead of themes.]]>
+                <![CDATA[Plain mode displays radiobuttons using native browser rendering instead of themes. Deprecated.]]>
             </description>
             <name>plain</name>
             <required>false</required>
