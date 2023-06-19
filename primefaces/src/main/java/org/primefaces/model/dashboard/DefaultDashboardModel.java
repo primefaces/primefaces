@@ -47,16 +47,33 @@ public class DefaultDashboardModel implements DashboardModel, Serializable {
         widgets.add(widget);
     }
 
+    /**
+     * @deprecated use addWidget(DashboardWidget widget)
+     */
+    @Deprecated
     @Override
     public void addColumn(DashboardWidget column) {
         widgets.add(column);
     }
 
+    /**
+     * @deprecated use getWidgetCount
+     */
+    @Deprecated
     @Override
     public int getColumnCount() {
         return widgets.size();
     }
 
+    @Override
+    public int getWidgetCount() {
+        return widgets.size();
+    }
+
+    /**
+     * @deprecated use getWidget(String widgetId)
+     */
+    @Deprecated
     @Override
     public DashboardWidget getColumn(int index) {
         return widgets.get(index);

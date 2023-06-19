@@ -29,6 +29,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @deprecated use DefaultDashboardWidget
+ */
+@Deprecated
 public class DefaultDashboardColumn implements DashboardWidget, Serializable {
 
     private static final long serialVersionUID = 1L;
