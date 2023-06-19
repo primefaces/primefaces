@@ -23,18 +23,99 @@
  */
 package org.primefaces.model.dashboard;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * DashBoard widgets used in responsive mode only.
  */
-public class DefaultDashboardWidget extends DefaultDashboardColumn {
+public class DefaultDashboardWidget implements DashboardWidget, Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private List<String> widgets;
+    private String style;
+    private String styleClass;
+
     public DefaultDashboardWidget() {
-        super();
+        widgets = new LinkedList<>();
     }
 
     public DefaultDashboardWidget(String widgetId, String styleClass) {
-        super(widgetId, styleClass);
+        this();
+        getWidgets().addAll(Arrays.asList(widgetId));
+        setStyleClass(styleClass);
     }
+
+    public DefaultDashboardWidget(String style, String styleClass, Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
+        this.style = style;
+        this.styleClass = styleClass;
+    }
+
+    public DefaultDashboardWidget(Collection<String> widgets) {
+        this();
+        this.widgets.addAll(widgets);
+    }
+
+    @Override
+    public void removeWidget(String widgetId) {
+        widgets.remove(widgetId);
+    }
+
+    @Override
+    public List<String> getWidgets() {
+        return widgets;
+    }
+
+    @Override
+    public int getWidgetCount() {
+        return widgets.size();
+    }
+
+    @Override
+    public String getWidget(int index) {
+        return widgets.get(index);
+    }
+
+    @Override
+    public void addWidget(int index, String widgetId) {
+        widgets.add(index, widgetId);
+    }
+
+    @Override
+    public void reorderWidget(int index, String widgetId) {
+        widgets.remove(widgetId);
+        widgets.add(index, widgetId);
+    }
+
+    @Override
+    public void addWidget(String widgetId) {
+        widgets.add(widgetId);
+    }
+
+    @Override
+    public String getStyle() {
+        return style;
+    }
+
+    @Override
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    @Override
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    @Override
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
 }

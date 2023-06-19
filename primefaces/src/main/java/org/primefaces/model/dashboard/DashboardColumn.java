@@ -23,35 +23,12 @@
  */
 package org.primefaces.model.dashboard;
 
-import java.util.List;
+/**
+ *
+ * @deprecated Will be removed in 14.0.0 use DashboardWidget
+ *
+ */
+@Deprecated
+public interface DashboardColumn extends DashboardWidget {
 
-public interface DashboardModel {
-
-    void addWidget(DashboardWidget widget);
-
-    List<DashboardWidget> getWidgets();
-
-    int getWidgetCount();
-
-    DashboardWidget getWidget(String widgetId);
-
-    void transferWidget(DashboardWidget fromWidget, DashboardWidget toWidget, String widgetId, int index, boolean swap);
-
-    /**
-     * @deprecated use addWidget(DashboardWidget widget)
-     */
-    @Deprecated
-    void addColumn(DashboardWidget column);
-
-    /**
-     * @deprecated use getWidgetCount
-     */
-    @Deprecated
-    int getColumnCount();
-
-    /**
-     * @deprecated use getWidget(String widgetId)
-     */
-    @Deprecated
-    DashboardWidget getColumn(int index);
 }
