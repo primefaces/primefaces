@@ -25,6 +25,18 @@ PrimeFaces.locales['ar'] = {
     week: 'الأسبوع',
     day: 'اليوم',
     allDayText: 'سا ئراليوم',
-    clear: 'إعادة ضبط'
+    clear: 'إعادة ضبط',
+    aria: {
+         'colorpicker.OPEN': 'فتح أداة انتقاء اللون',
+         'colorpicker.CLOSE': 'اغلاق أداة انتقاء اللون',
+         'colorpicker.CLEAR': 'إزالة اللون المحدد',
+         'colorpicker.MARKER': 'تشبّع: {s}. السطوع: {v}.',
+         'colorpicker.HUESLIDER': 'شريط تمرير درجة اللون',
+         'colorpicker.ALPHASLIDER': 'شريط تمرير التعتيم',
+         'colorpicker.INPUT': 'حقل إدخال اللون',
+         'colorpicker.FORMAT': 'تنسيق اللون',
+         'colorpicker.SWATCH': 'عينة اللون',
+         'colorpicker.INSTRUCTION': 'شريط التشبّع والسطوع. للتحكم استخدم أزرار الأسهم أعلى، أسفل، يمين، يسار .'
+     }
 };
 
