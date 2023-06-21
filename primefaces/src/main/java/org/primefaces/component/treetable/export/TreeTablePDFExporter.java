@@ -126,11 +126,6 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
         addFacetValue(rowSpan, colSpan, text);
-
-        int total = getExportableColumns(table).size();
-        if (colIndex.get() == total) {
-            pdfTable.completeRow();
-        }
     }
 
     @Override
