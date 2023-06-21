@@ -51,15 +51,18 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
     private ValueExpression monitorKey;
 
+    private ValueExpression cache;
+
     public FileDownloadActionListener() {
         ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
     }
 
-    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey) {
+    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey, ValueExpression cache) {
         this();
         this.value = value;
         this.contentDisposition = contentDisposition;
         this.monitorKey = monitorKey;
+        this.cache = cache;
     }
 
     @Override
@@ -101,7 +104,11 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 ? "/"
                 : externalContext.getRequestContextPath()); // Always add cookies to context root; see #3108
         ResourceUtils.addResponseCookie(context, monitorKeyCookieName, "true", cookieOptions);
-        ResourceUtils.addNoCacheControl(externalContext);
+
+        Boolean cache = contentDisposition != null ? (Boolean) this.cache.getValue(context.getELContext()) : Boolean.FALSE;
+        if (!cache) {
+            ResourceUtils.addNoCacheControl(externalContext);
+        }
 
         if (content.getContentLength() != null) {
             // we can't use externalContext.setResponseContentLength as our contentLength is a long

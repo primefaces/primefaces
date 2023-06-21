@@ -254,6 +254,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Controls browser caching mode of the resource. Default is false.]]>
+            </description>
+            <name>cache</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
 
     <tag>
