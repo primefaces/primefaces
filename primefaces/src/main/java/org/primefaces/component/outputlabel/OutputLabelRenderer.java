@@ -55,8 +55,6 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());
 
-    private static final String SB_STYLE_CLASS = OutputLabelRenderer.class.getName() + "#styleClass";
-
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         final ResponseWriter writer = context.getResponseWriter();
@@ -65,7 +63,6 @@ public class OutputLabelRenderer extends CoreRenderer {
         final String value = ComponentUtils.getValueToRender(context, label);
 
         final StyleClassBuilder styleClassBuilder = getStyleClassBuilder(context)
-                .add(SB_STYLE_CLASS)
                 .add(OutputLabel.STYLE_CLASS)
                 .add(label.getStyleClass());
 
