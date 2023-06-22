@@ -71,11 +71,16 @@ public class DefaultDashboardModel implements DashboardModel, Serializable {
     }
 
     /**
-     * @deprecated use getWidget(String widgetId)
+     * @deprecated use getWidget(int index)
      */
     @Deprecated
     @Override
     public DashboardWidget getColumn(int index) {
+        return widgets.get(index);
+    }
+
+    @Override
+    public DashboardWidget getWidget(int index) {
         return widgets.get(index);
     }
 
@@ -104,8 +109,5 @@ public class DefaultDashboardModel implements DashboardModel, Serializable {
             toWidget.addWidget(index, widgetId);
         }
     }
-
-
-
 
 }

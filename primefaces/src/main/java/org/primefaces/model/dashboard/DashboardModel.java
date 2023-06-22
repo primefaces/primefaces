@@ -35,6 +35,8 @@ public interface DashboardModel {
 
     DashboardWidget getWidget(String widgetId);
 
+    DashboardWidget getWidget(int index);
+
     void transferWidget(DashboardWidget fromWidget, DashboardWidget toWidget, String widgetId, int index, boolean swap);
 
     /**
@@ -50,7 +52,7 @@ public interface DashboardModel {
     int getColumnCount();
 
     /**
-     * @deprecated use getWidget(String widgetId)
+     * @deprecated use getWidget(int index)
      */
     @Deprecated
     DashboardWidget getColumn(int index);
