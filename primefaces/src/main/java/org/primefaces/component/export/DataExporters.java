@@ -47,11 +47,11 @@ public final class DataExporters {
         PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
         Map<String, Class<? extends Exporter<?>>> supportedExporters = Optional.ofNullable(primeAppContext.getExporters().get(targetClass))
                 .orElseThrow(() -> new UnsupportedOperationException(
-                        "Component " + targetClass + " not supported. Use DataExporter#register()"));
+                        "Component " + targetClass + " not supported. Use DataExporters#register()"));
 
         Class<? extends Exporter<?>> exportClass = Optional.ofNullable(supportedExporters.get(newType))
                 .orElseThrow(() -> new UnsupportedOperationException(
-                        "Exporter for " + targetClass +  " of " + newType + " not supported. Use DataExporter#register()"));
+                        "Exporter for " + targetClass +  " of " + newType + " not supported. Use DataExporters#register()"));
 
         try {
             return (Exporter<T>) exportClass.getConstructor().newInstance();
