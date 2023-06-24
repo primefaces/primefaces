@@ -58,7 +58,7 @@ public final class DataExporters {
         String newType = type.toLowerCase();
         Class<? extends Exporter<?>> exportClass = Optional.ofNullable(supportedExporters.get(newType))
                 .orElseThrow(() -> new UnsupportedOperationException(
-                        "Exporter for " + targetClass + " of " + newType + " not supported. Use DataExporters#register()"));
+                        "Exporter for " + targetClass + " of type " + newType + "is not supported. Use DataExporters#register()"));
 
         try {
             return (Exporter<T>) exportClass.getConstructor().newInstance();
