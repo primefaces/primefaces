@@ -47,13 +47,13 @@ public final class DataExporters {
 
         // since users might defined their own impl of components (e.g MyDataTable, MyTreeTable etc.)
         // retrieve the most eligible built-in component class first (e.g DataTable, TreeTable) to get corresponding exporters
-        Class<? extends UIComponent> targetClassTmp = primeAppContext.getExporters().keySet().stream()
+        Class<? extends UIComponent> resolvedTargetClass = primeAppContext.getExporters().keySet().stream()
                 .filter(k -> k.isAssignableFrom(targetClass))
                 .findFirst()
                 .orElseThrow(() -> new UnsupportedOperationException(
                         "Component " + targetClass + " not supported. Use DataExporters#register()"));
 
-        Map<String, Class<? extends Exporter<?>>> supportedExporters = primeAppContext.getExporters().get(targetClassTmp);
+        Map<String, Class<? extends Exporter<?>>> supportedExporters = primeAppContext.getExporters().get(resolvedTargetClass);
 
         String newType = type.toLowerCase();
         Class<? extends Exporter<?>> exportClass = Optional.ofNullable(supportedExporters.get(newType))
