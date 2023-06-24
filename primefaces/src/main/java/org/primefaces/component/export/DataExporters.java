@@ -51,14 +51,14 @@ public final class DataExporters {
                 .filter(k -> k.isAssignableFrom(targetClass))
                 .findFirst()
                 .orElseThrow(() -> new UnsupportedOperationException(
-                        "Component " + targetClass + " not supported. Use DataExporters#register()"));
+                        "Component " + targetClass.getName() + " not supported. Use DataExporters#register()"));
 
         Map<String, Class<? extends Exporter<?>>> supportedExporters = primeAppContext.getExporters().get(resolvedTargetClass);
 
         String newType = type.toLowerCase();
         Class<? extends Exporter<?>> exportClass = Optional.ofNullable(supportedExporters.get(newType))
                 .orElseThrow(() -> new UnsupportedOperationException(
-                        "Exporter for " + targetClass + " of type '" + newType + "' is not supported. Use DataExporters#register()"));
+                        "Exporter for " + targetClass.getName() + " of type '" + newType + "' is not supported. Use DataExporters#register()"));
 
         try {
             return (Exporter<T>) exportClass.getConstructor().newInstance();
