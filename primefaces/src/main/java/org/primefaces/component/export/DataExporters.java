@@ -43,7 +43,6 @@ public final class DataExporters {
     }
 
     public static <T extends UIComponent> Exporter<T> get(Class<T> targetClass, String type) {
-        String newType = type.toLowerCase();
         PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
 
         // since users might defined their own impl of components (e.g MyDataTable, MyTreeTable etc.)
@@ -57,6 +56,7 @@ public final class DataExporters {
 
         Map<String, Class<? extends Exporter<?>>> supportedExporters = primeAppContext.getExporters().get(targetClassTmp);
 
+        String newType = type.toLowerCase();
         Class<? extends Exporter<?>> exportClass = Optional.ofNullable(supportedExporters.get(newType))
                 .orElseThrow(() -> new UnsupportedOperationException(
                         "Exporter for " + targetClass + " of " + newType + " not supported. Use DataExporters#register()"));
@@ -70,9 +70,10 @@ public final class DataExporters {
     }
 
     public static <T extends UIComponent, E extends Exporter<T>> void register(Class<T> targetClass, Class<E> exporter, String type) {
-        String newType = type.toLowerCase();
         PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
         Map<String, Class<? extends Exporter<?>>> supportedExporters = primeAppContext.getExporters().computeIfAbsent(targetClass, o -> new HashMap<>());
+
+        String newType = type.toLowerCase();
         Class<? extends Exporter<?>> old = supportedExporters.put(newType, exporter);
         if (old != null) {
             LOGGER.log(Level.INFO, "Exporter {0} of type {1} has been replaced by {2}", new Object[]{old.getName(), newType, exporter.getName()});
