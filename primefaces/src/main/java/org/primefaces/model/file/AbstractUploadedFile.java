@@ -26,88 +26,67 @@ package org.primefaces.model.file;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import javax.faces.FacesWrapper;
-import javax.faces.component.StateHolder;
-import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 
-/**
- * Internal wrapper to avoid the file binaries to beeing saved in the ViewState.
- */
-public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedFile>, StateHolder, Serializable {
+import org.apache.commons.io.input.BoundedInputStream;
 
-    private UploadedFile wrapped;
+public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializable {
 
-    public UploadedFileWrapper() {
+    private String filename;
+    private byte[] cachedContent;
+    private Long sizeLimit;
+    private String webKitRelativePath;
+    private transient T source;
+
+    protected AbstractUploadedFile() {
         // NOOP
     }
 
-    public UploadedFileWrapper(UploadedFile wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public UploadedFile getWrapped() {
-        return wrapped;
-    }
-
-    @Override
-    public Object saveState(FacesContext fc) {
-        return null;
-    }
-
-    @Override
-    public void restoreState(FacesContext fc, Object o) {
-        // NOOP
-    }
-
-    @Override
-    public boolean isTransient() {
-        return true;
-    }
-
-    @Override
-    public void setTransient(boolean value) {
-        // NOOP
-    }
-
-    @Override
-    public long getSize() {
-        return getWrapped().getSize();
-    }
-
-    @Override
-    public void write(String filePath) throws Exception {
-        getWrapped().write(filePath);
+    protected AbstractUploadedFile(T source, String filename, Long sizeLimit, String webKitRelativePath) {
+        this.source = source;
+        this.filename = filename;
+        this.sizeLimit = sizeLimit;
+        this.webKitRelativePath = webKitRelativePath;
     }
 
     @Override
     public String getFileName() {
-        return getWrapped().getFileName();
+        return filename;
     }
-
 
     @Override
     public String getWebkitRelativePath() {
-        return getWrapped().getWebkitRelativePath();
+        return webKitRelativePath;
+    }
+
+    public T getSource() {
+        return source;
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return getWrapped().getInputStream();
+        return sizeLimit == null
+                ? getRawSourceInputStream()
+                : new BoundedInputStream(getRawSourceInputStream(), sizeLimit);
     }
 
     @Override
     public byte[] getContent() {
-        return getWrapped().getContent();
+        if (cachedContent != null) {
+            return cachedContent;
+        }
+
+        try {
+            cachedContent = readAllBytes();
+        }
+        catch (IOException ex) {
+            throw new FacesException(ex);
+        }
+
+        return cachedContent;
     }
 
-    @Override
-    public String getContentType() {
-        return getWrapped().getContentType();
-    }
+    protected abstract byte[] readAllBytes() throws IOException;
 
-    @Override
-    public void delete() throws IOException {
-        getWrapped().delete();
-    }
+    protected abstract InputStream getRawSourceInputStream() throws IOException;
 }

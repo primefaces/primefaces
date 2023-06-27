@@ -23,70 +23,69 @@
  */
 package org.primefaces.model.file;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.util.FileUploadUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import org.apache.commons.fileupload.FileItem;
+import org.primefaces.util.FileUploadUtils;
+
 /**
  *
  * Default UploadedFile implementation based on Commons FileUpload FileItem
  */
-public class CommonsUploadedFile implements UploadedFile, Serializable {
+public class CommonsUploadedFile extends AbstractUploadedFile<FileItem> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private transient FileItem fileItem;
-    private Long sizeLimit;
 
     public CommonsUploadedFile() {
         // NOOP
     }
 
-    public CommonsUploadedFile(FileItem fileItem, Long sizeLimit) {
-        this.fileItem = fileItem;
-        this.sizeLimit = sizeLimit;
+    public CommonsUploadedFile(FileItem source, Long sizeLimit, String webKitRelativePath) {
+        super(source, source.getName(), sizeLimit, webKitRelativePath);
     }
 
     @Override
-    public String getFileName() {
-        return FileUploadUtils.getValidFilename(fileItem.getName());
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return sizeLimit == null
-                ? fileItem.getInputStream()
-                : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
+    protected InputStream getRawSourceInputStream() throws IOException {
+        return getSource().getInputStream();
     }
 
     @Override
     public long getSize() {
-        return fileItem.getSize();
+        return getSource().getSize();
     }
 
+    /**
+     * {@link FileItem#get()} has his own cache, therefore use it!
+     */
     @Override
     public byte[] getContent() {
-        return fileItem.get();
+        return getSource().get();
     }
 
     @Override
     public String getContentType() {
-        return fileItem.getContentType();
+        return getSource().getContentType();
     }
 
     @Override
     public void write(String filePath) throws Exception {
         String validFilePath = FileUploadUtils.getValidFilePath(filePath);
-        fileItem.write(new File(validFilePath));
+        getSource().write(new File(validFilePath));
     }
 
     @Override
     public void delete() throws IOException {
-        fileItem.delete();
+        getSource().delete();
+    }
+
+    /**
+     * See {@link CommonsUploadedFile#getContent()}
+     */
+    @Override
+    protected byte[] readAllBytes() throws IOException {
+        throw new UnsupportedOperationException("Use FileItem#get() instead");
     }
 }

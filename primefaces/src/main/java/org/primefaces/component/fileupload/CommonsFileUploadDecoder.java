@@ -24,18 +24,19 @@
 package org.primefaces.component.fileupload;
 
 import java.io.File;
-import org.apache.commons.fileupload.FileItem;
-import org.primefaces.model.file.CommonsUploadedFile;
-import org.primefaces.model.file.UploadedFile;
-import org.primefaces.webapp.MultipartRequest;
-
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequestWrapper;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequestWrapper;
+
+import org.apache.commons.fileupload.FileItem;
+import org.primefaces.model.file.CommonsUploadedFile;
+import org.primefaces.model.file.UploadedFile;
+import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.webapp.MultipartRequest;
 
 public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
 
@@ -51,7 +52,7 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
         Long sizeLimit = fileUpload.getSizeLimit();
         return request.getFileItems(inputToDecodeId).stream()
                 .filter(p -> LangUtils.isNotBlank(p.getName()))
-                .map(p -> new CommonsUploadedFile(p, sizeLimit))
+                .map(p -> new CommonsUploadedFile(p, sizeLimit, null))
                 .collect(Collectors.toList());
     }
 
@@ -62,7 +63,7 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
             return null;
         }
 
-        return new CommonsUploadedFile(file, fileUpload.getSizeLimit());
+        return new CommonsUploadedFile(file, fileUpload.getSizeLimit(), FileUploadUtils.getWebkitRelativePath(request));
     }
 
     @Override

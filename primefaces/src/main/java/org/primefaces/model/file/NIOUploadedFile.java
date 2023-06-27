@@ -23,55 +23,39 @@
  */
 package org.primefaces.model.file;
 
-import org.apache.commons.io.FilenameUtils;
-import org.primefaces.util.FileUploadUtils;
-
-import javax.faces.FacesException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.faces.FacesException;
 
-public class NIOUploadedFile implements UploadedFile, Serializable {
+import org.apache.commons.io.FilenameUtils;
+import org.primefaces.util.FileUploadUtils;
 
-    private Path file;
-    private String filename;
-    private byte[] content;
+public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Serializable {
+
     private String contentType;
 
     public NIOUploadedFile() {
         // NOOP
     }
 
-    public NIOUploadedFile(Path file, String filename, String contentType) {
-        this.file = file;
-        this.filename = filename;
+    public NIOUploadedFile(Path source, String filename, String contentType, Long sizeLimit, String webKitRelativePath) {
+        super(source, filename, sizeLimit, webKitRelativePath);
         this.contentType = contentType;
     }
 
+
     @Override
-    public String getFileName() {
-        return filename;
+    protected InputStream getRawSourceInputStream() throws IOException {
+        return Files.newInputStream(getSource());
     }
 
     @Override
-    public InputStream getInputStream() throws IOException {
-        return Files.newInputStream(file);
-    }
-
-    @Override
-    public byte[] getContent() {
-        if (content == null) {
-            try {
-                content = Files.readAllBytes(file);
-            }
-            catch (IOException e) {
-                throw new FacesException(e);
-            }
-        }
-        return content;
+    protected byte[] readAllBytes() throws IOException {
+        return Files.readAllBytes(getSource());
     }
 
     @Override
@@ -82,7 +66,7 @@ public class NIOUploadedFile implements UploadedFile, Serializable {
     @Override
     public long getSize() {
         try {
-            return Files.size(file);
+            return Files.size(getSource());
         }
         catch (IOException e) {
             throw new FacesException(e);
@@ -92,11 +76,11 @@ public class NIOUploadedFile implements UploadedFile, Serializable {
     @Override
     public void write(String filePath) throws Exception {
         String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(getFileName()));
-        Files.copy(file, Paths.get(validFileName));
+        Files.copy(getSource(), Paths.get(validFileName));
     }
 
     @Override
     public void delete() throws IOException {
-        Files.delete(file);
+        Files.delete(getSource());
     }
 }

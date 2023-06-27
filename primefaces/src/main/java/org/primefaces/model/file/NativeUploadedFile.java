@@ -23,97 +23,68 @@
  */
 package org.primefaces.model.file;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 
-import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.IOUtils;
 
-public class NativeUploadedFile implements UploadedFile, Serializable {
+public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
     private static final String CONTENT_DISPOSITION_FILENAME_ATTR = "filename";
 
-    private transient Part part;
-    private String filename;
-    private byte[] cachedContent;
-    private Long sizeLimit;
-
     public NativeUploadedFile() {
+        // NOOP
     }
 
-    public NativeUploadedFile(Part part, Long sizeLimit) {
-        this.part = part;
-        this.sizeLimit = sizeLimit;
-        this.filename = resolveFilename(part);
-    }
-
-    @Override
-    public String getFileName() {
-        return filename;
+    public NativeUploadedFile(Part source, Long sizeLimit, String webKitRelativePath) {
+        super(source, resolveFilename(source), sizeLimit, webKitRelativePath);
     }
 
     @Override
-    public InputStream getInputStream() throws IOException {
-        return sizeLimit == null
-                ? part.getInputStream()
-                : new BoundedInputStream(part.getInputStream(), sizeLimit);
+    protected InputStream getRawSourceInputStream() throws IOException {
+        return getSource().getInputStream();
     }
 
     @Override
     public long getSize() {
-        return part.getSize();
+        return getSource().getSize();
     }
 
     @Override
-    public byte[] getContent() {
-        if (cachedContent != null) {
-            return cachedContent;
-        }
-
-        try (InputStream input = getInputStream()) {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-
-            int n = 0;
-            while (-1 != (n = input.read(buffer))) {
-                output.write(buffer, 0, n);
-            }
-            cachedContent = output.toByteArray();
-        }
-        catch (IOException ex) {
-            cachedContent = null;
-            throw new FacesException(ex);
-        }
-        return cachedContent;
+    protected byte[] readAllBytes() throws IOException {
+        return IOUtils.toByteArray(getSource().getInputStream());
     }
 
     @Override
     public String getContentType() {
-        return part.getContentType();
+        return getSource().getContentType();
     }
 
     @Override
     public void write(String filePath) throws Exception {
         SafeFile file = new SafeFile(filePath);
         String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
-        part.write(new SafeFile(validFilePath, filename).getCanonicalPath());
+        getSource().write(new SafeFile(validFilePath, getFileName()).getCanonicalPath());
     }
 
     @Override
     public void delete() throws IOException {
-        part.delete();
+        getSource().delete();
     }
 
-    public Part getPart() {
-        return part;
-    }
-
-    private String resolveFilename(Part part) {
+    /**
+     * Use {@link Part#getSubmittedFileName()} instead
+     */
+    @Deprecated
+    private static String resolveFilename(Part part) {
         if (part == null) {
             return null;
         }
@@ -126,7 +97,11 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         return FileUploadUtils.getValidFilename(getContentDispositionFileName(contentDisposition));
     }
 
-    protected String getContentDispositionFileName(final String line) {
+    /**
+     * See {@link NativeUploadedFile#resolveFilename(Part)} ()}
+     */
+    @Deprecated
+    protected static String getContentDispositionFileName(final String line) {
         // skip to 'filename'
         int i = line.indexOf(CONTENT_DISPOSITION_FILENAME_ATTR);
         if (i == -1) {
@@ -187,7 +162,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         return decode(b.toString());
     }
 
-    private String decode(String encoded) {
+    private static String decode(String encoded) {
         try {
             // GitHub #3916 escape + and % before decode
             encoded = encoded.replaceAll("%(?![0-9a-fA-F]{2})", "%25");

@@ -27,13 +27,14 @@ package org.primefaces.event;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+
 import org.primefaces.model.file.UploadedFile;
 
 public class FileUploadEvent extends FacesEvent {
 
     private static final long serialVersionUID = 1L;
 
-    private UploadedFile file;
+    private final UploadedFile file;
 
     public FileUploadEvent(UIComponent component, UploadedFile file) {
         super(component);

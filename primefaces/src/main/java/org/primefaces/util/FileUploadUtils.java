@@ -37,7 +37,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -401,5 +400,9 @@ public class FileUploadUtils {
         FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
         String fileKey = chunkDecoder.generateFileInfoKey(request);
         return Paths.get(chunkDecoder.getUploadDirectory(request), fileKey);
+    }
+
+    public static <T extends HttpServletRequest> String getWebkitRelativePath(T request) {
+        return request.getParameter("X-File-Webkit-Relative-Path");
     }
 }
