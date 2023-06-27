@@ -48,44 +48,34 @@ public class CommonsUploadedFile extends AbstractUploadedFile<FileItem> implemen
     }
 
     @Override
-    protected InputStream getRawSourceInputStream() throws IOException {
-        return getSource().getInputStream();
+    protected InputStream getOriginalSourceInputStream() throws IOException {
+        return getOriginalSource().getInputStream();
     }
 
     @Override
     public long getSize() {
-        return getSource().getSize();
+        return getOriginalSource().getSize();
     }
 
-    /**
-     * {@link FileItem#get()} has his own cache, therefore use it!
-     */
     @Override
     public byte[] getContent() {
-        return getSource().get();
+        // FileItem#get() has his own cache, therefore use it!
+        return getOriginalSource().get();
     }
 
     @Override
     public String getContentType() {
-        return getSource().getContentType();
+        return getOriginalSource().getContentType();
     }
 
     @Override
     public void write(String filePath) throws Exception {
         String validFilePath = FileUploadUtils.getValidFilePath(filePath);
-        getSource().write(new File(validFilePath));
+        getOriginalSource().write(new File(validFilePath));
     }
 
     @Override
     public void delete() throws IOException {
-        getSource().delete();
-    }
-
-    /**
-     * See {@link CommonsUploadedFile#getContent()}
-     */
-    @Override
-    protected byte[] readAllBytes() throws IOException {
-        throw new UnsupportedOperationException("Use FileItem#get() instead");
+        getOriginalSource().delete();
     }
 }

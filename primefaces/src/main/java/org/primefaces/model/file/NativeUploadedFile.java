@@ -33,7 +33,6 @@ import javax.servlet.http.Part;
 
 import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.IOUtils;
 
 public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {
 
@@ -49,35 +48,30 @@ public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Se
     }
 
     @Override
-    protected InputStream getRawSourceInputStream() throws IOException {
-        return getSource().getInputStream();
+    protected InputStream getOriginalSourceInputStream() throws IOException {
+        return getOriginalSource().getInputStream();
     }
 
     @Override
     public long getSize() {
-        return getSource().getSize();
-    }
-
-    @Override
-    protected byte[] readAllBytes() throws IOException {
-        return IOUtils.toByteArray(getSource().getInputStream());
+        return getOriginalSource().getSize();
     }
 
     @Override
     public String getContentType() {
-        return getSource().getContentType();
+        return getOriginalSource().getContentType();
     }
 
     @Override
     public void write(String filePath) throws Exception {
         SafeFile file = new SafeFile(filePath);
         String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
-        getSource().write(new SafeFile(validFilePath, getFileName()).getCanonicalPath());
+        getOriginalSource().write(new SafeFile(validFilePath, getFileName()).getCanonicalPath());
     }
 
     @Override
     public void delete() throws IOException {
-        getSource().delete();
+        getOriginalSource().delete();
     }
 
     /**
@@ -97,10 +91,6 @@ public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Se
         return FileUploadUtils.getValidFilename(getContentDispositionFileName(contentDisposition));
     }
 
-    /**
-     * See {@link NativeUploadedFile#resolveFilename(Part)} ()}
-     */
-    @Deprecated
     protected static String getContentDispositionFileName(final String line) {
         // skip to 'filename'
         int i = line.indexOf(CONTENT_DISPOSITION_FILENAME_ATTR);

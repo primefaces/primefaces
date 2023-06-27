@@ -29,6 +29,7 @@ import java.io.Serializable;
 import javax.faces.FacesException;
 
 import org.apache.commons.io.input.BoundedInputStream;
+import org.primefaces.util.IOUtils;
 
 public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializable {
 
@@ -59,15 +60,15 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
         return webKitRelativePath;
     }
 
-    public T getSource() {
+    public T getOriginalSource() {
         return source;
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
         return sizeLimit == null
-                ? getRawSourceInputStream()
-                : new BoundedInputStream(getRawSourceInputStream(), sizeLimit);
+                ? getOriginalSourceInputStream()
+                : new BoundedInputStream(getOriginalSourceInputStream(), sizeLimit);
     }
 
     @Override
@@ -76,8 +77,8 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
             return cachedContent;
         }
 
-        try {
-            cachedContent = readAllBytes();
+        try (InputStream is = getInputStream()) {
+            cachedContent = IOUtils.toByteArray(is);
         }
         catch (IOException ex) {
             throw new FacesException(ex);
@@ -86,7 +87,5 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
         return cachedContent;
     }
 
-    protected abstract byte[] readAllBytes() throws IOException;
-
-    protected abstract InputStream getRawSourceInputStream() throws IOException;
+    protected abstract InputStream getOriginalSourceInputStream() throws IOException;
 }

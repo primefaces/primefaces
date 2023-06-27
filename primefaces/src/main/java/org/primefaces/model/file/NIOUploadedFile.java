@@ -31,7 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.faces.FacesException;
 
-import org.apache.commons.io.FilenameUtils;
+import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
 
 public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Serializable {
@@ -49,13 +49,13 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
 
 
     @Override
-    protected InputStream getRawSourceInputStream() throws IOException {
-        return Files.newInputStream(getSource());
+    protected InputStream getOriginalSourceInputStream() throws IOException {
+        return Files.newInputStream(getOriginalSource());
     }
 
     @Override
     protected byte[] readAllBytes() throws IOException {
-        return Files.readAllBytes(getSource());
+        return Files.readAllBytes(getOriginalSource());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
     @Override
     public long getSize() {
         try {
-            return Files.size(getSource());
+            return Files.size(getOriginalSource());
         }
         catch (IOException e) {
             throw new FacesException(e);
@@ -75,12 +75,13 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
 
     @Override
     public void write(String filePath) throws Exception {
-        String validFileName = FileUploadUtils.getValidFilename(FilenameUtils.getName(getFileName()));
-        Files.copy(getSource(), Paths.get(validFileName));
+        SafeFile file = new SafeFile(filePath);
+        String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
+        Files.copy(getOriginalSource(), Paths.get(validFilePath));
     }
 
     @Override
     public void delete() throws IOException {
-        Files.delete(getSource());
+        Files.delete(getOriginalSource());
     }
 }
