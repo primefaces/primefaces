@@ -15,6 +15,7 @@
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} icon The DOM element for the message icon.
  * @prop {JQuery} message DOM element of the confirmation message displayed in this confirm popup.
+ * @prop {HTMLElement} focusedElementBeforeDialogOpened Element that was focused before the dialog was opened.
  * @prop {PrimeFaces.UnbindCallback} [resizeHandler] Unbind callback for the resize handler.
  * @prop {PrimeFaces.UnbindCallback} [scrollHandler] Unbind callback for the scroll handler.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
@@ -52,6 +53,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.content = this.jq.children('.ui-confirm-popup-content');
         this.message = this.content.children('.ui-confirm-popup-message');
         this.icon = this.content.children('.ui-confirm-popup-icon');
+        this.focusedElementBeforeDialogOpened = null;
 
         this.transition = PrimeFaces.utils.registerCSSTransition(this.jq, 'ui-connected-overlay');
     
@@ -145,6 +147,10 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @param {string | JQuery} [target] Selector or DOM element of the target component that triggers this popup.
      */
     show: function(target) {
+        // Remember the focused element before we opened the dialog
+        // so we can return focus to it once we close the dialog.
+        this.focusedElementBeforeDialogOpened = document.activeElement;
+        
         if (this.transition) {
             var $this = this;
 
@@ -184,8 +190,12 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     if (callback) {
                         callback();
                     }
+                    $this.returnFocus(50);
                 }
             });
+        }
+        else {
+            $this.returnFocus();
         }
     },
     
@@ -232,6 +242,25 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
      */
     applyFocus: function() {
         this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').trigger('focus');
+    },
+
+    /**
+     * Puts focus on the element that opened this dialog.
+     * @param {number | undefined} [delay] how long to delay before focusing
+     * @protected
+     */
+    returnFocus: function(delay) {
+        var el = this.focusedElementBeforeDialogOpened;
+        if (!el) {
+            return;
+        }
+
+        if (delay) {
+            setTimeout(function() { el.focus() }, delay);
+        }
+        else {
+            el.focus()
+        }
     },
 
     /**
