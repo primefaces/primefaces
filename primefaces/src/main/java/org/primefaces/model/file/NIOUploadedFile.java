@@ -54,11 +54,6 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
     }
 
     @Override
-    protected byte[] readAllBytes() throws IOException {
-        return Files.readAllBytes(getOriginalSource());
-    }
-
-    @Override
     public String getContentType() {
         return contentType;
     }

@@ -190,7 +190,6 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                 var file = settings.files ? settings.files[0] : null;
                 if (file && file.webkitRelativePath) {
-                    //xhr.setRequestHeader('X-File-Webkit-Relative-Path', file.webkitRelativePath);
                     settings.data.append('X-File-Webkit-Relative-Path', file.webkitRelativePath);
                 }
 
