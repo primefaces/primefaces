@@ -19,7 +19,8 @@
         <div class="card">
             <h:form>
                 <p:fileUpload listener="#{fileUploadView.handleFileUpload}" mode="advanced" dragDropSupport="false"
-                              multiple="true" update="messages" fileLimit="3"
+                              multiple="true" update="messages" sizeLimit="10000000" fileLimit="3"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
                               maxChunkSize="1000000"/>
 
                 <p:growl id="messages" showDetail="true" keepAlive="true"/>
