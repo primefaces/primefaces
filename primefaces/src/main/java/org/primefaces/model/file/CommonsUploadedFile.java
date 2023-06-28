@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 import org.apache.commons.fileupload.FileItem;
-import org.primefaces.util.FileUploadUtils;
 
 /**
  *
@@ -77,7 +76,8 @@ public class CommonsUploadedFile extends AbstractUploadedFile<FileItem> implemen
     protected void write(File file) throws IOException {
         try {
             getOriginalSource().write(file);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new IOException(e);
         }
     }

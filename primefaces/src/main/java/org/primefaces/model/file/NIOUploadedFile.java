@@ -23,17 +23,13 @@
  */
 package org.primefaces.model.file;
 
+import javax.faces.FacesException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import javax.faces.FacesException;
-
-import org.primefaces.shaded.owasp.SafeFile;
-import org.primefaces.util.FileUploadUtils;
 
 public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Serializable {
 
