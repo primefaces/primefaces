@@ -23,10 +23,7 @@
  */
 package org.primefaces.model.file;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
@@ -48,11 +45,6 @@ public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Se
     }
 
     @Override
-    protected InputStream getOriginalSourceInputStream() throws IOException {
-        return getOriginalSource().getInputStream();
-    }
-
-    @Override
     public long getSize() {
         return getOriginalSource().getSize();
     }
@@ -63,15 +55,18 @@ public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Se
     }
 
     @Override
-    public void write(String filePath) throws Exception {
-        SafeFile file = new SafeFile(filePath);
-        String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
-        getOriginalSource().write(new SafeFile(validFilePath, getFileName()).getCanonicalPath());
+    public void delete() throws IOException {
+        getOriginalSource().delete();
     }
 
     @Override
-    public void delete() throws IOException {
-        getOriginalSource().delete();
+    protected InputStream getOriginalSourceInputStream() throws IOException {
+        return getOriginalSource().getInputStream();
+    }
+
+    @Override
+    protected void write(File file) throws IOException {
+        getOriginalSource().write(file.getCanonicalPath());
     }
 
     /**

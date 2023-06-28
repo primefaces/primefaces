@@ -23,12 +23,15 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import javax.faces.FacesException;
 
 import org.apache.commons.io.input.BoundedInputStream;
+import org.primefaces.shaded.owasp.SafeFile;
+import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.IOUtils;
 
 public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializable {
@@ -87,5 +90,14 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
         return cachedContent;
     }
 
+    @Override
+    public void write(String filePath) throws Exception {
+        SafeFile file = new SafeFile(filePath, filename);
+        FileUploadUtils.getValidFilePath(file.getCanonicalPath());
+        write(file);
+    }
+
     protected abstract InputStream getOriginalSourceInputStream() throws IOException;
+
+    protected abstract void write(File file) throws IOException;
 }

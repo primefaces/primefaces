@@ -23,6 +23,7 @@
  */
 package org.primefaces.model.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -47,12 +48,6 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
         this.contentType = contentType;
     }
 
-
-    @Override
-    protected InputStream getOriginalSourceInputStream() throws IOException {
-        return Files.newInputStream(getOriginalSource());
-    }
-
     @Override
     public String getContentType() {
         return contentType;
@@ -69,14 +64,18 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
     }
 
     @Override
-    public void write(String filePath) throws Exception {
-        SafeFile file = new SafeFile(filePath);
-        String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
-        Files.copy(getOriginalSource(), Paths.get(validFilePath));
-    }
-
-    @Override
     public void delete() throws IOException {
         Files.delete(getOriginalSource());
     }
+
+    @Override
+    protected InputStream getOriginalSourceInputStream() throws IOException {
+        return Files.newInputStream(getOriginalSource());
+    }
+
+    @Override
+    protected void write(File file) throws IOException {
+        Files.copy(getOriginalSource(), file.toPath());
+    }
+
 }

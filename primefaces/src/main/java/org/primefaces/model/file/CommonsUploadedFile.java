@@ -48,11 +48,6 @@ public class CommonsUploadedFile extends AbstractUploadedFile<FileItem> implemen
     }
 
     @Override
-    protected InputStream getOriginalSourceInputStream() throws IOException {
-        return getOriginalSource().getInputStream();
-    }
-
-    @Override
     public long getSize() {
         return getOriginalSource().getSize();
     }
@@ -69,13 +64,22 @@ public class CommonsUploadedFile extends AbstractUploadedFile<FileItem> implemen
     }
 
     @Override
-    public void write(String filePath) throws Exception {
-        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
-        getOriginalSource().write(new File(validFilePath));
-    }
-
-    @Override
     public void delete() throws IOException {
         getOriginalSource().delete();
     }
+
+    @Override
+    protected InputStream getOriginalSourceInputStream() throws IOException {
+        return getOriginalSource().getInputStream();
+    }
+
+    @Override
+    protected void write(File file) throws IOException {
+        try {
+            getOriginalSource().write(file);
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+    }
+
 }
