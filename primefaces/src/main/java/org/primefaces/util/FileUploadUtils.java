@@ -65,9 +65,9 @@ public class FileUploadUtils {
     private FileUploadUtils() {
     }
 
-    public static String getValidFilename(String filename) {
+    public static String requireValidFilename(String filename) {
         if (LangUtils.isBlank(filename)) {
-            return null;
+            throw new FacesException("Filename cannot be empty or null");
         }
 
         if (isSystemWindows()) {
@@ -95,7 +95,7 @@ public class FileUploadUtils {
         return name;
     }
 
-    public static String getValidFilePath(String filePath) throws ValidationException {
+    public static String requireValidFilePath(String filePath) throws ValidationException {
         if (LangUtils.isBlank(filePath)) {
             throw new FacesException("Path can not be the empty string or null");
         }
