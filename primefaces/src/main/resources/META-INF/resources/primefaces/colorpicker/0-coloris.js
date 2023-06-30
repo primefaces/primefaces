@@ -2,16 +2,16 @@
  * Copyright (c) 2021-2023 Momo Bassit.
  * Licensed under the MIT License (MIT)
  * https://github.com/mdbassit/Coloris
- * Version: 0.19.0
+ * Version: 0.21.0
  * NPM: https://github.com/melloware/coloris-npm
  */
 
-window.Coloris = ((window, document, Math) => {
+window.Coloris = ((window, document, Math, undefined) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
   let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
       closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor, keyboardNav;
-  
+
   //***** PF: Prevent binding events multiple times
   let bound;
   //***** PF: Prevent binding events multiple times
@@ -78,7 +78,7 @@ window.Coloris = ((window, document, Math) => {
             bindFields(options.el);
           }
           //***** PF: Prevent binding events multiple times
-         
+
           if (options.wrap !== false) {
             wrapFields(options.el);
           }
@@ -91,7 +91,7 @@ window.Coloris = ((window, document, Math) => {
 
             // document.body is special
             if (container === document.body) {
-              container = null;
+              container = undefined;
             }
           }
           break;
@@ -328,6 +328,7 @@ window.Coloris = ((window, document, Math) => {
 
       if (settings.focusInput || settings.selectInput) {
         colorValue.focus({ preventScroll: true });
+        colorValue.setSelectionRange(currentEl.selectionStart, currentEl.selectionEnd);
       }
       
       if (settings.selectInput) {
@@ -468,7 +469,7 @@ window.Coloris = ((window, document, Math) => {
       // Revert the color to the original value if needed
       if (revert) {
         // This will prevent the "change" event on the colorValue input to execute its handler
-        currentEl = null;
+        currentEl = undefined;
 
         if (oldColor !== prevEl.value) {
           prevEl.value = oldColor;
@@ -501,7 +502,7 @@ window.Coloris = ((window, document, Math) => {
       }
 
       // This essentially marks the picker as closed
-      currentEl = null;
+      currentEl = undefined;
     }
   }
 
@@ -556,10 +557,10 @@ window.Coloris = ((window, document, Math) => {
     }
 
     if (settings.onChange) {
-      settings.onChange.call(window, color);
+      settings.onChange.call(window, color, currentEl);
     }
 
-    document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color } }));
+    document.dispatchEvent(new CustomEvent('coloris:pick', { detail: { color, currentEl } }));
   }
 
   /**
@@ -932,7 +933,7 @@ window.Coloris = ((window, document, Math) => {
   function init() {
     if (document.getElementById('clr-picker')) return; //** DO NOT REMOVE: Prevent binding events multiple times
     // Render the UI
-    container = null;
+    container = undefined;
     picker = document.createElement('div');
     picker.setAttribute('id', 'clr-picker');
     picker.className = 'clr-picker';
@@ -1011,9 +1012,11 @@ window.Coloris = ((window, document, Math) => {
     });
 
     addListener(colorValue, 'change', event => {
+      const value = colorValue.value;
+
       if (currentEl || settings.inline) {
-        setColorFromStr(colorValue.value);
-        pickColor();
+        const color = value === '' ? value : setColorFromStr(value);
+        pickColor(color);
       }
     });
 
@@ -1027,7 +1030,7 @@ window.Coloris = ((window, document, Math) => {
       closePicker();
     });
 
-    addListener(document, 'click', '.clr-format input', event => {
+    addListener(getEl('clr-format'), 'click', '.clr-format input', event => {
       currentFormat = event.target.value;
       updateColor();
       pickColor();
