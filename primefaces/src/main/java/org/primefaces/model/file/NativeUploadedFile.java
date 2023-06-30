@@ -23,11 +23,11 @@
  */
 package org.primefaces.model.file;
 
-import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import javax.servlet.http.Part;
 
 public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {
 
@@ -43,26 +43,26 @@ public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Se
 
     @Override
     public long getSize() {
-        return getOriginalSource().getSize();
+        return getSource().getSize();
     }
 
     @Override
     public String getContentType() {
-        return getOriginalSource().getContentType();
+        return getSource().getContentType();
     }
 
     @Override
     public void delete() throws IOException {
-        getOriginalSource().delete();
+        getSource().delete();
     }
 
     @Override
-    protected InputStream getOriginalSourceInputStream() throws IOException {
-        return getOriginalSource().getInputStream();
+    protected InputStream getSourceInputStream() throws IOException {
+        return getSource().getInputStream();
     }
 
     @Override
     protected void write(File file) throws IOException {
-        getOriginalSource().write(file.getCanonicalPath());
+        getSource().write(file.getCanonicalPath());
     }
 }

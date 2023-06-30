@@ -48,34 +48,34 @@ public class CommonsUploadedFile extends AbstractUploadedFile<FileItem> implemen
 
     @Override
     public long getSize() {
-        return getOriginalSource().getSize();
+        return getSource().getSize();
     }
 
     @Override
     public byte[] getContent() {
         // FileItem#get() has his own cache, therefore use it!
-        return getOriginalSource().get();
+        return getSource().get();
     }
 
     @Override
     public String getContentType() {
-        return getOriginalSource().getContentType();
+        return getSource().getContentType();
     }
 
     @Override
     public void delete() throws IOException {
-        getOriginalSource().delete();
+        getSource().delete();
     }
 
     @Override
-    protected InputStream getOriginalSourceInputStream() throws IOException {
-        return getOriginalSource().getInputStream();
+    protected InputStream getSourceInputStream() throws IOException {
+        return getSource().getInputStream();
     }
 
     @Override
     protected void write(File file) throws IOException {
         try {
-            getOriginalSource().write(file);
+            getSource().write(file);
         }
         catch (Exception e) {
             throw new IOException(e);

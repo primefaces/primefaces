@@ -23,13 +23,13 @@
  */
 package org.primefaces.model.file;
 
-import javax.faces.FacesException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.faces.FacesException;
 
 public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Serializable {
 
@@ -52,7 +52,7 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
     @Override
     public long getSize() {
         try {
-            return Files.size(getOriginalSource());
+            return Files.size(getSource());
         }
         catch (IOException e) {
             throw new FacesException(e);
@@ -61,17 +61,17 @@ public class NIOUploadedFile extends AbstractUploadedFile<Path> implements Seria
 
     @Override
     public void delete() throws IOException {
-        Files.delete(getOriginalSource());
+        Files.delete(getSource());
     }
 
     @Override
-    protected InputStream getOriginalSourceInputStream() throws IOException {
-        return Files.newInputStream(getOriginalSource());
+    protected InputStream getSourceInputStream() throws IOException {
+        return Files.newInputStream(getSource());
     }
 
     @Override
     protected void write(File file) throws IOException {
-        Files.copy(getOriginalSource(), file.toPath());
+        Files.copy(getSource(), file.toPath());
     }
 
 }

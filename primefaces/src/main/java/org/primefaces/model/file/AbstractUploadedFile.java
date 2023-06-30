@@ -63,15 +63,15 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
         return webKitRelativePath;
     }
 
-    public T getOriginalSource() {
+    public T getSource() {
         return source;
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
         return sizeLimit == null
-                ? getOriginalSourceInputStream()
-                : new BoundedInputStream(getOriginalSourceInputStream(), sizeLimit);
+                ? getSourceInputStream()
+                : new BoundedInputStream(getSourceInputStream(), sizeLimit);
     }
 
     @Override
@@ -97,7 +97,7 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
         write(file);
     }
 
-    protected abstract InputStream getOriginalSourceInputStream() throws IOException;
+    protected abstract InputStream getSourceInputStream() throws IOException;
 
     protected abstract void write(File file) throws IOException;
 }
