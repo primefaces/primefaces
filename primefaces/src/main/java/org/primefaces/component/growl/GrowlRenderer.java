@@ -24,7 +24,9 @@
 package org.primefaces.component.growl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
@@ -33,6 +35,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
@@ -43,6 +47,7 @@ public class GrowlRenderer extends UINotificationRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         Growl growl = (Growl) component;
         String clientId = growl.getClientId(context);
@@ -78,20 +83,18 @@ public class GrowlRenderer extends UINotificationRenderer {
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String _for = growl.getFor();
         boolean first = true;
-        Iterator<FacesMessage> messages;
-        if (_for != null) {
-            messages = context.getMessages(_for);
-        }
-        else {
-            messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+
+        List<FacesMessage> messages = collectFacesMessages(growl, context);
+        if (messages == null || messages.isEmpty()) {
+            writer.write("[]");
+            return;
         }
 
         writer.write("[");
 
-        while (messages.hasNext()) {
-            FacesMessage message = messages.next();
+        for (int i = 0; i < messages.size(); i++) {
+            FacesMessage message = messages.get(i);
             String severityName = getSeverityName(message);
 
             if (shouldRender(growl, message, severityName)) {
@@ -130,5 +133,57 @@ public class GrowlRenderer extends UINotificationRenderer {
         }
 
         writer.write("]");
+    }
+
+
+    protected List<FacesMessage> collectFacesMessages(Growl growl, FacesContext context) {
+        List<FacesMessage> messages = null;
+
+        String _for = growl.getFor();
+        if (!isValueBlank(_for)) {
+            List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, growl, _for,
+                    SearchExpressionUtils.SET_IGNORE_NO_RESULT);
+            for (int i = 0; i < forComponents.size(); i++) {
+                UIComponent forComponent = forComponents.get(i);
+                String forComponentClientId = forComponent.getClientId(context);
+                if (!_for.equals(forComponentClientId)) {
+
+                    Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
+                    while (messagesIterator.hasNext()) {
+                        FacesMessage next = messagesIterator.next();
+                        if (messages == null) {
+                            messages = new ArrayList<>(5);
+                        }
+                        if (!messages.contains(next)) {
+                            messages.add(next);
+                        }
+                    }
+                }
+            }
+        }
+        else if (growl.isGlobalOnly()) {
+            Iterator<FacesMessage> messagesIterator = context.getMessages(null);
+            while (messagesIterator.hasNext()) {
+                if (messages == null) {
+                    messages = new ArrayList<>(5);
+                }
+                messages.add(messagesIterator.next());
+            }
+        }
+        else {
+            Iterator<String> keyIterator = context.getClientIdsWithMessages();
+            while (keyIterator.hasNext()) {
+                String key = keyIterator.next();
+                Iterator<FacesMessage> messagesIterator = context.getMessages(key);
+                while (messagesIterator.hasNext()) {
+                    if (messages == null) {
+                        messages = new ArrayList<>(5);
+                    }
+                    messages.add(messagesIterator.next());
+                }
+            }
+        }
+
+        return messages;
     }
 }
