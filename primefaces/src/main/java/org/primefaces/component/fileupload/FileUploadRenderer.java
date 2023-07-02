@@ -25,7 +25,6 @@ package org.primefaces.component.fileupload;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -46,17 +45,14 @@ public class FileUploadRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
-            if (!context.isProjectStage(ProjectStage.Production)) {
-                LOGGER.fine(() -> "Decoding FileUpload requires contentType \"multipart/form-data\"." +
-                        " Skipping clientId: " + component.getClientId(context));
-            }
-
-            return;
-        }
-
         FileUpload fileUpload = (FileUpload) component;
         if (!fileUpload.isDisabled()) {
+            if (!context.getExternalContext().getRequestContentType().toLowerCase().startsWith("multipart/")) {
+                LOGGER.severe(() -> "Decoding FileUpload requires contentType \"multipart/form-data\"." +
+                        " Skipping clientId: " + component.getClientId(context));
+                return;
+            }
+
             PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
             FileUploadDecoder decoder = applicationContext.getFileUploadDecoder();
