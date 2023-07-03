@@ -1126,7 +1126,10 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     public Class<?> getSelectionType() {
         ValueExpression selectionVE = getValueExpression(UITree.PropertyKeys.selection.toString());
-        return selectionVE == null ? null : selectionVE.getType(getFacesContext().getELContext());
+        if (selectionVE == null) {
+            throw new FacesException("Selection must be set when SelectionMode is set for Tree " + getClientId());
+        }
+        return selectionVE.getType(getFacesContext().getELContext());
     }
 
     public boolean isCheckboxSelectionMode() {
