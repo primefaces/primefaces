@@ -77,8 +77,10 @@ public class TreeRenderer extends CoreRenderer {
     public void decodeSelection(FacesContext context, Tree tree, TreeNode root) {
         boolean multiple = tree.isMultipleSelectionMode();
         Class<?> selectionType = tree.getSelectionType();
+        boolean hasSelectionType = selectionType != null;
 
-        if (multiple && selectionType == null || (!selectionType.isArray() && !List.class.isAssignableFrom(selectionType))) {
+        if ((multiple && !hasSelectionType) ||
+                (multiple && hasSelectionType && !selectionType.isArray()) && !List.class.isAssignableFrom(selectionType)) {
             throw new FacesException("Multiple selection reference must be an Array or a List for Tree " + tree.getClientId());
         }
 
