@@ -142,7 +142,6 @@ public class CheckboxTreeNodeChildren<T> extends TreeNodeList<T> {
 
             TreeNode previous = get(index);
             super.set(index, node);
-            previous.setParent(null);
             node.setParent(parent);
             updateRowKeys(parent);
             updateSelectionState(parent);
