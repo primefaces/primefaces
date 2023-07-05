@@ -230,8 +230,8 @@
         },
 
         _renderCaption: function () {
-            if (!this.options.showCaption) {
-                this.captionContainer.hide();
+            if (this.options.showCaption) {
+                this.captionContainer.show();
             }
 
             return this.captionContainer;
