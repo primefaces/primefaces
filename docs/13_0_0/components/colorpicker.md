@@ -135,10 +135,46 @@ ColorPicker has two modes, default mode is _popup_ and other available option is
 
 !> Inline mode only allows 1 instance of the inline ColorPicker on the page and you cannot mix Inline and Popup on the same page.  It is a limitation of Coloris.
 
+## Legacy Hex Color Handling
+Prior to 13.0.0 the ColorPicker only returned the 6 digit hex code without the `#` like `ffffff`.  Now by default it includes the hex code `#ffffff`.
+If `alpha=true` for alpha blends it will now be an 8 digit hex code like `#c71c1cff`.  If you prefer to have the ColorPicker act like it has before
+13.0.0 then make the following changes.
+
+```xhtml
+<p:colorPicker value="#{colorView.value}" alpha="false" converter="#{hexColorConverter}">
+```
+
+Using the following HexColorConverter to strip out the `#`.
+
+```java
+@Named
+@FacesConverter(value = "hexColorConverter", managed = true)
+public class HexColorConverter implements Converter<String> {
+
+    @Override
+    public String getAsObject(FacesContext context, UIComponent component, String value) {
+        if (LangUtils.isBlank(value)) {
+            return null;
+        }
+
+        return value.startsWith("#") ? value.substring(1) : value;
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, String value) {
+        if (LangUtils.isBlank(value)) {
+            return null;
+        }
+
+        return value.startsWith("#") ? value : "#" + value;
+    }
+}
+```
+
 
 ## Localization and Accessibility
 ColorPicker is fully accessible both by keyboard and for visually impaired with proper ARIA screen reader support.
-To customize for your language you simplly need to update your `local-XX.js` file.  The subset of values respected
+To customize for your language you simply need to update your `local-XX.js` file.  The subset of values respected
 are below.  For full localization see the [localization documentation](/core/localization.md?id=client-localization).
 
 ```js
