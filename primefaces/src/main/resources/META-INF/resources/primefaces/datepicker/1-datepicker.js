@@ -271,7 +271,6 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 maskCfg.mask = this.cfg.mask;
             }
             this.input.inputmask('remove').inputmask(maskCfg);
-            this.input.off("blur.inputmask"); // GitHub #9259
         }
     },
 
