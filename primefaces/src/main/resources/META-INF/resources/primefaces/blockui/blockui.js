@@ -135,6 +135,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         // we must evaluate it each time as the DOM might has been changed
         var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.triggers);
 
+        // if trigger is null it has been removed from DOM so we need to hide the block UI
+        if (!triggers || triggers.length === 0) {
+            return true;
+        }
+
         return $.inArray(sourceId, triggers) !== -1;
     },
 
