@@ -190,20 +190,18 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         }
 
         int total = getExportableColumns(table).size();
-        AtomicInteger rowIndex = new AtomicInteger();
         table.forEachColumnGroupRow(context, cg, true, row -> {
             final AtomicInteger colIndex = new AtomicInteger(0);
-            rowIndex.getAndIncrement();
 
             table.forEachColumn(context, row, true, true, false, column -> {
-                if (column.isRendered() && column.isExportable()) {
+                if (column.isExportable()) {
                     String text = ExporterUtils.getColumnFacetValue(context, column, columnType);
 
                     proxifyWithRowExport(context,
                             table,
                             colIndex.get(),
                             total,
-                            () -> exportColumnGroupFacetValue(context, table, column, rowIndex.get(), colIndex, text));
+                            () -> exportColumnGroupFacetValue(context, table, column, colIndex, text));
 
                     colIndex.incrementAndGet();
                 }
@@ -232,7 +230,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         }
     }
 
-    protected void exportColumnGroupFacetValue(FacesContext context, T table, UIColumn column, int rowIndex, AtomicInteger colIndex, String text) {
+    protected void exportColumnGroupFacetValue(FacesContext context, T table, UIColumn column, AtomicInteger colIndex, String text) {
         if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportColumnGroupFacetValue() must be implemented");
         }
