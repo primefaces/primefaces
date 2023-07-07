@@ -113,8 +113,9 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, UIColumn column,
-                                               int rowIndex, AtomicInteger colIndex, String text) {
+                                               AtomicInteger colIndex, String text) {
         Sheet sheet = sheet();
+        int rowIndex = sheet.getLastRowNum();
 
         // by default column has 1 rowspan && colspan
         int rowSpan = (column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan()) - 1;

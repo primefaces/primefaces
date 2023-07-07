@@ -122,7 +122,7 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, UIColumn column,
-                                               int rowIndex, AtomicInteger colIndex, String text) {
+                                               AtomicInteger colIndex, String text) {
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
         addFacetValue(rowSpan, colSpan, text);
