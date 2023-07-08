@@ -897,7 +897,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("thead", null);
         writer.writeAttribute("id", theadClientId, null);
 
-        // macro optimization in case no column group present, to avoid deep tree traversal
+        // macro optimization in case no column group present, to avoid tree traversal
         // when building a 2D array columns representation while it's not really needed
         boolean hasColumnGroup = ComponentUtils.hasChildOfType(table, ColumnGroup.class);
         if (!hasColumnGroup) {
@@ -914,7 +914,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     /**
-     * @Deprecated Use {@link DataTableRenderer#encodeColumnHeader} instead
+     * @Deprecated Use {@link DataTableRenderer#encodeColumnGroupHeaders instead
      */
     @Deprecated
     private void encodeColumnGroupHeadersLegacy(FacesContext context, DataTable table, int columnStart, int columnEnd, String columnGroupType)
@@ -1019,7 +1019,7 @@ public class DataTableRenderer extends DataRenderer {
 
                     @Override
                     public void visitRow(int index, Row row) throws IOException {
-                        // Row will have his own renderer once col group legacy gets removed
+                        // Row will have his own renderer once col group legacy removed
                         String rowClass = row.getStyleClass();
                         String rowStyle = row.getStyle();
 
@@ -1033,6 +1033,11 @@ public class DataTableRenderer extends DataRenderer {
                     }
 
                     @Override
+                    public void visitRowEnd(int index, Row row) throws IOException {
+                        writer.endElement("tr");
+                    }
+
+                    @Override
                     public void visitColumn(int index, UIColumn column) throws IOException {
                         encodeCell(context, table, column, false, false, index);
                     }
@@ -1041,10 +1046,7 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeColumnGroupHeaders(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
         List<List<ColumnNode>> matrix = new ArrayList<>();
-
-//        UITable.flatTableColumns(ColumnNode.root(table), matrix, columnStart, columnEnd, o -> true);
         UITable.treeColumnsTo2DArray(ColumnNode.root(table), matrix, columnStart, columnEnd);
 
         int depth = matrix.size();
@@ -1053,14 +1055,15 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("role", "row", null);
 
             for (ColumnNode column : rows) {
-                if (column.getUiComp() instanceof UIColumn) {
-                    if (column.getUiComp() instanceof DynamicColumn) {
-                        ((DynamicColumn) column.getUiComp()).applyModel();
+                Object comp = column.getUIComp();
+                if (comp instanceof UIColumn) {
+                    if (comp instanceof DynamicColumn) {
+                        ((DynamicColumn) comp).applyModel();
                     }
-                    encodeColumnHeader(context, table, (UIColumn) column.getUiComp(), (depth - column.getLevel()) + 1, column.getColspan());
+                    encodeColumnHeader(context, table, (UIColumn) comp, (depth - column.getLevel()) + 1, column.getColspan());
                 }
-                else if (column.getUiComp() instanceof ColumnGroup) {
-                    encodeColumnGroupHeader(context, table, (ColumnGroup) column.getUiComp(), 1, column.getColspan());
+                else if (comp instanceof ColumnGroup) {
+                    encodeColumnGroupHeader(context, table, (ColumnGroup) comp, 1, column.getColspan());
                 }
             }
 
@@ -1512,13 +1515,11 @@ public class DataTableRenderer extends DataRenderer {
         if (!ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             return;
         }
-        ResponseWriter writer = context.getResponseWriter();
 
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
-
         facet.encodeAll(context);
-
         writer.endElement("div");
     }
 

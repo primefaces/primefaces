@@ -64,7 +64,7 @@ public class ColumnNode {
         return new ColumnNode(null, column);
     }
 
-    public Object getUiComp() {
+    public Object getUIComp() {
         return uiComp;
     }
 

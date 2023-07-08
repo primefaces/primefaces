@@ -34,6 +34,8 @@ public interface RowColumnVisitor {
 
     void visitRow(int index, Row row) throws IOException;
 
+    void visitRowEnd(int index, Row row) throws IOException;
+
     void visitColumnGroup(int index, ColumnGroup colGroup) throws IOException;
 
     class Adapter implements RowColumnVisitor {
@@ -45,6 +47,11 @@ public interface RowColumnVisitor {
 
         @Override
         public void visitRow(int index, Row row) throws IOException {
+            // NOOP
+        }
+
+        @Override
+        public void visitRowEnd(int index, Row row) throws IOException {
             // NOOP
         }
 
