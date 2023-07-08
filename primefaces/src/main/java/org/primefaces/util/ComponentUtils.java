@@ -23,8 +23,6 @@
  */
 package org.primefaces.util;
 
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -32,6 +30,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -53,6 +53,7 @@ import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 public class ComponentUtils {
 
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
