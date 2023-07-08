@@ -604,7 +604,7 @@ public class ComponentUtils {
     public static boolean isNestedWithinIterator(UIComponent component) {
         UIComponent parent = component;
         while (null != (parent = parent.getParent())) {
-            if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+            if (parent instanceof javax.faces.component.UIData || isUIRepeat(parent)
                     || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
                 return true;
             }
@@ -741,5 +741,9 @@ public class ComponentUtils {
     public static boolean isDisabledOrReadonly(UIInput component) {
         return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
                 || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+    }
+
+    public static boolean isUIRepeat(UIComponent component) {
+        return component.getClass().getName().endsWith("UIRepeat");
     }
 }
