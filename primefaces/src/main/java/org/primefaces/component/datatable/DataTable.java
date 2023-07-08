@@ -24,6 +24,8 @@
 package org.primefaces.component.datatable;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.el.ELContext;
