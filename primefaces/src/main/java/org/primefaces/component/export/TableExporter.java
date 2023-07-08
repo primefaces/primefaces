@@ -200,6 +200,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         });
     }
 
+    @Deprecated
     protected boolean addColumnGroupFacetsLegacy(FacesContext context, T table, ColumnType columnType) {
         if (!supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             return false;
@@ -242,10 +243,10 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         for (List<ColumnNode> rows : matrix) {
             for (int colIndex = 0; colIndex < rows.size(); colIndex++) {
                 ColumnNode node = rows.get(colIndex);
-                String text = ExporterUtils.getColumnFacetValue(context, node.getUiComp(), columnType);
+                String text = ExporterUtils.getColumnFacetValue(context, node.getUIComp(), columnType);
 
                 int colSpan = node.getColspan();
-                int rowSpan = node.getUiComp() instanceof UIColumn
+                int rowSpan = node.getUIComp() instanceof UIColumn
                         ? (depth - node.getLevel()) + 1
                         : 1;
 
@@ -399,7 +400,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                 Map<UIColumn, Integer> columnMeta = new LinkedHashMap<>();
                 ForEachRowColumn
                         .from(dt)
-                        .hints(ForEachRowColumn.ColumnHint.RENDERED, ForEachRowColumn.ColumnHint.EXPORTABLE, ForEachRowColumn.ColumnHint.VISIBLE)
+                        .hints(ForEachRowColumn.ColumnHint.SKIP_UNRENDERED, ForEachRowColumn.ColumnHint.EXPORTABLE, ForEachRowColumn.ColumnHint.VISIBLE)
                         .invoke(new RowColumnVisitor.Adapter() {
 
                             @Override

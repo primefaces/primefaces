@@ -43,7 +43,7 @@ public class ForEachRowColumn {
 
     public enum ColumnHint implements Predicate<Object> {
 
-        RENDERED {
+        SKIP_UNRENDERED {
             @Override
             public boolean test(Object o) {
                 return o instanceof UIColumn ? ((UIColumn) o).isRendered() : ((UIComponent) o).isRendered();
@@ -53,25 +53,25 @@ public class ForEachRowColumn {
         EXPORTABLE {
             @Override
             public boolean test(Object o) {
-                return o instanceof UIColumn && ((UIColumn) o).isExportable();
+                return !(o instanceof UIColumn) || ((UIColumn) o).isExportable();
             }
         },
 
         VISIBLE {
             @Override
             public boolean test(Object o) {
-                return o instanceof UIColumn && ((UIColumn) o).isVisible();
+                return !(o instanceof UIColumn) || ((UIColumn) o).isVisible();
             }
         }
     }
 
-    private Set<ColumnHint> hints = EnumSet.of(ColumnHint.RENDERED);
+    private Set<ColumnHint> hints = EnumSet.of(ColumnHint.SKIP_UNRENDERED);
 
     private UIComponent root;
 
-    private int columnStart = 0;
+    private Integer columnStart;
 
-    private int columnEnd = Integer.MAX_VALUE;
+    private Integer columnEnd;
 
     private RowColumnVisitor callback;
 
@@ -131,13 +131,14 @@ public class ForEachRowColumn {
 
     protected void visitChildren(UIComponent target) throws IOException {
         if (target.getChildCount() > 0) {
-            // ignore column start/end in case it's not a column container like row
-            boolean columnContainer = isColumnContainer(target);
-            int offset = columnContainer ? columnStart : 0;
-            int end = columnContainer ? Math.min(columnEnd, target.getChildCount()) : target.getChildCount();
+            // ignore column start/end in case it's not a column container like UIPanel
+            boolean columnAware = isColumnAware(target);
+            int offset = columnAware && columnStart != null ? columnStart : 0;
+            int end = columnAware && columnEnd != null ? Math.min(columnEnd, target.getChildCount()) : target.getChildCount();
+
             int idx = 0; // relative position of child to his parent
 
-            for (int i = offset; idx < end; i++) {
+            for (int i = offset; i < end; i++) {
                 UIComponent child = target.getChildren().get(i);
                 if (ComponentUtils.isTargetableComponent(child)) {
                     VisitResult result = visit(idx, child);
@@ -154,9 +155,10 @@ public class ForEachRowColumn {
     }
 
     private VisitResult handleRow(int index, Row target) throws IOException {
-        if (shouldIgnoreUnRendered(target)) {
+        if (isVisitable(target)) {
             callback.visitRow(index, target);
             visitChildren(target);
+            callback.visitRowEnd(index, target);
             return completeIfRoot(target);
         }
         return VisitResult.REJECT;
@@ -164,7 +166,7 @@ public class ForEachRowColumn {
 
 
     private VisitResult handleColumnGroup(int index, ColumnGroup target) throws IOException {
-        if (shouldIgnoreUnRendered(target)) {
+        if (isVisitable(target)) {
             callback.visitColumnGroup(index, target);
             visitChildren(target);
             return completeIfRoot(target);
@@ -177,11 +179,11 @@ public class ForEachRowColumn {
             Columns cols = (Columns) target;
             for (int i = 0; i < cols.getDynamicColumns().size(); i++) {
                 DynamicColumn column = cols.getDynamicColumns().get(i);
-                applyPredicateAndVisitIfPossible(index + i, column);
+                visitIfPossible(index + i, column);
             }
         }
         else {
-            applyPredicateAndVisitIfPossible(index, target);
+            visitIfPossible(index, target);
         }
 
         return completeIfRoot(target);
@@ -191,26 +193,22 @@ public class ForEachRowColumn {
         return root == target ? VisitResult.COMPLETE : VisitResult.ACCEPT;
     }
 
-    private void applyPredicateAndVisitIfPossible(int index, UIColumn column) throws IOException {
-        boolean eligible = true;
-        if (!hints.isEmpty()) {
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyStatelessModel();
-            }
-            eligible = hints.stream().allMatch(o -> o.test(column));
+    private void visitIfPossible(int index, UIColumn column) throws IOException {
+        if (column instanceof DynamicColumn) {
+            ((DynamicColumn) column).applyStatelessModel();
         }
-
-        if (eligible) {
+        if (isVisitable(column)) {
             callback.visitColumn(index, column);
         }
     }
 
-    private boolean shouldIgnoreUnRendered(Object target) {
-        return !hints.contains(ColumnHint.RENDERED) || ColumnHint.RENDERED.test(target);
+    private boolean isVisitable(Object target) {
+        return hints.stream().allMatch(o -> o.test(target));
     }
 
-    private static boolean isColumnContainer(UIComponent component) {
-        return component instanceof ColumnAware || component instanceof Row || component instanceof ColumnGroup;
+    private static boolean isColumnAware(UIComponent component) {
+        return component instanceof ColumnAware
+                || component instanceof Row
+                || component instanceof ColumnGroup;
     }
-
 }

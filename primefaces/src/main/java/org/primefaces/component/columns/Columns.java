@@ -95,6 +95,7 @@ public class Columns extends ColumnsBase {
     public List<DynamicColumn> getDynamicColumns() {
         if (dynamicColumns == null) {
             FacesContext context = getFacesContext();
+            setRowIndex(-1);
             dynamicColumns = new ArrayList<>(getRowCount());
 
             for (int i = 0; i < getRowCount(); i++) {
