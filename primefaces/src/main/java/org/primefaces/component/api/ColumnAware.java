@@ -164,11 +164,29 @@ public interface ColumnAware {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
         }
-        for (UIComponent component : cg.getChildren()) {
-            if (!(component instanceof Row)) {
+        for (UIComponent child : cg.getChildren()) {
+            if (child.getClass().getName().endsWith("UIRepeat")) {
+                VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                        ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                return child.visitTree(visitContext, (ctx, target) -> {
+                    if (target.getClass().getName().endsWith("UIRepeat")) {
+                        return VisitResult.ACCEPT;
+                    }
+
+                    if (target instanceof Row) {
+                        Row column = (Row) target;
+                        if (!callback.test(column)) {
+                            return VisitResult.COMPLETE;
+                        }
+                    }
+
+                    return VisitResult.REJECT;
+                });
+            }
+            else if (!(child instanceof Row)) {
                 continue;
             }
-            Row row = (Row) component;
+            Row row = (Row) child;
             if (skipUnrendered && !row.isRendered()) {
                 continue;
             }
