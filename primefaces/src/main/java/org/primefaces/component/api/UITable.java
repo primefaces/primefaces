@@ -573,6 +573,10 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     Object getDataLocale();
 
+    default boolean isColumnGroupLegacyEnabled() {
+        return true;
+    }
+
     static void treeColumnsTo2DArray(ColumnNode root, List<List<ColumnNode>> nodes, int columnStart, int columnEnd) {
         int idx = -1;
         for (int i = 0; i < root.getChildren().size(); i++) {

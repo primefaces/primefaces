@@ -30,6 +30,8 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspResponseWriter;
 
 import javax.el.ELException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;

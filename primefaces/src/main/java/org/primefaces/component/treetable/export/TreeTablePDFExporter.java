@@ -125,7 +125,7 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
     }
 
     @Override
-    protected void exportColumnGroupFacetValue(FacesContext context, TreeTable table, UIColumn column,
+    protected void exportColumnGroupFacetValueLegacy(FacesContext context, TreeTable table, UIColumn column,
                                                AtomicInteger colIndex, ColumnValue columnValue) {
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();

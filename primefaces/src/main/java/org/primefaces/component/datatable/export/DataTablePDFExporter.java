@@ -36,6 +36,7 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import org.primefaces.component.api.ColumnNode;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ColumnValue;
@@ -130,6 +131,11 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
         addFacetValue(rowSpan, colSpan, columnValue);
+    }
+
+    @Override
+    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, ColumnNode column, int rowspan, int colspan, String text) {
+        addFacetValue(rowspan, colspan, text);
     }
 
     @Override

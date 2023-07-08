@@ -32,6 +32,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
+import org.primefaces.component.api.ColumnNode;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.ColumnValue;
@@ -155,6 +156,27 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
             colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
             exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
         }
+    }
+
+    @Override
+    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, ColumnNode column, int rowspan, int colspan, String text) {
+        Sheet sheet = sheet();
+        int rowIndex = sheet.getLastRowNum();
+        Row row = row();
+
+        int relColIndex = row.getLastCellNum() > 0 ? row.getLastCellNum() : row.getLastCellNum() + 1;
+        int colIndex = calculateColumnOffset(sheet, rowIndex, relColIndex); // (1-based)
+
+        if (colspan > 1 || rowspan > 1) {
+            sheet().addMergedRegion(new CellRangeAddress(
+                    rowIndex, // first row (0-based)
+                    (rowIndex + rowspan) - 1, // last row (0-based)
+                    colIndex, // first column (0-based)
+                    (colIndex + colspan) - 1) // last column (0-based)
+            );
+        }
+
+        exportColumnFacetValue(context, table, text, colIndex);
     }
 
     @Override

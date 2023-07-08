@@ -47,9 +47,7 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.api.UITable;
+import org.primefaces.component.api.*;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.overlaypanel.OverlayPanel;
@@ -143,8 +141,16 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
         if (exportConfiguration.isExportHeader()) {
             addTableFacets(context, table, ColumnType.HEADER);
-            boolean headerGroup = addColumnGroupFacets(context, table, ColumnType.HEADER);
-            if (!headerGroup) {
+            if (table.isColumnGroupLegacyEnabled()) {
+                boolean headerGroup = addColumnGroupFacetsLegacy(context, table, ColumnType.HEADER);
+                if (!headerGroup) {
+                    addColumnFacets(context, table, ColumnType.HEADER);
+                }
+            }
+            else if (ComponentUtils.hasChildOfType(table, ColumnGroup.class)) {
+                addColumnGroupFacets(context, table, ColumnType.HEADER);
+            }
+            else {
                 addColumnFacets(context, table, ColumnType.HEADER);
             }
         }
@@ -194,7 +200,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         });
     }
 
-    protected boolean addColumnGroupFacets(FacesContext context, T table, ColumnType columnType) {
+    protected boolean addColumnGroupFacetsLegacy(FacesContext context, T table, ColumnType columnType) {
         if (!supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             return false;
         }
@@ -216,7 +222,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                             table,
                             colIndex.get(),
                             total,
-                            () -> exportColumnGroupFacetValue(context, table, column, colIndex, columnValue));
+                            () -> exportColumnGroupFacetValueLegacy(context, table, column, colIndex, columnValue));
 
                     colIndex.incrementAndGet();
                 }
@@ -225,6 +231,31 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             return true;
         });
         return true;
+    }
+
+    protected void addColumnGroupFacets(FacesContext context, T table, ColumnType columnType) {
+        List<List<ColumnNode>> matrix = new ArrayList<>();
+        ColumnNode root = ColumnNode.root(table);
+        UITable.treeColumnsTo2DArray(root, matrix, 0, getExportableColumns(table).size());
+
+        int depth = matrix.size();
+        for (List<ColumnNode> rows : matrix) {
+            for (int colIndex = 0; colIndex < rows.size(); colIndex++) {
+                ColumnNode node = rows.get(colIndex);
+                String text = ExporterUtils.getColumnFacetValue(context, node.getUiComp(), columnType);
+
+                int colSpan = node.getColspan();
+                int rowSpan = node.getUiComp() instanceof UIColumn
+                        ? (depth - node.getLevel()) + 1
+                        : 1;
+
+                proxifyWithRowExport(context,
+                        table,
+                        colIndex,
+                        rows.size(),
+                        () -> exportColumnGroupFacetValue(context, table, node, rowSpan, colSpan, text));
+            }
+        }
     }
 
     protected void addCells(FacesContext context, T table) {
@@ -245,7 +276,14 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         }
     }
 
-    protected void exportColumnGroupFacetValue(FacesContext context, T table, UIColumn column, AtomicInteger colIndex, ColumnValue columnValue) {
+    protected void exportColumnGroupFacetValueLegacy(FacesContext context, T table, UIColumn column, AtomicInteger colIndex, ColumnValue columnValue) {
+        if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
+            throw new UnsupportedOperationException(getClass().getName() + "#exportColumnGroupFacetValueLegacy() must be implemented");
+        }
+    }
+
+    protected void exportColumnGroupFacetValue(FacesContext context, T table, ColumnNode column,
+                                               int rowspan, int colspan, String text) {
         if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportColumnGroupFacetValue() must be implemented");
         }
@@ -354,10 +392,37 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
      * @return the List<UIColumn> that are exportable
      */
     protected List<UIColumn> getExportableColumns(T table) {
-        if (exportableColumns.containsKey(table)) {
-            return exportableColumns.get(table);
-        }
+        return exportableColumns.computeIfAbsent(table, dt -> {
 
+            boolean colGroupLegacy = dt.isColumnGroupLegacyEnabled();
+            if (!colGroupLegacy) {
+                Map<UIColumn, Integer> columnMeta = new LinkedHashMap<>();
+                ForEachRowColumn
+                        .from(dt)
+                        .hints(ForEachRowColumn.ColumnHint.RENDERED, ForEachRowColumn.ColumnHint.EXPORTABLE, ForEachRowColumn.ColumnHint.VISIBLE)
+                        .invoke(new RowColumnVisitor.Adapter() {
+
+                            @Override
+                            public void visitColumn(int index, UIColumn column) {
+                                int displayPriority = column.getDisplayPriority();
+                                columnMeta.put(column, displayPriority);
+                            }
+                        });
+
+                return columnMeta.entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByValue())
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+            }
+            else {
+                return getExportableColumnsLegacy(dt);
+            }
+        });
+    }
+
+    @Deprecated
+    protected List<UIColumn> getExportableColumnsLegacy(UITable table) {
         int allColumnsSize = table.getColumns().size();
         List<UIColumn> exportcolumns = new ArrayList<>(allColumnsSize);
         boolean visibleColumnsOnly = exportConfiguration.isVisibleOnly();
@@ -392,8 +457,6 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
             String metaColumnKey = meta.getColumnKey();
             table.invokeOnColumn(metaColumnKey, -1, exportcolumns::add);
         }
-
-        exportableColumns.put(table, exportcolumns);
 
         return exportcolumns;
     }

@@ -113,8 +113,8 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
     }
 
     @Override
-    protected void exportColumnGroupFacetValue(FacesContext context, TreeTable table, UIColumn column,
-                                               AtomicInteger colIndex, ColumnValue columnValue) {
+    protected void exportColumnGroupFacetValueLegacy(FacesContext context, TreeTable table, UIColumn column,
+                                                     AtomicInteger colIndex, ColumnValue columnValue) {
         Sheet sheet = sheet();
         int rowIndex = sheet.getLastRowNum();
 
