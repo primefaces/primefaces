@@ -33,7 +33,6 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
@@ -44,6 +43,8 @@ import javax.faces.model.ListDataModel;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -467,6 +468,31 @@ public class DataTable extends DataTableBase {
         }
     }
 
+    public boolean hasFooterColumn() {
+        return hasFooterColumn(this);
+    }
+
+    protected boolean hasFooterColumn(UIComponent component) {
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child.isRendered()) {
+                if ((child instanceof UIColumn)) {
+                    UIColumn column = (UIColumn) child;
+
+                    if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                        return true;
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    if (hasFooterColumn(child)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void loadLazyDataIfRequired() {
         if (getDataModel().getWrappedData() == null) {
             loadLazyDataIfEnabled();
@@ -749,46 +775,40 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
-    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
-        if (getChildCount() > 0) {
-            for (UIComponent child : getChildren()) {
-                if (child.isRendered()) {
-                    if (child instanceof UIColumn) {
-                        if (child instanceof Column) {
-                            for (UIComponent facet : child.getFacets().values()) {
-                                process(context, facet, phaseId);
-                            }
-                        }
-                        else if (child instanceof Columns) {
-                            Columns uicolumns = (Columns) child;
-                            int f = uicolumns.getFirst();
-                            int r = uicolumns.getRows();
-                            int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
-
-                            for (int i = f; i < l; i++) {
-                                uicolumns.setRowIndex(i);
-
-                                if (!uicolumns.isRowAvailable()) {
-                                    break;
-                                }
-
-                                for (UIComponent facet : child.getFacets().values()) {
-                                    process(context, facet, phaseId);
-                                }
-                            }
-
-                            uicolumns.setRowIndex(-1);
-                        }
+    protected void processColumnFacets(FacesContext context, UIComponent root, PhaseId phaseId) {
+        if (root.getChildCount() > 0) {
+            for (UIComponent child : root.getChildren()) {
+                if (child instanceof UIColumn) {
+                    if (child instanceof Column) {
+                        processFacets(context, child, phaseId);
                     }
-                    else if (child instanceof ColumnGroup) {
+                    else if (child instanceof Columns) {
+                        Columns uicolumns = (Columns) child;
+                        int f = uicolumns.getFirst();
+                        int r = uicolumns.getRows();
+                        int l = (r == 0) ? uicolumns.getRowCount() : (f + r);
+
+                        for (int i = f; i < l; i++) {
+                            uicolumns.setRowIndex(i);
+
+                            if (!uicolumns.isRowAvailable()) {
+                                break;
+                            }
+
+                            processFacets(context, child, phaseId);
+                        }
+
+                        uicolumns.setRowIndex(-1);
+                    }
+                }
+                else if (child instanceof ColumnGroup) {
+                    if (isColumnGroupLegacyEnabled()) {
                         if (child.getChildCount() > 0) {
                             for (UIComponent columnGroupChild : child.getChildren()) {
                                 if (columnGroupChild instanceof Row && columnGroupChild.getChildCount() > 0) {
                                     for (UIComponent rowChild : columnGroupChild.getChildren()) {
                                         if (rowChild instanceof Column && rowChild.getFacetCount() > 0) {
-                                            for (UIComponent facet : rowChild.getFacets().values()) {
-                                                process(context, facet, phaseId);
-                                            }
+                                            processFacets(context, rowChild, phaseId);
                                         }
                                         else {
                                             process(context, rowChild, phaseId);        //e.g ui:repeat
@@ -801,6 +821,12 @@ public class DataTable extends DataTableBase {
                             }
                         }
                     }
+                    else {
+                        processColumnFacets(context, child, phaseId);
+                    }
+                }
+                else if (child instanceof Row) {
+                    processColumnFacets(context, child, phaseId);
                 }
             }
         }
@@ -897,43 +923,6 @@ public class DataTable extends DataTableBase {
         getStateHelper().put(InternalPropertyKeys.defaultFilter, defaultFilter);
     }
 
-    public List<UIColumn> findOrderedColumns(String columnOrder) {
-        FacesContext context = getFacesContext();
-        List<UIColumn> orderedColumns = null;
-
-        if (columnOrder != null) {
-            orderedColumns = new ArrayList<>();
-
-            String[] order = columnOrder.split(",");
-            String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-
-            for (String columnId : order) {
-
-                for (UIComponent child : getChildren()) {
-                    if (child instanceof Column && child.getClientId(context).equals(columnId)) {
-                        orderedColumns.add((UIColumn) child);
-                        break;
-                    }
-                    else if (child instanceof Columns) {
-                        String columnsClientId = child.getClientId(context);
-
-                        if (columnId.startsWith(columnsClientId)) {
-                            String[] ids = columnId.split(separator);
-                            int index = Integer.parseInt(ids[ids.length - 1]);
-
-                            orderedColumns.add(new DynamicColumn(index, (Columns) child, context));
-                            break;
-                        }
-
-                    }
-                }
-
-            }
-        }
-
-        return orderedColumns;
-    }
-
     public Locale resolveDataLocale() {
         FacesContext context = getFacesContext();
         return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
@@ -941,16 +930,20 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected List<UIComponent> getIterableChildren() {
-        List<UIComponent> iterableChildren = new ArrayList<>(getChildCount());
+        if (isColumnGroupLegacyEnabled()) {
+            List<UIComponent> iterableChildren = new ArrayList<>(getChildCount());
 
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (!(child instanceof ColumnGroup)) {
-                iterableChildren.add(child);
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
+                if (!(child instanceof ColumnGroup)) {
+                    iterableChildren.add(child);
+                }
             }
+
+            return iterableChildren;
         }
 
-        return iterableChildren;
+        return getChildren();
     }
 
     public List<?> getFilteredValue() {
@@ -1234,5 +1227,23 @@ public class DataTable extends DataTableBase {
         }
 
         return value;
+    }
+
+    @Override
+    public List<UIColumn> collectColumns() {
+        if (!isColumnGroupLegacyEnabled()) {
+            List<UIColumn> columnsTmp = new ArrayList<>();
+            ForEachRowColumn.from(this).invoke(new RowColumnVisitor.Adapter() {
+
+                @Override
+                public void visitColumn(int index, UIColumn column) {
+                    columnsTmp.add(column);
+                }
+            });
+            columnsTmp.sort(ColumnComparators.displayOrder(getColumnMeta()));
+            return columnsTmp;
+        }
+
+        return super.collectColumns();
     }
 }

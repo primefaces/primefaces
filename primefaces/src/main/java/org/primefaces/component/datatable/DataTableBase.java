@@ -768,4 +768,5 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.selectAllFilteredOnly, selectAllFilteredOnly);
     }
 
+
 }

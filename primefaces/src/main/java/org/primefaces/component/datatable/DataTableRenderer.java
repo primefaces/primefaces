@@ -24,10 +24,7 @@
 package org.primefaces.component.datatable;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,8 +38,7 @@ import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.*;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -194,11 +190,11 @@ public class DataTableRenderer extends DataRenderer {
                     .attr("frozenColumns", table.getFrozenColumns(), 0)
                     .attr("liveScrollBuffer", table.getLiveScrollBuffer())
                     .attr("virtualScroll", table.isVirtualScroll())
-                    .attr("touchable", false,  true);
+                    .attr("touchable", false, true);
         }
         else {
             // only allow swipe if not scrollable
-            wb.attr("touchable", ComponentUtils.isTouchable(context, table),  true);
+            wb.attr("touchable", ComponentUtils.isTouchable(context, table), true);
         }
 
         //Resizable/Draggable Columns
@@ -483,10 +479,6 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeFrozenScrollableTable(FacesContext context, DataTable table, int frozenColumns) throws IOException {
-
-    }
-
     protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass,
                                          String tableStyle, String tableStyleClass) throws IOException {
 
@@ -584,6 +576,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     public void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        encodeColumnHeader(context, table, column, column.getRowspan(), column.getColspan());
+    }
+
+    public void encodeColumnHeader(FacesContext context, DataTable table, UIColumn column, int rowspan, int colspan) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -613,7 +609,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(filterable, DataTable.FILTER_COLUMN_CLASS)
                 .add(selectionMode != null, DataTable.SELECTION_COLUMN_CLASS)
                 .add(isGroupedColumn, DataTable.GROUPED_COLUMN_CLASS)
-                .add(resizable,  DataTable.RESIZABLE_COLUMN_CLASS)
+                .add(resizable, DataTable.RESIZABLE_COLUMN_CLASS)
                 .add(draggable, DataTable.DRAGGABLE_COLUMN_CLASS)
                 .add(!column.isToggleable(), DataTable.STATIC_COLUMN_CLASS)
                 .add(!columnVisible, DataTable.HIDDEN_COLUMN_CLASS)
@@ -659,11 +655,11 @@ public class DataTableRenderer extends DataRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        if (column.getRowspan() != 1) {
-            writer.writeAttribute("rowspan", column.getRowspan(), null);
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
         }
-        if (column.getColspan() != 1) {
-            writer.writeAttribute("colspan", column.getColspan(), null);
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
         }
 
         if (filterable) {
@@ -685,7 +681,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
+        if ("multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
             encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
@@ -705,8 +701,7 @@ public class DataTableRenderer extends DataRenderer {
         return sortIcon;
     }
 
-    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column,
-                SortMeta sortMeta) throws IOException {
+    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column, SortMeta sortMeta) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         UIComponent header = column.getFacet("header");
@@ -845,6 +840,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     public void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column) throws IOException {
+        encodeColumnFooter(context, table, column, column.getRowspan(), column.getColspan());
+    }
+
+    public void encodeColumnFooter(FacesContext context, DataTable table, UIColumn column, int rowspan, int colspan) throws IOException {
         if (!column.isRendered()) {
             return;
         }
@@ -877,11 +876,11 @@ public class DataTableRenderer extends DataRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        if (column.getRowspan() != 1) {
-            writer.writeAttribute("rowspan", column.getRowspan(), null);
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
         }
-        if (column.getColspan() != 1) {
-            writer.writeAttribute("colspan", column.getColspan(), null);
+        if (rowspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
         }
 
         //Footer content
@@ -910,23 +909,136 @@ public class DataTableRenderer extends DataRenderer {
                                String columnGroupType) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        List<UIColumn> columns = table.getColumns();
         String theadClientId = (theadId == null) ? table.getClientId(context) + "_head" : theadId;
-        String colGroupType = (columnGroupType == null) ? "header" : columnGroupType;
-        ColumnGroup group = table.getColumnGroup(colGroupType);
 
         writer.startElement("thead", null);
         writer.writeAttribute("id", theadClientId, null);
 
-        if (group != null && group.isRendered()) {
-            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
+        // macro optimization in case no column group present, to avoid deep tree traversal
+        // when building a 2D array columns representation while it's not really needed
+        boolean hasColumnGroup = ComponentUtils.hasChildOfType(table, ColumnGroup.class);
+        if (!hasColumnGroup) {
+            encodeColumnHeader(context, table, columnStart, columnEnd);
+        }
+        else if (table.isColumnGroupLegacyEnabled()) {
+            encodeColumnGroupHeadersLegacy(context, table, columnStart, columnEnd, columnGroupType);
+        }
+        else {
+            encodeColumnGroupHeaders(context, table, columnStart, columnEnd);
+        }
 
-            for (UIComponent child : group.getChildren()) {
-                if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row headerRow = (Row) child;
-                        String rowClass = headerRow.getStyleClass();
-                        String rowStyle = headerRow.getStyle();
+        writer.endElement("thead");
+    }
+
+    /**
+     * @Deprecated Use {@link DataTableRenderer#encodeColumnHeader} instead
+     */
+    @Deprecated
+    private void encodeColumnGroupHeadersLegacy(FacesContext context, DataTable table, int columnStart, int columnEnd, String columnGroupType)
+            throws IOException {
+        String colGroupType = (columnGroupType == null) ? "header" : columnGroupType;
+        ColumnGroup group = table.getColumnGroup(colGroupType);
+        if (group != null && group.isRendered()) {
+            encodeColumnGroupFacetLegacy(context, table, group, UIColumn.Facet.HEADER);
+        }
+        else {
+            encodeColumnHeader(context, table, columnStart, columnEnd);
+        }
+    }
+
+    protected void encodeColumnHeader(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("tr", null);
+
+        List<UIColumn> columns = table.getColumns();
+        for (int i = columnStart; i < columnEnd; i++) {
+            UIColumn column = columns.get(i);
+            if (column instanceof DynamicColumn) {
+                ((DynamicColumn) column).applyModel();
+            }
+            encodeColumnHeader(context, table, column);
+        }
+
+        writer.endElement("tr");
+    }
+
+    /**
+     * @Deprecated Use {@link DataTableRenderer#encodeColumnGroupHeader} instead
+     */
+    @Deprecated
+    protected void encodeColumnGroupFacetLegacy(FacesContext context, DataTable table, ColumnGroup group, UIColumn.Facet facetType) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
+
+        for (UIComponent child : group.getChildren()) {
+            if (child.isRendered()) {
+                if (child instanceof Row) {
+                    Row row = (Row) child;
+                    String rowClass = row.getStyleClass();
+                    String rowStyle = row.getStyle();
+
+                    writer.startElement("tr", null);
+                    if (rowClass != null) {
+                        writer.writeAttribute("class", rowClass, null);
+                    }
+                    if (rowStyle != null) {
+                        writer.writeAttribute("style", rowStyle, null);
+                    }
+
+                    for (UIComponent column : row.getChildren()) {
+                        if (column.isRendered()) {
+                            if (column instanceof Column) {
+                                if (facetType == UIColumn.Facet.HEADER) {
+                                    encodeColumnHeader(context, table, (Column) column);
+                                }
+                                else {
+                                    encodeColumnFooter(context, table, (UIColumn) column);
+                                }
+                            }
+                            else if (column instanceof Columns) {
+                                List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
+                                for (DynamicColumn dynaColumn : dynamicColumns) {
+                                    dynaColumn.applyModel();
+                                    if (facetType == UIColumn.Facet.HEADER) {
+                                        encodeColumnHeader(context, table, dynaColumn);
+                                    }
+                                    else {
+                                        encodeColumnFooter(context, table, dynaColumn);
+                                    }
+                                }
+                            }
+                            else {
+                                column.encodeAll(context);
+                            }
+                        }
+                    }
+
+                    writer.endElement("tr");
+                }
+                else {
+                    child.encodeAll(context);
+                }
+            }
+        }
+
+        context.getAttributes().remove(Constants.HELPER_RENDERER);
+    }
+
+    protected void encodeTFooter(FacesContext context, DataTable table, UIComponent tfooter, int columnStart, int columnEnd) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        ForEachRowColumn
+                .from(tfooter)
+                .columnStart(columnStart)
+                .columnEnd(columnEnd)
+                .invoke(new RowColumnVisitor.Adapter() {
+
+                    @Override
+                    public void visitRow(int index, Row row) throws IOException {
+                        // Row will have his own renderer once col group legacy gets removed
+                        String rowClass = row.getStyleClass();
+                        String rowStyle = row.getStyle();
 
                         writer.startElement("tr", null);
                         if (rowClass != null) {
@@ -935,50 +1047,105 @@ public class DataTableRenderer extends DataRenderer {
                         if (rowStyle != null) {
                             writer.writeAttribute("style", rowStyle, null);
                         }
-
-                        for (UIComponent headerRowChild : headerRow.getChildren()) {
-                            if (headerRowChild.isRendered()) {
-                                if (headerRowChild instanceof Column) {
-                                    encodeColumnHeader(context, table, (Column) headerRowChild);
-                                }
-                                else if (headerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) headerRowChild).getDynamicColumns();
-                                    for (DynamicColumn dynaColumn : dynamicColumns) {
-                                        dynaColumn.applyModel();
-                                        encodeColumnHeader(context, table, dynaColumn);
-                                    }
-                                }
-                                else {
-                                    headerRowChild.encodeAll(context);
-                                }
-                            }
-                        }
-
-                        writer.endElement("tr");
                     }
-                    else {
-                        child.encodeAll(context);
-                    }
-                }
-            }
 
-            context.getAttributes().remove(Constants.HELPER_RENDERER);
-        }
-        else {
+                    @Override
+                    public void visitColumn(int index, UIColumn column) throws IOException {
+                        encodeCell(context, table, column, false, false, index);
+                    }
+                });
+    }
+
+    protected void encodeColumnGroupHeaders(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        List<List<ColumnNode>> matrix = new ArrayList<>();
+
+//        UITable.flatTableColumns(ColumnNode.root(table), matrix, columnStart, columnEnd, o -> true);
+        UITable.treeColumnsTo2DArray(ColumnNode.root(table), matrix, columnStart, columnEnd);
+
+        int depth = matrix.size();
+        for (List<ColumnNode> rows : matrix) {
             writer.startElement("tr", null);
+            writer.writeAttribute("role", "row", null);
 
-            for (int i = columnStart; i < columnEnd; i++) {
-                UIColumn column = columns.get(i);
-                if (column instanceof DynamicColumn) {
-                    ((DynamicColumn) column).applyModel();
+            for (ColumnNode column : rows) {
+                if (column.getUiComp() instanceof UIColumn) {
+                    if (column.getUiComp() instanceof DynamicColumn) {
+                        ((DynamicColumn) column.getUiComp()).applyModel();
+                    }
+                    encodeColumnHeader(context, table, (UIColumn) column.getUiComp(), (depth - column.getLevel()) + 1, column.getColspan());
                 }
-                encodeColumnHeader(context, table, column);
+                else if (column.getUiComp() instanceof ColumnGroup) {
+                    encodeColumnGroupHeader(context, table, (ColumnGroup) column.getUiComp(), 1, column.getColspan());
+                }
             }
 
             writer.endElement("tr");
         }
+    }
 
-        writer.endElement("thead");
+    protected void encodeColumnFooters(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        List<UIColumn> columns = table.getColumns();
+        writer.startElement("tr", null);
+        writer.writeAttribute("role", "row", null);
+        for (int i = columnStart; i < columnEnd; i++) {
+            UIColumn column = columns.get(i);
+            if (column instanceof DynamicColumn) {
+                ((DynamicColumn) column).applyModel();
+            }
+
+            encodeColumnFooter(context, table, column);
+        }
+
+        writer.endElement("tr");
+    }
+
+    protected void encodeColumnGroupHeader(FacesContext context, DataTable table, ColumnGroup group, int rowspan, int colspan) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String columnClass = DataTable.COLUMN_HEADER_CLASS;
+        columnClass = group.getStyleClass() != null ? columnClass + " " + group.getStyleClass() : columnClass;
+        writer.startElement("th", group);
+        writer.writeAttribute("id", group.getClientId(context), null);
+        writer.writeAttribute("class", columnClass, null);
+        writer.writeAttribute("role", "columnheader", null);
+        writer.writeAttribute("scope", "col", null);
+
+        renderDynamicPassThruAttributes(context, group);
+
+        if (group.getStyle() != null) {
+            writer.writeAttribute("style", group.getStyle(), null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
+        }
+
+        UIComponent header = group.getFacet("header");
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
+
+        if (ComponentUtils.shouldRenderFacet(header)) {
+            header.encodeAll(context);
+        }
+        else {
+            String headerText = group.getHeaderText();
+            if (headerText != null) {
+                if (table.isEscapeText()) {
+                    writer.writeText(headerText, "headerText");
+                }
+                else {
+                    writer.write(headerText);
+                }
+            }
+        }
+
+        writer.endElement("span");
+        writer.endElement("th");
     }
 
     public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly) throws IOException {
@@ -1160,7 +1327,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(rowIndex % 2 == 0, DataTable.EVEN_ROW_CLASS, DataTable.ODD_ROW_CLASS)
                 .add(allowSelection, DataTable.SELECTABLE_ROW_CLASS)
                 .add(selected, "ui-state-highlight")
-                .add(table.isEditingRow(),  DataTable.EDITING_ROW_CLASS)
+                .add(table.isEditingRow(), DataTable.EDITING_ROW_CLASS)
                 .add(table.getRowStyleClass())
                 .add(expanded, DataTable.EXPANDED_ROW_CLASS)
                 .build();
@@ -1299,8 +1466,38 @@ public class DataTableRenderer extends DataRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        List<UIColumn> columns = table.getColumns();
+
         String tfootClientId = (tfootId == null) ? table.getClientId(context) + "_foot" : tfootId;
+
+        if (!table.isColumnGroupLegacyEnabled()) {
+            UIComponent tfooter = table.getFacet("tfooter");
+            boolean hasFooterColumn = table.hasFooterColumn();
+            if (tfooter == null && !hasFooterColumn) {
+                return;
+            }
+
+            writer.startElement("tfoot", null);
+            writer.writeAttribute("id", tfootClientId, null);
+            if (hasFooterColumn) {
+                encodeColumnFooters(context, table, columnStart, columnEnd);
+            }
+            if (tfooter != null) {
+                encodeTFooter(context, table, tfooter, columnStart, columnEnd);
+            }
+
+            writer.endElement("tfoot");
+        }
+        else {
+            encodeColumnFootersLegacy(context, table, columnStart, columnEnd, tfootClientId, columnGroupType);
+        }
+    }
+
+    @Deprecated
+    private void encodeColumnFootersLegacy(FacesContext context, DataTable table, int columnStart, int columnEnd, String tfootClientId, String columnGroupType)
+            throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        List<UIColumn> columns = table.getColumns();
+
         String colGroupType = (columnGroupType == null) ? "footer" : columnGroupType;
         ColumnGroup group = table.getColumnGroup(colGroupType);
         boolean hasFooterColumn = table.hasFooterColumn();
@@ -1314,70 +1511,23 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("id", tfootClientId, null);
 
         if (group != null && group.isRendered()) {
-            context.getAttributes().put(Constants.HELPER_RENDERER, "columnGroup");
-
-            for (UIComponent child : group.getChildren()) {
-                if (child.isRendered()) {
-                    if (child instanceof Row) {
-                        Row footerRow = (Row) child;
-                        String rowClass = footerRow.getStyleClass();
-                        String rowStyle = footerRow.getStyle();
-
-                        writer.startElement("tr", null);
-                        if (rowClass != null) {
-                            writer.writeAttribute("class", rowClass, null);
-                        }
-                        if (rowStyle != null) {
-                            writer.writeAttribute("style", rowStyle, null);
-                        }
-
-                        for (UIComponent footerRowChild : footerRow.getChildren()) {
-                            if (footerRowChild.isRendered()) {
-                                if (footerRowChild instanceof Column) {
-                                    encodeColumnFooter(context, table, (Column) footerRowChild);
-                                }
-                                else if (footerRowChild instanceof Columns) {
-                                    List<DynamicColumn> dynamicColumns = ((Columns) footerRowChild).getDynamicColumns();
-                                    for (DynamicColumn dynaColumn : dynamicColumns) {
-                                        dynaColumn.applyModel();
-                                        encodeColumnFooter(context, table, dynaColumn);
-                                    }
-                                }
-                                else {
-                                    footerRowChild.encodeAll(context);
-                                }
-                            }
-                        }
-                        writer.endElement("tr");
-                    }
-                    else {
-                        child.encodeAll(context);
-                    }
-                }
-            }
-
-            context.getAttributes().remove(Constants.HELPER_RENDERER);
+            encodeColumnGroupFacetLegacy(context, table, group, UIColumn.Facet.FOOTER);
         }
         else if (table.hasFooterColumn()) {
             writer.startElement("tr", null);
 
             for (int i = columnStart; i < columnEnd; i++) {
                 UIColumn column = columns.get(i);
-
-                if (column instanceof Column) {
-                    encodeColumnFooter(context, table, column);
-                }
-                else if (column instanceof DynamicColumn) {
+                if (column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
-
-                    encodeColumnFooter(context, table, dynamicColumn);
                 }
+
+                encodeColumnFooter(context, table, column);
             }
 
             writer.endElement("tr");
         }
-
         writer.endElement("tfoot");
     }
 
@@ -1422,10 +1572,10 @@ public class DataTableRenderer extends DataRenderer {
         else {
             String iconClass = checked ? HTML.RADIOBUTTON_CHECKED_ICON_CLASS : HTML.RADIOBUTTON_UNCHECKED_ICON_CLASS;
             String boxClass = getStyleClassBuilder(context)
-                        .add(HTML.RADIOBUTTON_BOX_CLASS)
-                        .add(disabled, "ui-state-disabled")
-                        .add(checked, "ui-state-active")
-                        .build();
+                    .add(HTML.RADIOBUTTON_BOX_CLASS)
+                    .add(disabled, "ui-state-disabled")
+                    .add(checked, "ui-state-active")
+                    .build();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", HTML.RADIOBUTTON_CLASS, null);
@@ -1475,10 +1625,10 @@ public class DataTableRenderer extends DataRenderer {
             String ariaRowLabel = table.getAriaRowLabel();
             Object rowKey = null;
             String boxClass = getStyleClassBuilder(context)
-                        .add(HTML.CHECKBOX_BOX_CLASS)
-                        .add(disabled, "ui-state-disabled")
-                        .add(checked, "ui-state-active")
-                        .build();
+                    .add(HTML.CHECKBOX_BOX_CLASS)
+                    .add(disabled, "ui-state-disabled")
+                    .add(checked, "ui-state-active")
+                    .build();
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
 
             if (isHeaderCheckbox) {

@@ -23,8 +23,6 @@
  */
 package org.primefaces.util;
 
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -34,7 +32,6 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -56,7 +53,7 @@ import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 public class ComponentUtils {
 
     public static final Set<VisitHint> VISIT_HINTS_SKIP_UNRENDERED = Collections.unmodifiableSet(
@@ -741,5 +738,30 @@ public class ComponentUtils {
     public static boolean isDisabledOrReadonly(UIInput component) {
         return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
                 || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+    }
+
+    /**
+     * Method to check if component is a UIInstruction
+     * Since {@link javax.faces.component.search.UntargetableComponent} is introduced in 2.3
+     * Check is based on class name
+     */
+    public static boolean isUntargetableComponent(UIComponent component) {
+        String clazz = component.getClass().getSimpleName();
+        return clazz.contains("UIInstructions") || clazz.contains("UILeaf");
+    }
+
+    public static boolean isTargetableComponent(UIComponent component) {
+        return !isUntargetableComponent(component);
+    }
+
+    public static <T extends UIComponent> boolean hasChildOfType(UIComponent parent, Class<T> clazz) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            UIComponent child = parent.getChildren().get(i);
+            if (child.isRendered() && child.getClass().isAssignableFrom(clazz)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

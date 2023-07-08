@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -43,19 +42,30 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.model.ColumnMeta;
+import org.primefaces.util.ColumnComparators;
 import org.primefaces.util.ComponentUtils;
 
 public interface ColumnAware {
 
+    /**
+     * Use {@link ForEachRowColumn#invoke(RowColumnVisitor)} instead
+     */
+    @Deprecated
     default void forEachColumn(Predicate<UIColumn> callback) {
         forEachColumn(true, true, false, callback);
     }
 
+    /**
+     * Use {@link ForEachRowColumn#invoke(RowColumnVisitor)} instead
+     */
+    @Deprecated
     default void forEachColumn(boolean unwrapDynamicColumns, boolean skipUnrendered, boolean skipColumnGroups, Predicate<UIColumn> callback) {
         forEachColumn(FacesContext.getCurrentInstance(), (UIComponent) this, unwrapDynamicColumns, skipUnrendered, skipColumnGroups, callback);
     }
 
     /**
+     * Use {@link ForEachRowColumn#invoke(RowColumnVisitor)} instead
+     *
      * NOTE: this is for internal usage only!
      *
      * @param context the {@link FacesContext}
@@ -67,6 +77,7 @@ public interface ColumnAware {
      * @param callback The callback, which will be invoked for each column. If it returns false, the algorithm will be cancelled
      * @return false when the algorithm was cancelled
      */
+    @Deprecated
     default boolean forEachColumn(FacesContext context, UIComponent root, boolean unwrapDynamicColumns, boolean skipUnrendered, boolean skipColumnGroups,
             Predicate<UIColumn> callback) {
         for (int i = 0; i < root.getChildCount(); i++) {
@@ -161,6 +172,7 @@ public interface ColumnAware {
      * @param callback The callback, which will be invoked for each row. If it returns false, the algorithm will be cancelled
      * @return false when the algorithm was cancelled
      */
+    @Deprecated
     default boolean forEachColumnGroupRow(FacesContext context, ColumnGroup cg, boolean skipUnrendered, Predicate<Row> callback) {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
@@ -238,6 +250,7 @@ public interface ColumnAware {
         return 0;
     }
 
+    @Deprecated
     default UIColumn findColumnInGroup(String columnKey, ColumnGroup group) {
         if (group == null) {
             return null;
@@ -268,6 +281,7 @@ public interface ColumnAware {
         return null;
     }
 
+    @Deprecated
     default ColumnGroup getColumnGroup(String type) {
         for (int i = 0; i < ((UIComponent) this).getChildCount(); i++) {
             UIComponent child = ((UIComponent) this).getChildren().get(i);
@@ -307,30 +321,7 @@ public interface ColumnAware {
         Map<String, ColumnMeta> columnMeta = getColumnMeta();
 
         // sort by displayOrder
-        columns.sort((c1, c2) -> {
-            if (c1 instanceof DynamicColumn) {
-                ((DynamicColumn) c1).applyStatelessModel();
-            }
-
-            Integer dp1 = c1.getDisplayPriority();
-            ColumnMeta cm1 = columnMeta.get(c1.getColumnKey());
-            if (cm1 != null && cm1.getDisplayPriority() != null) {
-                dp1 = cm1.getDisplayPriority();
-            }
-
-            if (c2 instanceof DynamicColumn) {
-                ((DynamicColumn) c2).applyStatelessModel();
-            }
-
-            Integer dp2 = c2.getDisplayPriority();
-            ColumnMeta cm2 = columnMeta.get(c2.getColumnKey());
-            if (cm2 != null && cm2.getDisplayPriority() != null) {
-                dp2 = cm2.getDisplayPriority();
-            }
-
-            return dp1.compareTo(dp2);
-        });
-
+        columns.sort(ColumnComparators.displayOrder(columnMeta));
         return columns;
     }
 
@@ -388,4 +379,5 @@ public interface ColumnAware {
                 .map(e -> e.getColumnKey())
                 .collect(Collectors.joining(","));
     }
+
 }

@@ -135,6 +135,17 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             }
         }
 
+        if (this.hasColGroup()) {
+            const frozenHeight = this.frozenThead.height();
+            const scrollHeight = this.scrollThead.height();
+
+            if (frozenHeight > scrollHeight) {
+                this.scrollThead.height(frozenHeight);
+            } else if (frozenHeight < scrollHeight) {
+                this.frozenThead.height(scrollHeight);
+            }
+        }
+
         this.scrollBody.on('scroll.datatable', function() {
             var scrollLeft = $this.scrollBody.scrollLeft(),
             scrollTop = $this.scrollBody.scrollTop();
@@ -898,7 +909,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
         var frozenFootRows = this.frozenTfoot.children();
         if (frozenFootRows.length > 0) {
             this.fixRowHeights(this.scrollTfoot.children(), frozenFootRows);
-            var scrollBarHeight = this.scrollContainer.height() - this.frozenContainer.height();
+            var scrollBarHeight = this.scrollBody.height() - this.frozenBodyTable.height();
             if (scrollBarHeight > 0) {
                 var browser = PrimeFaces.env.browser;
                 if (browser.webkit === true || browser.mozilla === true) {

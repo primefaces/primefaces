@@ -26,7 +26,6 @@ package org.primefaces.component.columns;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -104,7 +103,6 @@ public class Columns extends ColumnsBase {
     public List<DynamicColumn> getDynamicColumns() {
         if (dynamicColumns == null) {
             FacesContext context = getFacesContext();
-            setRowIndex(-1);
             dynamicColumns = new ArrayList<>(getRowCount());
 
             for (int i = 0; i < getRowCount(); i++) {

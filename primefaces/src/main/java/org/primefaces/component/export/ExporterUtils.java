@@ -39,6 +39,7 @@ import javax.faces.convert.Converter;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -200,6 +201,20 @@ public final class ExporterUtils {
         }
 
         return Objects.toString(textValue, Constants.EMPTY_STRING);
+    }
+
+    public static String getColumnFacetValue(FacesContext context, Object component, TableExporter.ColumnType columnType) {
+        if (component instanceof UIColumn) {
+            return getColumnFacetValue(context, (UIColumn) component, columnType);
+        }
+        else if (component instanceof ColumnGroup) {
+            ColumnGroup group = (ColumnGroup) component;
+            if (TableExporter.ColumnType.HEADER == columnType) {
+                return group.getHeaderText();
+            }
+        }
+
+        return Constants.EMPTY_STRING;
     }
 
     public static String getColumnExportTag(FacesContext context, UIColumn column) {
