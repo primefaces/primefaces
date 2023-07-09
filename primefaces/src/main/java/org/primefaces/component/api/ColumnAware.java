@@ -168,14 +168,14 @@ public interface ColumnAware {
             if (ComponentUtils.isUIRepeat(child)) {
                 VisitContext visitContext = VisitContext.createVisitContext(context, null,
                         ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-                return child.visitTree(visitContext, (ctx, target) -> {
+                child.visitTree(visitContext, (ctx, target) -> {
                     if (ComponentUtils.isUIRepeat(child)) {
                         return VisitResult.ACCEPT;
                     }
 
                     if (target instanceof Row) {
-                        Row column = (Row) target;
-                        if (!callback.test(column)) {
+                        Row row = (Row) target;
+                        if (!callback.test(row)) {
                             return VisitResult.COMPLETE;
                         }
                     }
@@ -183,16 +183,15 @@ public interface ColumnAware {
                     return VisitResult.REJECT;
                 });
             }
-            else if (!(child instanceof Row)) {
-                continue;
-            }
-            Row row = (Row) child;
-            if (skipUnrendered && !row.isRendered()) {
-                continue;
-            }
+            else if (child instanceof Row) {
+                Row row = (Row) child;
+                if (skipUnrendered && !row.isRendered()) {
+                    continue;
+                }
 
-            if (!callback.test(row)) {
-                return false;
+                if (!callback.test(row)) {
+                    return false;
+                }
             }
         }
         return true;
