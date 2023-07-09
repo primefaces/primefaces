@@ -88,24 +88,31 @@ For a full list of the available downloads, please visit the [download page](htt
   ```xml
   <!-- Java EE / javax.* / JSF 2.0 - JSF 2.3 -->
   <dependency>
-      <groupId>com.github.primefaces</groupId>
+      <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>master-SNAPSHOT</version>
+      <version>13.0.0-SNAPSHOT</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->
   <dependency>
-      <groupId>com.github.primefaces</groupId>
+      <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>master-SNAPSHOT</version>
+      <version>13.0.0-SNAPSHOT</version>
       <classifier>jakarta</classifier>
   </dependency>
 
   <repositories>
-      <repository>
-          <id>jitpack.io</id>
-          <url>https://jitpack.io</url>
-      </repository>
+    <repository>
+      <id>sonatype-snapshots</id>
+      <name>Sonatype Snapshot Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+          <enabled>false</enabled>
+      </releases>
+      <snapshots>
+          <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
   ```
 
