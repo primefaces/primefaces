@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -129,11 +128,11 @@ public interface ColumnAware {
                     }
                 }
             }
-            else if (child.getClass().getName().endsWith("UIRepeat")) {
+            else if (ComponentUtils.isUIRepeat(child)) {
                 VisitContext visitContext = VisitContext.createVisitContext(context, null,
                         ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
                 child.visitTree(visitContext, (ctx, target) -> {
-                    if (target.getClass().getName().endsWith("UIRepeat")) {
+                    if (ComponentUtils.isUIRepeat(target)) {
                         return VisitResult.ACCEPT;
                     }
 
