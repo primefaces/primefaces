@@ -164,17 +164,34 @@ public interface ColumnAware {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
         }
-        for (UIComponent component : cg.getChildren()) {
-            if (!(component instanceof Row)) {
-                continue;
-            }
-            Row row = (Row) component;
-            if (skipUnrendered && !row.isRendered()) {
-                continue;
-            }
+        for (UIComponent child : cg.getChildren()) {
+            if (ComponentUtils.isUIRepeat(child)) {
+                VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                        ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                child.visitTree(visitContext, (ctx, target) -> {
+                    if (ComponentUtils.isUIRepeat(child)) {
+                        return VisitResult.ACCEPT;
+                    }
 
-            if (!callback.test(row)) {
-                return false;
+                    if (target instanceof Row) {
+                        Row row = (Row) target;
+                        if (!callback.test(row)) {
+                            return VisitResult.COMPLETE;
+                        }
+                    }
+
+                    return VisitResult.REJECT;
+                });
+            }
+            else if (child instanceof Row) {
+                Row row = (Row) child;
+                if (skipUnrendered && !row.isRendered()) {
+                    continue;
+                }
+
+                if (!callback.test(row)) {
+                    return false;
+                }
             }
         }
         return true;
