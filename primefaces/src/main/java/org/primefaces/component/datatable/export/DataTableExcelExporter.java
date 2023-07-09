@@ -184,6 +184,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
             CellRangeAddress merged = sheet.getMergedRegion(j);
             if (merged.isInRange(row, col)) {
                 col = merged.getLastColumn() + 1;
+                return calculateColumnOffset(sheet, row, col);
             }
         }
         return col;
