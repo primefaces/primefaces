@@ -165,11 +165,11 @@ public interface ColumnAware {
             return false;
         }
         for (UIComponent child : cg.getChildren()) {
-            if (child.getClass().getName().endsWith("UIRepeat")) {
+            if (ComponentUtils.isUIRepeat(child)) {
                 VisitContext visitContext = VisitContext.createVisitContext(context, null,
                         ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
                 return child.visitTree(visitContext, (ctx, target) -> {
-                    if (target.getClass().getName().endsWith("UIRepeat")) {
+                    if (ComponentUtils.isUIRepeat(child)) {
                         return VisitResult.ACCEPT;
                     }
 
