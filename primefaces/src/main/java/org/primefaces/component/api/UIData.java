@@ -157,6 +157,14 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     @Override
+    public void setId(String id) {
+        super.setId(id);
+
+        //clear
+        clientId = null;
+    }
+    
+    @Override
     public String getContainerClientId(FacesContext context) {
         //clientId is without rowIndex
         String componentClientId = getClientId(context);
