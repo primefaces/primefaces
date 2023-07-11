@@ -23,10 +23,10 @@
  */
 package org.primefaces.component.dataview;
 
-import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIColumn;
 
 
-public abstract class DataViewGridItemBase extends UIComponentBase {
+public abstract class DataViewGridItemBase extends UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

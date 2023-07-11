@@ -175,9 +175,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
-        String containerClientId = sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
-
-        return containerClientId;
+        return sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
     }
 
     @Override
@@ -283,7 +281,7 @@ public class UIData extends javax.faces.component.UIData {
             for (int i = 0; i < iterableChildren.size(); i++) {
                 UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
-                    if (child instanceof Column) {
+                    if (child instanceof javax.faces.component.UIColumn) {
                         for (UIComponent grandkid : child.getChildren()) {
                             process(context, grandkid, phaseId);
                         }
