@@ -208,7 +208,7 @@ public class UIData extends javax.faces.component.UIData {
             for (int i = 0; i < iterableChildren.size(); i++) {
                 UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
-                    if (child instanceof Column) {
+                    if (child instanceof javax.faces.component.UIColumn) {
                         for (UIComponent grandkid : child.getChildren()) {
                             process(context, grandkid, phaseId);
                         }
