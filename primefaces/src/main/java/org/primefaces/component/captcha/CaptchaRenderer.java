@@ -25,7 +25,9 @@ package org.primefaces.component.captcha;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,7 +37,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
-
+    private static final Logger LOGGER = Logger.getLogger(CaptchaRenderer.class.getName());
     private static final String RESPONSE_FIELD = "g-recaptcha-response";
 
     @Override
@@ -101,6 +103,15 @@ public class CaptchaRenderer extends CoreRenderer {
     }
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {
-        return context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
+        String publicKey = context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
+        if (publicKey == null) {
+            return publicKey;
+        }
+        try {
+            return context.getApplication().evaluateExpressionGet(context, publicKey, String.class);
+        } catch (ELException e) {
+            LOGGER.fine(() -> "Error to process context parameter " + Captcha.PUBLIC_KEY + " as EL-expression: " + e.getMessage());
+            return publicKey;
+        }
     }
 }

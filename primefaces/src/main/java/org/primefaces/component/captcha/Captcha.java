@@ -30,7 +30,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.logging.Logger;
 
+import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
@@ -46,7 +48,7 @@ import org.primefaces.util.MessageFactory;
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
 public class Captcha extends CaptchaBase {
-
+    private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
 
     public static final String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
@@ -122,9 +124,16 @@ public class Captcha extends CaptchaBase {
 
     private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
         String privateKey = context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
+        try {
+            if (privateKey != null) {
+                privateKey = context.getApplication().evaluateExpressionGet(context, privateKey, String.class);
+            }
+        } catch (ELException e) {
+            LOGGER.fine(() -> "Error to process context parameter " + Captcha.PRIVATE_KEY + " as EL-expression: " + e.getMessage());
+        }
 
         if (privateKey == null) {
-            throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");
+            throw new FacesException("Cannot find private key for catpcha, use " + Captcha.PRIVATE_KEY + " context-param to define one");
         }
 
         StringBuilder postParams = new StringBuilder();
