@@ -131,7 +131,7 @@ public class Captcha extends CaptchaBase {
             }
         }
         catch (ELException e) {
-            LOGGER.fine(() -> "Error to process context parameter " + Captcha.PRIVATE_KEY + " as EL-expression: " + e.getMessage());
+            LOGGER.fine(() -> "Error processing context parameter " + Captcha.PRIVATE_KEY + " as EL-expression: " + e.getMessage());
         }
 
         if (privateKey == null) {
