@@ -48,6 +48,7 @@ import org.primefaces.util.MessageFactory;
 @ResourceDependency(library = "primefaces", name = "components.js")
 @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
 public class Captcha extends CaptchaBase {
+
     private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
 
@@ -128,7 +129,8 @@ public class Captcha extends CaptchaBase {
             if (privateKey != null) {
                 privateKey = context.getApplication().evaluateExpressionGet(context, privateKey, String.class);
             }
-        } catch (ELException e) {
+        }
+        catch (ELException e) {
             LOGGER.fine(() -> "Error to process context parameter " + Captcha.PRIVATE_KEY + " as EL-expression: " + e.getMessage());
         }
 

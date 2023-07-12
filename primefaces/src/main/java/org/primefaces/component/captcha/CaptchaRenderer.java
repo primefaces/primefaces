@@ -37,6 +37,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
+
     private static final Logger LOGGER = Logger.getLogger(CaptchaRenderer.class.getName());
     private static final String RESPONSE_FIELD = "g-recaptcha-response";
 
@@ -109,7 +110,8 @@ public class CaptchaRenderer extends CoreRenderer {
         }
         try {
             return context.getApplication().evaluateExpressionGet(context, publicKey, String.class);
-        } catch (ELException e) {
+        }
+        catch (ELException e) {
             LOGGER.fine(() -> "Error to process context parameter " + Captcha.PUBLIC_KEY + " as EL-expression: " + e.getMessage());
             return publicKey;
         }
