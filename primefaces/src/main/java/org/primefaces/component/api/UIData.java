@@ -296,9 +296,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
-        String containerClientId = sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
-
-        return containerClientId;
+        return  sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
     }
 
     @Override
