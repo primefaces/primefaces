@@ -121,8 +121,7 @@ public class Captcha extends CaptchaBase {
     }
 
     private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
-        String privateKey = context.getApplication().evaluateExpressionGet(context,
-                context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
+        String privateKey = context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
 
         if (privateKey == null) {
             throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");
