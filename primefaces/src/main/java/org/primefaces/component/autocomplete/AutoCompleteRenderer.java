@@ -530,6 +530,10 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, Object items, Converter converter) throws IOException {
+        // do not render table if empty message and there are no records
+        if (LangUtils.isNotBlank(ac.getEmptyMessage()) && (items == null || ((Collection) items).isEmpty())) {
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
         String var = ac.getVar();
         boolean pojo = var != null;
