@@ -23,9 +23,6 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -40,6 +37,9 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Logger;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -59,14 +59,14 @@ public class UIData extends javax.faces.component.UIData {
 
     private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
     private static final String SB_ID = UIData.class.getName() + "#id";
-    private String clientId;
 
+    private String clientId;
     private Object oldVar;
 
     public enum PropertyKeys {
         rowIndex,
         rowIndexVar,
-        lazy
+        lazy,
     }
 
     public boolean isLazy() {
@@ -103,79 +103,6 @@ public class UIData extends javax.faces.component.UIData {
 
     public void setRowIndexVar(String rowIndexVar) {
         getStateHelper().put(PropertyKeys.rowIndexVar, rowIndexVar);
-    }
-
-    @Override
-    public String getClientId(FacesContext context) {
-        if (clientId != null) {
-            return clientId;
-        }
-
-        String id = getId();
-        if (id == null) {
-            UniqueIdVendor parentUniqueIdVendor = ComponentTraversalUtils.closestUniqueIdVendor(this);
-
-            if (parentUniqueIdVendor == null) {
-                UIViewRoot viewRoot = context.getViewRoot();
-
-                if (viewRoot != null) {
-                    id = viewRoot.createUniqueId();
-                }
-                else {
-                    throw new FacesException("Cannot create clientId for " + getClass().getCanonicalName());
-                }
-            }
-            else {
-                id = parentUniqueIdVendor.createUniqueId(context, null);
-            }
-
-            setId(id);
-        }
-
-        UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
-        if (namingContainer != null) {
-            String containerClientId = namingContainer.getContainerClientId(context);
-
-            if (containerClientId != null) {
-                StringBuilder sb = SharedStringBuilder.get(context, SB_ID, containerClientId.length() + 10);
-                clientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
-            }
-            else {
-                clientId = id;
-            }
-        }
-        else {
-            clientId = id;
-        }
-
-        Renderer renderer = getRenderer(context);
-        if (renderer != null) {
-            clientId = renderer.convertClientId(context, clientId);
-        }
-
-        return clientId;
-    }
-
-    @Override
-    public void setId(String id) {
-        super.setId(id);
-
-        //clear
-        clientId = null;
-    }
-    
-    @Override
-    public String getContainerClientId(FacesContext context) {
-        //clientId is without rowIndex
-        String componentClientId = getClientId(context);
-
-        int rowIndex = getRowIndex();
-        if (rowIndex == -1) {
-            return componentClientId;
-        }
-
-        StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
-        return sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
     }
 
     @Override
@@ -281,7 +208,7 @@ public class UIData extends javax.faces.component.UIData {
             for (int i = 0; i < iterableChildren.size(); i++) {
                 UIComponent child = iterableChildren.get(i);
                 if (child.isRendered()) {
-                    if (child instanceof javax.faces.component.UIColumn) {
+                    if (child instanceof Column) {
                         for (UIComponent grandkid : child.getChildren()) {
                             process(context, grandkid, phaseId);
                         }
@@ -304,6 +231,82 @@ public class UIData extends javax.faces.component.UIData {
         else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
             component.processUpdates(context);
         }
+
+    }
+
+    @Override
+    public String getClientId(FacesContext context) {
+        if (clientId != null) {
+            return clientId;
+        }
+
+        String id = getId();
+        if (id == null) {
+            UniqueIdVendor parentUniqueIdVendor = ComponentTraversalUtils.closestUniqueIdVendor(this);
+
+            if (parentUniqueIdVendor == null) {
+                UIViewRoot viewRoot = context.getViewRoot();
+
+                if (viewRoot != null) {
+                    id = viewRoot.createUniqueId();
+                }
+                else {
+                    throw new FacesException("Cannot create clientId for " + getClass().getCanonicalName());
+                }
+            }
+            else {
+                id = parentUniqueIdVendor.createUniqueId(context, null);
+            }
+
+            setId(id);
+        }
+
+        UIComponent namingContainer = ComponentTraversalUtils.closestNamingContainer(this);
+        if (namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+
+            if (containerClientId != null) {
+                StringBuilder sb = SharedStringBuilder.get(context, SB_ID, containerClientId.length() + 10);
+                clientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+            }
+            else {
+                clientId = id;
+            }
+        }
+        else {
+            clientId = id;
+        }
+
+        Renderer renderer = getRenderer(context);
+        if (renderer != null) {
+            clientId = renderer.convertClientId(context, clientId);
+        }
+
+        return clientId;
+    }
+
+    @Override
+    public String getContainerClientId(FacesContext context) {
+        //clientId is without rowIndex
+        String componentClientId = getClientId(context);
+
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1) {
+            return componentClientId;
+        }
+
+        StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
+        String containerClientId = sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
+
+        return containerClientId;
+    }
+
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+
+        //clear
+        clientId = null;
     }
 
     public void setRowModel(int rowIndex) {
@@ -617,19 +620,19 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void preDecode(FacesContext context) {
-
+        // NOOP
     }
 
     protected void preValidate(FacesContext context) {
-
+        // NOOP
     }
 
     protected void preUpdate(FacesContext context) {
-
+        // NOOP
     }
 
     protected void preEncode(FacesContext context) {
-
+        // NOOP
     }
 
     @Override
