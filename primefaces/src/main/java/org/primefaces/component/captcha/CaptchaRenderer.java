@@ -112,7 +112,7 @@ public class CaptchaRenderer extends CoreRenderer {
             return context.getApplication().evaluateExpressionGet(context, publicKey, String.class);
         }
         catch (ELException e) {
-            LOGGER.fine(() -> "Error to process context parameter " + Captcha.PUBLIC_KEY + " as EL-expression: " + e.getMessage());
+            LOGGER.fine(() -> "Error processing context parameter " + Captcha.PUBLIC_KEY + " as EL-expression: " + e.getMessage());
             return publicKey;
         }
     }
