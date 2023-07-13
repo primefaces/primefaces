@@ -8703,7 +8703,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add none.]]>
+                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), and none.]]>
             </description>
             <name>rowSelectMode</name>
             <required>false</required>
@@ -9024,7 +9024,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to show the select all checkbox inside the column's header.]]>
+                <![CDATA[Whether to show the select all checkbox inside the column's header. Default is true.]]>
             </description>
             <name>showSelectAll</name>
             <required>false</required>
