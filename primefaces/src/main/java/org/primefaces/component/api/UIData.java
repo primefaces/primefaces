@@ -64,7 +64,6 @@ public class UIData extends javax.faces.component.UIData {
     private Object oldVar;
 
     public enum PropertyKeys {
-        rowIndex,
         rowIndexVar,
         lazy,
     }
@@ -296,7 +295,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         StringBuilder sb = SharedStringBuilder.get(context, SB_ID, componentClientId.length() + 4);
-        return  sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
+        return sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
     }
 
     @Override
