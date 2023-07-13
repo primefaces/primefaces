@@ -49,12 +49,13 @@ import org.primefaces.util.MessageFactory;
 @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
 public class Captcha extends CaptchaBase {
 
-    private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
 
     public static final String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
     public static final String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
     public static final String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
+
+    private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
 
     @Override
     protected void validateValue(FacesContext context, Object value) {
