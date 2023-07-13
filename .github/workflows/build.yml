@@ -39,7 +39,7 @@ jobs:
       fail-fast: false
       matrix:
         java: [8]
-        facesimpl: [ 'myfaces-2.2' ]
+        facesimpl: [ 'myfaces-2.2', 'mojarra-2.2' ]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.java }}
