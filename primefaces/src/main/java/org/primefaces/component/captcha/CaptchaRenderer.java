@@ -62,7 +62,7 @@ public class CaptchaRenderer extends CoreRenderer {
         String publicKey = getPublicKey(context, captcha);
 
         if (publicKey == null) {
-            throw new FacesException("Cannot find public key for catpcha, use primefaces.PUBLIC_CAPTCHA_KEY context-param to define one");
+            throw new FacesException("Cannot find public key for catpcha, use " + Captcha.PUBLIC_KEY + " context-param to define one");
         }
 
         encodeMarkup(context, captcha, publicKey);
@@ -105,15 +105,14 @@ public class CaptchaRenderer extends CoreRenderer {
 
     protected String getPublicKey(FacesContext context, Captcha captcha) {
         String publicKey = context.getExternalContext().getInitParameter(Captcha.PUBLIC_KEY);
-        if (publicKey == null) {
-            return publicKey;
-        }
         try {
-            return context.getApplication().evaluateExpressionGet(context, publicKey, String.class);
+            if (publicKey != null) {
+                publicKey = context.getApplication().evaluateExpressionGet(context, publicKey, String.class);
+            }
         }
         catch (ELException e) {
             LOGGER.fine(() -> "Error processing context parameter " + Captcha.PUBLIC_KEY + " as EL-expression: " + e.getMessage());
-            return publicKey;
         }
+        return publicKey;
     }
 }
