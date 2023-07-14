@@ -23,6 +23,9 @@
  */
 package org.primefaces.component.api;
 
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -37,9 +40,6 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Logger;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -75,7 +75,7 @@ public class UIData extends javax.faces.component.UIData {
             // if not set by xhtml, we need to check the type of the value binding
             Class<?> type = ELUtils.getType(getFacesContext(),
                     getValueExpression("value"),
-                    () -> getValue());
+                    this::getValue);
             if (type == null) {
                 LOGGER.warning("Unable to automatically determine the `lazy` attribute, fallback to false. "
                         + "Either define the `lazy` attribute on the component or make sure the `value` attribute doesn't resolve to `null`. "
@@ -233,6 +233,9 @@ public class UIData extends javax.faces.component.UIData {
 
     }
 
+    /**
+     * From MyFaces
+     */
     @Override
     public String getClientId(FacesContext context) {
         if (clientId != null) {
@@ -284,6 +287,9 @@ public class UIData extends javax.faces.component.UIData {
         return clientId;
     }
 
+    /**
+     * From MyFaces
+     */
     @Override
     public String getContainerClientId(FacesContext context) {
         //clientId is without rowIndex
@@ -306,9 +312,11 @@ public class UIData extends javax.faces.component.UIData {
         clientId = null;
     }
 
+    /**
+     * lightweight version of {@link UIData#setRowIndex(int)} which does not save/restore descendant state
+     */
     public void setRowModel(int rowIndex) {
         //update rowIndex
-        getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
         getDataModel().setRowIndex(rowIndex);
 
         //clear datamodel
