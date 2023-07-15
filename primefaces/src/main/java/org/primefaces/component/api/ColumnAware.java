@@ -313,7 +313,10 @@ public interface ColumnAware {
             }
             else if (child instanceof Columns) {
                 Columns uiColumns = (Columns) child;
-                columns.addAll(uiColumns.getDynamicColumns());
+                for (int j = 0; j < uiColumns.getRowCount(); j++) {
+                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
+                    columns.add(dynaColumn);
+                }
             }
         }
 
