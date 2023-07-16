@@ -1074,8 +1074,6 @@ public class DataTableRenderer extends DataRenderer {
         boolean encodeSummaryRow = (summaryRow != null && sort != null);
 
         for (int i = first; i < last; i++) {
-            table.resetDynamicColumns();
-
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {
                 break;

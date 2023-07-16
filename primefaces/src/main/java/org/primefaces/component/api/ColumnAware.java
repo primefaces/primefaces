@@ -313,10 +313,7 @@ public interface ColumnAware {
             }
             else if (child instanceof Columns) {
                 Columns uiColumns = (Columns) child;
-                for (int j = 0; j < uiColumns.getRowCount(); j++) {
-                    DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
-                    columns.add(dynaColumn);
-                }
+                columns.addAll(uiColumns.getDynamicColumns());
             }
         }
 
@@ -388,6 +385,7 @@ public interface ColumnAware {
         forEachColumn(false, false, false, column ->  {
             if (column instanceof Columns) {
                 ((Columns) column).setRowIndex(-1);
+                ((Columns) column).setDynamicColumns(null);
                 setColumns(null);
             }
             return true;
