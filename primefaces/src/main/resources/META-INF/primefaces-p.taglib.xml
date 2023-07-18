@@ -19847,7 +19847,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
+                <![CDATA[Displays data in a 'tabular' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
             </description>
             <name>layout</name>
             <required>false</required>
