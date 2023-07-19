@@ -610,7 +610,6 @@ public class AppMenu {
         terminalCommandMenuItems.add(new MenuItem("Autocomplete", "/ui/misc/terminal/autocomplete"));
         miscMenuItems.add(new MenuItem("Terminal", terminalCommandMenuItems));
 
-        miscMenuItems.add(new MenuItem("Watermark", "/ui/misc/watermark"));
         menuCategories.add(new MenuCategory("Misc", miscMenuItems));
         //MISC CATEGORY END
 
