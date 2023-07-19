@@ -37,7 +37,7 @@ What does that mean?
 
 Version | Binary | Source | JSF version | Java version | Documentation
 ------------ | -------------  | ------------- | ------------- | ------------- | ------------- |
-13.0.0-RC2| [primefaces-13.0.0-RC2.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.0-RC2/primefaces-13.0.0-RC2.jar)  | [primefaces-13.0.0-RC2-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.0-RC2/primefaces-13.0.0-RC2-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [13.0.0 Documentation](https://primefaces.github.io/primefaces/13_0_0/#/)
+13.0.0| [primefaces-13.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.0/primefaces-13.0.0.jar)  | [primefaces-13.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/13.0.0/primefaces-13.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [13.0.0 Documentation](https://primefaces.github.io/primefaces/13_0_0/#/)
 12.0.0| [primefaces-12.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0.jar)  | [primefaces-12.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/12.0.0/primefaces-12.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [12.0.0 Documentation](https://primefaces.github.io/primefaces/12_0_0/#/)
 11.0.0| [primefaces-11.0.0.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0.jar)  | [primefaces-11.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/11.0.0/primefaces-11.0.0-sources.jar) | 2.0 - 4.0 | 1.8 - ? | [11.0.0 Documentation](https://primefaces.github.io/primefaces/11_0_0/#/)
 
@@ -71,14 +71,14 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>12.0.0</version>
+      <version>13.0.0</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->	
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>12.0.0</version>
+      <version>13.0.0</version>
       <classifier>jakarta</classifier>
   </dependency>
   ```
@@ -90,14 +90,14 @@ For a full list of the available downloads, please visit the [download page](htt
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>13.0.0-SNAPSHOT</version>
+      <version>14.0.0-SNAPSHOT</version>
   </dependency>
 
   <!-- Jakarta EE / jakarta.* / Faces 3.0 - Faces 4.0  -->
   <dependency>
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
-      <version>13.0.0-SNAPSHOT</version>
+      <version>14.0.0-SNAPSHOT</version>
       <classifier>jakarta</classifier>
   </dependency>
 
@@ -152,9 +152,9 @@ Visit the [contribution](./CONTRIBUTING.md) page for detailed information.
 
 ### Release Instructions
 ***
-- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=11.0.0` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=14.0.0` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `11.0.0` to tag this release
+- In GitHub create a new Release titled `14.0.0` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
 - Rename Milestone in GitHub Issues and close it
 - Create a new Milestone
