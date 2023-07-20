@@ -44,6 +44,10 @@
     cursor: default;
 }
 
+.ui-tree .ui-tree-container .ui-treenode .ui-treenode-content * {
+    flex: none;
+}
+
 .ui-tree .ui-tree-selectable .ui-treenode-content {
     cursor: pointer;
 }
