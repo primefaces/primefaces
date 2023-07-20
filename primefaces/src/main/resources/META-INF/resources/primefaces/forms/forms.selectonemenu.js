@@ -327,7 +327,12 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.jq.removeClass('ui-state-hover');
             $this.menuIcon.removeClass('ui-state-hover');
-            $this.focusInput ? $this.focusInput.trigger('focus.ui-selectonemenu') : null;
+            if ($this.focusInput) {
+                $this.focusInput.trigger('focus.ui-selectonemenu')
+            }
+            else if ($(e.currentTarget).hasClass('ui-selectonemenu-trigger')) {
+                $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+            }
             e.preventDefault();
             e.stopPropagation();
         });
