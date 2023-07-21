@@ -664,15 +664,16 @@ public class DataTable extends DataTableBase {
         getStateHelper().put(InternalPropertyKeys.selectAll, selectAll);
     }
 
-    public SummaryRow getSummaryRow() {
+    public List<SummaryRow> getSummaryRows() {
+        List<SummaryRow> sumRows = new ArrayList<>(3);
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent kid = getChildren().get(i);
             if (kid.isRendered() && kid instanceof SummaryRow) {
-                return (SummaryRow) kid;
+                sumRows.add((SummaryRow) kid);
             }
         }
 
-        return null;
+        return sumRows;
     }
 
     @Override
