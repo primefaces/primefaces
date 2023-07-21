@@ -206,7 +206,20 @@ public class ImageCropperRenderer extends CoreRenderer {
             String format = guessImageFormat(stream.getContentType(), stream.getName());
             ImageIO.write(cropped, format, croppedOutImage);
 
-            return new CroppedImage(cropper.getImage().toString(), croppedOutImage.toByteArray(), x, y, w, h);
+            Object imageObject = cropper.getImage();
+            String originalFileName;
+            if (imageObject instanceof String) {
+                originalFileName = (String) imageObject;
+            }
+            else if (imageObject instanceof StreamedContent) {
+                StreamedContent streamedContentTmp = (StreamedContent) imageObject;
+                originalFileName = streamedContentTmp.getName();
+            }
+            else {
+                throw new IllegalArgumentException("ImageCropper 'image' must be either a String relative path or a StreamedObject.");
+            }
+
+            return new CroppedImage(originalFileName, croppedOutImage.toByteArray(), x, y, w, h);
         }
         catch (IOException e) {
             throw new ConverterException(e);
@@ -291,7 +304,7 @@ public class ImageCropperRenderer extends CoreRenderer {
                 contentType = streamedContentTmp.getContentType();
             }
             else {
-                throw new IllegalArgumentException("'image' must be either an String relative path or a StreamedObject.");
+                throw new IllegalArgumentException("ImageCropper 'image' must be either a String relative path or a StreamedObject.");
             }
         }
 
