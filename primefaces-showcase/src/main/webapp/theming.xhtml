@@ -83,7 +83,8 @@ sass --update themes/mytheme/theme.scss:themes/mytheme/theme.css
 
             <h6>Apply Theme</h6>
 
-            <p>Copy and import the theme.css file in your application to <i>WEB-INF/resources/mycooltheme/theme.css</i> and set the <i>primefaces.THEME</i> context parameter.</p>
+            <p>Copy and import the theme.css file in your application to <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> and set the <i>primefaces.THEME</i> context parameter. The <i>primefaces-</i> prefix
+            is required to distinguish the resources as a theme.</p>
     
 <pre><code class="language-xml">
     &lt;context-param&gt;
@@ -93,7 +94,7 @@ sass --update themes/mytheme/theme.scss:themes/mytheme/theme.css
         
 </code></pre>
 
-            <p>If you'd like to package the theme in a jar file for reuse it in more projects, the location of the theme should be at the <i>WEB-INF/resources/mycooltheme/theme.css</i> path folder inside a jar.</p>
+            <p>If you'd like to package the theme in a jar file for reuse it in more projects, the location of the theme should be at the <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> path folder inside a jar.</p>
         </div>
     </ui:define>
     
