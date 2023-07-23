@@ -71,10 +71,10 @@ public class AppMenu {
 
         //THEMING CATEGORY START
         List<MenuItem> themingMenuItems = new ArrayList<>();
-        themingMenuItems.add(new MenuItem("Introduction", "/theming"));
-        themingMenuItems.add(new MenuItem("Theme Designer", "https://www.primefaces.org/designer/primefaces"));
+        themingMenuItems.add(new MenuItem("Overview", "/theming"));
         themingMenuItems.add(new MenuItem("Visual Editor", "https://www.primefaces.org/designer-jsf"));
-        themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/10.0.0/"));
+        themingMenuItems.add(new MenuItem("Colors", "/colors"));
+        themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/13.0.0/"));
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
