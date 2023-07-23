@@ -1065,13 +1065,13 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeRows(FacesContext context, DataTable table, int first, int last, int columnStart, int columnEnd) throws IOException {
         String clientId = table.getClientId(context);
-        SummaryRow summaryRow = table.getSummaryRow();
+        List<SummaryRow> summaryRows = table.getSummaryRows();
         HeaderRow headerRow = table.getHeaderRow();
         ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
-        boolean encodeSummaryRow = (summaryRow != null && sort != null);
+        boolean encodeSummaryRow = (!summaryRows.isEmpty() && sort != null);
 
         for (int i = first; i < last; i++) {
             table.resetDynamicColumns();
@@ -1093,7 +1093,7 @@ public class DataTableRenderer extends DataRenderer {
 
             if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
                 table.setRowIndex(i);
-                encodeSummaryRow(context, summaryRow, sort);
+                encodeSummaryRow(context, summaryRows, sort);
             }
         }
     }
@@ -1118,13 +1118,16 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tbody");
     }
 
-    protected void encodeSummaryRow(FacesContext context, SummaryRow summaryRow, SortMeta sort) throws IOException {
-        MethodExpression me = summaryRow.getListener();
-        if (me != null) {
-            me.invoke(context.getELContext(), new Object[]{sort.getSortBy()});
-        }
+    protected void encodeSummaryRow(FacesContext context, List<SummaryRow> summaryRows, SortMeta sort) throws IOException {
+        for (int i = 0; i < summaryRows.size(); i++) {
+            SummaryRow summaryRow = summaryRows.get(i);
+            MethodExpression me = summaryRow.getListener();
+            if (me != null) {
+                me.invoke(context.getELContext(), new Object[]{sort.getSortBy()});
+            }
 
-        summaryRow.encodeAll(context);
+            summaryRow.encodeAll(context);
+        }
     }
 
     protected void encodeHeaderRow(FacesContext context, DataTable table, HeaderRow headerRow) throws IOException {
