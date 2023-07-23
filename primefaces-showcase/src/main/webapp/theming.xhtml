@@ -75,15 +75,15 @@
                 <i>theme.scss</i> file imports the theme files along with the <i>theme-base</i> folder at the root to combine everything together. Next step would be compilation of the scss that can either be command line or within your project with a maven plugin.
             </p>
 
-            <p>Once your theme is ready run the following command at the root of the <i>primefaces-sass-theme </i>project to compile it as css. Note that <a href="https://www.npmjs.com/package/sass">sass</a> command should be available in your terminal.</p>
+            <p>Once your theme is ready run the following command at the root of the <i>primefaces-sass-theme </i>project to compile it as css.</p>
 <pre><code class="language-xml">
-sass --update themes/mytheme/theme.scss:themes/mytheme/theme.css
+mvn dart-sass:compile-sass
         
     </code></pre>
 
             <h6>Apply Theme</h6>
 
-            <p>Copy and import the theme.css file in your application to <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> and set the <i>primefaces.THEME</i> context parameter. The <i>primefaces-</i> prefix
+            <p>Give a name to your theme e.g. <i>mycooltheme</i> then copy and import the generated theme.css file in your application to <i>WEB-INF/resources/primefaces-mycooltheme/theme.css</i> and finally set the <i>primefaces.THEME</i> context parameter. The <i>primefaces-</i> prefix
             is required to distinguish the resources as a theme.</p>
     
 <pre><code class="language-xml">
