@@ -218,6 +218,10 @@ public class ImageCropperRenderer extends CoreRenderer {
             else {
                 throw new IllegalArgumentException("ImageCropper 'image' must be either a String relative path or a StreamedObject.");
             }
+            if (LangUtils.isBlank(originalFileName)) {
+                // most likely stream.getName was not set by user
+                originalFileName = "unknown." + format;
+            }
 
             return new CroppedImage(originalFileName, croppedOutImage.toByteArray(), x, y, w, h);
         }

@@ -69,7 +69,7 @@ about the crop process. Following table describes CroppedImage properties.
 
 | Property | Type | Description
 | --- | --- | --- |
-originalFileName | String | Name of the original file that’s cropped
+originalFileName | String | Name of the original file that’s cropped. If using StreamedContent it will be the name set on the stream or `unknown.png` if NULL.
 bytes | byte[] | Contents of the cropped area as a byte array
 left | int | Left coordinate
 right | int | Right coordinate
