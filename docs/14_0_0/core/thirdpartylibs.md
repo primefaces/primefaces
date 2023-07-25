@@ -9,7 +9,7 @@ are many other third party libraries and plugins used to support features.
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.9.1 | https://www.chartjs.org |
 | [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.19.0 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
-| [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.6 | https://github.com/fengyuanchen/cropperjs |
+| [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.13 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.11.3 | https://fullcalendar.io/ |
 | [Idle Timer](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#idleTimer) | 1.1.0 - 2016-03-21 | https://github.com/thorst/jquery-idletimer |
