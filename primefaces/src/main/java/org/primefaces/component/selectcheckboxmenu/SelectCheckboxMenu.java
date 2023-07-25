@@ -98,6 +98,26 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
         return DEFAULT_EVENT;
     }
 
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + "_focus";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext());
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
+
     public List<Column> getColumns() {
         List<Column> columns = new ArrayList<>();
 
