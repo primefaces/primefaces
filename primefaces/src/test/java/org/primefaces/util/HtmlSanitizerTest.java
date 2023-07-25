@@ -33,7 +33,11 @@ public class HtmlSanitizerTest {
         String value = "<p><a href=\"https://www.primefaces.org\" target=\"_blank\">Link</a> <strong>bold </strong>"
                 + "<span class=\"ql-font-monospace\">monospace</span> <span class=\"ql-size-huge\">huge </span>"
                 + "<span class=\"ql-font-serif ql-size-small\">small serif </span><span style=\"color: rgb(230, 0, 0);\">red </span>"
-                + "<span style=\"background-color: rgb(255, 255, 0);\">yellow </span>x<sup>2</sup> <img src=\"data:image/png;base64,COFFEE\" /></p>";
+                + "<span style=\"background-color: rgb(255, 255, 0);\">yellow </span>x<sup>2</sup> <img src=\"data:image/png;base64,COFFEE\" /></p>"
+                + "<p><strong class=\"ql-size-huge\"><em><s><u>f</u></s></em></strong></p>"
+                + "<p><em class=\"ql-size-huge\"><s><u>f</u></s></em></p>"
+                + "<p><s class=\"ql-size-huge\"><u>f</u></s></p>"
+                + "<p><u class=\"ql-size-huge\">f</u></p>";
         String sanitized = HtmlSanitizer.sanitizeHtml(value, true, true, true, true, true);
         Assertions.assertTrue(sanitized.contains("<a href") && sanitized.contains("target="));
         Assertions.assertTrue(sanitized.contains("<strong>bold"));
@@ -41,6 +45,10 @@ public class HtmlSanitizerTest {
         Assertions.assertTrue(sanitized.contains("<span style=\"background"));
         Assertions.assertTrue(sanitized.contains("<sup>2"));
         Assertions.assertTrue(sanitized.contains("<img") && sanitized.contains("COFFEE"));
+        Assertions.assertTrue(sanitized.contains("<strong class=\"ql-size-huge\"><em><s><u>f</u></s></em></strong>"));
+        Assertions.assertTrue(sanitized.contains("<em class=\"ql-size-huge\"><s><u>f</u></s></em>"));
+        Assertions.assertTrue(sanitized.contains("<s class=\"ql-size-huge\"><u>f</u></s>"));
+        Assertions.assertTrue(sanitized.contains("<u class=\"ql-size-huge\">f</u>"));
     }
 
     @Test
