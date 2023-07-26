@@ -708,6 +708,22 @@
             var selector = ':not(:submit):not(:button):input:visible:enabled[name], a:first';
 
             setTimeout(function() {
+                var focusFirstElement = function(elements) {
+                    if (!elements || elements.length === 0) {
+                        return;
+                    }
+                    
+                    // first element could be the dialog close button
+                    var firstElement = elements.eq(0);
+                    // loop over elements looking for an input
+                    var inputs = elements.filter(":input");
+                    if (inputs.length > 0) {
+                        firstElement = inputs.eq(0);
+                    }
+                    
+                    PrimeFaces.focusElement(firstElement);
+                };
+            
                 if(id) {
                     var jq = $(PrimeFaces.escapeClientId(id));
 
@@ -715,18 +731,14 @@
                         jq.trigger('focus');
                     }
                     else {
-                        var firstElement = jq.find(selector).eq(0);
-                        PrimeFaces.focusElement(firstElement);
+                        focusFirstElement(jq.find(selector))
                     }
                 }
                 else if(context) {
-                    var firstElement = $(PrimeFaces.escapeClientId(context)).find(selector).eq(0);
-                    PrimeFaces.focusElement(firstElement);
+                     focusFirstElement($(PrimeFaces.escapeClientId(context)).find(selector))
                 }
                 else {
-                    var elements = $(selector),
-                    firstElement = elements.eq(0);
-                    PrimeFaces.focusElement(firstElement);
+                    focusFirstElement($(selector));
                 }
             }, 50);
 
