@@ -808,8 +808,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     var queryResults = isCustomContent ? this.panel.children().find('span') : this.items;
                     queryResults.filter(':not(.ui-autocomplete-moretext)').each(function() {
                         var item = $(this);
-                        var text = $this.cfg.escape ? item.html() : item.text();
-                        item.html(text.replace(re, '<span class="ui-autocomplete-query">$&</span>'));
+                        var escape = $this.cfg.escape;
+                        var text = escape ? item.html() : item.text();
+                        var escaped_re = new RegExp(escape ? escape(text) : text, "g");
+                        item.html(text.replace(escaped_re, '<span class="ui-autocomplete-query">$&</span>'));
                     });
                 }
             }
