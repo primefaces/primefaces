@@ -809,8 +809,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     queryResults.filter(':not(.ui-autocomplete-moretext)').each(function() {
                         var item = $(this);
                         var text = $this.cfg.escape ? item.html() : item.text();
-						var escaped_re = new RegExp($this.cfg.escape ? $this.cfg.escape(text) : text, "g");
-						item.html(text.replace(escaped_re, '<span class="ui-autocomplete-query">$&</span>'));
+                        var escaped_re = new RegExp($this.cfg.escape ? $this.cfg.escape(text) : text, "g");
+                        item.html(text.replace(escaped_re, '<span class="ui-autocomplete-query">$&</span>'));
                     });
                 }
             }
