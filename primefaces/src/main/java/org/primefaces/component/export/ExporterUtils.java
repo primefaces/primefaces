@@ -208,7 +208,7 @@ public final class ExporterUtils {
         }
 
         UIComponent facet = column.getFacet(columnType.facet());
-        if (columnValue == null || LangUtils.isBlank(columnValue.toString()) && ComponentUtils.shouldRenderFacet(facet)) {
+        if ((columnValue == null || LangUtils.isBlank(columnValue.toString())) && ComponentUtils.shouldRenderFacet(facet)) {
             columnValue = ColumnValue.fallbackValue(getComponentValue(context, facet));
         }
 

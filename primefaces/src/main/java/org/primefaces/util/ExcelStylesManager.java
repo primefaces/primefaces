@@ -97,7 +97,7 @@ public class ExcelStylesManager {
 
     public void updateFacetCell(Cell cell, ColumnValue value) {
         if (value.isCustomValue()) {
-            updateCellCustomValue(cell, value, facetStyles);
+            updateCellCustomValue(cell, value.getCustomValue(), facetStyles);
         }
         else {
             updateCellFallbackValue(cell, value.getFallbackValue(), facetStyles);
