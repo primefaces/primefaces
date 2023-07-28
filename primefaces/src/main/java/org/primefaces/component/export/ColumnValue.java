@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.export;
 
+import java.util.Objects;
+
 public class ColumnValue {
     private final Object customValue;
     private final String fallbackValue;
@@ -50,6 +52,24 @@ public class ColumnValue {
 
     public boolean isCustomValue() {
         return customValue != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ColumnValue that = (ColumnValue) o;
+
+        if (!Objects.equals(customValue, that.customValue)) return false;
+        return Objects.equals(fallbackValue, that.fallbackValue);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = customValue != null ? customValue.hashCode() : 0;
+        result = 31 * result + (fallbackValue != null ? fallbackValue.hashCode() : 0);
+        return result;
     }
 
     @Override
