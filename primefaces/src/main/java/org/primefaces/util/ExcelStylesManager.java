@@ -60,7 +60,7 @@ public class ExcelStylesManager {
      * Format: "m/d/yy h:mm"
      * @see org.apache.poi.ss.usermodel.BuiltinFormats
      */
-    private static final int DEFAULT_DATETIME_EXCEL_FORMAT = 22;
+    private static final short DEFAULT_DATETIME_EXCEL_FORMAT = 22;
 
     protected final Workbook wb;
     protected final ExcelOptions options;
