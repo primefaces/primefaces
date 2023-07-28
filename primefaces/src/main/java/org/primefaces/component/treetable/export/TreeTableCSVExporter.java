@@ -78,11 +78,12 @@ public class TreeTableCSVExporter extends TreeTableExporter<PrintWriter, CSVOpti
     }
 
     @Override
-    protected void exportColumnFacetValue(FacesContext context, TreeTable table, String text, int index) {
+    protected void exportColumnFacetValue(FacesContext context, TreeTable table, ColumnValue columnValue, int index) {
         if (index != 0) { // not first
             document.append(options().getDelimiterChar());
         }
 
+        String text = columnValue.toString();
         String exportValue = Constants.EMPTY_STRING;
         if (LangUtils.isNotBlank(text)) {
             exportValue = text.replace(options().getQuoteString(), options().getDoubleQuoteString());

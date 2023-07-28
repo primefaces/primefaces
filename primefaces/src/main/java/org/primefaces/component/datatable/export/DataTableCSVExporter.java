@@ -78,11 +78,12 @@ public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOpti
     }
 
     @Override
-    protected void exportColumnFacetValue(FacesContext context, DataTable table, String text, int index) {
+    protected void exportColumnFacetValue(FacesContext context, DataTable table, ColumnValue columnValue, int index) {
         if (index != 0) { // not first, for column separator
             document.append(options().getDelimiterChar());
         }
 
+        String text = columnValue.toString();
         String exportValue = Constants.EMPTY_STRING;
         if (LangUtils.isNotBlank(text)) {
             exportValue = text.replace(options().getQuoteString(), options().getDoubleQuoteString());

@@ -383,7 +383,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         return getStateHelper().eval(PropertyKeys.exportValue, null);
     }
 
-    public void setExportValue(String exportValue) {
+    public void setExportValue(Object exportValue) {
         getStateHelper().put(PropertyKeys.exportValue, exportValue);
     }
 
@@ -406,20 +406,20 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public String getExportHeaderValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
+    public Object getExportHeaderValue() {
+        return getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
 
-    public void setExportHeaderValue(String exportHeaderValue) {
+    public void setExportHeaderValue(Object exportHeaderValue) {
         getStateHelper().put(PropertyKeys.exportHeaderValue, exportHeaderValue);
     }
 
     @Override
-    public String getExportFooterValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportFooterValue, null);
+    public Object getExportFooterValue() {
+        return getStateHelper().eval(PropertyKeys.exportFooterValue, null);
     }
 
-    public void setExportFooterValue(String exportFooterValue) {
+    public void setExportFooterValue(Object exportFooterValue) {
         getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 

@@ -113,20 +113,20 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
     @Override
     protected void exportTabletFacetValue(FacesContext context, TreeTable table, String textValue) {
         int colspan = getExportableColumns(table).size();
-        addFacetValue(1, colspan, textValue);
+        addFacetValue(1, colspan, ColumnValue.fallbackValue(textValue));
     }
 
     @Override
-    protected void exportColumnFacetValue(FacesContext context, TreeTable table, String text, int index) {
-        addFacetValue(1, 1, text);
+    protected void exportColumnFacetValue(FacesContext context, TreeTable table, ColumnValue columnValue, int index) {
+        addFacetValue(1, 1, columnValue);
     }
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, TreeTable table, UIColumn column,
-                                               AtomicInteger colIndex, String text) {
+                                               AtomicInteger colIndex, ColumnValue columnValue) {
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
-        addFacetValue(rowSpan, colSpan, text);
+        addFacetValue(rowSpan, colSpan, columnValue);
     }
 
     @Override
@@ -237,8 +237,8 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
         return cell;
     }
 
-    protected void addFacetValue(int rowSpan, int colSpan, String textValue) {
-        PdfPCell cell = new PdfPCell(new Paragraph(textValue, facetFont));
+    protected void addFacetValue(int rowSpan, int colSpan, ColumnValue columnValue) {
+        PdfPCell cell = new PdfPCell(new Paragraph(columnValue.toString(), facetFont));
         if (facetBgColor != null) {
             cell.setBackgroundColor(facetBgColor);
         }

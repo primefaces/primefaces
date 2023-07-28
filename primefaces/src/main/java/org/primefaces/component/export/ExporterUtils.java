@@ -26,7 +26,6 @@ package org.primefaces.component.export;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -189,28 +188,38 @@ public final class ExporterUtils {
         return null;
     }
 
-    public static String getColumnFacetValue(FacesContext context, UIColumn column, TableExporter.ColumnType columnType) {
-        String textValue = null;
+    public static ColumnValue getColumnFacetValue(FacesContext context, UIColumn column, TableExporter.ColumnType columnType) {
+        ColumnValue columnValue = null;
         if (columnType == TableExporter.ColumnType.HEADER) {
-            textValue = Optional.ofNullable(column.getExportHeaderValue()).orElseGet(column::getHeaderText);
+            if (column.getExportHeaderValue() != null) {
+                columnValue = ColumnValue.customValue(column.getExportHeaderValue());
+            }
+            else {
+                columnValue = ColumnValue.fallbackValue(column.getHeaderText());
+            }
         }
         else if (columnType == TableExporter.ColumnType.FOOTER) {
-            textValue =  Optional.ofNullable(column.getExportFooterValue()).orElseGet(column::getFooterText);
+            if (column.getExportFooterValue() != null) {
+                columnValue = ColumnValue.customValue(column.getExportFooterValue());
+            }
+            else {
+                columnValue = ColumnValue.fallbackValue(column.getFooterText());
+            }
         }
 
         UIComponent facet = column.getFacet(columnType.facet());
-        if (LangUtils.isBlank(textValue) && ComponentUtils.shouldRenderFacet(facet)) {
-            textValue = getComponentValue(context, facet);
+        if (columnValue == null || LangUtils.isBlank(columnValue.toString()) && ComponentUtils.shouldRenderFacet(facet)) {
+            columnValue = ColumnValue.fallbackValue(getComponentValue(context, facet));
         }
 
-        return Objects.toString(textValue, Constants.EMPTY_STRING);
+        return columnValue;
     }
 
     public static String getColumnExportTag(FacesContext context, UIColumn column) {
         // lowerCase really? camelCase at best
         String columnTag = column.getExportTag();
         if (LangUtils.isBlank(columnTag)) {
-            columnTag = getColumnFacetValue(context, column, TableExporter.ColumnType.HEADER);
+            columnTag = getColumnFacetValue(context, column, TableExporter.ColumnType.HEADER).toString();
         }
         return EscapeUtils.forXmlTag(columnTag.toLowerCase());
     }
