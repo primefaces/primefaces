@@ -151,7 +151,7 @@
         <attribute>
             <description>Filename of the generated export file, defaults to target component id.</description>
             <name>fileName</name>
-            <required>false</required>
+            <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
