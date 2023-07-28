@@ -46,6 +46,21 @@ import org.primefaces.component.export.ExcelOptions;
 
 public class ExcelStylesManager {
     protected static final String DEFAULT_FONT = HSSFFont.FONT_ARIAL;
+    /**
+     * Format: "m/d/yy"
+     * @see org.apache.poi.ss.usermodel.BuiltinFormats
+     */
+    private static final short DEFAULT_DATE_EXCEL_FORMAT = 14;
+    /**
+     * Format: "h:mm"
+     * @see org.apache.poi.ss.usermodel.BuiltinFormats
+     */
+    private static final short DEFAULT_TIME_EXCEL_FORMAT = 20;
+    /**
+     * Format: "m/d/yy h:mm"
+     * @see org.apache.poi.ss.usermodel.BuiltinFormats
+     */
+    private static final int DEFAULT_DATETIME_EXCEL_FORMAT = 22;
 
     protected final Workbook wb;
     protected final ExcelOptions options;
@@ -346,7 +361,7 @@ public class ExcelStylesManager {
             dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
         }
         else {
-            dataFormat = 14;
+            dataFormat = DEFAULT_DATE_EXCEL_FORMAT;
         }
         style.setDataFormat(dataFormat);
         style.setAlignment(HorizontalAlignment.RIGHT);
@@ -361,7 +376,7 @@ public class ExcelStylesManager {
             dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
         }
         else {
-            dataFormat = 22;
+            dataFormat = DEFAULT_DATETIME_EXCEL_FORMAT;
         }
         style.setDataFormat(dataFormat);
         style.setAlignment(HorizontalAlignment.RIGHT);
@@ -376,7 +391,7 @@ public class ExcelStylesManager {
             dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
         }
         else {
-            dataFormat = 20;
+            dataFormat = DEFAULT_TIME_EXCEL_FORMAT;
         }
         style.setDataFormat(dataFormat);
         style.setAlignment(HorizontalAlignment.RIGHT);
