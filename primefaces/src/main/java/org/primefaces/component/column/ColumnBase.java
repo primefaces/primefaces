@@ -379,8 +379,8 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public String getExportValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    public Object getExportValue() {
+        return getStateHelper().eval(PropertyKeys.exportValue, null);
     }
 
     public void setExportValue(String exportValue) {

@@ -236,7 +236,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         }
     }
 
-    protected abstract void exportCellValue(FacesContext context, T table, UIColumn col, String text, int index);
+    protected abstract void exportCellValue(FacesContext context, T table, UIColumn col, ColumnValue columnValue, int index);
 
     protected abstract void exportPageOnly(FacesContext context, T table);
 

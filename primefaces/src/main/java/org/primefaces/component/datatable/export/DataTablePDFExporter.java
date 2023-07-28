@@ -36,6 +36,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.PDFOptions;
 import org.primefaces.component.export.PDFOrientationType;
@@ -129,8 +130,8 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
     }
 
     @Override
-    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
-        PdfPCell cell = createCell(col, new Paragraph(text, cellFont));
+    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int index) {
+        PdfPCell cell = createCell(col, new Paragraph(columnValue.toString(), cellFont));
         pdfTable.addCell(cell);
     }
 

@@ -358,8 +358,8 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public String getExportValue() {
-        return (String) getStateHelper().eval(PropertyKeys.exportValue, null);
+    public Object getExportValue() {
+        return getStateHelper().eval(PropertyKeys.exportValue, null);
     }
 
     public void setExportValue(String exportValue) {

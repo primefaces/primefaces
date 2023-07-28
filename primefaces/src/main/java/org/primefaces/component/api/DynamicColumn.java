@@ -339,7 +339,7 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getExportValue() {
+    public Object getExportValue() {
         return columns.getExportValue();
     }
 

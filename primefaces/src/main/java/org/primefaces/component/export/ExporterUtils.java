@@ -144,26 +144,26 @@ public final class ExporterUtils {
         }
     }
 
-    public static String getColumnValue(FacesContext context, UITable table, UIColumn column, boolean joinComponents) {
+    public static ColumnValue getColumnValue(FacesContext context, UITable table, UIColumn column, boolean joinComponents) {
         if (column.getExportValue() != null) {
-            return column.getExportValue();
+            return ColumnValue.customValue(column.getExportValue());
         }
         else if (column.getExportFunction() != null) {
             MethodExpression exportFunction = column.getExportFunction();
-            return (String) exportFunction.invoke(context.getELContext(), new Object[]{column});
+            return ColumnValue.customValue(exportFunction.invoke(context.getELContext(), new Object[]{column}));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
             String value = table.getConvertedFieldValue(context, column);
-            return Objects.toString(value, Constants.EMPTY_STRING);
+            return ColumnValue.fallbackValue(Objects.toString(value, Constants.EMPTY_STRING));
         }
         else {
-            return column.getChildren()
+            return ColumnValue.fallbackValue(column.getChildren()
                     .stream()
                     .filter(UIComponent::isRendered)
                     .map(c -> getComponentValue(context, c))
                     .filter(LangUtils::isNotBlank)
                     .limit(!joinComponents ? 1 : column.getChildren().size())
-                    .collect(Collectors.joining(Constants.SPACE));
+                    .collect(Collectors.joining(Constants.SPACE)));
         }
     }
 

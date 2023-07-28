@@ -535,6 +535,10 @@ public class CalendarUtils {
         }
     }
 
+    public static Date convertLocalTime2Date(LocalTime localTime) {
+        return convertLocalTime2Date(localTime, ZoneId.systemDefault());
+    }
+
     public static Date convertLocalTime2Date(LocalTime localTime, ZoneId zoneId) {
         if (localTime == null) {
             return null;

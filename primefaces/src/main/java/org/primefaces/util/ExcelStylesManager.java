@@ -27,6 +27,10 @@ import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Locale;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -37,6 +41,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellUtil;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
 
 public class ExcelStylesManager {
@@ -56,6 +61,9 @@ public class ExcelStylesManager {
     private CellStyle formattedDecimalStyle;
     private CellStyle formattedIntegerStyle;
     private CellStyle currencyStyle;
+    private CellStyle dateStyle;
+    private CellStyle timeStyle;
+    private CellStyle dateTimeStyle;
 
     protected ExcelStylesManager(Workbook wb, Locale locale, ExcelOptions options) {
         this.wb = wb;
@@ -87,14 +95,44 @@ public class ExcelStylesManager {
      *
      * @param column the column from which value comes
      * @param cell the cell to operate on
-     * @param value the String value to put in the cell
+     * @param value the ColumnValue value to put in the cell
      */
-    public void updateCell(UIColumn column, Cell cell, String value) {
-        updateCell(cell, value);
+    public void updateCell(UIColumn column, Cell cell, ColumnValue value) {
+        if (value.isCustomValue()) {
+            updateCellCustomValue(cell, value.getCustomValue());
+        }
+        else {
+            updateCellFallbackValue(cell, value.getFallbackValue());
+        }
         applyColumnAlignments(column, cell);
     }
 
-    private void updateCell(Cell cell, String value) {
+    private void updateCellCustomValue(Cell cell, Object value) {
+        if (value instanceof BigDecimal) {
+            setBigDecimalValue(cell, numberFormat.format(value), (BigDecimal) value);
+        }
+        else if (value instanceof Number) {
+            setNumberValue(cell, (Number) value);
+        }
+        else if (value instanceof LocalDate) {
+            setLocalDateValue(cell, (LocalDate) value);
+        }
+        else if (value instanceof LocalDateTime) {
+            setLocalDateTimeValue(cell, (LocalDateTime) value);
+        }
+        else if (value instanceof LocalTime) {
+            setLocalTimeValue(cell, (LocalTime) value);
+        }
+        else if (value instanceof Date) {
+            setDateValue(cell, (Date) value);
+        }
+        else {
+            cell.setCellStyle(getDefaultCellStyle());
+            cell.setCellValue(createRichTextString(value.toString()));
+        }
+    }
+
+    private void updateCellFallbackValue(Cell cell, String value) {
         boolean printed = false;
         if (stronglyTypedCells) {
             printed = setNumberValueIfAppropiate(cell, value);
@@ -114,26 +152,54 @@ public class ExcelStylesManager {
     private boolean setNumberValueIfAppropiate(Cell cell, String value) {
         BigDecimal bigDecimal = BigDecimalValidator.getInstance().validate(value, numberFormat);
         if (bigDecimal != null) {
-            cell.setCellValue(bigDecimal.doubleValue());
-            boolean withoutThousandSeparator = value.indexOf(numberFormat.getDecimalFormatSymbols().getGroupingSeparator()) == -1;
-            CellStyle style;
-            if (withoutThousandSeparator) {
-                style = getGeneralNumberStyle();
-            }
-            else {
-                boolean hasDecimals = bigDecimal.stripTrailingZeros().scale() > 0;
-                style = hasDecimals ? getFormattedDecimalStyle() : getFormattedIntegerStyle();
-            }
-            cell.setCellStyle(style);
+            setBigDecimalValue(cell, value, bigDecimal);
             return true;
         }
         else if (LangUtils.isNumeric(value)) {
             double number = Double.parseDouble(value);
-            cell.setCellValue(number);
-            cell.setCellStyle(getGeneralNumberStyle());
+            setNumberValue(cell, number);
             return true;
         }
         return false;
+    }
+
+    private void setBigDecimalValue(Cell cell, String value, BigDecimal bigDecimal) {
+        cell.setCellValue(bigDecimal.doubleValue());
+        boolean withoutThousandSeparator = value.indexOf(numberFormat.getDecimalFormatSymbols().getGroupingSeparator()) == -1;
+        CellStyle style;
+        if (withoutThousandSeparator) {
+            style = getGeneralNumberStyle();
+        }
+        else {
+            boolean hasDecimals = bigDecimal.stripTrailingZeros().scale() > 0;
+            style = hasDecimals ? getFormattedDecimalStyle() : getFormattedIntegerStyle();
+        }
+        cell.setCellStyle(style);
+    }
+
+    private void setNumberValue(Cell cell, Number number) {
+        cell.setCellValue(number.doubleValue());
+        cell.setCellStyle(getGeneralNumberStyle());
+    }
+
+    private void setLocalDateValue(Cell cell, LocalDate date) {
+        cell.setCellValue(date);
+        cell.setCellStyle(getDateStyle());
+    }
+
+    private void setLocalDateTimeValue(Cell cell, LocalDateTime dateTime) {
+        cell.setCellValue(dateTime);
+        cell.setCellStyle(getDateTimeStyle());
+    }
+
+    private void setLocalTimeValue(Cell cell, LocalTime localTime) {
+        cell.setCellValue(CalendarUtils.convertLocalTime2Date(localTime));
+        cell.setCellStyle(getTimeStyle());
+    }
+
+    private void setDateValue(Cell cell, Date date) {
+        cell.setCellValue(date);
+        cell.setCellStyle(getDateStyle());
     }
 
     private boolean setCurrencyValueIfAppropiate(Cell cell, String value) {
@@ -203,6 +269,27 @@ public class ExcelStylesManager {
         return currencyStyle;
     }
 
+    private CellStyle getDateStyle() {
+        if (dateStyle == null) {
+            dateStyle = createDateStyle();
+        }
+        return dateStyle;
+    }
+
+    private CellStyle getDateTimeStyle() {
+        if (dateTimeStyle == null) {
+            dateTimeStyle = createDateTimeStyle();
+        }
+        return dateTimeStyle;
+    }
+
+    private CellStyle getTimeStyle() {
+        if (timeStyle == null) {
+            timeStyle = createTimeStyle();
+        }
+        return timeStyle;
+    }
+
     private CellStyle createFacetStyle() {
         CellStyle style = wb.createCellStyle();
         style.setFont(createFont());
@@ -246,6 +333,51 @@ public class ExcelStylesManager {
         CellStyle style = createDefaultCellStyle();
         String format = getCurrencyExcelFormat();
         short dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        style.setDataFormat(dataFormat);
+        style.setAlignment(HorizontalAlignment.RIGHT);
+        return style;
+    }
+
+    private CellStyle createDateStyle() {
+        CellStyle style = createDefaultCellStyle();
+        short dataFormat;
+        if (options.getExcelDateFormat() != null) {
+            String format = options.getExcelDateFormat();
+            dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        }
+        else {
+            dataFormat = 14;
+        }
+        style.setDataFormat(dataFormat);
+        style.setAlignment(HorizontalAlignment.RIGHT);
+        return style;
+    }
+
+    private CellStyle createDateTimeStyle() {
+        CellStyle style = createDefaultCellStyle();
+        short dataFormat;
+        if (options.getExcelDateTimeFormat() != null) {
+            String format = options.getExcelDateTimeFormat();
+            dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        }
+        else {
+            dataFormat = 22;
+        }
+        style.setDataFormat(dataFormat);
+        style.setAlignment(HorizontalAlignment.RIGHT);
+        return style;
+    }
+
+    private CellStyle createTimeStyle() {
+        CellStyle style = createDefaultCellStyle();
+        short dataFormat;
+        if (options.getExcelTimeFormat() != null) {
+            String format = options.getExcelTimeFormat();
+            dataFormat = wb.getCreationHelper().createDataFormat().getFormat(format);
+        }
+        else {
+            dataFormat = 20;
+        }
         style.setDataFormat(dataFormat);
         style.setAlignment(HorizontalAlignment.RIGHT);
         return style;

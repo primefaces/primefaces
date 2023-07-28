@@ -217,7 +217,7 @@ public interface UIColumn {
 
     MethodExpression getExportFunction();
 
-    String getExportValue();
+    Object getExportValue();
 
     int getExportRowspan();
 

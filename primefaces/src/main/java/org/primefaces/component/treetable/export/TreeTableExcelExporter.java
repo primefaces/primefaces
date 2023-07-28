@@ -33,6 +33,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.component.treetable.TreeTable;
@@ -108,9 +109,9 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
     }
 
     @Override
-    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, String text, int i) {
+    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, ColumnValue columnValue, int i) {
         Cell cell = row().createCell(i);
-        stylesManager.updateCell(col, cell, text);
+        stylesManager.updateCell(col, cell, columnValue);
     }
 
     @Override

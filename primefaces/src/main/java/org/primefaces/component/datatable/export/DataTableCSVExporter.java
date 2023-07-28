@@ -35,6 +35,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.CSVOptions;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
@@ -91,13 +92,13 @@ public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOpti
     }
 
     @Override
-    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
+    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int index) {
         if (index != 0) {
             document.append(options().getDelimiterChar());
         }
 
         document.append(options().getQuoteChar())
-                .append(escapeQuotes(text))
+                .append(escapeQuotes(columnValue.toString()))
                 .append(options().getQuoteChar());
     }
 

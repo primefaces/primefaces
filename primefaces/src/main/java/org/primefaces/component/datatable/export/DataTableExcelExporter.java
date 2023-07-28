@@ -34,6 +34,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.ExcelStylesManager;
@@ -106,9 +107,9 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
     }
 
     @Override
-    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int i) {
+    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int i) {
         Cell cell = row().createCell(i);
-        stylesManager.updateCell(col, cell, text);
+        stylesManager.updateCell(col, cell, columnValue);
     }
 
     @Override
