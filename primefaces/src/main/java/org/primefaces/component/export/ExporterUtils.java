@@ -146,11 +146,11 @@ public final class ExporterUtils {
 
     public static ColumnValue getColumnValue(FacesContext context, UITable table, UIColumn column, boolean joinComponents) {
         if (column.getExportValue() != null) {
-            return ColumnValue.customValue(column.getExportValue());
+            return ColumnValue.explicitlySetValue(column.getExportValue());
         }
         else if (column.getExportFunction() != null) {
             MethodExpression exportFunction = column.getExportFunction();
-            return ColumnValue.customValue(exportFunction.invoke(context.getELContext(), new Object[]{column}));
+            return ColumnValue.explicitlySetValue(exportFunction.invoke(context.getELContext(), new Object[]{column}));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
             String value = table.getConvertedFieldValue(context, column);
@@ -193,7 +193,7 @@ public final class ExporterUtils {
         ColumnValue columnValue = null;
         if (columnType == TableExporter.ColumnType.HEADER) {
             if (column.getExportHeaderValue() != null) {
-                columnValue = ColumnValue.customValue(column.getExportHeaderValue());
+                columnValue = ColumnValue.explicitlySetValue(column.getExportHeaderValue());
             }
             else {
                 columnValue = ColumnValue.fallbackValue(column.getHeaderText());
@@ -201,7 +201,7 @@ public final class ExporterUtils {
         }
         else if (columnType == TableExporter.ColumnType.FOOTER) {
             if (column.getExportFooterValue() != null) {
-                columnValue = ColumnValue.customValue(column.getExportFooterValue());
+                columnValue = ColumnValue.explicitlySetValue(column.getExportFooterValue());
             }
             else {
                 columnValue = ColumnValue.fallbackValue(column.getFooterText());

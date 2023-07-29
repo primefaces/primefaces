@@ -96,8 +96,8 @@ public class ExcelStylesManager {
     }
 
     public void updateFacetCell(Cell cell, ColumnValue value) {
-        if (value.isCustomValue()) {
-            updateCellCustomValue(cell, value.getCustomValue(), facetStyles);
+        if (value.isExplicitlySetValue()) {
+            updateCellExplicitlySetValue(cell, value.getExplicitlySetValue(), facetStyles);
         }
         else {
             updateCellFallbackValue(cell, value.getFallbackValue(), facetStyles);
@@ -105,7 +105,7 @@ public class ExcelStylesManager {
     }
 
     /**
-     * If value has custom object value, then use that value to update the cell, otherwise if
+     * If value is an explicitly set value, then use that value to update the cell, otherwise if
      * ExcelOptions.isStronglyTypedCells = true then for cells check:
      * <pre>
      * Numeric - String that are all numbers make them a numeric cell
@@ -119,8 +119,8 @@ public class ExcelStylesManager {
      * @param value the ColumnValue value to put in the cell
      */
     public void updateCell(UIColumn column, Cell cell, ColumnValue value) {
-        if (value.isCustomValue()) {
-            updateCellCustomValue(cell, value.getCustomValue(), cellStyles);
+        if (value.isExplicitlySetValue()) {
+            updateCellExplicitlySetValue(cell, value.getExplicitlySetValue(), cellStyles);
         }
         else {
             updateCellFallbackValue(cell, value.getFallbackValue(), cellStyles);
@@ -128,7 +128,7 @@ public class ExcelStylesManager {
         applyColumnAlignments(column, cell);
     }
 
-    private void updateCellCustomValue(Cell cell, Object value, Styles styles) {
+    private void updateCellExplicitlySetValue(Cell cell, Object value, Styles styles) {
         if (value instanceof BigDecimal) {
             setBigDecimalValue(cell, numberFormat.format(value), (BigDecimal) value, styles);
         }
