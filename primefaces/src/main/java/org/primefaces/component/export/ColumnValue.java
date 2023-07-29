@@ -23,6 +23,8 @@
  */
 package org.primefaces.component.export;
 
+import org.primefaces.util.Constants;
+
 import java.util.Objects;
 
 public class ColumnValue {
@@ -31,7 +33,7 @@ public class ColumnValue {
 
     private ColumnValue(Object customValue, String fallbackValue) {
         this.customValue = customValue;
-        this.fallbackValue = fallbackValue;
+        this.fallbackValue = Objects.toString(fallbackValue, Constants.EMPTY_STRING);
     }
 
     public static ColumnValue customValue(Object value) {
@@ -75,10 +77,10 @@ public class ColumnValue {
     @Override
     public String toString() {
         if (customValue == null && fallbackValue == null) {
-            return null;
+            return Constants.EMPTY_STRING;
         }
         else {
-            return customValue != null ? customValue.toString() : fallbackValue;
+            return Objects.toString(customValue != null ? customValue.toString() : fallbackValue, Constants.EMPTY_STRING);
         }
     }
 }

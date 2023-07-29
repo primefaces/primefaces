@@ -26,6 +26,7 @@ package org.primefaces.component.export;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -212,7 +213,7 @@ public final class ExporterUtils {
             columnValue = ColumnValue.fallbackValue(getComponentValue(context, facet));
         }
 
-        return columnValue;
+        return Optional.ofNullable(columnValue).orElseGet(() -> ColumnValue.fallbackValue(Constants.EMPTY_STRING));
     }
 
     public static String getColumnExportTag(FacesContext context, UIColumn column) {
