@@ -120,5 +120,15 @@
          'javax.validation.constraints.Pattern.message': 'must match "{0}".',
          'javax.validation.constraints.Size.message': 'size must be between {0} and {1}.'
      }
-};
-PrimeFaces.locales['en_US'] = PrimeFaces.locales['en'];
+ };
+ // United States
+ PrimeFaces.locales['en_US'] = PrimeFaces.locales['en'];
+ // Australia
+ PrimeFaces.locales['en_AU'] = $.extend(true, {}, PrimeFaces.locales['en'], {
+     "dateFormat": "dd/mm/yy"
+ });
+ // Great Britain/UK
+ PrimeFaces.locales['en_GB'] = $.extend(true, {}, PrimeFaces.locales['en'], {
+     "firstDay": 1,
+     "dateFormat": "yy/mm/dd"
+ });
