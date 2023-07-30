@@ -9,7 +9,7 @@ PrimeFaces.locales['el'] = {
     dayNamesShort: ['Κυρ', 'Δευ', 'Τρι', 'Τετ', 'Πεμ', 'Παρ', 'Σαβ'],
     dayNamesMin: ['Κ', 'Δ', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σ'],
     weekHeader: 'Εβδ',
-    firstDay: 1,
+    firstDayOfWeek: 1,
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: '',

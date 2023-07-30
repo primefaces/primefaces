@@ -10,7 +10,7 @@
      dayNamesMin: ['日', '月', '火', '水', '木', '金', '土'],
      weekHeader: '週',
      weekNumberTitle: '週',
-     firstDay: 0,
+     firstDayOfWeek: 0,
      isRTL: false,
      showMonthAfterYear: true,
      yearSuffix: '年',

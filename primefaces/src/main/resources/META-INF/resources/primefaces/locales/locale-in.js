@@ -12,7 +12,7 @@
      dayNamesMin: ['M', 'S', 'S', 'R ', 'K', 'J ', 'S'],
      weekHeader: 'Minggu',
      weekNumberTitle: 'M',
-     firstDay: 0,
+     firstDayOfWeek: 0,
      isRTL: false,
      showMonthAfterYear: false,
      yearSuffix: '',

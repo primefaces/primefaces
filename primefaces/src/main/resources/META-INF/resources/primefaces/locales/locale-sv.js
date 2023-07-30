@@ -9,7 +9,7 @@ PrimeFaces.locales['sv'] = {
     dayNamesShort: ['sön', 'mån', 'tis', 'ons', 'tor', 'fre', 'lör'],
     dayNamesMin: ['sö', 'må', 'ti', 'on', 'to', 'fr', 'lö'],
     weekHeader: 'Vecka',
-    firstDay: 1,
+    firstDayOfWeek: 1,
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: '',

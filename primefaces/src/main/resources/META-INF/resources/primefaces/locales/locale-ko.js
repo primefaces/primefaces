@@ -9,7 +9,7 @@ PrimeFaces.locales['ko'] = {
     dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
     dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"],
     weekHeader: "주중",
-    firstDay: 1,
+    firstDayOfWeek: 1,
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: "",

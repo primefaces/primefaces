@@ -10,7 +10,7 @@ PrimeFaces.locales['fa'] = {
     dayNamesMin: ["ی", "د", "س", "چ", "پ", "ج", "ش"],
     weekHeader: 'هفته',
     weekNumberTitle: 'ه',
-    firstDay: 6,
+    firstDayOfWeek: 6,
     isRTL: true,
     showMonthAfterYear: false,
     yearSuffix: '',

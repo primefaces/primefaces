@@ -10,7 +10,7 @@ PrimeFaces.locales['fr'] = {
     dayNamesMin: ["D", "L", "M", "M", "J", "V", "S"],
     weekHeader: "Semaine",
     weekNumberTitle: "S",
-    firstDay: 1,
+    firstDayOfWeek: 1,
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: "",

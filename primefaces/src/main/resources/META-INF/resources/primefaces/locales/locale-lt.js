@@ -10,7 +10,7 @@
      dayNamesMin: ['S','P', 'A', 'T', 'K', 'P', 'Š'],
      weekHeader: 'Savaitė',
      weekNumberTitle: 'S',
-     firstDay: 1,
+     firstDayOfWeek: 1,
      isRTL: false,
      showMonthAfterYear: false,
      yearSuffix: '',

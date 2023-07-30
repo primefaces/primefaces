@@ -9,7 +9,7 @@ PrimeFaces.locales['ka'] = {
     dayNamesShort: ['კვ', 'ორშ', 'სამშ', 'ოთხშ', 'ხუთშ', 'პარ', 'შაბ'],
     dayNamesMin: ['კვი', 'ორშ', 'სამ', 'ოთხ', 'ხუთ', 'პარ', 'შაბ'],
     weekHeader: 'კვირა',
-    firstDay: 1,
+    firstDayOfWeek: 1,
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: '',

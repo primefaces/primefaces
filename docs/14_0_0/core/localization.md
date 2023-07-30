@@ -109,7 +109,7 @@ Side Validation, messages property is used as the bundle for the locale.
      dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
      weekHeader: 'Week',
      weekNumberTitle: 'W',
-     firstDay: 0,
+     firstDayOfWeek: 0,
      isRTL: false,
      showMonthAfterYear: false,
      yearSuffix: '',
