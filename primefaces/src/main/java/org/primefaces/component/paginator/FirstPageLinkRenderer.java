@@ -29,16 +29,12 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
-import org.primefaces.util.MessageFactory;
 
 public class FirstPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
-
-        String ariaMessage = MessageFactory.getMessage(UIPageableData.ARIA_FIRST_PAGE_LABEL);
-
-        super.render(context, pageable, UIPageableData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled, ariaMessage);
+        super.render(context, pageable, UIPageableData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIPageableData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled);
     }
 }
