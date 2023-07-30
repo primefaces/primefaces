@@ -26,19 +26,14 @@ package org.primefaces.component.autocomplete;
 import org.primefaces.component.api.AbstractPrimeHtmlInputText;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.component.api.UIPageableData;
 import org.primefaces.component.api.Widget;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.util.MessageFactory;
 
 public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implements Widget, InputHolder, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AutoCompleteRenderer";
-
-    public static final String DROPDOWN_LABEL = "primefaces.autocomplete.aria.DROPDOWN_LABEL";
-    public static final String RESULTS_MESSAGE = "primefaces.autocomplete.RESULTS_MESSAGE";
 
     public enum PropertyKeys {
 
@@ -62,9 +57,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         itemtipAtPosition,
         cache,
         cacheTimeout,
-        emptyMessage,
         appendTo,
-        resultsMessage,
         groupBy,
         queryEvent,
         dropdownMode,
@@ -84,7 +77,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         escape,
         queryMode,
         dropdownTabindex,
-        dropdownAriaLabel,
         completeEndpoint,
         lazyModel,
         lazyField
@@ -259,28 +251,12 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         getStateHelper().put(PropertyKeys.cacheTimeout, cacheTimeout);
     }
 
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, MessageFactory.getMessage(UIPageableData.EMPTY_MESSAGE));
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
-
     public String getAppendTo() {
         return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {
         getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public String getResultsMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.resultsMessage, " " + MessageFactory.getMessage(RESULTS_MESSAGE));
-    }
-
-    public void setResultsMessage(String resultsMessage) {
-        getStateHelper().put(PropertyKeys.resultsMessage, resultsMessage);
     }
 
     public Object getGroupBy() {
@@ -433,14 +409,6 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setDropdownTabindex(String dropdownTabindex) {
         getStateHelper().put(PropertyKeys.dropdownTabindex, dropdownTabindex);
-    }
-
-    public String getDropdownAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.dropdownAriaLabel, MessageFactory.getMessage(DROPDOWN_LABEL));
-    }
-
-    public void setDropdownAriaLabel(String dropdownAriaLabel) {
-        getStateHelper().put(PropertyKeys.dropdownAriaLabel, dropdownAriaLabel);
     }
 
     public String getCompleteEndpoint() {

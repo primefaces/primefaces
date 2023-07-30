@@ -1126,6 +1126,16 @@
         },
 
         /**
+         * Attempt to look up the locale key by current locale and fall back to US English if not found.
+         * @param {string} key The locale key
+         * @return {string} The translation for the given key
+         */
+        getLocaleLabel: function(key) {
+            var locale = this.getLocaleSettings();
+            return (locale&&locale[key]) ? locale[key] : PrimeFaces.locales['en_US'][key];
+        },
+
+        /**
          * For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
          * NULL and jQuery did so this function allows a drop in replacement.
          *
@@ -1432,6 +1442,9 @@
             moreLinkText: 'More...',
             noEventsText: 'No Events',
             clear: 'Clear',
+            searchMessage: '{0} results are available',
+            emptySearchMessage: 'No results found',
+            choose: 'Choose',
             aria: {
                 'paginator.PAGE': 'Page {0}',
                 'calendar.BUTTON': 'Show Calendar',

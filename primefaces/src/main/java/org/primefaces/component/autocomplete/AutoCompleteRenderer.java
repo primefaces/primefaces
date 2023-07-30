@@ -318,9 +318,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId + "_button", null);
         writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
-        if (LangUtils.isNotBlank(ac.getDropdownAriaLabel())) {
-            writer.writeAttribute(HTML.ARIA_LABEL, ac.getDropdownAriaLabel(), null);
-        }
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -531,7 +528,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, Object items, Converter converter) throws IOException {
         // do not render table if empty message and there are no records
-        if (LangUtils.isNotBlank(ac.getEmptyMessage()) && (items == null || ((Collection) items).isEmpty())) {
+        if (items == null || ((Collection) items).isEmpty()) {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();
@@ -801,9 +798,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
         }
-
-        wb.attr("emptyMessage", ac.getEmptyMessage(), null)
-                .attr("resultsMessage", ac.getResultsMessage(), null);
 
         if (ComponentUtils.shouldRenderFacet(ac.getFacet("itemtip"))) {
             wb.attr("itemtip", true, false)

@@ -14,8 +14,6 @@ Source code bundles:  [GitHub Server Message Bundle Files](https://github.com/pr
 ### Default Messages.properties
 
 ```
-primefaces.autocomplete.aria.DROPDOWN_LABEL=Show Options
-primefaces.autocomplete.RESULTS_MESSAGE=results are available, use up and down arrow keys to navigate
 primefaces.calendar.DATE_INVALID_RANGE_MESSAGE_ID = {0}: Validation Error: Start date is greater than the end date.
 primefaces.calendar.INVALID = {0}: Validation Error: Value is not valid.
 primefaces.calendar.MAX_DATE = {0}: Validation Error: Value must be {2} or before.
