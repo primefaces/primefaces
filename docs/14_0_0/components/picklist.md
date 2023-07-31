@@ -40,14 +40,6 @@ widgetVar | null | String | Name of the client side widget.
 disabled | false | Boolean | Disables the component.
 effect | null | String | Name of the animation to display.
 effectSpeed | null | String | Speed of the animation.
-addLabel | Add | String | Title of add button.
-addAllLabel | Add All | String | Title of add all button.
-removeLabel | Remove | String | Title of remove button.
-removeAllLabel |Remove All | String | Title of remove all button.
-moveUpLabel | Move Up | String | Title of move up button.
-moveTopLabel | Move Top | String | Title of move top button.
-moveDownLabel | Move Down | String | Title of move down button.
-moveButtomLabel | Move Buttom | String | Title of move bottom button.
 showSourceControls | false | Boolean | Specifies visibility of reorder buttons of source list.
 showTargetControls | false | Boolean | Specifies visibility of reorder buttons of target list.
 onTransfer | null | String | Client side callback to execute when an item is transferred from one list to another.
