@@ -10,7 +10,7 @@
      dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
      weekHeader: 'Week',
      weekNumberTitle: 'W',
-     firstDay: 0,
+     firstDayOfWeek: 0,
      isRTL: false,
      showMonthAfterYear: false,
      yearSuffix: '',
@@ -139,6 +139,6 @@
  });
  // Great Britain/UK
  PrimeFaces.locales['en_GB'] = $.extend(true, {}, PrimeFaces.locales['en'], {
-     "firstDay": 1,
+     "firstDayOfWeek": 1,
      "dateFormat": "yy/mm/dd"
  });

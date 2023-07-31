@@ -334,6 +334,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             for(var setting in localeSettings) {
                 this.cfg[setting] = localeSettings[setting];
             }
+            this.cfg.firstDay = localeSettings.firstDayOfWeek;
         }
     },
 

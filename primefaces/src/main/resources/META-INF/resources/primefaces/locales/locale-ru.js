@@ -10,7 +10,7 @@ PrimeFaces.locales['ru'] = {
     dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пн', 'Сб'],
     weekHeader: 'Неделя',
     weekNumberTitle: 'Н',
-    firstDay: 1,
+    firstDayOfWeek: 1,
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix:'',

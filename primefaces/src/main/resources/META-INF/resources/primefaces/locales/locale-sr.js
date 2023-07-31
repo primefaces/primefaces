@@ -9,7 +9,7 @@ PrimeFaces.locales['sr'] = {
     dayNamesShort: ['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'],
     dayNamesMin: ['N', 'P', 'U', 'S ', 'Č', 'P ', 'S'],
     weekHeader: 'Sedmica',
-    firstDay: 1,
+    firstDayOfWeek: 1,
     isRTL: false,
     showMonthAfterYear: false,
     yearSuffix: '',

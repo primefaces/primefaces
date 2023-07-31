@@ -109,7 +109,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
         var lang = PrimeFaces.locales[this.cfg.locale];
         if (lang) {
-            if (lang.firstDay !== undefined) { options.firstDay = lang.firstDay; }
+            if (lang.firstDayOfWeek !== undefined) { options.firstDay = lang.firstDayOfWeek; }
             if (lang.weekNumberTitle) { options.weekText = lang.weekNumberTitle; }
             if (lang.allDayText) { options.allDayText = lang.allDayText; }
             if (lang.moreLinkText) { options.moreLinkText = lang.moreLinkText; }
