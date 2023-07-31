@@ -1689,25 +1689,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Text to display when there is no data to display.]]>
-            </description>
-            <name>emptyMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
             </description>
             <name>appendTo</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Hint text for screen readers to provide information about the search results. Default is "{0} results found, use arrow keys to navigate".]]>
-            </description>
-            <name>resultsMessage</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -1861,14 +1845,6 @@
                 <![CDATA[Position of the dropdown button in the tabbing order.]]>
             </description>
             <name>dropdownTabindex</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[ARIA Label for the dropdown button.]]>
-            </description>
-            <name>dropdownAriaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

@@ -32,6 +32,9 @@
      noEventsText: 'No Events',
      today: 'Today',
      clear: 'Clear',
+     searchMessage: '{0} results are available',
+     emptySearchMessage: 'No results found',
+     choose: 'Choose',
      aria: {
          'pageLabel': 'Page {page}',
          'firstPageLabel': 'First Page',

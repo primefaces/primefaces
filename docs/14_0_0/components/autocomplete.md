@@ -38,7 +38,6 @@ AutoComplete provides live suggestions while an input is being typed.
 | dropdown | false | Boolean | Enables dropdown mode when set true.
 | dropdownMode | blank | String | Specifies the behavior dropdown button. Default "blank" mode sends an empty string and "current" mode sends the input value.
 | dropdownTabindex | null | String | Position of the dropdown button in the tabbing order.
-| dropdownAriaLabel | null | String | ARIA Label for the dropdown button.
 | dynamic | false | Boolean | Defines if dynamic loading is enabled for the element's panel. If the value is "true", the overlay is not rendered on page load to improve performance.
 | escape | true | Boolean | Defines if autocomplete results are escaped or not.
 | forceSelection | false | Boolean | When enabled, autoComplete only accepts input from the selection list.

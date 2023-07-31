@@ -60,6 +60,8 @@
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {string} wrapperStartTag The starting HTML with the wrapper element of the suggestions box.
  * @prop {string} wrapperEndTag The finishing HTML with the wrapper element of the suggestions box.
+ * @prop {string} resultsMessage Hint text for screen readers to provide information about the search results.
+ * @prop {string} emptyMessage Text to display when there is no data to display.
  *
  * @interface {PrimeFaces.widget.AutoCompleteCfg} cfg The configuration for the {@link  AutoComplete| AutoComplete widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -78,7 +80,6 @@
  * @prop {PrimeFaces.widget.AutoComplete.DropdownMode} cfg.dropdownMode Specifies the behavior of the dropdown button.
  * @prop {boolean} cfg.dynamic Defines if dynamic loading is enabled for the element's panel. If the value is `true`,
  * the overlay is not rendered on page load to improve performance.
- * @prop {string} cfg.emptyMessage Text to display when there is no data to display.
  * @prop {boolean} cfg.escape Whether the text of the suggestion items is escaped for HTML.
  * @prop {boolean} cfg.hasFooter Whether a footer facet is present.
  * @prop {boolean} cfg.forceSelection Whether one of the available suggestion items is forced to be preselected.
@@ -94,7 +95,6 @@
  * @prop {PrimeFaces.widget.AutoComplete.QueryEvent} cfg.queryEvent Event to initiate the the autocomplete search.
  * @prop {PrimeFaces.widget.AutoComplete.QueryMode} cfg.queryMode Specifies query mode, whether autocomplete contacts
  * the server.
- * @prop {string} cfg.resultsMessage Hint text for screen readers to provide information about the search results.
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
@@ -121,7 +121,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pojo = this.hinput.length == 1;
         this.cfg.minLength = this.cfg.minLength != undefined ? this.cfg.minLength : 1;
         this.cfg.cache = this.cfg.cache || false;
-        this.cfg.ariaEmptyMessage = this.cfg.emptyMessage || 'No search results are available.';
         this.cfg.dropdownMode = this.cfg.dropdownMode || 'blank';
         this.cfg.autoHighlight = (this.cfg.autoHighlight === undefined) ? true : this.cfg.autoHighlight;
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
@@ -138,6 +137,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.isTabPressed = false;
         this.isDynamicLoaded = false;
         this.currentInputValue = '';
+        this.configureLocale();
 
         if (this.cfg.cache) {
             this.initCache();
@@ -211,6 +211,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
      */
     refresh: function(cfg) {
         this._super(cfg);
+    },
+
+    /**
+     * Localizes the ARIA accessibility labels for the autocomplete.
+     * @private
+     */
+    configureLocale: function() {
+        this.emptyMessage = PrimeFaces.getLocaleLabel('emptySearchMessage');
+        this.resultsMessage = PrimeFaces.getLocaleLabel('searchMessage');
+        if (this.dropdown) {
+            this.dropdown.attr('aria-label', PrimeFaces.getLocaleLabel('choose'));
+        }
     },
 
     /**
@@ -827,11 +839,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 this.showItemtip(firstItem);
             }
 
-            this.displayAriaStatus(this.items.length + this.cfg.resultsMessage);
+            this.displayAriaStatus(this.resultsMessage.replace('{0}', this.items.length));
         }
         else {
-            if (this.cfg.emptyMessage) {
-                var emptyText = '<div class="ui-autocomplete-empty-message ui-widget">' + PrimeFaces.escapeHTML(this.cfg.emptyMessage) + '</div>';
+            if (this.emptyMessage && this.cfg.forceSelection) {
+                var emptyText = '<div class="ui-autocomplete-empty-message ui-widget">' + PrimeFaces.escapeHTML(this.emptyMessage) + '</div>';
                 this.panel.prepend(emptyText);
             }
             else if (!this.cfg.hasFooter) {
@@ -839,7 +851,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             this.input.removeAttr('aria-activedescendant');
-            this.displayAriaStatus(this.cfg.ariaEmptyMessage);
+            this.displayAriaStatus(this.emptyMessage);
         }
     },
 
