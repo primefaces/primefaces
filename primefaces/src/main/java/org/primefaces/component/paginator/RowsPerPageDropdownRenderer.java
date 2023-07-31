@@ -24,7 +24,6 @@
 package org.primefaces.component.paginator;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.faces.component.UINamingContainer;
@@ -35,11 +34,9 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIPageableData;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
-    private static final Logger LOGGER = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
     private static final Pattern PATTERN = Pattern.compile("[,]+");
 
     @Override
@@ -52,36 +49,23 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             ResponseWriter writer = context.getResponseWriter();
             int actualRows = pageable.getRows();
             String[] options = PATTERN.split(pageable.getRowsPerPageTemplate());
-            String label = pageable.getRowsPerPageLabel();
-            if (label != null) {
-                LOGGER.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
-            }
-            else {
-                label = MessageFactory.getMessage(UIPageableData.ROWS_PER_PAGE_LABEL);
-            }
-
             String clientId = pageable.getClientId(context);
             String ddId = clientId + separator + viewroot.createUniqueId();
             String ddName = clientId + "_rppDD";
             String labelId = null;
 
-            if (label != null) {
-                labelId = ddId + "_rppLabel";
+            labelId = ddId + "_rppLabel";
 
-                writer.startElement("label", null);
-                writer.writeAttribute("id", labelId, null);
-                writer.writeAttribute("for", ddId, null);
-                writer.writeAttribute("class", UIPageableData.PAGINATOR_RPP_LABEL_CLASS, null);
-                writer.writeText(label, null);
-                writer.endElement("label");
-            }
+            writer.startElement("label", null);
+            writer.writeAttribute("id", labelId, null);
+            writer.writeAttribute("for", ddId, null);
+            writer.writeAttribute("class", UIPageableData.PAGINATOR_RPP_LABEL_CLASS, null);
+            writer.endElement("label");
 
             writer.startElement("select", null);
             writer.writeAttribute("id", ddId, null);
             writer.writeAttribute("name", ddName, null);
-            if (label != null) {
-                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelId, null);
-            }
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelId, null);
             writer.writeAttribute("class", UIPageableData.PAGINATOR_RPP_OPTIONS_CLASS, null);
             writer.writeAttribute("autocomplete", "off", null);
 

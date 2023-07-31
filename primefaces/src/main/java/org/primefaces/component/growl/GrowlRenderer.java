@@ -24,7 +24,7 @@
 package org.primefaces.component.growl;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
@@ -78,54 +78,49 @@ public class GrowlRenderer extends UINotificationRenderer {
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String _for = growl.getFor();
         boolean first = true;
-        Iterator<FacesMessage> messages;
-        if (_for != null) {
-            messages = context.getMessages(_for);
-        }
-        else {
-            messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-        }
+        List<FacesMessage> messages = collectFacesMessages(growl, context);
 
         writer.write("[");
 
-        while (messages.hasNext()) {
-            FacesMessage message = messages.next();
-            String severityName = getSeverityName(message);
+        if (messages != null && !messages.isEmpty()) {
+            for (int i = 0; i < messages.size(); i++) {
+                FacesMessage message = messages.get(i);
+                String severityName = getSeverityName(message);
 
-            if (shouldRender(growl, message, severityName)) {
-                if (!first) {
-                    writer.write(",");
-                }
-                else {
-                    first = false;
-                }
-
-                String summary = EscapeUtils.forJavaScript(message.getSummary());
-                String detail = EscapeUtils.forJavaScript(message.getDetail());
-
-                writer.write("{");
-
-                if (growl.isShowSummary() && growl.isShowDetail()) {
-                    if (growl.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
-                        detail = Constants.EMPTY_STRING;
+                if (shouldRender(growl, message, severityName)) {
+                    if (!first) {
+                        writer.write(",");
                     }
-                    writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
-                }
-                else if (growl.isShowSummary() && !growl.isShowDetail()) {
-                    writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
-                }
-                else if (!growl.isShowSummary() && growl.isShowDetail()) {
-                    writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
-                }
+                    else {
+                        first = false;
+                    }
 
-                writer.write(",severity:'" + severityName + "'");
-                writer.write(",severityText:'" + getSeverityText(message) + "'");
+                    String summary = EscapeUtils.forJavaScript(message.getSummary());
+                    String detail = EscapeUtils.forJavaScript(message.getDetail());
 
-                writer.write("}");
+                    writer.write("{");
 
-                message.rendered();
+                    if (growl.isShowSummary() && growl.isShowDetail()) {
+                        if (growl.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
+                            detail = Constants.EMPTY_STRING;
+                        }
+                        writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
+                    }
+                    else if (growl.isShowSummary() && !growl.isShowDetail()) {
+                        writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
+                    }
+                    else if (!growl.isShowSummary() && growl.isShowDetail()) {
+                        writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
+                    }
+
+                    writer.write(",severity:'" + severityName + "'");
+                    writer.write(",severityText:'" + getSeverityText(message) + "'");
+
+                    writer.write("}");
+
+                    message.rendered();
+                }
             }
         }
 

@@ -60,5 +60,4 @@ public interface Pageable {
 
     String getRowsPerPageTemplate();
 
-    String getRowsPerPageLabel();
 }

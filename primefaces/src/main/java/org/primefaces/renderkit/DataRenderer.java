@@ -92,13 +92,10 @@ public class DataRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-corner-top";
         }
 
-        String ariaMessage = MessageFactory.getMessage(UIPageableData.ARIA_HEADER_LABEL);
-
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaMessage, null);
 
         if (isTop && ComponentUtils.shouldRenderFacet(leftTopContent)) {
             writer.startElement("div", null);

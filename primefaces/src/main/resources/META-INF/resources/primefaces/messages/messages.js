@@ -37,5 +37,12 @@ PrimeFaces.widget.Messages = PrimeFaces.widget.BaseWidget.extend({
                     '</li>' +
                 '</ul>' +
             '</div>');
-    }
+    },
+
+    /**
+     * Clears all current messages from the DOM.
+     */
+    clearMessages: function() {
+        this.jq.children().remove();
+    },
 });

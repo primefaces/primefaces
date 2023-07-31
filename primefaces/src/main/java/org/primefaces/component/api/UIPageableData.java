@@ -59,12 +59,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
     public static final String PAGINATOR_NEXT_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-next";
     public static final String PAGINATOR_LAST_PAGE_LINK_CLASS = "ui-paginator-last ui-state-default ui-corner-all";
     public static final String PAGINATOR_LAST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-end";
-    public static final String ARIA_HEADER_LABEL = "primefaces.paginator.aria.HEADER";
-    public static final String ARIA_FIRST_PAGE_LABEL = "primefaces.paginator.aria.FIRST_PAGE";
-    public static final String ARIA_PREVIOUS_PAGE_LABEL = "primefaces.paginator.aria.PREVIOUS_PAGE";
-    public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
-    public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
-    public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
     public static final String EMPTY_MESSAGE = "primefaces.data.EMPTY_MESSAGE";
 
     public enum PropertyKeys {
@@ -73,7 +67,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
         paginator,
         paginatorTemplate,
         rowsPerPageTemplate,
-        rowsPerPageLabel,
         currentPageReportTemplate,
         pageLinks,
         paginatorPosition,
@@ -128,15 +121,6 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
 
     public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
         getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
-    }
-
-    @Override
-    public String getRowsPerPageLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
-    }
-
-    public void setRowsPerPageLabel(String rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
     @Override
