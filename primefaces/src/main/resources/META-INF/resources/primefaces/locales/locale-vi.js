@@ -1,5 +1,29 @@
 /** Vietnamese */
 PrimeFaces.locales['vi'] = {
+        "accept": "Có",
+        "reject": "Không",
+        "choose": "Chọn",
+        "upload": "Upload",
+        "cancel": "Hủy",
+        "dayNames": ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+        "dayNamesShort": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+        "dayNamesMin": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+        "monthNames": ["Tháng Giêng", "Tháng Hai", "Tháng Ba", "Tháng Tư", "Tháng Năm", "Tháng Sáu", "Tháng Bảy", "Tháng Tám", "Tháng Chín", "Tháng Mười", "Tháng Mười một", "Tháng Mười hai"],
+        "monthNamesShort": ["Giêng", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười một", "Mười hai"],
+        "today": "Hôm nay",
+        "clear": "Làm lại",
+        "weekHeader": "Tuần",
+        "firstDayOfWeek": 1,
+        "showMonthAfterYear": false,
+        "dateFormat": "dd/mm/yy",
+        "weak": "Yếu",
+        "medium": "Trung bình",
+        "strong": "Mạnh",
+        "passwordPrompt": "Nhập một mật khẩu"
+    };
+    
+ // custom PF labels
+ PrimeFaces.locales['vi'] = $.extend(true, {}, PrimeFaces.locales['vi'], {
     closeText: 'Tắt',
     prevText: 'Tháng trước',
     nextText: 'Tháng sau',
@@ -9,9 +33,7 @@ PrimeFaces.locales['vi'] = {
     dayNamesShort: ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'],
     dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
     weekHeader: 'Tuần',
-    firstDayOfWeek: 1,
     isRTL: false,
-    showMonthAfterYear: false,
     yearSuffix: '',
     timeOnlyTitle: 'Chọn giờ',
     timeText: 'Giờ',
@@ -19,11 +41,7 @@ PrimeFaces.locales['vi'] = {
     minuteText: 'Phút',
     secondText: 'Giây',
     millisecondText: 'Mili giây',
-    currentText: 'Giờ hiện hành',
-    ampm: false,
     month: 'Tháng',
     week: 'Tuần',
-    day: 'Ngày',
-    allDayText: 'Cả ngày',
-    clear: 'Cài lại'
-};
+    day: 'Ngày'
+});

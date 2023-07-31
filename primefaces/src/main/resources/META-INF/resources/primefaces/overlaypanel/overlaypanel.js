@@ -84,7 +84,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if (this.cfg.showCloseIcon) {
             this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default"><span class="ui-icon ui-icon-closethick"></span></a>')
-                .attr('aria-label', PrimeFaces.getAriaLabel('overlaypanel.CLOSE')).appendTo(this.jq);
+                .attr('aria-label', PrimeFaces.getAriaLabel('close')).appendTo(this.jq);
         }
 
         this.bindCommonEvents();

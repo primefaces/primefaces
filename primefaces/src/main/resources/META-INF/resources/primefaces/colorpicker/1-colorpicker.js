@@ -132,7 +132,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         if (!lang) {
             return;
         }
-        if (lang.closeText) { this.cfg.closeLabel = lang.closeText; }
+        if (lang.aria && lang.aria.close) { this.cfg.closeLabel = lang.aria.close; }
         if (lang.clear) { this.cfg.clearLabel = lang.clear; }
         if (lang.isRTL) { this.cfg.rtl = true; }
         if (lang.aria) {
@@ -148,7 +148,6 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             this.configureAriaLabel('colorpicker.FORMAT', a11y, 'format');
             this.configureAriaLabel('colorpicker.SWATCH', a11y, 'swatch');
             this.configureAriaLabel('colorpicker.INSTRUCTION', a11y, 'instruction');
-            this.configureAriaLabel('colorpicker.OPEN', a11y, 'open');
             this.cfg.a11y = a11y;
         }
     },

@@ -7,10 +7,7 @@
 
     <ui:define name="head">
         <script>
-            PrimeFaces.locales['es'] = {
-                closeText: 'Cerrar',
-                prevText: 'Anterior',
-                nextText: 'Siguiente',
+                        PrimeFaces.locales['es'] = {
                 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
                 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -27,19 +24,20 @@
                 minuteText: 'Minuto',
                 secondText: 'Segundo',
                 millisecondText: 'Milisegundo',
-                currentText: 'Fecha actual',
                 ampm: false,
                 month: 'Mes',
                 week: 'Semana',
                 day: 'Día',
                 allDayText: 'Todo el día',
                 today: 'Hoy',
-                clear: 'Claro'
+                clear: 'Claro',
+                aria: {
+                   close: 'Cerrar',
+                   previous: 'Anterior',
+                   next: 'Siguiente',
+               }
             };
             PrimeFaces.locales ['de'] = {
-                closeText: 'Schließen',
-                prevText: 'Zurück',
-                nextText: 'Weiter',
                 monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
                 monthNamesShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
                 dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
@@ -55,15 +53,17 @@
                 hourText: 'Stunde',
                 minuteText: 'Minute',
                 secondText: 'Sekunde',
-                millisecondText: 'Millisekunde',
-                currentText: 'Aktuelles Datum',
+                today: 'Aktuelles Datum',
                 ampm: false,
                 month: 'Monat',
                 week: 'Woche',
                 day: 'Tag',
                 allDayText: 'Ganzer Tag',
-                today: 'Heute',
-                clear: 'Löschen'
+                aria: {
+                   close: 'Schließen',
+                   previous: 'Zurück',
+                   next: 'Weiter',
+               }
             };
         </script>
 

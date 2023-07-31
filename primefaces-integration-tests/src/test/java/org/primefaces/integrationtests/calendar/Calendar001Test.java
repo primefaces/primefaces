@@ -72,7 +72,7 @@ public class Calendar001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Calendar Config = " + cfg);
-        Assertions.assertEquals("m/d/yy", cfg.getString("dateFormat"));
+        Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
     }
 
     public static class Page extends AbstractPrimePage {

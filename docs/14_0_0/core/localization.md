@@ -57,6 +57,8 @@ In case you need to support another locale, settings should be extended with the
 
 Source code scripts: [GitHub Client Locale Javascript Files](https://github.com/primefaces/primefaces/tree/master/primefaces/src/main/resources/META-INF/resources/primefaces/locales)
 
+PrimeLocale code scripts: [PrimeLocale](https://github.com/primefaces/primelocale)
+
 ### Manual Locale Loading
 If you know the locale you want added to your page and want to include one of the built in locales from PrimeFaces
 just add the appropriate script to your page. For example to load the Dutch language add the following:
@@ -83,27 +85,15 @@ Side Validation, messages property is used as the bundle for the locale.
 
 ```js
 {
-     closeText: 'Close',
-     prevText: 'Previous',
-     nextText: 'Next',
-     monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-     monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-     dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-     dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-     dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
-     weekHeader: 'Week',
      weekNumberTitle: 'W',
-     firstDayOfWeek: 0,
      isRTL: false,
-     showMonthAfterYear: false,
      yearSuffix: '',
      timeOnlyTitle: 'Only Time',
      timeText: 'Time',
      hourText: 'Hour',
      minuteText: 'Minute',
      secondText: 'Second',
-     currentText: 'Current Date',
-     ampm: false,
+     millisecondText: 'Millisecond',
      year: 'Year',
      month: 'Month',
      week: 'Week',
@@ -112,16 +102,10 @@ Side Validation, messages property is used as the bundle for the locale.
      allDayText: 'All Day',
      moreLinkText: 'More...',
      noEventsText: 'No Events',
-     today: 'Today',
-     clear: 'Clear',
      aria: {
-         'paginator.PAGE': 'Page {0}',
-         'calendar.BUTTON': 'Show Calendar',
          'datatable.sort.ASC': 'activate to sort column ascending',
          'datatable.sort.DESC': 'activate to sort column descending',
          'datatable.sort.NONE': 'activate to remove sorting on column',
-         'columntoggler.CLOSE': 'Close',
-         'overlaypanel.CLOSE': 'Close',
          'colorpicker.OPEN': 'Open color picker',
          'colorpicker.CLOSE': 'Close color picker',
          'colorpicker.CLEAR': 'Clear the selected color',
@@ -186,6 +170,7 @@ Side Validation, messages property is used as the bundle for the locale.
          'javax.faces.validator.RegexValidator.NOT_MATCHED_detail': 'Regex pattern of \'{0}\' not matched.',
          'javax.faces.validator.RegexValidator.MATCH_EXCEPTION': 'Error in regular expression.',
          'javax.faces.validator.RegexValidator.MATCH_EXCEPTION_detail': 'Error in regular expression, \'{0}\'.',
+         //optional for bean validation integration in client side validation
          'javax.faces.validator.BeanValidator.MESSAGE': '{0}',
          'javax.validation.constraints.AssertFalse.message': 'must be false.',
          'javax.validation.constraints.AssertTrue.message': 'must be true.',
@@ -201,7 +186,7 @@ Side Validation, messages property is used as the bundle for the locale.
          'javax.validation.constraints.Pattern.message': 'must match "{0}".',
          'javax.validation.constraints.Size.message': 'size must be between {0} and {1}.'
      }
-}
+ });
 ```
 
 ### Usage

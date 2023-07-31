@@ -1,8 +1,5 @@
 /** Croatian */
 PrimeFaces.locales['hr'] = {
-    closeText: 'Zatvori',
-    prevText: 'Prethodni',
-    nextText: 'Slijedeći',
     monthNames: ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'],
     monthNamesShort: ['Sij', 'Velj', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'],
     dayNames: ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 'Petak', 'Subota'],
@@ -19,12 +16,15 @@ PrimeFaces.locales['hr'] = {
     minuteText: 'Minuta',
     secondText: 'Sekunda',
     millisecondText: 'Milisekunda',
-    currentText: 'Sada',
-    ampm: false,
+    today: 'Sada',
     month: 'Mjesec',
     week: 'Tjedan',
     day: 'Dan',
     allDayText: 'Cijeli dan',
-    clear: 'Resetiraj'
+    clear: 'Resetiraj',
+    "aria": {
+        close: 'Zatvori',
+        previous: 'Prethodni',
+        next: 'Slijedeći',
+    }
 };
-
