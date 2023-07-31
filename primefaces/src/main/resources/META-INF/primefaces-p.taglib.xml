@@ -7702,14 +7702,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Template of the currentPageReport UI.]]>
             </description>
             <name>currentPageReportTemplate</name>
@@ -7948,14 +7940,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8322,14 +8306,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -9117,14 +9093,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -30501,14 +30469,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

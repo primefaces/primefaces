@@ -83,6 +83,7 @@ Widget: _PrimeFaces.widget.Messages_
 | Method | Params | Return Type | Description |
 | --- | --- | --- | --- |
 | appendMessage(facesMessage) | facesMessage: see JSDoc about PrimeFaces.FacesMessage  | void | appends the message |
+| clearMessages() | none  | void | clears all current messages |
 
 
 ## Skinning
