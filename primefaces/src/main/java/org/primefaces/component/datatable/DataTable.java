@@ -1207,6 +1207,10 @@ public class DataTable extends DataTableBase {
 
     public LazyDataModel<?> getLazyDataModel() {
         if (isLazy()) {
+            Object value = getValue();
+            if (value == null) {
+                return null;
+            }
             return (LazyDataModel<?>) getDataModel();
         }
         return null;
