@@ -25,12 +25,10 @@ package org.primefaces.selenium.internal;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverLogLevel;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
@@ -81,7 +79,7 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
         }
 
         LoggingPreferences logPrefs = new LoggingPreferences();
-        logPrefs.enable(LogType.BROWSER, Level.ALL);
+        logPrefs.enable(LogType.BROWSER, config.getWebdriverLogLevel());
 
         switch (config.getWebdriverBrowser()) {
             case "firefox":
@@ -100,7 +98,6 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
                     chromeOptions.addArguments("--headless=new");
                 }
                 chromeOptions.setCapability(ChromeOptions.LOGGING_PREFS, logPrefs);
-                chromeOptions.setLogLevel(ChromeDriverLogLevel.fromLevel(config.getWebdriverLogLevel()));
 
                 // Chrome 111 workaround: https://github.com/SeleniumHQ/selenium/issues/11750
                 chromeOptions.addArguments("--remote-allow-origins=*");
