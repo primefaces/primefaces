@@ -1486,7 +1486,6 @@ public class DataTableRenderer extends DataRenderer {
 
             if (isHeaderCheckbox) {
                 rowKey = "head";
-                ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
             }
             else {
                 rowKey = table.getRowKey();
@@ -1524,10 +1523,6 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String ariaRowLabel = table.getAriaRowLabel();
-        if (isHeaderCheckbox) {
-            ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
-        }
-
         writer.startElement("input", null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("name", table.getClientId(context) + "_checkbox", null);

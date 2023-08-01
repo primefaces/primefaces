@@ -404,7 +404,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 });
 
         //toggler
-        encodeCheckbox(context, null, false, !notChecked, null, MessageFactory.getMessage(SelectCheckboxMenu.ARIA_TOGGLER_CHECKBOX_ALL));
+        encodeCheckbox(context, null, false, !notChecked, null, null);
 
         //filter
         if (menu.isFilter()) {
