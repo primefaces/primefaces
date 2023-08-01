@@ -172,7 +172,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         page.buttonEnglish.click();
 
         // Assert
-        assertButton(schedule.getTodayButton(), "Current Date");
+        assertButton(schedule.getTodayButton(), "Today");
         assertButton(schedule.getMonthButton(), "Month");
         assertButton(schedule.getWeekButton(), "Week");
         assertButton(schedule.getDayButton(), "Day");

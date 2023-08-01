@@ -1,8 +1,5 @@
 /** Serbian */
 PrimeFaces.locales['sr'] = {
-    closeText: 'Zatvori',
-    prevText: 'Nazad',
-    nextText: 'Napred',
     monthNames: ['Januar', 'Februar', 'Mart', 'April', 'Maj', 'Juni', 'Juli', 'Avgust', 'Septembar', 'Oktobar', 'Novembar', 'Decembar'],
     monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Avg', 'Sep', 'Okt', 'Nov', 'Dec'],
     dayNames: ['Nedelja', 'Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak', 'Subota'],
@@ -20,10 +17,14 @@ PrimeFaces.locales['sr'] = {
     secondText: 'Sekunda',
     millisecondText: 'Milisekunda',
     currentText: 'Danas',
-    ampm: false,
     month: 'Mesec',
     week: 'sedmica',
     day: 'Dan',
     allDayText: 'Celi Dan',
-    clear: 'Ресетовати'
+    clear: 'Ресетовати',
+    "aria": {
+        close: 'Zatvori',
+        previous: 'Nazad',
+        next: 'Napred',
+    }
 };

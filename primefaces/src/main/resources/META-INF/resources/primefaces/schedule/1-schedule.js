@@ -116,9 +116,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             if (lang.noEventsText) { options.noEventsText = lang.noEventsText; }
             
             var buttonText = options.buttonText || {};
-            if (lang.prevText) { buttonText.prev = lang.prevText; }
-            if (lang.nextText) { buttonText.next = lang.nextText; }
-            if (lang.currentText) { buttonText.today = lang.currentText; }
+            if (lang.aria.previous) { buttonText.prev = lang.aria.previous; }
+            if (lang.aria.next) { buttonText.next = lang.aria.next; }
+            if (lang.today) { buttonText.today = lang.today; }
             if (lang.year) { buttonText.year = lang.year; }
             if (lang.month) { buttonText.month = lang.month; }
             if (lang.week) { buttonText.week = lang.week; }

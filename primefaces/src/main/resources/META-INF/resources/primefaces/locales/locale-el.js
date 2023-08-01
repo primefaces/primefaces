@@ -1,17 +1,100 @@
 /** Greek */
 PrimeFaces.locales['el'] = {
-    closeText: 'Κλείσιμο',
-    prevText: 'Προηγούμενο',
-    nextText: 'Επόμενο',
-    monthNames: ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάϊος', 'Ιούνιος', 'Ιούλιος', 'Άυγουστος', 'Σεπτέμβιος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος'],
-    monthNamesShort: ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μαι', 'Ιουν', 'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ'],
-    dayNames: ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο'],
-    dayNamesShort: ['Κυρ', 'Δευ', 'Τρι', 'Τετ', 'Πεμ', 'Παρ', 'Σαβ'],
-    dayNamesMin: ['Κ', 'Δ', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σ'],
-    weekHeader: 'Εβδ',
-    firstDayOfWeek: 1,
+    "startsWith": "Αρχίζει με",
+    "contains": "Περιέχει",
+    "notContains": "Δεν Περιέχει",
+    "endsWith": "Τελειώνει με",
+    "equals": "Ισο με",
+    "notEquals": "Διαφορετικό από",
+    "noFilter": "Χωρίς φίλτρο",
+    "lt": "Μικρότερο από",
+    "lte": "Μικρότερο από ή ίσο με",
+    "gt": "Μεγαλύτερο από",
+    "gte": "Μεγαλύτερο από ή ίσο με",
+    "dateIs": "Ημερομηνία είναι",
+    "dateIsNot": "Ημερομηνία δεν είναι",
+    "dateBefore": "Ημερομηνία πριν",
+    "dateAfter": "Ημερομηνία μετά",
+    "custom": "Ειδική κατασκευή",
+    "clear": "Καθαρισμός",
+    "apply": "Εφαρμογή",
+    "matchAll": "Ισοδύναμο με όλα",
+    "matchAny": "Ισοδύναμο με τουλάχιστον ένα",
+    "addRule": "Προσθήκη κανόνα",
+    "removeRule": "Αφαίρεση κανόνα",
+    "accept": "ΝΑΙ",
+    "reject": "ΟΧΙ",
+    "choose": "Επιλογή",
+    "upload": "Ανεβάζω",
+    "cancel": "Ακύρωση",
+    "dayNames": [
+        "Κυριακή",
+        "Δευτέρα",
+        "Τρίτη",
+        "Τετάρτη",
+        "Πέμπτη",
+        "Παρασκευή",
+        "Σάββατο"
+    ],
+    "dayNamesShort": ["Κυρ", "Δευ", "Τρι", "Τετ", "Πεμ", "Παρ", "Σαβ"],
+    "dayNamesMin": ['Κ', 'Δ', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σ'],
+    "monthNames": [
+        "Ιανουάριος",
+        "Φεβρουάριος",
+        "Μάρτιος",
+        "Απρίλιος",
+        "Μάιος",
+        "Ιούνιος",
+        "Ιούλιος",
+        "Αύγουστος",
+        "Σεπτέμβριος",
+        "Οκτώβριος",
+        "Νοέμβριος",
+        "Δεκέμβριος"
+    ],
+    "monthNamesShort": [
+        "Ιαν",
+        "Φεβ",
+        "Μαρ",
+        "Απρ",
+        "Μαϊ",
+        "Ιουν",
+        "Ιουλ",
+        "Αυγ",
+        "Σεπ",
+        "Οκτ",
+        "Νοε",
+        "Δεκ"
+    ],
+    "today": "Σήμερα",
+    "weekHeader": "Εβδ",
+    "firstDayOfWeek": 1,
+    "showMonthAfterYear": false,
+    "dateFormat": "dd/mm/yyyy",
+    "weak": "Αδύναμος",
+    "medium": "Μεσαίος",
+    "strong": "Δυνατός",
+    "passwordPrompt": "Εισαγωγή κωδικού",
+    "emptyFilterMessage": "Δεν υπάρχουν διαθέσιμες επιλογές",
+    "emptyMessage": "Δεν βρέθηκαν αποτελέσματα",
+    "aria": {
+        "close": 'Κλείσιμο',
+        "previous": 'Προηγούμενο',
+        "next": 'Επόμενο',
+        "trueLabel": "Αληθής",
+        "falseLabel": "Ψευδής",
+        "nullLabel": "Κενή ετικέτα",
+        "pageLabel": "Σελίδα {page}",
+        "firstPageLabel": "Πρώτη Σελίδα",
+        "lastPageLabel": "Τελευταία Σελίδα",
+        "nextPageLabel": "Επόμενη Σελίδα",
+        "previousPageLabel": "Προηγούμενη Σελίδα"
+    }
+};
+
+// custom PF labels
+PrimeFaces.locales['el'] = $.extend(true, {}, PrimeFaces.locales['el'], {
     isRTL: false,
-    showMonthAfterYear: false,
     yearSuffix: '',
     timeOnlyTitle: 'Επιλογή Ώρας',
     timeText: 'Χρόνος',
@@ -19,13 +102,11 @@ PrimeFaces.locales['el'] = {
     minuteText: 'Λεπτό',
     secondText: 'Δευτερόλεπτο',
     millisecondText: 'Μιλιδευτερόλεπτο',
-    currentText: 'Σημερινή Ημερομηνία',
-    ampm: false,
+    today: 'Σημερινή Ημερομηνία',
     month: 'Μήνας',
     week: 'Εβδομάδα',
     day: 'Ημέρα',
     allDayText: 'Όλη Μέρα',
-    clear: 'Επαναφορά',
     aria: {
         'colorpicker.OPEN': 'Άνοιγμα επιλογέα χρώματος',
         'colorpicker.CLOSE': 'Κλείσιμο επιλογέα χρώματος',
@@ -39,7 +120,7 @@ PrimeFaces.locales['el'] = {
         'colorpicker.INSTRUCTION': 'Επιλογέας κορεσμού και φωτεινότητας. Χρησιμοποιήστε τα πλήκτρα πάνω, κάτω, αριστερά και δεξιά για να επιλέξετε.',
         'spinner.INCREASE': 'Αύξηση της αξίας',
         'spinner.DECREASE': 'Μείωση της αξίας'
-    }
+    },
     messages: {
         'javax.faces.component.UIInput.CONVERSION': '{0}: Παρουσιάστηκε σφάλμα μετατροπής.',
         'javax.faces.component.UIInput.REQUIRED': '{0}: Σφάλμα επικύρωσης. Η τιμή είναι απαραίτητη.',
@@ -140,4 +221,5 @@ PrimeFaces.locales['el'] = {
         'org.hibernate.validator.constraints.pl.NIP.message': 'Μη έγκυρος Αριθμός Ταυτοποίησης ΦΠΑ (NIP)',
         'org.hibernate.validator.constraints.pl.PESEL.message': 'Μη έγκυρος Εθνικός Αριθμός Ταυτοποίησης Πολωνίας (PESEL)'
     }
-};
+});
+PrimeFaces.locales['el_GR'] = PrimeFaces.locales['el'];

@@ -11,11 +11,13 @@ touch/touchswipe.js
 locales/locale-ar.js
 locales/locale-ca.js
 locales/locale-cs.js
+locales/locale-da.js
 locales/locale-de.js
 locales/locale-el.js
 locales/locale-en.js
 locales/locale-es.js
 locales/locale-fa.js
+locales/locale-fi.js
 locales/locale-fr.js
 locales/locale-hr.js
 locales/locale-hu.js
@@ -24,6 +26,7 @@ locales/locale-it.js
 locales/locale-iw.js
 locales/locale-ja.js
 locales/locale-ka.js
+locales/locale-ky.js
 locales/locale-ko.js
 locales/locale-lt.js
 locales/locale-lv.js
