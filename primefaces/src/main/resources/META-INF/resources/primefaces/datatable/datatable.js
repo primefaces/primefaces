@@ -1132,6 +1132,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
                         });
         }
+        this.configureSelectAllAria();
 
         //keyboard support
         this.tbody.off('focus.dataTable blur.dataTable change.dataTable', checkboxSelector)
@@ -2799,6 +2800,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.selection = new Array('@all');
         this.writeSelections();
     },
+    
+    /**
+     * Configures the ARIA label for the select all checkbox.
+     * @private
+     */
+    configureSelectAllAria: function() {
+        if (this.checkAllToggler) {
+           var checked = this.checkAllToggler.attr('aria-checked') === "true" || this.checkAllToggler.prop('checked');
+           var ariaLabel = checked ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
+           this.checkAllToggler.attr('aria-label', ariaLabel);
+        }
+    },
 
     /**
      * Toggles the `selected all` checkbox in the header of this DataTable. When no rows are selected, this will select
@@ -2842,12 +2855,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             else {
                 this.checkAllToggler.addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
                 this.checkAllToggler.attr('aria-checked', true);
+                
 
                 checkboxes.each(function() {
                     $this.selectRowWithCheckbox($(this), true);
                 });
             }
         }
+        
+        this.configureSelectAllAria();
 
         // GitHub #6730 user wants all rows not just displayed rows
         if(!this.cfg.selectionPageOnly && shouldCheckAll) {
