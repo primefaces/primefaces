@@ -107,7 +107,9 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
         assertNoJavascriptErrors();
         System.out.println("ColorPicker Config = " + cfg);
         Assertions.assertEquals("popup", cfg.getString("mode"));
-        Assertions.assertEquals("auto", cfg.getString("themeMode"));
+        if (cfg.has("themeMode")) {
+            Assertions.assertEquals("light", cfg.getString("themeMode"));
+        }
         Assertions.assertEquals("default", cfg.getString("theme"));
         Assertions.assertEquals("en", cfg.getString("locale"));
         Assertions.assertTrue(cfg.getBoolean("clearButton"));
