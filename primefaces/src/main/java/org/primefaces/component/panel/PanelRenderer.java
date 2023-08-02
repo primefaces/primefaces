@@ -211,7 +211,7 @@ public class PanelRenderer extends CoreRenderer {
 
         //Options
         if (panel.isClosable()) {
-            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), MessageFactory.getMessage(Panel.ARIA_CLOSE));
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), null);
         }
 
         if (panel.isToggleable()) {

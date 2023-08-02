@@ -34,7 +34,6 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
@@ -153,7 +152,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, MessageFactory.getMessage(Dialog.ARIA_CLOSE));
+            encodeIcon(context, Dialog.TITLE_BAR_CLOSE_CLASS, Dialog.CLOSE_ICON_CLASS, null);
         }
 
         if (dialog.isMaximizable()) {
