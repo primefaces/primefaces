@@ -163,7 +163,7 @@ public class ColorPickerRenderer extends InputRenderer {
                 .attr("defaultColor", value, null)
                 .attr("theme", colorPicker.getTheme())
                 .attr("theme", colorPicker.getTheme(), "default")
-                .attr("themeMode", colorPicker.getThemeMode(), "light")
+                .attr("themeMode", colorPicker.getThemeMode(), "auto")
                 .attr("format", colorPicker.getFormat(), "hex")
                 .attr("formatToggle", colorPicker.isFormatToggle(), false)
                 .attr("clearButton", colorPicker.isClearButton(), false)
