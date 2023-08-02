@@ -96,6 +96,7 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.configureLocale();
         this.cfg.inline = !this.popup;
+        this.cfg.themeMode = this.cfg.themeMode || PrimeFaces.env.getThemeContrast();
         var settings = this.cfg;
         if (this.popup) {
             colorisInitialized = true;
