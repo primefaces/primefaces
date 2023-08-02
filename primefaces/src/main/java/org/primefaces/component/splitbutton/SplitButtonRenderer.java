@@ -41,7 +41,6 @@ import org.primefaces.component.overlaypanel.OverlayPanel;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.*;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.*;
 
@@ -420,7 +419,6 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (button.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);

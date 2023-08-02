@@ -359,7 +359,7 @@ public class PickListRenderer extends InputRenderer {
 
         String styleClass = PickList.FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
         String placeholder = isSource ? picklist.getSourceFilterPlaceholder() : picklist.getTargetFilterPlaceholder();
-        String ariaLabel = LangUtils.isNotBlank(placeholder) ? placeholder : MessageFactory.getMessage(InputRenderer.ARIA_FILTER);
+        String ariaLabel = LangUtils.isNotBlank(placeholder) ? placeholder : null;
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.FILTER_CONTAINER, null);
@@ -370,7 +370,10 @@ public class PickListRenderer extends InputRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        if (LangUtils.isNotBlank(ariaLabel)) {
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
+        }
+
         if (LangUtils.isNotBlank(placeholder)) {
             writer.writeAttribute("placeholder", placeholder, null);
         }

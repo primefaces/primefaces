@@ -140,8 +140,21 @@ PrimeFaces.locales['ko'] = $.extend(true, {}, PrimeFaces.locales['ko'], {
     moreLinkText: "더...",
     noEventsText: "사건 없음",
     aria: {
-        'datatable.sort.ASC': '활성화하여 열 오름차순 정렬',
-        'datatable.sort.DESC': '활성화하여 열 내림차순 정렬'
+        'datatable.sort.ASC': '열 오름차순 정렬 활성화',
+        'datatable.sort.DESC': '열 내림차순 정렬 활성화',
+        'datatable.sort.NONE': '열 정렬 제거',
+        'colorpicker.OPEN': '색상 선택도구 열기',
+        'colorpicker.CLOSE': '색상 선택도구 닫기',
+        'colorpicker.CLEAR': '선택된 색상 초기화',
+        'colorpicker.MARKER': '채도: {s}. 밝기: {v}.',
+        'colorpicker.HUESLIDER': 'Hue 슬라이더',
+        'colorpicker.ALPHASLIDER': '불투명도 슬라이더',
+        'colorpicker.INPUT': '색상 값 필드',
+        'colorpicker.FORMAT': '색상 포맷',
+        'colorpicker.SWATCH': '색상 스와치',
+        'colorpicker.INSTRUCTION': '채도 및 밝기 선택기. 위, 아래, 왼쪽 및 오른쪽 화살표 키를 사용하여 선택합니다..',
+        'spinner.INCREASE': '값 증가',
+        'spinner.DECREASE': '값 감소'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: 유효성 검사 오류: 값이 필요랍니다.',

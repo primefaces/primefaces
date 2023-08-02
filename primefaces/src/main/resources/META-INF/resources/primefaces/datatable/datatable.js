@@ -675,6 +675,18 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.skinSelect(filter);
                 $this.bindChangeFilter(filter);
             }
+            
+        });
+        
+        // ARIA labels for filters
+        filterColumns.each(function() {
+            var filterColumn = $(this);
+            var filter = filterColumn.find(':input');
+            var title = filterColumn.find('.ui-column-title')
+
+            if (filter && title) {
+                filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
+            }
         });
     },
 
