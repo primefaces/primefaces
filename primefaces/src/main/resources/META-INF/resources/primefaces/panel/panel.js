@@ -287,6 +287,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.closer = $(this.jqId + '_closer');
+        this.closer.attr('aria-label', PrimeFaces.getAriaLabel('close'));
         this.visibleStateHolder = $(this.jqId + "_visible");
 
         this.closer.on("click", function(e) {

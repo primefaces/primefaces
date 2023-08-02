@@ -164,11 +164,13 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //remove message on click of close icon
-        message.find('div.ui-growl-icon-close').on("click", function() {
+        var closeIcon = message.find('div.ui-growl-icon-close');
+        closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        closeIcon.on("click", function() {
             $this.removeMessage(message);
 
             //clear timeout if removed manually
-            if(!sticky) {
+            if (!sticky) {
                 clearTimeout(message.data('timeout'));
             }
         });

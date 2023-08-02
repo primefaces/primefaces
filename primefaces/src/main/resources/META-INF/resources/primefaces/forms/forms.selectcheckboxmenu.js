@@ -206,6 +206,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.filterInputWrapper = this.header.children('.ui-selectcheckboxmenu-filter-container');
         this.filterInput = this.filterInputWrapper.children('.ui-inputtext');
         this.closer = this.header.children('.ui-selectcheckboxmenu-close');
+        this.closer.attr('aria-label', PrimeFaces.getAriaLabel('close'));
 
         if (this.cfg.renderPanelContentOnClient && this.itemContainerWrapper.children().length === 0) {
             this.renderItems();

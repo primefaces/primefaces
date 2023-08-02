@@ -34,8 +34,6 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
@@ -115,15 +113,10 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE);
 
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
-            if (ariaLabel != null) {
-                writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
-            }
-
             writer.startElement("span", null);
             writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
             writer.endElement("span");
