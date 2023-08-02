@@ -775,6 +775,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     setupSelection: function() {
+        var $this = this;
         this.selectionHolder = this.jqId + '_selection';
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
@@ -788,6 +789,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         //shift key based range selection
         this.originRowIndex = null;
         this.cursorIndex = null;
+        
+        // set aria labels
+        this.tbody.find(this.rowSelector).each(function() {
+            $this.updateSelectionAria($(this))
+        });
 
         this.bindSelectionEvents();
     },
@@ -2578,6 +2584,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.fireRowUnselectEvent(rowMeta.key, "rowUnselect");
         }
     },
+    
+    /**
+     * Configures the ARIA label for the row checkbox/radio button.
+     * @param {JQuery} row the row key to identify
+     * @private
+     */
+    updateSelectionAria: function(row) {
+        if (row) {
+            var jq = row.children('td.ui-selection-column').find(":radio,:checkbox,div.ui-chkbox-box");
+            if (jq) {
+                var rowMeta = this.getRowMeta(row);
+                var checked = row.attr('aria-selected') === "true"
+                var ariaLabel = checked ? PrimeFaces.getAriaLabel('selectRow') : PrimeFaces.getAriaLabel('unselectRow');
+                ariaLabel += " " + rowMeta.key;
+                jq.attr('aria-label', ariaLabel);
+            }
+        }
+    },
 
     /**
      * Highlights row to mark it as selected.
@@ -2586,6 +2610,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     highlightRow: function(row) {
         row.addClass('ui-state-highlight').attr('aria-selected', true);
+        this.updateSelectionAria(row)
     },
 
     /**
@@ -2595,6 +2620,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      */
     unhighlightRow: function(row) {
         row.removeClass('ui-state-highlight').attr('aria-selected', false);
+        this.updateSelectionAria(row)
     },
 
     /**
