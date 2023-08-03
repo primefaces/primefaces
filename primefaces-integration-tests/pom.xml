@@ -474,13 +474,6 @@
             </properties>
         </profile>
         <profile>
-            <id>chrome-jsf22</id>
-            <properties>
-                <webdriver.browser>chrome</webdriver.browser>
-                <excludedGroups>ChromeExclude,Jsf22Exclude</excludedGroups>
-            </properties>
-        </profile>
-        <profile>
             <id>firefox</id>
             <properties>
                 <webdriver.browser>firefox</webdriver.browser>
@@ -532,23 +525,6 @@
             </properties>
         </profile>
         <profile>
-            <id>myfaces-2.2</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-api</artifactId>
-                    <version>2.2.15</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-impl</artifactId>
-                    <version>2.2.15</version>
-                    <scope>compile</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
             <id>myfaces-2.3</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -582,21 +558,6 @@
                     <artifactId>myfaces-impl</artifactId>
                     <version>${myfaces-next.version}</version>
                     <scope>compile</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>mojarra-2.2</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>2.2.20</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>2.2.20</version>
                 </dependency>
             </dependencies>
         </profile>

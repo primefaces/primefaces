@@ -548,8 +548,7 @@ public class PrimeFaces {
 
             PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(fc);
             String clientWindowId = "session";
-            if (primeApplicationContext.getEnvironment().isAtLeastJsf22() &&
-                    "client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
+            if ("client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
                 ExternalContext externalContext = fc.getExternalContext();
                 ClientWindow clientWindow = externalContext.getClientWindow();
                 if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {

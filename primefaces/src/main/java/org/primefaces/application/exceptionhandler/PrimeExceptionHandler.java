@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -294,14 +293,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected AjaxExceptionHandler findHandlerComponent(FacesContext context, Throwable rootCause) {
         AjaxExceptionHandlerVisitCallback visitCallback = new AjaxExceptionHandlerVisitCallback(rootCause);
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf21()) {
-            context.getViewRoot().visitTree(
-                    VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_ITERATION.get()), visitCallback);
-        }
-        else {
-            context.getViewRoot().visitTree(
-                    VisitContext.createVisitContext(context, null, Collections.emptySet()), visitCallback);
-        }
+        context.getViewRoot().visitTree(
+                VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_ITERATION.get()), visitCallback);
 
         Map<String, AjaxExceptionHandler> handlers = visitCallback.getHandlers();
 
