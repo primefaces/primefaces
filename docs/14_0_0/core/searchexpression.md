@@ -1,11 +1,6 @@
 # Search Expression Framework
 
-Core JSF component referencing is based on component identifiers only with basic keyword
-support. PrimeFaces Search Expression Framework (SEF) provides both server side and client side
-extensions to make it easier to reference components. SEF is utilized in partial update, process and
-whenever a component references another component.
-
-Search Expressions are part of the JSF specs since 2.3.
+PrimeFaces enhances the Faces Search Expressions with own keywords, which are part of the Faces specs since 2.3.
 
 ## Keywords
 
@@ -13,22 +8,30 @@ Keywords are the easier way to reference components, they resolve to ids so that
 the reference does not need to change. Core JSF provides a couple of keywords and PrimeFaces
 provides more along with composite expression support.
 
-| Keyword | Type | Description |
-| --- | --- | --- |
-@this | Standard | Current component.
-@all | Standard | Whole view.
-@form | Standard | Closest ancestor form of current component.
-@none | Standard | No component.
-@namingcontainer | PrimeFaces | Closest ancestor naming container of current component.
-@parent | PrimeFaces | Parent of the current component.
-@composite | PrimeFaces | Closest composite component ancestor.
-@child(n) | PrimeFaces | nth child.
-@row(n) | PrimeFaces | nth row.
-@previous | PrimeFaces | Previous sibling.
-@next | PrimeFaces | Next sibling.
-@widgetVar(name) | PrimeFaces | Component with given widgetVar.
-@root | PrimeFaces | UIViewRoot instance of the view, can be used to start searching from the root instead the current component.
-@id(id) | PrimeFaces | Used to search components by their id ignoring the component tree structure and naming containers.
+
+### Faces
+| Keyword | Description |
+| --- | --- |
+@this | Current component.
+@all | Whole view.
+@form | Closest ancestor form of current component.
+@none | No component.
+@namingcontainer | Closest ancestor naming container of current component.
+@parent | Parent of the current component.
+@composite | Closest composite component ancestor.
+@child(n) | nth child.
+@previous | Previous sibling.
+@next | Next sibling.
+@root | UIViewRoot instance of the view, can be used to start searching from the root instead the current component.
+@id(id) | Used to search components by their id ignoring the component tree structure and naming containers.
+
+### PrimeFaces additional keywords
+| Keyword | Description |
+| --- | --- |
+@row(n) | nth row.
+@obs(event) | targeting a event. See [Event/Observer Pattern](/components/autoupdate.md)
+@widgetVar(name) | Component with given widgetVar.
+@(selector) | PFS / PrimeFaces Selectors.
 
 Consider the following case where ids are used for referencing;
 

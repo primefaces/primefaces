@@ -32,7 +32,6 @@ import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspPartialResponseWriter;
-import org.primefaces.expression.SearchExpressionConstants;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -117,7 +116,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             ResetInputContextCallback contextCallback = null;
 
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
-                if (LangUtils.isBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
+                if (LangUtils.isBlank(renderId) || renderId.trim().equals("@none")) {
                     continue;
                 }
 
@@ -126,7 +125,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
                     visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
                 }
 
-                if (renderId.equals(SearchExpressionConstants.ALL_KEYWORD)) {
+                if (renderId.equals(PartialViewContext.ALL_PARTIAL_PHASE_CLIENT_IDS)) {
                     context.getViewRoot().visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
                 }
                 else {

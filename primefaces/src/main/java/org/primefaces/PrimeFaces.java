@@ -26,7 +26,6 @@ package org.primefaces;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -53,6 +52,7 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.faces.component.search.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionUtils;
 
 public class PrimeFaces {

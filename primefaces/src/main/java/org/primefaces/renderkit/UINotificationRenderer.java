@@ -123,7 +123,7 @@ public class UINotificationRenderer extends CoreRenderer {
             // clientId / SearchExpression case
             if (forType == null || "expression".equals(forType)) {
                 List<UIComponent> forComponents = SearchExpressionUtils.contextlessResolveComponents(context, uiMessages, _for,
-                        SearchExpressionUtils.SET_IGNORE_NO_RESULT2);
+                        SearchExpressionUtils.HINTS_IGNORE_NO_RESULT);
                 for (int i = 0; i < forComponents.size(); i++) {
                     UIComponent forComponent = forComponents.get(i);
                     String forComponentClientId = forComponent.getClientId(context);

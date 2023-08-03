@@ -32,28 +32,21 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 
 public class SearchExpressionUtils {
 
-    public static final Set<SearchExpressionHint> SET_NONE = Collections.unmodifiableSet(EnumSet.noneOf(SearchExpressionHint.class));
-    public static final Set<SearchExpressionHint> SET_SKIP_UNRENDERED = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.SKIP_UNRENDERED));
-    public static final Set<SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
-    public static final Set<SearchExpressionHint> SET_PARENT_FALLBACK = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.PARENT_FALLBACK));
-    public static final Set<SearchExpressionHint> SET_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT));
-    public static final Set<SearchExpressionHint> SET_VALIDATE_RENDERER = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER));
-
-    public static final Set<javax.faces.component.search.SearchExpressionHint> SET_IGNORE_NO_RESULT2 =
+    // NOTE: Faces implementations require a modifiable hints set for #resolveComponent and #resolveClientId
+    // So don't use it for this calls
+    public static final Set<javax.faces.component.search.SearchExpressionHint> HINTS_IGNORE_NO_RESULT =
             Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT));
-    private static final Set<javax.faces.component.search.SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE2 =
+    public static final Set<javax.faces.component.search.SearchExpressionHint> HINTS_RESOLVE_CLIENT_SIDE =
             Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE));
-    private static final Set<javax.faces.component.search.SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE_OPTIONAL =
+    public static final Set<javax.faces.component.search.SearchExpressionHint> HINTS_IGNORE_NO_RESULT_RESOLVE_CLIENT_SIDE =
             Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE,
                     javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT));
 
@@ -64,22 +57,15 @@ public class SearchExpressionUtils {
         return EnumSet.of(javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT);
     }
 
-    public static Set<javax.faces.component.search.SearchExpressionHint> hintsIgnoreNoResultClientSide() {
+    public static Set<javax.faces.component.search.SearchExpressionHint> hintsIgnoreNoResultResolveClientSide() {
         return EnumSet.of(javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT,
                 javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE);
     }
 
-    public static Set<javax.faces.component.search.SearchExpressionHint> hintsClientSide() {
+    public static Set<javax.faces.component.search.SearchExpressionHint> hintsResolveClientSide() {
         return EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE);
     }
 
-    public static VisitContext createVisitContext(FacesContext context, Set<SearchExpressionHint> hints) {
-        if (hints.contains(SearchExpressionHint.SKIP_UNRENDERED)) {
-            return VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-        }
-
-        return VisitContext.createVisitContext(context);
-    }
 
     public static UIComponent contextlessOptionalResolveComponent(FacesContext context, UIComponent component, String expression) {
         return contextlessResolveComponent(context, component, expression, hintsIgnoreNoResult());
@@ -89,7 +75,6 @@ public class SearchExpressionUtils {
         return contextlessResolveComponent(context, component, expression, EnumSet.noneOf(javax.faces.component.search.SearchExpressionHint.class));
     }
 
-    // NOTE: JSF impls require a modifiable hints set for #resolveComponent and #resolveClientId
     public static UIComponent contextlessResolveComponent(FacesContext context, UIComponent component, String expression,
             Set<javax.faces.component.search.SearchExpressionHint> hints) {
 
@@ -149,13 +134,13 @@ public class SearchExpressionUtils {
 
     public static String resolveClientIdsForClientSide(FacesContext context, UIComponent component, String expression) {
         return resolveClientIdsAsString(context, component, expression,
-                SET_RESOLVE_CLIENT_SIDE2,
+                HINTS_RESOLVE_CLIENT_SIDE,
                 null);
     }
 
     public static String resolveOptionalClientIdsForClientSide(FacesContext context, UIComponent component, String expression) {
         return resolveClientIdsAsString(context, component, expression,
-                SET_RESOLVE_CLIENT_SIDE_OPTIONAL,
+                HINTS_IGNORE_NO_RESULT_RESOLVE_CLIENT_SIDE,
                 null);
     }
 
@@ -171,7 +156,7 @@ public class SearchExpressionUtils {
         }
 
         return context.getApplication().getSearchExpressionHandler().resolveClientId(
-                SearchExpressionContext.createSearchExpressionContext(context, component, hintsIgnoreNoResultClientSide(), null),
+                SearchExpressionContext.createSearchExpressionContext(context, component, hintsIgnoreNoResultResolveClientSide(), null),
                 expression);
     }
 
@@ -181,7 +166,7 @@ public class SearchExpressionUtils {
         }
 
         return context.getApplication().getSearchExpressionHandler().resolveClientId(
-                SearchExpressionContext.createSearchExpressionContext(context, component, hintsClientSide(), null),
+                SearchExpressionContext.createSearchExpressionContext(context, component, hintsResolveClientSide(), null),
                 expression);
     }
 
