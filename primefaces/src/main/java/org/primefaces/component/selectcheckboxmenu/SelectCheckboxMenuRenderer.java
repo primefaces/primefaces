@@ -41,7 +41,6 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.*;
@@ -680,8 +679,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
                 .attr("renderPanelContentOnClient", menu.getVar() == null,  false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()));
 
         if (menu.isFilter()) {
             wb.attr("filter", true)

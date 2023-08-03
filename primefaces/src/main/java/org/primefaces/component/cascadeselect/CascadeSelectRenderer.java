@@ -34,7 +34,6 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 
 import org.primefaces.renderkit.SelectOneRenderer;
@@ -256,8 +255,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("CascadeSelect", cascadeSelect)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, cascadeSelect, cascadeSelect.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, cascadeSelect, cascadeSelect.getAppendTo()), null);
 
         encodeClientBehaviors(context, cascadeSelect);
         wb.finish();

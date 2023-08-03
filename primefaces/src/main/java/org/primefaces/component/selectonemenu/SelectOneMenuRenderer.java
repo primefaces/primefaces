@@ -40,7 +40,6 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.*;
@@ -511,8 +510,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneMenu", menu)
                 .attr("editable", menu.isEditable(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()))
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
                 .attr("alwaysDisplayLabel", menu.isAlwaysDisplayLabel(), false)
                 .attr("label", menu.getLabel(), null)

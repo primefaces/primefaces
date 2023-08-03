@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.expression.impl;
+package org.primefaces.expression;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,9 +30,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
-import org.primefaces.expression.SearchExpressionUtils;
+import javax.faces.component.visit.VisitContext;
+import org.primefaces.util.ComponentUtils;
 
-public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
+public class WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
     private static final Pattern PATTERN = Pattern.compile("widgetVar\\((\\w+)\\)");
 
@@ -50,8 +51,8 @@ public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
                 context.getSearchExpressionContext().getFacesContext().getViewRoot().visitTree(
-                        SearchExpressionUtils.createVisitContext(
-                                context.getSearchExpressionContext().getFacesContext(), SearchExpressionUtils.SET_SKIP_UNRENDERED),
+                        VisitContext.createVisitContext(context.getSearchExpressionContext().getFacesContext(), null,
+                                ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED),
                         visitCallback);
 
                 context.invokeContextCallback(visitCallback.getComponent());

@@ -36,7 +36,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.ToggleCloseEvent;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.Visibility;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
@@ -106,7 +106,7 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
-            dataSourceComponent = SearchExpressionFacade.resolveComponent(getFacesContext(), this, getDatasource());
+            dataSourceComponent = SearchExpressionUtils.contextlessResolveComponent(getFacesContext(), this, getDatasource());
         }
 
         return dataSourceComponent;

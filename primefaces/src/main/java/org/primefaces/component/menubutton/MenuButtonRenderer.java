@@ -33,7 +33,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -162,8 +161,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("MenuButton", button)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
-                  SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, button, button.getAppendTo()))
             .attr("collision", button.getCollision())
             .attr("autoDisplay", button.isAutoDisplay())
             .attr("toggleEvent", button.getToggleEvent(), null)

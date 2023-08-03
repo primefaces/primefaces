@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -90,7 +91,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
                 .attr("my", panel.getMy(), null)
                 .attr("at", panel.getAt(), null)
                 .attr("collision", panel.getCollision(), null)
-                .attr("appendTo", panel.getAppendTo(), null)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, panel, panel.getAppendTo()))
                 .attr("dynamic", panel.isDynamic(), false)
                 .attr("cache", panel.isCache(), true)
                 .attr("dismissable", panel.isDismissable(), true)
