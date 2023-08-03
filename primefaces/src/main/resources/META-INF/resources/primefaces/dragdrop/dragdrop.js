@@ -41,7 +41,7 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.cancel = this.cfg.cancel || "input,textarea,button,select,option";
 
         if(this.cfg.appendTo) {
-            this.cfg.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
+            this.cfg.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.appendTo);
         }
         
         var $this = this;

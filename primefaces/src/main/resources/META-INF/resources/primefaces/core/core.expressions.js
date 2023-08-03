@@ -18,10 +18,11 @@ if (!PrimeFaces.expressions) {
          * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
          * each search expression to the component it refers to and returns a JQuery object with the DOM elements of
          * the resolved components.
-         * @param {string | HTMLElement | JQuery}  expressions A search expression with one or multiple components to resolve.
+         * @param {JQuery} source the source element where to start the search (e.g. required for @form).
+         * @param {string | HTMLElement | JQuery} expressions A search expression with one or multiple components to resolve.
          * @return {JQuery} A list with the resolved components.
          */
-        resolveComponentsAsSelector: function(expressions) {
+        resolveComponentsAsSelector: function(source, expressions) {
 
             if (expressions instanceof $) {
                 return expressions;
@@ -67,6 +68,10 @@ if (!PrimeFaces.expressions) {
                             elements = elements.add(
                                     $(expression.substring(2, expression.length - 1)));
                         }
+                        else if (expression == '@form') {
+                            var form = source.closest('form');
+                            elements = elements.add(form[0]);
+                        }
                     }
                 }
             }
@@ -77,10 +82,12 @@ if (!PrimeFaces.expressions) {
         /**
          * Takes a search expression that may contain multiple components, separated by commas or whitespaces. Resolves
          * each search expression to the component it refers to and returns a list of IDs of the resolved components.
+         *
+         * @param {JQuery} source the source element where to start the search (e.g. required for @form).
          * @param {string} expressions A search expression with one or multiple components to resolve.
          * @return {string[]} A list of IDs with the resolved components.
          */
-        resolveComponents: function(expressions) {
+        resolveComponents: function(source, expressions) {
             var splittedExpressions = PrimeFaces.expressions.SearchExpressionFacade.splitExpressions(expressions),
             ids = [];
 
@@ -121,6 +128,14 @@ if (!PrimeFaces.expressions) {
                                 if (clientId && !PrimeFaces.inArray(ids, clientId)) {
                                     ids.push(clientId);
                                 }
+                            }
+                        }
+                        else if (expression == '@form') {
+                            var element = source.closest('form'),
+                            clientId = element.data(PrimeFaces.CLIENT_ID_DATA) || element.attr('id');;
+                            
+                            if (!PrimeFaces.inArray(ids, clientId)) {
+                                ids.push(clientId);
                             }
                         }
                     }

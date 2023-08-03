@@ -287,7 +287,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.inline) {
                 $this.panel.css('position', '');
             }
-            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.cfg.appendTo);
+            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.appendTo);
         };
     },
 

@@ -32,7 +32,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         this.content = this.jq;
         this.cfg.animate = (this.cfg.animate === false) ? false : true;
         this.cfg.blocked = (this.cfg.blocked === true) ? true : false;
@@ -133,7 +133,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             return false;
         }
         // we must evaluate it each time as the DOM might has been changed
-        var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.triggers);
+        var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.triggers);
 
         // if trigger is null it has been removed from DOM so we need to hide the block UI
         if (!triggers || triggers.length === 0) {
@@ -274,7 +274,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     * @private
     */
     alignOverlay: function() {
-        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.block);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.block);
         if (this.blocker) {
             this.blocker.css('z-index', PrimeFaces.nextZindex());
         }

@@ -30,23 +30,25 @@ if (window.PrimeFaces) {
         var renderMessages = cfg.renderMessages || true;
         var validateInvisibleElements = cfg.validateInvisibleElements || false;
 
+        var $source = $(cfg.source);
+
         var process;
         if (cfg.ajax && cfg.process) {
-            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.process);
+            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.process);
         }
         else {
-            process = $(cfg.source).closest('form');
+            process = $source.closest('form');
         }
 
         var update;
         if (cfg.ajax && cfg.update) {
-            update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.update);
+            update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.update);
         }
         else {
-            update = $(cfg.source).closest('form');
+            update = $source.closest('form');
         }
 
-        return PrimeFaces.validation.validate(process, update, highlight, focus, renderMessages, validateInvisibleElements);
+        return PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements);
     };
 
     /**
@@ -160,6 +162,7 @@ if (window.PrimeFaces) {
         /**
          * Triggers client-side-validation of single or multiple containers (complex validation or simple inputs).
          * @function
+         * @param {JQuery} source The source element.
          * @param {string | HTMLElement | JQuery} process The elements to be processed.
          * @param {string | HTMLElement | JQuery} update The elements to be updated.
          * @param {boolean} highlight If invalid elements should be highlighted.
@@ -168,10 +171,10 @@ if (window.PrimeFaces) {
          * @param {boolean} validateInvisibleElements If invisible elements should be validated.
          * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
          */
-        validate : function(process, update, highlight, focus, renderMessages, validateInvisibleElements) {
+        validate : function(source, process, update, highlight, focus, renderMessages, validateInvisibleElements) {
             var vc = PrimeFaces.validation.ValidationContext;
 
-            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(process);
+            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, process);
 
             // validate all inputs first
             var inputs = $();
@@ -188,7 +191,7 @@ if (window.PrimeFaces) {
                 inputs = inputs.filter(':visible');
             }
             for (var i = 0; i < inputs.length; i++) {
-                PrimeFaces.validation.validateInput(inputs.eq(i), highlight);
+                PrimeFaces.validation.validateInput(source, inputs.eq(i), highlight);
             }
 
             // validate complex validations, which cann be applied to any container element
@@ -205,7 +208,7 @@ if (window.PrimeFaces) {
                 nonInputs = nonInputs.filter(':visible');
             }
             for (var i = 0; i < nonInputs.length; i++) {
-                PrimeFaces.validation.validateComplex(nonInputs.eq(i), highlight);
+                PrimeFaces.validation.validateComplex(source, nonInputs.eq(i), highlight);
             }
 
             // early exit - we dont need to render messages
@@ -215,7 +218,7 @@ if (window.PrimeFaces) {
 
             // render messages
             if (renderMessages === true) {
-                update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(update);
+                update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(source, update);
                 for (var i = 0; i < update.length; i++) {
                     var component = update.eq(i);
                     PrimeFaces.validation.Utils.renderMessages(vc.messages, component);
@@ -314,7 +317,7 @@ if (window.PrimeFaces) {
          * @param {JQuery} element A JQuery instance with a single input element to validate.
          * @param {boolean} highlight If the invalid element should be highlighted.
          */
-        validateInput : function(element, highlight) {
+        validateInput : function(source, element, highlight) {
             var vc = PrimeFaces.validation.ValidationContext;
 
             if (element.is(':checkbox,:radio') && element.data('p-grouped')) {
@@ -383,7 +386,7 @@ if (window.PrimeFaces) {
 
                         if (validator) {
                             try {
-                                validator.validate(element, newValue);
+                                validator.validate(source, element, newValue);
                             }
                             catch (ve) {
                                 var validatorMessageStr = element.data('p-vmsg');
@@ -423,11 +426,12 @@ if (window.PrimeFaces) {
          * validation failure messages.
          * @function
          * @internal
+         * @param {JQuery} source the source element.
          * @param {JQuery} element A JQuery instance with a single input element to validate.
          * @param {boolean} highlight If the invalid element should be highlighted.
          * @returns {boolean} `true` if the value of the element is valid, `false` otherwise.
          */
-        validateComplex : function(element, highlight) {
+        validateComplex : function(source, element, highlight) {
             var vc = PrimeFaces.validation.ValidationContext;
             var valid = true;
 
@@ -441,7 +445,7 @@ if (window.PrimeFaces) {
 
                     if (validator) {
                         try {
-                            validator.validate(element);
+                            validator.validate(source, element);
                         }
                         catch (ve) {
                             var validatorMessageStr = element.data('p-vmsg');

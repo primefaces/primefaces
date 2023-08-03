@@ -43,8 +43,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
      */
     init: function(cfg) {
         this._super(cfg);
-        this.table = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.datasource);
-        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
+        this.table = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.datasource);
+        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
         this.tableId = this.table.attr('id');
         this.hasFrozenColumn = this.table.hasClass('ui-datatable-frozencolumn');
         this.hasStickyHeader = this.table.hasClass('ui-datatable-sticky');

@@ -56,7 +56,7 @@ if (!PrimeFaces.utils) {
          */
         resolveDynamicOverlayContainer: function(widget) {
             return widget.cfg.appendTo
-                ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.cfg.appendTo)
+                ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(widget.jq, widget.cfg.appendTo)
                 : $(document.body);
         },
 
