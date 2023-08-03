@@ -28,7 +28,6 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -47,8 +46,10 @@ public class DroppableRenderer extends CoreRenderer {
 
         renderDummyMarkup(context, component, clientId);
 
-        UIComponent target = SearchExpressionFacade.resolveComponent(
-                context, droppable, droppable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, droppable, droppable.getFor());
+        if (target == null) {
+            target = droppable.getParent();
+        }
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Droppable", droppable)

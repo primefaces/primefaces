@@ -31,7 +31,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.component.selectoneradio.SelectOneRadioRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
@@ -43,7 +43,7 @@ public class RadioButtonRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadioButton radioButton = (RadioButton) component;
-        SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionFacade.resolveComponent(
+        SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionUtils.contextlessResolveComponent(
                 context, radioButton, radioButton.getFor());
 
         encodeMarkup(context, radioButton, selectOneRadio);

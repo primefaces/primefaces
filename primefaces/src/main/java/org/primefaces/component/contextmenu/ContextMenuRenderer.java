@@ -31,7 +31,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -45,10 +45,8 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("ContextMenu", menu);
 
-        String _for = menu.getFor();
-        if (_for != null) {
-            UIComponent target = SearchExpressionFacade.resolveComponent(context, menu, _for);
-
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, menu, menu.getFor());
+        if (target != null) {
             wb.attr("target", target.getClientId(context));
 
             if (target instanceof Widget) {

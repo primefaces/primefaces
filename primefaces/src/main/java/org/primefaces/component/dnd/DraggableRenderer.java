@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.dashboard.Dashboard;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -43,8 +42,10 @@ public class DraggableRenderer extends CoreRenderer {
 
         renderDummyMarkup(context, component, clientId);
 
-        UIComponent target = SearchExpressionFacade.resolveComponent(
-                context, draggable, draggable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, draggable, draggable.getFor());
+        if (target == null) {
+            target = draggable.getParent();
+        }
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Draggable", draggable)
@@ -83,7 +84,7 @@ public class DraggableRenderer extends CoreRenderer {
         //Dashboard support
         String dashboard = draggable.getDashboard();
         if (dashboard != null) {
-            Dashboard db = (Dashboard) SearchExpressionFacade.resolveComponent(context, draggable, dashboard);
+            Dashboard db = (Dashboard) SearchExpressionUtils.contextlessResolveComponent(context, draggable, dashboard);
             wb.selectorAttr("connectToSortable", "#" + db.getClientId(context) + " .ui-dashboard-column");
         }
 

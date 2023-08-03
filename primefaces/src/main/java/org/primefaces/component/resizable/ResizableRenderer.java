@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -46,8 +45,11 @@ public class ResizableRenderer extends CoreRenderer {
         Resizable resizable = (Resizable) component;
         String clientId = resizable.getClientId(context);
 
-        UIComponent target = SearchExpressionFacade.resolveComponent(
-                context, resizable, resizable.getFor(), SearchExpressionUtils.SET_PARENT_FALLBACK);
+        UIComponent target = SearchExpressionUtils.contextlessOptionalResolveComponent(context, resizable, resizable.getFor());
+        if (target == null) {
+            target = resizable.getParent();
+        }
+
         String targetId = target.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);

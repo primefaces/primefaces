@@ -31,7 +31,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -82,12 +81,6 @@ public class FileUploadRenderer extends CoreRenderer {
         if (fileUpload.getMode().equals("advanced")) {
             PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
 
-            String dropZone = null;
-            if (fileUpload.getDropZone() != null) {
-                dropZone = SearchExpressionFacade.resolveClientIds(context, fileUpload, fileUpload.getDropZone(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE);
-            }
-
             wb.init("FileUpload", fileUpload)
                     .attr("dnd", fileUpload.isDragDropSupport(), true)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
@@ -96,7 +89,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("maxRetries", fileUpload.getMaxRetries(), 30)
                     .attr("retryTimeout", fileUpload.getRetryTimeout(), 1000)
                     .attr("resumeContextPath", pfContext.getFileUploadResumeUrl(), null)
-                    .attr("dropZone", dropZone, null)
+                    .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, fileUpload.getDropZone()))
                     .callback("onAdd", "function(file, callback)", fileUpload.getOnAdd())
                     .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("onupload", "function()", fileUpload.getOnupload());
@@ -109,10 +102,8 @@ public class FileUploadRenderer extends CoreRenderer {
 
         wb.attr("mode", fileUpload.getMode())
                 .attr("auto", fileUpload.isAuto(), false)
-                .attr("update", SearchExpressionFacade.resolveClientIds(context, fileUpload, update,
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process,
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, update))
+                .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, fileUpload, process))
                 .attr("global", fileUpload.isGlobal(), true)
                 .attr("disabled", fileUpload.isDisabled(), false)
                 .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)

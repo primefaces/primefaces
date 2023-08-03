@@ -49,6 +49,12 @@ public class SearchExpressionUtils {
     public static final Set<SearchExpressionHint> SET_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT));
     public static final Set<SearchExpressionHint> SET_VALIDATE_RENDERER = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER));
 
+    private static final Set<javax.faces.component.search.SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE2 =
+            Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+    private static final Set<javax.faces.component.search.SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE_OPTIONAL =
+            Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE,
+                    javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT));
+
     private SearchExpressionUtils() {
     }
 
@@ -61,12 +67,20 @@ public class SearchExpressionUtils {
                 javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE);
     }
 
+    public static Set<javax.faces.component.search.SearchExpressionHint> hintsClientSide() {
+        return EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+    }
+
     public static VisitContext createVisitContext(FacesContext context, Set<SearchExpressionHint> hints) {
         if (hints.contains(SearchExpressionHint.SKIP_UNRENDERED)) {
             return VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
         }
 
         return VisitContext.createVisitContext(context);
+    }
+
+    public static UIComponent contextlessOptionalResolveComponent(FacesContext context, UIComponent component, String expression) {
+        return contextlessResolveComponent(context, component, expression, hintsIgnoreNoResult());
     }
 
     public static UIComponent contextlessResolveComponent(FacesContext context, UIComponent component, String expression) {
@@ -120,11 +134,27 @@ public class SearchExpressionUtils {
     public static String resolveClientIdsAsString(FacesContext context, UIComponent component, String expression,
             Set<javax.faces.component.search.SearchExpressionHint> hints, Set<VisitHint> visitHints) {
 
+        if (LangUtils.isBlank(expression)) {
+            return null;
+        }
+
         List<String> clientIds = context.getApplication().getSearchExpressionHandler().resolveClientIds(
                 SearchExpressionContext.createSearchExpressionContext(context, component, hints, visitHints),
                 expression);
 
         return String.join(",", clientIds);
+    }
+
+    public static String resolveClientIdsForClientSide(FacesContext context, UIComponent component, String expression) {
+        return resolveClientIdsAsString(context, component, expression,
+                SET_RESOLVE_CLIENT_SIDE2,
+                null);
+    }
+
+    public static String resolveOptionalClientIdsForClientSide(FacesContext context, UIComponent component, String expression) {
+        return resolveClientIdsAsString(context, component, expression,
+                SET_RESOLVE_CLIENT_SIDE_OPTIONAL,
+                null);
     }
 
     public static String resolveClientId(FacesContext context, UIComponent component, String expression) {
@@ -140,6 +170,16 @@ public class SearchExpressionUtils {
 
         return context.getApplication().getSearchExpressionHandler().resolveClientId(
                 SearchExpressionContext.createSearchExpressionContext(context, component, hintsIgnoreNoResultClientSide(), null),
+                expression);
+    }
+
+    public static String resolveClientIdForClientSide(FacesContext context, UIComponent component, String expression) {
+        if (LangUtils.isBlank(expression)) {
+            return null;
+        }
+
+        return context.getApplication().getSearchExpressionHandler().resolveClientId(
+                SearchExpressionContext.createSearchExpressionContext(context, component, hintsClientSide(), null),
                 expression);
     }
 

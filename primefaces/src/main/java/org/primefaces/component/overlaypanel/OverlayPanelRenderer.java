@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -79,7 +78,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
-        String target = SearchExpressionFacade.resolveClientId(context, panel, panel.getFor());
+        String target = SearchExpressionUtils.resolveClientId(context, panel, panel.getFor());
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("OverlayPanel", panel)

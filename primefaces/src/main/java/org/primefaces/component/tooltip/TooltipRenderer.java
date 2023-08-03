@@ -29,7 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -39,7 +39,7 @@ public class TooltipRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Tooltip tooltip = (Tooltip) component;
-        String target = SearchExpressionFacade.resolveClientIds(
+        String target = SearchExpressionUtils.resolveClientIdsForClientSide(
                 context, component, tooltip.getFor());
 
         encodeMarkup(context, tooltip, target);

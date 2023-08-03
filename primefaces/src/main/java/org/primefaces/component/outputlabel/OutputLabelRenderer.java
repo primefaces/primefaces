@@ -46,7 +46,7 @@ import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
@@ -137,7 +137,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                 }
             };
 
-            UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, label, _for);
+            UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(context, label, _for);
 
             if (CompositeUtils.isComposite(forComponent)) {
                 CompositeUtils.invokeOnDeepestEditableValueHolder(context, forComponent, callback);

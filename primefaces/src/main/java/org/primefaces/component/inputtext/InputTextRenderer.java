@@ -29,7 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -75,7 +75,7 @@ public class InputTextRenderer extends InputRenderer {
                 .attr("maxlength", inputText.getMaxlength(), Integer.MIN_VALUE);
 
         if (counter != null) {
-            UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputText, counter);
+            UIComponent counterComponent = SearchExpressionUtils.contextlessResolveComponent(context, inputText, counter);
 
             if (counterComponent != null) {
                 wb.attr("counter", counterComponent.getClientId(context))

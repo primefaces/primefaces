@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -55,10 +54,9 @@ public class SpotlightRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Spotlight spotlight) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Spotlight", spotlight)
-                .attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE))
-                .attr("active", spotlight.isActive(), false)
-                .attr("blockScroll", spotlight.isBlockScroll(), false);
+            .attr("target", SearchExpressionUtils.resolveClientIdsForClientSide(context, spotlight, spotlight.getTarget()))
+            .attr("active", spotlight.isActive(), false)
+            .attr("blockScroll", spotlight.isBlockScroll(), false);
 
         wb.finish();
     }
