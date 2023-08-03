@@ -12,7 +12,7 @@
     <h:body>
 
         <h:form id="form">
-            <p:inputMask id="optional" value="#{inputMask001.optional}" mask="9[999]" size="4"/>
+            <p:inputMask id="optional" value="#{inputMask001.optional}" mask="9[999]" size="4" autoClear="false"/>
 
             <p:commandButton id="button" update="@form" value="Submit"/>
         </h:form>
