@@ -27,7 +27,6 @@ import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -54,6 +53,7 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.primefaces.expression.SearchExpressionUtils;
 
 public class PrimeFaces {
 
@@ -166,7 +166,7 @@ public class PrimeFaces {
 
         FacesContext facesContext = getFacesContext();
 
-        String clientId = SearchExpressionFacade.resolveClientId(facesContext,
+        String clientId = SearchExpressionUtils.resolveClientId(facesContext,
                 base,
                 expression);
         executeScript("PrimeFaces.focus('" + clientId + "');");
@@ -188,7 +188,7 @@ public class PrimeFaces {
 
         UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
-            List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expression);
+            List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(facesContext, root, expression);
             for (UIComponent component : components) {
                 component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
             }
@@ -349,7 +349,7 @@ public class PrimeFaces {
 
                 try {
                     String clientId =
-                            SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
+                            SearchExpressionUtils.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
 
                     facesContext.getPartialViewContext().getRenderIds().add(clientId);
                 }

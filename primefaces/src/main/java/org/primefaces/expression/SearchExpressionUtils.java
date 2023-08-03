@@ -49,6 +49,8 @@ public class SearchExpressionUtils {
     public static final Set<SearchExpressionHint> SET_IGNORE_NO_RESULT = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT));
     public static final Set<SearchExpressionHint> SET_VALIDATE_RENDERER = Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.VALIDATE_RENDERER));
 
+    public static final Set<javax.faces.component.search.SearchExpressionHint> SET_IGNORE_NO_RESULT2 =
+            Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT));
     private static final Set<javax.faces.component.search.SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE2 =
             Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE));
     private static final Set<javax.faces.component.search.SearchExpressionHint> SET_RESOLVE_CLIENT_SIDE_OPTIONAL =

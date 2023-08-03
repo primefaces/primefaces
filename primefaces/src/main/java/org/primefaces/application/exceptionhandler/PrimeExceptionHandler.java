@@ -55,7 +55,7 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspPhaseListener;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.EscapeUtils;
@@ -241,7 +241,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             }
 
             if (LangUtils.isNotBlank(handlerComponent.getUpdate())) {
-                List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
+                List<UIComponent> updates = SearchExpressionUtils.contextlessResolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
                 if (updates != null && !updates.isEmpty()) {
                     context.setResponseWriter(writer);

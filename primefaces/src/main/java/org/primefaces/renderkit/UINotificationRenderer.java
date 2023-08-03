@@ -34,7 +34,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.UINotifications;
 import org.primefaces.component.messages.Messages;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
@@ -109,7 +108,7 @@ public class UINotificationRenderer extends CoreRenderer {
 
             // key case
             if (forType == null || "key".equals(forType)) {
-                String[] keys = SearchExpressionFacade.split(context, _for, SearchExpressionFacade.EXPRESSION_SEPARATORS);
+                String[] keys = context.getApplication().getSearchExpressionHandler().splitExpressions(context, _for);
                 for (String key : keys) {
                     Iterator<FacesMessage> messagesIterator = context.getMessages(key);
                     while (messagesIterator.hasNext()) {
@@ -123,8 +122,8 @@ public class UINotificationRenderer extends CoreRenderer {
 
             // clientId / SearchExpression case
             if (forType == null || "expression".equals(forType)) {
-                List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, _for,
-                        SearchExpressionUtils.SET_IGNORE_NO_RESULT);
+                List<UIComponent> forComponents = SearchExpressionUtils.contextlessResolveComponents(context, uiMessages, _for,
+                        SearchExpressionUtils.SET_IGNORE_NO_RESULT2);
                 for (int i = 0; i < forComponents.size(); i++) {
                     UIComponent forComponent = forComponents.get(i);
                     String forComponentClientId = forComponent.getClientId(context);
@@ -156,7 +155,7 @@ public class UINotificationRenderer extends CoreRenderer {
         else {
             String[] ignores = uiMessages.getForIgnores() == null
                     ? null
-                    : SearchExpressionFacade.split(context, uiMessages.getForIgnores(), SearchExpressionFacade.EXPRESSION_SEPARATORS);
+                    : context.getApplication().getSearchExpressionHandler().splitExpressions(context, uiMessages.getForIgnores());
             Iterator<String> keyIterator = context.getClientIdsWithMessages();
             while (keyIterator.hasNext()) {
                 String key = keyIterator.next();
