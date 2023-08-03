@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.ObserverSearchKeywordResolver;
 import org.primefaces.expression.PfsSearchKeywordResolver;
+import org.primefaces.expression.RowSearchKeywordResolver;
 import org.primefaces.expression.WidgetVarSearchKeywordResolver;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
@@ -58,5 +59,6 @@ public class PostConstructApplicationEventListener implements SystemEventListene
         context.getApplication().addSearchKeywordResolver(new WidgetVarSearchKeywordResolver());
         context.getApplication().addSearchKeywordResolver(new ObserverSearchKeywordResolver());
         context.getApplication().addSearchKeywordResolver(new PfsSearchKeywordResolver());
+        context.getApplication().addSearchKeywordResolver(new RowSearchKeywordResolver());
     }
 }
