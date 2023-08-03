@@ -328,6 +328,14 @@
             if(input.is('textarea')) {
                 input.attr('aria-multiline', true);
             }
+            
+            // ARIA for filter type inputs
+            if (input.is('[class*="-filter"]')) {
+                var ariaLabel = input.attr('aria-label');
+                if (!ariaLabel) {
+                    input.attr('aria-label', PrimeFaces.getLocaleLabel('filter'));
+                }
+            }
 
             return this;
         },

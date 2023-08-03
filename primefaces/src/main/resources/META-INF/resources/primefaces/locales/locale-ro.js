@@ -136,8 +136,21 @@ PrimeFaces.locales['ro'] = $.extend(true, {}, PrimeFaces.locales['ro'], {
     moreLinkText: 'Mai mult...',
     noEventsText: 'Fără Evenimente',
     aria: {
-        'datatable.sort.ASC': 'activează pentru a sorta coloana crescător',
-        'datatable.sort.DESC': 'activează pentru a sorta coloana descrescător',
+         'datatable.sort.ASC': 'activare pentru a sorta coloana crescător',
+         'datatable.sort.DESC': 'activare pentru a sorta coloana descrescător',
+         'datatable.sort.NONE': 'activare pentru a elimina sortarea pe coloană',
+         'colorpicker.OPEN': 'Deschideți selectorul de culori',
+         'colorpicker.CLOSE': 'Închideți selectorul de culori',
+         'colorpicker.CLEAR': 'Ștergeți culoarea selectată',
+         'colorpicker.MARKER': 'Saturație: {s}. Luminozitate: {v}.',
+         'colorpicker.HUESLIDER': 'Slider de nuanță',
+         'colorpicker.ALPHASLIDER': 'Slider de opacitate',
+         'colorpicker.INPUT': 'Câmp pentru valoarea culorii',
+         'colorpicker.FORMAT': 'Format de culoare',
+         'colorpicker.SWATCH': 'Eșantion de culoare',
+         'colorpicker.INSTRUCTION': 'Selector de saturație și luminozitate. Folosiți tastele săgeți sus, jos, stânga și dreapta pentru a selecta.',
+         'spinner.INCREASE': 'Măriți valoarea',
+         'spinner.DECREASE': 'Reduceți valoarea'
     },
     messages: {
         'javax.faces.component.UIInput.REQUIRED': '{0}: Eroare de validare: Valoarea este obligatorie.',

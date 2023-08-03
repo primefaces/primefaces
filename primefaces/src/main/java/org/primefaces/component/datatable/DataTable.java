@@ -135,7 +135,6 @@ public class DataTable extends DataTableBase {
     public static final String ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-e";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
-    public static final String ARIA_FILTER_BY = "primefaces.datatable.aria.FILTER_BY";
     public static final String SORT_LABEL = "primefaces.datatable.SORT_LABEL";
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";

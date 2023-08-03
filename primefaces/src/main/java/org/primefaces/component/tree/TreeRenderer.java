@@ -41,7 +41,6 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
@@ -436,7 +435,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Tree.FILTER_CLASS, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");
 
         writer.startElement("span", null);

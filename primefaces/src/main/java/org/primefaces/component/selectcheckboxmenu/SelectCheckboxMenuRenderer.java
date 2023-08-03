@@ -43,7 +43,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.*;
 
@@ -439,7 +438,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.writeAttribute("aria-disabled", false, null);
         writer.writeAttribute("aria-multiline", false, null);
         writer.writeAttribute("aria-readonly", false, null);

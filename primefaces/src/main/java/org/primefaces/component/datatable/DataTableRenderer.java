@@ -774,25 +774,11 @@ public class DataTableRenderer extends DataRenderer {
         String filterId = column.getContainerClientId(context) + separator + "filter";
         Object filterValue = findFilterValueForColumn(context, table, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
-
-        //aria
-        String ariaLabelId = filterId + "_label";
-        String ariaHeaderLabel = getHeaderLabel(context, column);
-
-        String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, ariaHeaderLabel);
-
-        writer.startElement("label", null);
-        writer.writeAttribute("id", ariaLabelId, null);
-        writer.writeAttribute("for", filterId, null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
-        writer.writeText(ariaMessage, null);
-        writer.endElement("label");
-
-        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
+        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+        String filterId, String filterStyleClass, Object filterValue) throws IOException {
 
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
@@ -804,7 +790,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", filterStyleClass, null);
         writer.writeAttribute("value", filterValue, null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
 
         if (disableTabbing) {
             writer.writeAttribute("tabindex", "-1", null);
