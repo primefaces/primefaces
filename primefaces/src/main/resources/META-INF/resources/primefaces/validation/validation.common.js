@@ -314,6 +314,7 @@ if (window.PrimeFaces) {
          * messages.
          * @function
          * @internal
+         * @param {JQuery} source The source element.
          * @param {JQuery} element A JQuery instance with a single input element to validate.
          * @param {boolean} highlight If the invalid element should be highlighted.
          */
