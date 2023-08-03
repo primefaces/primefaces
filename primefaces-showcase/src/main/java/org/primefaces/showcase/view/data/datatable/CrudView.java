@@ -35,11 +35,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Named
 @ViewScoped
 public class CrudView implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<Product> products;
 
@@ -53,6 +56,7 @@ public class CrudView implements Serializable {
     @PostConstruct
     public void init() {
         this.products = this.productService.getClonedProducts(100);
+        this.selectedProducts = new ArrayList<Product>();
     }
 
     public List<Product> getProducts() {
