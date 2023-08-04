@@ -113,7 +113,7 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
     @Override
     protected void exportTabletFacetValue(FacesContext context, DataTable table, String textValue) {
         int colspan = getExportableColumns(table).size();
-        addFacetValue(1, colspan, ColumnValue.fallbackValue(textValue));
+        addFacetValue(1, colspan, ColumnValue.of(textValue));
     }
 
     @Override

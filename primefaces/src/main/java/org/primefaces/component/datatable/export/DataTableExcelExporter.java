@@ -96,7 +96,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
             ));
         }
 
-        exportColumnFacetValue(context, table, ColumnValue.fallbackValue(textValue), 0);
+        exportColumnFacetValue(context, table, ColumnValue.of(textValue), 0);
     }
 
     @Override

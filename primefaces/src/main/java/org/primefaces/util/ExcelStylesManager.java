@@ -96,11 +96,11 @@ public class ExcelStylesManager {
     }
 
     public void updateFacetCell(Cell cell, ColumnValue value) {
-        if (value.isExplicitlySetValue()) {
-            updateCellExplicitlySetValue(cell, value.getExplicitlySetValue(), facetStyles);
+        if (value.isStringValue()) {
+            updateCellStringValue(cell, value.toString(), facetStyles);
         }
         else {
-            updateCellFallbackValue(cell, value.getFallbackValue(), facetStyles);
+            updateCellObjectValue(cell, value.getValue(), facetStyles);
         }
     }
 
@@ -119,16 +119,16 @@ public class ExcelStylesManager {
      * @param value the ColumnValue value to put in the cell
      */
     public void updateCell(UIColumn column, Cell cell, ColumnValue value) {
-        if (value.isExplicitlySetValue()) {
-            updateCellExplicitlySetValue(cell, value.getExplicitlySetValue(), cellStyles);
+        if (value.isStringValue()) {
+            updateCellStringValue(cell, value.toString(), cellStyles);
         }
         else {
-            updateCellFallbackValue(cell, value.getFallbackValue(), cellStyles);
+            updateCellObjectValue(cell, value.getValue(), cellStyles);
         }
         applyColumnAlignments(column, cell);
     }
 
-    private void updateCellExplicitlySetValue(Cell cell, Object value, Styles styles) {
+    private void updateCellObjectValue(Cell cell, Object value, Styles styles) {
         if (value instanceof BigDecimal) {
             setBigDecimalValue(cell, numberFormat.format(value), (BigDecimal) value, styles);
         }
@@ -153,7 +153,7 @@ public class ExcelStylesManager {
         }
     }
 
-    private void updateCellFallbackValue(Cell cell, String value, Styles styles) {
+    private void updateCellStringValue(Cell cell, String value, Styles styles) {
         boolean printed = false;
         if (stronglyTypedCells) {
             printed = setNumberValueIfAppropiate(cell, value, styles);

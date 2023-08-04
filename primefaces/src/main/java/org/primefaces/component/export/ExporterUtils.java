@@ -25,8 +25,6 @@ package org.primefaces.component.export;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -146,18 +144,18 @@ public final class ExporterUtils {
 
     public static ColumnValue getColumnValue(FacesContext context, UITable table, UIColumn column, boolean joinComponents) {
         if (column.getExportValue() != null) {
-            return ColumnValue.explicitlySetValue(column.getExportValue());
+            return ColumnValue.of(column.getExportValue());
         }
         else if (column.getExportFunction() != null) {
             MethodExpression exportFunction = column.getExportFunction();
-            return ColumnValue.explicitlySetValue(exportFunction.invoke(context.getELContext(), new Object[]{column}));
+            return ColumnValue.of(exportFunction.invoke(context.getELContext(), new Object[]{column}));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
             String value = table.getConvertedFieldValue(context, column);
-            return ColumnValue.fallbackValue(Objects.toString(value, Constants.EMPTY_STRING));
+            return ColumnValue.of(value);
         }
         else {
-            return ColumnValue.fallbackValue(column.getChildren()
+            return ColumnValue.of(column.getChildren()
                     .stream()
                     .filter(UIComponent::isRendered)
                     .map(c -> getComponentValue(context, c))
@@ -190,30 +188,30 @@ public final class ExporterUtils {
     }
 
     public static ColumnValue getColumnFacetValue(FacesContext context, UIColumn column, TableExporter.ColumnType columnType) {
-        ColumnValue columnValue = null;
+        ColumnValue columnValue = ColumnValue.EMPTY_VALUE;
         if (columnType == TableExporter.ColumnType.HEADER) {
             if (column.getExportHeaderValue() != null) {
-                columnValue = ColumnValue.explicitlySetValue(column.getExportHeaderValue());
+                columnValue = ColumnValue.of(column.getExportHeaderValue());
             }
             else {
-                columnValue = ColumnValue.fallbackValue(column.getHeaderText());
+                columnValue = ColumnValue.of(column.getHeaderText());
             }
         }
         else if (columnType == TableExporter.ColumnType.FOOTER) {
             if (column.getExportFooterValue() != null) {
-                columnValue = ColumnValue.explicitlySetValue(column.getExportFooterValue());
+                columnValue = ColumnValue.of(column.getExportFooterValue());
             }
             else {
-                columnValue = ColumnValue.fallbackValue(column.getFooterText());
+                columnValue = ColumnValue.of(column.getFooterText());
             }
         }
 
         UIComponent facet = column.getFacet(columnType.facet());
-        if ((columnValue == null || LangUtils.isBlank(columnValue.toString())) && ComponentUtils.shouldRenderFacet(facet)) {
-            columnValue = ColumnValue.fallbackValue(getComponentValue(context, facet));
+        if (LangUtils.isBlank(columnValue.toString()) && ComponentUtils.shouldRenderFacet(facet)) {
+            columnValue = ColumnValue.of(getComponentValue(context, facet));
         }
 
-        return Optional.ofNullable(columnValue).orElseGet(() -> ColumnValue.fallbackValue(Constants.EMPTY_STRING));
+        return columnValue;
     }
 
     public static String getColumnExportTag(FacesContext context, UIColumn column) {

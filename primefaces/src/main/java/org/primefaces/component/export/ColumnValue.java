@@ -28,32 +28,25 @@ import org.primefaces.util.Constants;
 import java.util.Objects;
 
 public class ColumnValue {
-    private final Object explicitlySetValue;
-    private final String fallbackValue;
+    public static final ColumnValue EMPTY_VALUE = ColumnValue.of(Constants.EMPTY_STRING);
 
-    private ColumnValue(Object explicitlySetValue, String fallbackValue) {
-        this.explicitlySetValue = explicitlySetValue;
-        this.fallbackValue = Objects.toString(fallbackValue, Constants.EMPTY_STRING);
+    private final Object value;
+
+
+    private ColumnValue(Object value) {
+        this.value = value;
     }
 
-    public static ColumnValue explicitlySetValue(Object value) {
-        return new ColumnValue(value, null);
+    public static ColumnValue of(Object value) {
+        return new ColumnValue(value);
     }
 
-    public static ColumnValue fallbackValue(String value) {
-        return new ColumnValue(null, value);
+    public Object getValue() {
+        return value;
     }
 
-    public Object getExplicitlySetValue() {
-        return explicitlySetValue;
-    }
-
-    public String getFallbackValue() {
-        return fallbackValue;
-    }
-
-    public boolean isExplicitlySetValue() {
-        return explicitlySetValue != null;
+    public boolean isStringValue() {
+        return value instanceof String;
     }
 
     @Override
@@ -63,24 +56,16 @@ public class ColumnValue {
 
         ColumnValue that = (ColumnValue) o;
 
-        if (!Objects.equals(explicitlySetValue, that.explicitlySetValue)) return false;
-        return Objects.equals(fallbackValue, that.fallbackValue);
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        int result = explicitlySetValue != null ? explicitlySetValue.hashCode() : 0;
-        result = 31 * result + (fallbackValue != null ? fallbackValue.hashCode() : 0);
-        return result;
+        return value != null ? value.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        if (explicitlySetValue == null && fallbackValue == null) {
-            return Constants.EMPTY_STRING;
-        }
-        else {
-            return Objects.toString(explicitlySetValue != null ? explicitlySetValue.toString() : fallbackValue, Constants.EMPTY_STRING);
-        }
+        return Objects.toString(value, Constants.EMPTY_STRING);
     }
 }
