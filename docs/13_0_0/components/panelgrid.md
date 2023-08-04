@@ -27,7 +27,7 @@ contentStyle | null | String | Inline style of the panel-content.
 styleClass | null | String | Style class of the panel/table.
 contentStyleClass | null | String | Style class of the panel-content.
 columnClasses | null | String | Comma separated list of column style classes.<br/>For layout=grid: Grid CSS - classes<br/>For layout=flex: PrimeFlex (FlexGrid) - classes; primeflex.css must be included into the template.xhtml
-layout | tabular | String | Displays data in a 'tabular' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.
+layout | grid | String | Displays data in a 'tabular' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.
 role | grid | String | Role for aria.
 
 ## Getting started with PanelGrid

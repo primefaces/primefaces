@@ -64,6 +64,7 @@ public class UIData extends javax.faces.component.UIData {
 
     private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
     private static final String SB_ID = UIData.class.getName() + "#id";
+    private static final DataModel EMPTY_DATA_MODEL = new ListDataModel(Collections.emptyList());
 
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
@@ -636,7 +637,7 @@ public class UIData extends javax.faces.component.UIData {
 
         Object current = getValue();
         if (current == null) {
-            setDataModel(new ListDataModel(Collections.emptyList()));
+            setDataModel(EMPTY_DATA_MODEL );
         }
         else if (current instanceof DataModel) {
             setDataModel((DataModel) current);

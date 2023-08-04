@@ -328,6 +328,14 @@
             if(input.is('textarea')) {
                 input.attr('aria-multiline', true);
             }
+            
+            // ARIA for filter type inputs
+            if (input.is('[class*="-filter"]')) {
+                var ariaLabel = input.attr('aria-label');
+                if (!ariaLabel) {
+                    input.attr('aria-label', PrimeFaces.getLocaleLabel('filter'));
+                }
+            }
 
             return this;
         },
@@ -708,6 +716,22 @@
             var selector = ':not(:submit):not(:button):input:visible:enabled[name], a:first';
 
             setTimeout(function() {
+                var focusFirstElement = function(elements) {
+                    if (!elements || elements.length === 0) {
+                        return;
+                    }
+                    
+                    // first element could be the dialog close button
+                    var firstElement = elements.eq(0);
+                    // loop over elements looking for an input
+                    var inputs = elements.filter(":input");
+                    if (inputs.length > 0) {
+                        firstElement = inputs.eq(0);
+                    }
+                    
+                    PrimeFaces.focusElement(firstElement);
+                };
+            
                 if(id) {
                     var jq = $(PrimeFaces.escapeClientId(id));
 
@@ -715,18 +739,14 @@
                         jq.trigger('focus');
                     }
                     else {
-                        var firstElement = jq.find(selector).eq(0);
-                        PrimeFaces.focusElement(firstElement);
+                        focusFirstElement(jq.find(selector))
                     }
                 }
                 else if(context) {
-                    var firstElement = $(PrimeFaces.escapeClientId(context)).find(selector).eq(0);
-                    PrimeFaces.focusElement(firstElement);
+                     focusFirstElement($(PrimeFaces.escapeClientId(context)).find(selector))
                 }
                 else {
-                    var elements = $(selector),
-                    firstElement = elements.eq(0);
-                    PrimeFaces.focusElement(firstElement);
+                    focusFirstElement($(selector));
                 }
             }, 50);
 
@@ -1114,6 +1134,16 @@
         },
 
         /**
+         * Attempt to look up the locale key by current locale and fall back to US English if not found.
+         * @param {string} key The locale key
+         * @return {string} The translation for the given key
+         */
+        getLocaleLabel: function(key) {
+            var locale = this.getLocaleSettings();
+            return (locale&&locale[key]) ? locale[key] : PrimeFaces.locales['en_US'][key];
+        },
+
+        /**
          * For 4.0 jQuery deprecated $.trim in favor of PrimeFaces.trim however that does not handle
          * NULL and jQuery did so this function allows a drop in replacement.
          *
@@ -1299,7 +1329,7 @@
          * @type {string}
          * @readonly
          */
-        RESET_VALUES_PARAM : "primefaces.resetvalues",
+        RESET_VALUES_PARAM : "javax.faces.partial.resetValues",
 
         /**
          * Name of the POST parameter that indicates whether `<p:autoUpdate>` tags should be ignored.
@@ -1389,60 +1419,206 @@
      */
     PrimeFaces.locales = {
         'en_US': {
-            closeText: 'Close',
-            prevText: 'Previous',
-            nextText: 'Next',
-            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
-            dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
-            weekHeader: 'Week',
-            weekNumberTitle: 'W',
-            firstDay: 0,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix:'',
-            timeOnlyTitle: 'Only Time',
-            timeText: 'Time',
-            hourText: 'Hour',
-            minuteText: 'Minute',
-            secondText: 'Second',
-            millisecondText: 'Millisecond',
-            currentText: 'Current Date',
-            ampm: false,
-            year: 'Year',
-            month: 'Month',
-            week: 'Week',
-            day: 'Day',
-            list: 'Agenda',
-            allDayText: 'All Day',
-            moreLinkText: 'More...',
-            noEventsText: 'No Events',
-            clear: 'Clear',
-            aria: {
-                'paginator.PAGE': 'Page {0}',
-                'calendar.BUTTON': 'Show Calendar',
-                'datatable.sort.ASC': 'activate to sort column ascending',
-                'datatable.sort.DESC': 'activate to sort column descending',
-                'datatable.sort.NONE': 'activate to remove sorting on column',
-                'columntoggler.CLOSE': 'Close',
-                'overlaypanel.CLOSE': 'Close',
-                'colorpicker.OPEN': 'Open color picker',
-                'colorpicker.CLOSE': 'Close color picker',
-                'colorpicker.CLEAR': 'Clear the selected color',
-                'colorpicker.MARKER': 'Saturation: {s}. Brightness: {v}.',
-                'colorpicker.HUESLIDER': 'Hue slider',
-                'colorpicker.ALPHASLIDER': 'Opacity slider',
-                'colorpicker.INPUT': 'Color value field',
-                'colorpicker.FORMAT': 'Color format',
-                'colorpicker.SWATCH': 'Color swatch',
-                'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.',
-                'spinner.INCREASE': 'Increase Value',
-                'spinner.DECREASE': 'Decrease Value'
+            "startsWith": "Starts with",
+            "contains": "Contains",
+            "notContains": "Not contains",
+            "endsWith": "Ends with",
+            "equals": "Equals",
+            "notEquals": "Not equals",
+            "noFilter": "No Filter",
+            "filter": "Filter",
+            "lt": "Less than",
+            "lte": "Less than or equal to",
+            "gt": "Greater than",
+            "gte": "Greater than or equal to",
+            "dateIs": "Date is",
+            "dateIsNot": "Date is not",
+            "dateBefore": "Date is before",
+            "dateAfter": "Date is after",
+            "custom": "Custom",
+            "clear": "Clear",
+            "apply": "Apply",
+            "matchAll": "Match All",
+            "matchAny": "Match Any",
+            "addRule": "Add Rule",
+            "removeRule": "Remove Rule",
+            "accept": "Yes",
+            "reject": "No",
+            "choose": "Choose",
+            "upload": "Upload",
+            "cancel": "Cancel",
+            "completed": "Completed",
+            "pending": "Pending",
+            "dayNames": [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ],
+            "dayNamesShort": [
+                "Sun",
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat"
+            ],
+            "dayNamesMin": [
+                "Su",
+                "Mo",
+                "Tu",
+                "We",
+                "Th",
+                "Fr",
+                "Sa"
+            ],
+            "monthNames": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            "monthNamesShort": [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+            ],
+            "chooseYear": "Choose Year",
+            "chooseMonth": "Choose Month",
+            "chooseDate": "Choose Date",
+            "prevDecade": "Previous Decade",
+            "nextDecade": "Next Decade",
+            "prevYear": "Previous Year",
+            "nextYear": "Next Year",
+            "prevMonth": "Previous Month",
+            "nextMonth": "Next Month",
+            "prevHour": "Previous Hour",
+            "nextHour": "Next Hour",
+            "prevMinute": "Previous Minute",
+            "nextMinute": "Next Minute",
+            "prevSecond": "Previous Second",
+            "nextSecond": "Next Second",
+            "am": "AM",
+            "pm": "PM",
+            "today": "Today",
+            "weekHeader": "Wk",
+            "firstDayOfWeek": 0,
+            "showMonthAfterYear": false,
+            "dateFormat": "mm/dd/yy",
+            "weak": "Weak",
+            "medium": "Medium",
+            "strong": "Strong",
+            "passwordPrompt": "Enter a password",
+            "emptyFilterMessage": "No results found",
+            "searchMessage": "{0} results are available",
+            "selectionMessage": "{0} items selected",
+            "emptySelectionMessage": "No selected item",
+            "emptySearchMessage": "No results found",
+            "emptyMessage": "No available options",
+            "weekNumberTitle": "W",
+            "isRTL": false,
+            "yearSuffix": "",
+            "timeOnlyTitle": "Only Time",
+            "timeText": "Time",
+            "hourText": "Hour",
+            "minuteText": "Minute",
+            "secondText": "Second",
+            "millisecondText": "Millisecond",
+            "year": "Year",
+            "month": "Month",
+            "week": "Week",
+            "day": "Day",
+            "list": "Agenda",
+            "allDayText": "All Day",
+            "moreLinkText": "More...",
+            "noEventsText": "No Events",
+            "aria": {
+                "trueLabel": "True",
+                "falseLabel": "False",
+                "nullLabel": "Not Selected",
+                "star": "1 star",
+                "stars": "{star} stars",
+                "selectAll": "All items selected",
+                "unselectAll": "All items unselected",
+                "close": "Close",
+                "previous": "Previous",
+                "next": "Next",
+                "navigation": "Navigation",
+                "scrollTop": "Scroll Top",
+                "moveTop": "Move Top",
+                "moveUp": "Move Up",
+                "moveDown": "Move Down",
+                "moveBottom": "Move Bottom",
+                "moveToTarget": "Move to Target",
+                "moveToSource": "Move to Source",
+                "moveAllToTarget": "Move All to Target",
+                "moveAllToSource": "Move All to Source",
+                "pageLabel": "Page {page}",
+                "firstPageLabel": "First Page",
+                "lastPageLabel": "Last Page",
+                "nextPageLabel": "Next Page",
+                "previousPageLabel": "Previous Page",
+                "rowsPerPageLabel": "Rows per page",
+                "jumpToPageDropdownLabel": "Jump to Page Dropdown",
+                "jumpToPageInputLabel": "Jump to Page Input",
+                "selectRow": "Row Selected",
+                "unselectRow": "Row Unselected",
+                "expandRow": "Row Expanded",
+                "collapseRow": "Row Collapsed",
+                "showFilterMenu": "Show Filter Menu",
+                "hideFilterMenu": "Hide Filter Menu",
+                "filterOperator": "Filter Operator",
+                "filterConstraint": "Filter Constraint",
+                "editRow": "Row Edit",
+                "saveEdit": "Save Edit",
+                "cancelEdit": "Cancel Edit",
+                "listView": "List View",
+                "gridView": "Grid View",
+                "slide": "Slide",
+                "slideNumber": "{slideNumber}",
+                "zoomImage": "Zoom Image",
+                "zoomIn": "Zoom In",
+                "zoomOut": "Zoom Out",
+                "rotateRight": "Rotate Right",
+                "rotateLeft": "Rotate Left",
+                "datatable.sort.ASC": "activate to sort column ascending",
+                "datatable.sort.DESC": "activate to sort column descending",
+                "datatable.sort.NONE": "activate to remove sorting on column",
+                "colorpicker.OPEN": "Open color picker",
+                "colorpicker.CLOSE": "Close color picker",
+                "colorpicker.CLEAR": "Clear the selected color",
+                "colorpicker.MARKER": "Saturation: {s}. Brightness: {v}.",
+                "colorpicker.HUESLIDER": "Hue slider",
+                "colorpicker.ALPHASLIDER": "Opacity slider",
+                "colorpicker.INPUT": "Color value field",
+                "colorpicker.FORMAT": "Color format",
+                "colorpicker.SWATCH": "Color swatch",
+                "colorpicker.INSTRUCTION": "Saturation and brightness selector. Use up, down, left and right arrow keys to select.",
+                "spinner.INCREASE": "Increase Value",
+                "spinner.DECREASE": "Decrease Value"
             }
         }
-
     };
 
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];

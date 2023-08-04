@@ -28,20 +28,12 @@ import javax.faces.context.ExceptionHandlerFactory;
 
 public class PrimeExceptionHandlerFactory extends ExceptionHandlerFactory {
 
-    private final ExceptionHandlerFactory wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
-    public PrimeExceptionHandlerFactory(final ExceptionHandlerFactory wrapped) {
-        this.wrapped = wrapped;
+    public PrimeExceptionHandlerFactory(ExceptionHandlerFactory wrapped) {
+        super(wrapped);
     }
 
     @Override
     public ExceptionHandler getExceptionHandler() {
-        return new PrimeExceptionHandler(wrapped.getExceptionHandler());
-    }
-
-    @Override
-    public ExceptionHandlerFactory getWrapped() {
-        return wrapped;
+        return new PrimeExceptionHandler(getWrapped().getExceptionHandler());
     }
 }

@@ -140,7 +140,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.form = this.jq.closest('form');
         this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
         this.dragoverCount = 0;
-        this.customDropZone = this.cfg.dropZone !== undefined ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.dropZone) : null;
+        this.customDropZone = this.cfg.dropZone !== undefined
+            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.dropZone)
+            : null;
         this.dropZone = (this.cfg.dnd === false) ? null : this.customDropZone || this.jq;
         this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
         this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
@@ -637,7 +639,9 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
      * @return {PrimeFaces.ajax.RequestParameter} Parameters to post when upload the files.
      */
     createPostData: function() {
-        var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
+        var process = this.cfg.process
+            ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.process).join(' ')
+            : this.id;
         var params = this.form.serializeArray();
 
         var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
@@ -647,7 +651,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
 
         if (this.cfg.update) {
-            var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ');
+            var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.update).join(' ');
             PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
         }
 

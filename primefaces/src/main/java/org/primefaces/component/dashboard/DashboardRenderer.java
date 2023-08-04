@@ -31,7 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.panel.Panel;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.dashboard.DashboardModel;
 import org.primefaces.model.dashboard.DashboardWidget;
 import org.primefaces.renderkit.CoreRenderer;
@@ -90,7 +90,7 @@ public class DashboardRenderer extends CoreRenderer {
                 }
 
                 for (String widgetId : column.getWidgets()) {
-                    Panel widget = (Panel) SearchExpressionFacade.resolveComponent(context, dashboard, widgetId);
+                    Panel widget = (Panel) SearchExpressionUtils.contextlessResolveComponent(context, dashboard, widgetId);
                     if (widget != null) {
                         renderChild(context, widget);
                     }

@@ -72,7 +72,6 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     public static final String TOKEN_DISPLAY_CLASS = "ui-selectcheckboxmenu-token ui-state-active ui-corner-all";
     public static final String TOKEN_LABEL_CLASS = "ui-selectcheckboxmenu-token-label";
     public static final String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
-    public static final String ARIA_TOGGLER_CHECKBOX_ALL = "primefaces.datatable.aria.HEADER_CHECKBOX_ALL";
 
     private static final String DEFAULT_EVENT = "change";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
@@ -96,6 +95,26 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     @Override
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
+    }
+
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + "_focus";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext());
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 
     public List<Column> getColumns() {

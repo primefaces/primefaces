@@ -136,11 +136,17 @@ public class PanelRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
         writer.writeAttribute(HTML.ARIA_ROLE, "region", null);
-        writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_header", null);
+
+        boolean isRenderHeader = shouldRenderHeader(context, panel);
+        if (isRenderHeader) {
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_header", null);
+        }
 
         renderDynamicPassThruAttributes(context, panel);
 
-        encodeHeader(context, panel, optionsMenu);
+        if (isRenderHeader) {
+            encodeHeader(context, panel, optionsMenu);
+        }
         encodeContent(context, panel);
         encodeFooter(context, panel);
 
@@ -164,16 +170,23 @@ public class PanelRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
+    protected boolean shouldRenderHeader(FacesContext context, Panel panel) throws IOException {
+        UIComponent header = panel.getFacet("header");
+        String headerText = panel.getHeader();
+        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
+
+        if (headerText == null && !shouldRenderFacet) {
+            return false;
+        }
+        return true;
+    }
+
     protected void encodeHeader(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(context);
         boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
-
-        if (headerText == null && !shouldRenderFacet) {
-            return;
-        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", panel.getClientId(context) + "_header", null);
@@ -198,7 +211,7 @@ public class PanelRenderer extends CoreRenderer {
 
         //Options
         if (panel.isClosable()) {
-            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), MessageFactory.getMessage(Panel.ARIA_CLOSE));
+            encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle(), null);
         }
 
         if (panel.isToggleable()) {

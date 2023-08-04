@@ -31,16 +31,8 @@ import org.primefaces.util.Constants;
 
 public class DialogViewHandler extends ViewHandlerWrapper {
 
-    private ViewHandler wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public DialogViewHandler(ViewHandler wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public ViewHandler getWrapped() {
-        return this.wrapped;
+        super(wrapped);
     }
 
     @Override

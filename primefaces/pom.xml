@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces-parent</artifactId>
-        <version>13.0.0-SNAPSHOT</version>
+        <version>14.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -181,7 +181,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.76</version>
+            <version>9.0.78</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
@@ -600,7 +600,6 @@
                                 <include>texteditor/**</include>
                                 <include>timeline/**</include>
                                 <include>toggleswitch/**</include>
-                                <include>watermark/**</include>
                             </includes>
                             <aggregations>
                                 <aggregation>

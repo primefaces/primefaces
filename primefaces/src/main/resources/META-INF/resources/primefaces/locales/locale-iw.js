@@ -1,15 +1,12 @@
 /** Hebrew both iw and he*/
 PrimeFaces.locales['iw'] = {
-    closeText: 'סגור',
-    prevText: 'הקודם',
-    nextText: 'הבא',
     monthNames: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
     monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
     dayNames: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
     dayNamesShort: ['א\'', 'ב\'', 'ג\'', 'ד\'', 'ה\'', 'ו\'', 'שבת'],
     dayNamesMin: ['א\'', 'ב\'', 'ג\'', 'ד\'', 'ה\'', 'ו\'', 'שבת'],
     weekHeader: 'שבוע',
-    firstDay: 0,
+    firstDayOfWeek: 0,
     isRTL: true,
     showMonthAfterYear: false,
     yearSuffix: '',
@@ -19,12 +16,16 @@ PrimeFaces.locales['iw'] = {
     minuteText: 'דקה',
     secondText: 'שניה',
     millisecondText: 'אלפית השנייה',
-    currentText: 'היום',
-    ampm: false,
+    today: 'היום',
     month: 'חודש',
     week: 'שבוע',
     day: 'יום',
     allDayText: 'כל היום',
-    clear: 'אִתחוּל'
+    clear: 'אִתחוּל',
+    "aria": {
+        close: 'סגור',
+        previous: 'סגור',
+        next: 'הקודם',
+    }
 };
 PrimeFaces.locales['he'] = PrimeFaces.locales['iw'];

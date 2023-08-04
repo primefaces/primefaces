@@ -26,9 +26,7 @@ package org.primefaces.component.dnd;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -37,7 +35,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.DragDropEvent;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
@@ -114,13 +112,6 @@ public class Droppable extends DroppableBase {
     }
 
     protected UIData findDatasource(FacesContext context, Droppable droppable, String datasourceId) {
-        UIComponent datasource = SearchExpressionFacade.resolveComponent(context, droppable, datasourceId);
-
-        if (datasource == null) {
-            throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
-        }
-        else {
-            return (UIData) datasource;
-        }
+        return (UIData) SearchExpressionUtils.contextlessResolveComponent(context, droppable, datasourceId);
     }
 }

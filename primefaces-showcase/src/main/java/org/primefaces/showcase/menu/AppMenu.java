@@ -47,8 +47,8 @@ public class AppMenu {
         //GENERAL CATEGORY START
         List<MenuItem> generalMenuItems = new ArrayList<>();
         generalMenuItems.add(new MenuItem("Get Started", "/getstarted"));
-        generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/12_0_0/#/"));
-        generalMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/12_0_0/#/core/contentsecuritypolicy"));
+        generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/13_0_0/#/"));
+        generalMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/13_0_0/#/core/contentsecuritypolicy"));
         menuCategories.add(new MenuCategory("General", generalMenuItems));
         //GENERAL CATEGORY END
 
@@ -71,10 +71,10 @@ public class AppMenu {
 
         //THEMING CATEGORY START
         List<MenuItem> themingMenuItems = new ArrayList<>();
-        themingMenuItems.add(new MenuItem("Introduction", "/theming"));
-        themingMenuItems.add(new MenuItem("Theme Designer", "https://www.primefaces.org/designer/primefaces"));
+        themingMenuItems.add(new MenuItem("Overview", "/theming"));
         themingMenuItems.add(new MenuItem("Visual Editor", "https://www.primefaces.org/designer-jsf"));
-        themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/10.0.0/"));
+        themingMenuItems.add(new MenuItem("Colors", "/colors"));
+        themingMenuItems.add(new MenuItem("SASS API", "https://www.primefaces.org/designer/api/primefaces/13.0.0/"));
         menuCategories.add(new MenuCategory("Theming", themingMenuItems));
         //THEMING CATEGORY END
 
@@ -610,7 +610,6 @@ public class AppMenu {
         terminalCommandMenuItems.add(new MenuItem("Autocomplete", "/ui/misc/terminal/autocomplete"));
         miscMenuItems.add(new MenuItem("Terminal", terminalCommandMenuItems));
 
-        miscMenuItems.add(new MenuItem("Watermark", "/ui/misc/watermark"));
         menuCategories.add(new MenuCategory("Misc", miscMenuItems));
         //MISC CATEGORY END
 

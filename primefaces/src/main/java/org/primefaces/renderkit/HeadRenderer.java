@@ -239,27 +239,25 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
         }
 
-        if (applicationContext.getEnvironment().isAtLeastJsf22()) {
-            if (context.getExternalContext().getClientWindow() != null) {
-                ClientWindow clientWindow = context.getExternalContext().getClientWindow();
-                if (clientWindow instanceof PrimeClientWindow) {
+        if (context.getExternalContext().getClientWindow() != null) {
+            ClientWindow clientWindow = context.getExternalContext().getClientWindow();
+            if (clientWindow instanceof PrimeClientWindow) {
 
-                    boolean initialRedirect = false;
+                boolean initialRedirect = false;
 
-                    Object cookie = PrimeClientWindowUtils.getInitialRedirectCookie(context, clientWindow.getId());
-                    if (cookie instanceof Cookie) {
-                        Cookie servletCookie = (Cookie) cookie;
-                        initialRedirect = true;
+                Object cookie = PrimeClientWindowUtils.getInitialRedirectCookie(context, clientWindow.getId());
+                if (cookie instanceof Cookie) {
+                    Cookie servletCookie = (Cookie) cookie;
+                    initialRedirect = true;
 
-                        // expire/remove cookie
-                        servletCookie.setMaxAge(0);
-                        ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(servletCookie);
-                    }
-                    writer.write(
-                            String.format("PrimeFaces.clientwindow.init('%s', %s);",
-                                    PrimeClientWindowUtils.secureWindowId(clientWindow.getId()),
-                                    initialRedirect));
+                    // expire/remove cookie
+                    servletCookie.setMaxAge(0);
+                    ((HttpServletResponse) context.getExternalContext().getResponse()).addCookie(servletCookie);
                 }
+                writer.write(
+                        String.format("PrimeFaces.clientwindow.init('%s', %s);",
+                                PrimeClientWindowUtils.secureWindowId(clientWindow.getId()),
+                                initialRedirect));
             }
         }
 

@@ -32,7 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
@@ -199,9 +199,9 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
                 .attr("at", menu.getAt());
 
         String trigger = menu.getTrigger();
-        if (trigger != null) {
-            wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, (UIComponent) menu, trigger))
-                    .attr("triggerEvent", menu.getTriggerEvent());
+        if (LangUtils.isNotBlank(trigger)) {
+            wb.attr("trigger", SearchExpressionUtils.resolveClientIdsForClientSide(context, (UIComponent) menu, trigger))
+                .attr("triggerEvent", menu.getTriggerEvent());
         }
     }
 

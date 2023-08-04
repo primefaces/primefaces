@@ -123,7 +123,7 @@ public class BlockUI001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("BlockUI Config = " + cfg);
-        Assertions.assertEquals(cfg.get("block"), "form:panel1 form:panel2");
+        Assertions.assertEquals(cfg.get("block"), "form:panel1,form:panel2");
     }
 
     public static class Page extends AbstractPrimePage {

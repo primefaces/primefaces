@@ -25,9 +25,10 @@ package org.primefaces.component.fileupload;
 
 import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
 
@@ -80,9 +81,9 @@ public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<Multipar
             }
         }
         if (multipartRequest == null) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "commons UPLOADER requires configuration of servlet filter 'org.primefaces.webapp.filter.FileUploadFilter'");
-            }
+            throw new FacesException("HTTP request is no " + MultipartRequest.class.getName() + ". "
+                    + "Uploader 'commons' requires configuration of servlet filter 'org.primefaces.webapp.filter.FileUploadFilter'. "
+                    + "Also make sure to enable multi part by setting enctype to your form (e.g <h:form enctype=\"multipart/form-data\">... </h:form>");
         }
         return multipartRequest;
     }

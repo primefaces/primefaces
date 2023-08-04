@@ -152,6 +152,15 @@ body.dark {
     --external-icon: var(--dark-external-icon);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.2;
+}
+
 h1 {
     font-size: 2em;
     margin: 0.67em 0;
@@ -414,22 +423,22 @@ blockquote {
 }
 
 @media (min-width: 901px) and (max-width: 1024px) {
-    html.default .col-content {
+    html .col-content {
         width: 72%;
     }
-    html.default .col-menu {
+    html .col-menu {
         width: 28%;
     }
-    html.default .tsd-navigation {
+    html .tsd-navigation {
         padding-left: 10px;
     }
 }
 @media (max-width: 900px) {
-    html.default .col-content {
+    html .col-content {
         float: none;
         width: 100%;
     }
-    html.default .col-menu {
+    html .col-menu {
         position: fixed !important;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
@@ -445,10 +454,10 @@ blockquote {
         background-color: var(--color-panel);
         transform: translate(100%, 0);
     }
-    html.default .col-menu > *:last-child {
+    html .col-menu > *:last-child {
         padding-bottom: 20px;
     }
-    html.default .overlay {
+    html .overlay {
         content: "";
         display: block;
         position: fixed;
@@ -459,6 +468,50 @@ blockquote {
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.75);
         visibility: hidden;
+    }
+
+    .to-has-menu .overlay {
+        animation: fade-in 0.4s;
+    }
+
+    .to-has-menu :is(header, footer, .col-content) {
+        animation: shift-to-left 0.4s;
+    }
+
+    .to-has-menu .col-menu {
+        animation: pop-in-from-right 0.4s;
+    }
+
+    .from-has-menu .overlay {
+        animation: fade-out 0.4s;
+    }
+
+    .from-has-menu :is(header, footer, .col-content) {
+        animation: unshift-to-left 0.4s;
+    }
+
+    .from-has-menu .col-menu {
+        animation: pop-out-to-right 0.4s;
+    }
+
+    .has-menu body {
+        overflow: hidden;
+    }
+    .has-menu .overlay {
+        visibility: visible;
+    }
+    .has-menu :is(header, footer, .col-content) {
+        transform: translate(-25%, 0);
+    }
+    .has-menu .col-menu {
+        visibility: visible;
+        transform: translate(0, 0);
+        display: grid;
+        grid-template-rows: auto 1fr;
+        max-height: 100vh;
+    }
+    .has-menu .tsd-navigation {
+        max-height: 100%;
     }
 }
 
@@ -597,6 +650,10 @@ footer {
     border-top: 1px solid var(--color-panel-divider);
     background-color: var(--color-panel);
 }
+footer:after {
+    content: "";
+    display: table;
+}
 footer.with-border-bottom {
     border-bottom: 1px solid var(--color-panel-divider);
 }
@@ -709,12 +766,13 @@ footer .tsd-legend {
 
 .tsd-flag {
     display: inline-block;
-    padding: 1px 5px;
+    padding: 0.25em 0.4em;
     border-radius: 4px;
     color: var(--color-comment-tag-text);
     background-color: var(--color-comment-tag);
     text-indent: 0;
-    font-size: 14px;
+    font-size: 75%;
+    line-height: 1;
     font-weight: normal;
 }
 
@@ -819,7 +877,6 @@ footer .tsd-legend {
 .tsd-navigation.secondary {
     max-height: calc(100vh - 1rem - 40px);
     overflow: auto;
-    position: -webkit-sticky;
     position: sticky;
     top: calc(0.5rem + 40px);
     transition: 0.3s;
@@ -1338,4 +1395,20 @@ input[type="checkbox"]:checked + .tsd-widget:before {
 
 img {
     max-width: 100%;
+}
+
+.tsd-anchor-icon {
+    margin-left: 10px;
+    vertical-align: middle;
+    color: var(--color-text);
+}
+
+.tsd-anchor-icon svg {
+    width: 1em;
+    height: 1em;
+    visibility: hidden;
+}
+
+.tsd-anchor-link:hover > .tsd-anchor-icon svg {
+    visibility: visible;
 }

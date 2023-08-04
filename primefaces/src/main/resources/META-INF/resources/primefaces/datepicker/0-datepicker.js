@@ -278,7 +278,7 @@
         },
 
         getFirstDayOfWeek: function () {
-            return this.options.locale.firstDay !== undefined ? this.options.locale.firstDay : this.options.locale.firstDayOfWeek;
+            return this.options.locale.firstDayOfWeek;
         },
 
         getSundayIndex: function () {

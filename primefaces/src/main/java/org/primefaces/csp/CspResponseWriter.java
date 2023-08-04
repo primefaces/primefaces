@@ -58,8 +58,6 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                     "onselect", "onshow", "onstalled", "onstorage", "onsubmit", "onsuspend", "ontimeupdate", "ontoggle", "ontouchcancel",
                     "ontouchend", "ontouchmove", "ontouchstart", "ontransitionend", "onunload", "onvolumechange", "onwaiting", "onwheel"));
 
-    private ResponseWriter wrapped;
-
     private CspState cspState;
 
     private String lastElement;
@@ -69,9 +67,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
     private Lazy<Boolean> policyProvided;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public CspResponseWriter(ResponseWriter wrapped, CspState cspState) {
-        this.wrapped = wrapped;
+        super(wrapped);
         this.cspState = cspState;
 
         policyProvided = new Lazy<>(() ->
@@ -260,10 +257,5 @@ public class CspResponseWriter extends ResponseWriterWrapper {
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
         return getWrapped().cloneWithWriter(writer);
-    }
-
-    @Override
-    public ResponseWriter getWrapped() {
-        return wrapped;
     }
 }

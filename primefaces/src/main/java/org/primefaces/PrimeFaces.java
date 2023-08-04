@@ -26,8 +26,6 @@ package org.primefaces;
 import org.primefaces.component.api.MultiViewStateAware;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.ComponentNotFoundException;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.DialogFrameworkOptions;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -54,6 +52,8 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.faces.component.search.ComponentNotFoundException;
+import org.primefaces.expression.SearchExpressionUtils;
 
 public class PrimeFaces {
 
@@ -166,7 +166,7 @@ public class PrimeFaces {
 
         FacesContext facesContext = getFacesContext();
 
-        String clientId = SearchExpressionFacade.resolveClientId(facesContext,
+        String clientId = SearchExpressionUtils.resolveClientId(facesContext,
                 base,
                 expression);
         executeScript("PrimeFaces.focus('" + clientId + "');");
@@ -188,7 +188,7 @@ public class PrimeFaces {
 
         UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
-            List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expression);
+            List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(facesContext, root, expression);
             for (UIComponent component : components) {
                 component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
             }
@@ -349,7 +349,7 @@ public class PrimeFaces {
 
                 try {
                     String clientId =
-                            SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
+                            SearchExpressionUtils.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
 
                     facesContext.getPartialViewContext().getRenderIds().add(clientId);
                 }
@@ -548,8 +548,7 @@ public class PrimeFaces {
 
             PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(fc);
             String clientWindowId = "session";
-            if (primeApplicationContext.getEnvironment().isAtLeastJsf22() &&
-                    "client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
+            if ("client-window".equals(primeApplicationContext.getConfig().getMultiViewStateStore())) {
                 ExternalContext externalContext = fc.getExternalContext();
                 ClientWindow clientWindow = externalContext.getClientWindow();
                 if (clientWindow != null && LangUtils.isNotBlank(clientWindow.getId())) {

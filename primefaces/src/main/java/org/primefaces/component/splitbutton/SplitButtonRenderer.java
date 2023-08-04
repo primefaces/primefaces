@@ -38,10 +38,8 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.component.overlaypanel.OverlayPanel;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.*;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
 import org.primefaces.util.*;
 
@@ -215,9 +213,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
     protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SplitButton", button);
-        wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo(),
-                SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+        wb.init("SplitButton", button)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, button, button.getAppendTo()));
 
         if (button.isFilter()) {
             wb.attr("filter", true)
@@ -420,7 +417,6 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
 
         if (button.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);

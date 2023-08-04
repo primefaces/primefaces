@@ -80,7 +80,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         }
         //POST
         else {
-            writer.writeAttribute("href", "javascript:void(0)", null);
+            writer.writeAttribute("href", "#", null);
         }
 
         if (isCommand) {

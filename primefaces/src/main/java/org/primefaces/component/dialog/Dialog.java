@@ -63,8 +63,6 @@ public class Dialog extends DialogBase {
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
     public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
 
-    public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
-
     private static final String DEFAULT_EVENT = "close";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()

@@ -29,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -116,10 +115,9 @@ public class ConfirmPopupRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("ConfirmPopup", popup)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, popup, popup.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
-                .attr("global", popup.isGlobal(), false)
-                .attr("dismissable", popup.isDismissable(), true);
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, popup, popup.getAppendTo()))
+            .attr("global", popup.isGlobal(), false)
+            .attr("dismissable", popup.isDismissable(), true);
 
         wb.finish();
     }

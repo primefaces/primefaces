@@ -35,7 +35,6 @@ import javax.faces.event.PhaseId;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.event.AutoCompleteEvent;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -318,9 +317,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId + "_button", null);
         writer.writeAttribute("class", dropdownClass, null);
         writer.writeAttribute("type", "button", null);
-        if (LangUtils.isNotBlank(ac.getDropdownAriaLabel())) {
-            writer.writeAttribute(HTML.ARIA_LABEL, ac.getDropdownAriaLabel(), null);
-        }
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -530,6 +526,10 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestionsAsTable(FacesContext context, AutoComplete ac, Object items, Converter converter) throws IOException {
+        // do not render table if empty message and there are no records
+        if (items == null || ((Collection) items).isEmpty()) {
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
         String var = ac.getVar();
         boolean pojo = var != null;
@@ -776,8 +776,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("forceSelection", ac.isForceSelection(), false)
                 .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
                 .attr("multiple", ac.isMultiple(), false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, ac, ac.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, ac, ac.getAppendTo()))
                 .attr("grouping", ac.getValueExpression(AutoComplete.PropertyKeys.groupBy.toString()) != null, false)
                 .attr("queryEvent", ac.getQueryEvent(), null)
                 .attr("dropdownMode", ac.getDropdownMode(), null)
@@ -797,9 +796,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
         }
-
-        wb.attr("emptyMessage", ac.getEmptyMessage(), null)
-                .attr("resultsMessage", ac.getResultsMessage(), null);
 
         if (ComponentUtils.shouldRenderFacet(ac.getFacet("itemtip"))) {
             wb.attr("itemtip", true, false)

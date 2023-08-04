@@ -33,7 +33,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.LangUtils;
 
 /**
@@ -79,7 +78,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
                     infos.put(clientId, null);
                 }
                 else {
-                    String[] onList = SearchExpressionFacade.split(context, on, SearchExpressionFacade.EXPRESSION_SEPARATORS);
+                    String[] onList = context.getApplication().getSearchExpressionHandler().splitExpressions(context, on);
                     infos.put(clientId, Arrays.asList(onList));
                 }
             }

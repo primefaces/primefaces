@@ -34,12 +34,11 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
+import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
@@ -102,8 +101,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
             // #7325 restore global filter value
             if (FilterMeta.GLOBAL_FILTER_KEY.equals(entry.getKey())) {
-                UIComponent globalFilterComponent = SearchExpressionFacade
-                            .resolveComponent(context, (UIComponent) this, GLOBAL_FILTER_COMPONENT_ID, SearchExpressionUtils.SET_NONE);
+                UIComponent globalFilterComponent = SearchExpressionUtils.contextlessResolveComponent(
+                        context, (UIComponent) this, GLOBAL_FILTER_COMPONENT_ID);
                 if (globalFilterComponent != null && globalFilterComponent instanceof ValueHolder) {
                     ((ValueHolder) globalFilterComponent).setValue(entry.getValue().getFilterValue());
                 }
@@ -151,11 +150,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // #globalFilter sets the default value, which will be assigned to the "globalFilter" input
         String globalFilterDefaultValue = getGlobalFilter();
         // if #globalFilter is set, the "globalFilter" is mandatory
-        Set<SearchExpressionHint> hint = LangUtils.isBlank(globalFilterDefaultValue)
-                ? SearchExpressionUtils.SET_IGNORE_NO_RESULT
-                : SearchExpressionUtils.SET_NONE;
-        UIComponent globalFilterComponent = SearchExpressionFacade
-                .resolveComponent(context, (UIComponent) this, GLOBAL_FILTER_COMPONENT_ID, hint);
+        Set<SearchExpressionHint> hints = LangUtils.isBlank(globalFilterDefaultValue)
+                ? SearchExpressionUtils.hintsIgnoreNoResult()
+                : null;
+        UIComponent globalFilterComponent = SearchExpressionUtils.contextlessResolveComponent(
+                context, (UIComponent) this, GLOBAL_FILTER_COMPONENT_ID, hints);
         if (globalFilterComponent != null) {
             if (globalFilterComponent instanceof ValueHolder) {
                 ((ValueHolder) globalFilterComponent).setValue(globalFilterDefaultValue);

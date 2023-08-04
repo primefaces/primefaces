@@ -32,27 +32,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  integration-tests-22:
-    runs-on: ubuntu-latest
-    name: Integration Tests (Java ${{ matrix.java }} - ${{ matrix.facesimpl }})
-    strategy:
-      fail-fast: false
-      matrix:
-        java: [8]
-        facesimpl: [ 'myfaces-2.2' ]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: ${{ matrix.java }}
-          cache: 'maven'
-      - name: Build
-        run: mvn clean install -pl -primefaces-integration-tests-jakarta -T1C -DskipTests -Dcheckstyle.skip -Djsdoc.skip.typedoc=true -Dmaven.javadoc.skip=true --batch-mode --show-version
-      - name: Integration Tests (serial)
-        run: mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,headless,chrome-jsf22,theme-saga,csp,${{ matrix.facesimpl }}
-
 
   integration-tests-23:
     runs-on: ubuntu-latest

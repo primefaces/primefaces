@@ -23,9 +23,19 @@
  */
 package org.primefaces.renderkit;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.UINotification;
+import org.primefaces.component.api.UINotifications;
 import org.primefaces.component.messages.Messages;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
 public class UINotificationRenderer extends CoreRenderer {
@@ -89,4 +99,78 @@ public class UINotificationRenderer extends CoreRenderer {
         return severity;
     }
 
+    public List<FacesMessage> collectFacesMessages(UINotifications uiMessages, FacesContext context) {
+        List<FacesMessage> messages = null;
+
+        String _for = uiMessages.getFor();
+        if (!isValueBlank(_for)) {
+            String forType = uiMessages.getForType();
+
+            // key case
+            if (forType == null || "key".equals(forType)) {
+                String[] keys = context.getApplication().getSearchExpressionHandler().splitExpressions(context, _for);
+                for (String key : keys) {
+                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
+                    while (messagesIterator.hasNext()) {
+                        if (messages == null) {
+                            messages = new ArrayList<>(5);
+                        }
+                        messages.add(messagesIterator.next());
+                    }
+                }
+            }
+
+            // clientId / SearchExpression case
+            if (forType == null || "expression".equals(forType)) {
+                List<UIComponent> forComponents = SearchExpressionUtils.contextlessResolveComponents(context, uiMessages, _for,
+                        SearchExpressionUtils.HINTS_IGNORE_NO_RESULT);
+                for (int i = 0; i < forComponents.size(); i++) {
+                    UIComponent forComponent = forComponents.get(i);
+                    String forComponentClientId = forComponent.getClientId(context);
+                    if (!_for.equals(forComponentClientId)) {
+
+                        Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
+                        while (messagesIterator.hasNext()) {
+                            FacesMessage next = messagesIterator.next();
+                            if (messages == null) {
+                                messages = new ArrayList<>(5);
+                            }
+                            if (!messages.contains(next)) {
+                                messages.add(next);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if (uiMessages.isGlobalOnly()) {
+            Iterator<FacesMessage> messagesIterator = context.getMessages(null);
+            while (messagesIterator.hasNext()) {
+                if (messages == null) {
+                    messages = new ArrayList<>(5);
+                }
+                messages.add(messagesIterator.next());
+            }
+        }
+        else {
+            String[] ignores = uiMessages.getForIgnores() == null
+                    ? null
+                    : context.getApplication().getSearchExpressionHandler().splitExpressions(context, uiMessages.getForIgnores());
+            Iterator<String> keyIterator = context.getClientIdsWithMessages();
+            while (keyIterator.hasNext()) {
+                String key = keyIterator.next();
+                if (ignores == null || !LangUtils.contains(ignores, key)) {
+                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
+                    while (messagesIterator.hasNext()) {
+                        if (messages == null) {
+                            messages = new ArrayList<>(5);
+                        }
+                        messages.add(messagesIterator.next());
+                    }
+                }
+            }
+        }
+
+        return messages;
+    }
 }

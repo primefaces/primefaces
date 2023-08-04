@@ -25,7 +25,6 @@ package org.primefaces.util;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 
 /**
@@ -67,7 +66,7 @@ public class CSVBuilder {
 
     public CSVBuilder process(UIComponent component, String expressions) {
         if (LangUtils.isNotBlank(expressions)) {
-            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions);
+            String resolvedExpressions = SearchExpressionUtils.resolveClientIdsForClientSide(context, component, expressions);
             buffer.append(",p:'").append(resolvedExpressions).append("'");
         }
 
@@ -76,8 +75,7 @@ public class CSVBuilder {
 
     public CSVBuilder update(UIComponent component, String expressions) {
         if (LangUtils.isNotBlank(expressions)) {
-            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(
-                    context, component, expressions, SearchExpressionUtils.SET_VALIDATE_RENDERER);
+            String resolvedExpressions = SearchExpressionUtils.resolveClientIdsForClientSide(context, component, expressions);
             buffer.append(",u:'").append(resolvedExpressions).append("'");
         }
 

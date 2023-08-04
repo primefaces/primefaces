@@ -42,9 +42,6 @@ public class PrimeEnvironment {
     private final boolean atLeastEl22;
 
     private final boolean atLeastJsf40;
-    private final boolean atLeastJsf23;
-    private final boolean atLeastJsf22;
-    private final boolean atLeastJsf21;
 
     private final boolean mojarra;
 
@@ -60,9 +57,6 @@ public class PrimeEnvironment {
         atLeastEl22 = LangUtils.isClassAvailable("javax.el.ValueReference");
 
         atLeastJsf40 = LangUtils.isClassAvailable("jakarta.faces.lifecycle.ClientWindowScoped");
-        atLeastJsf23 = LangUtils.isClassAvailable("javax.faces.component.UIImportConstants");
-        atLeastJsf22 = LangUtils.isClassAvailable("javax.faces.flow.Flow");
-        atLeastJsf21 = LangUtils.isClassAvailable("javax.faces.component.TransientStateHolder");
 
         atLeastBv11 = LangUtils.isClassAvailable("javax.validation.executable.ExecutableValidator");
 
@@ -132,18 +126,6 @@ public class PrimeEnvironment {
 
     public boolean isAtLeastJsf40() {
         return atLeastJsf40;
-    }
-
-    public boolean isAtLeastJsf23() {
-        return atLeastJsf23;
-    }
-
-    public boolean isAtLeastJsf22() {
-        return atLeastJsf22;
-    }
-
-    public boolean isAtLeastJsf21() {
-        return atLeastJsf21;
     }
 
     public boolean isAtLeastServlet30() {

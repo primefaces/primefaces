@@ -113,8 +113,9 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, UIColumn column,
-                                               int rowIndex, AtomicInteger colIndex, String text) {
+                                               AtomicInteger colIndex, String text) {
         Sheet sheet = sheet();
+        int rowIndex = sheet.getLastRowNum();
 
         // by default column has 1 rowspan && colspan
         int rowSpan = (column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan()) - 1;
@@ -183,6 +184,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
             CellRangeAddress merged = sheet.getMergedRegion(j);
             if (merged.isInRange(row, col)) {
                 col = merged.getLastColumn() + 1;
+                return calculateColumnOffset(sheet, row, col);
             }
         }
         return col;
