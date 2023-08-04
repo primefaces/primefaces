@@ -26,6 +26,10 @@ PrimeFaces.locales['ka'] = {
         close: 'დახურვა',
         previous: 'წინა',
         next: 'შემდეგი',
+         'messages.ERROR': 'შეცდომა',
+         'messages.FATAL': 'საბედისწერო',
+         'messages.INFO': 'ინფორმაცია',
+         'messages.WARN': 'გაფრთხილება'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: შეცდომა: ველის შევსება აუცილებელია.'

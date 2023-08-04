@@ -48,7 +48,11 @@ PrimeFaces.locales['lt'] = {
         'colorpicker.SWATCH': 'Spalvos atspalviai',
         'colorpicker.INSTRUCTION': 'Sodrumo ir ryškumo parinkiklis. Parinkimui naudokite rodyklės klavišus: aukštyn, žemyn, kairėn, dešinėn.',
         'spinner.INCREASE': 'Vertės didinimas',
-        'spinner.DECREASE': 'Vertės sumažėjimas'
+        'spinner.DECREASE': 'Vertės sumažėjimas',
+        'messages.ERROR': 'Klaida',
+        'messages.FATAL': 'Fatališka',
+        'messages.INFO': 'Informacija',
+        'messages.WARN': 'Įspėjimas'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Patikros klaida: Privaloma reikšmė.',

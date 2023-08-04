@@ -150,7 +150,11 @@ PrimeFaces.locales['ro'] = $.extend(true, {}, PrimeFaces.locales['ro'], {
          'colorpicker.SWATCH': 'Eșantion de culoare',
          'colorpicker.INSTRUCTION': 'Selector de saturație și luminozitate. Folosiți tastele săgeți sus, jos, stânga și dreapta pentru a selecta.',
          'spinner.INCREASE': 'Măriți valoarea',
-         'spinner.DECREASE': 'Reduceți valoarea'
+         'spinner.DECREASE': 'Reduceți valoarea',
+         'messages.ERROR': 'Eroare',
+         'messages.FATAL': 'Fatal',
+         'messages.INFO': 'Infromație',
+         'messages.WARN': 'Atenție'
     },
     messages: {
         'javax.faces.component.UIInput.REQUIRED': '{0}: Eroare de validare: Valoarea este obligatorie.',

@@ -1616,7 +1616,11 @@
                 "colorpicker.SWATCH": "Color swatch",
                 "colorpicker.INSTRUCTION": "Saturation and brightness selector. Use up, down, left and right arrow keys to select.",
                 "spinner.INCREASE": "Increase Value",
-                "spinner.DECREASE": "Decrease Value"
+                "spinner.DECREASE": "Decrease Value",
+                "messages.ERROR": "Error",
+                "messages.FATAL": "Fatal",
+                "messages.INFO": "Information",
+                "messages.WARN": "Warning"
             }
         }
     };

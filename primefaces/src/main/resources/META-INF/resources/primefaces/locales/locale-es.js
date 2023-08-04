@@ -180,7 +180,11 @@
          'colorpicker.SWATCH': 'Muestra de color',
          'colorpicker.INSTRUCTION': 'Selector de saturación y brillo. Utilice las teclas de flecha arriba, abajo, izquierda y derecha para seleccionar.',
          'spinner.INCREASE': 'Aumentar valor',
-         'spinner.DECREASE': 'Disminuir valor'
+         'spinner.DECREASE': 'Disminuir valor',
+         'messages.ERROR': 'Error',
+         'messages.FATAL': 'Fatal',
+         'messages.INFO': 'Información',
+         'messages.WARN': 'Advertencia'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Error de validación: se necesita un valor.',

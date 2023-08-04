@@ -119,7 +119,11 @@ PrimeFaces.locales['el'] = $.extend(true, {}, PrimeFaces.locales['el'], {
         'colorpicker.SWATCH': 'Δείγμα χρωμάτων',
         'colorpicker.INSTRUCTION': 'Επιλογέας κορεσμού και φωτεινότητας. Χρησιμοποιήστε τα πλήκτρα πάνω, κάτω, αριστερά και δεξιά για να επιλέξετε.',
         'spinner.INCREASE': 'Αύξηση της αξίας',
-        'spinner.DECREASE': 'Μείωση της αξίας'
+        'spinner.DECREASE': 'Μείωση της αξίας',
+        'messages.ERROR': 'Σφάλμα',
+        'messages.FATAL': 'Καίριο',
+        'messages.INFO': 'Πληροφορία',
+        'messages.WARN': 'Προείδοποίηση'
     },
     messages: {
         'javax.faces.component.UIInput.CONVERSION': '{0}: Παρουσιάστηκε σφάλμα μετατροπής.',

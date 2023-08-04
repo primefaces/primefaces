@@ -154,7 +154,11 @@ PrimeFaces.locales['pt_PT'] = $.extend(true, {}, PrimeFaces.locales['pt'], {
         'colorpicker.SWATCH': 'Amostras de cores',
         'colorpicker.INSTRUCTION': 'Seletor de saturação e luminosidade. Utilze as teclas de seta para cima, baixo, esquerda e direita para selecionar.',
         'spinner.INCREASE': 'Aumentar Valor',
-        'spinner.DECREASE': 'Reduzir Valor'
+        'spinner.DECREASE': 'Reduzir Valor',
+        'messages.ERROR': 'Erro',
+        'messages.FATAL': 'Fatal',
+        'messages.INFO': 'Informação',
+        'messages.WARN': 'Alerta'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Erro de validação: é necessário um valor.',

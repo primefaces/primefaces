@@ -133,6 +133,12 @@ PrimeFaces.locales['no'] = $.extend(true, {}, PrimeFaces.locales['no'], {
     week: 'uke',
     day: 'Dag',
     allDayText: 'Hele dagen',
+    aria: {
+         'messages.ERROR': 'Feil',
+         'messages.FATAL': 'Alvorlig',
+         'messages.INFO': 'Informasjon',
+         'messages.WARN': 'Advarsel'
+    },
     messages: {
         'javax.faces.component.UIInput.REQUIRED': '{0}: Valideringsfeil: Verdi kreves.'
     }

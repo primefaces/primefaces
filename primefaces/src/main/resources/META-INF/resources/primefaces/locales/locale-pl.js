@@ -138,6 +138,10 @@ PrimeFaces.locales['pl'] = $.extend(true, {}, PrimeFaces.locales['pl'], {
         'datatable.sort.ASC': 'Kliknij, aby posortować kolumny rosnąco',
         'datatable.sort.DESC': 'Kliknij, aby posortować kolumny malejąco',
         'datatable.sort.NONE': 'Kliknij, aby usunąć sortowanie kolumny',
+        'messages.ERROR': 'B\u0142\u0105d',
+        'messages.FATAL': 'Krytyczny',
+        'messages.INFO': 'Informacje',
+        'messages.WARN': 'Ostrze\u017Cenie'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Błąd walidacji: Wartość jest wymagana.',
