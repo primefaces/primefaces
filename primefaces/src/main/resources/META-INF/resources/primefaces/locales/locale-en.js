@@ -104,7 +104,7 @@
          "hideFilterMenu": "Hide Filter Menu",
          "filterOperator": "Filter Operator",
          "filterConstraint": "Filter Constraint",
-         "editRow": "Row Edit",
+         "editRow": "Edit Row",
          "saveEdit": "Save Edit",
          "cancelEdit": "Cancel Edit",
          "listView": "List View",

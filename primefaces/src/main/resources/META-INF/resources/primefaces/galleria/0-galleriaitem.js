@@ -51,11 +51,18 @@
             this.wrapper = this.container.closest('.ui-galleria-item-wrapper');
             this.containerInWrapper = this.wrapper.children('.ui-galleria-item-container');
             this.navBackwardBtn = this.containerInWrapper.children('.ui-galleria-item-prev');
+            this.navBackwardBtn.attr('aria-label', PrimeFaces.getAriaLabel('previous'));
             this.navForwardBtn = this.containerInWrapper.children('.ui-galleria-item-next');
+            this.navForwardBtn.attr('aria-label', PrimeFaces.getAriaLabel('next'));
             
             if (this.indicatorContainer.length === 0) {
                 this.indicators = this.wrapper.find('> .ui-galleria-indicators > .ui-galleria-indicator');
             }
+            this.indicators.each(function(index, item) {
+                var indicator = $(item).find('button');
+                indicator.attr('aria-label', PrimeFaces.getAriaLabel('pageLabel').replace('{page}', (index + 1)));
+            });
+                                
 
             this._bindEvents();
             this.mounted();
@@ -183,8 +190,8 @@
 
                 for (var index = 0; index < this.indicators.length; index++) {
                     if (this.options.activeIndex === index) {
-                        this.indicators.eq(index).addClass('ui-state-highlight');
-
+                        var indicator = this.indicators.eq(index);
+                        indicator.addClass('ui-state-highlight');
                         break;
                     }
                 }

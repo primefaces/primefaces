@@ -1242,6 +1242,28 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     e.preventDefault();
                 }
             });
+        // set aria labels
+        this.tbody.find(togglerSelector).each(function() {
+            $this.updateExpansionAria($(this))
+        });
+    },
+
+    /**
+     * Configures the ARIA label for the row expander.
+     * @param {JQuery} toggler the toggler button
+     * @private
+     */
+    updateExpansionAria: function(toggler) {
+        if (toggler) {
+            var row = toggler.closest('tr');
+            var rowMeta = this.getRowMeta(row);
+            var expanded = toggler.attr('aria-expanded') === "true";
+            var ariaLabel = expanded ? PrimeFaces.getAriaLabel('expandRow') : PrimeFaces.getAriaLabel('collapseRow');
+            if (rowMeta && rowMeta.key) {
+                ariaLabel += " " + rowMeta.key;
+            }
+            toggler.attr('aria-label', ariaLabel);
+        }
     },
 
     /**
@@ -2988,7 +3010,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         labels = toggler.children('span'),
         expanded = iconOnly ? toggler.hasClass('ui-icon-circle-triangle-s'): toggler.children('span').eq(0).hasClass('ui-helper-hidden'),
         $this = this;
-
+        
         //Run toggle expansion if row is not being toggled already to prevent conflicts
         if($.inArray(rowIndex, this.expansionProcess) === -1) {
             this.expansionProcess.push(rowIndex);
@@ -2996,6 +3018,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if(expanded) {
                 if(iconOnly) {
                     toggler.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s').attr('aria-expanded', false);
+                    this.updateExpansionAria(toggler);
                 }
                 else {
                     labels.eq(0).removeClass('ui-helper-hidden');
@@ -3015,6 +3038,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 if(iconOnly) {
                     toggler.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e').attr('aria-expanded', true);
+                    this.updateExpansionAria(toggler);
                 }
                 else {
                     labels.eq(0).addClass('ui-helper-hidden');
@@ -3150,6 +3174,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             for(var i = 0; i < columns.length; i++) {
                 var column = columns.eq(i),
                 toggler = column.children('.ui-row-toggler');
+                this.updateExpansionAria(toggler);
 
                 if(toggler.length > 0) {
                     if(toggler.hasClass('ui-icon')) {
@@ -3184,6 +3209,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.editMode === 'row') {
             var rowEditorSelector = '> tr > td > div.ui-row-editor > a';
+            
+            // add aria to buttons
+            this.tbody.find('a.ui-row-editor-pencil').attr('aria-label', PrimeFaces.getAriaLabel('editRow'));
+            this.tbody.find('a.ui-row-editor-check').attr('aria-label', PrimeFaces.getAriaLabel('saveEdit'));
+            this.tbody.find('a.ui-row-editor-close').attr('aria-label', PrimeFaces.getAriaLabel('cancelEdit'));
 
             this.tbody.off('click.datatable focus.datatable blur.datatable', rowEditorSelector)
                         .on('click.datatable', rowEditorSelector, null, function(e) {
@@ -5085,7 +5115,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @protected
      */
     bindToggleRowGroupEvents: function() {
-        var expandableRows = this.tbody.children('tr.ui-rowgroup-header'),
+        var $this = this, 
+            expandableRows = this.tbody.children('tr.ui-rowgroup-header'),
             toggler = expandableRows.find('> td:first > a.ui-rowgroup-toggler');
 
         toggler.off('click.dataTable-rowgrouptoggler').on('click.dataTable-rowgrouptoggler', function(e) {
@@ -5094,17 +5125,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
            parentRow = link.closest('tr.ui-rowgroup-header');
 
            if(togglerIcon.hasClass('ui-icon-circle-triangle-s')) {
-               link.attr('aria-expanded', false);
+               link.attr('aria-expanded', false).attr('aria-label', PrimeFaces.getAriaLabel('collapseRow'));
                togglerIcon.addClass('ui-icon-circle-triangle-e').removeClass('ui-icon-circle-triangle-s');
                parentRow.nextUntil('tr.ui-rowgroup-header').hide();
            }
            else {
-               link.attr('aria-expanded', true);
+               link.attr('aria-expanded', true).attr('aria-label', PrimeFaces.getAriaLabel('expandRow'));
                togglerIcon.addClass('ui-icon-circle-triangle-s').removeClass('ui-icon-circle-triangle-e');
                parentRow.nextUntil('tr.ui-rowgroup-header').show();
            }
 
            e.preventDefault();
+        });
+        // set aria labels
+        toggler.each(function() {
+            $this.updateExpansionAria($(this))
         });
     },
 

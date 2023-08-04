@@ -34,7 +34,6 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends CoreRenderer {
@@ -216,11 +215,11 @@ public class PanelRenderer extends CoreRenderer {
 
         if (panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
-            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), MessageFactory.getMessage(Panel.ARIA_TOGGLE));
+            encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle(), null);
         }
 
         if (optionsMenu != null) {
-            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), MessageFactory.getMessage(Panel.ARIA_OPTIONS_MENU));
+            encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle(), null);
         }
 
         //Actions
