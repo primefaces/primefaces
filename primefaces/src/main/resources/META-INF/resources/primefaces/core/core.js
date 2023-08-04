@@ -1329,7 +1329,7 @@
          * @type {string}
          * @readonly
          */
-        RESET_VALUES_PARAM : "primefaces.resetvalues",
+        RESET_VALUES_PARAM : "javax.faces.partial.resetValues",
 
         /**
          * Name of the POST parameter that indicates whether `<p:autoUpdate>` tags should be ignored.
