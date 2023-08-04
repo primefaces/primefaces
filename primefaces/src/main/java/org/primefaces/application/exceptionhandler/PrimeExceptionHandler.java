@@ -66,18 +66,11 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    private final ExceptionHandler wrapped;
     private final Lazy<PrimeConfiguration> config;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
         this.config = new Lazy(() -> PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig());
-    }
-
-    @Override
-    public ExceptionHandler getWrapped() {
-        return wrapped;
     }
 
     @Override

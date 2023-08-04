@@ -23,8 +23,6 @@
  */
 package org.primefaces.util;
 
-import javax.faces.context.PartialViewContext;
-
 public class Constants {
 
     public static class ContextParams {
@@ -75,7 +73,7 @@ public class Constants {
         public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
         public static final String RESET_VALUES_PARAM = "javax.faces.partial.resetValues";
 
-        // PF request params        
+        // PF request params
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
         public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
         public static final String NONCE_PARAM = "primefaces.nonce";

@@ -35,17 +35,10 @@ import org.primefaces.util.Constants;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
-    private PartialViewContext wrapped;
     private PartialResponseWriter writer;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContext(PartialViewContext wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public PartialViewContext getWrapped() {
-        return this.wrapped;
+        super(wrapped);
     }
 
     @Override
