@@ -80,7 +80,25 @@
                 week: 'Week',
                 day: 'Day',
                 am: 'AM',
-                pm: 'PM'
+                pm: 'PM',
+                prevDecade: "Previous Decade",
+                nextDecade: "Next Decade",
+                prevYear: "Previous Year",
+                nextYear: "Next Year",
+                prevMonth: "Previous Month",
+                nextMonth: "Next Month",
+                prevHour: "Previous Hour",
+                nextHour: "Next Hour",
+                prevMinute: "Previous Minute",
+                nextMinute: "Next Minute",
+                prevSecond: "Previous Second",
+                nextSecond: "Next Second",
+                prevMillisecond: "Previous Millisecond",
+                nextMillisecond: "Next Millisecond",
+                aria: {
+                   previous: 'Previous',
+                   next: 'Next',
+                }
             },
             dateFormat: 'mm/dd/yy',
             yearRange: null,
@@ -1678,11 +1696,11 @@
             var container = '<div class="' + containerClass + '" data-type="' + type + '">';
 
             //up
-            container += this.renderTimePickerUpButton();
+            container += this.renderTimePickerUpButton(type);
             //text
             container += text;
             //down
-            container += this.renderTimePickerDownButton();
+            container += this.renderTimePickerDownButton(type);
 
             //end
             container += '</div>';
@@ -1690,14 +1708,54 @@
             return container;
         },
 
-        renderTimePickerUpButton: function () {
-            return '<a tabindex="0" class="ui-picker-up">' +
+        renderTimePickerUpButton: function (type) {
+            var ariaLabel ='';
+            switch (type) {
+                case 0:
+                    ariaLabel = this.options.locale.nextHour;
+                    break;
+                case 1:
+                    ariaLabel = this.options.locale.nextMinute;
+                    break;
+                case 2:
+                    ariaLabel = this.options.locale.nextSecond;
+                    break;
+                case 3:
+                    ariaLabel = this.options.locale.nextMillisecond;
+                    break;
+                case 4:
+                    ariaLabel = this.options.locale.am;
+                    break;
+                default:
+                    ariaLabel ='';
+            }
+            return '<a tabindex="0" class="ui-picker-up" aria-label="'+ariaLabel+'">' +
                 '<span class="ui-icon ui-icon-carat-1-n"></span>' +
                 '</a>';
         },
 
-        renderTimePickerDownButton: function () {
-            return '<a tabindex="0" class="ui-picker-down">' +
+        renderTimePickerDownButton: function (type) {
+                        var ariaLabel ='';
+            switch (type) {
+                case 0:
+                    ariaLabel = this.options.locale.prevHour;
+                    break;
+                case 1:
+                    ariaLabel = this.options.locale.prevMinute;
+                    break;
+                case 2:
+                    ariaLabel = this.options.locale.prevSecond;
+                    break;
+                case 3:
+                    ariaLabel = this.options.locale.prevMillisecond;
+                    break;
+                case 4:
+                    ariaLabel = this.options.locale.pm;
+                    break;
+                default:
+                    ariaLabel ='';
+            }
+            return '<a tabindex="0" class="ui-picker-down" aria-label="'+ariaLabel+'">' +
                 '<span class="ui-icon ui-icon-carat-1-s"></span>' +
                 '</a>';
         },
@@ -1737,6 +1795,8 @@
 
             var navBackwardSelector = '.ui-datepicker-header > .ui-datepicker-prev',
                 navForwardSelector = '.ui-datepicker-header > .ui-datepicker-next';
+            this.panel.find(navBackwardSelector).attr('aria-label', this.options.locale.aria.previous);
+            this.panel.find(navForwardSelector).attr('aria-label', this.options.locale.aria.next);
             this.panel.off('click.datePicker-navBackward', navBackwardSelector).on('click.datePicker-navBackward', navBackwardSelector, null, this.navBackward.bind($this));
             this.panel.off('click.datePicker-navForward', navForwardSelector).on('click.datePicker-navForward', navForwardSelector, null, this.navForward.bind($this));
 
@@ -1771,7 +1831,7 @@
                     $this.toggleAmPm(event);
                 });
 
-            if (this.options.timeInput) {
+            if (this.options.timeInput) {                
                 this.panel.off('focus', '.ui-hour-picker input').on('focus', '.ui-hour-picker input', null, function (event) {
                     $this.oldHours = this.value;
                 }).off('focus', '.ui-minute-picker input').on('focus', '.ui-minute-picker input', null, function (event) {
