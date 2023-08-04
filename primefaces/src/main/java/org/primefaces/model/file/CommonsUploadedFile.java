@@ -23,70 +23,63 @@
  */
 package org.primefaces.model.file;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.util.FileUploadUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import org.apache.commons.fileupload.FileItem;
+
 /**
  *
  * Default UploadedFile implementation based on Commons FileUpload FileItem
  */
-public class CommonsUploadedFile implements UploadedFile, Serializable {
+public class CommonsUploadedFile extends AbstractUploadedFile<FileItem> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private transient FileItem fileItem;
-    private Long sizeLimit;
 
     public CommonsUploadedFile() {
         // NOOP
     }
 
-    public CommonsUploadedFile(FileItem fileItem, Long sizeLimit) {
-        this.fileItem = fileItem;
-        this.sizeLimit = sizeLimit;
-    }
-
-    @Override
-    public String getFileName() {
-        return FileUploadUtils.getValidFilename(fileItem.getName());
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return sizeLimit == null
-                ? fileItem.getInputStream()
-                : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
+    public CommonsUploadedFile(FileItem source, Long sizeLimit, String webKitRelativePath) {
+        super(source, source.getName(), sizeLimit, webKitRelativePath);
     }
 
     @Override
     public long getSize() {
-        return fileItem.getSize();
+        return getSource().getSize();
     }
 
     @Override
     public byte[] getContent() {
-        return fileItem.get();
+        // FileItem#get() has his own cache, therefore use it!
+        return getSource().get();
     }
 
     @Override
     public String getContentType() {
-        return fileItem.getContentType();
-    }
-
-    @Override
-    public void write(String filePath) throws Exception {
-        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
-        fileItem.write(new File(validFilePath));
+        return getSource().getContentType();
     }
 
     @Override
     public void delete() throws IOException {
-        fileItem.delete();
+        getSource().delete();
     }
+
+    @Override
+    protected InputStream getSourceInputStream() throws IOException {
+        return getSource().getInputStream();
+    }
+
+    @Override
+    protected void write(File file) throws IOException {
+        try {
+            getSource().write(file);
+        }
+        catch (Exception e) {
+            throw new IOException(e);
+        }
+    }
+
 }

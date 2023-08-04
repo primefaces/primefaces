@@ -189,6 +189,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 xhr.pfSettings = settings;
                 xhr.pfArgs = {}; // default should be an empty object
+
+                var file = settings.files ? settings.files[0] : null;
+                if (file && file.webkitRelativePath) {
+                    settings.data.append('X-File-Webkit-Relative-Path', file.webkitRelativePath);
+                }
+
                 if($this.cfg.global) {
                     $(document).trigger('pfAjaxSend', [xhr, this]);
                 }
