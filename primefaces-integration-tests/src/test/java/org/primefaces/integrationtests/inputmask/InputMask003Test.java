@@ -107,7 +107,13 @@ public class InputMask003Test extends AbstractInputMaskTest {
         assertNoJavascriptErrors();
         System.out.println("InputMask Config = " + cfg);
         Assertions.assertEquals(mask, cfg.getString("mask"));
-        Assertions.assertFalse(cfg.has(AbstractInputMaskTest.AUTO_CLEAR));
+        if (mask.contains("[")) {
+            Assertions.assertFalse(cfg.getBoolean(AbstractInputMaskTest.AUTO_CLEAR));
+            Assertions.assertFalse(cfg.getBoolean("clearIncomplete"));
+        }
+        else {
+            Assertions.assertTrue(cfg.getBoolean("clearIncomplete"));
+        }
     }
 
     public static class Page extends AbstractPrimePage {
