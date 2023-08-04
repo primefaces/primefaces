@@ -193,12 +193,16 @@ public class SearchExpressionUtils {
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent resolvedComponent = contextlessResolveComponent(FacesContext.getCurrentInstance(), component, expression);
 
-        if (resolvedComponent instanceof Widget) {
-            return ((Widget) resolvedComponent).resolveWidgetVar(context);
+        if (resolvedComponent != null) {
+            if (resolvedComponent instanceof Widget) {
+                return ((Widget) resolvedComponent).resolveWidgetVar(context);
+            }
+            else {
+                throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
+            }
         }
-        else {
-            throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
-        }
+
+        return null; // won't occure, a ComponentNotFoundException will be thrown
     }
 
     // used by p:closestWidgetVar
