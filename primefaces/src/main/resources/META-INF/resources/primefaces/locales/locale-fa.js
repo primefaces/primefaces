@@ -177,6 +177,8 @@ PrimeFaces.locales['fa'] = {
         'colorpicker.FORMAT': 'تنسيق اللون',
         'colorpicker.SWATCH': 'عينة اللون',
         'colorpicker.INSTRUCTION': 'شريط التشبّع والسطوع. للتحكم استخدم أزرار الأسهم أعلى، أسفل، يمين، يسار .',
+        'switch.ON': 'روشن',
+        'switch.OFF': 'خاموش',
         'messages.ERROR': 'خطا',
         'messages.FATAL': 'وخیم',
         'messages.INFO': 'اطلاعات',

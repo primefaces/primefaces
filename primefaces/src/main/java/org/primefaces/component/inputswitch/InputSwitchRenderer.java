@@ -143,7 +143,11 @@ public class InputSwitchRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, InputSwitch inputSwitch) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("InputSwitch", inputSwitch).finish();
+        wb.init("InputSwitch", inputSwitch)
+                .attr("showLabels", inputSwitch.isShowLabels())
+                .attr("onLabel", inputSwitch.getOnLabel(), null)
+                .attr("offLabel", inputSwitch.getOffLabel(), null)
+                .finish();
     }
 
     protected boolean isChecked(String value) {

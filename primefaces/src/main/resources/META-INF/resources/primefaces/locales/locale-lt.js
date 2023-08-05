@@ -49,6 +49,8 @@ PrimeFaces.locales['lt'] = {
         'colorpicker.INSTRUCTION': 'Sodrumo ir ryškumo parinkiklis. Parinkimui naudokite rodyklės klavišus: aukštyn, žemyn, kairėn, dešinėn.',
         'spinner.INCREASE': 'Vertės didinimas',
         'spinner.DECREASE': 'Vertės sumažėjimas',
+        'switch.ON': 'Įjungtas',
+        'switch.OFF': 'Atjungtas',
         'messages.ERROR': 'Klaida',
         'messages.FATAL': 'Fatališka',
         'messages.INFO': 'Informacija',

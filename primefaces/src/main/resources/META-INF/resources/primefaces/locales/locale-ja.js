@@ -154,10 +154,12 @@
          'colorpicker.INSTRUCTION': '彩度と明度セレクターは上下左右キーで選択することができます。',
          'spinner.INCREASE': '価値を高める',
          'spinner.DECREASE': '減少値',
-         'messages.ERROR': '\u30A8\u30E9\u30FC',
-         'messages.FATAL': '\u81F4\u547D\u7684',
-         'messages.INFO': '\u60C5\u5831',
-         'messages.WARN': '\u8B66\u544A'
+         'switch.ON': 'オン',
+         'switch.OFF': 'オフ',
+         'messages.ERROR': 'エラー',
+         'messages.FATAL': '致命的',
+         'messages.INFO': 'インフォメーション',
+         'messages.WARN': '警告'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: 検証エラー: 必須入力です。',

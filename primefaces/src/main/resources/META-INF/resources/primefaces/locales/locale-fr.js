@@ -154,6 +154,8 @@ PrimeFaces.locales['fr'] = $.extend(true, {}, PrimeFaces.locales['fr'], {
         'colorpicker.INSTRUCTION': 'Sélecteur de saturation et de luminosité. Utilisez les touches fléchées haut, bas, gauche et droite pour sélectionner.',
         'spinner.INCREASE': 'Augmenter la valeur',
         'spinner.DECREASE': 'Diminuer la valeur',
+        'switch.ON': 'Sur',
+        'switch.OFF': 'Arrêt',
         'messages.ERROR': 'Erreur',
         'messages.FATAL': 'Fatal',
         'messages.INFO': 'Information',

@@ -149,6 +149,8 @@ PrimeFaces.locales['nl'] = $.extend(true, {}, PrimeFaces.locales['nl'], {
         'colorpicker.INSTRUCTION': 'Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.',
         'spinner.INCREASE': 'Verhoog waarde',
         'spinner.DECREASE': 'Verlaag waarde',
+        'switch.ON': 'Aan',
+        'switch.OFF': 'Uit',
         'messages.ERROR': 'Fout',
         'messages.FATAL': 'Fataal',
         'messages.INFO': 'Informatie',

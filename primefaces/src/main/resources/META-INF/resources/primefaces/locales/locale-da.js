@@ -157,7 +157,15 @@
  PrimeFaces.locales['da'] = $.extend(true, {}, PrimeFaces.locales['da'], {
      weekNumberTitle: 'S',
      isRTL: false,
-     yearSuffix: ''
+     yearSuffix: '',
+     aria: {
+        'switch.ON': 'På',
+        'switch.OFF': 'Af',
+        'messages.ERROR': 'Fejl',
+        'messages.FATAL': 'Dødelig',
+        'messages.INFO': 'Information',
+        'messages.WARN': 'Advarsel'
+     }
  });
 
  PrimeFaces.locales['da_DK'] = PrimeFaces.locales['da'];

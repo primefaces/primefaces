@@ -78,6 +78,8 @@ PrimeFaces.locales['sv'] = $.extend(true, {}, PrimeFaces.locales['sv'], {
     day: 'dag',
     allDayText: 'Hela dagen',
     aria: {
+         'switch.ON': 'På',
+         'switch.OFF': 'Av',
          'messages.ERROR': 'Fel',
          'messages.FATAL': 'Alvarligt',
          'messages.INFO': 'Information',

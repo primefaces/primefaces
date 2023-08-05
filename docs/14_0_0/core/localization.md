@@ -30,8 +30,6 @@ primefaces.fileupload.VIRUS_TOTAL_FILE = Virus Total has identified file ''{0}''
 primefaces.password.INVALID_MATCH = {0}: Validation Error.
 primefaces.password.INVALID_MATCH_detail = {0} should match with {1}.
 primefaces.slider.OUT_OF_RANGE = {0}: Validation Error: Value is out of range.
-primefaces.switch.LABEL_ON = On
-primefaces.switch.LABEL_OFF = Off
 primefaces.tree.REQUIRED = {0}: Validation Error.
 primefaces.tree.REQUIRED_detail = Selection is required.
 
@@ -105,6 +103,8 @@ Side Validation, messages property is used as the bundle for the locale.
          'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.',
          'spinner.INCREASE': 'Increase Value',
          'spinner.DECREASE': 'Decrease Value',
+         'switch.ON': 'On',
+         'switch.OFF': 'Off',
          'messages.ERROR': 'Error',
          'messages.FATAL': 'Fatal',
          'messages.INFO': 'Information',

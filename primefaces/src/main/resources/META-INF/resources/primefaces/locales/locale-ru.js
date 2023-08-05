@@ -152,6 +152,8 @@ PrimeFaces.locales['ru'] = $.extend(true, {}, PrimeFaces.locales['ru'], {
         'colorpicker.INSTRUCTION': 'Селектор насыщенности и яркости. Для выбора используйте клавиши со стрелками вверх, вниз, влево и вправо',
         'spinner.INCREASE': 'Увеличение стоимости',
         'spinner.DECREASE': 'Уменьшение стоимости',
+        'switch.ON': 'На',
+        'switch.OFF': 'С сайта',
         'messages.ERROR': 'Ошибка',
         'messages.FATAL': 'Фатальная Ошибка',
         'messages.INFO': 'Информация',

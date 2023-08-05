@@ -120,6 +120,8 @@ PrimeFaces.locales['el'] = $.extend(true, {}, PrimeFaces.locales['el'], {
         'colorpicker.INSTRUCTION': 'Επιλογέας κορεσμού και φωτεινότητας. Χρησιμοποιήστε τα πλήκτρα πάνω, κάτω, αριστερά και δεξιά για να επιλέξετε.',
         'spinner.INCREASE': 'Αύξηση της αξίας',
         'spinner.DECREASE': 'Μείωση της αξίας',
+        'switch.ON': 'Στο',
+        'switch.OFF': 'Από',
         'messages.ERROR': 'Σφάλμα',
         'messages.FATAL': 'Καίριο',
         'messages.INFO': 'Πληροφορία',
