@@ -66,10 +66,10 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         //config
         this.cfg.showEvent = this.cfg.showEvent ? this.cfg.showEvent + '.password' : 'focus.password';
         this.cfg.hideEvent = this.cfg.hideEvent ? this.cfg.hideEvent + '.password' : 'blur.password';
-        this.cfg.promptLabel = this.cfg.promptLabel||'Please enter a password';
-        this.cfg.weakLabel = this.cfg.weakLabel||'Weak';
-        this.cfg.goodLabel = this.cfg.goodLabel||'Medium';
-        this.cfg.strongLabel = this.cfg.strongLabel||'Strong';
+        this.cfg.promptLabel = this.cfg.promptLabel||PrimeFaces.getLocaleLabel('passwordPrompt');
+        this.cfg.weakLabel = this.cfg.weakLabel||PrimeFaces.getLocaleLabel('weak');
+        this.cfg.goodLabel = this.cfg.goodLabel||PrimeFaces.getLocaleLabel('medium');
+        this.cfg.strongLabel = this.cfg.strongLabel||PrimeFaces.getLocaleLabel('strong');
 
         var panelStyle = this.cfg.inline ? 'ui-password-panel-inline' : 'ui-password-panel-overlay';
 
