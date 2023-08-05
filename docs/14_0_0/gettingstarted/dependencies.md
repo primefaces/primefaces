@@ -6,7 +6,7 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
 | Dependency | GroupId | ArtifactId | Version | Type | Description |
 | --- | --- | --- | --- | --- | --- |
-| JSF runtime | | |  2.0, 2.1, 2.2, 2.3, 3.0, 4.0 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
+| JSF runtime | | | 2.3, 3.0, 4.0 | Required | Apache MyFaces or Eclipse (former Oracle) Mojarra |
 | Libre OpenPDF | com.github.librepdf | openpdf | 1.3.29 | Optional | DataExporter (PDF) |
 | Apache POI | org.apache.poi | poi | 5.2.3 | Optional | DataExporter (Excel XLS or XML) |
 | Apache POI | org.apache.poi | poi-ooxml | 5.2.3 | Optional | DataExporter (Excel XLSX Office 2003) |

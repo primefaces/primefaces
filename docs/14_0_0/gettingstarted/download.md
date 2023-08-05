@@ -12,23 +12,23 @@ http://www.primefaces.org/downloads
 ## Download with Maven
 Group id is _org.primefaces_ and artifact id is _primefaces._
 
-### javax (JSF 2.0 - JSF 2.3)
+### javax (JSF 2.3)
 
 ```xml
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
-    <version>12.0.0</version>
+    <version>14.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
-### jakarta (JSF 3.0 - JSF 4.0)
+### jakarta (JSF 3.0 - JSF 4.X)
 
 ```xml
 <dependency>
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
-    <version>12.0.0</version>
+    <version>14.0.0-SNAPSHOT</version>
     <classifier>jakarta</classifier>
 </dependency>
 ```
