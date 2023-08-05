@@ -106,7 +106,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" ></span>';
         if (msg.severityText) {
             // GitHub #5153 for screen readers
-            markup += '<span class="ui-growl-severity ui-helper-hidden-accessible">' + msg.severityText + '</span>';
+            markup += '<span class="ui-growl-severity ui-helper-hidden-accessible">' + PrimeFaces.getAriaLabel('messages.'+msg.severity.toUpperCase()) + '</span>';
         }
         markup += '<div class="ui-growl-message">';
         markup += '<span class="ui-growl-title"></span>';

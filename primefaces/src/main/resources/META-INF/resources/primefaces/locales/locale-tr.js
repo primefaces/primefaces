@@ -89,7 +89,11 @@ PrimeFaces.locales['tr'] = $.extend(true, {}, PrimeFaces.locales['tr'], {
         'colorpicker.SWATCH': 'Renk örneği',
         'colorpicker.INSTRUCTION': 'Doygunluk ve parlaklık seçici. Seçmek için yukarı, aşağı, sol ve sağ ok tuşlarını kullanın.',
         'spinner.INCREASE': 'Değer artışı',
-        'spinner.DECREASE': 'Değer düşüşü'
+        'spinner.DECREASE': 'Değer düşüşü',
+        'messages.ERROR': 'Hata',
+        'messages.FATAL': 'Kritik Hata',
+        'messages.INFO': 'Bilgi',
+        'messages.WARN': 'Uyarı'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Doğrulama Hatası: Değer gerekli.',

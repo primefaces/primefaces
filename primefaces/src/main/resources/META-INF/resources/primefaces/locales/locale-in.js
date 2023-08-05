@@ -143,6 +143,10 @@ PrimeFaces.locales['in'] = $.extend(true, {}, PrimeFaces.locales['in'], {
     aria: {
         'datatable.sort.ASC': 'Aktifkan untuk mengurutkan dari kecil ke besar',
         'datatable.sort.DESC': 'Aktifkan untuk mengurukan dari besar ke kecil',
+        'messages.ERROR': 'Error',
+        'messages.FATAL': 'Fatal',
+        'messages.INFO': 'Informasi',
+        'messages.WARN': 'Peringatan'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Kesalahan Validasi: Nilai diperlukan.',

@@ -77,6 +77,12 @@ PrimeFaces.locales['sv'] = $.extend(true, {}, PrimeFaces.locales['sv'], {
     week: 'vecka',
     day: 'dag',
     allDayText: 'Hela dagen',
+    aria: {
+         'messages.ERROR': 'Fel',
+         'messages.FATAL': 'Alvarligt',
+         'messages.INFO': 'Information',
+         'messages.WARN': 'Varning'
+    },
     messages: {
         'javax.faces.component.UIInput.REQUIRED': '{0}: Valideringsfel: Värde är obligatoriskt.',
         'javax.faces.converter.IntegerConverter.INTEGER': '{2}: \'{0}\' måste vara ett numeriskt värde bestående av 1 eller flera siffror.',

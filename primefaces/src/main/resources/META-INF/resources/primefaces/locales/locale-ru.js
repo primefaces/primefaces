@@ -151,7 +151,11 @@ PrimeFaces.locales['ru'] = $.extend(true, {}, PrimeFaces.locales['ru'], {
         'colorpicker.SWATCH': 'Образец цвета',
         'colorpicker.INSTRUCTION': 'Селектор насыщенности и яркости. Для выбора используйте клавиши со стрелками вверх, вниз, влево и вправо',
         'spinner.INCREASE': 'Увеличение стоимости',
-        'spinner.DECREASE': 'Уменьшение стоимости'
+        'spinner.DECREASE': 'Уменьшение стоимости',
+        'messages.ERROR': 'Ошибка',
+        'messages.FATAL': 'Фатальная Ошибка',
+        'messages.INFO': 'Информация',
+        'messages.WARN': 'Предупреждение'
     },
     messages: { //Опционально для стороны клиента
         'javax.faces.component.UIInput.REQUIRED': '{0}: Ошибка проверки: Требуется значение.',

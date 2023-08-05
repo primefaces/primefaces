@@ -166,5 +166,11 @@ PrimeFaces.locales['cs'] = $.extend(true, {}, PrimeFaces.locales['cs'], {
     month: 'Měsíc',
     week: 'Týden',
     day: 'Den',
-    allDayText: 'Celý den'
+    allDayText: 'Celý den',
+    aria: {
+         'messages.ERROR': 'Chyba',
+         'messages.FATAL': 'Fatální chyba',
+         'messages.INFO': 'Informace',
+         'messages.WARN': 'Upozornění'
+     }
 });

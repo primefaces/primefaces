@@ -154,7 +154,11 @@ PrimeFaces.locales['ko'] = $.extend(true, {}, PrimeFaces.locales['ko'], {
         'colorpicker.SWATCH': '색상 스와치',
         'colorpicker.INSTRUCTION': '채도 및 밝기 선택기. 위, 아래, 왼쪽 및 오른쪽 화살표 키를 사용하여 선택합니다..',
         'spinner.INCREASE': '값 증가',
-        'spinner.DECREASE': '값 감소'
+        'spinner.DECREASE': '값 감소',
+        'messages.ERROR': '오류',
+        'messages.FATAL': '치명적',
+        'messages.INFO': '정보',
+        'messages.WARN': '주의'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: 유효성 검사 오류: 값이 필요랍니다.',

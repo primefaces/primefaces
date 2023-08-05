@@ -27,10 +27,6 @@ primefaces.datatable.SORT_DESC = Descending
 primefaces.datatable.SORT_LABEL = Sort
 primefaces.fileupload.CLAM_AV_FILE = ClamAV has identified file ''{0}'' as potentially dangerous with message ''{1}''
 primefaces.fileupload.VIRUS_TOTAL_FILE = Virus Total has identified file ''{0}'' potentially dangerous
-primefaces.messages.aria.ERROR = Error
-primefaces.messages.aria.FATAL = Fatal
-primefaces.messages.aria.INFO = Information
-primefaces.messages.aria.WARN = Warning
 primefaces.password.INVALID_MATCH = {0}: Validation Error.
 primefaces.password.INVALID_MATCH_detail = {0} should match with {1}.
 primefaces.slider.OUT_OF_RANGE = {0}: Validation Error: Value is out of range.
@@ -108,7 +104,11 @@ Side Validation, messages property is used as the bundle for the locale.
          'colorpicker.SWATCH': 'Color swatch',
          'colorpicker.INSTRUCTION': 'Saturation and brightness selector. Use up, down, left and right arrow keys to select.',
          'spinner.INCREASE': 'Increase Value',
-         'spinner.DECREASE': 'Decrease Value'
+         'spinner.DECREASE': 'Decrease Value',
+         'messages.ERROR': 'Error',
+         'messages.FATAL': 'Fatal',
+         'messages.INFO': 'Information',
+         'messages.WARN': 'Warning'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',

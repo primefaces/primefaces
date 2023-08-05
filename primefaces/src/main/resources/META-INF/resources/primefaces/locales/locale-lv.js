@@ -149,7 +149,11 @@ PrimeFaces.locales['lv'] = $.extend(true, {}, PrimeFaces.locales['lv'], {
         'colorpicker.SWATCH': 'Krāsu palete',
         'colorpicker.INSTRUCTION': 'Piesātinājuma un spilgtuma atlasītājs. Lai atlasītu, izmantojiet augšup, lejup, pa kreisi un pa labi vērsto bulttaustiņu.',
         'spinner.INCREASE': 'Palielināt vērtību',
-        'spinner.DECREASE': 'Samazināt vērtību'
+        'spinner.DECREASE': 'Samazināt vērtību',
+        'messages.ERROR': 'Kļūda',
+        'messages.FATAL': 'Fatāla kļūda',
+        'messages.INFO': 'Informācija',
+        'messages.WARN': 'Brīdinājums'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Validācijas kļūda: nepieciešama vērtība.',

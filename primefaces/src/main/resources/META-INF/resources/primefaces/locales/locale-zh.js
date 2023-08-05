@@ -194,6 +194,10 @@ PrimeFaces.locales['zh'] = {
          'datatable.sort.ASC': '升序排列',
          'datatable.sort.DESC': '降序排列',
          'datatable.sort.NONE': '无序排列',
+         'messages.ERROR': '错误',
+         'messages.FATAL': '严重错误',
+         'messages.INFO': '信息',
+         'messages.WARN': '警告'
      },
      messages: { // 客户端验证选项
          'javax.faces.component.UIInput.REQUIRED': '验证失败！“{0}”是必填项！',

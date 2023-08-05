@@ -148,7 +148,11 @@ PrimeFaces.locales['nl'] = $.extend(true, {}, PrimeFaces.locales['nl'], {
         'colorpicker.SWATCH': 'Kleurstaal',
         'colorpicker.INSTRUCTION': 'Verzadiging- en helderheidkiezer. Gebruik pijltoetsen om te selecteren.',
         'spinner.INCREASE': 'Verhoog waarde',
-        'spinner.DECREASE': 'Verlaag waarde'
+        'spinner.DECREASE': 'Verlaag waarde',
+        'messages.ERROR': 'Fout',
+        'messages.FATAL': 'Fataal',
+        'messages.INFO': 'Informatie',
+        'messages.WARN': 'Waarschuwing'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Validatiefout: Waarde is vereist.',

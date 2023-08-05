@@ -176,7 +176,11 @@ PrimeFaces.locales['fa'] = {
         'colorpicker.INPUT': 'حقل إدخال اللون',
         'colorpicker.FORMAT': 'تنسيق اللون',
         'colorpicker.SWATCH': 'عينة اللون',
-        'colorpicker.INSTRUCTION': 'شريط التشبّع والسطوع. للتحكم استخدم أزرار الأسهم أعلى، أسفل، يمين، يسار .'
+        'colorpicker.INSTRUCTION': 'شريط التشبّع والسطوع. للتحكم استخدم أزرار الأسهم أعلى، أسفل، يمين، يسار .',
+        'messages.ERROR': 'خطا',
+        'messages.FATAL': 'وخیم',
+        'messages.INFO': 'اطلاعات',
+        'messages.WARN': 'هشدار'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: خطای اعتبارسنجی: این قسمت الزامیست.',

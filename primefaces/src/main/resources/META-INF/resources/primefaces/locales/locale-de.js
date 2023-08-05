@@ -154,7 +154,11 @@ PrimeFaces.locales['de'] = $.extend(true, {}, PrimeFaces.locales['de'], {
         'colorpicker.SWATCH': 'Farbmuster',
         'colorpicker.INSTRUCTION': 'Sättigungs- und Helligkeitsauswahl. Verwenden Sie die Pfeiltasten oben, unten, links und rechts zur Auswahl.',
         'spinner.INCREASE': 'Wert erhöhen',
-        'spinner.DECREASE': 'Wert vermindern'
+        'spinner.DECREASE': 'Wert vermindern',
+        'messages.ERROR': 'Fehler',
+        'messages.FATAL': 'Schwerwiegender Fehler',
+        'messages.INFO': 'Information',
+        'messages.WARN': 'Warnung'
     },
     messages: { //optional for Client Side Validation
         'javax.faces.component.UIInput.REQUIRED': '{0}: Eingabe erforderlich.',
