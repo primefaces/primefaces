@@ -33,10 +33,8 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.UINotifications;
-import org.primefaces.component.messages.Messages;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
 
 public class UINotificationRenderer extends CoreRenderer {
 
@@ -61,32 +59,6 @@ public class UINotificationRenderer extends CoreRenderer {
         }
         else if (ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal()) {
             severity = "fatal";
-        }
-
-        return severity;
-    }
-
-    /**
-     * Gets the severity in I18N human readable text for ARIA screen readers.
-     *
-     * @param message the message to process
-     * @return the human readable text for the severity
-     */
-    protected String getSeverityText(FacesMessage message) {
-        int ordinal = message.getSeverity().getOrdinal();
-        String severity = null;
-
-        if (ordinal == FacesMessage.SEVERITY_INFO.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_INFO);
-        }
-        else if (ordinal == FacesMessage.SEVERITY_ERROR.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_ERROR);
-        }
-        else if (ordinal == FacesMessage.SEVERITY_WARN.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_WARN);
-        }
-        else if (ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_FATAL);
         }
 
         return severity;
