@@ -357,7 +357,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (($this.cfg.focusOnError || $this.cfg.focusOnLastActiveTab) && focusIndex >= 0) {
-               setTimeout(function () {$this.select(focusIndex, true)}, 10);
+               PrimeFaces.queueTask(function () {$this.select(focusIndex, true)}, 10);
             }
         });
     },

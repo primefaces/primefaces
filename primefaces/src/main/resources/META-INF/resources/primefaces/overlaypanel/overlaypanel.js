@@ -325,7 +325,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
         var thisPanel = this;
-        this.showTimeout = setTimeout(function() {
+        this.showTimeout = PrimeFaces.queueTask(function() {
             if (!thisPanel.loaded && thisPanel.cfg.dynamic) {
                 thisPanel.loadContents(target);
             }

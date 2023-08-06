@@ -71,7 +71,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         // GitHub #10046 delay registering events until CSP has registered
         var $this = this;
-        setTimeout(function () {$this.wrapEvents();}, 0);
+        PrimeFaces.queueTask(function () {$this.wrapEvents();});
     },
 
     /**

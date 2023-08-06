@@ -223,7 +223,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         i = interval||500;
 
         clearTimeout(this.timer);
-        this.timer = setTimeout(function() {
+        this.timer = PrimeFaces.queueTask(function() {
             $this.repeat(40, dir);
         }, i);
 

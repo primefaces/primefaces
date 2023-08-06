@@ -257,7 +257,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 onBeforePaste: function (pastedValue, opts) {
                     // GitHub #8319 issue with pasting mask
                     // TODO: Remove if InputMask 5.0.8+ fixes the issue
-                    setTimeout(function(){ $this.input.trigger("input")}, 20);
+                    PrimeFaces.queueTask(function(){ $this.input.trigger("input")}, 20);
                     return pastedValue;
                 }
             };
@@ -314,7 +314,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     });
                 }
 
-                setTimeout(function() {
+                PrimeFaces.queueTask(function() {
                     $this.refocusInput = false;
                 }, 10);
             }

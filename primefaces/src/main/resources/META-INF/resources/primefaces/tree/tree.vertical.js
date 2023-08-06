@@ -129,7 +129,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     clearTimeout($this.filterTimeout);
                 }
 
-                $this.filterTimeout = setTimeout(function() {
+                $this.filterTimeout = PrimeFaces.queueTask(function() {
                     $this.filter();
                     $this.filterTimeout = null;
                 }, 300);
@@ -300,9 +300,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 case 'Tab':
                     pressTab = true;
                     $this.container.trigger('focus');
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         pressTab = false;
-                    }, 2);
+                    });
 
                 break;
             }

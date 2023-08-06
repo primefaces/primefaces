@@ -163,7 +163,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     else
                         $this.jq.children('.ui-tooltip-text').html(text);
 
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         $this.globalTitle = text;
                         $this.target = element;
                         $this._show();
@@ -397,7 +397,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             var $this = this;
             this.clearTimeout();
 
-            this.timeout = setTimeout(function() {
+            this.timeout = PrimeFaces.queueTask(function() {
                 $this._show();
             }, this.cfg.showDelay);
         }
@@ -446,7 +446,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.clearTimeout();
 
-        this.timeout = setTimeout(function() {
+        this.timeout = PrimeFaces.queueTask(function() {
             $this._hide();
         }, this.cfg.hideDelay);
     },

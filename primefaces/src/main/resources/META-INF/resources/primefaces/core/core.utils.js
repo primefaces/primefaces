@@ -758,9 +758,9 @@ if (!PrimeFaces.utils) {
                                 callTransitionEvent(callbacks, 'onEnter');
 
                                 requestAnimationFrame(function() {
-                                    setTimeout(function() {
+                                    PrimeFaces.queueTask(function() {
                                         element.addClass(classNameStates.enterActive);
-                                    }, 0);
+                                    });
 
                                     element.one('transitionrun.css-transition-show', function(event) {
                                         callTransitionEvent(callbacks, 'onEntering', event);
@@ -793,9 +793,9 @@ if (!PrimeFaces.utils) {
                                 element.addClass(classNameStates.exit);
                                 callTransitionEvent(callbacks, 'onExit');
 
-                                setTimeout(function() {
+                                PrimeFaces.queueTask(function() {
                                     element.addClass(classNameStates.exitActive);
-                                }, 0);
+                                });
 
                                 element.one('transitionrun.css-transition-hide', function(event) {
                                     callTransitionEvent(callbacks, 'onExiting', event);
@@ -931,6 +931,26 @@ if (!PrimeFaces.utils) {
                 return doc.documentElement.textContent;
             }
             return input;
+        },
+        
+        /**
+         * Queue a microtask if delay is 0 or less and setTimeout if > 0.
+         *
+         * @param {() => void} fn the function to call after the delay
+         * @param {number | undefined} delay the optional delay in milliseconds
+         * @return {number | undefined} the id associated to the timeout or undefined if no timeout used
+         */
+        queueTask: function(fn, delay) {
+            // if delay is 0 use microtask
+            if (!delay || delay <= 0) {
+                // queueMicrotask adds the function (task) into a queue and each function is executed one by one (FIFO)
+                // after the current task has completed its work and when there is no other code waiting to be run 
+                // before control of the execution context is returned to the browser's event loop.
+                window.queueMicrotask(fn);
+                return undefined;
+            }
+            // In the case of setTimeout, each task is executed from the event queue, after control is given to the event loop.
+            return window.setTimeout(fn, delay);
         }
     };
 

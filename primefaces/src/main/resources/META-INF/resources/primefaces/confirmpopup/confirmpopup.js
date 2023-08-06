@@ -255,12 +255,7 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
             return;
         }
 
-        if (delay) {
-            setTimeout(function() { el.focus() }, delay);
-        }
-        else {
-            el.focus()
-        }
+        PrimeFaces.queueTask(function() { el.focus() }, delay);
     },
 
     /**

@@ -701,17 +701,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if ($this.timeout) {
                 $this.deleteTimeout();
             }
-
-            var delay = $this.cfg.delay;
-            if (delay && delay > 0) {
-                $this.timeout = setTimeout(function() {
-                    $this.timeout = null;
-                    $this.search(value);
-                }, delay);
-            }
-            else {
+            $this.timeout = PrimeFaces.queueTask(function() {
+                $this.timeout = null;
                 $this.search(value);
-            }
+            }, $this.cfg.delay);
         }
         else if (value.length === 0) {
             if ($this.timeout) {
