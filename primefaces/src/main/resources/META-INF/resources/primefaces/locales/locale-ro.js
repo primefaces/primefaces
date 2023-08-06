@@ -151,6 +151,8 @@ PrimeFaces.locales['ro'] = $.extend(true, {}, PrimeFaces.locales['ro'], {
          'colorpicker.INSTRUCTION': 'Selector de saturație și luminozitate. Folosiți tastele săgeți sus, jos, stânga și dreapta pentru a selecta.',
          'spinner.INCREASE': 'Măriți valoarea',
          'spinner.DECREASE': 'Reduceți valoarea',
+         'switch.ON': 'Pe',
+         'switch.OFF': 'Off',
          'messages.ERROR': 'Eroare',
          'messages.FATAL': 'Fatal',
          'messages.INFO': 'Infromație',

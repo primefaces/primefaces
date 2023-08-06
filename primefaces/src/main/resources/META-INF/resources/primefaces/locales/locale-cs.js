@@ -168,6 +168,8 @@ PrimeFaces.locales['cs'] = $.extend(true, {}, PrimeFaces.locales['cs'], {
     day: 'Den',
     allDayText: 'Celý den',
     aria: {
+         'switch.ON': 'Na adrese',
+         'switch.OFF': 'Vypnuto',
          'messages.ERROR': 'Chyba',
          'messages.FATAL': 'Fatální chyba',
          'messages.INFO': 'Informace',

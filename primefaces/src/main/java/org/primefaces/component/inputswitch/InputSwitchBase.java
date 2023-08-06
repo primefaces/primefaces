@@ -69,7 +69,7 @@ public abstract class InputSwitchBase extends UIInput implements Widget, ClientB
     }
 
     public String getOnLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.onLabel, "on");
+        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
     }
 
     public void setOnLabel(String onLabel) {
@@ -77,7 +77,7 @@ public abstract class InputSwitchBase extends UIInput implements Widget, ClientB
     }
 
     public String getOffLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.offLabel, "off");
+        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
     }
 
     public void setOffLabel(String offLabel) {

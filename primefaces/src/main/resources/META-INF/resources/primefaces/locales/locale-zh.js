@@ -194,6 +194,8 @@ PrimeFaces.locales['zh'] = {
          'datatable.sort.ASC': '升序排列',
          'datatable.sort.DESC': '降序排列',
          'datatable.sort.NONE': '无序排列',
+         'switch.ON': '开',
+         'switch.OFF': '关',
          'messages.ERROR': '错误',
          'messages.FATAL': '严重错误',
          'messages.INFO': '信息',

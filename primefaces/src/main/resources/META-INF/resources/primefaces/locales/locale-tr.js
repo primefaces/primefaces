@@ -90,6 +90,8 @@ PrimeFaces.locales['tr'] = $.extend(true, {}, PrimeFaces.locales['tr'], {
         'colorpicker.INSTRUCTION': 'Doygunluk ve parlaklık seçici. Seçmek için yukarı, aşağı, sol ve sağ ok tuşlarını kullanın.',
         'spinner.INCREASE': 'Değer artışı',
         'spinner.DECREASE': 'Değer düşüşü',
+        'switch.ON': 'Açık',
+        'switch.OFF': 'Kapalı',
         'messages.ERROR': 'Hata',
         'messages.FATAL': 'Kritik Hata',
         'messages.INFO': 'Bilgi',

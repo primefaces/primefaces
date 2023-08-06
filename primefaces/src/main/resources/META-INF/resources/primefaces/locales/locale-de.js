@@ -155,6 +155,8 @@ PrimeFaces.locales['de'] = $.extend(true, {}, PrimeFaces.locales['de'], {
         'colorpicker.INSTRUCTION': 'Sättigungs- und Helligkeitsauswahl. Verwenden Sie die Pfeiltasten oben, unten, links und rechts zur Auswahl.',
         'spinner.INCREASE': 'Wert erhöhen',
         'spinner.DECREASE': 'Wert vermindern',
+        'switch.ON': 'Ein',
+        'switch.OFF': 'Aus',
         'messages.ERROR': 'Fehler',
         'messages.FATAL': 'Schwerwiegender Fehler',
         'messages.INFO': 'Information',

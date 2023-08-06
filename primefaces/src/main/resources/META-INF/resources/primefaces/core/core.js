@@ -1617,6 +1617,8 @@
                 "colorpicker.INSTRUCTION": "Saturation and brightness selector. Use up, down, left and right arrow keys to select.",
                 "spinner.INCREASE": "Increase Value",
                 "spinner.DECREASE": "Decrease Value",
+                "switch.ON": "On",
+                "switch.OFF": "Off",
                 "messages.ERROR": "Error",
                 "messages.FATAL": "Fatal",
                 "messages.INFO": "Information",

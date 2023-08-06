@@ -181,6 +181,8 @@
          'colorpicker.INSTRUCTION': 'Selector de saturación y brillo. Utilice las teclas de flecha arriba, abajo, izquierda y derecha para seleccionar.',
          'spinner.INCREASE': 'Aumentar valor',
          'spinner.DECREASE': 'Disminuir valor',
+         'switch.ON': 'En',
+         'switch.OFF': 'Fuera',
          'messages.ERROR': 'Error',
          'messages.FATAL': 'Fatal',
          'messages.INFO': 'Información',

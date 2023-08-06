@@ -33,9 +33,6 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanButtonRenderer";
 
-    public static final String LABEL_ON = "primefaces.switch.LABEL_ON";
-    public static final String LABEL_OFF = "primefaces.switch.LABEL_OFF";
-
     public enum PropertyKeys {
 
         widgetVar,

@@ -150,6 +150,8 @@ PrimeFaces.locales['lv'] = $.extend(true, {}, PrimeFaces.locales['lv'], {
         'colorpicker.INSTRUCTION': 'Piesātinājuma un spilgtuma atlasītājs. Lai atlasītu, izmantojiet augšup, lejup, pa kreisi un pa labi vērsto bulttaustiņu.',
         'spinner.INCREASE': 'Palielināt vērtību',
         'spinner.DECREASE': 'Samazināt vērtību',
+        'switch.ON': 'Uz',
+        'switch.OFF': 'Izslēgts',
         'messages.ERROR': 'Kļūda',
         'messages.FATAL': 'Fatāla kļūda',
         'messages.INFO': 'Informācija',

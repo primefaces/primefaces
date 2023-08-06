@@ -143,6 +143,8 @@ PrimeFaces.locales['in'] = $.extend(true, {}, PrimeFaces.locales['in'], {
     aria: {
         'datatable.sort.ASC': 'Aktifkan untuk mengurutkan dari kecil ke besar',
         'datatable.sort.DESC': 'Aktifkan untuk mengurukan dari besar ke kecil',
+        'switch.ON': 'Pada',
+        'switch.OFF': 'Mati',
         'messages.ERROR': 'Error',
         'messages.FATAL': 'Fatal',
         'messages.INFO': 'Informasi',

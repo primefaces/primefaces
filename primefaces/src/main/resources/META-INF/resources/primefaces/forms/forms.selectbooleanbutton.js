@@ -6,6 +6,8 @@
  * @prop {JQuery} icon The DOM element for the icon with the button.
  * @prop {JQuery} input The DOM element for the hidden input field storing the value of this widget.
  * @prop {boolean} disabled Whether this button is disabled.
+ * @prop {string} onLabel Calculated On label value either set by user or locale.
+ * @prop {string} offLabel Calculated Off label value either set by user or locale.
  * 
  * @interface {PrimeFaces.widget.SelectBooleanButtonCfg} cfg The configuration for the {@link  SelectBooleanButton| SelectBooleanButton widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -30,6 +32,8 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
         this.input = $(this.jqId + '_input');
         this.disabled = this.input.is(':disabled');
         this.icon = this.jq.children('.ui-button-icon-left');
+        this.onLabel = this.cfg.onLabel || PrimeFaces.getAriaLabel('switch.ON');
+        this.offLabel = this.cfg.offLabel || PrimeFaces.getAriaLabel('switch.OFF');
         var $this = this;
 
         //bind events if not disabled
@@ -45,6 +49,15 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
                 $this.toggle();
                 $this.input.trigger('focus');
             });
+        }
+        
+        if (this.input.prop('checked')) {
+            this.input.attr('aria-label', this.onLabel);
+            this.jq.children('.ui-button-text').text(this.onLabel);
+        }
+        else {
+            this.input.attr('aria-label', this.offLabel);
+            this.jq.children('.ui-button-text').text(this.offLabel);
         }
 
         this.input.on('focus', function() {
@@ -87,11 +100,12 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
      * Turns this button to its on state, which corresponds to checking the underlying checkbox.
      */
     check: function() {
-        if(!this.disabled) {
+        if (!this.disabled) {
             this.input.prop('checked', true);
-            this.jq.addClass('ui-state-active').children('.ui-button-text').text(this.cfg.onLabel);
+            this.input.attr('aria-label', this.onLabel);
+            this.jq.addClass('ui-state-active').children('.ui-button-text').text(this.onLabel);
 
-            if(this.icon.length > 0) {
+            if (this.icon.length > 0) {
                 this.icon.removeClass(this.cfg.offIcon).addClass(this.cfg.onIcon);
             }
 
@@ -103,11 +117,12 @@ PrimeFaces.widget.SelectBooleanButton = PrimeFaces.widget.BaseWidget.extend({
      * Turns this button to its off state, which corresponds to unchecking the underlying checkbox.
      */
     uncheck: function() {
-        if(!this.disabled) {
+        if (!this.disabled) {
             this.input.prop('checked', false);
-            this.jq.removeClass('ui-state-active').children('.ui-button-text').text(this.cfg.offLabel);
+            this.input.attr('aria-label', this.offLabel);
+            this.jq.removeClass('ui-state-active').children('.ui-button-text').text(this.offLabel);
 
-            if(this.icon.length > 0) {
+            if (this.icon.length > 0) {
                 this.icon.removeClass(this.cfg.onIcon).addClass(this.cfg.offIcon);
             }
 
