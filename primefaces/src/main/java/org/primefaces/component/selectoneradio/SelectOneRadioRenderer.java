@@ -97,8 +97,11 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String style = radio.getStyle();
+        boolean flex = ComponentUtils.isFlex(context, radio);
+        if (flex) {
+            layout = "responsive";
+        }
         boolean lineDirection = "lineDirection".equals(layout);
-        boolean flex = !lineDirection && ComponentUtils.isFlex(context, radio);
         String styleClass = getStyleClassBuilder(context)
                 .add(lineDirection, "layout-line-direction")
                 .add(GridLayoutUtils.getResponsiveClass(flex))

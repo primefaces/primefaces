@@ -151,7 +151,7 @@
         <attribute>
             <description>Filename of the generated export file, defaults to target component id.</description>
             <name>fileName</name>
-            <required>false</required>
+            <required>true</required>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
@@ -1689,25 +1689,9 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Text to display when there is no data to display.]]>
-            </description>
-            <name>emptyMessage</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Appends the overlay to the element defined by search expression. Defaults to document body.]]>
             </description>
             <name>appendTo</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Hint text for screen readers to provide information about the search results. Default is "{0} results found, use arrow keys to navigate".]]>
-            </description>
-            <name>resultsMessage</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -1861,14 +1845,6 @@
                 <![CDATA[Position of the dropdown button in the tabbing order.]]>
             </description>
             <name>dropdownTabindex</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[ARIA Label for the dropdown button.]]>
-            </description>
-            <name>dropdownAriaLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -7726,14 +7702,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Template of the currentPageReport UI.]]>
             </description>
             <name>currentPageReportTemplate</name>
@@ -7972,14 +7940,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8351,14 +8311,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Template of the currentPageReport UI.]]>
             </description>
             <name>currentPageReportTemplate</name>
@@ -8703,7 +8655,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), add none.]]>
+                <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), and none.]]>
             </description>
             <name>rowSelectMode</name>
             <required>false</required>
@@ -9024,7 +8976,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to show the select all checkbox inside the column's header.]]>
+                <![CDATA[Whether to show the select all checkbox inside the column's header. Default is true.]]>
             </description>
             <name>showSelectAll</name>
             <required>false</required>
@@ -9141,14 +9093,6 @@
                 <![CDATA[Template of the rowsPerPage dropdown.]]>
             </description>
             <name>rowsPerPageTemplate</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -19847,7 +19791,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Displays data in a 'table' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
+                <![CDATA[Displays data in a 'tabular' layout, 'grid' layout or 'flex' layout. The grid and flex layout are responsive layouts. Default value is 'grid'.]]>
             </description>
             <name>layout</name>
             <required>false</required>
@@ -20944,70 +20888,6 @@
             <name>escape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of add button. Default is "Add".]]>
-            </description>
-            <name>addLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of add all button. Default is "Add All".]]>
-            </description>
-            <name>addAllLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of remove button. Default is "Remove".]]>
-            </description>
-            <name>removeLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of remove all button. Default is "Remove All".]]>
-            </description>
-            <name>removeAllLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move up button. Default is "Move Up".]]>
-            </description>
-            <name>moveUpLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move top button. Default is "Move Top".]]>
-            </description>
-            <name>moveTopLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move down button. Default is "Move Down".]]>
-            </description>
-            <name>moveDownLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of move bottom button. Default is "Move Down".]]>
-            </description>
-            <name>moveBottomLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
         </attribute>
         <attribute>
             <description>
@@ -22566,10 +22446,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description>
+                <![CDATA[Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".]]>
+            </description>
             <name>selectable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <description>Enables selection of time ranges by clicking and dragging on the schedule, see https://fullcalendar.io/docs/select-callback. Uses the ajax-event "rangeSelect" instead of "dateSelect".</description>
         </attribute>
         <attribute>
             <description>
@@ -30520,14 +30402,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label for rowsPerPage dropdown.]]>
-            </description>
-            <name>rowsPerPageLabel</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Template of the currentPageReport UI.]]>
             </description>
             <name>currentPageReportTemplate</name>
@@ -30956,64 +30830,6 @@
                 <![CDATA[The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.]]>
             </description>
             <name>tabindex</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-    </tag>
-    <tag>
-        <description>
-            <![CDATA[Watermark displays a hint on an input field.]]>
-        </description>
-        <tag-name>watermark</tag-name>
-        <component>
-            <component-type>org.primefaces.component.Watermark</component-type>
-            <renderer-type>org.primefaces.component.WatermarkRenderer</renderer-type>
-        </component>
-        <attribute>
-            <description>
-                <![CDATA[Unique identifier of the component in a namingContainer.]]>
-            </description>
-            <name>id</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Boolean value to specify the rendering of the component, when set to false component will not be rendered.]]>
-            </description>
-            <name>rendered</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[An el expression referring to a server side UIComponent instance in a backing bean.]]>
-            </description>
-            <name>binding</name>
-            <required>false</required>
-            <type>javax.faces.component.UIComponent</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Name of the client side widget.]]>
-            </description>
-            <name>widgetVar</name>
-            <required>false</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Text of watermark. Required.]]>
-            </description>
-            <name>value</name>
-            <required>true</required>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <description>
-                <![CDATA[Id of the component to attach the watermark.]]>
-            </description>
-            <name>for</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

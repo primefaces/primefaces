@@ -97,7 +97,7 @@ public class ImageCropperRendererTest {
         }
         catch (IllegalArgumentException e) {
             String message = e.getMessage();
-            if (!"'image' must be either an String relative path or a StreamedObject.".equals(message)) {
+            if (!"ImageCropper 'image' must be either a String relative path or a StreamedObject.".equals(message)) {
                 Assertions.fail("should thrown IllegalArgumentException with message: " + message);
             }
         }

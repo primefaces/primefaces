@@ -26,6 +26,7 @@ package org.primefaces.integrationtests.dataexporter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import javax.faces.FacesException;
@@ -38,7 +39,9 @@ import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.util.EscapeUtils;
 
-public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> {
+public class TextExporter extends DataTableExporter<PrintWriter, ExporterOptions> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public TextExporter() {
         super(null, Collections.emptySet(), false);

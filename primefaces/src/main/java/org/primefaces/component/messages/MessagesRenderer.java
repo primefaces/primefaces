@@ -32,12 +32,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class MessagesRenderer extends UINotificationRenderer {
@@ -206,87 +202,11 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Messages.CLOSE_LINK_CLASS, null);
         writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE), null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);
         writer.endElement("span");
 
         writer.endElement("a");
-    }
-
-    protected List<FacesMessage> collectFacesMessages(Messages uiMessages, FacesContext context) {
-        List<FacesMessage> messages = null;
-
-        String _for = uiMessages.getFor();
-        if (!isValueBlank(_for)) {
-            String forType = uiMessages.getForType();
-
-            // key case
-            if (forType == null || "key".equals(forType)) {
-                String[] keys = SearchExpressionFacade.split(context, _for, SearchExpressionFacade.EXPRESSION_SEPARATORS);
-                for (String key : keys) {
-                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
-                    while (messagesIterator.hasNext()) {
-                        if (messages == null) {
-                            messages = new ArrayList<>(5);
-                        }
-                        messages.add(messagesIterator.next());
-                    }
-                }
-            }
-
-            // clientId / SearchExpression case
-            if (forType == null || "expression".equals(forType)) {
-                List<UIComponent> forComponents = SearchExpressionFacade.resolveComponents(context, uiMessages, _for,
-                        SearchExpressionUtils.SET_IGNORE_NO_RESULT);
-                for (int i = 0; i < forComponents.size(); i++) {
-                    UIComponent forComponent = forComponents.get(i);
-                    String forComponentClientId = forComponent.getClientId(context);
-                    if (!_for.equals(forComponentClientId)) {
-
-                        Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
-                        while (messagesIterator.hasNext()) {
-                            FacesMessage next = messagesIterator.next();
-                            if (messages == null) {
-                                messages = new ArrayList<>(5);
-                            }
-                            if (!messages.contains(next)) {
-                                messages.add(next);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else if (uiMessages.isGlobalOnly()) {
-            Iterator<FacesMessage> messagesIterator = context.getMessages(null);
-            while (messagesIterator.hasNext()) {
-                if (messages == null) {
-                    messages = new ArrayList<>(5);
-                }
-                messages.add(messagesIterator.next());
-            }
-        }
-        else {
-            String[] ignores = uiMessages.getForIgnores() == null
-                    ? null
-                    : SearchExpressionFacade.split(context, uiMessages.getForIgnores(), SearchExpressionFacade.EXPRESSION_SEPARATORS);
-            Iterator<String> keyIterator = context.getClientIdsWithMessages();
-            while (keyIterator.hasNext()) {
-                String key = keyIterator.next();
-                if (ignores == null || !LangUtils.contains(ignores, key)) {
-                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
-                    while (messagesIterator.hasNext()) {
-                        if (messages == null) {
-                            messages = new ArrayList<>(5);
-                        }
-                        messages.add(messagesIterator.next());
-                    }
-                }
-            }
-        }
-
-        return messages;
     }
 }

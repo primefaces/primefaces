@@ -39,8 +39,10 @@
     <ui:define name="implementation">
         <div class="card">
             <h:form id="form">
-                <p:messages/>
-                <h:panelGrid columns="2" cellpadding="7">
+                <p:messages>
+                   <p:autoUpdate />
+                </p:messages>
+                <h:panelGrid columns="2" cellpadding="7" id="panel">
                     <p:outputLabel for="firstname" value="Firstname:"/>
                     <p:inputText id="firstname" value="#{requestContextView.user.firstname}" required="true"/>
 

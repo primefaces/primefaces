@@ -24,7 +24,6 @@
 package org.primefaces.component.panelgrid;
 
 import java.io.IOException;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
@@ -189,7 +188,7 @@ public class PanelGridRenderer extends CoreRenderer {
         int i = 0;
 
         for (UIComponent child : grid.getChildren()) {
-            if (child instanceof Row || child.getClass().getName().endsWith("UIRepeat")) {
+            if (child instanceof Row || ComponentUtils.isUIRepeat(child)) {
                 // #6829 count row even though its not rendered
                 // #7780 count row if a UIRepeat and assume the user knows what they are doing
                 i++;

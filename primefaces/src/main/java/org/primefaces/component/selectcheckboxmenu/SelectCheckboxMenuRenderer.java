@@ -41,10 +41,7 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.component.messages.Messages;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.*;
 
@@ -404,7 +401,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 });
 
         //toggler
-        encodeCheckbox(context, null, false, !notChecked, null, MessageFactory.getMessage(SelectCheckboxMenu.ARIA_TOGGLER_CHECKBOX_ALL));
+        encodeCheckbox(context, null, false, !notChecked, null, null);
 
         //filter
         if (menu.isFilter()) {
@@ -415,7 +412,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("class", SelectCheckboxMenu.CLOSER_CLASS, null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(Messages.ARIA_CLOSE), null);
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-circle-close", null);
@@ -441,7 +437,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "list", null);
         writer.writeAttribute(HTML.ARIA_CONTROLS, menu.getClientId(context) + "_table", null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.writeAttribute("aria-disabled", false, null);
         writer.writeAttribute("aria-multiline", false, null);
         writer.writeAttribute("aria-readonly", false, null);
@@ -684,8 +679,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
                 .attr("renderPanelContentOnClient", menu.getVar() == null,  false)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null);
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, menu, menu.getAppendTo()));
 
         if (menu.isFilter()) {
             wb.attr("filter", true)

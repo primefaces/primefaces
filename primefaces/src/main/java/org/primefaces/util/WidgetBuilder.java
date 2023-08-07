@@ -80,9 +80,10 @@ public class WidgetBuilder {
     }
 
     /**
-     * Use {@link WidgetBuilder#init(String, UIComponent)} instead
+     * @deprecated Use {@link WidgetBuilder#init(String, UIComponent)} instead
      */
-    private WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
+    @Deprecated
+    public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
 
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async

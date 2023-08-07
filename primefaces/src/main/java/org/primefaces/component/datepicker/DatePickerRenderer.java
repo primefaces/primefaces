@@ -41,7 +41,6 @@ import javax.faces.convert.ConverterException;
 import org.json.JSONObject;
 import org.primefaces.component.api.UICalendar;
 import org.primefaces.component.calendar.BaseCalendarRenderer;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.datepicker.DateMetadata;
 import org.primefaces.model.datepicker.DateMetadataModel;
@@ -208,8 +207,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
             .attr("responsiveBreakpoint", datePicker.getResponsiveBreakpoint(), DatePicker.RESPONSIVE_BREAKPOINT_SMALL)
             .attr("touchUI", datePicker.isTouchUI(), false)
             .attr("showWeek", datePicker.isShowWeek(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, datePicker, datePicker.getAppendTo(),
-                            SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+            .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, datePicker, datePicker.getAppendTo()))
             .attr("icon", datePicker.getTriggerButtonIcon(), null)
             .attr("rangeSeparator", datePicker.getRangeSeparator(), "-")
             .attr("timeSeparator", datePicker.getTimeSeparator(), ":")

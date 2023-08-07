@@ -115,8 +115,9 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, TreeTable table, UIColumn column,
-                                               int rowIndex, AtomicInteger colIndex, String text, int i) {
+                                               AtomicInteger colIndex, String text) {
         Sheet sheet = sheet();
+        int rowIndex = sheet.getLastRowNum();
 
         // by default column has 1 rowspan && colspan
         int rowSpan = (column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan()) - 1;

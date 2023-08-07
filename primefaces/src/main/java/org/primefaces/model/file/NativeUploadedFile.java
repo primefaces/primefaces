@@ -23,179 +23,46 @@
  */
 package org.primefaces.model.file;
 
-import java.io.*;
-import java.net.URLDecoder;
-import javax.faces.FacesException;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import javax.servlet.http.Part;
 
-import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.shaded.owasp.SafeFile;
-import org.primefaces.util.FileUploadUtils;
-
-public class NativeUploadedFile implements UploadedFile, Serializable {
+public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-    private static final String CONTENT_DISPOSITION_FILENAME_ATTR = "filename";
-
-    private transient Part part;
-    private String filename;
-    private byte[] cachedContent;
-    private Long sizeLimit;
 
     public NativeUploadedFile() {
+        // NOOP
     }
 
-    public NativeUploadedFile(Part part, Long sizeLimit) {
-        this.part = part;
-        this.sizeLimit = sizeLimit;
-        this.filename = resolveFilename(part);
-    }
-
-    @Override
-    public String getFileName() {
-        return filename;
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return sizeLimit == null
-                ? part.getInputStream()
-                : new BoundedInputStream(part.getInputStream(), sizeLimit);
+    public NativeUploadedFile(Part source, Long sizeLimit, String webKitRelativePath) {
+        super(source, source.getSubmittedFileName(), sizeLimit, webKitRelativePath);
     }
 
     @Override
     public long getSize() {
-        return part.getSize();
-    }
-
-    @Override
-    public byte[] getContent() {
-        if (cachedContent != null) {
-            return cachedContent;
-        }
-
-        try (InputStream input = getInputStream()) {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-
-            int n = 0;
-            while (-1 != (n = input.read(buffer))) {
-                output.write(buffer, 0, n);
-            }
-            cachedContent = output.toByteArray();
-        }
-        catch (IOException ex) {
-            cachedContent = null;
-            throw new FacesException(ex);
-        }
-        return cachedContent;
+        return getSource().getSize();
     }
 
     @Override
     public String getContentType() {
-        return part.getContentType();
-    }
-
-    @Override
-    public void write(String filePath) throws Exception {
-        SafeFile file = new SafeFile(filePath);
-        String validFilePath = FileUploadUtils.getValidFilePath(file.getCanonicalPath());
-        part.write(new SafeFile(validFilePath, filename).getCanonicalPath());
+        return getSource().getContentType();
     }
 
     @Override
     public void delete() throws IOException {
-        part.delete();
+        getSource().delete();
     }
 
-    public Part getPart() {
-        return part;
+    @Override
+    protected InputStream getSourceInputStream() throws IOException {
+        return getSource().getInputStream();
     }
 
-    private String resolveFilename(Part part) {
-        if (part == null) {
-            return null;
-        }
-
-        String contentDisposition = part.getHeader("content-disposition");
-        if (contentDisposition == null) {
-            return null;
-        }
-
-        return FileUploadUtils.getValidFilename(getContentDispositionFileName(contentDisposition));
-    }
-
-    protected String getContentDispositionFileName(final String line) {
-        // skip to 'filename'
-        int i = line.indexOf(CONTENT_DISPOSITION_FILENAME_ATTR);
-        if (i == -1) {
-            return null; // does not contain 'filename'
-        }
-
-        // skip past 'filename'
-        i += CONTENT_DISPOSITION_FILENAME_ATTR.length();
-
-        final int lineLength = line.length();
-
-        // skip whitespace
-        while (i < lineLength && Character.isWhitespace(line.charAt(i))) {
-            i++;
-        }
-
-        // expect '='
-        if (i == lineLength || line.charAt(i++) != '=') {
-            throw new FacesException("Content-Disposition filename property did not have '='.");
-        }
-
-        // skip whitespace again
-        while (i < lineLength && Character.isWhitespace(line.charAt(i))) {
-            i++;
-        }
-
-        // expect '"'
-        if (i == lineLength || line.charAt(i++) != '"') {
-            throw new FacesException("Content-Disposition filename property was not quoted.");
-        }
-
-        // buffer to hold the file name
-        final StringBuilder b = new StringBuilder();
-
-        for (; i < lineLength; i++) {
-            final char c = line.charAt(i);
-
-            if (c == '"') {
-                return decode(b.toString());
-            }
-
-            // only unescape double quote, leave all others as-is, but still skip 2 characters
-            if (c == '\\' && i + 2 != lineLength) {
-                char next = line.charAt(++i);
-                if (next == '"') {
-                    b.append('"');
-                }
-                else {
-                    b.append(c);
-                    b.append(next);
-                }
-            }
-            else {
-                b.append(c);
-            }
-        }
-
-        return decode(b.toString());
-    }
-
-    private String decode(String encoded) {
-        try {
-            // GitHub #3916 escape + and % before decode
-            encoded = encoded.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
-            encoded = encoded.replace("+", "%2B");
-            return URLDecoder.decode(encoded, "UTF-8");
-        }
-        catch (UnsupportedEncodingException ex) {
-            throw new FacesException(ex);
-        }
+    @Override
+    protected void write(File file) throws IOException {
+        getSource().write(file.getCanonicalPath());
     }
 }

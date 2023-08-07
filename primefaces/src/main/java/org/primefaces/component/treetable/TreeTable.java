@@ -33,7 +33,6 @@ import javax.faces.event.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.column.Column;
 import org.primefaces.component.treetable.feature.FilterFeature;
 import org.primefaces.component.treetable.feature.TreeTableFeatures;
 import org.primefaces.event.*;
@@ -286,21 +285,6 @@ public class TreeTable extends TreeTableBase {
                 super.queueEvent(wrappedEvent);
             }
         }
-    }
-
-    public boolean hasFooterColumn() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof Column && child.isRendered()) {
-                Column column = (Column) child;
-
-                if (column.getFacet("footer") != null || column.getFooterText() != null) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     private boolean isToggleRequest(FacesContext context) {

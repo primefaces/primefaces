@@ -162,6 +162,10 @@
     vertical-align: middle;
 }
 
+.ui-selectoneradio.ui-grid-responsive label {
+  display: inline;
+}
+
 .ui-selectmanycheckbox.ui-widget td,
 .ui-selectoneradio.ui-widget td {
     border: 0 none;

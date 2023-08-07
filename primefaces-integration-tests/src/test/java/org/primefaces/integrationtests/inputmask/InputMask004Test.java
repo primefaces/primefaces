@@ -66,13 +66,13 @@ public class InputMask004Test extends AbstractInputMaskTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("12__", inputMask.getValue());
         Assertions.assertEquals("12", inputMask.getWidgetValueUnmasked());
+        Assertions.assertEquals("12__", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     @DisplayName("InputMask: GitHub #6469 Optional test with server side validation.")
     public void testOptionalAreaCode3(final Page page) {
         // Arrange
@@ -84,8 +84,8 @@ public class InputMask004Test extends AbstractInputMaskTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("123_", inputMask.getValue());
         Assertions.assertEquals("123", inputMask.getWidgetValueUnmasked());
+        Assertions.assertEquals("123_", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
@@ -111,7 +111,7 @@ public class InputMask004Test extends AbstractInputMaskTest {
         assertNoJavascriptErrors();
         System.out.println("InputMask Config = " + cfg);
         Assertions.assertEquals(mask, cfg.getString("mask"));
-        Assertions.assertFalse(cfg.has(AbstractInputMaskTest.AUTO_CLEAR));
+        Assertions.assertFalse(cfg.getBoolean(AbstractInputMaskTest.AUTO_CLEAR));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -549,47 +549,83 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         //visuals
         PrimeFaces.skinButton(this.jq.find('.ui-button'));
-
+        
         //events
-        $(this.jqId + ' .ui-picklist-button-add').on("click", function() {
+        var moveToTarget = $(this.jqId + ' .ui-picklist-button-add');
+        var moveToTargetAria = PrimeFaces.getAriaLabel('moveToTarget');
+        moveToTarget.attr('title', moveToTargetAria).find('.ui-button-text').text(moveToTargetAria);
+        moveToTarget.on("click", function() {
             $this.add();
         });
-        $(this.jqId + ' .ui-picklist-button-add-all').on("click", function() {
+
+        var moveAllToTarget = $(this.jqId + ' .ui-picklist-button-add-all');
+        var moveAllToTargetAria = PrimeFaces.getAriaLabel('moveAllToTarget');
+        moveAllToTarget.attr('title', moveAllToTargetAria).find('.ui-button-text').text(moveAllToTargetAria);
+        moveAllToTarget.on("click", function() {
             $this.addAll();
         });
-        $(this.jqId + ' .ui-picklist-button-remove').on("click", function() {
+
+        var moveToSource = $(this.jqId + ' .ui-picklist-button-remove');
+        var moveToSourceAria = PrimeFaces.getAriaLabel('moveToSource');
+        moveToSource.attr('title', moveToSourceAria).find('.ui-button-text').text(moveToSourceAria);
+        moveToSource.on("click", function() {
             $this.remove();
         });
-        $(this.jqId + ' .ui-picklist-button-remove-all').on("click", function() {
+        
+        var moveAllToSource = $(this.jqId + ' .ui-picklist-button-remove-all');
+        var moveAllToSourceAria = PrimeFaces.getAriaLabel('moveAllToSource');
+        moveAllToSource.attr('title', moveAllToSourceAria).find('.ui-button-text').text(moveAllToSourceAria);
+        moveAllToSource.on("click", function() {
             $this.removeAll();
         });
+        
+        var moveUpAria = PrimeFaces.getAriaLabel('moveUp');
+        var moveDownAria = PrimeFaces.getAriaLabel('moveDown');
+        var moveTopAria = PrimeFaces.getAriaLabel('moveTop');
+        var moveBottomAria = PrimeFaces.getAriaLabel('moveBottom');
 
         if(this.cfg.showSourceControls) {
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up').on("click", function() {
+            var moveUpSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-up');
+            moveUpSource.attr('title', moveUpAria).find('.ui-button-text').text(moveUpAria);
+            moveUpSource.on("click", function() {
                 $this.moveUp($this.sourceList);
             });
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top').on("click", function() {
+            var moveTopSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-top');
+            moveTopSource.attr('title', moveTopAria).find('.ui-button-text').text(moveTopAria);
+            moveTopSource.on("click", function() {
                 $this.moveTop($this.sourceList);
             });
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down').on("click", function() {
+            var moveDownSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-down');
+            moveDownSource.attr('title', moveDownAria).find('.ui-button-text').text(moveDownAria);
+            moveDownSource.on("click", function() {
                 $this.moveDown($this.sourceList);
             });
-            $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom').on("click", function() {
+            var moveBottomSource = $(this.jqId + ' .ui-picklist-source-controls .ui-picklist-button-move-bottom');
+            moveBottomSource.attr('title', moveBottomAria).find('.ui-button-text').text(moveBottomAria);
+            moveBottomSource.on("click", function() {
                 $this.moveBottom($this.sourceList);
             });
         }
 
         if(this.cfg.showTargetControls) {
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up').on("click", function() {
+            var moveUpTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-up');
+            moveUpTarget.attr('title', moveUpAria).find('.ui-button-text').text(moveUpAria);
+            moveUpTarget.on("click", function() {
                 $this.moveUp($this.targetList);
             });
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top').on("click", function() {
+            var moveTopTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-top');
+            moveTopTarget.attr('title', moveTopAria).find('.ui-button-text').text(moveTopAria);
+            moveTopTarget.on("click", function() {
                 $this.moveTop($this.targetList);
             });
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down').on("click", function() {
+            var moveDownTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-down');
+            moveDownTarget.attr('title', moveDownAria).find('.ui-button-text').text(moveDownAria);
+            moveDownTarget.on("click", function() {
                 $this.moveDown($this.targetList);
             });
-            $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').on("click", function() {
+            var moveBottomTarget = $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom');
+            moveBottomTarget.attr('title', moveBottomAria).find('.ui-button-text').text(moveBottomAria);
+            moveBottomTarget.on("click", function() {
                 $this.moveBottom($this.targetList);
             });
         }

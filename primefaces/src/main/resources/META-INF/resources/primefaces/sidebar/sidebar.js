@@ -225,6 +225,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.showCloseIcon) {
             this.closeIcon.attr('role', 'button');
+            this.closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
         }
     },
 

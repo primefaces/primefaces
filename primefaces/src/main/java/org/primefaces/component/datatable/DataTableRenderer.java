@@ -774,25 +774,11 @@ public class DataTableRenderer extends DataRenderer {
         String filterId = column.getContainerClientId(context) + separator + "filter";
         Object filterValue = findFilterValueForColumn(context, table, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
-
-        //aria
-        String ariaLabelId = filterId + "_label";
-        String ariaHeaderLabel = getHeaderLabel(context, column);
-
-        String ariaMessage = MessageFactory.getMessage(DataTable.ARIA_FILTER_BY, ariaHeaderLabel);
-
-        writer.startElement("label", null);
-        writer.writeAttribute("id", ariaLabelId, null);
-        writer.writeAttribute("for", filterId, null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
-        writer.writeText(ariaMessage, null);
-        writer.endElement("label");
-
-        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue, ariaLabelId);
+        encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,
-        String filterId, String filterStyleClass, Object filterValue, String ariaLabelId) throws IOException {
+        String filterId, String filterStyleClass, Object filterValue) throws IOException {
 
         filterStyleClass = filterStyleClass == null
                            ? DataTable.COLUMN_INPUT_FILTER_CLASS
@@ -804,7 +790,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", filterStyleClass, null);
         writer.writeAttribute("value", filterValue, null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
 
         if (disableTabbing) {
             writer.writeAttribute("tabindex", "-1", null);
@@ -1065,13 +1050,13 @@ public class DataTableRenderer extends DataRenderer {
 
     protected void encodeRows(FacesContext context, DataTable table, int first, int last, int columnStart, int columnEnd) throws IOException {
         String clientId = table.getClientId(context);
-        SummaryRow summaryRow = table.getSummaryRow();
+        List<SummaryRow> summaryRows = table.getSummaryRows();
         HeaderRow headerRow = table.getHeaderRow();
         ELContext elContext = context.getELContext();
 
         SortMeta sort = table.getHighestPriorityActiveSortMeta();
         boolean encodeHeaderRow = headerRow != null && headerRow.isEnabled() && sort != null;
-        boolean encodeSummaryRow = (summaryRow != null && sort != null);
+        boolean encodeSummaryRow = (!summaryRows.isEmpty() && sort != null);
 
         for (int i = first; i < last; i++) {
             table.resetDynamicColumns();
@@ -1093,7 +1078,7 @@ public class DataTableRenderer extends DataRenderer {
 
             if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
                 table.setRowIndex(i);
-                encodeSummaryRow(context, summaryRow, sort);
+                encodeSummaryRow(context, summaryRows, sort);
             }
         }
     }
@@ -1118,13 +1103,16 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("tbody");
     }
 
-    protected void encodeSummaryRow(FacesContext context, SummaryRow summaryRow, SortMeta sort) throws IOException {
-        MethodExpression me = summaryRow.getListener();
-        if (me != null) {
-            me.invoke(context.getELContext(), new Object[]{sort.getSortBy()});
-        }
+    protected void encodeSummaryRow(FacesContext context, List<SummaryRow> summaryRows, SortMeta sort) throws IOException {
+        for (int i = 0; i < summaryRows.size(); i++) {
+            SummaryRow summaryRow = summaryRows.get(i);
+            MethodExpression me = summaryRow.getListener();
+            if (me != null) {
+                me.invoke(context.getELContext(), new Object[]{sort.getSortBy()});
+            }
 
-        summaryRow.encodeAll(context);
+            summaryRow.encodeAll(context);
+        }
     }
 
     protected void encodeHeaderRow(FacesContext context, DataTable table, HeaderRow headerRow) throws IOException {
@@ -1483,7 +1471,6 @@ public class DataTableRenderer extends DataRenderer {
 
             if (isHeaderCheckbox) {
                 rowKey = "head";
-                ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
             }
             else {
                 rowKey = table.getRowKey();
@@ -1521,10 +1508,6 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String ariaRowLabel = table.getAriaRowLabel();
-        if (isHeaderCheckbox) {
-            ariaRowLabel = MessageFactory.getMessage(DataTable.ARIA_HEADER_CHECKBOX_ALL);
-        }
-
         writer.startElement("input", null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("name", table.getClientId(context) + "_checkbox", null);

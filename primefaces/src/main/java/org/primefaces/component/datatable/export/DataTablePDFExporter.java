@@ -26,6 +26,7 @@ package org.primefaces.component.datatable.export;
 import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 
 import com.lowagie.text.Font;
@@ -39,9 +40,12 @@ import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.PDFOptions;
 import org.primefaces.component.export.PDFOrientationType;
 import org.primefaces.util.Constants;
+import org.primefaces.util.IOUtils;
 import org.primefaces.util.LangUtils;
 
 public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions> {
+
+    private static final Logger LOGGER = Logger.getLogger(DataTablePDFExporter.class.getName());
 
     private Font cellFont;
     private Font facetFont;
@@ -65,6 +69,7 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
             PdfWriter.getInstance(document, os());
         }
         catch (DocumentException e) {
+            IOUtils.closeQuietly(document, e1 -> LOGGER.warning(e1.getMessage()));
             throw new IOException(e);
         }
 
@@ -117,15 +122,10 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, UIColumn column,
-                                               int rowIndex, AtomicInteger colIndex, String text, int i) {
+                                               AtomicInteger colIndex, String text) {
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
         addFacetValue(rowSpan, colSpan, text);
-
-        int total = getExportableColumns(table).size();
-        if (i == total) {
-            pdfTable.completeRow();
-        }
     }
 
     @Override

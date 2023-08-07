@@ -29,7 +29,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -49,7 +49,7 @@ public class KeyFilterRenderer extends CoreRenderer {
             target = component.getParent();
         }
         else {
-            target = SearchExpressionFacade.resolveComponent(context, keyFilter, keyFilter.getFor());
+            target = SearchExpressionUtils.contextlessResolveComponent(context, keyFilter, keyFilter.getFor());
         }
 
         String targetClientId = target instanceof InputHolder ? ((InputHolder) target).getInputClientId() : target.getClientId();

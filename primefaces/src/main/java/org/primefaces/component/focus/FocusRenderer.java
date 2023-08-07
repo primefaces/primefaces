@@ -33,7 +33,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
 
@@ -73,7 +73,7 @@ public class FocusRenderer extends CoreRenderer {
 
     protected void encodeExplicitFocus(FacesContext context, Focus focus) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent forComponent = SearchExpressionFacade.resolveComponent(
+        UIComponent forComponent = SearchExpressionUtils.contextlessResolveComponent(
                 context, focus, focus.getFor());
 
         String clientId = forComponent.getClientId(context);
@@ -93,7 +93,7 @@ public class FocusRenderer extends CoreRenderer {
             writer.write("PrimeFaces.focus('" + invalidClientId + "');");
         }
         else if (focus.getContext() != null) {
-            UIComponent focusContext = SearchExpressionFacade.resolveComponent(
+            UIComponent focusContext = SearchExpressionUtils.contextlessResolveComponent(
                     context, focus, focus.getContext());
 
             writer.write("PrimeFaces.focus(null, '" + focusContext.getClientId(context) + "');");

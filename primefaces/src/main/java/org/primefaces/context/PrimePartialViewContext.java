@@ -23,8 +23,6 @@
  */
 package org.primefaces.context;
 
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
@@ -32,36 +30,19 @@ import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspPartialResponseWriter;
-import org.primefaces.expression.SearchExpressionConstants;
 
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.visit.ResetInputContextCallback;
-import org.primefaces.visit.ResetInputVisitCallback;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
-    private PartialViewContext wrapped;
     private PartialResponseWriter writer;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContext(PartialViewContext wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    @Override
-    public PartialViewContext getWrapped() {
-        return this.wrapped;
+        super(wrapped);
     }
 
     @Override
     public void processPartial(PhaseId phaseId) {
-        if (phaseId == PhaseId.RENDER_RESPONSE) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            resetValues(context);
-        }
-
         getWrapped().processPartial(phaseId);
     }
 
@@ -98,46 +79,5 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         return getWrapped().isPartialRequest()
                 || FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey(
                         Constants.RequestParams.PARTIAL_PROCESS_PARAM);
-    }
-
-    /**
-     * Visit the current renderIds and, if the component is
-     * an instance of {@link EditableValueHolder},
-     * call its {@link EditableValueHolder#resetValue} method.
-     * Use {@link javax.faces.component.UIComponent#visitTree} to do the visiting.</p>
-     *
-     * @param context The current {@link FacesContext}.
-     */
-    private void resetValues(FacesContext context) {
-        Object resetValuesObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.RESET_VALUES_PARAM);
-        boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject));
-
-        if (resetValues) {
-            VisitContext visitContext = null;
-            ResetInputContextCallback contextCallback = null;
-
-            for (String renderId : context.getPartialViewContext().getRenderIds()) {
-                if (LangUtils.isBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
-                    continue;
-                }
-
-                // lazy init
-                if (visitContext == null) {
-                    visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-                }
-
-                if (renderId.equals(SearchExpressionConstants.ALL_KEYWORD)) {
-                    context.getViewRoot().visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-                }
-                else {
-                    // lazy init
-                    if (contextCallback == null) {
-                        contextCallback = new ResetInputContextCallback(visitContext);
-                    }
-
-                    context.getViewRoot().invokeOnComponent(context, renderId, contextCallback);
-                }
-            }
-        }
     }
 }

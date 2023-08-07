@@ -575,12 +575,13 @@ if (!PrimeFaces.ajax) {
                     sourceId = $(cfg.source).attr('id');
                 }
 
+                var $source = $(PrimeFaces.escapeClientId(sourceId));
+
                 if(cfg.formId) {
                     //Explicit form is defined
-                    form = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.formId);
+                    form = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.formId);
                 }
                 else {
-                    var $source = $(PrimeFaces.escapeClientId(sourceId));
                     //look for a parent of source
                     form = $source.closest('form');
 
@@ -630,7 +631,7 @@ if (!PrimeFaces.ajax) {
                 }
 
                 //process
-                var processArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
+                var processArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'process');
                 if(cfg.fragmentProcess) {
                     processArray.push(cfg.fragmentProcess);
                 }
@@ -642,7 +643,7 @@ if (!PrimeFaces.ajax) {
                 }
                 // fallback to @all if no process was defined by the user
                 else {
-                    var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'process');
+                    var definedProcess = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'process');
                     if (definedProcess === undefined || definedProcess.length === 0) {
                         processIds = '@all';
                     }
@@ -652,7 +653,7 @@ if (!PrimeFaces.ajax) {
                 }
 
                 //update
-                var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'update');
+                var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall($source, cfg, 'update');
                 if(cfg.fragmentUpdate) {
                     updateArray.push(cfg.fragmentUpdate);
                 }
@@ -950,13 +951,15 @@ if (!PrimeFaces.ajax) {
              * Given an AJAX call configuration, resolves the components for the `process` or `update` search
              * expressions given by the configurations. Resolves the search expressions to the actual components and
              * returns a list of their IDs.
+             *
+             * @param {JQuery} source the source element.
              * @param {Partial<PrimeFaces.ajax.Configuration>} cfg An AJAX call configuration.
              * @param {"process" | "update"} type Whether to resolve the `process` or `update` expressions.
              * @return {string[]} A list of IDs with the components to which the process or update expressions refer.
              */
-            resolveComponentsForAjaxCall: function(cfg, type) {
+            resolveComponentsForAjaxCall: function(source, cfg, type) {
                 var expressions = PrimeFaces.ajax.Request.resolveExpressionsForAjaxCall(cfg, type);
-                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(expressions);
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(source, expressions);
             },
 
             /**

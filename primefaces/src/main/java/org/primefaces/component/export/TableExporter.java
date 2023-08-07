@@ -58,7 +58,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     protected ExportConfiguration exportConfiguration;
 
     // Because more than 1 table can be exported we cache each one for performance
-    private final Map<UITable, List<UIColumn>> exportableColumns = new HashMap<>();
+    private final Map<T, List<UIColumn>> exportableColumns = new HashMap<>();
 
     private final O defaultOptions;
 
@@ -111,9 +111,10 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
 
             ExportVisitCallback exportCallback = new ExportVisitCallback(tables);
             exportCallback.export(context);
+
+            postExport(context);
         }
         finally {
-            postExport(context);
             if (document instanceof AutoCloseable) {
                 IOUtils.closeQuietly((AutoCloseable) document, e -> LOGGER.log(Level.SEVERE, e.getMessage(), e));
             }
@@ -189,23 +190,19 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         }
 
         int total = getExportableColumns(table).size();
-        AtomicInteger rowIndex = new AtomicInteger();
         table.forEachColumnGroupRow(context, cg, true, row -> {
             final AtomicInteger colIndex = new AtomicInteger(0);
-            rowIndex.getAndIncrement();
 
-            AtomicInteger i = new AtomicInteger(0);
             table.forEachColumn(context, row, true, true, false, column -> {
-                if (column.isRendered() && column.isExportable()) {
+                if (column.isExportable()) {
                     String text = ExporterUtils.getColumnFacetValue(context, column, columnType);
 
                     proxifyWithRowExport(context,
                             table,
-                            i.get(),
+                            colIndex.get(),
                             total,
-                            () -> exportColumnGroupFacetValue(context, table, column, rowIndex.get(), colIndex, text, i.get()));
+                            () -> exportColumnGroupFacetValue(context, table, column, colIndex, text));
 
-                    i.getAndIncrement();
                     colIndex.incrementAndGet();
                 }
                 return true;
@@ -233,7 +230,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         }
     }
 
-    protected void exportColumnGroupFacetValue(FacesContext context, T table, UIColumn column, int rowIndex, AtomicInteger colIndex, String text, int i) {
+    protected void exportColumnGroupFacetValue(FacesContext context, T table, UIColumn column, AtomicInteger colIndex, String text) {
         if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportColumnGroupFacetValue() must be implemented");
         }
@@ -341,7 +338,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
      * @param table the Table with columns to export
      * @return the List<UIColumn> that are exportable
      */
-    protected List<UIColumn> getExportableColumns(UITable table) {
+    protected List<UIColumn> getExportableColumns(T table) {
         if (exportableColumns.containsKey(table)) {
             return exportableColumns.get(table);
         }

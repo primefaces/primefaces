@@ -252,7 +252,7 @@ public class PrimeApplicationContext {
     private void resolveFileUploadDecoder() {
         String uploader = config.getUploader();
         if ("auto".equals(uploader)) {
-            uploader = environment.isAtLeastJsf22() ? "native" : "commons";
+            uploader = "native"; // default since JSF 2.2+
         }
 
         String finalUploader = uploader;

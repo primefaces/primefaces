@@ -41,6 +41,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
@@ -201,12 +202,12 @@ public class ImageCropperRenderer extends CoreRenderer {
                 h = outputImage.getHeight() - y;
             }
 
+            String originalFileName = stream.getName();
             BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
             ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
-            String format = guessImageFormat(stream.getContentType(), stream.getName());
+            String format = guessImageFormat(stream.getContentType(), originalFileName);
             ImageIO.write(cropped, format, croppedOutImage);
-
-            return new CroppedImage(cropper.getImage().toString(), croppedOutImage.toByteArray(), x, y, w, h);
+            return new CroppedImage(originalFileName, croppedOutImage.toByteArray(), x, y, w, h);
         }
         catch (IOException e) {
             throw new ConverterException(e);
@@ -248,6 +249,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         InputStream inputStream = null;
         String contentType = null;
         String imagePath = null;
+        String originalFileName = null;
 
         // try to evaluate as Resource object, otherwise we would need to handle the Resource#resourcePath which would be more awkward
         ValueExpression imageVE = cropper.getValueExpression(ImageCropperBase.PropertyKeys.image.toString());
@@ -255,11 +257,13 @@ public class ImageCropperRenderer extends CoreRenderer {
         if (resource != null) {
             inputStream = resource.getInputStream();
             contentType = resource.getContentType();
+            originalFileName = resource.getResourceName();
         }
         else {
             Object imageObject = cropper.getImage();
             if (imageObject instanceof String) {
                 imagePath = (String) imageObject;
+                originalFileName = imagePath;
 
                 boolean isExternal = imagePath.startsWith("http");
 
@@ -289,9 +293,10 @@ public class ImageCropperRenderer extends CoreRenderer {
                 StreamedContent streamedContentTmp = (StreamedContent) imageObject;
                 inputStream = streamedContentTmp.getStream().get();
                 contentType = streamedContentTmp.getContentType();
+                originalFileName = streamedContentTmp.getName();
             }
             else {
-                throw new IllegalArgumentException("'image' must be either an String relative path or a StreamedObject.");
+                throw new IllegalArgumentException("ImageCropper 'image' must be either a String relative path or a StreamedObject.");
             }
         }
 
@@ -300,9 +305,16 @@ public class ImageCropperRenderer extends CoreRenderer {
             inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
         }
 
+        originalFileName = FilenameUtils.getName(originalFileName);
+        if (LangUtils.isBlank(originalFileName)) {
+            // most likely stream.getName was not set by user
+            String format = guessImageFormat(contentType, Constants.EMPTY_STRING);
+            originalFileName = "unknown." + format;
+        }
+
         InputStream finalInputStream = inputStream;
         return DefaultStreamedContent.builder()
-                .name(imagePath)
+                .name(originalFileName)
                 .stream(() -> finalInputStream)
                 .contentType(contentType)
                 .build();

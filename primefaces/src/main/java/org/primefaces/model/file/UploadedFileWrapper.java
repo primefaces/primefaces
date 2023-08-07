@@ -85,6 +85,12 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
         return getWrapped().getFileName();
     }
 
+
+    @Override
+    public String getWebkitRelativePath() {
+        return getWrapped().getWebkitRelativePath();
+    }
+
     @Override
     public InputStream getInputStream() throws IOException {
         return getWrapped().getInputStream();

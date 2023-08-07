@@ -25,7 +25,10 @@ package org.primefaces.showcase.view.input;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
 @Named
@@ -60,8 +63,13 @@ public class SelectBooleanView {
         this.value3 = value3;
     }
 
-    public void addMessage() {
-        String summary = value2 ? "Checked" : "Unchecked";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+    public void addMessage(AjaxBehaviorEvent event) {
+        UIComponent component = event.getComponent();
+        if (component instanceof UIInput) {
+            UIInput inputComponent = (UIInput) component;
+            Boolean value = (Boolean) inputComponent.getValue();
+            String summary = value ? "Checked" : "Unchecked";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+        }
     }
 }

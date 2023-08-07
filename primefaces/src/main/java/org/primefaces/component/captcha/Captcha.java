@@ -30,7 +30,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.logging.Logger;
 
+import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
@@ -52,6 +54,8 @@ public class Captcha extends CaptchaBase {
     public static final String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
     public static final String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
     public static final String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
+
+    private static final Logger LOGGER = Logger.getLogger(Captcha.class.getName());
 
     @Override
     protected void validateValue(FacesContext context, Object value) {
@@ -121,11 +125,18 @@ public class Captcha extends CaptchaBase {
     }
 
     private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
-        String privateKey = context.getApplication().evaluateExpressionGet(context,
-                context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
+        String privateKey = context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY);
+        try {
+            if (privateKey != null) {
+                privateKey = context.getApplication().evaluateExpressionGet(context, privateKey, String.class);
+            }
+        }
+        catch (ELException e) {
+            LOGGER.fine(() -> "Error processing context parameter " + Captcha.PRIVATE_KEY + " as EL-expression: " + e.getMessage());
+        }
 
         if (privateKey == null) {
-            throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");
+            throw new FacesException("Cannot find private key for catpcha, use " + Captcha.PRIVATE_KEY + " context-param to define one");
         }
 
         StringBuilder postParams = new StringBuilder();

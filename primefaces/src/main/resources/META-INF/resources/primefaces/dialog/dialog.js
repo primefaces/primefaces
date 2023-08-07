@@ -46,6 +46,7 @@
  * @prop {PrimeFaces.widget.Dialog.ClientState} [state] The client-side state of the dialog such as its width
  * and height. The client-side state can be preserved during AJAX updates by sending it to the server.
  * @prop {JQuery} titlebar DOM element of the title bar container of this dialog.
+ * @prop {HTMLElement} focusedElementBeforeDialogOpened Element that was focused before the dialog was opened.
  * 
  * @interface {PrimeFaces.widget.DialogCfg} cfg The configuration for the {@link  Dialog| Dialog widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -119,6 +120,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.cache = this.cfg.cache === false ? false : true;
         this.cfg.responsive = this.cfg.responsive === false ? false : true;
         this.parent = this.jq.parent();
+        this.focusedElementBeforeDialogOpened = null;
 
         this.initSize();
         
@@ -237,6 +239,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.isVisible()) {
             return;
         }
+        
+        // Remember the focused element before we opened the dialog
+        // so we can return focus to it once we close the dialog.
+        this.focusedElementBeforeDialogOpened = document.activeElement;
 
         if(!this.loaded && this.cfg.dynamic) {
             this.loadContents();
@@ -361,10 +367,21 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     applyFocus: function() {
-        if(this.cfg.focus)
-        	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).trigger('focus');
+        if (this.cfg.focus)
+            PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.focus).trigger('focus');
         else
             PrimeFaces.focus(null, this.id);
+    },
+    
+    /**
+     * Puts focus on the element that opened this dialog.
+     * @protected
+     */
+    returnFocus: function() {
+        var el = this.focusedElementBeforeDialogOpened;
+        if (el) {
+            el.focus();
+        }
     },
 
     /**
@@ -391,6 +408,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $(this).removeClass('ui-state-focus');
         });
 
+        this.closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
         this.closeIcon.on('click', function(e) {
             $this.hide();
             e.preventDefault();
@@ -587,6 +605,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
+        
+        // return focus to where it was before we opened the dialog
+        this.returnFocus();
     },
 
     /**

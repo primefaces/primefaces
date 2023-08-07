@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.el.PropertyNotFoundException;
+import javax.el.ValueExpression;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.*;
 import javax.faces.component.behavior.ClientBehavior;
@@ -123,9 +124,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            Jsf22Helper.renderPassThroughAttributes(context, component);
-        }
+        renderPassThroughAttributes(context, component);
     }
 
     protected void renderDomEvents(FacesContext context, UIComponent component, List<String> eventAttrs) throws IOException {
@@ -234,9 +233,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            Jsf22Helper.renderPassThroughAttributes(context, component);
-        }
+        renderPassThroughAttributes(context, component);
     }
 
     protected void renderAttribute(FacesContext context, UIComponent component, String attribute, Object value)
@@ -895,6 +892,35 @@ public abstract class CoreRenderer extends Renderer {
     protected void logDevelopmentWarning(FacesContext context, String message) {
         if (LOGGER.isLoggable(Level.WARNING) && context.isProjectStage(ProjectStage.Development)) {
             LOGGER.log(Level.WARNING, message);
+        }
+    }
+
+    private void renderPassThroughAttributes(FacesContext context, UIComponent component) throws IOException {
+        Map<String, Object> passthroughAttributes = component.getPassThroughAttributes(false);
+
+        if (passthroughAttributes != null && !passthroughAttributes.isEmpty()) {
+            ResponseWriter writer = context.getResponseWriter();
+
+            for (Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
+                Object attributeValue = attribute.getValue();
+                if (attributeValue != null) {
+                    String value = null;
+
+                    if (attributeValue instanceof ValueExpression) {
+                        Object expressionValue = ((ValueExpression) attributeValue).getValue(context.getELContext());
+                        if (expressionValue != null) {
+                            value = expressionValue.toString();
+                        }
+                    }
+                    else {
+                        value = attributeValue.toString();
+                    }
+
+                    if (value != null) {
+                        writer.writeAttribute(attribute.getKey(), value, null);
+                    }
+                }
+            }
         }
     }
 }

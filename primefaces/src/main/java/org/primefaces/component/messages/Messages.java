@@ -37,10 +37,4 @@ public class Messages extends MessagesBase implements Widget {
     public static final String CLOSE_ICON_CLASS = "ui-icon ui-icon-close";
     public static final String SEVERITY_PREFIX_CLASS = "ui-messages-";
 
-    public static final String ARIA_CLOSE = "primefaces.messages.aria.CLOSE";
-    public static final String ARIA_INFO = "primefaces.messages.aria.INFO";
-    public static final String ARIA_ERROR = "primefaces.messages.aria.ERROR";
-    public static final String ARIA_WARN = "primefaces.messages.aria.WARN";
-    public static final String ARIA_FATAL = "primefaces.messages.aria.FATAL";
-
 }

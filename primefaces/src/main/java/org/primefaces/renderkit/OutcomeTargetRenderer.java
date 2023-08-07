@@ -35,7 +35,6 @@ import javax.faces.lifecycle.ClientWindow;
 import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.LangUtils;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
@@ -48,8 +47,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (outcomeTarget instanceof UIComponent
-                && PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
+        if (outcomeTarget instanceof UIComponent) {
             String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
             if (toFlowDocumentId != null) {
@@ -124,22 +122,20 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            String toFlowDocumentId = navCase.getToFlowDocumentId();
-            if (toFlowDocumentId != null) {
-                if (params == null) {
-                    params = new LinkedHashMap<>();
-                }
+        String toFlowDocumentId = navCase.getToFlowDocumentId();
+        if (toFlowDocumentId != null) {
+            if (params == null) {
+                params = new LinkedHashMap<>();
+            }
 
-                List<String> flowDocumentIdValues = new ArrayList<>();
-                flowDocumentIdValues.add(toFlowDocumentId);
-                params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
+            List<String> flowDocumentIdValues = new ArrayList<>();
+            flowDocumentIdValues.add(toFlowDocumentId);
+            params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
 
-                if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
-                    List<String> flowIdValues = new ArrayList<>();
-                    flowIdValues.add(navCase.getFromOutcome());
-                    params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
-                }
+            if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
+                List<String> flowIdValues = new ArrayList<>();
+                flowIdValues.add(navCase.getFromOutcome());
+                params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
             }
         }
 
@@ -156,9 +152,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         boolean clientWindowRenderingModeEnabled = false;
         Object clientWindow = null;
         try {
-            if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
-                        && outcomeTarget.isDisableClientWindow()) {
-
+            if (outcomeTarget.isDisableClientWindow()) {
                 clientWindow = context.getExternalContext().getClientWindow();
 
                 if (clientWindow != null) {

@@ -45,7 +45,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
@@ -132,7 +132,7 @@ public class DataExporter implements ActionListener, StateHolder {
         }
 
         try {
-            List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
+            List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(context, event.getComponent(), tables);
             Class<? extends UIComponent> targetClass = guessTargetClass(components);
             Exporter exporterInstance = getExporter(exportAs, customExporterInstance, targetClass);
 

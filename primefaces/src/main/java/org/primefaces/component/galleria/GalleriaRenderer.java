@@ -171,6 +171,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
             writer.startElement("ul", null);
             writer.writeAttribute("class", Galleria.CAPTION_ITEMS_CLASS, null);
+            writer.writeAttribute("style", "display: none", null); // default to hidden
 
             if (galleria.isRepeating()) {
                 for (int i = 0; i < galleria.getRowCount(); i++) {

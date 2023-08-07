@@ -23,12 +23,10 @@
  */
 package org.primefaces.component.growl;
 
-import javax.faces.component.UIMessages;
-
-import org.primefaces.component.api.UINotification;
+import org.primefaces.component.api.UINotifications;
 import org.primefaces.component.api.Widget;
 
-public abstract class GrowlBase extends UIMessages implements Widget, UINotification {
+public abstract class GrowlBase extends UINotifications implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -39,10 +37,7 @@ public abstract class GrowlBase extends UIMessages implements Widget, UINotifica
         widgetVar,
         sticky,
         life,
-        escape,
-        severity,
         keepAlive,
-        skipDetailIfEqualsSummary
     }
 
     public GrowlBase() {
@@ -78,23 +73,6 @@ public abstract class GrowlBase extends UIMessages implements Widget, UINotifica
         getStateHelper().put(PropertyKeys.life, life);
     }
 
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
-
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
     public boolean isKeepAlive() {
         return (Boolean) getStateHelper().eval(PropertyKeys.keepAlive, false);
     }
@@ -103,12 +81,4 @@ public abstract class GrowlBase extends UIMessages implements Widget, UINotifica
         getStateHelper().put(PropertyKeys.keepAlive, keepAlive);
     }
 
-    @Override
-    public boolean isSkipDetailIfEqualsSummary() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
-    }
-
-    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
-        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
-    }
 }

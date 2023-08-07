@@ -33,7 +33,6 @@ import javax.faces.event.PhaseId;
 import javax.xml.bind.DatatypeConverter;
 
 import org.primefaces.event.CaptureEvent;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -98,12 +97,10 @@ public class PhotoCamRenderer extends CoreRenderer {
                 .callback("onCameraError", "function(errorObj)", cam.getOnCameraError());
 
         if (cam.getUpdate() != null) {
-            wb.attr("update", SearchExpressionFacade.resolveClientIds(context, cam, cam.getUpdate(),
-                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+            wb.attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, cam, cam.getUpdate()));
         }
         if (cam.getProcess() != null) {
-            wb.attr("process", SearchExpressionFacade.resolveClientIds(context, cam, cam.getProcess(),
-                    SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE));
+            wb.attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, cam, cam.getProcess()));
         }
 
         wb.finish();

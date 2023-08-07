@@ -43,11 +43,8 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
     private final Map<String, DynamicContentHandler> handlers;
 
-    private final ResourceHandler wrapped;
-
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResourceHandler(ResourceHandler wrapped) {
-        this.wrapped = wrapped;
+        super(wrapped);
         handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
 
@@ -58,11 +55,6 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         if (LangUtils.isClassAvailable("io.nayuki.qrcodegen.QrCode")) {
             handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
-    }
-
-    @Override
-    public ResourceHandler getWrapped() {
-        return this.wrapped;
     }
 
     @Override

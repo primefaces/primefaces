@@ -257,7 +257,7 @@ public class FileUploadUtilsTest {
         String filename = "~myfile.txt";
 
         // Act
-        String result = FileUploadUtils.getValidFilename(filename);
+        String result = FileUploadUtils.requireValidFilename(filename);
 
         // Assert
         assertEquals(filename, result);

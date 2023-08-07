@@ -333,7 +333,7 @@ hand, can restrict the drop target to be within the parent by setting it to _sib
 The `onDrop` attribute can be used to prevent dropping of certain nodes on certain nodes.
 
 ```java
-public boolean boolean onDrop(TreeDragDropInfo info) {
+public boolean onDrop(TreeDragDropInfo info) {
     // return true if info.getDragNode() or info.getDragNodes() can be dropped on info.getDropNode()
 }
 ```

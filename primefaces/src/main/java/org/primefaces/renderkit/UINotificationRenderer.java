@@ -23,10 +23,18 @@
  */
 package org.primefaces.renderkit;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.UINotification;
-import org.primefaces.component.messages.Messages;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.component.api.UINotifications;
+import org.primefaces.expression.SearchExpressionUtils;
+import org.primefaces.util.LangUtils;
 
 public class UINotificationRenderer extends CoreRenderer {
 
@@ -56,32 +64,6 @@ public class UINotificationRenderer extends CoreRenderer {
         return severity;
     }
 
-    /**
-     * Gets the severity in I18N human readable text for ARIA screen readers.
-     *
-     * @param message the message to process
-     * @return the human readable text for the severity
-     */
-    protected String getSeverityText(FacesMessage message) {
-        int ordinal = message.getSeverity().getOrdinal();
-        String severity = null;
-
-        if (ordinal == FacesMessage.SEVERITY_INFO.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_INFO);
-        }
-        else if (ordinal == FacesMessage.SEVERITY_ERROR.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_ERROR);
-        }
-        else if (ordinal == FacesMessage.SEVERITY_WARN.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_WARN);
-        }
-        else if (ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal()) {
-            severity = MessageFactory.getMessage(Messages.ARIA_FATAL);
-        }
-
-        return severity;
-    }
-
     protected String getClientSideSeverity(String severity) {
         if (severity == null) {
             return "all,error"; // validation.js checks if severity contains error.
@@ -89,4 +71,78 @@ public class UINotificationRenderer extends CoreRenderer {
         return severity;
     }
 
+    public List<FacesMessage> collectFacesMessages(UINotifications uiMessages, FacesContext context) {
+        List<FacesMessage> messages = null;
+
+        String _for = uiMessages.getFor();
+        if (!isValueBlank(_for)) {
+            String forType = uiMessages.getForType();
+
+            // key case
+            if (forType == null || "key".equals(forType)) {
+                String[] keys = context.getApplication().getSearchExpressionHandler().splitExpressions(context, _for);
+                for (String key : keys) {
+                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
+                    while (messagesIterator.hasNext()) {
+                        if (messages == null) {
+                            messages = new ArrayList<>(5);
+                        }
+                        messages.add(messagesIterator.next());
+                    }
+                }
+            }
+
+            // clientId / SearchExpression case
+            if (forType == null || "expression".equals(forType)) {
+                List<UIComponent> forComponents = SearchExpressionUtils.contextlessResolveComponents(context, uiMessages, _for,
+                        SearchExpressionUtils.HINTS_IGNORE_NO_RESULT);
+                for (int i = 0; i < forComponents.size(); i++) {
+                    UIComponent forComponent = forComponents.get(i);
+                    String forComponentClientId = forComponent.getClientId(context);
+                    if (!_for.equals(forComponentClientId)) {
+
+                        Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
+                        while (messagesIterator.hasNext()) {
+                            FacesMessage next = messagesIterator.next();
+                            if (messages == null) {
+                                messages = new ArrayList<>(5);
+                            }
+                            if (!messages.contains(next)) {
+                                messages.add(next);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if (uiMessages.isGlobalOnly()) {
+            Iterator<FacesMessage> messagesIterator = context.getMessages(null);
+            while (messagesIterator.hasNext()) {
+                if (messages == null) {
+                    messages = new ArrayList<>(5);
+                }
+                messages.add(messagesIterator.next());
+            }
+        }
+        else {
+            String[] ignores = uiMessages.getForIgnores() == null
+                    ? null
+                    : context.getApplication().getSearchExpressionHandler().splitExpressions(context, uiMessages.getForIgnores());
+            Iterator<String> keyIterator = context.getClientIdsWithMessages();
+            while (keyIterator.hasNext()) {
+                String key = keyIterator.next();
+                if (ignores == null || !LangUtils.contains(ignores, key)) {
+                    Iterator<FacesMessage> messagesIterator = context.getMessages(key);
+                    while (messagesIterator.hasNext()) {
+                        if (messages == null) {
+                            messages = new ArrayList<>(5);
+                        }
+                        messages.add(messagesIterator.next());
+                    }
+                }
+            }
+        }
+
+        return messages;
+    }
 }
