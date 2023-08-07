@@ -115,7 +115,6 @@ public class GrowlRenderer extends UINotificationRenderer {
                     }
 
                     writer.write(",severity:'" + severityName + "'");
-                    writer.write(",severityText:'" + getSeverityText(message) + "'");
 
                     writer.write("}");
 
