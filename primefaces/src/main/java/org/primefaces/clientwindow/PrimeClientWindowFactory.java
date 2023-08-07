@@ -25,31 +25,20 @@ package org.primefaces.clientwindow;
 
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.ClientWindow;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleWrapper;
+import javax.faces.lifecycle.ClientWindowFactory;
 
-// We can't use a ClientWindowFactory as this is registered in the faces-config.xml
-// if we would add the client-window-factory entry, pre JSF2.3 would crash
-public class PrimeClientWindowLifecycle extends LifecycleWrapper {
+public class PrimeClientWindowFactory extends ClientWindowFactory {
 
-    public PrimeClientWindowLifecycle(Lifecycle wrapped) {
+    public PrimeClientWindowFactory(ClientWindowFactory wrapped) {
         super(wrapped);
     }
 
     @Override
-    public void attachWindow(FacesContext facesContext) {
-        ClientWindow clientWindow = facesContext.getExternalContext().getClientWindow();
+    public ClientWindow getClientWindow(FacesContext context) {
+        ClientWindow clientWindow = context.getExternalContext().getClientWindow();
         if (clientWindow == null) {
             clientWindow = new PrimeClientWindow();
         }
-
-        try {
-            clientWindow.decode(facesContext);
-            facesContext.getExternalContext().setClientWindow(clientWindow);
-        }
-        catch (RuntimeException e) {
-            facesContext.getExternalContext().setClientWindow(null);
-            throw e;
-        }
+        return clientWindow;
     }
 }

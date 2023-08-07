@@ -23,29 +23,34 @@
  */
 package org.primefaces.clientwindow;
 
-import java.util.Iterator;
+import javax.faces.context.FacesContext;
+import javax.faces.lifecycle.ClientWindow;
 import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.lifecycle.LifecycleWrapper;
 
-public class PrimeClientWindowLifecycleFactory extends LifecycleFactory {
 
-    public PrimeClientWindowLifecycleFactory(LifecycleFactory wrapped) {
+// MyFaces do not use this use PrimeClientWindowFactory directly
+// Mojarra must use this class until issue is fixed: https://github.com/eclipse-ee4j/mojarra/issues/5297
+public class PrimeClientWindowLifecycleFactory extends LifecycleWrapper {
+
+    public PrimeClientWindowLifecycleFactory(Lifecycle wrapped) {
         super(wrapped);
     }
 
     @Override
-    public void addLifecycle(String lifecycleId, Lifecycle lifecycle) {
-        getWrapped().addLifecycle(lifecycleId, lifecycle);
-    }
+    public void attachWindow(FacesContext facesContext) {
+        ClientWindow clientWindow = facesContext.getExternalContext().getClientWindow();
+        if (clientWindow == null) {
+            clientWindow = new PrimeClientWindow();
+        }
 
-    @Override
-    public Lifecycle getLifecycle(String lifecycleId) {
-        Lifecycle result = getWrapped().getLifecycle(lifecycleId);
-        return new PrimeClientWindowLifecycle(result);
-    }
-
-    @Override
-    public Iterator<String> getLifecycleIds() {
-        return getWrapped().getLifecycleIds();
+        try {
+            clientWindow.decode(facesContext);
+            facesContext.getExternalContext().setClientWindow(clientWindow);
+        }
+        catch (RuntimeException e) {
+            facesContext.getExternalContext().setClientWindow(null);
+            throw e;
+        }
     }
 }
