@@ -39,7 +39,7 @@ public class RadioButton extends RadioButtonBase {
     @Override
     public String getInputClientId() {
         FacesContext context = FacesContext.getCurrentInstance();
-        return SearchExpressionFacade.resolveComponent(context, this, getFor()).getClientId(context)
+        return SearchExpressionUtils.contextlessResolveComponent(context, this, getFor()).getClientId(context)
                 + UINamingContainer.getSeparatorChar(context) + getItemIndex() + "_clone";
     }
 
