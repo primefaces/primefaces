@@ -257,7 +257,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.tooltip) {
             this.cfg.options.eventMouseEnter = function(mouseEnterInfo) {
                 if(mouseEnterInfo.event.extendedProps.description) {
-                    $this.tipTimeout = setTimeout(function() {
+                    $this.tipTimeout = PrimeFaces.queueTask(function() {
                         $this.tip.css({
                             'left': mouseEnterInfo.jsEvent.pageX + 'px',
                             'top': (mouseEnterInfo.jsEvent.pageY + 15) + 'px',

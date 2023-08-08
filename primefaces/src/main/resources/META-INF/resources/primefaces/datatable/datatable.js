@@ -763,11 +763,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 clearTimeout($this.filterTimeout);
             }
 
-            $this.filterTimeout = setTimeout(function() {
+            $this.filterTimeout = PrimeFaces.queueTask(function() {
                 $this.filter();
                 $this.filterTimeout = null;
-            },
-            $this.cfg.filterDelay);
+            }, $this.cfg.filterDelay);
         });
     },
 
@@ -1432,9 +1431,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.scrollBody.children('div').css('height', parseFloat((scrollLimit * this.rowHeight + 1) + 'px'));
 
                 if(hasEmptyMessage && this.cfg.scrollHeight && this.percentageScrollHeight) {
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         $this.adjustScrollHeight();
-                    }, 10);
+                    });
                 }
             }
         }
@@ -1459,7 +1458,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var virtualScrollBody = this;
 
                 clearTimeout($this.scrollTimeout);
-                $this.scrollTimeout = setTimeout(function() {
+                $this.scrollTimeout = PrimeFaces.queueTask(function() {
                     var viewportHeight = $this.scrollBody.outerHeight(),
                     tableHeight = $this.bodyTable.outerHeight(),
                     pageHeight = $this.rowHeight * $this.cfg.scrollStep,
@@ -2349,9 +2348,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});
 
                         if(hasEmptyMessage && $this.cfg.scrollHeight && $this.percentageScrollHeight) {
-                            setTimeout(function() {
+                            PrimeFaces.queueTask(function() {
                                 $this.adjustScrollHeight();
-                            }, 10);
+                            });
                         }
                     }
                 }
@@ -4111,9 +4110,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.cfg.resizeMode === 'expand') {
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         $this.fireColumnResizeEvent(ui.helper.parent());
-                    }, 5);
+                    });
                 }
                 else {
                     $this.fireColumnResizeEvent(ui.helper.parent());
@@ -4269,10 +4268,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if((newWidth > minWidth && nextColumnWidth > minWidth) || (expandMode && newWidth > minWidth)) {
             if(expandMode) {
                 table.width(table.width() + change);
-                setTimeout(function() {
+                PrimeFaces.queueTask(function() {
                     columnHeader.width(newWidth);
                     $this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, null);
-                }, 1);
+                });
             }
             else {
                 columnHeader.width(newWidth);
@@ -4291,7 +4290,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     //footer
                     this.footerTable.width(this.footerTable.width() + change);
 
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         if($this.hasColumnGroup) {
                             $this.theadClone.find('> tr:first').children('th').eq(colIndex).width(newWidth);            //body
                             $this.footerTable.find('> tfoot > tr:first').children('th').eq(colIndex).width(newWidth);   //footer
@@ -4300,7 +4299,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             $this.theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);   //body
                             $this.footerCols.eq(colIndex).width(newWidth);                                                          //footer
                         }
-                    }, 1);
+                    });
                 }
                 else {
                     if(this.hasColumnGroup) {
@@ -4882,7 +4881,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.stickyContainer.hide();
-                $this.resizeTimeout = setTimeout(function() {
+                $this.resizeTimeout = PrimeFaces.queueTask(function() {
                     $this.stickyContainer.css('left', orginTableContent.offset().left + 'px');
                     $this.stickyContainer.width(table.outerWidth());
                     $this.stickyContainer.show();

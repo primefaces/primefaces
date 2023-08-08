@@ -2180,7 +2180,7 @@
                 $this = this;
 
             this.clearTimePickerTimer();
-            this.timePickerTimer = setTimeout(function () {
+            this.timePickerTimer = PrimeFaces.queueTask(function () {
                 $this.repeat(event, 100, type, direction);
             }, i);
 
@@ -2237,7 +2237,7 @@
                     onEntered: function() {
                         if (!$this.options.touchUI) {
                             $this.datepickerClick = true;
-                            setTimeout(function () {$this.datepickerClick = false;}, 200);
+                            PrimeFaces.queueTask(function () {$this.datepickerClick = false;}, 200);
                             $this.bindDocumentClickListener();
                             $this.bindWindowResizeListener();
 
@@ -2470,7 +2470,7 @@
             }
 
             if (!this.options.inline && this.isSingleSelection() && (!this.options.showTime || this.options.hideOnDateTimeSelect)) {
-                setTimeout(function () {
+                PrimeFaces.queueTask(function () {
                     $this.hideOverlay();
                 }, 100);
 

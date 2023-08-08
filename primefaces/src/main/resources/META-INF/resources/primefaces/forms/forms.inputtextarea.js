@@ -180,7 +180,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                             _self.clearTimeout(_self.timeout);
                         }
 
-                        _self.timeout = setTimeout(function() {
+                        _self.timeout = PrimeFaces.queueTask(function() {
                             _self.search(query);
                         }, _self.cfg.queryDelay);
 

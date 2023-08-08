@@ -447,10 +447,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             function(e, eventTarget) {
                 if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     $this.hide();
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         $this.revert();
                         $this.changeAriaValue($this.getActiveItem());
-                    }, 2);
+                    });
                 }
             });
 
@@ -741,7 +741,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }
 
-                $this.searchTimer = setTimeout(function(){
+                $this.searchTimer = PrimeFaces.queueTask(function(){
                     $this.searchValue = '';
                     $this.focusInput ? $this.focusInput.val('') : null;
                 }, 1000);
@@ -819,9 +819,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
             }
         }).on('paste.ui-selectonemenu', function() {
-            setTimeout(function(){
+            PrimeFaces.queueTask(function(){
                 $this.filter($this.filterInput.val());
-            },2);
+            });
 		});
     },
 
@@ -1026,7 +1026,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     focusFilter: function(timeout) {
         if(timeout) {
             var $this = this;
-            setTimeout(function() {
+            PrimeFaces.queueTask(function() {
                 $this.focusFilter();
             }, timeout);
         }

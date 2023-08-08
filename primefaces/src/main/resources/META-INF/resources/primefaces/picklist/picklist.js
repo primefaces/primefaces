@@ -342,7 +342,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.focusedItem = list.children('.ui-picklist-item:visible:first');
             }
 
-            setTimeout(function() {
+            PrimeFaces.queueTask(function() {
                 if ($this.focusedItem) {
                     PrimeFaces.scrollInView(list, $this.focusedItem);
                     $this.focusedItem.addClass('ui-picklist-outline');
@@ -704,7 +704,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 clearTimeout($this.filterTimeout);
             }
 
-            $this.filterTimeout = setTimeout(function() {
+            $this.filterTimeout = PrimeFaces.queueTask(function() {
                 $this.filter(input.val(), $this.getFilteredList(input));
                 $this.filterTimeout = null;
             },

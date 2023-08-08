@@ -221,10 +221,9 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 case 'Enter':
                 case ' ':
                     var currentLink = $this.focusedItem.children('.ui-menuitem-link');
-                    //IE fix
-                    setTimeout(function(){
+                    PrimeFaces.queueTask(function(){
                         currentLink.trigger('click');
-                    },1);
+                    });
                     $this.jq.trigger("blur");
 
                     var href = currentLink.attr('href');

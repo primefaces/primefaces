@@ -333,7 +333,7 @@ if (!PrimeFaces.ajax) {
                     $this = this,
                     sourceId = (typeof(request.source) === 'string') ? request.source: $(request.source).attr('id'),
                     createTimeout = function() {
-                            return setTimeout(function() {
+                            return PrimeFaces.queueTask(function() {
                                 $this.requests.push(request);
 
                                 if($this.requests.length === 1) {

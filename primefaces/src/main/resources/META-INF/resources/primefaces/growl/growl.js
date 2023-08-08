@@ -200,7 +200,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     setRemovalTimeout: function(message) {
         var $this = this;
 
-        var timeout = setTimeout(function() {
+        var timeout = PrimeFaces.queueTask(function() {
             $this.removeMessage(message);
         }, this.cfg.life);
 

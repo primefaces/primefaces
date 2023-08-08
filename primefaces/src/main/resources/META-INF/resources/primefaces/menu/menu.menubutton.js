@@ -78,7 +78,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.TieredMenu.extend({
             clearTimeout(this.timeoutId);
         }
 
-        this.timeoutId = setTimeout(function () {
+        this.timeoutId = PrimeFaces.queueTask(function () {
            submenu.css('z-index', PrimeFaces.nextZindex())
                   .show()
                   .position(pos);

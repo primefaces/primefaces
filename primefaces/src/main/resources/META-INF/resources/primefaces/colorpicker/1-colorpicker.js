@@ -242,10 +242,10 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
             }
             if ($this.hasFloatLabel) {
                 var container = $this.input.parent();
-                setTimeout(function() {
+                PrimeFaces.queueTask(function() {
                     container.removeClass('ui-inputwrapper-focus');
                     PrimeFaces.utils.updateFloatLabel(container, $this.input, $this.hasFloatLabel);
-                }, 0);
+                });
             }
         });
 

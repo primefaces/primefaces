@@ -434,7 +434,7 @@ PrimeFaces.widget.MegaMenu = PrimeFaces.widget.BaseWidget.extend({
             clearTimeout(this.timeoutId);
         }
 
-        this.timeoutId = setTimeout(function () {
+        this.timeoutId = PrimeFaces.queueTask(function () {
            submenu.css('z-index', PrimeFaces.nextZindex())
                   .show()
                   .position(pos)

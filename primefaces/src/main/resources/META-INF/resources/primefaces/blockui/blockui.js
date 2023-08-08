@@ -106,7 +106,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 // subscribe to all DOM update events so we can resize even if another DOM element changed
-                setTimeout(function() { $this.alignOverlay() }, 0);
+                PrimeFaces.queueTask(function() { $this.alignOverlay() });
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
@@ -115,7 +115,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         }).on('pfAjaxUpdated.' + this.id, function(e, xhr, settings) {
             // subscribe to all DOM update events so we can resize even if another DOM element changed
             if (!$this.cfg.blocked && !$this.isXhrSourceATrigger(settings)) {
-                setTimeout(function() { $this.alignOverlay() }, 0);
+                PrimeFaces.queueTask(function() { $this.alignOverlay() });
             }
         });
     },
@@ -157,7 +157,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         }
 
         var delay = this.cfg.delay || 0;
-        this.timeout = setTimeout(function() {
+        this.timeout = PrimeFaces.queueTask(function() {
             $this.alignOverlay();
 
             var animated = $this.cfg.animate;

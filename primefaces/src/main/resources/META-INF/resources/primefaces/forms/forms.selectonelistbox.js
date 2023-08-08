@@ -74,7 +74,7 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
                 $this.focusedItem = $this.items.filter(':visible:first');
             }
             
-            setTimeout(function() {
+            PrimeFaces.queueTask(function() {
                 if($this.focusedItem) {
                     PrimeFaces.scrollInView($this.listContainer, $this.focusedItem);
                     $this.focusedItem.addClass('ui-listbox-outline');

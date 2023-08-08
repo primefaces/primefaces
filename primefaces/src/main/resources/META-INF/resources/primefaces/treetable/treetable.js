@@ -360,7 +360,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 clearTimeout($this.filterTimeout);
             }
 
-            $this.filterTimeout = setTimeout(function() {
+            $this.filterTimeout = PrimeFaces.queueTask(function() {
                 $this.filter();
                 $this.filterTimeout = null;
             },
@@ -699,7 +699,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.stickyContainer.hide();
-                $this.resizeTimeout = setTimeout(function() {
+                $this.resizeTimeout = PrimeFaces.queueTask(function() {
                     $this.stickyContainer.css('left', orginTableContent.offset().left + 'px');
                     $this.stickyContainer.width(table.outerWidth());
                     $this.stickyContainer.show();
