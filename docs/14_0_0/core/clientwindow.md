@@ -5,7 +5,7 @@ This allows for separating state not only per session but also on a per client-w
 (Or call it per-browser-tab-base.)
 
 
-Prime Client Window is activated in faces-config.xml
+Prime Client Window is activated in `faces-config.xml`
 ```xml
 <faces-config>
     ...
@@ -14,6 +14,20 @@ Prime Client Window is activated in faces-config.xml
     </factory>
 </faces-config>
 ```
+
+**MyFaces:**
+
+You can add the `PrimeClientWindowFactory` directly with no need for the LifeCyleFactory. 
+For **Mojarra** you must use the LifeCycleFactory until this issue is fixed see: https://github.com/eclipse-ee4j/mojarra/issues/5297
+```xml
+<faces-config>
+    ...
+    <factory>
+        <client-window-factory>org.primefaces.clientwindow.PrimeClientWindowFactory</client-window-factory>
+    </factory>
+</faces-config>
+```
+
 
 It´s a replacement for the standard JSF-mechanism activated in web.xml. So only add PrimeClientWindowLifecycleFactory
 but not add javax.faces.CLIENT_WINDOW_MODE!
@@ -29,8 +43,8 @@ See [MultiViewState](core/multiviewstate.md) for details.
 
 Prime Client Window adds jfwid-parameter to all url´s rendered by JSF and PrimeFaces.
 Prime Client Window offers improved handling compared to JSF´s built in mechanism in following points:
-* JSF doesnt append the url param on initial redirect, so f5 creates a new windowId
-* JSF doesnt validate if the tab was initialy openend with another windowId
+* JSF does NOT append the url param on initial redirect, so f5 creates a new windowId
+* JSF does NOT validate if the tab was initially opened with another windowId
 * it uses sessionStorage to save and validate the windowId
 * the workflow is the same as Apache DeltaSpike lazy mode
 
