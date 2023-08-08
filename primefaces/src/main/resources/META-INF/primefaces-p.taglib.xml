@@ -25164,14 +25164,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Plain mode displays radiobuttons using native browser rendering instead of themes. Deprecated.]]>
-            </description>
-            <name>plain</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Unselectable mode when true clicking a radio again will clear the selection. Default false.]]>
             </description>
             <name>unselectable</name>
