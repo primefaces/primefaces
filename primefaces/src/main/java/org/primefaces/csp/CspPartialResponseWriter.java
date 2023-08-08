@@ -31,11 +31,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 
-import org.primefaces.context.PartialResponseWriterWrapper;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.EscapeUtils;
 
-public class CspPartialResponseWriter extends PartialResponseWriterWrapper {
+public class CspPartialResponseWriter extends PartialResponseWriter {
 
     private CspResponseWriter cspResponseWriter;
     private PrimeRequestContext requestContext;
