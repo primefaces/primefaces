@@ -24,7 +24,6 @@
 package org.primefaces.component.api;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -39,7 +38,6 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
-import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
@@ -47,8 +45,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
-import org.primefaces.model.CollectionDataModel;
-import org.primefaces.model.IterableDataModel;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
@@ -64,14 +60,12 @@ public class UIData extends javax.faces.component.UIData {
 
     private static final Logger LOGGER = Logger.getLogger(UIData.class.getName());
     private static final String SB_ID = UIData.class.getName() + "#id";
-    private static final DataModel EMPTY_DATA_MODEL = new ListDataModel(Collections.emptyList());
 
     private final Map<String, Object> _rowTransientStates = new HashMap<>();
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
     private Object _initialDescendantFullComponentState;
 
     private String clientId;
-    private DataModel model;
     private Boolean isNested;
     private Object oldVar;
 
@@ -629,49 +623,6 @@ public class UIData extends javax.faces.component.UIData {
         return saved.getOrDefault(componentClientId, ImmutableSavedState.NULL_STATE);
     }
 
-    @Override
-    protected DataModel getDataModel() {
-        if (model != null) {
-            return (model);
-        }
-
-        Object current = getValue();
-        if (current == null) {
-            setDataModel(EMPTY_DATA_MODEL );
-        }
-        else if (current instanceof DataModel) {
-            setDataModel((DataModel) current);
-        }
-        else if (current instanceof List) {
-            setDataModel(new ListDataModel((List) current));
-        }
-        else if (Object[].class.isAssignableFrom(current.getClass())) {
-            setDataModel(new ArrayDataModel((Object[]) current));
-        }
-        else if (current instanceof ResultSet) {
-            setDataModel(new ResultSetDataModel((ResultSet) current));
-        }
-        else if (current instanceof Collection) {
-            setDataModel(new CollectionDataModel((Collection) current));
-        }
-        else if (current instanceof Iterable) {
-            setDataModel(new IterableDataModel((Iterable<?>) current));
-        }
-        else if (current instanceof Map) {
-            setDataModel(new IterableDataModel(((Map<?, ?>) current).entrySet()));
-        }
-        else {
-            setDataModel(new ScalarDataModel(current));
-        }
-
-        return model;
-    }
-
-    @Override
-    protected void setDataModel(DataModel dataModel) {
-        model = dataModel;
-    }
-
     protected boolean shouldSkipChildren(FacesContext context) {
         return false;
     }
@@ -1197,7 +1148,6 @@ public class UIData extends javax.faces.component.UIData {
             _initialDescendantFullComponentState = null;
 
             clientId = null;
-            model = null;
             isNested = null;
             oldVar = null;
         }
@@ -1207,7 +1157,6 @@ public class UIData extends javax.faces.component.UIData {
             _initialDescendantFullComponentState = null;
 
             clientId = null;
-            model = null;
             isNested = null;
             oldVar = null;
         }
@@ -1285,24 +1234,6 @@ public class UIData extends javax.faces.component.UIData {
 
         preEncode(context);
 
-        if (context == null) {
-            throw new NullPointerException();
-        }
-
-        pushComponentToEL(context, null);
-
-        if (!isRendered()) {
-            return;
-        }
-
-        context.getApplication().publishEvent(context, PreRenderComponentEvent.class, this);
-
-        String rendererType = getRendererType();
-        if (rendererType != null) {
-            Renderer renderer = getRenderer(context);
-            if (renderer != null) {
-                renderer.encodeBegin(context, this);
-            }
-        }
+        super.encodeBegin(context);
     }
 }

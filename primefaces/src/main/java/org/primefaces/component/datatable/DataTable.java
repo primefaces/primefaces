@@ -39,7 +39,9 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.ArrayDataModel;
+import javax.faces.model.CollectionDataModel;
 import javax.faces.model.DataModel;
+import javax.faces.model.IterableDataModel;
 import javax.faces.model.ListDataModel;
 
 import org.primefaces.PrimeFaces;
