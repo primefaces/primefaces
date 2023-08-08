@@ -871,6 +871,33 @@
             </plugin>
 
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>native2ascii-maven-plugin</artifactId>
+                <version>2.1.0</version>
+                <executions>
+                    <execution>
+                        <id>utf8-to-latin1</id>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <srcDir>src/main/resources</srcDir>
+                            <targetDir>${project.build.outputDirectory}</targetDir>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <includes>
+                                <include>/META-INF/resources/primefaces/locales/*.js</include>
+                                <include>/org/primefaces/*.properties</include>
+                            </includes>
+                            <excludes>
+                                <exclude/><!-- nothing by default -->
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <configuration>
