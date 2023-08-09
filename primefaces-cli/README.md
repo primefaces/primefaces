@@ -19,13 +19,13 @@ There always may be corner-cases which need some additional manual work. So it´
 ### Windows PowerShell
 
 ```powershell
-Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0/primefaces-cli-12.0.0.jar -OutFile C:\cli\pfcli.jar
+Invoke-WebRequest -Uri https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/13.0.0/primefaces-cli-13.0.0.jar -OutFile C:\cli\pfcli.jar
 ```
 
 ### Wget
 
 ```bash
-wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/12.0.0/primefaces-cli-12.0.0.jar
+wget -O pfcli.jar https://repo.maven.apache.org/maven2/org/primefaces/primefaces-cli/13.0.0/primefaces-cli-13.0.0.jar
 ```
 
 ## PrimeFlex 2 → PrimeFlex 3 migration

@@ -11,7 +11,6 @@
     </factory>
 
     <lifecycle>
-        <phase-listener>org.primefaces.application.resource.DynamicResourcesPhaseListener</phase-listener>
         <phase-listener>org.primefaces.component.autoupdate.AutoUpdatePhaseListener</phase-listener>
         <phase-listener>org.primefaces.csp.CspPhaseListener</phase-listener>
         <phase-listener>org.primefaces.application.DialogKeepFlashPhaseListener</phase-listener>
@@ -996,11 +995,6 @@
     </component>
 
     <component>
-        <component-type>org.primefaces.component.Watermark</component-type>
-        <component-class>org.primefaces.component.watermark.Watermark</component-class>
-    </component>
-
-    <component>
         <component-type>org.primefaces.component.Wizard</component-type>
         <component-class>org.primefaces.component.wizard.Wizard</component-class>
     </component>
@@ -1790,11 +1784,6 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.TriStateCheckboxRenderer</renderer-type>
             <renderer-class>org.primefaces.component.tristatecheckbox.TriStateCheckboxRenderer</renderer-class>
-        </renderer>
-        <renderer>
-            <component-family>org.primefaces.component</component-family>
-            <renderer-type>org.primefaces.component.WatermarkRenderer</renderer-type>
-            <renderer-class>org.primefaces.component.watermark.WatermarkRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>

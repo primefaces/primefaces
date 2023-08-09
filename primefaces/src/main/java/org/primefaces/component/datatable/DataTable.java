@@ -39,7 +39,9 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.ArrayDataModel;
+import javax.faces.model.CollectionDataModel;
 import javax.faces.model.DataModel;
+import javax.faces.model.IterableDataModel;
 import javax.faces.model.ListDataModel;
 
 import org.primefaces.PrimeFaces;
@@ -135,12 +137,9 @@ public class DataTable extends DataTableBase {
     public static final String ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-e";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
-    public static final String ARIA_FILTER_BY = "primefaces.datatable.aria.FILTER_BY";
-    public static final String ARIA_HEADER_CHECKBOX_ALL = "primefaces.datatable.aria.HEADER_CHECKBOX_ALL";
     public static final String SORT_LABEL = "primefaces.datatable.SORT_LABEL";
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
-    public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
     public static final String STRIPED_ROWS_CLASS = "ui-datatable-striped";
     public static final String GRIDLINES_CLASS = "ui-datatable-gridlines";
     public static final String SMALL_SIZE_CLASS = "ui-datatable-sm";
@@ -664,15 +663,16 @@ public class DataTable extends DataTableBase {
         getStateHelper().put(InternalPropertyKeys.selectAll, selectAll);
     }
 
-    public SummaryRow getSummaryRow() {
+    public List<SummaryRow> getSummaryRows() {
+        List<SummaryRow> sumRows = new ArrayList<>(3);
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent kid = getChildren().get(i);
             if (kid.isRendered() && kid instanceof SummaryRow) {
-                return (SummaryRow) kid;
+                sumRows.add((SummaryRow) kid);
             }
         }
 
-        return null;
+        return sumRows;
     }
 
     @Override
@@ -1204,9 +1204,12 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public LazyDataModel<?> getLazyDataModel() {
+    public LazyDataModel<Object> getLazyDataModel() {
         if (isLazy()) {
-            return (LazyDataModel<?>) getDataModel();
+            DataModel<Object> value = getDataModel();
+            if (value instanceof LazyDataModel) {
+                return (LazyDataModel<Object>) value;
+            }
         }
         return null;
     }

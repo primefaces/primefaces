@@ -39,7 +39,7 @@ jobs:
       - name: Log github.ref
         run: echo "${{ github.ref }}"
       - name: Build
-        run: mvn clean install -Pquick -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
+        run: mvn clean install -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 --batch-mode --show-version
       - name: Integration Tests FileUpload
         run: >
             mvn -B -V clean install -fprimefaces-integration-tests/pom.xml -Pintegration-tests,${{ matrix.profile }}

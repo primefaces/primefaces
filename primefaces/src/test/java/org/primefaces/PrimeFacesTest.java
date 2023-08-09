@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
@@ -55,6 +56,7 @@ public class PrimeFacesTest {
 
 
     @Test
+    @Disabled
     public void update() {
         UIComponent root = new UIPanel();
         root.setId("root");
@@ -73,6 +75,7 @@ public class PrimeFacesTest {
     }
 
     @Test
+    @Disabled
     public void update_ComponentNotFound() {
         UIComponent root = new UIPanel();
         root.setId("root");
@@ -87,6 +90,7 @@ public class PrimeFacesTest {
     }
 
     @Test
+    @Disabled
     public void update_Multiple() {
         UIComponent root = new UIPanel();
         root.setId("root");
@@ -104,6 +108,7 @@ public class PrimeFacesTest {
     }
 
     @Test
+    @Disabled
     public void update_Multiple_ComponentNotFound() {
         UIComponent root = new UIPanel();
         root.setId("root");

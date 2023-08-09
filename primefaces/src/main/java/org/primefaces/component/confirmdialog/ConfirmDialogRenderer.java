@@ -30,12 +30,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.dialog.Dialog;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class ConfirmDialogRenderer extends CoreRenderer {
@@ -81,8 +78,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
                 .attr("visible", dialog.isVisible(), false)
                 .attr("width", dialog.getWidth(), null)
                 .attr("height", dialog.getHeight(), null)
-                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, dialog, dialog.getAppendTo(),
-                        SearchExpressionUtils.SET_RESOLVE_CLIENT_SIDE), null)
+                .attr("appendTo", SearchExpressionUtils.resolveOptionalClientIdForClientSide(context, dialog, dialog.getAppendTo()))
                 .attr("showEffect", dialog.getShowEffect(), null)
                 .attr("hideEffect", dialog.getHideEffect(), null)
                 .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
@@ -115,15 +111,10 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         writer.endElement("span");
 
         if (dialog.isClosable()) {
-            String ariaLabel = MessageFactory.getMessage(Dialog.ARIA_CLOSE);
 
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", Dialog.TITLE_BAR_CLOSE_CLASS, null);
-            if (ariaLabel != null) {
-                writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
-            }
-
             writer.startElement("span", null);
             writer.writeAttribute("class", Dialog.CLOSE_ICON_CLASS, null);
             writer.endElement("span");

@@ -46,8 +46,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.model.CollectionDataModel;
-import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ConsumerTwo;
 
 /**

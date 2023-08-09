@@ -47,7 +47,6 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private static final String HTML_TAG = "html";
     private static final String TYPE_ATTRIBUTE = "type";
 
-    private final ResponseWriter wrapped;
     private final MoveScriptsToBottomState state;
 
     private boolean inScript;
@@ -58,9 +57,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     private boolean writeFouc;
 
-    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
-        this.wrapped = wrapped;
+        super(wrapped);
         this.state = state;
 
         inScript = false;
@@ -69,11 +67,6 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
         includeAttributes = new LinkedHashMap<>(6);
         inline = new StringBuilder(75);
-    }
-
-    @Override
-    public ResponseWriter getWrapped() {
-        return wrapped;
     }
 
     @Override

@@ -51,7 +51,7 @@ public class FileUploadChunksServlet extends HttpServlet {
         boolean usesCommonsUpload = "commons".equals(uploader);
         if (uploader == null || "auto".equals(uploader)) {
             PrimeEnvironment environment = new StartupPrimeEnvironment();
-            usesCommonsUpload = !environment.isAtLeastJsf22();
+            usesCommonsUpload = false; // default since JSF2.2
         }
         if (usesCommonsUpload) {
             throw new ServletException("Resuming chunked file uploads is not supported with commons uploader.");

@@ -35,7 +35,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -46,7 +46,7 @@ public class MessageRenderer extends UINotificationRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Message uiMessage = (Message) component;
 
-        UIComponent target = SearchExpressionFacade.resolveComponent(context, uiMessage, uiMessage.getFor());
+        UIComponent target = SearchExpressionUtils.contextlessResolveComponent(context, uiMessage, uiMessage.getFor());
         String targetClientId = target.getClientId(context);
 
         encodeMarkup(context, uiMessage, targetClientId);

@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -136,7 +136,7 @@ public class SliderRenderer extends CoreRenderer {
             return null;
         }
 
-        UIComponent targetComponent = SearchExpressionFacade.resolveComponent(context, slider, target);
+        UIComponent targetComponent = SearchExpressionUtils.contextlessResolveComponent(context, slider, target);
         return targetComponent;
     }
 }

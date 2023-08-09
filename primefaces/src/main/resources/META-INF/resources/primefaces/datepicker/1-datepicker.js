@@ -161,7 +161,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         //extensions
         if(!this.cfg.inline && this.cfg.showIcon) {
             this.triggerButton = this.jqEl.siblings('.ui-datepicker-trigger:button');
-            this.triggerButton.attr('aria-label',PrimeFaces.getAriaLabel('calendar.BUTTON')).attr('aria-haspopup', true);
+            this.triggerButton.attr('aria-label',PrimeFaces.getLocaleLabel('chooseDate')).attr('aria-haspopup', true);
 
             var title = this.jqEl.attr('title');
             if(title) {
@@ -224,16 +224,15 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
 
         if(localeSettings) {
             var locale = {};
+            for(var setting in localeSettings) {
+                locale[setting] = localeSettings[setting];
+            }
             if (this.cfg.localeAm) {
                 locale["am"] = this.cfg.localeAm;
             }
             if (this.cfg.localePm) {
                 locale["pm"] = this.cfg.localePm;
             }
-            for(var setting in localeSettings) {
-                locale[setting] = localeSettings[setting];
-            }
-
             this.cfg.userLocale = locale;
         }
     },
@@ -258,7 +257,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                 onBeforePaste: function (pastedValue, opts) {
                     // GitHub #8319 issue with pasting mask
                     // TODO: Remove if InputMask 5.0.8+ fixes the issue
-                    setTimeout(function(){ $this.input.trigger("input")}, 20);
+                    PrimeFaces.queueTask(function(){ $this.input.trigger("input")}, 20);
                     return pastedValue;
                 }
             };
@@ -288,7 +287,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
             if ($this.cfg.inline) {
                 $this.panel.css('position', '');
             }
-            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.cfg.appendTo);
+            this.options.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($this.jq, $this.cfg.appendTo);
         };
     },
 
@@ -315,7 +314,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
                     });
                 }
 
-                setTimeout(function() {
+                PrimeFaces.queueTask(function() {
                     $this.refocusInput = false;
                 }, 10);
             }

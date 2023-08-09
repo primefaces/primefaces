@@ -222,36 +222,6 @@
     margin-left: 1px;
 }
 
-.ui-radiobutton.ui-radiobutton-native {
-    margin: 0;
-    padding: 0;
-}
-
-.ui-radiobutton.ui-radiobutton-native  .ui-helper-hidden-accessible {
-    clip: auto;
-    position: static !important;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    margin: 0;
-    padding: 0;
-}
-
-.ui-radiobutton.ui-radiobutton-native  .ui-radiobutton-box {
-    display:none;
-}
-
-.ui-radiobutton.ui-radiobutton-native .ui-helper-hidden-accessible input {
-    margin: 0;
-    -webkit-transform: none; 
-    -moz-transform: none; 
-    transform: none;
-}
-
-.ui-selectoneradio-native label {
-    margin: 0;
-}
-
 /** SelectOneMenu **/
 .ui-selectonemenu {
 	display: inline-block;

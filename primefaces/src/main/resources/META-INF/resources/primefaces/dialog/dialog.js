@@ -367,8 +367,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @protected
      */
     applyFocus: function() {
-        if(this.cfg.focus)
-        	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.focus).trigger('focus');
+        if (this.cfg.focus)
+            PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.focus).trigger('focus');
         else
             PrimeFaces.focus(null, this.id);
     },
@@ -408,6 +408,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             $(this).removeClass('ui-state-focus');
         });
 
+        this.closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
         this.closeIcon.on('click', function(e) {
             $this.hide();
             e.preventDefault();

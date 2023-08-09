@@ -26,8 +26,7 @@ package org.primefaces.component.radiobutton;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.selectoneradio.SelectOneRadio;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
@@ -40,11 +39,8 @@ public class RadioButton extends RadioButtonBase {
     @Override
     public String getInputClientId() {
         FacesContext context = FacesContext.getCurrentInstance();
-        // #10227
-        SelectOneRadio radio = (SelectOneRadio) SearchExpressionFacade.resolveComponent(context, this, getFor());
-        return radio.getClientId(context)
-                + UINamingContainer.getSeparatorChar(context) + getItemIndex()
-                + (radio.isPlain() ? "" : "_clone");
+        return SearchExpressionUtils.contextlessResolveComponent(context, this, getFor()).getClientId(context)
+                + UINamingContainer.getSeparatorChar(context) + getItemIndex() + "_clone";
     }
 
     @Override

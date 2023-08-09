@@ -125,13 +125,13 @@ public class SelectBooleanButton001Test extends AbstractPrimePageTest {
         SelectBooleanButton selectBooleanButton = page.iconOnly;
         selectBooleanButton.setValue(false);
         Assertions.assertFalse(selectBooleanButton.isSelected());
-        Assertions.assertEquals("ui-button", selectBooleanButton.getLabel());
+        Assertions.assertEquals("Off", selectBooleanButton.getLabel());
 
         // Act
         selectBooleanButton.check();
 
         // Assert
-        Assertions.assertEquals("ui-button", selectBooleanButton.getLabel());
+        Assertions.assertEquals("On", selectBooleanButton.getLabel());
         Assertions.assertTrue(selectBooleanButton.isSelected());
     }
 

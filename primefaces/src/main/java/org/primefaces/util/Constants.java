@@ -71,9 +71,9 @@ public class Constants {
         public static final String PARTIAL_PROCESS_PARAM = "javax.faces.partial.execute";
         public static final String PARTIAL_SOURCE_PARAM = "javax.faces.source";
         public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
+        public static final String RESET_VALUES_PARAM = "javax.faces.partial.resetValues";
 
         // PF request params
-        public static final String RESET_VALUES_PARAM = "primefaces.resetvalues";
         public static final String IGNORE_AUTO_UPDATE_PARAM = "primefaces.ignoreautoupdate";
         public static final String SKIP_CHILDREN_PARAM = "primefaces.skipchildren";
         public static final String NONCE_PARAM = "primefaces.nonce";

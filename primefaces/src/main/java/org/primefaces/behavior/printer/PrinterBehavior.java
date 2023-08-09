@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 import org.json.JSONObject;
 import org.primefaces.behavior.base.AbstractBehavior;
 import org.primefaces.behavior.base.BehaviorAttribute;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
@@ -60,7 +60,7 @@ public class PrinterBehavior extends AbstractBehavior {
     public String getScript(ClientBehaviorContext behaviorContext) {
         FacesContext context = behaviorContext.getFacesContext();
 
-        String component = SearchExpressionFacade.resolveClientId(
+        String component = SearchExpressionUtils.resolveClientIdForClientSide(
                     context, behaviorContext.getComponent(), getTarget());
 
         String config = getConfiguration();

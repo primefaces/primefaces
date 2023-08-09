@@ -68,6 +68,7 @@
  * in the overlay panel with all selected items (when the overlay panel is shown).
  * @prop {JQuery} [togglerBox] The DOM element with the toggler checkbox for selecting or unselecting all
  * options in the overlay panel with all selected items (when the overlay panel is shown).
+ * @prop {JQuery} [togglerCheckboxInput] The DOM element for the hidden input of the Select All checkbox.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
  * @prop {JQuery} triggers The DOM elements for the buttons that can trigger (hide or show) the overlay panel with the
  * available checkbox options.
@@ -201,9 +202,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.header = this.panel.children('.ui-selectcheckboxmenu-header');
         this.toggler = this.header.children('.ui-chkbox');
         this.togglerBox = this.toggler.children('.ui-chkbox-box');
+        this.togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
         this.filterInputWrapper = this.header.children('.ui-selectcheckboxmenu-filter-container');
         this.filterInput = this.filterInputWrapper.children('.ui-inputtext');
         this.closer = this.header.children('.ui-selectcheckboxmenu-close');
+        this.closer.attr('aria-label', PrimeFaces.getAriaLabel('close'));
 
         if (this.cfg.renderPanelContentOnClient && this.itemContainerWrapper.children().length === 0) {
             this.renderItems();
@@ -550,7 +553,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                             $this.items.filter(':not(.ui-state-disabled):first').find('div.ui-chkbox > div.ui-helper-hidden-accessible > input').trigger('focus');
                         }
                         else {
-                            $this.toggler.find('> div.ui-helper-hidden-accessible > input').trigger('focus');
+                            $this.togglerCheckboxInput.trigger('focus');
                         }
                         e.preventDefault();
                     }
@@ -562,6 +565,17 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     break;
             };
         });
+    },
+    
+    /**
+     * Configures the ARIA label for the select all checkbox.
+     * @private
+     */
+    configureSelectAllAria: function() {
+        if (this.togglerCheckboxInput) {
+           var ariaLabel = this.togglerCheckboxInput.prop('checked') ? PrimeFaces.getAriaLabel('selectAll') : PrimeFaces.getAriaLabel('unselectAll');
+           this.togglerCheckboxInput.attr('aria-label', ariaLabel);
+        }
     },
 
     /**
@@ -594,9 +608,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                     };
                 });
 
-            var togglerCheckboxInput = this.toggler.find('> div.ui-helper-hidden-accessible > input');
-            this.bindCheckboxKeyEvents(togglerCheckboxInput);
-            togglerCheckboxInput.on('keydown.selectCheckboxMenu', function(e) {
+            this.bindCheckboxKeyEvents($this.togglerCheckboxInput);
+            this.configureSelectAllAria();
+            $this.togglerCheckboxInput.on('keydown.selectCheckboxMenu', function(e) {
                 if (e.key === 'Tab' && e.shiftKey) {
                     e.preventDefault();
                 }
@@ -817,6 +831,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         else {
             this.uncheckAll();
         }
+        this.configureSelectAllAria();
     },
 
     /**

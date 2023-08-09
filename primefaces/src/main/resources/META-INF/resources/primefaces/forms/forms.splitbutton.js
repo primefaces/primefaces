@@ -328,9 +328,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         }).on('paste.ui-splitbutton', function() {
-            setTimeout(function(){
+            PrimeFaces.queueTask(function(){
                 $this.filter($this.filterInput.val());
-            },2);
+            });
 	});
     },
 

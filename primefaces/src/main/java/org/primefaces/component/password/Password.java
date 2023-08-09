@@ -27,7 +27,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
@@ -57,7 +57,7 @@ public class Password extends PasswordBase {
         Object submittedValue = getSubmittedValue();
 
         if (isValid() && LangUtils.isNotBlank(match)) {
-            Password matchWith = (Password) SearchExpressionFacade.resolveComponent(context, this, match);
+            Password matchWith = (Password) SearchExpressionUtils.contextlessResolveComponent(context, this, match);
 
             if (submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {
                 setValid(false);

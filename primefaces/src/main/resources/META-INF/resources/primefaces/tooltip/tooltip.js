@@ -163,7 +163,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                     else
                         $this.jq.children('.ui-tooltip-text').html(text);
 
-                    setTimeout(function() {
+                    PrimeFaces.queueTask(function() {
                         $this.globalTitle = text;
                         $this.target = element;
                         $this._show();
@@ -190,7 +190,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jq = $(this.jqId);
-        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
         var describedBy = this.target.attr("aria-describedby");
         if (!describedBy || 0 === describedBy.length) {
@@ -397,7 +397,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             var $this = this;
             this.clearTimeout();
 
-            this.timeout = setTimeout(function() {
+            this.timeout = PrimeFaces.queueTask(function() {
                 $this._show();
             }, this.cfg.showDelay);
         }
@@ -446,7 +446,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.clearTimeout();
 
-        this.timeout = setTimeout(function() {
+        this.timeout = PrimeFaces.queueTask(function() {
             $this._hide();
         }, this.cfg.hideDelay);
     },
@@ -544,7 +544,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
      */
     getTarget: function() {
         if (this.cfg.delegate)
-            return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+            return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
         else
             return this.target;
     }

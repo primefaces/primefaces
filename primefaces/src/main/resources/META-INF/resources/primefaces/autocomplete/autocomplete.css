@@ -153,6 +153,7 @@
 
 .ui-autocomplete-empty-message {
     padding:3px 5px;
+    width: 100%;
 }
 
 .ui-autocomplete-panel .ui-autocomplete-group {

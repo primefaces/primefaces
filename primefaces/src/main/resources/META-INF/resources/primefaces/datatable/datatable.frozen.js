@@ -697,7 +697,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                 //footer
                 footerTable.width(footerTableWidth + change);
 
-                setTimeout(function() {
+                PrimeFaces.queueTask(function() {
                     columnHeader.width(newWidth);
 
                     if($this.hasColumnGroup) {
@@ -708,7 +708,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
                         theadClone.find(PrimeFaces.escapeClientId(columnHeader.attr('id') + '_clone')).width(newWidth);     //body
                         footerCols.eq(colIndex).width(newWidth);                                                            //footer
                     }
-                }, 1);
+                });
 
 
             }

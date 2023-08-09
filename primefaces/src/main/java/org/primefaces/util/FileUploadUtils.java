@@ -37,7 +37,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -66,9 +65,9 @@ public class FileUploadUtils {
     private FileUploadUtils() {
     }
 
-    public static String getValidFilename(String filename) {
+    public static String requireValidFilename(String filename) {
         if (LangUtils.isBlank(filename)) {
-            return null;
+            throw new FacesException("Filename cannot be empty or null");
         }
 
         if (isSystemWindows()) {
@@ -96,7 +95,7 @@ public class FileUploadUtils {
         return name;
     }
 
-    public static String getValidFilePath(String filePath) throws ValidationException {
+    public static String requireValidFilePath(String filePath) throws ValidationException {
         if (LangUtils.isBlank(filePath)) {
             throw new FacesException("Path can not be the empty string or null");
         }
@@ -401,5 +400,9 @@ public class FileUploadUtils {
         FileUploadChunkDecoder<T> chunkDecoder = getFileUploadChunkDecoder(request);
         String fileKey = chunkDecoder.generateFileInfoKey(request);
         return Paths.get(chunkDecoder.getUploadDirectory(request), fileKey);
+    }
+
+    public static <T extends HttpServletRequest> String getWebkitRelativePath(T request) {
+        return request.getParameter("X-File-Webkit-Relative-Path");
     }
 }

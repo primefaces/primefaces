@@ -35,16 +35,15 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.*;
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
+import org.primefaces.expression.SearchExpressionUtils;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -160,7 +159,7 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(tree.getRowNode());
             }
             else {
-                Tree otherTree = (Tree) SearchExpressionFacade.resolveComponent(context, context.getViewRoot(), dragSource);
+                Tree otherTree = (Tree) SearchExpressionUtils.contextlessResolveComponent(context, context.getViewRoot(), dragSource);
                 otherTree.setRowKey(otherTree.getValue(), rowKey);
                 dragNodeList.add(otherTree.getRowNode());
             }
@@ -436,7 +435,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Tree.FILTER_CLASS, null);
-        writer.writeAttribute(HTML.ARIA_LABEL, MessageFactory.getMessage(InputRenderer.ARIA_FILTER), null);
         writer.endElement("input");
 
         writer.startElement("span", null);

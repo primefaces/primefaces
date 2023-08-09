@@ -66,7 +66,7 @@ public class FileUploadFilter implements Filter {
 
         if (uploader == null || "auto".equals(uploader)) {
             PrimeEnvironment environment = new StartupPrimeEnvironment();
-            bypass = environment.isAtLeastJsf22();
+            bypass = true; // default since JSF 2.2
         }
         else if ("native".equals(uploader)) {
             bypass = true;

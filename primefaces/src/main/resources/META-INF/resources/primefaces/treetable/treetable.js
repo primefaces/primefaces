@@ -257,6 +257,16 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.bindChangeFilter(filter);
             }
         });
+        // ARIA labels for filters
+        filterColumns.each(function() {
+            var filterColumn = $(this);
+            var filter = filterColumn.find(':input');
+            var title = filterColumn.find('.ui-column-title')
+
+            if (filter && title) {
+                filter.attr('aria-label', PrimeFaces.getLocaleLabel('filter') + " " + title.text());
+            }
+        });
     },
 
     /**
@@ -350,7 +360,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 clearTimeout($this.filterTimeout);
             }
 
-            $this.filterTimeout = setTimeout(function() {
+            $this.filterTimeout = PrimeFaces.queueTask(function() {
                 $this.filter();
                 $this.filterTimeout = null;
             },
@@ -689,7 +699,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 $this.stickyContainer.hide();
-                $this.resizeTimeout = setTimeout(function() {
+                $this.resizeTimeout = PrimeFaces.queueTask(function() {
                     $this.stickyContainer.css('left', orginTableContent.offset().left + 'px');
                     $this.stickyContainer.width(table.outerWidth());
                     $this.stickyContainer.show();

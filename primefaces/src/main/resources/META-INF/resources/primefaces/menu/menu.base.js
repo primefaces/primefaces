@@ -54,7 +54,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g,"\\:");
 
-        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
+        this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.trigger);
 
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);

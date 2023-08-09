@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
@@ -129,11 +128,11 @@ public interface ColumnAware {
                     }
                 }
             }
-            else if (child.getClass().getName().endsWith("UIRepeat")) {
+            else if (ComponentUtils.isUIRepeat(child)) {
                 VisitContext visitContext = VisitContext.createVisitContext(context, null,
                         ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
                 child.visitTree(visitContext, (ctx, target) -> {
-                    if (target.getClass().getName().endsWith("UIRepeat")) {
+                    if (ComponentUtils.isUIRepeat(target)) {
                         return VisitResult.ACCEPT;
                     }
 
@@ -165,17 +164,34 @@ public interface ColumnAware {
         if (cg == null || cg.getChildCount() == 0) {
             return false;
         }
-        for (UIComponent component : cg.getChildren()) {
-            if (!(component instanceof Row)) {
-                continue;
-            }
-            Row row = (Row) component;
-            if (skipUnrendered && !row.isRendered()) {
-                continue;
-            }
+        for (UIComponent child : cg.getChildren()) {
+            if (ComponentUtils.isUIRepeat(child)) {
+                VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                        ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+                child.visitTree(visitContext, (ctx, target) -> {
+                    if (ComponentUtils.isUIRepeat(child)) {
+                        return VisitResult.ACCEPT;
+                    }
 
-            if (!callback.test(row)) {
-                return false;
+                    if (target instanceof Row) {
+                        Row row = (Row) target;
+                        if (!callback.test(row)) {
+                            return VisitResult.COMPLETE;
+                        }
+                    }
+
+                    return VisitResult.REJECT;
+                });
+            }
+            else if (child instanceof Row) {
+                Row row = (Row) child;
+                if (skipUnrendered && !row.isRendered()) {
+                    continue;
+                }
+
+                if (!callback.test(row)) {
+                    return false;
+                }
             }
         }
         return true;

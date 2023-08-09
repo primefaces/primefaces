@@ -30,8 +30,6 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
-import org.primefaces.util.MessageFactory;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -74,12 +72,10 @@ public class HeaderRowRenderer extends CoreRenderer {
 
     protected void encodeToggleIcon(FacesContext context, boolean expanded) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER);
 
         writer.startElement("a", null);
         writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
         writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
-        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         writer.writeAttribute("href", "#", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", expanded ? DataTable.ROW_GROUP_TOGGLER_OPEN_ICON_CLASS : DataTable.ROW_GROUP_TOGGLER_CLOSED_ICON_CLASS, null);

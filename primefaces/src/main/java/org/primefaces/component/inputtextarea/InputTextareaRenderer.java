@@ -34,7 +34,7 @@ import javax.faces.event.PhaseId;
 
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.event.AutoCompleteEvent;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -122,7 +122,7 @@ public class InputTextareaRenderer extends InputRenderer {
                 .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
 
         if (counter != null) {
-            UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputTextarea, counter);
+            UIComponent counterComponent = SearchExpressionUtils.contextlessResolveComponent(context, inputTextarea, counter);
 
             wb.attr("counter", counterComponent.getClientId(context))
                     .attr("counterTemplate", inputTextarea.getCounterTemplate(), null)

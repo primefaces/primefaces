@@ -30,6 +30,8 @@ public interface UploadedFile {
 
     String getFileName();
 
+    String getWebkitRelativePath();
+
     InputStream getInputStream() throws IOException;
 
     byte[] getContent();

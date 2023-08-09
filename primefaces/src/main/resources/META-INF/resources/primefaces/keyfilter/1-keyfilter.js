@@ -31,7 +31,7 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
     init : function(cfg) {
         this._super(cfg);
 
-        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+        this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.target);
 
         if (this.target.is(':input')) {
             this.applyKeyFilter(this.target, cfg);

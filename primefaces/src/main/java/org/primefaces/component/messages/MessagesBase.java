@@ -23,28 +23,20 @@
  */
 package org.primefaces.component.messages;
 
-import javax.faces.component.UIMessages;
-
-import org.primefaces.component.api.UINotification;
+import org.primefaces.component.api.UINotifications;
 
 
-public abstract class MessagesBase extends UIMessages implements UINotification {
+public abstract class MessagesBase extends UINotifications {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MessagesRenderer";
 
     public enum PropertyKeys {
-
-        escape,
-        severity,
         closable,
         style,
         styleClass,
-        showIcon,
-        forType,
-        forIgnores,
-        skipDetailIfEqualsSummary
+        showIcon
     }
 
     public MessagesBase() {
@@ -54,23 +46,6 @@ public abstract class MessagesBase extends UIMessages implements UINotification 
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
-
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
     }
 
     public boolean isClosable() {
@@ -103,30 +78,5 @@ public abstract class MessagesBase extends UIMessages implements UINotification 
 
     public void setShowIcon(boolean showIcon) {
         getStateHelper().put(PropertyKeys.showIcon, showIcon);
-    }
-
-    public String getForType() {
-        return (String) getStateHelper().eval(PropertyKeys.forType, null);
-    }
-
-    public void setForType(String forType) {
-        getStateHelper().put(PropertyKeys.forType, forType);
-    }
-
-    public String getForIgnores() {
-        return (String) getStateHelper().eval(PropertyKeys.forIgnores, null);
-    }
-
-    public void setForIgnores(String forIgnores) {
-        getStateHelper().put(PropertyKeys.forIgnores, forIgnores);
-    }
-
-    @Override
-    public boolean isSkipDetailIfEqualsSummary() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
-    }
-
-    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
-        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
     }
 }

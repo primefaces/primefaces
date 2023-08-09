@@ -104,10 +104,8 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         markup += '<div role="alert" class="ui-growl-item">';
         markup += '<div class="ui-growl-icon-close ui-icon ui-icon-closethick" style="display:none"></div>';
         markup += '<span class="ui-growl-image ui-growl-image-' + msg.severity + '" ></span>';
-        if (msg.severityText) {
-            // GitHub #5153 for screen readers
-            markup += '<span class="ui-growl-severity ui-helper-hidden-accessible">' + msg.severityText + '</span>';
-        }
+        // GitHub #5153 for screen readers
+        markup += '<span class="ui-growl-severity ui-helper-hidden-accessible">' + PrimeFaces.getAriaLabel('messages.'+msg.severity.toUpperCase()) + '</span>';
         markup += '<div class="ui-growl-message">';
         markup += '<span class="ui-growl-title"></span>';
         markup += '<p></p>';
@@ -164,11 +162,13 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //remove message on click of close icon
-        message.find('div.ui-growl-icon-close').on("click", function() {
+        var closeIcon = message.find('div.ui-growl-icon-close');
+        closeIcon.attr('aria-label', PrimeFaces.getAriaLabel('close'));
+        closeIcon.on("click", function() {
             $this.removeMessage(message);
 
             //clear timeout if removed manually
-            if(!sticky) {
+            if (!sticky) {
                 clearTimeout(message.data('timeout'));
             }
         });
@@ -200,7 +200,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     setRemovalTimeout: function(message) {
         var $this = this;
 
-        var timeout = setTimeout(function() {
+        var timeout = PrimeFaces.queueTask(function() {
             $this.removeMessage(message);
         }, this.cfg.life);
 

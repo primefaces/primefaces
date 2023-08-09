@@ -65,8 +65,6 @@ public class ComponentUtils {
     public static final Lazy<Set<VisitHint>> VISIT_HINTS_SKIP_ITERATION = new Lazy<>(() ->
             Collections.unmodifiableSet(EnumSet.of(VisitHint.SKIP_ITERATION)));
 
-    public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
-
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
 
@@ -365,13 +363,7 @@ public class ComponentUtils {
     }
 
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf21()) {
-            return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
-        }
-        else {
-            Boolean skipIterationHint = (Boolean) visitContext.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
-            return skipIterationHint != null && skipIterationHint;
-        }
+        return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
     }
 
     public static <T extends Renderer> T getUnwrappedRenderer(FacesContext context, String family, String rendererType) {
@@ -604,7 +596,7 @@ public class ComponentUtils {
     public static boolean isNestedWithinIterator(UIComponent component) {
         UIComponent parent = component;
         while (null != (parent = parent.getParent())) {
-            if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+            if (parent instanceof javax.faces.component.UIData || isUIRepeat(parent)
                     || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
                 return true;
             }
@@ -741,5 +733,9 @@ public class ComponentUtils {
     public static boolean isDisabledOrReadonly(UIInput component) {
         return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")))
                 || Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+    }
+
+    public static boolean isUIRepeat(UIComponent component) {
+        return component.getClass().getName().endsWith("UIRepeat");
     }
 }
