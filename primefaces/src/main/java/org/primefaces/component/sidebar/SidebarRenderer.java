@@ -37,6 +37,11 @@ import org.primefaces.util.WidgetBuilder;
 public class SidebarRenderer extends CoreRenderer {
 
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Sidebar sidebar = (Sidebar) component;
 
