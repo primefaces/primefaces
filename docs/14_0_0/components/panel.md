@@ -25,7 +25,7 @@ binding | null | Object | An el expression that maps to a server side UIComponen
 header | null | String | Header text
 footer | null | String | Footer text
 toggleable | false | Boolean | Makes panel toggleable.
-toggleSpeed | 1000 | Integer | Speed of toggling in milliseconds
+toggleSpeed | 500 | Integer | Speed of toggling in milliseconds
 collapsed | false | Boolean | Renders a toggleable panel as collapsed.
 style | null | String | Style of the panel
 styleClass | null | String | Style class of the panel

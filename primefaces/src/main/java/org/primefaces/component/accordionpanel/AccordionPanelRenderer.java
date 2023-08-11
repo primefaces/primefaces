@@ -155,6 +155,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         }
 
         wb.attr("multiple", multiple, false)
+                .attr("toggleSpeed", acco.getToggleSpeed())
                 .callback("onTabChange", "function(panel)", acco.getOnTabChange())
                 .callback("onTabShow", "function(panel)", acco.getOnTabShow())
                 .callback("onTabClose", "function(panel)", acco.getOnTabClose())
