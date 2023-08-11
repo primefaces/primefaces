@@ -851,7 +851,7 @@
             var scrollBehavior = 'scroll-behavior';
             var target = $('html,body');
             var sbValue = target.css(scrollBehavior);
-            var animationDuration = duration || 1000;
+            var animationDuration = duration || 400;
             target.css(scrollBehavior, 'auto');
             target.animate(
                     { scrollTop: offset.top, scrollLeft: offset.left },
