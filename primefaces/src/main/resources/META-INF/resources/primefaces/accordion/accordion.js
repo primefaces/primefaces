@@ -100,16 +100,21 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 element.removeClass('ui-state-hover');
             }
         }).on("click", function(e) {
-            var element = $(this);
-            if(!element.hasClass('ui-state-disabled')) {
-                var tabIndex = $this.headers.index(element);
+            var header = $(this);
+            if(!header.hasClass('ui-state-disabled')) {
+                var tabIndex = $this.headers.index(header);
 
-                if(element.hasClass('ui-state-active')) {
+                if(header.hasClass('ui-state-active')) {
                     $this.unselect(tabIndex);
                 }
                 else {
                     $this.select(tabIndex);
-                    $(this).trigger('focus.accordion');
+                    header.trigger('focus.accordion');
+                    this.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center" ,
+                        inline: "center"
+                    });
                 }
             }
 
