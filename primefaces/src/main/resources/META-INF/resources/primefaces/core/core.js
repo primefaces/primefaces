@@ -837,14 +837,14 @@
                         clearInterval(window.downloadMonitor);
                         PrimeFaces.setCookie(cookieName, null, { path: cookiePath });
                     }
-                }, 1000);
+                }, );
             }
         },
 
         /**
          * Scrolls to a component with given client id
          * @param {string} id The ID of an element to scroll to.
-         * @param {string | number | undefined} duration string or number determining how long the animation will run. Default to 1000
+         * @param {string | number | undefined} duration string or number determining how long the animation will run. Default to 400
          */
         scrollTo: function(id, duration) {
             var offset = $(PrimeFaces.escapeClientId(id)).offset();
