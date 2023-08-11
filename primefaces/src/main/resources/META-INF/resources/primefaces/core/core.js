@@ -842,18 +842,20 @@
         },
 
         /**
-         *  Scrolls to a component with given client id
+         * Scrolls to a component with given client id
          * @param {string} id The ID of an element to scroll to.
+         * @param {string | number | undefined} duration string or number determining how long the animation will run. Default to 400
          */
-        scrollTo: function(id) {
+        scrollTo: function(id, duration) {
             var offset = $(PrimeFaces.escapeClientId(id)).offset();
             var scrollBehavior = 'scroll-behavior';
             var target = $('html,body');
             var sbValue = target.css(scrollBehavior);
+            var animationDuration = duration || 400;
             target.css(scrollBehavior, 'auto');
             target.animate(
                     { scrollTop: offset.top, scrollLeft: offset.left },
-                    1000,
+                    animationDuration,
                     'easeInCirc',
                     function(){ target.css(scrollBehavior, sbValue) }
             );
