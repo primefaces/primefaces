@@ -750,6 +750,14 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Sets toggle animation speed in milliseconds. Default is 500.]]>
+            </description>
+            <name>toggleSpeed</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -10433,7 +10441,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Sets toogle animation speed in milliseconds. Default is 500.]]>
+                <![CDATA[Sets toggle animation speed in milliseconds. Default is 500.]]>
             </description>
             <name>toggleSpeed</name>
             <required>false</required>

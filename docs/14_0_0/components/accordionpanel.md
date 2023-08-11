@@ -38,6 +38,7 @@ AccordionPanel is a container component that displays content in stacked format.
 | styleClass    | null    | String     | Style class of the container element.
 | tabController | null    | MethodExpr | Server side listener to decide whether a tab change or tab close should be allowed.
 | tabindex      | 0       | String     | Position of the headers in the tabbing order.
+| toggleSpeed   | 500     | Integer    | Speed of toggling in milliseconds
 | widgetVar     | null    | String     | Name of the client side widget.
 | multiViewState| false   | Boolean    | Whether to keep Panel state across views, defaults to false.
 
