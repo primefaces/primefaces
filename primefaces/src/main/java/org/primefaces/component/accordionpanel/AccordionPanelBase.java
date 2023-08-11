@@ -53,6 +53,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         tabindex,
         tabController,
         toggleSpeed,
+        scrollIntoView,
         multiViewState
     }
 
@@ -177,5 +178,13 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public void setMultiViewState(boolean multiViewState) {
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
+
+    public String getScrollIntoView() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollIntoView, null);
+    }
+
+    public void setScrollIntoView(String scrollIntoView) {
+        getStateHelper().put(PropertyKeys.scrollIntoView, scrollIntoView);
     }
 }
