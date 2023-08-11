@@ -26,6 +26,7 @@
  * @prop {boolean} cfg.rtl `true` if the current text direction `rtl` (right-to-left); or `false` otherwise.
  * @prop {boolean} cfg.multiViewState Whether to keep AccordionPanel state across views.
  * @prop {number} cfg.toggleSpeed Speed of toggling in milliseconds.
+ * @prop {number} cfg.scrollIntoView Should the tab scroll into view. One of start, center, end, nearest, or NULL if disabled.
  */
 PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
@@ -101,16 +102,27 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
                 element.removeClass('ui-state-hover');
             }
         }).on("click", function(e) {
-            var element = $(this);
-            if (!element.hasClass('ui-state-disabled')) {
-                var tabIndex = $this.headers.index(element);
+            var header = $(this);
+            if (!header.hasClass('ui-state-disabled')) {
+                var tabIndex = $this.headers.index(header);
 
-                if (element.hasClass('ui-state-active')) {
+                if (header.hasClass('ui-state-active')) {
                     $this.unselect(tabIndex);
                 }
                 else {
                     $this.select(tabIndex);
-                    $(this).trigger('focus.accordion');
+                    header.trigger('focus.accordion');
+
+                    if ($this.cfg.scrollIntoView) {
+                        // 300 ms delay is so the content actually exists that we are trying to scroll to
+                        PrimeFaces.queueTask(function() {
+                            header.next()[0].scrollIntoView({
+                                behavior: "smooth",
+                                block: $this.cfg.scrollIntoView,
+                                inline: "center"
+                            });
+                        }, 300);
+                    }
                 }
             }
 
