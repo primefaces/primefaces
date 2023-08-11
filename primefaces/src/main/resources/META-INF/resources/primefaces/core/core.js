@@ -837,7 +837,7 @@
                         clearInterval(window.downloadMonitor);
                         PrimeFaces.setCookie(cookieName, null, { path: cookiePath });
                     }
-                }, );
+                }, 1000);
             }
         },
 
