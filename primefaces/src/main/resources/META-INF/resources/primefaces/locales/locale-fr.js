@@ -109,7 +109,7 @@ PrimeFaces.locales['fr'] = {
         "cancelEdit": "Annule l'édition",
         "listView": "Vue en liste",
         "gridView": "Vue en grille",
-        "slide": "Ascenceur",
+        "slide": "Diapositive",
         "slideNumber": "{slideNumber}",
         "zoomImage": "Zoomer l'image",
         "zoomIn": "Zoomer",
