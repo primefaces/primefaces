@@ -25202,6 +25202,14 @@
             <required>false</required>
             <type>boolean</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Comma separated list of column style classes.]]>
+            </description>
+            <name>columnClasses</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <description>
