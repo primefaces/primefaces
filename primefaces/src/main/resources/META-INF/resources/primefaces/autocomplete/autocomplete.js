@@ -1182,20 +1182,23 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 if ($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
                     return;
                 }
-                var itemDisplayMarkup = '<li data-token-value="' + PrimeFaces.escapeHTML(itemValue);
+
+                var itemLabelEscaped = PrimeFaces.escapeHTML(itemLabel);
+                var itemValueEscaped = PrimeFaces.escapeHTML(itemValue);
+                var itemDisplayMarkup = '<li data-token-value="' + itemValueEscaped;
                 itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
                 itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" '
-                itemDisplayMarkup += 'role="option" aria-label="' + PrimeFaces.escapeHTML(itemLabel) + '" ';
+                itemDisplayMarkup += 'role="option" aria-label="' + itemLabelEscaped + '" ';
                 itemDisplayMarkup += 'aria-selected="true">';
                 itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" aria-hidden="true"></span>';
-                itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + PrimeFaces.escapeHTML(itemLabel) + '</span></li>';
+                itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + itemLabelEscaped + '</span></li>';
 
                 $this.inputContainer.before(itemDisplayMarkup);
                 $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
                 $this.input.val('');
                 $this.input.removeAttr('placeholder');
 
-                $this.hinput.append('<option value="' + PrimeFaces.escapeHTML(itemValue) + '" selected="selected"></option>');
+                $this.hinput.append('<option value="' + itemValueEscaped + '" selected="selected"></option>');
                 if ($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
                     $this.input.css('display', 'none').trigger("blur");
                     $this.disableDropdown();

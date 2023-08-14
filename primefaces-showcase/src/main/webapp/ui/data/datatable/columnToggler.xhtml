@@ -46,7 +46,10 @@
                     </div>
                 </f:facet>
 
-                <p:column headerText="Code">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Code" title="Code"/>
+                    </f:facet>
                     <h:outputText value="#{product.code}" />
                 </p:column>
 

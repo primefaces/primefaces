@@ -52,6 +52,8 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         dir,
         tabindex,
         tabController,
+        toggleSpeed,
+        scrollIntoView,
         multiViewState
     }
 
@@ -136,6 +138,7 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         getStateHelper().put(PropertyKeys.multiple, multiple);
     }
 
+    @Override
     public String getDir() {
         return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
@@ -160,6 +163,14 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         getStateHelper().put(PropertyKeys.tabController, tabController);
     }
 
+    public int getToggleSpeed() {
+        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
+    }
+
+    public void setToggleSpeed(int toggleSpeed) {
+        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
+    }
+
     @Override
     public boolean isMultiViewState() {
         return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
@@ -167,5 +178,13 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public void setMultiViewState(boolean multiViewState) {
         getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
+
+    public String getScrollIntoView() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollIntoView, null);
+    }
+
+    public void setScrollIntoView(String scrollIntoView) {
+        getStateHelper().put(PropertyKeys.scrollIntoView, scrollIntoView);
     }
 }

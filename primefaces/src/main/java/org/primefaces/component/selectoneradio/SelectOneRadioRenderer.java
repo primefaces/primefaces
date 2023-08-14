@@ -96,6 +96,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = radio.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, radio);
+        String columnClassesValue = radio.getColumnClasses();
+        String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
         String style = radio.getStyle();
         boolean flex = ComponentUtils.isFlex(context, radio);
         if (flex) {
@@ -146,10 +148,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                     writer.writeAttribute("class", GridLayoutUtils.getFlexGridClass(flex), null);
                 }
 
-                writer.startElement("div", null);
-                if (!lineDirection) {
-                    writer.writeAttribute("class", GridLayoutUtils.getColumnClass(flex, columns), null);
+                String columnClass = (colMod < columnClasses.length) ? columnClasses[colMod].trim() : "";
+                if (!columnClass.contains("md-") && !columnClass.contains("col-") && !lineDirection) {
+                    columnClass += (!"".equals(columnClass) ? " " : "") + GridLayoutUtils.getFlexColumnClass(columns);
                 }
+
+                writer.startElement("div", null);
+                writer.writeAttribute("class", columnClass, null);
                 writer.writeAttribute("role", "radio", null);
                 writer.writeAttribute(HTML.ARIA_CHECKED, Boolean.toString(selected), null);
                 encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);

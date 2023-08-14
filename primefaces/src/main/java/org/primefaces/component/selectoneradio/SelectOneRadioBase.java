@@ -39,7 +39,8 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
         widgetVar,
         columns,
         unselectable,
-        flex
+        flex,
+        columnClasses
     }
 
     public SelectOneRadioBase() {
@@ -82,5 +83,13 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
 
     public void setFlex(boolean flex) {
         getStateHelper().put(PropertyKeys.flex, flex);
+    }
+
+    public String getColumnClasses() {
+        return (String) getStateHelper().eval(PropertyKeys.columnClasses, null);
+    }
+
+    public void setColumnClasses(String columnClasses) {
+        getStateHelper().put(PropertyKeys.columnClasses, columnClasses);
     }
 }

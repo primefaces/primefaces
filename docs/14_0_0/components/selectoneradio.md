@@ -45,6 +45,7 @@ tabindex | null | String | Specifies the tab order of element in tab navigation.
 unselectable | false | Boolean | Unselectable mode when true clicking a radio again will clear the selection. Default false.
 hideNoSelectionOption | false | Boolean  | Flag indicating that, if this component is activated by the user, The "no selection option", if any, must be hidden.
 readonly | false | Boolean | Flag indicating that this input element will prevent changes by the user.
+columnClasses | null | String | Comma separated list of column style classes.
 
 ## Getting started with SelectOneRadio
 SelectOneRadio usage is same as the standard one.
