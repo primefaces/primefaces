@@ -96,6 +96,7 @@
  * @prop {PrimeFaces.widget.AutoComplete.QueryMode} cfg.queryMode Specifies query mode, whether autocomplete contacts
  * the server.
  * @prop {number} cfg.selectLimit Limits the number of simultaneously selected items. Default is unlimited.
+ * @prop {string} cfg.separator Separator used in itemLabel to allow formatting of itemLabel.
  * @prop {number} cfg.scrollHeight Height of the container with the suggestion items.
  * @prop {boolean} cfg.unique Ensures uniqueness of the selected items.
  * @prop {string} cfg.completeEndpoint REST endpoint for fetching autocomplete suggestions. Takes precedence over the
@@ -1185,13 +1186,24 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                 var itemLabelEscaped = PrimeFaces.escapeHTML(itemLabel);
                 var itemValueEscaped = PrimeFaces.escapeHTML(itemValue);
+                
+                var itemLabelHtml = null;
+                var separator = $this.cfg.separator;
+                if (separator && itemLabelEscaped.includes(separator)) {
+                    itemLabelHtml = "";
+                    var words = itemLabelEscaped.split(delimiter);
+                    for (var i = 0; i < words.length; i++) {
+                        itemLabelHtml += `<span class="ui-autocomplete-token-label-${i + 1}">${words[i]}</span>`;
+                    }
+                }
+
                 var itemDisplayMarkup = '<li data-token-value="' + itemValueEscaped;
                 itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
                 itemDisplayMarkup += (itemStyleClass === '' ? '' : ' ' + itemStyleClass) + '" '
                 itemDisplayMarkup += 'role="option" aria-label="' + itemLabelEscaped + '" ';
                 itemDisplayMarkup += 'aria-selected="true">';
                 itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" aria-hidden="true"></span>';
-                itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + itemLabelEscaped + '</span></li>';
+                itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + (itemLabelHtml == null ? itemLabelEscaped : itemLabelHtml) + '</span></li>';
 
                 $this.inputContainer.before(itemDisplayMarkup);
                 $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();

@@ -1583,6 +1583,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+         <attribute>
+            <description>
+                <![CDATA[A Separator used in itemLabel to allow formatting of itemLabel.]]>
+            </description>
+            <name>separator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
         <attribute>
             <description>
                 <![CDATA[Maximum number of results to be displayed. Default is unlimited.]]>

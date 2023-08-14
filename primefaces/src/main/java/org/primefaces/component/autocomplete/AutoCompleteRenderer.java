@@ -791,6 +791,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("queryMode", ac.getQueryMode())
                 .attr("completeEndpoint", ac.getCompleteEndpoint())
                 .attr("moreText", ac.getMoreText())
+                .attr("separator", ac.getSeparator(), null)
                 .attr("hasFooter", ComponentUtils.shouldRenderFacet(ac.getFacet("footer")));
 
         if (ac.isCache()) {

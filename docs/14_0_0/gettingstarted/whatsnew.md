@@ -11,6 +11,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * Accordion
     * Added `toggleSpeed` for toggle speed animation duration.
     * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport
+    * Added `separator` used in itemLabel to allow formatting of itemLabel.
     
 * Messages
     * Added `clearMessages` widget method to clear all current messages.

@@ -63,6 +63,7 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
         dropdownMode,
         autoHighlight,
         selectLimit,
+        separator,
         inputStyle,
         inputStyleClass,
         groupByTooltip,
@@ -297,6 +298,14 @@ public abstract class AutoCompleteBase extends AbstractPrimeHtmlInputText implem
 
     public void setSelectLimit(int selectLimit) {
         getStateHelper().put(PropertyKeys.selectLimit, selectLimit);
+    }
+
+    public String getSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.separator, null);
+    }
+
+    public void setSeparator(String separator) {
+        getStateHelper().put(PropertyKeys.separator, separator);
     }
 
     public String getInputStyle() {

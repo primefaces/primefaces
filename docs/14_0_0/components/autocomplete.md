@@ -98,6 +98,7 @@ AutoComplete provides live suggestions while an input is being typed.
 | requiredMessage | null | String | Message to be displayed when required field validation fails.
 | scrollHeight | null | Integer | Defines the height of the items viewport.
 | selectLimit | null | Integer | Limits the multiple selection. Default is unlimited.
+| separator | null | String | Separator used in itemLabel to allow formatting of itemLabel.
 | tabindex | null | String | Position of the input field in the tabbing order.
 | type | text | String | Input field type.
 | unique | false | Boolean | Ensures uniqueness of selected items.
@@ -250,6 +251,31 @@ public class AutoCompleteBean {
     private List<Player> selectedPlayers;
     //...
 }
+```
+
+## Custom formatting of itemLabel
+`AutoComplete` supports extended formatting of `itemLabel` using a `separator`.
+If a `separator` is defined and the `itemLabel` contains that `separator`, then the words in `itemLabel` are wrapped in a `span`-element at each separator. Following example demonstrates it.
+
+```xhtml
+<p:autoComplete id="advanced" value="#{autoCompleteBean.selectedPlayers}" completeMethod="#{autoCompleteBean.completePlayer}" separator="|"
+    var="p" itemLabel="#{p.id} | #{p.name}" itemValue="#{p}" converter="player" multiple="true">
+    <p:column style="width:20%;text-align:center">
+        <p:graphicImage value="/images/barca/#{p.photo}"/>
+    </p:column>
+    <p:column style="width:80%">
+        #{p.name} - #{p.number}
+    </p:column>
+</p:autoComplete>
+```
+
+The generated HTML of each `itemLabel` has additional `span` elements that can be used by the user for styling.
+
+```html
+<span class"ui-autocomplete-token-label">
+    <span class="ui-autocomplete-token-label-1">myId</span>
+    <span class="ui-autocomplete-token-label-2">myName</span>
+</span>
 ```
 
 ## Caching
