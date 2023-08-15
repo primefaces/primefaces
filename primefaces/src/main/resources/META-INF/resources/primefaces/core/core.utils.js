@@ -951,7 +951,29 @@ if (!PrimeFaces.utils) {
             }
             // In the case of setTimeout, each task is executed from the event queue, after control is given to the event loop.
             return window.setTimeout(fn, delay);
-        }
+        },
+
+        /**
+         * Killswitch that kills all AJAX requests, running Pollers and IdleMonitors.
+         * @see {@link https://github.com/primefaces/primefaces/issues/10299|GitHub Issue 10299}
+         */
+        killswitch: function() {
+            PrimeFaces.warn("Abort all AJAX requests!");
+            PrimeFaces.ajax.Queue.abortAll();
+
+            // stop all pollers and idle monitors
+            for (item in PrimeFaces.widgets) {
+                widget = PrimeFaces.widgets[item];
+                if (widget instanceof PrimeFaces.widget.Poll) {
+                    PrimeFaces.warn("Stopping Poll");
+                    widget.stop();
+                }
+                if (widget instanceof PrimeFaces.widget.IdleMonitor) {
+                    PrimeFaces.warn("Stopping IdleMonitor");
+                    widget.pause();
+                }
+            }
+        },
     };
 
 }
