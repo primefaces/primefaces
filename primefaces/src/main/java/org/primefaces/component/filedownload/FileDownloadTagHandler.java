@@ -37,14 +37,14 @@ public class FileDownloadTagHandler extends TagHandler {
     private final TagAttribute value;
     private final TagAttribute contentDisposition;
     private final TagAttribute monitorKey;
-    private final TagAttribute cache;
+    private final TagAttribute store;
 
     public FileDownloadTagHandler(TagConfig tagConfig) {
         super(tagConfig);
         value = getRequiredAttribute("value");
         contentDisposition = getAttribute("contentDisposition");
         monitorKey = getAttribute("monitorKey");
-        cache = getAttribute("cache");
+        store = getAttribute("store");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class FileDownloadTagHandler extends TagHandler {
         ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
         ValueExpression contentDispositionVE = null;
         ValueExpression monitorKeyVE = null;
-        ValueExpression cacheVE = null;
+        ValueExpression storeVE = null;
 
         if (contentDisposition != null) {
             contentDispositionVE = contentDisposition.getValueExpression(faceletContext, String.class);
@@ -64,11 +64,11 @@ public class FileDownloadTagHandler extends TagHandler {
         if (monitorKey != null) {
             monitorKeyVE = monitorKey.getValueExpression(faceletContext, String.class);
         }
-        if (cache != null) {
-            cacheVE = cache.getValueExpression(faceletContext, Boolean.class);
+        if (store != null) {
+            storeVE = store.getValueExpression(faceletContext, Boolean.class);
         }
 
         ActionSource actionSource = (ActionSource) parent;
-        actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE, cacheVE));
+        actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE, storeVE));
     }
 }
