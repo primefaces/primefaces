@@ -47,6 +47,9 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
     @FindByParentPartialId(value = "_filter", searchFromRoot = true)
     private WebElement filterInput;
 
+    @FindBy(css = ".ui-selectcheckboxmenu-label")
+    private WebElement label;
+
     @FindBy(css = "input[type='checkbox']")
     private List<WebElement> checkboxes;
 
@@ -59,6 +62,10 @@ public abstract class SelectCheckboxMenu extends AbstractInputComponent {
 
     public WebElement getPanel() {
         return panel;
+    }
+
+    public WebElement getLabel() {
+        return label;
     }
 
     public List<WebElement> getCheckboxes() {

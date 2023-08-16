@@ -58,6 +58,7 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         dynamic,
         labelSeparator,
         emptyLabel,
+        selectedLabel,
         filterNormalize
     }
 
@@ -240,6 +241,14 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public void setEmptyLabel(String emptyLabel) {
         getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
+    }
+
+    public String getSelectedLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.selectedLabel, null);
+    }
+
+    public void setSelectedLabel(String selectedLabel) {
+        getStateHelper().put(PropertyKeys.selectedLabel, selectedLabel);
     }
 
     public boolean isFilterNormalize() {

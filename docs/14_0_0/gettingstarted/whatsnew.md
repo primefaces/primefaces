@@ -14,6 +14,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
+    
+* SelectCheckBoxMenu
+    * Added `selectedLabel` to display a label when items selected similar to `emptyMessage`.
 
 ### PrimeFaces Selenium 
 
