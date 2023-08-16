@@ -676,6 +676,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("updateLabel", menu.isUpdateLabel(), false)
                 .attr("labelSeparator", menu.getLabelSeparator(), ", ")
                 .attr("emptyLabel", menu.getEmptyLabel())
+                .attr("selectedLabel", menu.getSelectedLabel(), null)
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
                 .attr("renderPanelContentOnClient", menu.getVar() == null,  false)

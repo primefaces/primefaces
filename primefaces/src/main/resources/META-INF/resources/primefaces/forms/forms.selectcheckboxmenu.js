@@ -86,6 +86,8 @@
  * the overlay is not rendered on page load to improve performance.
  * @prop {string} cfg.emptyLabel Label to be shown in updateLabel mode when no item is selected. If not set the label is
  * shown.
+ * @prop {string} cfg.selectedLabel Label to be shown in updateLabel mode when one or more items are selected. If not
+ * set the label is shown.
  * @prop {boolean} cfg.filter `true` if the options can be filtered, or `false` otherwise.
  * @prop {PrimeFaces.widget.SelectCheckboxMenu.FilterFunction} cfg.filterFunction A custom filter function that is used
  * when `filterMatchMode` is set to `custom`.
@@ -1205,6 +1207,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         if (checkedItems && checkedItems.length) {
             for (var i = 0; i < checkedItems.length; i++) {
+                if (this.cfg.selectedLabel) {
+                    labelText = this.cfg.selectedLabel;
+                    break;
+                }
+
                 if (i > 0) {
                     labelText = labelText + this.cfg.labelSeparator;
                 }
@@ -1216,8 +1223,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             labelText = this.cfg.emptyLabel || this.defaultLabel || '';
             this.labelContainer.removeClass('ui-state-active');
         }
+        
+        var showLabel = this.cfg.updateLabel && !(this.cfg.multiple && labelText.length > 0);
+        var showSelectedLabel = this.cfg.updateLabel && this.cfg.selectedLabel;
 
-        if (this.cfg.updateLabel && !(this.cfg.multiple && labelText.length > 0)) {
+        if (showLabel || showSelectedLabel) {
              this.label.text(labelText);
              this.labelContainer.attr('title', labelText);
         }

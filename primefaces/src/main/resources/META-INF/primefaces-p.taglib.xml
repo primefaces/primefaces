@@ -12798,7 +12798,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Label to be shown in display mode when value isempty.]]>
+                <![CDATA[Label to be shown in display mode when value is empty.]]>
             </description>
             <name>emptyLabel</name>
             <required>false</required>
@@ -23495,6 +23495,14 @@
                 <![CDATA[Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.]]>
             </description>
             <name>emptyLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Label to be shown in updateLabel mode when one or more items are selected. If not set the label is shown.]]>
+            </description>
+            <name>multipleLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>

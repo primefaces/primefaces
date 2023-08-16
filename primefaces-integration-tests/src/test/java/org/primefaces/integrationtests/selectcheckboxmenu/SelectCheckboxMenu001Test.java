@@ -45,6 +45,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         String value = "London";
         assertSelected(menu, 0);
+        assertLabel(menu, "Cities");
 
         // Act
         menu.selectValue(value);
@@ -52,6 +53,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(menu, 1);
+        assertLabel(menu, "Item(s) Selected");
         WebElement checkbox = menu.getSelectedCheckboxes().get(0);
         assertValue(checkbox, value);
         assertConfiguration(menu.getWidgetConfiguration());
@@ -105,6 +107,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         assertSelected(menu, 0);
+        assertLabel(menu, "Cities");
 
         // Act
         menu.checkAll();
@@ -112,6 +115,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(menu, 9);
+        assertLabel(menu, "Item(s) Selected");
         assertValue(menu.getSelectedCheckboxes().get(0), "Miami");
         assertValue(menu.getSelectedCheckboxes().get(1), "London");
         assertValue(menu.getSelectedCheckboxes().get(2), "Paris");
@@ -132,6 +136,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         menu.checkAll();
         assertSelected(menu, 9);
+        assertLabel(menu, "Item(s) Selected");
 
         // Act
         menu.uncheckAll();
@@ -139,11 +144,16 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertSelected(menu, 0);
+        assertLabel(menu, "Cities");
         assertConfiguration(menu.getWidgetConfiguration());
     }
 
     private void assertSelected(SelectCheckboxMenu menu, int count) {
         Assertions.assertEquals(count, menu.getSelectedCheckboxes().size());
+    }
+
+    private void assertLabel(SelectCheckboxMenu menu, String label) {
+        Assertions.assertEquals(label, menu.getLabel().getText());
     }
 
     private void assertValue(WebElement checkbox, String value) {
