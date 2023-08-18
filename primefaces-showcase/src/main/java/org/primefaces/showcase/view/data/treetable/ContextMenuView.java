@@ -72,4 +72,8 @@ public class ContextMenuView implements Serializable {
 
         selectedNode = null;
     }
+
+    public void viewNode() {
+        // no-op
+    }
 }
