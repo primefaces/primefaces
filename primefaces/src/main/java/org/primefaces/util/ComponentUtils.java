@@ -32,9 +32,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -67,9 +64,6 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
-
-    // regex for finding ID's
-    private static final Pattern ID_PATTERN = Pattern.compile("\\sid=\"(.*?)\"");
 
     private ComponentUtils() {
     }
@@ -631,19 +625,7 @@ public class ComponentUtils {
         String encodedComponent = fsw.toString();
 
         // find all id's to replace
-        Matcher matcher = ID_PATTERN.matcher(encodedComponent);
-
-        // grab all the unique ID's found
-        Set<String> ids = new HashSet<>(5);
-        while (matcher.find()) {
-            String id = matcher.group(1);
-            if (!ids.contains(id)) {
-                ids.add(id);
-                // replace each id with an indexed version
-                String replaceId = id + separator + index;
-                encodedComponent = encodedComponent.replaceAll(id, replaceId);
-            }
-        }
+        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
 
         writer.write(encodedComponent);
     }
