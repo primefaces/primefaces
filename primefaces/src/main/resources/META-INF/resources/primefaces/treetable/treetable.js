@@ -608,8 +608,14 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var targetEvent = cfg.event + '.treetable';
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
-            targetWidget.onRowRightClick(e, $(this));
-            menuWidget.show(e);
+            var isContextMenuDelayed = targetWidget.onRowRightClick(e, $(this), function() {
+                menuWidget.show(e);
+            });
+
+            if (isContextMenuDelayed) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
         });
     },
 
@@ -1014,27 +1020,28 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {JQuery.TriggeredEvent} event The click event that occurred.
      * @param {JQuery} node The node that was clicked.
+     * @param {() => void} [fnShowMenu] Optional callback function invoked when the menu was opened.
      * @return {boolean} true to hide the native browser context menu, false to display it
      */
-    onRowRightClick: function(event, node) {
+    onRowRightClick: function(event, node, fnShowMenu) {
         var selected = node.hasClass('ui-state-highlight'),
             nodeKey = node.attr('data-rk');
 
-        if(this.isCheckboxSelection()) {
-            if(!selected) {
+        if (this.isCheckboxSelection()) {
+            if (!selected) {
                 this.toggleCheckboxNode(node);
             }
         }
         else {
-            if(this.isSingleSelection() || !selected ) {
+            if (this.isSingleSelection() || !selected) {
                 this.unselectAllNodes();
             }
             this.selectNode(node, true);
         }
 
-        this.fireSelectEvent(nodeKey, 'contextMenu');
+        this.fireSelectEvent(nodeKey, 'contextMenu', fnShowMenu);
 
-        if(this.cfg.disabledTextSelection) {
+        if (this.cfg.disabledTextSelection) {
             PrimeFaces.clearSelection();
         }
 
@@ -1046,15 +1053,26 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      * @param {string} nodeKey The key of the node that was selected.
      * @param {string} behaviorEvent Name of the event to fire.
+     * @param {() => void} [fnShowMenu] Optional callback function invoked when the menu was opened.
      */
-    fireSelectEvent: function(nodeKey, behaviorEvent) {
-        if(this.hasBehavior(behaviorEvent)) {
+    fireSelectEvent: function(nodeKey, behaviorEvent, fnShowMenu) {
+        if (this.hasBehavior(behaviorEvent)) {
             var ext = {
-                    params: [{name: this.id + '_instantSelection', value: nodeKey}
-                ]
+                params: [{ name: this.id + '_instantSelection', value: nodeKey }
+                ],
+                oncomplete: function() {
+                    if (typeof fnShowMenu === "function") {
+                        fnShowMenu();
+                    }
+                }
             };
 
             this.callBehavior(behaviorEvent, ext);
+        }
+        else {
+            if (typeof fnShowMenu === "function") {
+                fnShowMenu();
+            }
         }
     },
 
