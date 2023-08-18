@@ -41,7 +41,7 @@
 
                 <p:contextMenu for="products">
                     <p:menuitem value="View" update="productDetail" icon="pi pi-search"
-                                oncomplete="PF('productDialog').show()"/>
+                                oncomplete="PF('productDialog').show()" actionListener="#{dtContextMenuView.viewProduct}"/>
                     <p:menuitem value="Delete" update="products" icon="pi pi-times"
                                 action="#{dtContextMenuView.deleteProduct}"/>
                 </p:contextMenu>

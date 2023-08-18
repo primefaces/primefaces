@@ -69,4 +69,8 @@ public class ContextMenuView implements Serializable {
         products.remove(selectedProduct);
         selectedProduct = null;
     }
+
+    public void viewProduct() {
+        // no-op
+    }
 }
