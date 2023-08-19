@@ -1867,7 +1867,7 @@
             this.panel.off('click.datePicker-clearButton', clearButtonSelector).on('click.datePicker-clearButton', clearButtonSelector, null, this.onClearButtonClick.bind($this));
 
             var dateSelector = '.ui-datepicker-calendar td a';
-            this.panel.off('click.datePicker-date keydown..datePicker-date', dateSelector).on('click.datePicker-date', dateSelector, null, function (event) {
+            this.panel.off('click.datePicker-date keydown.datePicker-date', dateSelector).on('click.datePicker-date', dateSelector, null, function (event) {
                 if ($this.monthsMetadata) {
                     var dayEl = $(this),
                         calendarIndex = dayEl.closest('.ui-datepicker-group').index(),
