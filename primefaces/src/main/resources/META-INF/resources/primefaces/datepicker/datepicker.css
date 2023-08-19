@@ -56,7 +56,7 @@
     min-width: .75em;
 }
 
-.p-datepicker-panel .ui-timepicker > .ui-separator a {
+.p-datepicker-panel .ui-timepicker > .ui-separator button {
     visibility: hidden;
     opacity: 0;
 }
