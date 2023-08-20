@@ -1932,7 +1932,7 @@
                 case 'ArrowUp':
                     // Moves focus to the same day of the previous week.
                     var nextIndex = (currentIndex - 7) % $tabbableElements.length;
-                    if (nextIndex <= 0) {
+                    if (nextIndex < 0) {
                         $this.focusPreviousInterval(event);
                     }
                     else {
@@ -2114,14 +2114,17 @@
             }
         },
 
-        onInputKeyDown: function (event) {
-
-            if (event.key === 'Enter') {
-                this.inputfield.val(this.getValueToRender());
-            }
-
-            if (event.key === 'Escape') {
-                this.onEscapeKey(event);
+        onInputKeyDown: function(event) {
+            switch (event.key) {
+                case 'ArrowDown':
+                case 'Enter':
+                case ' ':
+                    this.inputfield.val(this.getValueToRender());
+                    this.showOverlay();
+                    break;
+                case 'Escape':
+                    this.onEscapeKey(event);
+                    break;
             }
         },
 

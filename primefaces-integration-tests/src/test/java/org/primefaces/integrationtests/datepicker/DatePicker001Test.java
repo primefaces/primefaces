@@ -189,6 +189,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Arrange
         DatePicker datePicker = page.datePicker;
         datePicker.clear();
+        datePicker.hidePanel();
         ComponentUtils.sendKeys(datePicker.getInput(), "02/32/1900");
 
         // Act
@@ -208,6 +209,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Arrange
         DatePicker datePicker = page.datePicker;
         datePicker.clear();
+        datePicker.hidePanel();
         ComponentUtils.sendKeys(datePicker.getInput(), "02/28/1900");
 
         // Act
