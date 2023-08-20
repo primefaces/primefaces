@@ -167,18 +167,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default boolean isColumnFilterable(FacesContext context, UIColumn column) {
         Map<String, FilterMeta> filterBy = getFilterByAsMap();
-        if (filterBy.containsKey(column.getColumnKey())) {
-            return true;
-        }
-
-        // lazy init - happens in cases where the column is initially not rendered
-        FilterMeta f = FilterMeta.of(context, getVar(), column);
-        if (f != null) {
-            filterBy.put(f.getColumnKey(), f);
-        }
-        setFilterByAsMap(filterBy);
-
-        return f != null;
+        return filterBy.containsKey(column.getColumnKey());
     }
 
     default void updateFilterByValuesWithFilterRequest(FacesContext context, Map<String, FilterMeta> filterBy) {
@@ -378,18 +367,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default boolean isColumnSortable(FacesContext context, UIColumn column) {
         Map<String, SortMeta> sortBy = getSortByAsMap();
-        if (sortBy.containsKey(column.getColumnKey())) {
-            return true;
-        }
-
-        // lazy init - happens in cases where the column is initially not rendered
-        SortMeta s = SortMeta.of(context, getVar(), column);
-        if (s != null) {
-            sortBy.put(s.getColumnKey(), s);
-        }
-        setSortByAsMap(sortBy);
-
-        return s != null;
+        return sortBy.containsKey(column.getColumnKey());
     }
 
     default String getSortMetaAsString() {

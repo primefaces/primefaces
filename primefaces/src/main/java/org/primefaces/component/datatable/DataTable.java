@@ -38,11 +38,7 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.CollectionDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.model.IterableDataModel;
-import javax.faces.model.ListDataModel;
+import javax.faces.model.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
@@ -180,12 +176,12 @@ public class DataTable extends DataTableBase {
     private boolean reset = false;
     private List<UIColumn> columns;
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
+    private Map<String, SortMeta> sortBy;
+    private Map<String, FilterMeta> filterBy;
 
     protected enum InternalPropertyKeys {
         defaultFilter,
-        filterByAsMap,
         defaultSort,
-        sortByAsMap,
         visibleColumnsAsMap,
         resizableColumnsAsMap,
         selectedRowKeys,
@@ -1083,22 +1079,28 @@ public class DataTable extends DataTableBase {
 
     @Override
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap, () -> initSortBy(getFacesContext()));
+        if (sortBy == null) {
+            sortBy = initSortBy(getFacesContext());
+        }
+        return sortBy;
     }
 
     @Override
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.sortByAsMap, sortBy);
+        this.sortBy = sortBy;
     }
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap, () -> initFilterBy(getFacesContext()));
+        if (filterBy == null) {
+            filterBy = initFilterBy(getFacesContext());
+        }
+        return filterBy;
     }
 
     @Override
     public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
-        getStateHelper().put(InternalPropertyKeys.filterByAsMap, filterBy);
+        this.filterBy = filterBy;
     }
 
     @Override
@@ -1108,7 +1110,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public boolean isFilterByAsMapDefined() {
-        return getStateHelper().get(InternalPropertyKeys.filterByAsMap) != null;
+        return filterBy != null;
     }
 
     @Override

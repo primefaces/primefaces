@@ -120,6 +120,15 @@ public class TreeTable extends TreeTableBase {
     private List<UIColumn> columns;
     private List<String> filteredRowKeys = new ArrayList<>();
     private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
+    private Map<String, SortMeta> sortBy;
+    private Map<String, FilterMeta> filterBy;
+
+    protected enum InternalPropertyKeys {
+        defaultFilter,
+        defaultSort,
+        columnMeta,
+        width;
+    }
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -542,22 +551,28 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Map<String, SortMeta> getSortByAsMap() {
-        return ComponentUtils.computeIfAbsent(getStateHelper(), InternalPropertyKeys.sortByAsMap.name(), () -> initSortBy(getFacesContext()));
+        if (sortBy == null) {
+            sortBy = initSortBy(getFacesContext());
+        }
+        return sortBy;
     }
 
     @Override
     public void setSortByAsMap(Map<String, SortMeta> sortBy) {
-        getStateHelper().put(InternalPropertyKeys.sortByAsMap.name(), sortBy);
+        this.sortBy = sortBy;
     }
 
     @Override
     public Map<String, FilterMeta> getFilterByAsMap() {
-        return ComponentUtils.eval(getStateHelper(), InternalPropertyKeys.filterByAsMap.name(), () -> initFilterBy(getFacesContext()));
+        if (filterBy == null) {
+            filterBy = initFilterBy(getFacesContext());
+        }
+        return filterBy;
     }
 
     @Override
     public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
-        getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), filterBy);
+        this.filterBy = filterBy;
     }
 
     @Override
@@ -582,7 +597,7 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public boolean isFilterByAsMapDefined() {
-        return getStateHelper().get(InternalPropertyKeys.filterByAsMap.name()) != null;
+        return filterBy != null;
     }
 
     public boolean isMultiSort() {

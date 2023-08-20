@@ -91,15 +91,6 @@ public abstract class TreeTableBase extends UITree implements Widget, ClientBeha
         exportRowTag
     }
 
-    protected enum InternalPropertyKeys {
-        defaultFilter,
-        filterByAsMap,
-        defaultSort,
-        sortByAsMap,
-        columnMeta,
-        width;
-    }
-
     public TreeTableBase() {
         setRendererType(DEFAULT_RENDERER);
     }
