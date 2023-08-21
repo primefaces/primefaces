@@ -25,7 +25,9 @@ package org.primefaces.selenium.component.model.datatable;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.primefaces.selenium.PrimeSelenium;
 
 public class Row {
 
@@ -55,5 +57,19 @@ public class Row {
 
     public Cell getCell(int index) {
         return cells.get(index);
+    }
+
+    public boolean isToggleable() {
+        return (getToggler() != null);
+    }
+
+    public void toggle() {
+        if (isToggleable()) {
+            PrimeSelenium.guardAjax(getToggler()).click();
+        }
+    }
+
+    public WebElement getToggler() {
+        return getCell(0).getWebElement().findElement(By.className("ui-row-toggler"));
     }
 }

@@ -25,7 +25,6 @@ package org.primefaces.selenium.component.model.treetable;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.model.datatable.Cell;
 
 import java.util.Arrays;
@@ -38,17 +37,8 @@ public class Row extends org.primefaces.selenium.component.model.datatable.Row {
         super(webElement, cells);
     }
 
-    public boolean isToggleable() {
-        return (getToggler() != null);
-    }
-
-    public void toggle() {
-        if (isToggleable()) {
-            PrimeSelenium.guardAjax(getToggler()).click();
-        }
-    }
-
-    private WebElement getToggler() {
+    @Override
+    public WebElement getToggler() {
         return getCell(0).getWebElement().findElement(By.className("ui-treetable-toggler"));
     }
 
