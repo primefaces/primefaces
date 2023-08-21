@@ -17,6 +17,7 @@ stream the binary data. FileDownload presents an easier way to do the same.
 | value | null | StreamedContent | A streamed content instance.
 | contentDisposition | attachment | String | Specifies display mode on non-AJAX downloads.
 | monitorKey | null | String | Optional key to support monitoring multiple filedownloads on same page.
+| store | false | Boolean | Controls the `no-store` attribute on the cache control header. Default is to include `no-store`.
 
 ## Getting started with FileDownload
 A user command action is required to trigger the file-download process.
@@ -72,6 +73,10 @@ Please see our core documentation about it [Dynamic Content Streaming / Renderin
 On regular (non-AJAX) downloads, by default, content is displayed as an `attachment` with a download dialog box,
 another alternative is the `inline` mode, in this case browser will try to open the file internally without a prompt.
 Note that content disposition is not part of the http standard, although it is widely implemented.
+
+## Browser Caching
+Most of the time you want to leave store="false" which is the default to not cache the results.  However, in the case of PDF Downloads there have
+been issues with some browser like Chrome/Edge. See: https://github.com/primefaces/primefaces/issues/10251
 
 ## Monitor Status
 When fileDownload is used without AJAX, ajaxStatus cannot apply. Still PrimeFaces provides a feature
