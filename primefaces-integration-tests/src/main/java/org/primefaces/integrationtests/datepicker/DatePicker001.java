@@ -40,9 +40,11 @@ public class DatePicker001 implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private LocalDate localDate;
+    private LocalDate localDateEditable;
 
     @PostConstruct
     public void init() {
         localDate = LocalDate.now();
+        localDateEditable = LocalDate.now();
     }
 }

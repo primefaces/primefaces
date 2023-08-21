@@ -26,7 +26,7 @@
                 <p:column headerText="last login notBetween" field="lastLoginDateTime" filterMatchMode="notBetween">
                     <f:facet name="filter">
                         <p:datePicker selectionMode="range" onchange="PF('wgtTable').filter()" id="lastLoginDateTimeFilter"
-                                      pattern="yyyy-MM-dd" rangeSeparator="-">
+                                      pattern="yyyy-MM-dd" rangeSeparator="-" showOnFocus="false">
                             <f:convertDateTime type="localDateTime"/>
                         </p:datePicker>
                     </f:facet>

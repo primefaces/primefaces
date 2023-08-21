@@ -63,6 +63,7 @@
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input {
     text-align: center;
+    -moz-appearance: textfield !important;
 }
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-millisecond-picker input {

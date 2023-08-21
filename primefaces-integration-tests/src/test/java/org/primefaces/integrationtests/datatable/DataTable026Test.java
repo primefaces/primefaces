@@ -41,6 +41,7 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.SelectManyMenu;
+import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 public class DataTable026Test extends AbstractDataTableTest {
@@ -236,7 +237,8 @@ public class DataTable026Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
-        page.birthdateRangeFilter.getInput().sendKeys("1/1/1970 - 1/5/1970");
+        page.birthdateRangeFilter.clear();
+        ComponentUtils.sendKeys(page.birthdateRangeFilter.getInput(), "1/1/1970 - 1/5/1970");
         PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -256,7 +258,8 @@ public class DataTable026Test extends AbstractDataTableTest {
         DataTable dataTable = page.dataTable;
 
         // Act
-        page.birthdateRangeFilter.getInput().sendKeys("12/25/1969 - 1/3/1970");
+        page.birthdateRangeFilter.clear();
+        ComponentUtils.sendKeys(page.birthdateRangeFilter.getInput(), "12/25/1969 - 1/3/1970");
         PrimeSelenium.guardAjax(page.birthdateRangeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
