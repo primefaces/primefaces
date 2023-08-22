@@ -21,35 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component.model.treetable;
+package org.primefaces.integrationtests.datatable;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.component.model.datatable.Cell;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Arrays;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class Row extends org.primefaces.selenium.component.model.datatable.Row {
-    public Row(WebElement webElement, List<Cell> cells) {
-        super(webElement, cells);
+@Named
+@ViewScoped
+@Data
+public class DataTable041 implements Serializable {
+
+    private List<Car> cars;
+
+    @PostConstruct
+    public void init() {
+        cars = new ArrayList<>();
+        cars.add(new Car(1, "Entry_1", 1000d));
+        cars.add(new Car(2, "Entry_2", 1500d));
+        cars.add(new Car(3, "Entry_3", 2000d));
+        cars.add(new Car(4, "Entry_4", 2500d));
+        cars.add(new Car(5, "Entry_5", 3000d));
     }
 
-    @Override
-    public WebElement getToggler() {
-        return getCell(0).getWebElement().findElement(By.className("ui-treetable-toggler"));
-    }
+    @Getter
+    @Setter
+    public static class Car implements Serializable {
+        private Integer number;
+        private String name;
+        private Double price;
 
-    public int getLevel() {
-        String cssClasses = getWebElement().getAttribute("class");
-        Optional<String> levelClassOpt = Arrays.stream(cssClasses.split(" ")).filter(c -> c.startsWith("ui-node-level")).findFirst();
-        if (levelClassOpt.isPresent()) {
-            String levelClass = levelClassOpt.get();
-            return Integer.parseInt(levelClass.replace("ui-node-level-", ""));
+        public Car() {
         }
-        else {
-            return -1;
+
+        public Car(Integer number, String name, Double price) {
+            this.number = number;
+            this.name = name;
+            this.price = price;
         }
     }
 }

@@ -24,6 +24,7 @@
 package org.primefaces.selenium.component;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractTable;
 import org.primefaces.selenium.component.model.datatable.Cell;
@@ -39,11 +40,22 @@ public abstract class DataTable extends AbstractTable<Row> {
 
     public List<Row> getRows() {
         return getRowsWebElement().stream()
-                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message"))
+                .filter(rowElt -> !PrimeSelenium.hasCssClass(rowElt, "ui-datatable-empty-message")
+                        && !PrimeSelenium.hasCssClass(rowElt, "ui-expanded-row-content"))
                 .map(rowElt -> {
                     List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
                     return new Row(rowElt, cells);
                 }).collect(Collectors.toList());
+    }
+
+    public WebElement getExpandedRow(int index) {
+        return getExpandedRows().get(index);
+    }
+
+    public List<WebElement> getExpandedRows() {
+        return getRowsWebElement().stream()
+                .filter(rowElt -> PrimeSelenium.hasCssClass(rowElt, "ui-expanded-row-content"))
+                .collect(Collectors.toList());
     }
 
     @Override
