@@ -21,35 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.selenium.component.model.treetable;
+package org.primefaces.integrationtests.datatable;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.primefaces.selenium.component.model.datatable.Cell;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.FindBy;
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.component.DataTable;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Row extends org.primefaces.selenium.component.model.datatable.Row {
-    public Row(WebElement webElement, List<Cell> cells) {
-        super(webElement, cells);
+public class Datatable041Test extends AbstractPrimePageTest {
+
+    @Test
+    public void testRowExpansion(Page page) {
+        // Act
+        page.dataTable.getRow(0).toggle();
+        page.dataTable.getRow(1).toggle();
+        page.dataTable.getRow(2).toggle();
+        page.dataTable.getRow(3).toggle();
+        page.dataTable.getRow(4).toggle();
+
+        // Assert
+        assertEquals(5, page.dataTable.getExpandedRows().size());
+        assertEquals(5, page.dataTable.getRows().size());
     }
 
-    @Override
-    public WebElement getToggler() {
-        return getCell(0).getWebElement().findElement(By.className("ui-treetable-toggler"));
-    }
+    public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:datatable")
+        DataTable dataTable;
 
-    public int getLevel() {
-        String cssClasses = getWebElement().getAttribute("class");
-        Optional<String> levelClassOpt = Arrays.stream(cssClasses.split(" ")).filter(c -> c.startsWith("ui-node-level")).findFirst();
-        if (levelClassOpt.isPresent()) {
-            String levelClass = levelClassOpt.get();
-            return Integer.parseInt(levelClass.replace("ui-node-level-", ""));
-        }
-        else {
-            return -1;
+        @Override
+        public String getLocation() {
+            return "datatable/dataTable041.xhtml";
         }
     }
 }
