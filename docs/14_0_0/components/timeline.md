@@ -30,9 +30,9 @@ dropAccept | null | String | Selector to define the accepted draggables.
 dropActiveStyleClass | null | String | Style class to apply when an acceptable draggable is being dragged over.
 dropHoverStyleClass | null | String | Style class to apply when an acceptable draggable is dragged over.
 dropScope | null | String | Scope key to match draggables and droppables.
-editable | false | Boolean | If true, the items in the timeline can be manipulated. Only applicable when option selectable is true.
-editableAdd | false | Boolean | If true, new items can be created by double tapping an empty space in the Timeline. Takes precedence over editable.
-editableGroup | false | Boolean | If true, items can be dragged from one group to another. Only applicable when the Timeline has groups. Takes precedence over editable.
+editable | false | Boolean | If true, the items in the timeline can be manipulated. Only applicable when option `selectable` is true.
+editableAdd | `editable` value | Boolean | If true, new items can be created by double tapping an empty space in the Timeline. **Takes precedence over `editable`**.
+editableGroup | `editable` value  | Boolean | If true, items can be dragged from one group to another. Only applicable when the Timeline has groups. **Takes precedence over `editable`**.
 editableOverrideItems | false | Boolean | If true, TimelineEvent specific editables properties are overridden by timeline settings.
 editableRemove | false | Boolean | If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item. Takes precedence over editable.
 end | null | LocalDateTime  | The initial end date for the axis of the timeline. If not provided, the latest date present in the events is taken as end date.
@@ -42,7 +42,7 @@ eventMarginAxis | 10 | Integer | The minimal margin in pixels between events and
 eventStyle | null | String | Specifies the default type for the timeline items. Choose from 'box', 'point', 'range', and 'background'. Note that individual items can override this default type. If undefined, the Timeline will auto detect the type from the items data: if a start and end date is available, a 'range' will be created, and else, a 'box' is created. Items of type 'background' are not editable.
 eventVerticalMargin | 10 | Integer | The minimal vertical margin in pixels between items. Takes precedence over eventMargin property.
 extender | null | String | Name of javascript function to extend the options of the underlying timeline javascript component.
-groupStyle | null | String | A css text string to apply custom styling for an individual group label, for example "color: red; background-color: pink;".
+groupStyle | null | String | A CSS text string to apply custom styling for an individual group label, for example "color: red; background-color: pink;".
 groupsOrder | true | Boolean | Allows to customize the way groups are ordered. When true (default), groups will be ordered by content alphabetically (when the list of groups is missing) or by native ordering of TimelineGroup object in the list of groups (when the list of groups is available). When false, groups will not be ordered at all.
 height | null | String | The height of the timeline in pixels or as a percentage. When height is undefined or null, the height of the timeline is automatically adjusted to fit the contents. It is possible to set a maximum height using option maxHeight to prevent the timeline from getting too high in case of automatically calculated height.
 horizontalScroll | false | Boolean | Specifies the horizontal scrollable.
