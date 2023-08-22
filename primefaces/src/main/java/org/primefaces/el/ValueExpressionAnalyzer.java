@@ -27,9 +27,7 @@ import javax.el.ELContext;
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.el.ValueReference;
-import javax.faces.context.FacesContext;
 import javax.faces.el.CompositeComponentExpressionHolder;
-import org.primefaces.context.PrimeApplicationContext;
 
 public class ValueExpressionAnalyzer {
 
@@ -92,22 +90,19 @@ public class ValueExpressionAnalyzer {
 
         try {
             // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
-            // The unwrapping requires EL 2.2
-            if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastEl22()) {
-                ValueReference reference = toValueReference(expression, elContext);
+            ValueReference reference = toValueReference(expression, elContext);
 
-                // check for a CC expression
-                if (reference != null && isCompositeComponentReference(reference)) {
-                    ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
+            // check for a CC expression
+            if (reference != null && isCompositeComponentReference(reference)) {
+                ValueExpression unwrapped = unwrapCompositeComponentReference(reference);
 
-                    // check for nested CC expressions
-                    if (unwrapped != null && isCompositeComponentReference(toValueReference(unwrapped, elContext))) {
-                        return getExpression(elContext, unwrapped);
-                    }
-
-                    // also return null if it cant be further unwrapped
-                    return unwrapped;
+                // check for nested CC expressions
+                if (unwrapped != null && isCompositeComponentReference(toValueReference(unwrapped, elContext))) {
+                    return getExpression(elContext, unwrapped);
                 }
+
+                // also return null if it cant be further unwrapped
+                return unwrapped;
             }
 
             return expression;

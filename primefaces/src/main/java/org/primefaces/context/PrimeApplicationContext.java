@@ -223,10 +223,6 @@ public class PrimeApplicationContext {
     }
 
     private void resolveFileUploadResumeUrl(FacesContext facesContext) {
-        if (!getEnvironment().isAtLeastServlet30()) {
-            return;
-        }
-
         Object request = facesContext.getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
             ServletContext servletContext = ((HttpServletRequest) request).getServletContext();
@@ -331,7 +327,7 @@ public class PrimeApplicationContext {
     }
 
     public void release() {
-        if (environment != null && environment.isAtLeastBv11()) {
+        if (environment != null) {
             if (validatorFactory != null && validatorFactory.isInitialized() && validatorFactory.get() != null) {
                 validatorFactory.get().close();
             }

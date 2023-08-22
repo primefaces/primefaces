@@ -39,28 +39,20 @@ public class PrimeEnvironment {
 
     private final boolean beanValidationAvailable;
 
-    private final boolean atLeastEl22;
-
     private final boolean atLeastJsf40;
 
     private final boolean mojarra;
 
     private final boolean atLeastBv11;
 
-    private final boolean atLeastServlet30;
-
     private final String buildVersion;
 
     private final boolean htmlSanitizerAvailable;
 
     public PrimeEnvironment(FacesContext context) {
-        atLeastEl22 = LangUtils.isClassAvailable("javax.el.ValueReference");
-
         atLeastJsf40 = LangUtils.isClassAvailable("jakarta.faces.lifecycle.ClientWindowScoped");
 
         atLeastBv11 = LangUtils.isClassAvailable("javax.validation.executable.ExecutableValidator");
-
-        atLeastServlet30 = LangUtils.isClassAvailable("javax.servlet.SessionCookieConfig");
 
         beanValidationAvailable = resolveBeanValidationAvailable();
 
@@ -120,16 +112,8 @@ public class PrimeEnvironment {
         return beanValidationAvailable;
     }
 
-    public boolean isAtLeastEl22() {
-        return atLeastEl22;
-    }
-
     public boolean isAtLeastJsf40() {
         return atLeastJsf40;
-    }
-
-    public boolean isAtLeastServlet30() {
-        return atLeastServlet30;
     }
 
     public boolean isMojarra() {

@@ -167,7 +167,7 @@ public class PrimeConfiguration {
         }
 
         cookiesSecure = true;
-        if (environment.isAtLeastServlet30() && externalContext.getContext() instanceof ServletContext) {
+        if (externalContext.getContext() instanceof ServletContext) {
             ServletContext se = (ServletContext) externalContext.getContext();
             if (se.getSessionCookieConfig() != null) {
                 cookiesSecure = se.getSessionCookieConfig().isSecure();
