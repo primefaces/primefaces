@@ -128,7 +128,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} item An OPTION element to set as the selected element.
      */
     selectItem: function(item) {
-        item.addClass('ui-state-highlight').removeClass('ui-state-hover');
+        item.addClass('ui-state-highlight').removeClass('ui-state-hover').attr('aria-selected', 'true');
         this.options.eq(item.index()).prop('selected', true);
     },
 
@@ -137,7 +137,7 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
      * @param {JQuery} item Item to unselect.
      */
     unselectItem: function(item) {
-        item.removeClass('ui-state-highlight');
+        item.removeClass('ui-state-highlight').attr('aria-selected', 'false');
         this.options.eq(item.index()).prop('selected', false);
     },
 
