@@ -244,7 +244,7 @@ Instead of using the default sorting algorithm which uses a java comparator, you
 own sort method as well.
 
 ```java
-public int sortByModel(Object car1, Object car2) {
+public int sortByModel(Object car1, Object car2, SortMeta sortMeta) {
     //return -1, 0 , 1 if car1 is less than, equal to or greater than car2
 }
 ```
