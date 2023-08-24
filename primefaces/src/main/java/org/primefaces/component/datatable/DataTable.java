@@ -33,7 +33,6 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
@@ -895,43 +894,6 @@ public class DataTable extends DataTableBase {
     @Override
     public void setDefaultFilter(boolean defaultFilter) {
         getStateHelper().put(InternalPropertyKeys.defaultFilter, defaultFilter);
-    }
-
-    public List<UIColumn> findOrderedColumns(String columnOrder) {
-        FacesContext context = getFacesContext();
-        List<UIColumn> orderedColumns = null;
-
-        if (columnOrder != null) {
-            orderedColumns = new ArrayList<>();
-
-            String[] order = columnOrder.split(",");
-            String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-
-            for (String columnId : order) {
-
-                for (UIComponent child : getChildren()) {
-                    if (child instanceof Column && child.getClientId(context).equals(columnId)) {
-                        orderedColumns.add((UIColumn) child);
-                        break;
-                    }
-                    else if (child instanceof Columns) {
-                        String columnsClientId = child.getClientId(context);
-
-                        if (columnId.startsWith(columnsClientId)) {
-                            String[] ids = columnId.split(separator);
-                            int index = Integer.parseInt(ids[ids.length - 1]);
-
-                            orderedColumns.add(new DynamicColumn(index, (Columns) child, context));
-                            break;
-                        }
-
-                    }
-                }
-
-            }
-        }
-
-        return orderedColumns;
     }
 
     public Locale resolveDataLocale() {
