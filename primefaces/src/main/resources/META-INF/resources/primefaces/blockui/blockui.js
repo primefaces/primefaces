@@ -159,7 +159,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         var delay = this.cfg.delay || 0;
         this.timeout = setTimeout(function() {
             // #10484: if delayed and AJAX event already finished
-            if ($this.cfg.triggers && PrimeFaces.ajax.Queue.isEmpty()) {
+            if (($this.cfg.triggers || delay > 0) && PrimeFaces.ajax.Queue.isEmpty()) {
                 PrimeFaces.warn("BlockUI AJAX event completed before showing the block.");
                 return;
             }
