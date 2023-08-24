@@ -107,8 +107,6 @@ public class TreeTableRenderer extends DataRenderer {
         if (table.isSortingCurrentlyActive()) {
             TreeTableFeatures.sortFeature().sort(context, table);
         }
-
-        table.resetDynamicColumns();
     }
 
     protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {

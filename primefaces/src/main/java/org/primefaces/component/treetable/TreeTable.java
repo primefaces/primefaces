@@ -338,8 +338,6 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Object saveState(FacesContext context) {
-        resetDynamicColumns();
-
         // reset value when filtering is enabled
         // filtering stores the filtered values the value property, so it needs to be reset; see #7336
         if (isFilteringEnabled()) {
@@ -462,30 +460,6 @@ public class TreeTable extends TreeTableBase {
 
     public void setFilteredRowKeys(List<String> filteredRowKeys) {
         this.filteredRowKeys = filteredRowKeys;
-    }
-
-    @Override
-    protected void preDecode(FacesContext context) {
-        resetDynamicColumns();
-        super.preDecode(context);
-    }
-
-    @Override
-    protected void preValidate(FacesContext context) {
-        resetDynamicColumns();
-        super.preValidate(context);
-    }
-
-    @Override
-    protected void preUpdate(FacesContext context) {
-        resetDynamicColumns();
-        super.preUpdate(context);
-    }
-
-    @Override
-    protected void preEncode(FacesContext context) {
-        resetDynamicColumns();
-        super.preEncode(context);
     }
 
     @Override
