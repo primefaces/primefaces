@@ -142,8 +142,6 @@ public class DataTableRenderer extends DataRenderer {
             table.calculateRows();
             table.calculateFirst();
         }
-
-        table.resetDynamicColumns();
     }
 
     protected void encodeScript(FacesContext context, DataTable table) throws IOException {
@@ -1059,8 +1057,6 @@ public class DataTableRenderer extends DataRenderer {
         boolean encodeSummaryRow = (!summaryRows.isEmpty() && sort != null);
 
         for (int i = first; i < last; i++) {
-            table.resetDynamicColumns();
-
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {
                 break;
