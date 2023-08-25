@@ -1580,9 +1580,8 @@ public class DataTableRenderer extends DataRenderer {
             }
 
             nextGroupByData = groupByVE.getValue(elContext);
+            table.setRowIndex(currentRowIndex); // restore row index
         }
-
-        table.setRowIndex(currentRowIndex); // restore row index
 
         return Objects.equals(nextGroupByData, currentGroupByData);
     }
