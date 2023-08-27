@@ -30,7 +30,6 @@ import java.io.Serializable;
 import javax.faces.FacesException;
 
 import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.shaded.owasp.SafeFile;
 import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.IOUtils;
 
@@ -92,8 +91,8 @@ public abstract class AbstractUploadedFile<T> implements UploadedFile, Serializa
 
     @Override
     public void write(String filePath) throws Exception {
-        SafeFile file = new SafeFile(filePath, filename);
-        FileUploadUtils.requireValidFilePath(file.getCanonicalPath());
+        File file = new File(filePath, filename);
+        FileUploadUtils.requireValidFilePath(file.getCanonicalPath(), true);
         write(file);
     }
 

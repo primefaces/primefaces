@@ -24,6 +24,7 @@
 package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
@@ -36,11 +37,14 @@ import java.io.InputStream;
 import javax.faces.application.Application;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.faces.FacesException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.PrimeApplicationContext;
@@ -151,7 +155,7 @@ public class FileUploadUtilsTest {
     }
 
     @Test
-    public void checkPathTraversal_AbsoluteFile() {
+    public void requireValidFilePath_AbsoluteFile() {
         // Unix systems can start with / but Windows cannot
         String os = System.getProperty("os.name").toLowerCase();
 
@@ -161,46 +165,34 @@ public class FileUploadUtilsTest {
         // Act
         if (os.contains("win")) {
             try {
-                FileUploadUtils.checkPathTraversal(relativePath);
+                FileUploadUtils.requireValidFilePath(relativePath, false);
                 fail("File was absolute path and should have failed");
             }
-            catch (Exception e) {
+            catch (ValidatorException e) {
                 // Assert
-                assertEquals("Path traversal attempt - absolute path not allowed.", e.getMessage());
+                assertEquals("Invalid directory, name does not match the canonical path.", e.getFacesMessage().getDetail());
             }
         }
         else {
-            String result = FileUploadUtils.checkPathTraversal(relativePath);
+            String result = FileUploadUtils.requireValidFilePath(relativePath, false);
             assertTrue(result.endsWith("test.png"));
         }
     }
 
     @Test
-    public void checkPathTraversal_PathTraversal() {
+    public void requireValidFilePath_PathTraversal() {
         // Arrange
         String relativePath = "../../test.png";
 
         // Act
         try {
-            FileUploadUtils.checkPathTraversal(relativePath);
+            FileUploadUtils.requireValidFilePath(relativePath, false);
             fail("File was absolute path and should have failed");
         }
-        catch (Exception e) {
+        catch (ValidatorException e) {
             // Assert
-            assertEquals("Path traversal attempt for path ../../test.png", e.getMessage());
+            assertEquals("Invalid directory, name does not match the canonical path.", e.getFacesMessage().getDetail());
         }
-    }
-
-    @Test
-    public void checkPathTraversal_Valid() {
-        // Arrange
-        String relativePath = "test.png";
-
-        // Act
-        String result = FileUploadUtils.checkPathTraversal(relativePath);
-
-        // Assert
-        assertEquals(relativePath, result);
     }
 
     @Test
@@ -261,6 +253,41 @@ public class FileUploadUtilsTest {
 
         // Assert
         assertEquals(filename, result);
+    }
+
+    @Test
+    public void requireValidFilename_Linux() {
+        try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
+            fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(false);
+
+            // Check each invalid character individually
+            String[] invalidCharacters = {"/", "\0", ":", "*", "?", "\"", "<", ">", "|"};
+            for (String character : invalidCharacters) {
+                String invalidFileName = "filename_with_" + character;
+                assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+            }
+        }
+    }
+
+    @Test
+    public void requireValidFilename_Windows() {
+        try (MockedStatic<FileUploadUtils> fileUploadUtilsMockedStatic = Mockito.mockStatic(FileUploadUtils.class, Mockito.CALLS_REAL_METHODS)) {
+            fileUploadUtilsMockedStatic.when(FileUploadUtils::isSystemWindows).thenReturn(true);
+
+            // Check each invalid character individually
+            String[] invalidCharacters = {"/", "\\\\", ":", "*", "?", "\"", "<", ">", "|"};
+            for (String character : invalidCharacters) {
+                String invalidFileName = "filename_with_" + character;
+                assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename(invalidFileName));
+            }
+
+            // Add reserved device names as invalid filenames
+            String[] reservedDeviceNames = {"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2",
+                "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+            for (String deviceName : reservedDeviceNames) {
+                assertThrows(FacesException.class, () -> FileUploadUtils.requireValidFilename(deviceName));
+            }
+        }
     }
 
 }
