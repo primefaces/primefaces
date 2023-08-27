@@ -49,8 +49,6 @@ import org.primefaces.component.fileupload.FileUploadChunkDecoder;
 import org.primefaces.component.fileupload.FileUploadDecoder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.file.UploadedFile;
-import org.primefaces.shaded.owasp.SafeFile;
-import org.primefaces.shaded.owasp.ValidationException;
 import org.primefaces.virusscan.VirusException;
 
 /**
@@ -60,76 +58,99 @@ public class FileUploadUtils {
 
     private static final Logger LOGGER = Logger.getLogger(FileUploadUtils.class.getName());
 
-    private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\/:*?\"<>|])");
+    // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
+    private static final Pattern INVALID_FILENAME_WINDOWS =
+            Pattern.compile("^(?!^(PRN|AUX|CLOCK\\$|NUL|CON|COM\\d|LPT\\d|\\..*)(\\..+)?$)[^\\x00-\\x1f\\\\?*:\\\";|/<>]+$");
+    private static final Pattern INVALID_FILENAME_LINUX = Pattern.compile(".*[/\0:*?\\\"<>|].*");
+    private static final Pattern PERCENTS_PAT = Pattern.compile("(%)([0-9a-fA-F])([0-9a-fA-F])");
 
     private FileUploadUtils() {
     }
 
+
     public static String requireValidFilename(String filename) {
         if (LangUtils.isBlank(filename)) {
-            throw new FacesException("Filename cannot be empty or null");
+            throw validationError("Filename cannot be empty or null");
         }
 
         if (isSystemWindows()) {
-            if (!filename.contains("\\\\")) {
-                int length = FilenameUtils.getPrefixLength(filename);
-                String prefix = LangUtils.substring(filename, 0, length);
-                String[] parts = prefix.split(Pattern.quote(File.separator));
-                for (String part : parts) {
-                    if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
-                        throw new FacesException("Invalid filename: " + filename);
-                    }
-                }
-            }
-            else {
-                throw new FacesException("Invalid filename: " + filename);
+            if (!INVALID_FILENAME_WINDOWS.matcher(filename).find()) {
+                throw validationError("Invalid filename: " + filename);
             }
         }
-
-        String name = FilenameUtils.getName(filename);
-        String extension = FilenameUtils.getExtension(filename);
-        if (name.isEmpty() && extension.isEmpty()) {
-            throw new FacesException("Filename can not be the empty string");
+        else if (INVALID_FILENAME_LINUX.matcher(filename).find()) {
+            throw validationError("Invalid filename: " + filename);
         }
 
-        return name;
+        if (PERCENTS_PAT.matcher(filename).find()) {
+            throw validationError("Invalid filename: " + filename);
+        }
+
+        int ch = containsUnprintableCharacters(filename);
+        if (ch != -1) {
+            throw validationError("Invalid filename: (" + filename + ") contains unprintable character: " + ch);
+        }
+
+        return FilenameUtils.getName(filename);
     }
 
-    public static String requireValidFilePath(String filePath) throws ValidationException {
+    public static String requireValidFilePath(String filePath, boolean mustExist) {
         if (LangUtils.isBlank(filePath)) {
-            throw new FacesException("Path can not be the empty string or null");
+            throw validationError("Path can not be the empty string or null");
+        }
+
+        int ch = containsUnprintableCharacters(filePath);
+        if (ch != -1) {
+            throw validationError("Invalid path: (" + filePath + ") contains unprintable character: " + ch);
+        }
+
+        if (PERCENTS_PAT.matcher(filePath).find()) {
+            throw validationError("Invalid path: " + filePath);
         }
 
         try {
-            SafeFile file = new SafeFile(filePath);
+            File file = new File(filePath);
             File parentFile = file.getParentFile();
 
-            if (!file.exists()) {
-                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not exist.");
+            if (mustExist && !file.exists()) {
+                throw validationError("Invalid file, \"" + file + "\" does not exist.");
             }
-            if (!parentFile.exists()) {
-                throw new ValidationException("Invalid directory", "Invalid directory, specified parent does not exist.");
+            if (mustExist && !parentFile.exists()) {
+                throw validationError("Invalid directory, file parent directory does not exist.");
             }
-            if (!parentFile.isDirectory()) {
-                throw new ValidationException("Invalid directory", "Invalid directory, specified parent is not a directory.");
+            if (mustExist && !parentFile.isDirectory()) {
+                throw validationError("Invalid directory, file parent is not a directory.");
             }
             if (!file.getCanonicalFile().toPath().startsWith(parentFile.getCanonicalFile().toPath())) {
-                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not reside inside specified parent.");
+                throw validationError("Invalid directory, \"" + file + "\" does not reside inside specified parent.");
             }
-
             if (!file.getCanonicalPath().equals(filePath)) {
-                throw new ValidationException("Invalid directory", "Invalid directory name does not match the canonical path");
+                throw validationError("Invalid directory, name does not match the canonical path." );
             }
         }
         catch (IOException ex) {
-            throw new ValidationException("Invalid directory", "Failure to validate directory path");
+            throw validationError("Failure to validate directory path: " + ex.getMessage());
         }
 
         return filePath;
     }
 
+    public static ValidatorException validationError(String message) {
+        return new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "File Error", message));
+    }
+
     public static boolean isSystemWindows() {
         return File.separatorChar == '\\';
+    }
+
+    public static int containsUnprintableCharacters(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if ((ch) < 32 || (ch) > 126) {
+                return ch;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -325,44 +346,6 @@ public class FileUploadUtils {
         if (sizeLimit != null && totalPartSize > sizeLimit) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
         }
-    }
-
-    /**
-     * OWASP prevent directory path traversal of "../../image.png".
-     *
-     * @see <a href="https://owasp.org/www-community/attacks/Path_Traversal">https://owasp.org/www-community/attacks/Path_Traversal</a>
-     * @param relativePath the relative path to check for path traversal
-     * @return the relative path
-     * @throws FacesException if any error is detected
-     */
-    public static String checkPathTraversal(String relativePath) {
-        // Unix systems can start with / but Windows cannot
-        String os = System.getProperty("os.name").toLowerCase();
-        if (!os.contains("win")) {
-            relativePath = relativePath.startsWith("/") ? relativePath.substring(1) : relativePath;
-        }
-
-        File file = new File(relativePath);
-
-        if (file.isAbsolute()) {
-            throw new FacesException("Path traversal attempt - absolute path not allowed.");
-        }
-
-        try  {
-            String pathUsingCanonical = file.getCanonicalPath();
-            String pathUsingAbsolute = file.getAbsolutePath();
-
-            // Require the absolute path and canonicalized path match.
-            // This is done to avoid directory traversal
-            // attacks, e.g. "1/../2/"
-            if (!pathUsingCanonical.equals(pathUsingAbsolute))  {
-                throw new FacesException("Path traversal attempt for path " + relativePath);
-            }
-        }
-        catch (IOException ex) {
-            throw new FacesException("Path traversal - unexpected exception.", ex);
-        }
-        return relativePath;
     }
 
     public static List<Path> listChunks(Path path) {
