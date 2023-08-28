@@ -42,3 +42,13 @@ For this to contain meaningful ids your columns should define an id attribute ot
 | --- | --- | --- |
 | toggle | org.primefaces.event.ToggleEvent | On item selection/unselection. |
 | close | org.primefaces.event.ToggleCloseEvent | On closing of toggler popup. |
+
+## Client Side API
+Widget: _PrimeFaces.widget.ColumnToggler_
+
+
+| Method | Params | Return Type | Description |
+| --- | --- | --- | --- |
+| checkAll() | - | void | Selects all columns for display. |
+| uncheckAll() | - | void | Selects all columns to hide. |
+| toggleAll() | - | void | Either select or unselect all columns. |
