@@ -87,7 +87,7 @@ PrimeFaces.locales['ca'] = {
     "firstDayOfWeek": 1,
     "showMonthAfterYear": false,
     "dateFormat": "dd/mm/yy",
-    "weak": "Débil",
+    "weak": "Dèbil",
     "medium": "Mig",
     "strong": "Fort",
     "passwordPrompt": "Escriu una contrasenya",
