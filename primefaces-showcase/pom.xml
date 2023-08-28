@@ -23,7 +23,7 @@
         <myfaces.version>2.3.10</myfaces.version>
         <myfaces-next.version>2.3-next-M7</myfaces-next.version>
         <resteasy.version>5.0.8.Final</resteasy.version>
-        <jetty.version>9.4.51.v20230217</jetty.version>
+        <jetty.version>9.4.52.v20230823</jetty.version>
         <jsf.project.stage>Production</jsf.project.stage>
     </properties>
 
