@@ -335,16 +335,18 @@ public class BarChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
             ChartUtils.writeDataValue(fsw, "borderSkipped", this.borderSkipped, true);
             if (borderRadius instanceof BarCorner) {
-                ((BarCorner)borderRadius).encode(fsw);
-            } else {
+                ((BarCorner) borderRadius).encode(fsw);
+            }
+            else {
                 ChartUtils.writeDataValue(fsw, "borderRadius", this.borderRadius, true);
             }
             ChartUtils.writeDataValue(fsw, "hoverBackgroundColor", this.hoverBackgroundColor, true);
             ChartUtils.writeDataValue(fsw, "hoverBorderColor", this.hoverBorderColor, true);
             ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
             if (hoverBorderRadius instanceof BarCorner) {
-                ((BarCorner)hoverBorderRadius).encode(fsw);
-            } else {
+                ((BarCorner) hoverBorderRadius).encode(fsw);
+            }
+            else {
                 ChartUtils.writeDataValue(fsw, "hoverBorderRadius", this.hoverBorderRadius, true);
             }
             fsw.write("}");
