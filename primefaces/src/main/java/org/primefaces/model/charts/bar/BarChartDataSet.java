@@ -47,9 +47,11 @@ public class BarChartDataSet extends ChartDataSet {
     private Object borderColor;
     private Object borderWidth;
     private String borderSkipped;
+    private Object borderRadius;
     private Object hoverBackgroundColor;
     private Object hoverBorderColor;
     private Object hoverBorderWidth;
+    private Object hoverBorderRadius;
 
     /**
      * Gets the list of data in this dataSet
@@ -216,6 +218,21 @@ public class BarChartDataSet extends ChartDataSet {
     }
 
     /**
+     * Get the borderRadius attribute value, may be a number or {@link BarCorner}
+     * @return borderRadius value
+     */
+    public Object getBorderRadius() {
+        return borderRadius;
+    }
+    /**
+     * Set the borderRadius attribute value,
+     * @param  borderRadius may be an integer or {@link BarCorner}
+     */
+    public void setBorderRadius(Object borderRadius) {
+        this.borderRadius = borderRadius;
+    }
+
+    /**
      * Gets the hoverBackgroundColor
      *
      * @return hoverBackgroundColor
@@ -270,6 +287,22 @@ public class BarChartDataSet extends ChartDataSet {
     }
 
     /**
+     * Get the border radius of the bar when hovered
+     * @return the border radius, may be an integer or {@link BarCorner}
+     */
+    public Object getHoverBorderRadius() {
+        return hoverBorderRadius;
+    }
+
+    /**
+     * Get the border radius of the bar when hovered
+     * @param hoverBorderRadius the border radius, may be an integer or {@link BarCorner}
+     */
+    public void setHoverBorderRadius(Object hoverBorderRadius) {
+        this.hoverBorderRadius = hoverBorderRadius;
+    }
+
+    /**
      * Gets the type
      *
      * @return type of current chart
@@ -301,10 +334,19 @@ public class BarChartDataSet extends ChartDataSet {
             ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
             ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
             ChartUtils.writeDataValue(fsw, "borderSkipped", this.borderSkipped, true);
+            if (borderRadius instanceof BarCorner) {
+                ((BarCorner)borderRadius).encode(fsw);
+            } else {
+                ChartUtils.writeDataValue(fsw, "borderRadius", this.borderRadius, true);
+            }
             ChartUtils.writeDataValue(fsw, "hoverBackgroundColor", this.hoverBackgroundColor, true);
             ChartUtils.writeDataValue(fsw, "hoverBorderColor", this.hoverBorderColor, true);
             ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
-
+            if (hoverBorderRadius instanceof BarCorner) {
+                ((BarCorner)hoverBorderRadius).encode(fsw);
+            } else {
+                ChartUtils.writeDataValue(fsw, "hoverBorderRadius", this.hoverBorderRadius, true);
+            }
             fsw.write("}");
 
             return fsw.toString();
