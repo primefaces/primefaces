@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -229,7 +230,7 @@ public class SortFeature implements DataTableFeature {
                 }
             }
             else {
-                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
+                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2, sortMeta});
             }
 
             return sortMeta.getOrder().isAscending() ? result : -1 * result;

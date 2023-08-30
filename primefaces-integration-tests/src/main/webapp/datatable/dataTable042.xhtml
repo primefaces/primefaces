@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable value="#{dataTable042.data}" var="data" id="datatable">
+                <p:column field="textA" headerText="TextA" sortFunction="#{dataTable042.legacySort}">
+                    <h:outputText value="#{data.textA}"/>
+                </p:column>
+                <p:column field="textB" headerText="TextB" sortFunction="#{dataTable042.modernSort}" nullSortOrder="-1">
+                    <h:outputText value="#{data.textB}"/>
+                </p:column>
+            </p:dataTable>
+
+            <p:commandButton value="Refresh" id="cmdRefresh" process="@this" update="@form" actionListener="#{dataTable042.refresh}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
