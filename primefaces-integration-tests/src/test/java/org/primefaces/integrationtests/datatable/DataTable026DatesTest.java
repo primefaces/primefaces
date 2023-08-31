@@ -43,6 +43,7 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.SelectManyMenu;
+import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.datatable.Row;
 import org.primefaces.util.CalendarUtils;
 
@@ -60,7 +61,8 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
         // Act
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.of(2021, 1, 10);
-        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start + " - " + end); // 2021-01-01 - 2021-01-10
+        page.lastLoginDateTimeFilter.clear();
+        ComponentUtils.sendKeys(page.lastLoginDateTimeFilter.getInput(), "" + start + " - " + end); // 2021-01-01 - 2021-01-10
         PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -88,7 +90,8 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
         // Act
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.of(2021, 1, 10);
-        page.lastLoginDateFilter.getInput().sendKeys("" + start + " - " + end); // 2021-01-01 - 2021-01-10
+        page.lastLoginDateFilter.clear();
+        ComponentUtils.sendKeys(page.lastLoginDateFilter.getInput(), "" + start + " - " + end); // 2021-01-01 - 2021-01-10
         PrimeSelenium.guardAjax(page.lastLoginDateFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -118,7 +121,8 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
                 .atZone(ZoneId.ofOffset("GMT", ZoneOffset.ofHours(12)))
                 .withZoneSameInstant(ZoneId.systemDefault())
                 .toLocalDateTime();
-        page.lastLoginDateTimeFilter2.getInput().sendKeys("2021-01-10 01:16:04");
+        page.lastLoginDateTimeFilter2.clear();
+        ComponentUtils.sendKeys(page.lastLoginDateTimeFilter2.getInput(), "2021-01-10 01:16:04");
         PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter2.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -144,7 +148,8 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
 
         // Act
         LocalDateTime localDateTime = LocalDateTime.of(2021, 1, 10, 15, 16, 04);
-        page.lastLoginDateFilter2.getInput().sendKeys("2021-01-10 15:16:04");
+        page.lastLoginDateFilter2.clear();
+        ComponentUtils.sendKeys(page.lastLoginDateFilter2.getInput(), "2021-01-10 15:16:04");
         PrimeSelenium.guardAjax(page.lastLoginDateFilter2.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -171,7 +176,8 @@ public class DataTable026DatesTest extends AbstractDataTableTest {
 
         // Act
         LocalDate start = LocalDate.of(2021, 1, 1);
-        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start);
+        page.lastLoginDateTimeFilter.clear();
+        ComponentUtils.sendKeys(page.lastLoginDateTimeFilter.getInput(), "" + start);
         PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert

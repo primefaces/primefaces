@@ -114,6 +114,11 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             disabled = uicalendar.isDisabled();
 
             writer.writeAttribute("class", inputStyleClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "combobox", null);
+            writer.writeAttribute(HTML.ARIA_AUTOCOMPLETE, "none", null);
+            writer.writeAttribute(HTML.ARIA_HASPOPUP, "dialog", null);
+            writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+            writer.writeAttribute(HTML.ARIA_CONTROLS,  uicalendar.getClientId() + "_panel", null);
 
             if (inputStyle != null) {
                 writer.writeAttribute("style", inputStyle, null);

@@ -56,13 +56,14 @@
     min-width: .75em;
 }
 
-.p-datepicker-panel .ui-timepicker > .ui-separator a {
+.p-datepicker-panel .ui-timepicker > .ui-separator button {
     visibility: hidden;
     opacity: 0;
 }
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput input {
     text-align: center;
+    -moz-appearance: textfield !important;
 }
 
 .p-datepicker-panel .ui-timepicker.ui-timepicker-timeinput .ui-millisecond-picker input {

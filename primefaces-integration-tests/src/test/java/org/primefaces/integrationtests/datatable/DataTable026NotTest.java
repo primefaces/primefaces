@@ -40,6 +40,7 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.SelectManyMenu;
+import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.component.model.datatable.Row;
 
 public class DataTable026NotTest extends AbstractDataTableTest {
@@ -75,7 +76,8 @@ public class DataTable026NotTest extends AbstractDataTableTest {
         // Act
         LocalDate start = LocalDate.of(2021, 1, 1);
         LocalDate end = LocalDate.of(2021, 1, 10);
-        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start + " - " + end);
+        page.lastLoginDateTimeFilter.clear();
+        ComponentUtils.sendKeys(page.lastLoginDateTimeFilter.getInput(), "" + start + " - " + end);
         PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert
@@ -102,7 +104,8 @@ public class DataTable026NotTest extends AbstractDataTableTest {
 
         // Act
         LocalDate start = LocalDate.of(2021, 1, 1);
-        page.lastLoginDateTimeFilter.getInput().sendKeys("" + start);
+        page.lastLoginDateTimeFilter.clear();
+        ComponentUtils.sendKeys(page.lastLoginDateTimeFilter.getInput(), "" + start);
         PrimeSelenium.guardAjax(page.lastLoginDateTimeFilter.getInput()).sendKeys(Keys.TAB);
 
         // Assert

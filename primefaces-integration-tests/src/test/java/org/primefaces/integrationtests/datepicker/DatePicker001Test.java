@@ -32,6 +32,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -187,7 +188,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: illegal date")
     public void testIllegalDate(Page page) {
         // Arrange
-        DatePicker datePicker = page.datePicker;
+        DatePicker datePicker = page.datepickerEditable;
         datePicker.clear();
         ComponentUtils.sendKeys(datePicker.getInput(), "02/32/1900");
 
@@ -206,7 +207,7 @@ public class DatePicker001Test extends AbstractDatePickerTest {
     @DisplayName("DatePicker: correct date")
     public void testCorrectDate(Page page) {
         // Arrange
-        DatePicker datePicker = page.datePicker;
+        DatePicker datePicker = page.datepickerEditable;
         datePicker.clear();
         ComponentUtils.sendKeys(datePicker.getInput(), "02/28/1900");
 
@@ -216,6 +217,58 @@ public class DatePicker001Test extends AbstractDatePickerTest {
         // Assert
         Assertions.assertFalse(page.messages.isDisplayed());
         Assertions.assertEquals(0, page.messages.getAllMessages().size());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("DatePicker: Arrow Down should trigger the popup")
+    public void testArrowDownOnInput(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datepickerEditable;
+        datePicker.clear();
+
+
+        // Act
+        ComponentUtils.sendKeys(datePicker.getInput(), Keys.ARROW_DOWN);
+
+        // Assert
+        Assertions.assertTrue(datePicker.getPanel().isDisplayed());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("DatePicker: ENTER should trigger the popup")
+    public void testEnterOnInput(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datepickerEditable;
+        datePicker.clear();
+
+
+        // Act
+        ComponentUtils.sendKeys(datePicker.getInput(), Keys.ENTER);
+
+        // Assert
+        Assertions.assertTrue(datePicker.getPanel().isDisplayed());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("DatePicker: ESCAPE should close the popup")
+    public void testEscapeOnPanel(Page page) {
+        // Arrange
+        DatePicker datePicker = page.datepickerEditable;
+        datePicker.clear();
+        ComponentUtils.sendKeys(datePicker.getInput(), Keys.ENTER);
+        Assertions.assertTrue(datePicker.getPanel().isDisplayed());
+
+        // Act
+        ComponentUtils.sendKeys(datePicker.getInput(), Keys.ESCAPE);
+
+        // Assert
+        Assertions.assertFalse(datePicker.getPanel().isDisplayed());
         assertNoJavascriptErrors();
     }
 
@@ -241,6 +294,9 @@ public class DatePicker001Test extends AbstractDatePickerTest {
 
         @FindBy(id = "form:datepicker")
         DatePicker datePicker;
+
+        @FindBy(id = "form:datepickerEditable")
+        DatePicker datepickerEditable;
 
         @FindBy(id = "form:button")
         CommandButton button;

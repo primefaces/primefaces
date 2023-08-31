@@ -54,6 +54,10 @@ public class DefaultWebDriverAdapter implements WebDriverAdapter {
         else if ("chrome".equals(configProvider.getWebdriverBrowser())) {
             if (!System.getProperties().contains("webdriver.chrome.driver")) {
                 webDriverManager = WebDriverManager.chromedriver();
+
+                // uncomment if you need to clear cache getting Chrome mismatch errors
+                //webDriverManager.clearDriverCache();
+                //webDriverManager.clearResolutionCache();
             }
         }
         else if ("safari".equals(configProvider.getWebdriverBrowser())) {
