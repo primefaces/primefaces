@@ -141,6 +141,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             writer.startElement("tbody", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -152,6 +154,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "listbox", null);
+            writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, "false", null);
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
@@ -196,6 +200,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
             writer.startElement("tr", null);
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
+
             if (option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
             }
@@ -217,6 +226,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
+            writer.writeAttribute(HTML.ARIA_ROLE, "option", null);
+            writer.writeAttribute(HTML.ARIA_LABEL, option.getLabel(), null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "" + option.isDisabled(), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, "" + selected, null);
 
             writer.startElement("span", null);
             if (option.isEscape()) {

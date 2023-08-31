@@ -44,24 +44,23 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         this._super();
         var $this = this;
 
-        if(!this.cfg.disabled) {
-            this.items.on('click.selectListbox', function(e) {
+        if (!this.cfg.disabled) {
+            this.items.off().on('click.selectListbox', function(e) {
                 //stop propagation
-                if($this.checkboxClick) {
+                if ($this.checkboxClick) {
                     $this.checkboxClick = false;
                     return;
                 }
 
                 var item = $(this),
-                selectedItems = $this.items.filter('.ui-state-highlight'),
-                metaKey = $this.cfg.metaKeySelection && (e.metaKey||e.ctrlKey);
+                    metaKey = $this.cfg.metaKeySelection && (e.metaKey || e.ctrlKey);
 
-                if(!e.shiftKey) {
-                    if(!metaKey && !$this.cfg.showCheckbox) {
+                if (!e.shiftKey) {
+                    if (!metaKey && !$this.cfg.showCheckbox) {
                         $this.unselectAll();
                     }
 
-                    if((metaKey || $this.cfg.showCheckbox) && item.hasClass('ui-state-highlight')) {
+                    if ((metaKey || $this.cfg.showCheckbox) && item.hasClass('ui-state-highlight')) {
                         $this.unselectItem(item);
                     }
                     else {
@@ -71,18 +70,18 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                 }
                 else {
                     //range selection
-                    if($this.cursorItem) {
+                    if ($this.cursorItem) {
                         $this.unselectAll();
 
                         var currentItemIndex = item.index(),
-                        cursorItemIndex = $this.cursorItem.index(),
-                        startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
-                        endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
+                            cursorItemIndex = $this.cursorItem.index(),
+                            startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
+                            endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
 
-                        for(var i = startIndex ; i < endIndex; i++) {
+                        for (var i = startIndex; i < endIndex; i++) {
                             var it = $this.allItems.eq(i);
 
-                            if(it.is(':visible') && !it.hasClass('ui-state-disabled')) {
+                            if (it.is(':visible') && !it.hasClass('ui-state-disabled')) {
                                 $this.selectItem(it);
                             }
                         }
@@ -97,30 +96,100 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                 $this.input.trigger('click');
                 PrimeFaces.clearSelection();
                 e.preventDefault();
+            }).on('keydown.selectListbox', function(event) {
+                $this.onKeyDown(event);
             });
 
-            if(this.cfg.showCheckbox) {
+            if (this.cfg.showCheckbox) {
                 this.checkboxes = this.jq.find('.ui-selectlistbox-item:not(.ui-state-disabled) div.ui-chkbox > div.ui-chkbox-box');
 
                 this.checkboxes.on('mouseenter.selectManyMenu', function(e) {
                     $(this).addClass('ui-state-hover');
                 })
-                .on('mouseleave.selectManyMenu', function(e) {
-                    $(this).removeClass('ui-state-hover');
-                })
-                .on('click.selectManyMenu', function(e) {
-                    $this.checkboxClick = true;
+                    .on('mouseleave.selectManyMenu', function(e) {
+                        $(this).removeClass('ui-state-hover');
+                    })
+                    .on('click.selectManyMenu', function(e) {
+                        $this.checkboxClick = true;
 
-                    var item = $(this).closest('.ui-selectlistbox-item');
-                    if(item.hasClass('ui-state-highlight'))
-                        $this.unselectItem(item);
-                    else
-                        $this.selectItem(item);
+                        var item = $(this).closest('.ui-selectlistbox-item');
+                        if (item.hasClass('ui-state-highlight'))
+                            $this.unselectItem(item);
+                        else
+                            $this.selectItem(item);
 
-                    $this.input.trigger('change');
-                });
+                        $this.input.trigger('change');
+                    });
             }
         }
+    },
+
+    /**
+     * Handle keyboard events.
+     * @param {Event} event the DOM onKeyDown event
+     * @private
+     */
+    onKeyDown: function(event) {
+        var $this = this,
+            item = $(event.currentTarget),
+            isMetaKey = (event.metaKey || event.ctrlKey),
+            metaKey = this.cfg.metaKeySelection && isMetaKey;
+
+        switch (event.code) {
+            case 'Enter':
+            case 'Space':
+                if (!metaKey && !$this.cfg.showCheckbox) {
+                    $this.unselectAll();
+                }
+
+                if ((metaKey || $this.cfg.showCheckbox) && item.hasClass('ui-state-highlight')) {
+                    $this.unselectItem(item);
+                }
+                else {
+                    $this.selectItem(item);
+                    $this.cursorItem = item;
+                }
+                event.preventDefault();
+                break;
+            case 'KeyA':
+                if (metaKey) $this.selectAll();
+                event.preventDefault();
+                break;
+            case 'KeyD':
+                if (metaKey) $this.unselectAll();
+                event.preventDefault();
+                break;
+            case 'ArrowUp':
+            case 'ArrowDown':
+                if (!event.shiftKey) {
+                    var newItem = event.key === 'ArrowDown' ? item.next() : item.prev();
+                    if (!newItem.hasClass('ui-selectlistbox-item')) {
+                        return;
+                    }
+                    $this.focus(newItem);
+                }
+                event.preventDefault();
+                break;
+            case 'Home':
+            case 'PageUp':
+                $this.focus($this.items.first());
+                event.preventDefault();
+                break;
+            case 'End':
+            case 'PageDown':
+                $this.focus($this.items.last());
+                event.preventDefault();
+                break;
+        }
+    },
+
+    /**
+     * Focus the item.
+     * @param {JQuery} item The item to focus.
+     */
+    focus: function(item) {
+        this.cursorItem = item;
+        item.trigger('focus');
     },
 
     /**
@@ -132,15 +201,17 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         //
         // 1) don't use jquery wrappers
         // 2) don't use existing methods like selectItem
+        var filteredItems = this.items.filter(":visible");
 
-        for(var i = 0; i < this.items.length; i++) {
-            var item = this.items.eq(i);
+        for (var i = 0; i < filteredItems.length; i++) {
+            var item = filteredItems.eq(i);
             var itemNative = item[0];
 
             itemNative.classList.add('ui-state-highlight');
             itemNative.classList.remove('ui-state-hover');
+            itemNative.setAttribute('aria-selected', 'true');
 
-            if(this.cfg.showCheckbox) {
+            if (this.cfg.showCheckbox) {
                 var checkbox = item.find('div.ui-chkbox').children('div.ui-chkbox-box');
 
                 var checkboxNative = checkbox[0];
@@ -153,7 +224,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             }
         }
 
-        for(var i = 0; i < this.options.length; i++) {
+        for (var i = 0; i < this.options.length; i++) {
             this.options[i].selected = true;
         }
     },
@@ -168,14 +239,16 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         //
         // 1) don't use jquery wrappers
         // 2) don't use existing methods like unselectItem
+        var filteredItems = this.items.filter(":visible");
 
-        for(var i = 0; i < this.items.length; i++) {
-            var item = this.items.eq(i);
+        for (var i = 0; i < filteredItems.length; i++) {
+            var item = filteredItems.eq(i);
             var itemNative = item[0];
 
             itemNative.classList.remove('ui-state-highlight');
+            itemNative.setAttribute('aria-selected', 'false');
 
-            if(this.cfg.showCheckbox) {
+            if (this.cfg.showCheckbox) {
                 var checkbox = item.find('div.ui-chkbox').children('div.ui-chkbox-box');
 
                 var checkboxNative = checkbox[0];
@@ -187,7 +260,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
             }
         }
 
-        for(var i = 0; i < this.options.length; i++) {
+        for (var i = 0; i < this.options.length; i++) {
             this.options[i].selected = false;
         }
     },
@@ -200,7 +273,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
     selectItem: function(item) {
         this._super(item);
 
-        if(this.cfg.showCheckbox) {
+        if (this.cfg.showCheckbox) {
             this.selectCheckbox(item.find('div.ui-chkbox-box'));
         }
     },
@@ -213,7 +286,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
     unselectItem: function(item) {
         this._super(item);
 
-        if(this.cfg.showCheckbox) {
+        if (this.cfg.showCheckbox) {
             this.unselectCheckbox(item.find('div.ui-chkbox-box'));
         }
     },

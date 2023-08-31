@@ -25,22 +25,22 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
         this._super();
         var $this = this;
 
-        if(!this.cfg.disabled) {
+        if (!this.cfg.disabled) {
             this.focusedItem = null;
-            
+
             this.items.on('click.selectListbox', function(e) {
                 var item = $(this),
-                selectedItem = $this.items.filter('.ui-state-highlight');
+                    selectedItem = $this.items.filter('.ui-state-highlight');
 
-                if(item.index() !== selectedItem.index()) {
-                    if(selectedItem.length) {
+                if (item.index() !== selectedItem.index()) {
+                    if (selectedItem.length) {
                         $this.unselectItem(selectedItem);
                     }
 
                     $this.selectItem(item);
                     $this.input.trigger('change');
                 }
-                
+
                 /* For keyboard navigation */
                 $this.removeOutline();
                 $this.focusedItem = item;
@@ -52,10 +52,10 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
                 e.preventDefault();
             });
         }
-        
+
         this.bindKeyEvents();
     },
-    
+
     /**
      * Sets up the event listeners for keyboard related events.
      * @private
@@ -63,75 +63,81 @@ PrimeFaces.widget.SelectOneListbox = PrimeFaces.widget.SelectListbox.extend({
     bindKeyEvents: function() {
         var $this = this;
 
-        this.input.off('focus.selectListbox blur.selectListbox keydown.selectListbox').on('focus.selectListbox', function(e) {
-            $this.jq.addClass('ui-state-focus');
-            
-            var activeItem = $this.focusedItem||$this.items.filter('.ui-state-highlight:visible:first');
-            if(activeItem.length) {
-                $this.focusedItem = activeItem;
-            }
-            else {
-                $this.focusedItem = $this.items.filter(':visible:first');
-            }
-            
-            PrimeFaces.queueTask(function() {
-                if($this.focusedItem) {
-                    PrimeFaces.scrollInView($this.listContainer, $this.focusedItem);
-                    $this.focusedItem.addClass('ui-listbox-outline');
+        this.input.off('focus.selectListbox blur.selectListbox keydown.selectListbox')
+            .on('focus.selectListbox', function(e) {
+                $this.jq.addClass('ui-state-focus');
+
+                var activeItem = $this.focusedItem || $this.items.filter('.ui-state-highlight:visible:first');
+                if (activeItem.length) {
+                    $this.focusedItem = activeItem;
                 }
-            }, 100);
-        })
-        .on('blur.selectListbox', function() {
-            $this.jq.removeClass('ui-state-focus');
-            $this.removeOutline();
-            $this.focusedItem = null;
-        })
-        .on('keydown.selectListbox', function(e) {
-            if(!$this.focusedItem) {
-                return;
-            }
+                else {
+                    $this.focusedItem = $this.items.filter(':visible:first');
+                }
 
-            switch(e.key) {
-                case 'ArrowUp':
-                    if(!$this.focusedItem.hasClass('ui-state-highlight')) {
-                        $this.focusedItem.trigger('click.selectListbox');
+                PrimeFaces.queueTask(function() {
+                    if ($this.focusedItem) {
+                        PrimeFaces.scrollInView($this.listContainer, $this.focusedItem);
+                        $this.focusedItem.addClass('ui-listbox-outline');
                     }
-                    else {
-                        var prevItem = $this.focusedItem.prevAll('.ui-selectlistbox-item:visible:first');
-                        if(prevItem.length) {
-                            prevItem.trigger('click.selectListbox');
+                });
+            })
+            .on('blur.selectListbox', function() {
+                $this.jq.removeClass('ui-state-focus');
+                $this.removeOutline();
+                $this.focusedItem = null;
+            })
+            .on('keydown.selectListbox', function(e) {
+                if (!$this.focusedItem) {
+                    return;
+                }
 
-                            PrimeFaces.scrollInView($this.listContainer, $this.focusedItem);
-                        }
-                    }
-                    e.preventDefault();
-                break;
-
-                case 'ArrowDown':
-                    if(!$this.focusedItem.hasClass('ui-state-highlight')) {
-                        $this.focusedItem.trigger('click.selectListbox');
-                    }
-                    else {
-                        var nextItem = $this.focusedItem.nextAll('.ui-selectlistbox-item:visible:first');
-                        if(nextItem.length) {
-                            nextItem.trigger('click.selectListbox');
-
-                            PrimeFaces.scrollInView($this.listContainer, $this.focusedItem);
-                        }
-                    }
-                    e.preventDefault();
-                break;
-            };
-        });
+                switch (e.code) {
+                    case 'ArrowUp':
+                        $this.select($this.focusedItem.prevAll('.ui-selectlistbox-item:visible:first'));
+                        e.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        $this.select($this.focusedItem.nextAll('.ui-selectlistbox-item:visible:first'));
+                        e.preventDefault();
+                        break;
+                    case 'Home':
+                    case 'PageUp':
+                        $this.select($this.items.first());
+                        e.preventDefault();
+                        break;
+                    case 'End':
+                    case 'PageDown':
+                        $this.select($this.items.last());
+                        e.preventDefault();
+                        break;
+                };
+            });
 
     },
-    
+
+    /**
+     * Select the item.
+     * @param {JQuery} item The item to focus.
+     */
+    select: function(item) {
+        if (!this.focusedItem.hasClass('ui-state-highlight')) {
+            this.focusedItem.trigger('click.selectListbox');
+        }
+        else {
+            if (item && item.length) {
+                item.trigger('click.selectListbox');
+                PrimeFaces.scrollInView(this.listContainer, item);
+            }
+        }
+    },
+
     /**
      * Removes the outline around the listbox with the select options.
      * @private
      */
     removeOutline: function() {
-        if(this.focusedItem && this.focusedItem.hasClass('ui-listbox-outline')) {
+        if (this.focusedItem && this.focusedItem.hasClass('ui-listbox-outline')) {
             this.focusedItem.removeClass('ui-listbox-outline');
         }
     }
