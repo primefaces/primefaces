@@ -1066,18 +1066,13 @@ public class DataTableRenderer extends DataRenderer {
                 break;
             }
 
-            table.setRowIndex(i);
-
             if (encodeHeaderRow && (i == first || !isInSameGroup(context, table, i, -1, sort.getSortBy(), elContext))) {
-                table.setRowIndex(i);
                 encodeHeaderRow(context, table, headerRow);
             }
 
-            table.setRowIndex(i);
             encodeRow(context, table, clientId, i, columnStart, columnEnd);
 
             if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
-                table.setRowIndex(i);
                 encodeSummaryRow(context, summaryRows, sort);
             }
         }
@@ -1561,11 +1556,8 @@ public class DataTableRenderer extends DataRenderer {
     protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
                                     ELContext elContext) {
 
-        table.setRowIndex(currentRowIndex);
         Object currentGroupByData = groupByVE.getValue(elContext);
-
         int nextRowIndex = currentRowIndex + step;
-
         Object nextGroupByData;
 
         // in case of a lazy DataTable, the LazyDataModel currently only loads rows inside the current page; we need a small hack here
@@ -1578,17 +1570,17 @@ public class DataTableRenderer extends DataRenderer {
                 return false;
             }
 
-            nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> {
-                return groupByVE.getValue(elContext);
-            });
+            nextGroupByData = ComponentUtils.executeInRequestScope(context, table.getVar(), nextRowData, () -> groupByVE.getValue(elContext));
         }
         else {
             table.setRowIndex(nextRowIndex);
             if (!table.isRowAvailable()) {
+                table.setRowIndex(currentRowIndex); // restore row index
                 return false;
             }
 
             nextGroupByData = groupByVE.getValue(elContext);
+            table.setRowIndex(currentRowIndex); // restore row index
         }
 
         return Objects.equals(nextGroupByData, currentGroupByData);
