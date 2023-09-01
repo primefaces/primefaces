@@ -107,13 +107,7 @@ public class MenuButtonRenderer extends TieredMenuRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (isValueBlank(value)) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
-        }
-        else {
-            writer.writeText(value, "value");
-        }
+        renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
 
         writer.endElement("span");
 

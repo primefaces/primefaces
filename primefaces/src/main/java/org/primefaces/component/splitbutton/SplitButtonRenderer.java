@@ -169,13 +169,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
-        }
-        else {
-            writer.writeText(value, "value");
-        }
+        renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
 
         writer.endElement("span");
 
@@ -207,7 +201,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()));
+        writer.writeText(getIconOnlyButtonText(button.getTitle(), button.getAriaLabel()), null);
         writer.endElement("span");
 
         writer.endElement("button");
