@@ -885,6 +885,37 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     /**
+     * Renders a button value or label for screen readers if no value is present or icon only button.
+     *
+     * @param writer The response writer
+     * @param escaped is the button escaped?
+     * @param value the value for the button
+     * @param title the title for the button
+     * @param arialLabel the aria label for the button
+     * @throws IOException if any error occurs
+     */
+    protected void renderButtonValue(ResponseWriter writer, boolean escaped, Object value, String title, String arialLabel) throws IOException {
+        if (value == null) {
+            //For ScreenReader
+            String label = getIconOnlyButtonText(title, arialLabel);
+            if (escaped) {
+                writer.writeText(label, null);
+            }
+            else {
+                writer.write(label);
+            }
+        }
+        else {
+            if (escaped) {
+                writer.writeText(value, "value");
+            }
+            else {
+                writer.write(value.toString());
+            }
+        }
+    }
+
+    /**
      * Logs a WARN log message in ProjectStage == DEVELOPMENT.
      * @param context the FacesContext
      * @param message the message to log

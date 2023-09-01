@@ -119,16 +119,11 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
             }
             else {
                 //For ScreenReader
-                writer.write(getIconOnlyButtonText(linkButton.getTitle(), linkButton.getAriaLabel()));
+                renderButtonValue(writer, linkButton.isEscape(), null, linkButton.getTitle(), linkButton.getAriaLabel());
             }
         }
         else {
-            if (linkButton.isEscape()) {
-                writer.writeText(value, "value");
-            }
-            else {
-                writer.write(value);
-            }
+            renderButtonValue(writer, linkButton.isEscape(), value, linkButton.getTitle(), linkButton.getAriaLabel());
         }
 
         writer.endElement("span");
