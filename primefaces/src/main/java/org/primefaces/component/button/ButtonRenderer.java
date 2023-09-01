@@ -82,18 +82,7 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        if (value == null) {
-            //For ScreenReader
-            writer.write(getIconOnlyButtonText(title, button.getAriaLabel()));
-        }
-        else {
-            if (button.isEscape()) {
-                writer.writeText(value, "value");
-            }
-            else {
-                writer.write(value);
-            }
-        }
+        renderButtonValue(writer, button.isEscape(), value, title, button.getAriaLabel());
 
         writer.endElement("span");
 
