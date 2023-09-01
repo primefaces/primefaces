@@ -136,7 +136,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        renderButtonValue(writer, true, button.getValue(), button.getTitle(), button.getAriaLabel());
+        renderButtonValue(writer, true, label, button.getTitle(), button.getAriaLabel());
 
         writer.endElement("span");
 
