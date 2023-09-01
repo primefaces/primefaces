@@ -158,7 +158,7 @@ public class DataRenderer extends CoreRenderer {
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
         }
         else {
-            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
+            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition.toLowerCase() + "'";
         }
 
         wb.append(",paginator:{")
