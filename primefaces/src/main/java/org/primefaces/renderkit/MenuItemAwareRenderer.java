@@ -28,6 +28,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.behavior.ClientBehavior;
@@ -116,6 +118,17 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                 command = "if(PF.metaKey(event)){return true};" + command;
             }
             onclick = (onclick == null) ? command : onclick + ";" + command;
+        }
+        else {
+            // not a command but make sure they know why its not valid
+            if (context.isProjectStage(ProjectStage.Development) && menuitem.isAjax() && menuitem instanceof UIMenuItem) {
+                UIMenuItem uim = (UIMenuItem) menuitem;
+                if (uim.getUpdate() != null || uim.getOncomplete() != null || uim.getProcess() != null) {
+                    String menuClientId = source.getClientId(context);
+                    LOGGER.log(Level.WARNING, () -> "Menu '" + menuClientId
+                            + "' is attempting to use AJAX features but is not a command using action or listener attributes.");
+                }
+            }
         }
 
         if (onclick != null) {
