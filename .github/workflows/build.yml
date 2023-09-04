@@ -16,7 +16,7 @@ jobs:
       matrix:
         java: [11, 17]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
@@ -43,7 +43,7 @@ jobs:
         java: [11, 20]
         facesimpl: [ 'mojarra-2.3', 'myfaces-2.3']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
@@ -66,7 +66,7 @@ jobs:
         java: [11, 20]
         facesimpl: [ 'mojarra-4.0', 'myfaces-4.0' ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
