@@ -624,15 +624,6 @@ public class UIData extends javax.faces.component.UIData {
         }
     }
 
-    protected SavedState getSavedState(UIComponent component, FacesContext context) {
-        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-        if (saved == null) {
-            return ImmutableSavedState.NULL_STATE;
-        }
-        String componentClientId = component.getClientId(context);
-        return saved.getOrDefault(componentClientId, ImmutableSavedState.NULL_STATE);
-    }
-
     protected boolean shouldSkipChildren(FacesContext context) {
         return false;
     }
