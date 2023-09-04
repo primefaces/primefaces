@@ -77,6 +77,7 @@ public interface ColumnAware {
             if (child instanceof Columns) {
                 Columns columns = (Columns) child;
                 if (unwrapDynamicColumns) {
+                    columns.setRowIndex(-1);
                     for (int j = 0; j < columns.getRowCount(); j++) {
                         DynamicColumn dynaColumn = new DynamicColumn(j, columns, context);
                         dynaColumn.applyStatelessModel();
