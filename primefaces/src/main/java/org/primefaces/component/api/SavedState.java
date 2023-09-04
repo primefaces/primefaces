@@ -24,6 +24,7 @@
 package org.primefaces.component.api;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.faces.component.EditableValueHolder;
 
@@ -103,6 +104,10 @@ public class SavedState implements Serializable {
         this.submitted = submitted;
     }
 
+    public boolean hasDeltaState() {
+        return submittedValue != null || value != null || localValueSet || !valid || submitted;
+    }
+
     @Override
     public String toString() {
         return ("submittedValue: " + submittedValue + " value: " + value
@@ -111,12 +116,7 @@ public class SavedState implements Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (localValueSet ? 1231 : 1237);
-        result = prime * result + (submitted ? 1231 : 1237);
-        result = prime * result + ((submittedValue == null) ? 0 : submittedValue.hashCode());
-        return result;
+        return Objects.hash(localValueSet, submitted, submittedValue);
     }
 
     @Override
@@ -131,20 +131,6 @@ public class SavedState implements Serializable {
             return false;
         }
         SavedState other = (SavedState) obj;
-        if (localValueSet != other.localValueSet) {
-            return false;
-        }
-        if (submitted != other.submitted) {
-            return false;
-        }
-        if (submittedValue == null) {
-            if (other.submittedValue != null) {
-                return false;
-            }
-        }
-        else if (!submittedValue.equals(other.submittedValue)) {
-            return false;
-        }
-        return true;
+        return localValueSet == other.localValueSet && submitted == other.submitted && Objects.equals(submittedValue, other.submittedValue);
     }
 }
