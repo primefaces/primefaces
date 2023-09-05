@@ -44,7 +44,7 @@ public abstract class SelectRenderer extends InputRenderer {
     protected boolean isHideNoSelection(UIComponent component) {
         Object attribute = component.getAttributes().get("hideNoSelectionOption");
         if (attribute instanceof String) {
-            attribute = Boolean.parseBoolean(Objects.toString(attribute));
+            attribute = Boolean.parseBoolean((String) attribute);
         }
         return Boolean.TRUE.equals(attribute);
     }
