@@ -41,8 +41,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileCleaningTracker;
-import org.primefaces.config.PrimeEnvironment;
-import org.primefaces.config.StartupPrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
@@ -63,17 +61,7 @@ public class FileUploadFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-
-        if (uploader == null || "auto".equals(uploader)) {
-            PrimeEnvironment environment = new StartupPrimeEnvironment();
-            bypass = true; // default since JSF 2.2
-        }
-        else if ("native".equals(uploader)) {
-            bypass = true;
-        }
-        else if ("commons".equals(uploader)) {
-            bypass = false;
-        }
+        bypass = !"commons".equals(uploader);
 
         thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
         fileCountMax = filterConfig.getInitParameter(FILE_COUNT_MAX_PARAM);

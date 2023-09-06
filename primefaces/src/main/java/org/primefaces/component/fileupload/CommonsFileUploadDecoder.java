@@ -41,8 +41,6 @@ import org.primefaces.webapp.MultipartRequest;
 
 public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
 
-    private static final Logger LOGGER = Logger.getLogger(CommonsFileUploadDecoder.class.getName());
-
     @Override
     public String getName() {
         return "commons";

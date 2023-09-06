@@ -40,7 +40,7 @@ public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Se
     }
 
     public NativeUploadedFile(Part source, Long sizeLimit, String webKitRelativePath) {
-        super(source, FileUploadUtils.requireValidFilename(source.getSubmittedFileName()), sizeLimit, webKitRelativePath);
+        super(source, source.getSubmittedFileName(), sizeLimit, webKitRelativePath);
     }
 
     @Override
