@@ -29,8 +29,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import javax.servlet.http.Part;
 
-import org.primefaces.util.FileUploadUtils;
-
 public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {
 
     private static final long serialVersionUID = 1L;
