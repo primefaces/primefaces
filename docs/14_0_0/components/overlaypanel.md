@@ -37,6 +37,7 @@ my | left top | String | Position of the panel relative to the target.
 onHide | null | String | Client side callback to execute when panel is hidden.
 onShow | null | String | Client side callback to execute when panel is shown.
 showCloseIcon | false | Boolean | Displays a close icon to hide the overlay, default is false.
+showDelay | 0 | Integer | Delay time to show overlay in milliseconds.
 showEvent | click | String | Event on target to show the panel.
 style | null | String | Inline style of the panel.
 styleClass | null | String | Style class of the panel.
