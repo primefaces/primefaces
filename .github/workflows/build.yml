@@ -26,8 +26,8 @@ jobs:
       - name: Build
         run: mvn clean install -T1C -Psecurity-checks,jsdoc,minify --batch-mode --show-version
       - name: Sonar Cloud
-        if: github.repository == 'primefaces/primefaces' && matrix.java == 17
-        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=org.primefaces:primefaces -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
+        if: github.repository == 'primefaces/primefaces' && github.ref == 'refs/heads/master' && matrix.java == 17
+        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.organization=primefaces -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}}  -fprimefaces/pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
