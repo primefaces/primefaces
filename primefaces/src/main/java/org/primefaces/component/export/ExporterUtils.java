@@ -25,6 +25,7 @@ package org.primefaces.component.export;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
