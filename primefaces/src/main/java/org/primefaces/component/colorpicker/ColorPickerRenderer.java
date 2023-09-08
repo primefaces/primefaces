@@ -32,7 +32,6 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.*;
 
@@ -63,7 +62,7 @@ public class ColorPickerRenderer extends InputRenderer {
             if (!COLOR_PATTERN.matcher(submittedValue).matches()) {
                 submittedValue = Constants.EMPTY_STRING;
             }
-            colorPicker.setSubmittedValue(ComponentUtils.getConvertedValue(context, component, submittedValue));
+            colorPicker.setSubmittedValue(submittedValue);
         }
 
         decodeBehaviors(context, component);

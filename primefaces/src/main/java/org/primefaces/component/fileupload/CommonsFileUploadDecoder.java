@@ -25,7 +25,6 @@ package org.primefaces.component.fileupload;
 
 import java.io.File;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.faces.FacesException;
@@ -40,8 +39,6 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.webapp.MultipartRequest;
 
 public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
-
-    private static final Logger LOGGER = Logger.getLogger(CommonsFileUploadDecoder.class.getName());
 
     @Override
     public String getName() {

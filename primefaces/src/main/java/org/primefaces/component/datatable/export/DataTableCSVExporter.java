@@ -35,6 +35,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.CSVOptions;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
@@ -77,11 +78,12 @@ public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOpti
     }
 
     @Override
-    protected void exportColumnFacetValue(FacesContext context, DataTable table, String text, int index) {
+    protected void exportColumnFacetValue(FacesContext context, DataTable table, ColumnValue columnValue, int index) {
         if (index != 0) { // not first, for column separator
             document.append(options().getDelimiterChar());
         }
 
+        String text = columnValue.toString();
         String exportValue = Constants.EMPTY_STRING;
         if (LangUtils.isNotBlank(text)) {
             exportValue = text.replace(options().getQuoteString(), options().getDoubleQuoteString());
@@ -91,13 +93,13 @@ public class DataTableCSVExporter extends DataTableExporter<PrintWriter, CSVOpti
     }
 
     @Override
-    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, String text, int index) {
+    protected void exportCellValue(FacesContext context, DataTable table, UIColumn col, ColumnValue columnValue, int index) {
         if (index != 0) {
             document.append(options().getDelimiterChar());
         }
 
         document.append(options().getQuoteChar())
-                .append(escapeQuotes(text))
+                .append(escapeQuotes(columnValue.toString()))
                 .append(options().getQuoteChar());
     }
 

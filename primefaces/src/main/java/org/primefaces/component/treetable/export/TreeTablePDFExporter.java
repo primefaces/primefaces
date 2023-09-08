@@ -35,6 +35,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExporterOptions;
 import org.primefaces.component.export.PDFOptions;
 import org.primefaces.component.export.PDFOrientationType;
@@ -112,25 +113,25 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
     @Override
     protected void exportTabletFacetValue(FacesContext context, TreeTable table, String textValue) {
         int colspan = getExportableColumns(table).size();
-        addFacetValue(1, colspan, textValue);
+        addFacetValue(1, colspan, ColumnValue.of(textValue));
     }
 
     @Override
-    protected void exportColumnFacetValue(FacesContext context, TreeTable table, String text, int index) {
-        addFacetValue(1, 1, text);
+    protected void exportColumnFacetValue(FacesContext context, TreeTable table, ColumnValue columnValue, int index) {
+        addFacetValue(1, 1, columnValue);
     }
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, TreeTable table, UIColumn column,
-                                               AtomicInteger colIndex, String text) {
+                                               AtomicInteger colIndex, ColumnValue columnValue) {
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
-        addFacetValue(rowSpan, colSpan, text);
+        addFacetValue(rowSpan, colSpan, columnValue);
     }
 
     @Override
-    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, String text, int index) {
-        PdfPCell cell = createCell(col, new Paragraph(text, cellFont));
+    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, ColumnValue columnValue, int index) {
+        PdfPCell cell = createCell(col, new Paragraph(columnValue.toString(), cellFont));
         pdfTable.addCell(cell);
     }
 
@@ -236,8 +237,8 @@ public class TreeTablePDFExporter extends TreeTableExporter<Document, PDFOptions
         return cell;
     }
 
-    protected void addFacetValue(int rowSpan, int colSpan, String textValue) {
-        PdfPCell cell = new PdfPCell(new Paragraph(textValue, facetFont));
+    protected void addFacetValue(int rowSpan, int colSpan, ColumnValue columnValue) {
+        PdfPCell cell = new PdfPCell(new Paragraph(columnValue.toString(), facetFont));
         if (facetBgColor != null) {
             cell.setBackgroundColor(facetBgColor);
         }

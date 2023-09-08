@@ -139,7 +139,7 @@ public class FileUploadUtils {
         return new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "File Error", message));
     }
 
-    public static boolean isSystemWindows() {
+    static boolean isSystemWindows() {
         return File.separatorChar == '\\';
     }
 

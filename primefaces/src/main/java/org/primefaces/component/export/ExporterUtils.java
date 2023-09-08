@@ -25,7 +25,6 @@ package org.primefaces.component.export;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.el.MethodExpression;
@@ -40,6 +39,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.component.rowtoggler.RowToggler;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
@@ -127,6 +127,9 @@ public final class ExporterUtils {
         else if (component instanceof OverlayPanel) {
             return Constants.EMPTY_STRING;
         }
+        else if (component instanceof RowToggler) {
+            return Constants.EMPTY_STRING;
+        }
         else {
             //This would get the plain texts on UIInstructions when using Facelets
             String value = component.toString();
@@ -140,26 +143,26 @@ public final class ExporterUtils {
         }
     }
 
-    public static String getColumnValue(FacesContext context, UITable table, UIColumn column, boolean joinComponents) {
+    public static ColumnValue getColumnValue(FacesContext context, UITable table, UIColumn column, boolean joinComponents) {
         if (column.getExportValue() != null) {
-            return column.getExportValue();
+            return ColumnValue.of(column.getExportValue());
         }
         else if (column.getExportFunction() != null) {
             MethodExpression exportFunction = column.getExportFunction();
-            return (String) exportFunction.invoke(context.getELContext(), new Object[]{column});
+            return ColumnValue.of(exportFunction.invoke(context.getELContext(), new Object[]{column}));
         }
         else if (LangUtils.isNotBlank(column.getField())) {
             String value = table.getConvertedFieldValue(context, column);
-            return Objects.toString(value, Constants.EMPTY_STRING);
+            return ColumnValue.of(value);
         }
         else {
-            return column.getChildren()
+            return ColumnValue.of(column.getChildren()
                     .stream()
                     .filter(UIComponent::isRendered)
                     .map(c -> getComponentValue(context, c))
                     .filter(LangUtils::isNotBlank)
                     .limit(!joinComponents ? 1 : column.getChildren().size())
-                    .collect(Collectors.joining(Constants.SPACE));
+                    .collect(Collectors.joining(Constants.SPACE)));
         }
     }
 
@@ -185,28 +188,28 @@ public final class ExporterUtils {
         return null;
     }
 
-    public static String getColumnFacetValue(FacesContext context, UIColumn column, TableExporter.ColumnType columnType) {
-        String textValue = null;
+    public static ColumnValue getColumnFacetValue(FacesContext context, UIColumn column, TableExporter.ColumnType columnType) {
+        ColumnValue columnValue = ColumnValue.EMPTY_VALUE;
         if (columnType == TableExporter.ColumnType.HEADER) {
-            textValue = Optional.ofNullable(column.getExportHeaderValue()).orElseGet(column::getHeaderText);
+            columnValue = ColumnValue.of(Optional.ofNullable(column.getExportHeaderValue()).orElseGet(column::getHeaderText));
         }
         else if (columnType == TableExporter.ColumnType.FOOTER) {
-            textValue =  Optional.ofNullable(column.getExportFooterValue()).orElseGet(column::getFooterText);
+            columnValue = ColumnValue.of(Optional.ofNullable(column.getExportFooterValue()).orElseGet(column::getFooterText));
         }
 
         UIComponent facet = column.getFacet(columnType.facet());
-        if (LangUtils.isBlank(textValue) && ComponentUtils.shouldRenderFacet(facet)) {
-            textValue = getComponentValue(context, facet);
+        if (LangUtils.isBlank(columnValue.toString()) && ComponentUtils.shouldRenderFacet(facet)) {
+            columnValue = ColumnValue.of(getComponentValue(context, facet));
         }
 
-        return Objects.toString(textValue, Constants.EMPTY_STRING);
+        return columnValue;
     }
 
     public static String getColumnExportTag(FacesContext context, UIColumn column) {
         // lowerCase really? camelCase at best
         String columnTag = column.getExportTag();
         if (LangUtils.isBlank(columnTag)) {
-            columnTag = getColumnFacetValue(context, column, TableExporter.ColumnType.HEADER);
+            columnTag = getColumnFacetValue(context, column, TableExporter.ColumnType.HEADER).toString();
         }
         return EscapeUtils.forXmlTag(columnTag.toLowerCase());
     }

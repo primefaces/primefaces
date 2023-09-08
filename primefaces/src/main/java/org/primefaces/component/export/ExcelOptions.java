@@ -50,6 +50,10 @@ public class ExcelOptions implements ExporterOptions {
     private DecimalFormat numberFormat;
     private DecimalFormat currencyFormat;
 
+    private String excelDateFormat;
+    private String excelTimeFormat;
+    private String excelDateTimeFormat;
+
     public ExcelOptions() {
     }
 
@@ -177,5 +181,29 @@ public class ExcelOptions implements ExporterOptions {
 
     public void setCurrencyFormat(DecimalFormat currencyFormat) {
         this.currencyFormat = currencyFormat;
+    }
+
+    public String getExcelDateFormat() {
+        return excelDateFormat;
+    }
+
+    public void setExcelDateFormat(String excelDateFormat) {
+        this.excelDateFormat = excelDateFormat;
+    }
+
+    public String getExcelTimeFormat() {
+        return excelTimeFormat;
+    }
+
+    public void setExcelTimeFormat(String excelTimeFormat) {
+        this.excelTimeFormat = excelTimeFormat;
+    }
+
+    public String getExcelDateTimeFormat() {
+        return excelDateTimeFormat;
+    }
+
+    public void setExcelDateTimeFormat(String excelDateTimeFormat) {
+        this.excelDateTimeFormat = excelDateTimeFormat;
     }
 }

@@ -21,48 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model.file;
+package org.primefaces.component.export;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import javax.servlet.http.Part;
+import org.primefaces.util.Constants;
 
-public class NativeUploadedFile extends AbstractUploadedFile<Part> implements Serializable {
+import java.util.Objects;
 
-    private static final long serialVersionUID = 1L;
+public class ColumnValue {
+    public static final ColumnValue EMPTY_VALUE = ColumnValue.of(Constants.EMPTY_STRING);
 
-    public NativeUploadedFile() {
-        // NOOP
+    private final Object value;
+
+
+    private ColumnValue(Object value) {
+        this.value = value;
     }
 
-    public NativeUploadedFile(Part source, Long sizeLimit, String webKitRelativePath) {
-        super(source, source.getSubmittedFileName(), sizeLimit, webKitRelativePath);
+    public static ColumnValue of(Object value) {
+        return new ColumnValue(value);
     }
 
-    @Override
-    public long getSize() {
-        return getSource().getSize();
+    public Object getValue() {
+        return value;
     }
 
-    @Override
-    public String getContentType() {
-        return getSource().getContentType();
-    }
-
-    @Override
-    public void delete() throws IOException {
-        getSource().delete();
+    public boolean isStringValue() {
+        return value instanceof String;
     }
 
     @Override
-    protected InputStream getSourceInputStream() throws IOException {
-        return getSource().getInputStream();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ColumnValue that = (ColumnValue) o;
+
+        return Objects.equals(value, that.value);
     }
 
     @Override
-    protected void write(File file) throws IOException {
-        getSource().write(file.getCanonicalPath());
+    public int hashCode() {
+        return value != null ? value.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(value, Constants.EMPTY_STRING);
     }
 }

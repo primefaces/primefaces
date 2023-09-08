@@ -7,8 +7,8 @@ are many other third party libraries and plugins used to support features.
 | --- | --- | --- |
 | [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.0 | https://github.com/autoNumeric/autoNumeric |
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.9.1 | https://www.chartjs.org |
-| [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.19.0 | https://github.com/mdbassit/Coloris |
-| [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.0 | https://github.com/js-cookie/js-cookie |
+| [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.21.1 | https://github.com/mdbassit/Coloris |
+| [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.5 | https://github.com/js-cookie/js-cookie |
 | [Cropper.js](../jsdocs/classes/node_modules_cropperjs_types.Cropper-1.html) | 1.5.13 | https://github.com/fengyuanchen/cropperjs |
 | [Download.js](../jsdocs/modules/node_modules__types_downloadjs.html) | 4.2 | http://danml.com/download.html |
 | [FullCalendar](../jsdocs/classes/node_modules__fullcalendar_core_main.Calendar.html) | 5.11.3 | https://fullcalendar.io/ |
@@ -28,10 +28,10 @@ are many other third party libraries and plugins used to support features.
 | [jQuery UI](../jsdocs/modules/node_modules__types_jqueryui.html) | 1.13.2 | https://github.com/jquery/jquery-ui |
 | [jQuery](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html) | 3.7.1 | https://jquery.com/ |
 | [jScrollPane](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#jScrollPane) | 2.2.3 | https://github.com/vitch/jScrollPane |
-| [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.14.6 | https://github.com/jsplumb/jsplumb |
+| [JSPlumb Diagram](../jsdocs/modules/node_modules_jsplumb.export_.html) | 2.15.6 | https://github.com/jsplumb/jsplumb |
 | [Keypad](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#keypad) | 2.1.1 | http://keith-wood.name/keypad.html |
 | [Moment](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html) | 2.29.4 | https://github.com/moment/moment |
-| [Moment Timezone](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.34 | https://github.com/moment/moment-timezone |
+| [Moment Timezone](../jsdocs/modules/node_modules_moment_ts3_1_typings_moment.html#tz) | 0.5.43 | https://github.com/moment/moment-timezone |
 | [Quill Editor](../jsdocs/modules/node_modules__types_quill.html) | 1.3.7 | https://quilljs.com/ |
 | [Raphaël](../jsdocs/interfaces/node_modules__types_raphael.RaphaelStatic.html) | 2.3.0 | http://raphaeljs.com |
 | [Signature](../jsdocs/interfaces/src_PrimeFaces.JQuery-1.html#signature) | 1.2.0 | http://keith-wood.name/signature.html |
