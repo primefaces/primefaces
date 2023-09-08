@@ -40,6 +40,7 @@ import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITable;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.overlaypanel.OverlayPanel;
+import org.primefaces.component.rowtoggler.RowToggler;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
@@ -125,6 +126,9 @@ public final class ExporterUtils {
             return (String) component.getAttributes().get("alt");
         }
         else if (component instanceof OverlayPanel) {
+            return Constants.EMPTY_STRING;
+        }
+        else if (component instanceof RowToggler) {
             return Constants.EMPTY_STRING;
         }
         else {
