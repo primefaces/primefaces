@@ -13612,7 +13612,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.]]>
+                <![CDATA[DO NOT USE! To limit the number of digits...set minValue, maxValue and/or decimalPlaces accordingly.]]>
             </description>
             <name>maxlength</name>
             <required>false</required>
