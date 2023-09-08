@@ -169,7 +169,7 @@ public interface ColumnAware {
                 VisitContext visitContext = VisitContext.createVisitContext(context, null,
                         ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
                 child.visitTree(visitContext, (ctx, target) -> {
-                    if (ComponentUtils.isUIRepeat(child)) {
+                    if (ComponentUtils.isUIRepeat(target)) {
                         return VisitResult.ACCEPT;
                     }
 
