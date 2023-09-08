@@ -32,7 +32,7 @@ disabled | false | Boolean | Disables input field
 immediate | false | Boolean | When set true, process validations logic is executed at apply request values phase for this component.
 label | null | String | A localized user presentable name.
 lang | null | String | Code describing the language used in the generated markup for this component.
-maxlength | null | Integer | DO NOT USE! To limit the number of digits...set maximumValue, minimumValue and/or decimalPlaces accordingly.
+maxlength | null | Integer | DO NOT USE! To limit the number of digits...set `minValue`, `maxValue` and/or `decimalPlaces` accordingly.
 onblur | null | String | Client side callback to execute when input element loses focus.
 onchange | null | String | Client side callback to execute when input element loses focus and its value has been modified since gaining focus.
 onclick | null | String | Client side callback to execute when input element is clicked.
