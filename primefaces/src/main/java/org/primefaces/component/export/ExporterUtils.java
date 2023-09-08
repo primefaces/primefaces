@@ -190,20 +190,10 @@ public final class ExporterUtils {
     public static ColumnValue getColumnFacetValue(FacesContext context, UIColumn column, TableExporter.ColumnType columnType) {
         ColumnValue columnValue = ColumnValue.EMPTY_VALUE;
         if (columnType == TableExporter.ColumnType.HEADER) {
-            if (column.getExportHeaderValue() != null) {
-                columnValue = ColumnValue.of(column.getExportHeaderValue());
-            }
-            else {
-                columnValue = ColumnValue.of(column.getHeaderText());
-            }
+            columnValue = ColumnValue.of(Optional.ofNullable(column.getExportHeaderValue()).orElseGet(column::getHeaderText));
         }
         else if (columnType == TableExporter.ColumnType.FOOTER) {
-            if (column.getExportFooterValue() != null) {
-                columnValue = ColumnValue.of(column.getExportFooterValue());
-            }
-            else {
-                columnValue = ColumnValue.of(column.getFooterText());
-            }
+            columnValue = ColumnValue.of(Optional.ofNullable(column.getExportFooterValue()).orElseGet(column::getFooterText));
         }
 
         UIComponent facet = column.getFacet(columnType.facet());
