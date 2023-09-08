@@ -497,29 +497,52 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void saveDescendantState(UIComponent component, FacesContext context) {
+        // Save state for this component (if it is a EditableValueHolder)
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-
         if (component instanceof EditableValueHolder) {
-            saveInputState((EditableValueHolder) component, context);
+            EditableValueHolder input = (EditableValueHolder) component;
+            SavedState state = null;
+            String clientId = component.getClientId(context);
+            if (saved == null) {
+                state = new SavedState();
+            }
+            if (state == null) {
+                state = saved.get(clientId);
+                if (state == null) {
+                    state = new SavedState();
+                }
+            }
+            state.setValue(input.getLocalValue());
+            state.setValid(input.isValid());
+            state.setSubmittedValue(input.getSubmittedValue());
+            state.setLocalValueSet(input.isLocalValueSet());
+            if (state.hasDeltaState()) {
+                getStateHelper().put(PropertyKeys.saved, clientId, state);
+            }
+            else if (saved != null) {
+                getStateHelper().remove(PropertyKeys.saved, clientId);
+            }
         }
         else if (component instanceof UIForm) {
             UIForm form = (UIForm) component;
-            String componentClientId = component.getClientId(context);
+            String clientId = component.getClientId(context);
             SavedState state = null;
             if (saved == null) {
                 state = new SavedState();
-                getStateHelper().put(PropertyKeys.saved, componentClientId, state);
             }
-
             if (state == null) {
-                state = saved.get(componentClientId);
+                state = saved.get(clientId);
                 if (state == null) {
                     state = new SavedState();
-                    //saved.put(clientId, state);
-                    getStateHelper().put(PropertyKeys.saved, componentClientId, state);
                 }
             }
             state.setSubmitted(form.isSubmitted());
+            if (state.hasDeltaState()) {
+                getStateHelper().put(PropertyKeys.saved, clientId, state);
+            }
+            else if (saved != null) {
+                getStateHelper().remove(PropertyKeys.saved, clientId);
+            }
         }
 
         //save state for children
@@ -536,34 +559,6 @@ public class UIData extends javax.faces.component.UIData {
                 saveDescendantState(facet, context);
             }
         }
-    }
-
-    protected void saveInputState(EditableValueHolder input, FacesContext context) {
-        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-        String componentClientId = ((UIComponent) input).getClientId(context);
-        if (isDefaultAndEmpty(input)) {
-            if (saved != null) {
-                saved.remove(componentClientId);
-            }
-            return;
-        }
-
-        SavedState state = saved != null
-                ? saved.computeIfAbsent(componentClientId, key -> new SavedState())
-                : new SavedState();
-
-        state.setValue(input.getLocalValue());
-        state.setLocalValueSet(input.isLocalValueSet());
-        state.setValid(input.isValid());
-        state.setSubmittedValue(input.getSubmittedValue());
-        getStateHelper().put(PropertyKeys.saved, componentClientId, state);
-    }
-
-    protected boolean isDefaultAndEmpty(EditableValueHolder input) {
-        return input.getLocalValue() == null
-                && input.isValid()
-                && !input.isLocalValueSet()
-                && input.getSubmittedValue() == null;
     }
 
     protected void restoreDescendantState() {
@@ -584,48 +579,54 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     protected void restoreDescendantState(UIComponent component, FacesContext context) {
+        // Reset the client identifier for this component
         String id = component.getId();
-        component.setId(id); //reset the client id
-
+        component.setId(id); // Forces client id to be reset
+        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
+        // Restore state for this component (if it is a EditableValueHolder)
         if (component instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) component;
-            SavedState state = getSavedState(component, context);
+            String clientId = component.getClientId(context);
 
-            input.setValue(state.getValue());
-            input.setLocalValueSet(state.isLocalValueSet());
-            input.setValid(state.isValid());
-            input.setSubmittedValue(state.getSubmittedValue());
+            SavedState state = saved == null ? null : saved.get(clientId);
+            if (state == null) {
+                input.resetValue();
+            }
+            else {
+                input.setValue(state.getValue());
+                input.setValid(state.isValid());
+                input.setSubmittedValue(state.getSubmittedValue());
+                // This *must* be set after the call to setValue(), since
+                // calling setValue() always resets "localValueSet" to true.
+                input.setLocalValueSet(state.isLocalValueSet());
+            }
         }
         else if (component instanceof UIForm) {
             UIForm form = (UIForm) component;
-            SavedState state = getSavedState(component, context);
-
-            form.setSubmitted(state.getSubmitted());
+            String clientId = component.getClientId(context);
+            SavedState state = saved == null ? null : saved.get(clientId);
+            if (state == null) {
+                // submitted is transient state
+                form.setSubmitted(false);
+            }
+            else {
+                form.setSubmitted(state.getSubmitted());
+            }
         }
 
-        //restore state of children
+        // Restore state for children of this component
         if (component.getChildCount() > 0) {
-            for (int i = 0; i < component.getChildCount(); i++) {
-                UIComponent kid = component.getChildren().get(i);
+            for (UIComponent kid : component.getChildren()) {
                 restoreDescendantState(kid, context);
             }
         }
 
-        //restore state of facets
+        // Restore state for facets of this component
         if (component.getFacetCount() > 0) {
             for (UIComponent facet : component.getFacets().values()) {
                 restoreDescendantState(facet, context);
             }
         }
-    }
-
-    protected SavedState getSavedState(UIComponent component, FacesContext context) {
-        Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
-        if (saved == null) {
-            return ImmutableSavedState.NULL_STATE;
-        }
-        String componentClientId = component.getClientId(context);
-        return saved.getOrDefault(componentClientId, ImmutableSavedState.NULL_STATE);
     }
 
     @Override
