@@ -260,6 +260,19 @@ public class WidgetBuilder {
         return this;
     }
 
+    public WidgetBuilder attr(String name, Enum<?> value, Enum<?> defaultValue) throws IOException {
+        if (value != null && !value.equals(defaultValue)) {
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":\"");
+            rw.write(EscapeUtils.forJavaScript(value.toString()));
+            rw.write("\"");
+        }
+
+        return this;
+    }
+
     public WidgetBuilder attr(String name, double value, double defaultValue) throws IOException {
         if (value != defaultValue) {
             ResponseWriter rw = context.getResponseWriter();

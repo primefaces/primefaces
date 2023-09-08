@@ -80,27 +80,27 @@ public abstract class ColorPickerBase extends AbstractPrimeHtmlInputText impleme
         getStateHelper().put(PropertyKeys.mode, mode);
     }
 
-    public String getTheme() {
-        return (String) getStateHelper().eval(PropertyKeys.theme, "default");
+    public ColorPickerTheme getTheme() {
+        return (ColorPickerTheme) getStateHelper().eval(PropertyKeys.theme, ColorPickerTheme.defaultValue);
     }
 
-    public void setTheme(String theme) {
+    public void setTheme(ColorPickerTheme theme) {
         getStateHelper().put(PropertyKeys.theme, theme);
     }
 
-    public String getThemeMode() {
-        return (String) getStateHelper().eval(PropertyKeys.themeMode, "auto");
+    public ColorPickerThemeMode getThemeMode() {
+        return (ColorPickerThemeMode) getStateHelper().eval(PropertyKeys.themeMode, ColorPickerThemeMode.auto);
     }
 
-    public void setThemeMode(String themeMode) {
+    public void setThemeMode(ColorPickerThemeMode themeMode) {
         getStateHelper().put(PropertyKeys.themeMode, themeMode);
     }
 
-    public String getFormat() {
-        return (String) getStateHelper().eval(PropertyKeys.format, "hex");
+    public ColorPickerFormat getFormat() {
+        return (ColorPickerFormat) getStateHelper().eval(PropertyKeys.format, ColorPickerFormat.hex);
     }
 
-    public void setFormat(String format) {
+    public void setFormat(ColorPickerFormat format) {
         getStateHelper().put(PropertyKeys.format, format);
     }
 
