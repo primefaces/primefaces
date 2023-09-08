@@ -35,7 +35,7 @@
         <myfaces-next.version>2.3-next-M7</myfaces-next.version>
         <tomcat.version>9.0.80</tomcat.version>
         <resteasy.version>5.0.8.Final</resteasy.version>
-        <owb.version>2.0.27</owb.version>
+        <owb.version>4.0.0</owb.version>
         <jetty.version>9.4.52.v20230823</jetty.version>
     </properties>
 
