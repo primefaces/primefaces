@@ -2,15 +2,16 @@
  * Copyright (c) 2021-2023 Momo Bassit.
  * Licensed under the MIT License (MIT)
  * https://github.com/mdbassit/Coloris
- * Version: 0.21.0
+ * Version: 0.21.1
  * NPM: https://github.com/melloware/coloris-npm
  */
 
 window.Coloris = ((window, document, Math, undefined) => {
   const ctx = document.createElement('canvas').getContext('2d');
   const currentColor = { r: 0, g: 0, b: 0, h: 0, s: 0, v: 0, a: 1 };
-  let container, picker, colorArea, colorAreaDims, colorMarker, colorPreview, colorValue, clearButton,
-      closeButton, hueSlider, hueMarker, alphaSlider, alphaMarker, currentEl, currentFormat, oldColor, keyboardNav;
+  let container,picker,colorArea,colorMarker,colorPreview,colorValue,clearButton,closeButton,
+      hueSlider,hueMarker,alphaSlider,alphaMarker,currentEl,currentFormat,oldColor,keyboardNav,
+      colorAreaDims = {};
 
   //***** PF: Prevent binding events multiple times
   let bound;
