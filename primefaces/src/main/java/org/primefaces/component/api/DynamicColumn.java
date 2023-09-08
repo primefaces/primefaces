@@ -299,12 +299,12 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getExportHeaderValue() {
+    public Object getExportHeaderValue() {
         return columns.getExportHeaderValue();
     }
 
     @Override
-    public String getExportFooterValue() {
+    public Object getExportFooterValue() {
         return columns.getExportFooterValue();
     }
 
@@ -339,7 +339,7 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getExportValue() {
+    public Object getExportValue() {
         return columns.getExportValue();
     }
 

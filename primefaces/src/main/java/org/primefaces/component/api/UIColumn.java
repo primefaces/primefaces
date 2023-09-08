@@ -217,7 +217,7 @@ public interface UIColumn {
 
     MethodExpression getExportFunction();
 
-    String getExportValue();
+    Object getExportValue();
 
     int getExportRowspan();
 
@@ -225,9 +225,9 @@ public interface UIColumn {
 
     boolean isGroupRow();
 
-    String getExportHeaderValue();
+    Object getExportHeaderValue();
 
-    String getExportFooterValue();
+    Object getExportFooterValue();
 
     String getExportTag();
 

@@ -33,6 +33,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.export.ColumnValue;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.ExporterUtils;
 import org.primefaces.component.treetable.TreeTable;
@@ -97,25 +98,24 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
             ));
         }
 
-        exportColumnFacetValue(context, table, textValue, 0);
+        exportColumnFacetValue(context, table, ColumnValue.of(textValue), 0);
     }
 
     @Override
-    protected void exportColumnFacetValue(FacesContext context, TreeTable table, String text, int index) {
+    protected void exportColumnFacetValue(FacesContext context, TreeTable table, ColumnValue columnValue, int index) {
         Cell cell = row().createCell(index);
-        cell.setCellValue(stylesManager.createRichTextString(text));
-        cell.setCellStyle(stylesManager.getFacetStyle());
+        stylesManager.updateFacetCell(cell, columnValue);
     }
 
     @Override
-    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, String text, int i) {
+    protected void exportCellValue(FacesContext context, TreeTable table, UIColumn col, ColumnValue columnValue, int i) {
         Cell cell = row().createCell(i);
-        stylesManager.updateCell(col, cell, text);
+        stylesManager.updateCell(col, cell, columnValue);
     }
 
     @Override
     protected void exportColumnGroupFacetValue(FacesContext context, TreeTable table, UIColumn column,
-                                               AtomicInteger colIndex, String text) {
+                                               AtomicInteger colIndex, ColumnValue columnValue) {
         Sheet sheet = sheet();
         int rowIndex = sheet.getLastRowNum();
 
@@ -131,7 +131,7 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
                     colIndex.get(), // first column (0-based)
                     colIndex.get() + colSpan // last column (0-based)
             ));
-            exportColumnFacetValue(context, table, text, (short) colIndex.get());
+            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
             colIndex.set(colIndex.get() + colSpan);
         }
         else if (rowSpan > 0) {
@@ -141,7 +141,7 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
                     colIndex.get(), // first column (0-based)
                     colIndex.get() // last column (0-based)
             ));
-            exportColumnFacetValue(context, table, text, (short) colIndex.get());
+            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
         }
         else if (colSpan > 0) {
             colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
@@ -151,12 +151,12 @@ public class TreeTableExcelExporter extends TreeTableExporter<Workbook, ExcelOpt
                     colIndex.get(), // first column (0-based)
                     colIndex.get() + colSpan // last column (0-based)
             ));
-            exportColumnFacetValue(context, table, text, (short) colIndex.get());
+            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
             colIndex.set(colIndex.get() + colSpan);
         }
         else {
             colIndex.set(calculateColumnOffset(sheet, rowIndex, colIndex.get()));
-            exportColumnFacetValue(context, table, text, (short) colIndex.get());
+            exportColumnFacetValue(context, table, columnValue, (short) colIndex.get());
         }
     }
 
