@@ -693,7 +693,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @return {number} The number of tabs.
      */
     getLength: function() {
-        return this.navContainer.children().length;
+        return this.headerContainer.length;
     },
 
     /**
