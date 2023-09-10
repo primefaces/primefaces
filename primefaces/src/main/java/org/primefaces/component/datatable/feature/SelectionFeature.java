@@ -98,9 +98,9 @@ public class SelectionFeature implements DataTableFeature {
                 }
                 else {
                     Class<?> clazz = selection.getClass();
-                    boolean isArray = clazz != null && clazz.isArray();
+                    boolean isArray = clazz.isArray();
 
-                    if (clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
+                    if (!isArray && !List.class.isAssignableFrom(clazz)) {
                         throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
                     }
 
@@ -134,9 +134,9 @@ public class SelectionFeature implements DataTableFeature {
                 List<Object> selectionTmp = Collections.emptyList();
                 Set<String> rowKeysTmp = Collections.emptySet();
                 if (isSelectable(table, var, requestMap, o)) {
-                    selectionTmp = new ArrayList(1);
+                    selectionTmp = new ArrayList<>(1);
                     selectionTmp.add(o);
-                    rowKeysTmp = new HashSet(1);
+                    rowKeysTmp = new HashSet<>(1);
                     rowKeysTmp.add(rowKey);
                 }
 
