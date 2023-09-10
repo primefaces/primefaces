@@ -69,6 +69,9 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
         // auto detect touch interface for mobile
         this.cfg.autoDetectDisplay = (this.cfg.autoDetectDisplay === undefined) ? true : this.cfg.autoDetectDisplay;
         this.cfg.responsiveBreakpoint = this.cfg.responsiveBreakpoint || 576;
+        
+        // default date should be input value before widget value
+        this.cfg.defaultDate = this.input.val() || this.cfg.defaultDate;
 
         //i18n and l7n
         this.configureLocale();
