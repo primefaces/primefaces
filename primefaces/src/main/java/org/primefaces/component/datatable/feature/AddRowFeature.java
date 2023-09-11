@@ -37,12 +37,11 @@ public class AddRowFeature implements DataTableFeature {
             DataTableFeatures.selectionFeature().decodeSelectionRowKeys(context, table);
         }
 
-        String clientId = table.getClientId(context);
         int rowIndex = table.getRowCount() - 1;
         table.setRowIndex(table.getRowCount() - 1);
 
         if (table.isRowAvailable()) {
-            renderer.encodeRow(context, table, clientId, rowIndex);
+            renderer.encodeRow(context, table, rowIndex);
         }
     }
 

@@ -37,11 +37,7 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.CollectionDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.model.IterableDataModel;
-import javax.faces.model.ListDataModel;
+import javax.faces.model.*;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
@@ -178,7 +174,7 @@ public class DataTable extends DataTableBase {
 
     private boolean reset = false;
     private List<UIColumn> columns;
-    private Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
+    private final Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     protected enum InternalPropertyKeys {
         defaultFilter,
@@ -241,7 +237,7 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean isColumnSelectionEnabled() {
-        return getColumnSelectionMode() != null;
+        return LangUtils.isNotBlank(getColumnSelectionMode());
     }
 
     public String getColumnSelectionMode() {
@@ -365,11 +361,11 @@ public class DataTable extends DataTableBase {
             if ("rowSelect".equals(eventName) || "rowSelectRadio".equals(eventName) || "contextMenu".equals(eventName)
                     || "rowSelectCheckbox".equals(eventName) || "rowDblselect".equals(eventName)) {
                 String rowKey = params.get(clientId + "_instantSelectedRowKey");
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getRowData(rowKey));
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
             else if ("rowUnselect".equals(eventName) || "rowUnselectCheckbox".equals(eventName)) {
                 String rowKey = params.get(clientId + "_instantUnselectedRowKey");
-                wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), getRowData(rowKey));
+                wrapperEvent = new UnselectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
             else if ("page".equals(eventName) || "virtualScroll".equals(eventName) || "liveScroll".equals(eventName)) {
                 int rows = getRowsToRender();
@@ -390,7 +386,7 @@ public class DataTable extends DataTableBase {
 
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
                 setRowIndex(rowIndex);
-                wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), getRowData());
+                wrapperEvent = new RowEditEvent<>(this, behaviorEvent.getBehavior(), getRowData());
             }
             else if ("colResize".equals(eventName)) {
                 String columnId = params.get(clientId + "_columnId");
@@ -439,7 +435,7 @@ public class DataTable extends DataTableBase {
                     }
                 }
 
-                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), rowIndex, column, rowKey);
+                wrapperEvent = new CellEditEvent<>(this, behaviorEvent.getBehavior(), rowIndex, column, rowKey);
             }
             else if ("rowReorder".equals(eventName)) {
                 int fromIndex = Integer.parseInt(params.get(clientId + "_fromIndex"));
@@ -449,7 +445,7 @@ public class DataTable extends DataTableBase {
             }
             else if ("tap".equals(eventName) || "taphold".equals(eventName)) {
                 String rowkey = params.get(clientId + "_rowkey");
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getRowData(rowkey));
+                wrapperEvent = new SelectEvent<>(this, behaviorEvent.getBehavior(), getRowData(rowkey));
             }
 
             if (wrapperEvent == null) {
@@ -583,12 +579,6 @@ public class DataTable extends DataTableBase {
         return EVENT_NAMES;
     }
 
-    public boolean isBodyUpdate(FacesContext context) {
-        String clientId = getClientId(context);
-
-        return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_updateBody");
-    }
-
     public SubTable getSubTable() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
@@ -611,9 +601,7 @@ public class DataTable extends DataTableBase {
                 throw new UnsupportedOperationException("DataTable#rowKey must be defined for component " + getClientId(getFacesContext()));
             }
 
-            return ComponentUtils.executeInRequestScope(getFacesContext(), getVar(), object, () -> {
-                return getRowKey();
-            });
+            return ComponentUtils.executeInRequestScope(getFacesContext(), getVar(), object, this::getRowKey);
         }
     }
 
@@ -711,9 +699,7 @@ public class DataTable extends DataTableBase {
     public String getScrollState() {
         Map<String, String> params = getFacesContext().getExternalContext().getRequestParameterMap();
         String name = getClientId() + "_scrollState";
-        String value = params.get(name);
-
-        return value == null ? (isRTL() ? "-1,0" : "0,0") : value;
+        return Objects.requireNonNullElseGet(params.get(name), () -> isRTL() ? "-1,0" : "0,0");
     }
 
     @Override
@@ -941,9 +927,7 @@ public class DataTable extends DataTableBase {
         resetDynamicColumns();
 
         // reset component for MyFaces view pooling
-        if (deferredEvents != null) {
-            deferredEvents.clear();
-        }
+        deferredEvents.clear();
         reset = false;
         columns = null;
 

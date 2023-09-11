@@ -483,10 +483,6 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeFrozenScrollableTable(FacesContext context, DataTable table, int frozenColumns) throws IOException {
-
-    }
-
     protected void encodeScrollAreaStart(FacesContext context, DataTable table, String containerClass, String containerBoxClass,
                                          String tableStyle, String tableStyleClass) throws IOException {
 
@@ -685,7 +681,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if (selectionMode != null && "multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
+        if ("multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
             encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
@@ -976,20 +972,16 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
-        String emptyMessage = table.getEmptyMessage();
-        UIComponent emptyFacet = table.getFacet("emptyMessage");
-        SubTable subTable = table.getSubTable();
-        String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         int rows = table.getRows();
-        int first = table.isClientCacheRequest(context) ? Integer.valueOf(params.get(clientId + "_first")) + rows : table.getFirst();
+        int first = table.isClientCacheRequest(context) ? Integer.parseInt(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
 
         if (table.isVirtualScroll()) {
             int virtualScrollRowCount = (table.getScrollRows() * 2);
-            rowCountToRender = virtualScrollRowCount > rowCount ? rowCount : virtualScrollRowCount;
+            rowCountToRender = Math.min(virtualScrollRowCount, rowCount);
         }
 
         int frozenRows = table.getFrozenRows();
@@ -1000,6 +992,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (!dataOnly) {
+            String tbodyClientId = (tbodyId == null) ? clientId + "_data" : tbodyId;
             writer.startElement("tbody", null);
             writer.writeAttribute("id", tbodyClientId, null);
             writer.writeAttribute("class", DataTable.DATA_CLASS, null);
@@ -1010,6 +1003,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (hasData) {
+            SubTable subTable = table.getSubTable();
             if (subTable != null) {
                 encodeSubTable(context, table, subTable, first, (first + rowCountToRender));
             }
@@ -1025,10 +1019,12 @@ public class DataTableRenderer extends DataRenderer {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
 
+            UIComponent emptyFacet = table.getFacet("emptyMessage");
             if (ComponentUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
                 emptyFacet.encodeAll(context);
             }
             else {
+                String emptyMessage = table.getEmptyMessage();
                 writer.writeText(emptyMessage, "emptyMessage");
             }
 
@@ -1049,7 +1045,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeRows(FacesContext context, DataTable table, int first, int last, int columnStart, int columnEnd) throws IOException {
-        String clientId = table.getClientId(context);
         List<SummaryRow> summaryRows = table.getSummaryRows();
         HeaderRow headerRow = table.getHeaderRow();
         ELContext elContext = context.getELContext();
@@ -1070,7 +1065,7 @@ public class DataTableRenderer extends DataRenderer {
                 encodeHeaderRow(context, table, headerRow);
             }
 
-            encodeRow(context, table, clientId, i, columnStart, columnEnd);
+            encodeRow(context, table, i, columnStart, columnEnd);
 
             if (encodeSummaryRow && !isInSameGroup(context, table, i, 1, sort.getSortBy(), elContext)) {
                 encodeSummaryRow(context, summaryRows, sort);
@@ -1085,14 +1080,13 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        String clientId = table.getClientId(context);
 
         writer.startElement("tbody", null);
         writer.writeAttribute("class", DataTable.DATA_CLASS, null);
 
         for (int i = 0; i < frozenRows; i++) {
             table.setRowIndex(i);
-            encodeRow(context, table, clientId, i, columnStart, columnEnd);
+            encodeRow(context, table, i, columnStart, columnEnd);
         }
 
         writer.endElement("tbody");
@@ -1114,11 +1108,11 @@ public class DataTableRenderer extends DataRenderer {
         headerRow.encodeAll(context);
     }
 
-    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex) throws IOException {
-        return encodeRow(context, table, clientId, rowIndex, 0, table.getColumns().size());
+    public boolean encodeRow(FacesContext context, DataTable table, int rowIndex) throws IOException {
+        return encodeRow(context, table, rowIndex, 0, table.getColumns().size());
     }
 
-    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, int columnStart, int columnEnd)
+    public boolean encodeRow(FacesContext context, DataTable table, int rowIndex, int columnStart, int columnEnd)
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
@@ -1365,10 +1359,6 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
-        if (facet == null) {
-            return;
-        }
-
         if (!ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             return;
         }
@@ -1452,24 +1442,17 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         if (table.isNativeElements()) {
-            encodeNativeCheckbox(context, table, checked, disabled, isHeaderCheckbox);
+            encodeNativeCheckbox(context, table, checked, disabled);
         }
         else {
             String ariaRowLabel = table.getAriaRowLabel();
-            Object rowKey = null;
             String boxClass = getStyleClassBuilder(context)
                         .add(HTML.CHECKBOX_BOX_CLASS)
                         .add(disabled, "ui-state-disabled")
                         .add(checked, "ui-state-active")
                         .build();
             String iconClass = checked ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
-
-            if (isHeaderCheckbox) {
-                rowKey = "head";
-            }
-            else {
-                rowKey = table.getRowKey();
-            }
+            Object rowKey = isHeaderCheckbox ? "head" : table.getRowKey();
 
             writer.startElement("div", null);
             writer.writeAttribute("class", styleClass, "styleClass");
@@ -1497,9 +1480,7 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeNativeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled,
-                                        boolean isHeaderCheckbox) throws IOException {
-
+    protected void encodeNativeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         String ariaRowLabel = table.getAriaRowLabel();
