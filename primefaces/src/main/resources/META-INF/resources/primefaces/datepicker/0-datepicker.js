@@ -180,18 +180,18 @@
             }
 
             var parsedDefaultDate = this.parseValue(this.options.defaultDate);
-
+            var hasMultipleDates = (this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array;
             var viewDateDefaultsToNow = false;
 
             this.value = parsedDefaultDate;
-            if (this.options.viewDate) {
+            if (this.options.viewDate && !hasMultipleDates) {
                 this.viewDate = this.parseValue(this.options.viewDate);
                 if (!this.viewDate) {
                     this.viewDate = new Date();
                 }
             }
             else {
-                if ((this.isMultipleSelection() || this.isRangeSelection()) && parsedDefaultDate instanceof Array) {
+                if (hasMultipleDates) {
                     this.viewDate = parsedDefaultDate[0];
                 }
                 else {
