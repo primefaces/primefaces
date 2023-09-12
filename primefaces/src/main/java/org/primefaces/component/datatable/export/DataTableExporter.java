@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -100,25 +99,27 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
         boolean lazy = table.isLazy();
 
         if (lazy) {
-            LazyDataModel<?> lazyDataModel = (LazyDataModel<?>) table.getValue();
+            LazyDataModel<Object> lazyDataModel = (LazyDataModel<Object>) table.getValue();
             List<?> wrappedData = lazyDataModel.getWrappedData();
 
             if (rowCount > 0) {
                 table.setFirst(0);
-                table.setRows(rowCount);
-                table.loadLazyDataIfEnabled();
             }
 
-            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                exportRow(context, table, rowIndex);
+            int offset = 0;
+            List<Object> items = null;
+            while(!(items = lazyDataModel.load(offset, rows, table.getActiveSortMeta(), table.getActiveFilterMeta())).isEmpty()) {
+                lazyDataModel.setWrappedData(items);
+                for (int rowIndex = 0; rowIndex < items.size(); rowIndex++) {
+                    exportRow(context, table, rowIndex);
+                }
+                offset += rows;
             }
 
             //restore
             table.setFirst(first);
-            table.setRows(rows);
             table.setRowIndex(-1);
             lazyDataModel.setWrappedData(wrappedData);
-            lazyDataModel.setPageSize(rows);
             lazyDataModel.setRowIndex(-1);
         }
         else {
