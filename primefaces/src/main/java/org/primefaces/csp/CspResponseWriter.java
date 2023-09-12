@@ -256,6 +256,6 @@ public class CspResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
-        return getWrapped().cloneWithWriter(writer);
+        return new CspResponseWriter(getWrapped().cloneWithWriter(writer), this.cspState);
     }
 }
