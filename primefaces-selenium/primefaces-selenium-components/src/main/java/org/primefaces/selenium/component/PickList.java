@@ -49,16 +49,16 @@ public abstract class PickList extends AbstractComponent {
     private static final String ITEM_VALUE_ATTR = "data-item-value";
     private static final By CHECK_SELECTOR = By.cssSelector("div[class*='ui-chkbox']");
 
-    @FindBy(css = "button[title='Move to Target']")
+    @FindBy(css = "button[class*='ui-picklist-button-add']")
     private WebElement add;
 
-    @FindBy(css = "button[title='Move All to Target']")
+    @FindBy(css = "button[class*='ui-picklist-button-add-all']")
     private WebElement addAll;
 
-    @FindBy(css = "button[title='Move to Source']")
+    @FindBy(css = "button[class*='ui-picklist-button-remove']")
     private WebElement remove;
 
-    @FindBy(css = "button[title='Move All to Source']")
+    @FindBy(css = "button[class*='ui-picklist-button-remove-all']")
     private WebElement removeAll;
 
     @FindBy(css = "ul[class*='ui-picklist-source']")
