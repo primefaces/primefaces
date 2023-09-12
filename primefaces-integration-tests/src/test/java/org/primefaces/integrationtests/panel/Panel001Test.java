@@ -87,6 +87,7 @@ public class Panel001Test extends AbstractPrimePageTest {
         panel.expand();
 
         // Assert
+        Assertions.assertEquals("button", panel.getHeader().getAttribute("role"));
         Assertions.assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
         Assertions.assertFalse(page.messages.isEmpty());
         Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
@@ -106,6 +107,7 @@ public class Panel001Test extends AbstractPrimePageTest {
         panel.toggle();
 
         // Assert
+        Assertions.assertEquals("button", panel.getHeader().getAttribute("role"));
         Assertions.assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
         Assertions.assertFalse(page.messages.isEmpty());
         Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
