@@ -95,7 +95,7 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             // The purpose of using this variable is to retrieve the entire underlying dataset in smaller,
             // manageable chunks rather than all at once.
             LazyDataModel<Object> lazyDataModel = (LazyDataModel<Object>) table.getValue();
-            Integer bufferSize = exportConfiguration.getbufferSize();
+            Integer bufferSize = exportConfiguration.getBufferSize();
             boolean bufferized = bufferSize != null;
             int batchSize = Objects.requireNonNullElseGet(bufferSize, () -> lazyDataModel.count(table.getFilterByAsMap()));
 

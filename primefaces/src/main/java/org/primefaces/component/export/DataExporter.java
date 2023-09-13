@@ -386,8 +386,8 @@ public class DataExporter implements ActionListener, StateHolder {
             return this;
         }
 
-        public Builder bufferSize(ValueExpression lazyChunSize) {
-            exporter.bufferSize = lazyChunSize;
+        public Builder bufferSize(ValueExpression bufferSize) {
+            exporter.bufferSize = bufferSize;
             return this;
         }
 

@@ -195,7 +195,7 @@ public class ExportConfiguration {
         return outputStream;
     }
 
-    public Integer getbufferSize() {
+    public Integer getBufferSize() {
         return bufferSize;
     }
 }
