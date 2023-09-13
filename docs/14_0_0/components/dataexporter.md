@@ -13,23 +13,24 @@ such as excel, pdf, csv and xml.
 
 ## Attributes
 
-| Name | Default | Type | Description |
-| --- | --- | --- | --- |
-type | null | String | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml".
-target | null | String | Search expression to resolve one or multiple target components.
-fileName | null | String | Filename of the generated export file, defaults to target component id.
-pageOnly | false | Boolean | Exports only current page instead of whole dataset.
-preProcessor | null | MethodExpr | PreProcessor for the exported document.
-postProcessor | null | MethodExpr | PostProcessor for the exported document.
-encoding | UTF-8 | String | Character encoding to use.
-selectionOnly | false | Boolean | When enabled, only selection would be exported.
-visibleOnly | false | Boolean | When enabled, only visible data would be exported.
-exportHeader | true | Boolean | When enabled, the header will be exported.
-exportFooter | true | Boolean | When enabled, the footer will be exported.
-options | null | ExporterOptions | Options object to customize document.
-exporter | null | Object | Custom `org.primefaces.component.export.Exporter` to be used instead of built-in exporters.
+| Name | Default | Type             | Description |
+| --- | --- |------------------| --- |
+type | null | String           | Export type: "xls", "xlsx", "xlsxstream", "pdf", "csv", "xml".
+target | null | String           | Search expression to resolve one or multiple target components.
+fileName | null | String           | Filename of the generated export file, defaults to target component id.
+pageOnly | false | Boolean          | Exports only current page instead of whole dataset.
+preProcessor | null | MethodExpr       | PreProcessor for the exported document.
+postProcessor | null | MethodExpr       | PostProcessor for the exported document.
+encoding | UTF-8 | String           | Character encoding to use.
+selectionOnly | false | Boolean          | When enabled, only selection would be exported.
+visibleOnly | false | Boolean          | When enabled, only visible data would be exported.
+exportHeader | true | Boolean          | When enabled, the header will be exported.
+exportFooter | true | Boolean          | When enabled, the footer will be exported.
+options | null | ExporterOptions  | Options object to customize document.
+exporter | null | Object           | Custom `org.primefaces.component.export.Exporter` to be used instead of built-in exporters.
 onTableRender | null | MethodExpression | OnTableRender to be used to set the options of exported table.
 onRowExport | null | MethodExpression | Callback every time a row is being exported
+bufferSize | null | ValueExpression  | Control how many items are fetched at a time when DataTable#lazy is enabled
 
 ## Getting Started with DataExporter
 

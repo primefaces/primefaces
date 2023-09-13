@@ -91,8 +91,6 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
     @Override
     protected void exportAll(FacesContext context, DataTable table) {
         if (table.isLazy()) {
-            LazyDataModel<Object> lazyDataModel = (LazyDataModel<Object>) table.getValue();
-
             // bufferSize is used to control how many items are fetched at a time.
             // The purpose of using this variable is to retrieve the entire underlying dataset in smaller,
             // manageable chunks rather than all at once. This approach is often used to improve performance
@@ -102,6 +100,7 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             int batchSize = Objects.requireNonNullElseGet(bufferSize, table::getRowCount);
 
             if (batchSize > 0) {
+                LazyDataModel<Object> lazyDataModel = (LazyDataModel<Object>) table.getValue();
                 List<?> wrappedData = lazyDataModel.getWrappedData();
                 int offset = 0;
                 List<Object> items;
