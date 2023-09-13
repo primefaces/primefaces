@@ -47,6 +47,7 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute onTableRender;
     private final TagAttribute exporter;
     private final TagAttribute onRowExport;
+    private final TagAttribute bufferSize;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -65,6 +66,7 @@ public class DataExporterTagHandler extends TagHandler {
         onTableRender = getAttribute("onTableRender");
         exporter = getAttribute("exporter");
         onRowExport = getAttribute("onRowExport");
+        bufferSize = getAttribute("bufferSize");
     }
 
     @Override
@@ -88,6 +90,7 @@ public class DataExporterTagHandler extends TagHandler {
         MethodExpression onTableRenderME = null;
         ValueExpression exporterVE = null;
         MethodExpression onRowExportME = null;
+        ValueExpression bufferSizeVE = null;
 
         if (encoding != null) {
             encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -125,6 +128,9 @@ public class DataExporterTagHandler extends TagHandler {
         if (onRowExport != null) {
             onRowExportME = onRowExport.getMethodExpression(faceletContext, null, new Class[]{Object.class});
         }
+        if (bufferSize != null) {
+            bufferSizeVE = bufferSize.getValueExpression(faceletContext, Integer.class);
+        }
         ActionSource actionSource = (ActionSource) parent;
         DataExporter dataExporter = DataExporter.builder()
                     .target(targetVE)
@@ -142,6 +148,7 @@ public class DataExporterTagHandler extends TagHandler {
                     .selectionOnly(selectionOnlyVE)
                     .visibleOnly(visibleOnlyVE)
                     .onRowExport(onRowExportME)
+                    .bufferSize(bufferSizeVE)
                     .build();
         actionSource.addActionListener(dataExporter);
     }

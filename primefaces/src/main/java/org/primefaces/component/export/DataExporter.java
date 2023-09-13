@@ -67,6 +67,7 @@ public class DataExporter implements ActionListener, StateHolder {
     private MethodExpression onTableRender;
     private MethodExpression onRowExport;
     private ValueExpression exporter;
+    private ValueExpression bufferSize;
 
     public DataExporter() {
         ResourceUtils.addComponentResource(FacesContext.getCurrentInstance(), "filedownload/filedownload.js");
@@ -131,6 +132,11 @@ public class DataExporter implements ActionListener, StateHolder {
             customExporterInstance = exporter.getValue(elContext);
         }
 
+        Integer bufferSizeTmp = null;
+        if (bufferSize != null) {
+            bufferSizeTmp = (Integer) bufferSize.getValue(elContext);
+        }
+
         try {
             List<UIComponent> components = SearchExpressionUtils.contextlessResolveComponents(context, event.getComponent(), tables);
             Class<? extends UIComponent> targetClass = guessTargetClass(components);
@@ -168,6 +174,7 @@ public class DataExporter implements ActionListener, StateHolder {
                     .onTableRender(onTableRender)
                     .onRowExport(onRowExport)
                     .outputStream(outputStream)
+                    .bufferSize(bufferSizeTmp)
                     .build();
 
             exporterInstance.export(context, components, config);
@@ -264,11 +271,12 @@ public class DataExporter implements ActionListener, StateHolder {
         onTableRender = (MethodExpression) values[12];
         exporter = (ValueExpression) values[13];
         onRowExport = (MethodExpression) values[14];
+        bufferSize = (ValueExpression) values[15];
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[15];
+        Object[] values = new Object[16];
 
         values[0] = target;
         values[1] = type;
@@ -285,6 +293,7 @@ public class DataExporter implements ActionListener, StateHolder {
         values[12] = onTableRender;
         values[13] = exporter;
         values[14] = onRowExport;
+        values[15] = bufferSize;
 
         return (values);
     }
@@ -295,7 +304,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     public static class Builder {
 
-        private DataExporter exporter;
+        private final DataExporter exporter;
 
         Builder() {
             exporter = new DataExporter();
@@ -374,6 +383,11 @@ public class DataExporter implements ActionListener, StateHolder {
 
         public Builder onRowExport(MethodExpression onRowExport) {
             exporter.onRowExport = onRowExport;
+            return this;
+        }
+
+        public Builder bufferSize(ValueExpression lazyChunSize) {
+            exporter.bufferSize = lazyChunSize;
             return this;
         }
 

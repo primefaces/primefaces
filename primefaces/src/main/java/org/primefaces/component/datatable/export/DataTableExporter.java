@@ -24,10 +24,7 @@
 package org.primefaces.component.datatable.export;
 
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -93,27 +90,30 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
 
     @Override
     protected void exportAll(FacesContext context, DataTable table) {
-        int first = table.getFirst();
-        int rowCount = table.getRowCount();
-        int rows = table.getRows();
-        boolean lazy = table.isLazy();
-
-        if (lazy) {
+        if (table.isLazy()) {
             LazyDataModel<Object> lazyDataModel = (LazyDataModel<Object>) table.getValue();
-            List<?> wrappedData = lazyDataModel.getWrappedData();
 
-            if (rowCount > 0) {
+            // bufferSize is used to control how many items are fetched at a time.
+            // The purpose of using this variable is to retrieve the entire underlying dataset in smaller,
+            // manageable chunks rather than all at once. This approach is often used to improve performance
+            // and reduce the load on system resources when dealing with large datasets.
+            Integer bufferSize = exportConfiguration.getbufferSize();
+            boolean bufferized = bufferSize != null;
+            int batchSize = Objects.requireNonNullElseGet(bufferSize, table::getRowCount);
+
+            if (batchSize > 0) {
+                List<?> wrappedData = lazyDataModel.getWrappedData();
                 int offset = 0;
                 List<Object> items;
 
                 do {
-                    items = lazyDataModel.load(offset, rows, table.getActiveSortMeta(), table.getActiveFilterMeta());
+                    items = lazyDataModel.load(offset, batchSize, table.getActiveSortMeta(), table.getActiveFilterMeta());
                     lazyDataModel.setWrappedData(items);
                     for (int rowIndex = 0; rowIndex < items.size(); rowIndex++) {
                         exportRow(context, table, rowIndex);
                     }
-                    offset += rows;
-                } while (!items.isEmpty());
+                    offset += items.size();
+                } while ((bufferized && !items.isEmpty()) || (!bufferized && offset < batchSize));
 
                 //restore
                 table.setRowIndex(-1);
@@ -122,6 +122,9 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             }
         }
         else {
+            int first = table.getFirst();
+            int rowCount = table.getRowCount();
+
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
                 exportRow(context, table, rowIndex);
             }
