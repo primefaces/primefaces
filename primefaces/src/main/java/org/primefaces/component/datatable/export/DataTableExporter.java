@@ -103,24 +103,23 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
             List<?> wrappedData = lazyDataModel.getWrappedData();
 
             if (rowCount > 0) {
-                table.setFirst(0);
-            }
+                int offset = 0;
+                List<Object> items;
 
-            int offset = 0;
-            List<Object> items = null;
-            while(!(items = lazyDataModel.load(offset, rows, table.getActiveSortMeta(), table.getActiveFilterMeta())).isEmpty()) {
-                lazyDataModel.setWrappedData(items);
-                for (int rowIndex = 0; rowIndex < items.size(); rowIndex++) {
-                    exportRow(context, table, rowIndex);
-                }
-                offset += rows;
-            }
+                do {
+                    items = lazyDataModel.load(offset, rows, table.getActiveSortMeta(), table.getActiveFilterMeta());
+                    lazyDataModel.setWrappedData(items);
+                    for (int rowIndex = 0; rowIndex < items.size(); rowIndex++) {
+                        exportRow(context, table, rowIndex);
+                    }
+                    offset += rows;
+                } while (!items.isEmpty());
 
-            //restore
-            table.setFirst(first);
-            table.setRowIndex(-1);
-            lazyDataModel.setWrappedData(wrappedData);
-            lazyDataModel.setRowIndex(-1);
+                //restore
+                table.setRowIndex(-1);
+                lazyDataModel.setWrappedData(wrappedData);
+                lazyDataModel.setRowIndex(-1);
+            }
         }
         else {
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
