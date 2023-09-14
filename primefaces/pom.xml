@@ -271,8 +271,8 @@
                     <version>1.14.0</version>
                     <configuration>
                         <installDirectory>${project.build.directory}</installDirectory>
-                        <nodeVersion>v16.8.0</nodeVersion>
-                        <npmVersion>7.22.0</npmVersion>
+                        <nodeVersion>v18.8.0</nodeVersion>
+                        <npmVersion>8.19.1</npmVersion>
                         <workingDirectory>${basedir}/src/main/type-definitions</workingDirectory>
                     </configuration>
                     <executions>

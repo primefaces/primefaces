@@ -230,3 +230,9 @@ PrimeFaces.locales['de'] = $.extend(true, {}, PrimeFaces.locales['de'], {
         'javax.validation.constraints.Size.message': 'Größe muss zwischen {0} und {1} liegen'
     }
 });
+
+ // Austrian
+ PrimeFaces.locales['de_AT'] = $.extend(true, {}, PrimeFaces.locales['de'], {
+    "monthNames": ["Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+    "monthNamesShort": ["Jän", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+ });
