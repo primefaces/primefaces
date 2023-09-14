@@ -258,4 +258,23 @@ public class CspResponseWriter extends ResponseWriterWrapper {
     public ResponseWriter cloneWithWriter(Writer writer) {
         return new CspResponseWriter(getWrapped().cloneWithWriter(writer), this.cspState);
     }
+
+    /**
+     * Special scenario where for indexed id's we need to replace the old id with new one.
+     *
+     * @param oldId the old id
+     * @param newId the new id
+     */
+    public void updateId(String oldId, String newId) {
+        Map<String, String> events = cspState.getEventHandlers().remove(oldId);
+        if (events != null && !events.isEmpty()) {
+            for (Map.Entry<String, String> entry : events.entrySet()) {
+                String oldValue = entry.getValue();
+                String newValue = oldValue.replaceAll(oldId, newId);
+                entry.setValue(newValue);
+            }
+            CspState cspState = this.cspState;
+            cspState.getEventHandlers().put(newId, events);
+        }
+    }
 }
