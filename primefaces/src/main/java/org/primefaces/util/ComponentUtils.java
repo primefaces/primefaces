@@ -32,6 +32,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -53,6 +56,7 @@ import org.primefaces.component.api.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspResponseWriter;
 
 public class ComponentUtils {
 
@@ -66,6 +70,10 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
+
+    // regex for finding ID's
+    private static final Pattern ID_PATTERN = Pattern.compile("\\sid=\"(.*?)\"");
+
 
     private ComponentUtils() {
     }
@@ -618,24 +626,37 @@ public class ComponentUtils {
      */
     public static void encodeIndexedId(FacesContext context, UIComponent component, int index) throws IOException {
         // swap writers
-        ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter originalWriter = context.getResponseWriter();
         FastStringWriter fsw = new FastStringWriter();
-        context.setResponseWriter(writer.cloneWithWriter(fsw));
+        ResponseWriter clonedWriter = originalWriter.cloneWithWriter(fsw);
+        context.setResponseWriter(clonedWriter);
 
         // encode the component
         component.encodeAll(context);
 
         // restore the original writer
-        context.setResponseWriter(writer);
+        context.setResponseWriter(originalWriter);
 
         // append index to all id's
         char separator = UINamingContainer.getSeparatorChar(context);
         String encodedComponent = fsw.toString();
 
-        // find all id's to replace
-        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
+        if (clonedWriter instanceof CspResponseWriter) {
+            CspResponseWriter cspWriter = (CspResponseWriter) clonedWriter;
+            // find all id's to replace
+            Matcher matcher = ID_PATTERN.matcher(encodedComponent);
+            while (matcher.find()) {
+                String oldId = matcher.group(1);
+                String newId = oldId + separator + index;
+                cspWriter.updateId(oldId, newId);
+            }
+        }
 
-        writer.write(encodedComponent);
+        // replace 'id=' and 'source:' values
+        encodedComponent = encodedComponent.replaceAll("\\sid=\"(.*?)\"", " id=\"$1" + separator + index + "\"");
+        encodedComponent = encodedComponent.replaceAll("source:&quot;(.*?)&quot;", " source:&quot;$1" + separator + index + "&quot;");
+
+        originalWriter.write(encodedComponent);
     }
 
 
