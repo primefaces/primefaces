@@ -270,7 +270,9 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         if (events != null && !events.isEmpty()) {
             for (Map.Entry<String, String> entry : events.entrySet()) {
                 String oldValue = entry.getValue();
-                String newValue = oldValue.replaceAll(oldId, newId);
+                // replace 'id=' and 'source:' values
+                String newValue = oldValue.replaceAll("\\sid=\"" + oldId + "\"", " id=\"" + newId + "\"");
+                newValue = newValue.replaceAll("source:\"" + oldId + "\"", " source:\"" + newId + "\"");
                 entry.setValue(newValue);
             }
             CspState cspState = this.cspState;
