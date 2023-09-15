@@ -40,6 +40,7 @@ public class ExportConfiguration {
     private MethodExpression onTableRender;
     private MethodExpression onRowExport;
     private OutputStream outputStream;
+    private Integer bufferSize;
 
     public ExportConfiguration() {
         // NOOP
@@ -117,6 +118,11 @@ public class ExportConfiguration {
             return this;
         }
 
+        public Builder bufferSize(Integer bufferSize) {
+            this.config.bufferSize = bufferSize;
+            return this;
+        }
+
         public ExportConfiguration build() {
             return config;
         }
@@ -137,6 +143,7 @@ public class ExportConfiguration {
                 ", onTableRender=" + onTableRender +
                 ", onRowExport=" + onRowExport +
                 ", outputStream=" + outputStream +
+                ", bufferSize=" + bufferSize +
                 '}';
     }
 
@@ -186,5 +193,9 @@ public class ExportConfiguration {
 
     public OutputStream getOutputStream() {
         return outputStream;
+    }
+
+    public Integer getBufferSize() {
+        return bufferSize;
     }
 }

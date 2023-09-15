@@ -24,11 +24,7 @@
 package org.primefaces.component.datatable.export;
 
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.*;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.datatable.DataTable;
@@ -94,34 +90,39 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
 
     @Override
     protected void exportAll(FacesContext context, DataTable table) {
-        int first = table.getFirst();
-        int rowCount = table.getRowCount();
-        int rows = table.getRows();
-        boolean lazy = table.isLazy();
+        if (table.isLazy()) {
+            // bufferSize is used to control how many items are fetched at a time.
+            // The purpose of using this variable is to retrieve the entire underlying dataset in smaller,
+            // manageable chunks rather than all at once.
+            LazyDataModel<Object> lazyDataModel = (LazyDataModel<Object>) table.getValue();
+            Integer bufferSize = exportConfiguration.getBufferSize();
+            boolean bufferized = bufferSize != null;
+            int batchSize = Objects.requireNonNullElseGet(bufferSize, () -> lazyDataModel.count(table.getActiveFilterMeta()));
 
-        if (lazy) {
-            LazyDataModel<?> lazyDataModel = (LazyDataModel<?>) table.getValue();
-            List<?> wrappedData = lazyDataModel.getWrappedData();
+            if (batchSize > 0) {
+                List<?> wrappedData = lazyDataModel.getWrappedData();
+                int offset = 0;
+                List<Object> items;
 
-            if (rowCount > 0) {
-                table.setFirst(0);
-                table.setRows(rowCount);
-                table.loadLazyDataIfEnabled();
+                do {
+                    items = lazyDataModel.load(offset, batchSize, table.getActiveSortMeta(), table.getActiveFilterMeta());
+                    lazyDataModel.setWrappedData(items);
+                    for (int rowIndex = 0; rowIndex < items.size(); rowIndex++) {
+                        exportRow(context, table, rowIndex);
+                    }
+                    offset += items.size();
+                } while ((bufferized && !items.isEmpty()) || (!bufferized && offset < batchSize));
+
+                //restore
+                table.setRowIndex(-1);
+                lazyDataModel.setWrappedData(wrappedData);
+                lazyDataModel.setRowIndex(-1);
             }
-
-            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-                exportRow(context, table, rowIndex);
-            }
-
-            //restore
-            table.setFirst(first);
-            table.setRows(rows);
-            table.setRowIndex(-1);
-            lazyDataModel.setWrappedData(wrappedData);
-            lazyDataModel.setPageSize(rows);
-            lazyDataModel.setRowIndex(-1);
         }
         else {
+            int first = table.getFirst();
+            int rowCount = table.getRowCount();
+
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
                 exportRow(context, table, rowIndex);
             }

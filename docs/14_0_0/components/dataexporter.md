@@ -30,6 +30,7 @@ options | null | ExporterOptions | Options object to customize document.
 exporter | null | Object | Custom `org.primefaces.component.export.Exporter` to be used instead of built-in exporters.
 onTableRender | null | MethodExpression | OnTableRender to be used to set the options of exported table.
 onRowExport | null | MethodExpression | Callback every time a row is being exported
+bufferSize | null | ValueExpression  | Control how many items are fetched at a time when DataTable#lazy is enabled
 
 ## Getting Started with DataExporter
 

@@ -18,6 +18,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * SelectCheckBoxMenu
     * Added `selectedLabel` to display a label when items selected similar to `emptyMessage`.
 
+* DataExporter
+    * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled
+  
 ### PrimeFaces Selenium 
 
 * ...

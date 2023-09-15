@@ -226,6 +226,12 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
+        <attribute>
+            <description>Control how many items are fetched at a time when DataTable#lazy is enabled. Retrieve the entire underlying dataset in smaller, manageable chunks rather than all at once.</description>
+            <name>bufferSize</name>
+            <required>false</required>
+            <type>javax.el.ValueExpression</type>
+        </attribute>
     </tag>
 
     <tag>
