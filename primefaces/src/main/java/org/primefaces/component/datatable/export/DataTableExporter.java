@@ -101,6 +101,8 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
 
             if (batchSize > 0) {
                 List<?> wrappedData = lazyDataModel.getWrappedData();
+                int pageSize = lazyDataModel.getPageSize();
+                lazyDataModel.setPageSize(batchSize);
                 int offset = 0;
                 List<Object> items;
 
@@ -116,6 +118,7 @@ public abstract class DataTableExporter<P, O extends ExporterOptions> extends Ta
                 //restore
                 table.setRowIndex(-1);
                 lazyDataModel.setWrappedData(wrappedData);
+                lazyDataModel.setPageSize(pageSize);
                 lazyDataModel.setRowIndex(-1);
             }
         }
