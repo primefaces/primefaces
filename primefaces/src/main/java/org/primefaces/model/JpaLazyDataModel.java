@@ -61,7 +61,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected Class<T> entityClass;
     protected SerializableSupplier<EntityManager> entityManager;
     protected String rowKeyField;
-    protected boolean caseSensitive = false;
+    protected boolean caseSensitive = true;
 
     private transient Lazy<Method> rowKeyGetter;
 
