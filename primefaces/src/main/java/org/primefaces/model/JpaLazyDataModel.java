@@ -61,6 +61,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected Class<T> entityClass;
     protected SerializableSupplier<EntityManager> entityManager;
     protected String rowKeyField;
+    protected boolean caseSensitive = false;
 
     private transient Lazy<Method> rowKeyGetter;
 
@@ -190,24 +191,26 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected Predicate createPredicate(FilterMeta filter, Field filterField,
             Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue) {
 
-        Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> fieldExpression.as(String.class));
+        Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> caseSensitive
+                ? fieldExpression.as(String.class)
+                : cb.upper(fieldExpression.as(String.class)));
         Lazy<Collection<Object>> filterValueAsCollection = new Lazy(
                 () -> filterValue.getClass().isArray() ? Arrays.asList((Object[]) filterValue)
                         : (Collection<Object>) filterValue);
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
-                return cb.like(fieldExpressionAsString.get(), filterValue + "%");
+                return cb.like(fieldExpressionAsString.get(), getStringFilterValue(filterValue) + "%");
             case NOT_STARTS_WITH:
-                return cb.notLike(fieldExpressionAsString.get(), filterValue + "%");
+                return cb.notLike(fieldExpressionAsString.get(), getStringFilterValue(filterValue) + "%");
             case ENDS_WITH:
-                return cb.like(fieldExpressionAsString.get(), "%" + filterValue);
+                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue));
             case NOT_ENDS_WITH:
-                return cb.notLike(fieldExpressionAsString.get(), "%" + filterValue);
+                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue));
             case CONTAINS:
-                return cb.like(fieldExpressionAsString.get(), "%" + filterValue + "%");
+                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
             case NOT_CONTAINS:
-                return cb.notLike(fieldExpressionAsString.get(), "%" + filterValue + "%");
+                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
             case EXACT:
             case EQUALS:
                 return cb.equal(fieldExpression, filterValue);
@@ -243,6 +246,10 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         return null;
+    }
+
+    protected Object getStringFilterValue(Object filterValue) {
+        return caseSensitive ? filterValue : filterValue.toString().toUpperCase(Locale.getDefault());
     }
 
     protected void applySort(CriteriaBuilder cb,
@@ -401,5 +408,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             });
         }
         return rowKeyGetter.get();
+    }
+
+    public void setRowKeyField(String rowKeyField) {
+        this.rowKeyField = rowKeyField;
+    }
+
+    public void setCaseSensitive(boolean caseSensitive) {
+        this.caseSensitive = caseSensitive;
     }
 }
