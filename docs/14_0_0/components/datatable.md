@@ -953,7 +953,17 @@ or provide a existing JSF `Converter`:
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, myConverter);
 ```
 
+or use the builder pattern to enable case insensitive searching and other features:
+
+```java
+JpaLazyDataModel<MyEntity> lazyDataModel = new JpaLazyDataModel.Builder<>(MyEntity.class, () -> entityManager)
+    .rowKeyField("id")
+    .caseSensitive(false)
+    .build();
+```
+
 Also you can add global filters via:
+
 ```java
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager) {
     @Override

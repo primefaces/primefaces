@@ -20,6 +20,10 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 
 * DataExporter
     * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled
+    
+* DataTable
+    * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`
+    * JPALazyDataModel now supports builder pattern for constructor.
   
 ### PrimeFaces Selenium 
 

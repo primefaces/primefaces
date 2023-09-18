@@ -73,12 +73,29 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     /**
+     * Private constructor when using the builder pattern.
+     * @param builder the builder.
+     */
+    public JpaLazyDataModel(Builder<T> builder) {
+        Objects.requireNonNull(builder.entityClass, "EntityClass must not be null");
+        Objects.requireNonNull(builder.entityManager, "EnittyManager must not be null");
+        this.entityClass = builder.entityClass;
+        this.entityManager = builder.entityManager;
+        this.rowKeyField = builder.rowKeyField;
+        this.setRowKeyField(builder.rowKeyField);
+        this.setCaseSensitive(builder.caseSensitive);
+        this.setConverter(builder.converter);
+    }
+
+    /**
      * Constructs a JpaLazyDataModel for usage without enabled selection.
      *
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
      */
     public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
+        Objects.requireNonNull(entityClass, "EntityClass must not be null");
+        Objects.requireNonNull(entityManager, "EnittyManager must not be null");
         this.entityClass = entityClass;
         this.entityManager = entityManager;
     }
@@ -417,5 +434,37 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
+    }
+
+    public static class Builder<T> {
+        private Class<T> entityClass;
+        private SerializableSupplier<EntityManager> entityManager;
+        private String rowKeyField;
+        private Converter converter;
+        private boolean caseSensitive = true;
+
+        public Builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
+            this.entityClass = entityClass;
+            this.entityManager = entityManager;
+        }
+
+        public Builder<T> converter(Converter converter) {
+            this.converter = converter;
+            return this;
+        }
+
+        public Builder<T> rowKeyField(String rowKeyField) {
+            this.rowKeyField = rowKeyField;
+            return this;
+        }
+
+        public Builder<T> caseSensitive(boolean caseSensitive) {
+            this.caseSensitive = caseSensitive;
+            return this;
+        }
+
+        public JpaLazyDataModel<T> build() {
+            return new JpaLazyDataModel<>(this);
+        }
     }
 }
