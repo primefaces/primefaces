@@ -212,6 +212,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             case NOT_CONTAINS:
                 return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
             case EXACT:
+                return cb.equal(fieldExpressionAsString.get(), getStringFilterValue(filterValue));
             case EQUALS:
                 return cb.equal(fieldExpression, filterValue);
             case NOT_EXACT:
