@@ -60,7 +60,7 @@ PrimeFaces.locales['es'] = {
         "D",
         "L",
         "M",
-        "X",
+        "M",
         "J",
         "V",
         "S"
