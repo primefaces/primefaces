@@ -88,7 +88,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
      * @param rowKeyField The name of the rowKey property (e.g. "id")
+     * @deprecated use the builder instead
      */
+    @Deprecated
     public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
         this(entityClass, entityManager);
         this.rowKeyField = rowKeyField;
@@ -99,10 +101,12 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      *
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
-     * @param converter The converter, which will be used for converting the entity to a rowKey and vice versa
+     * @param rowKeyConverter The converter, which will be used for converting the entity to a rowKey and vice versa
+     * @deprecated use the builder instead
      */
-    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter converter) {
-        super(converter);
+    @Deprecated
+    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> rowKeyConverter) {
+        super(rowKeyConverter);
         this.entityClass = entityClass;
         this.entityManager = entityManager;
     }
@@ -292,8 +296,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public T getRowData(String rowKey) {
-        Converter converter = getConverter();
-        if (converter != null) {
+        Converter<T> rowKeyConverter = getRowKeyConverter();
+        if (rowKeyConverter != null) {
             return super.getRowData(rowKey);
         }
 
@@ -318,8 +322,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public String getRowKey(T object) {
-        Converter converter = getConverter();
-        if (converter != null) {
+        Converter<T> rowKeyConverter = getRowKeyConverter();
+        if (rowKeyConverter != null) {
             return super.getRowKey(object);
         }
 
@@ -401,5 +405,44 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             });
         }
         return rowKeyGetter.get();
+    }
+
+
+
+    public static <T> Builder<T> builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
+        return new Builder<>(entityClass, entityManager);
+    }
+
+    public static class Builder<T> {
+        private final Class<T> entityClass;
+        private final SerializableSupplier<EntityManager> entityManager;
+        private String rowKeyField;
+        private Converter<T> rowKeyConverter;
+
+        public Builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
+            this.entityClass = entityClass;
+            this.entityManager = entityManager;
+        }
+
+        public Builder<T> rowKeyConverter(Converter<T> rowKeyConverter) {
+            this.rowKeyConverter = rowKeyConverter;
+            return this;
+        }
+
+        public Builder<T> rowKeyField(String rowKeyField) {
+            this.rowKeyField = rowKeyField;
+            return this;
+        }
+
+        public JpaLazyDataModel<T> build() {
+            JpaLazyDataModel<T> model = new JpaLazyDataModel<>(entityClass, entityManager);
+            if (rowKeyField != null) {
+                model.rowKeyField = rowKeyField;
+            }
+            if (rowKeyConverter != null) {
+                model.setRowKeyConverter(rowKeyConverter);
+            }
+            return model;
+        }
     }
 }

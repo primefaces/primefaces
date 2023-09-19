@@ -43,7 +43,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     private static final long serialVersionUID = 1L;
 
-    private Converter converter;
+    private Converter<T> rowKeyConverter;
     private int rowCount;
     private int pageSize;
 
@@ -62,11 +62,11 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
      * This constructor allows to skip the implementation of {@link #getRowData(java.lang.String)} and
      * {@link #getRowKey(java.lang.Object)}, when selection is used.
      *
-     * @param converter The converter used to convert rowKey to rowData and vice versa.
+     * @param rowKeyConverter The rowKeyConverter used to convert rowKey to rowData and vice versa.
      */
-    public LazyDataModel(Converter converter) {
+    public LazyDataModel(Converter<T> rowKeyConverter) {
         super();
-        this.converter = converter;
+        this.rowKeyConverter = rowKeyConverter;
     }
 
     /**
@@ -97,9 +97,9 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     @Override
     public T getRowData(String rowKey) {
-        if (converter != null) {
+        if (rowKeyConverter != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return (T) converter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+            return (T) rowKeyConverter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
         }
 
         throw new UnsupportedOperationException(
@@ -134,9 +134,9 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     @Override
     public String getRowKey(T object) {
-        if (converter != null) {
+        if (rowKeyConverter != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return converter.getAsString(context, UIComponent.getCurrentComponent(context), object);
+            return rowKeyConverter.getAsString(context, UIComponent.getCurrentComponent(context), object);
         }
 
         throw new UnsupportedOperationException(
@@ -228,6 +228,10 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         return rowCount;
     }
 
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
@@ -236,15 +240,31 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         this.pageSize = pageSize;
     }
 
-    public void setRowCount(int rowCount) {
-        this.rowCount = rowCount;
+    public Converter<T> getRowKeyConverter() {
+        return rowKeyConverter;
     }
 
-    public Converter getConverter() {
-        return converter;
+    public void setRowKeyConverter(Converter<T> rowKeyConverter) {
+        this.rowKeyConverter = rowKeyConverter;
     }
 
-    public void setConverter(Converter converter) {
-        this.converter = converter;
+    /**
+     *
+     * @return
+     * @deprecated please use {@link #getRowKeyConverter()}
+     */
+    @Deprecated
+    public Converter<T> getConverter() {
+        return rowKeyConverter;
+    }
+
+    /**
+     *
+     * @param rowKeyConverter
+     * @@deprecated please use {@link #setRowKeyConverter(javax.faces.convert.Converter)}
+     */
+    @Deprecated
+    public void setConverter(Converter<T> rowKeyConverter) {
+        this.rowKeyConverter = rowKeyConverter;
     }
 }
