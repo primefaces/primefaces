@@ -43,6 +43,7 @@ import javax.faces.convert.ConverterException;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.primefaces.util.BeanUtils;
 import org.primefaces.util.LangUtils;
@@ -420,6 +421,10 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     public void setRowKeyField(String rowKeyField) {
+        // reset cache
+        if (!Objects.equals(rowKeyField, this.rowKeyField)) {
+            rowKeyGetter = null;
+        }
         this.rowKeyField = rowKeyField;
     }
 
@@ -454,6 +459,11 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         public Builder<T> rowKeyField(String rowKeyField) {
             this.rowKeyField = rowKeyField;
+            return this;
+        }
+
+        public Builder<T> rowKeyField(SingularAttribute<T, ?> rowKeyField) {
+            this.rowKeyField = rowKeyField.getName();
             return this;
         }
 
