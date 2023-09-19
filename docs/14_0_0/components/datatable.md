@@ -959,11 +959,19 @@ JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.cla
     .build();
 ```
 
-or use the builder pattern to enable case insensitive searching and other features:
+or enable case insensitive searching:
 
 ```java
 JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
     .caseSensitive(false)
+    .build();
+```
+
+or enable wildcard support so `*` and `?` can be used like `Hello*` to find all words starting with `Hello`:
+
+```java
+JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
+    .wildcardSupport(true)
     .build();
 ```
 

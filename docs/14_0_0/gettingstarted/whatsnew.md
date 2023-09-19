@@ -23,6 +23,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 
 * DataTable
     * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`
+    * JPALazyDataModel now supports wildcard filters with `setWildCardSupport(true);` so you can use `*` or `?` in filter
     * JPALazyDataModel now supports builder pattern for constructor.
   
 ### PrimeFaces Selenium 
