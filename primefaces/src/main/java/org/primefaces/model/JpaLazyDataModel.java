@@ -61,6 +61,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected Class<T> entityClass;
     protected SerializableSupplier<EntityManager> entityManager;
     protected String rowKeyField;
+    protected boolean caseSensitive = true;
 
     private transient Lazy<Method> rowKeyGetter;
 
@@ -194,25 +195,28 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected Predicate createPredicate(FilterMeta filter, Field filterField,
             Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue) {
 
-        Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> fieldExpression.as(String.class));
+        Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> caseSensitive
+                ? fieldExpression.as(String.class)
+                : cb.upper(fieldExpression.as(String.class)));
         Lazy<Collection<Object>> filterValueAsCollection = new Lazy(
                 () -> filterValue.getClass().isArray() ? Arrays.asList((Object[]) filterValue)
                         : (Collection<Object>) filterValue);
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
-                return cb.like(fieldExpressionAsString.get(), filterValue + "%");
+                return cb.like(fieldExpressionAsString.get(), getStringFilterValue(filterValue) + "%");
             case NOT_STARTS_WITH:
-                return cb.notLike(fieldExpressionAsString.get(), filterValue + "%");
+                return cb.notLike(fieldExpressionAsString.get(), getStringFilterValue(filterValue) + "%");
             case ENDS_WITH:
-                return cb.like(fieldExpressionAsString.get(), "%" + filterValue);
+                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue));
             case NOT_ENDS_WITH:
-                return cb.notLike(fieldExpressionAsString.get(), "%" + filterValue);
+                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue));
             case CONTAINS:
-                return cb.like(fieldExpressionAsString.get(), "%" + filterValue + "%");
+                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
             case NOT_CONTAINS:
-                return cb.notLike(fieldExpressionAsString.get(), "%" + filterValue + "%");
+                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
             case EXACT:
+                return cb.equal(fieldExpressionAsString.get(), getStringFilterValue(filterValue));
             case EQUALS:
                 return cb.equal(fieldExpression, filterValue);
             case NOT_EXACT:
@@ -247,6 +251,10 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         return null;
+    }
+
+    protected Object getStringFilterValue(Object filterValue) {
+        return caseSensitive ? filterValue : filterValue.toString().toUpperCase(Locale.getDefault());
     }
 
     protected void applySort(CriteriaBuilder cb,
@@ -407,7 +415,21 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         return rowKeyGetter.get();
     }
 
+    public String getRowKeyField() {
+        return rowKeyField;
+    }
 
+    public void setRowKeyField(String rowKeyField) {
+        this.rowKeyField = rowKeyField;
+    }
+
+    public boolean isCaseSensitive() {
+        return caseSensitive;
+    }
+
+    public void setCaseSensitive(boolean caseSensitive) {
+        this.caseSensitive = caseSensitive;
+    }
 
     public static <T> Builder<T> builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
         return new Builder<>(entityClass, entityManager);
@@ -418,6 +440,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         private final SerializableSupplier<EntityManager> entityManager;
         private String rowKeyField;
         private Converter<T> rowKeyConverter;
+        private boolean caseSensitive = true;
 
         public Builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
             this.entityClass = entityClass;
@@ -434,6 +457,11 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        public Builder<T> caseSensitive(boolean caseSensitive) {
+            this.caseSensitive = caseSensitive;
+            return this;
+        }
+
         public JpaLazyDataModel<T> build() {
             JpaLazyDataModel<T> model = new JpaLazyDataModel<>(entityClass, entityManager);
             if (rowKeyField != null) {
@@ -442,6 +470,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             if (rowKeyConverter != null) {
                 model.setRowKeyConverter(rowKeyConverter);
             }
+            model.caseSensitive = caseSensitive;
             return model;
         }
     }

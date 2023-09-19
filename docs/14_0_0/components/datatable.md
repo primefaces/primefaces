@@ -944,13 +944,27 @@ new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
 If you have selection enabled, you can either pass the rowKey field name in the constructor:
 
 ```java
-new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, "id");
+JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
+    .rowKeyField("id")
+    .build();
 ```
 
 or provide a existing JSF `Converter`:
 
 ```java
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, myConverter);
+```java
+JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
+    .rowKeyConverter(myConverter)
+    .build();
+```
+
+or use the builder pattern to enable case insensitive searching and other features:
+
+```java
+JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
+    .caseSensitive(false)
+    .build();
 ```
 
 Also you can add global filters via:
