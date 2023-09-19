@@ -941,11 +941,11 @@ PrimeFaces provides a OOTB implementation for JPA users, which supports basic fe
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
 ```
 
-If you have selection enabled, you can either pass the rowKey field via JPA metamodel:
+If you have selection enabled, you can either pass the rowKey via JPA metamodel:
 
 ```java
 JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKeyField(MyEntity_.id)
+    .rowKey(MyEntity_.id)
     .build();
 ```
 
@@ -953,7 +953,7 @@ or as plain String:
 
 ```java
 JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKeyField("id")
+    .rowKey("id")
     .build();
 ```
 
