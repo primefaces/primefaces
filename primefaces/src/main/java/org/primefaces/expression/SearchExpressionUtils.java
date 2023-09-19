@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.search.SearchExpressionContext;
+import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.api.Widget;
@@ -42,28 +43,28 @@ public class SearchExpressionUtils {
 
     // NOTE: Faces implementations require a modifiable hints set for #resolveComponent and #resolveClientId
     // So don't use it for this calls
-    public static final Set<javax.faces.component.search.SearchExpressionHint> HINTS_IGNORE_NO_RESULT =
-            Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT));
-    public static final Set<javax.faces.component.search.SearchExpressionHint> HINTS_RESOLVE_CLIENT_SIDE =
-            Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE));
-    public static final Set<javax.faces.component.search.SearchExpressionHint> HINTS_IGNORE_NO_RESULT_RESOLVE_CLIENT_SIDE =
-            Collections.unmodifiableSet(EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE,
-                    javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT));
+    public static final Set<SearchExpressionHint> HINTS_IGNORE_NO_RESULT =
+            Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT));
+    public static final Set<SearchExpressionHint> HINTS_RESOLVE_CLIENT_SIDE =
+            Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE));
+    public static final Set<SearchExpressionHint> HINTS_IGNORE_NO_RESULT_RESOLVE_CLIENT_SIDE =
+            Collections.unmodifiableSet(EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE,
+                    SearchExpressionHint.IGNORE_NO_RESULT));
 
     private SearchExpressionUtils() {
     }
 
-    public static Set<javax.faces.component.search.SearchExpressionHint> hintsIgnoreNoResult() {
-        return EnumSet.of(javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT);
+    public static Set<SearchExpressionHint> hintsIgnoreNoResult() {
+        return EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT);
     }
 
-    public static Set<javax.faces.component.search.SearchExpressionHint> hintsIgnoreNoResultResolveClientSide() {
-        return EnumSet.of(javax.faces.component.search.SearchExpressionHint.IGNORE_NO_RESULT,
-                javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+    public static Set<SearchExpressionHint> hintsIgnoreNoResultResolveClientSide() {
+        return EnumSet.of(SearchExpressionHint.IGNORE_NO_RESULT,
+                SearchExpressionHint.RESOLVE_CLIENT_SIDE);
     }
 
-    public static Set<javax.faces.component.search.SearchExpressionHint> hintsResolveClientSide() {
-        return EnumSet.of(javax.faces.component.search.SearchExpressionHint.RESOLVE_CLIENT_SIDE);
+    public static Set<SearchExpressionHint> hintsResolveClientSide() {
+        return EnumSet.of(SearchExpressionHint.RESOLVE_CLIENT_SIDE);
     }
 
 
@@ -72,11 +73,11 @@ public class SearchExpressionUtils {
     }
 
     public static UIComponent contextlessResolveComponent(FacesContext context, UIComponent component, String expression) {
-        return contextlessResolveComponent(context, component, expression, EnumSet.noneOf(javax.faces.component.search.SearchExpressionHint.class));
+        return contextlessResolveComponent(context, component, expression, EnumSet.noneOf(SearchExpressionHint.class));
     }
 
     public static UIComponent contextlessResolveComponent(FacesContext context, UIComponent component, String expression,
-            Set<javax.faces.component.search.SearchExpressionHint> hints) {
+            Set<SearchExpressionHint> hints) {
 
         if (LangUtils.isBlank(expression)) {
             return null;
@@ -95,11 +96,11 @@ public class SearchExpressionUtils {
     }
 
     public static List<UIComponent> contextlessResolveComponents(FacesContext context, UIComponent component, String expression) {
-        return contextlessResolveComponents(context, component, expression, EnumSet.noneOf(javax.faces.component.search.SearchExpressionHint.class));
+        return contextlessResolveComponents(context, component, expression, EnumSet.noneOf(SearchExpressionHint.class));
     }
 
     public static List<UIComponent> contextlessResolveComponents(FacesContext context, UIComponent component, String expression,
-            Set<javax.faces.component.search.SearchExpressionHint> hints) {
+            Set<SearchExpressionHint> hints) {
         List<UIComponent> result = new ArrayList<>();
 
         context.getApplication().getSearchExpressionHandler().resolveComponents(
@@ -119,7 +120,7 @@ public class SearchExpressionUtils {
     }
 
     public static String resolveClientIdsAsString(FacesContext context, UIComponent component, String expression,
-            Set<javax.faces.component.search.SearchExpressionHint> hints, Set<VisitHint> visitHints) {
+                                                  Set<SearchExpressionHint> hints, Set<VisitHint> visitHints) {
 
         if (LangUtils.isBlank(expression)) {
             return null;
