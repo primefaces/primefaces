@@ -941,18 +941,24 @@ PrimeFaces provides a OOTB implementation for JPA users, which supports basic fe
 new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
 ```
 
-If you have selection enabled, you can either pass the rowKey field name in the constructor:
+If you have selection enabled, you can either pass the rowKey via JPA metamodel:
 
 ```java
 JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKeyField("id")
+    .rowKey(MyEntity_.id)
+    .build();
+```
+
+or as plain String:
+
+```java
+JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
+    .rowKey("id")
     .build();
 ```
 
 or provide a existing JSF `Converter`:
 
-```java
-new JpaLazyDataModel<>(MyEntity.class, () -> entityManager, myConverter);
 ```java
 JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
     .rowKeyConverter(myConverter)
