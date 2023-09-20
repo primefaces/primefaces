@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 20]
+        java: [11, 21]
         facesimpl: [ 'mojarra-2.3', 'myfaces-2.3']
     steps:
       - uses: actions/checkout@v4
@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 20]
+        java: [11, 21]
         facesimpl: [ 'mojarra-4.0', 'myfaces-4.0' ]
     steps:
       - uses: actions/checkout@v4
