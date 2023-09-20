@@ -973,7 +973,9 @@ JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.cla
     .build();
 ```
 
-or enable wildcard support so `*` and `?` can be used like `Hello*` to find all words starting with `Hello`:
+or enable wildcard support for characters `*`, `%`, `?` and `_`. Characters `*` and `%` means any characters 
+while `?` and `_` mean replace a single character.  For example `Smith*` would find all matches starting with 
+the word `Smith`. For single character replacement like `Te?t` would match words `Tent` and `Test`.
 
 ```java
 JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
