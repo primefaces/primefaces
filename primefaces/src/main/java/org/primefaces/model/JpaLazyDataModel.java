@@ -46,6 +46,7 @@ import javax.persistence.criteria.*;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.primefaces.util.BeanUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
 import org.primefaces.util.SerializableSupplier;
@@ -63,6 +64,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected SerializableSupplier<EntityManager> entityManager;
     protected String rowKey;
     protected boolean caseSensitive = true;
+    protected boolean wildcardSupport = false;
 
     private transient Lazy<Method> rowKeyGetter;
 
@@ -217,7 +219,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             case NOT_CONTAINS:
                 return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
             case EXACT:
-                return cb.equal(fieldExpressionAsString.get(), getStringFilterValue(filterValue));
+                String exactValue = getStringFilterValue(filterValue);
+                if (wildcardSupport && (exactValue.contains("%") || exactValue.contains("_"))) {
+                    return cb.like(fieldExpressionAsString.get(), exactValue);
+                }
+                else {
+                    return cb.equal(fieldExpressionAsString.get(), exactValue);
+                }
             case EQUALS:
                 return cb.equal(fieldExpression, filterValue);
             case NOT_EXACT:
@@ -254,8 +262,14 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         return null;
     }
 
-    protected Object getStringFilterValue(Object filterValue) {
-        return caseSensitive ? filterValue : filterValue.toString().toUpperCase(Locale.getDefault());
+    protected String getStringFilterValue(Object filterValue) {
+        String value = Objects.toString(filterValue, Constants.EMPTY_STRING);
+        value = caseSensitive ? value : value.toUpperCase(Locale.getDefault());
+        if (wildcardSupport) {
+            value = value.replace("*", "%");
+            value = value.replace("?", "_");
+        }
+        return value;
     }
 
     protected void applySort(CriteriaBuilder cb,
@@ -440,6 +454,14 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         this.caseSensitive = caseSensitive;
     }
 
+    public boolean isWildcardSupport() {
+        return wildcardSupport;
+    }
+
+    public void setWildcardSupport(boolean wildcardSupport) {
+        this.wildcardSupport = wildcardSupport;
+    }
+
     public static <T> Builder<T> builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
         return new Builder<>(entityClass, entityManager);
     }
@@ -450,6 +472,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         private String rowKey;
         private Converter<T> rowKeyConverter;
         private boolean caseSensitive = true;
+        private boolean wildcardSupport = false;
 
         public Builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
             this.entityClass = entityClass;
@@ -476,10 +499,16 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        public Builder<T> wildcardSupport(boolean wildcardSupport) {
+            this.wildcardSupport = wildcardSupport;
+            return this;
+        }
+
         public JpaLazyDataModel<T> build() {
             JpaLazyDataModel<T> model = new JpaLazyDataModel<>(entityClass, entityManager);
             model.rowKey = rowKey;
             model.caseSensitive = caseSensitive;
+            model.wildcardSupport = wildcardSupport;
             if (rowKeyConverter != null) {
                 model.setRowKeyConverter(rowKeyConverter);
             }
