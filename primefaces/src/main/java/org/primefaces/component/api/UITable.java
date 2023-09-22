@@ -60,14 +60,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default Map<String, FilterMeta> initFilterBy(FacesContext context) {
         Map<String, FilterMeta> filterBy = new LinkedHashMap<>();
-        AtomicBoolean filtered = new AtomicBoolean();
 
         // build columns filterBy
         forEachColumn(c -> {
             FilterMeta meta = FilterMeta.of(context, getVar(), c);
             if (meta != null) {
                 filterBy.put(meta.getColumnKey(), meta);
-                filtered.set(filtered.get() || meta.isActive());
             }
 
             return true;
@@ -76,14 +74,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         // merge internal filterBy with user filterBy
         Object userFilterBy = getFilterBy();
         if (userFilterBy != null) {
-            updateFilterByWithUserFilterBy(context, filterBy, userFilterBy, filtered);
+            updateFilterByWithUserFilterBy(context, filterBy, userFilterBy);
         }
 
         // build global filterBy
-        updateFilterByWithGlobalFilter(context, filterBy, filtered);
-
-        // finally set if default filtering is enabled
-        setDefaultFilter(filtered.get());
+        updateFilterByWithGlobalFilter(context, filterBy);
 
         setFilterByAsMap(filterBy);
 
@@ -91,13 +86,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default void updateFilterByWithMVS(FacesContext context, Map<String, FilterMeta> tsFilterBy) {
-        boolean defaultFilter = isDefaultFilter();
         for (Map.Entry<String, FilterMeta> entry : tsFilterBy.entrySet()) {
             FilterMeta intlFilterBy = getFilterByAsMap().get(entry.getKey());
             if (intlFilterBy != null) {
                 FilterMeta tsFilterMeta = entry.getValue();
                 intlFilterBy.setFilterValue(tsFilterMeta.getFilterValue());
-                defaultFilter |= intlFilterBy.isActive();
             }
             // #7325 restore global filter value
             if (FilterMeta.GLOBAL_FILTER_KEY.equals(entry.getKey())) {
@@ -108,12 +101,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 }
             }
         }
-
-        setDefaultFilter(defaultFilter);
     }
 
-    default void updateFilterByWithUserFilterBy(FacesContext context, Map<String, FilterMeta> intlFilterBy, Object usrFilterBy,
-            AtomicBoolean filtered) {
+    default void updateFilterByWithUserFilterBy(FacesContext context, Map<String, FilterMeta> intlFilterBy, Object usrFilterBy) {
 
         Collection<FilterMeta> filterByTmp;
         if (usrFilterBy instanceof FilterMeta) {
@@ -142,11 +132,10 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             intlFM.setFilterBy(filterByVE);
             intlFM.setConstraint(userFM.getConstraint());
             intlFM.setMatchMode(userFM.getMatchMode());
-            filtered.set(filtered.get() || userFM.isActive());
         }
     }
 
-    default void updateFilterByWithGlobalFilter(FacesContext context, Map<String, FilterMeta> filterBy, AtomicBoolean filtered) {
+    default void updateFilterByWithGlobalFilter(FacesContext context, Map<String, FilterMeta> filterBy) {
         // #globalFilter sets the default value, which will be assigned to the "globalFilter" input
         String globalFilterDefaultValue = getGlobalFilter();
         // if #globalFilter is set, the "globalFilter" is mandatory
@@ -161,7 +150,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
             FilterMeta globalFilterBy = FilterMeta.of(globalFilterDefaultValue, getGlobalFilterFunction());
             filterBy.put(globalFilterBy.getColumnKey(), globalFilterBy);
-            filtered.set(filtered.get() || globalFilterBy.isActive());
         }
     }
 
@@ -237,10 +225,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         return getFilterByAsMap().get(column.getColumnKey()).getFilterValue();
     }
 
-    boolean isDefaultFilter();
-
-    void setDefaultFilter(boolean defaultFilter);
-
     Object getFilterBy();
 
     void setFilterBy(Object filterBy);
@@ -300,26 +284,20 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             updateSortByWithUserSortBy(context, sortBy, userSortBy, sorted);
         }
 
-        setDefaultSort(sorted.get());
-
         setSortByAsMap(sortBy);
 
         return sortBy;
     }
 
     default void updateSortByWithMVS(Map<String, SortMeta> tsSortBy) {
-        boolean defaultSort = isDefaultSort();
         for (Map.Entry<String, SortMeta> entry : tsSortBy.entrySet()) {
             SortMeta intlSortBy = getSortByAsMap().get(entry.getKey());
             if (intlSortBy != null) {
                 SortMeta tsSortMeta = entry.getValue();
                 intlSortBy.setPriority(tsSortMeta.getPriority());
                 intlSortBy.setOrder(tsSortMeta.getOrder());
-                defaultSort |= intlSortBy.isActive();
             }
         }
-
-        setDefaultSort(defaultSort);
     }
 
     default void updateSortByWithUserSortBy(FacesContext context, Map<String, SortMeta> intlSortBy, Object usrSortBy, AtomicBoolean sorted) {
@@ -417,10 +395,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     Object getSortBy();
 
     void setSortBy(Object sortBy);
-
-    boolean isDefaultSort();
-
-    void setDefaultSort(boolean defaultSort);
 
     default void decodeColumnTogglerState(FacesContext context) {
         String columnTogglerStateParam = context.getExternalContext().getRequestParameterMap()
