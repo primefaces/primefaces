@@ -550,8 +550,6 @@ public class DataTable extends DataTableBase {
         setFirst(0);
         resetRows();
         reset = true;
-        setDefaultSort(false);
-        setDefaultFilter(false);
         setSortByAsMap(null);
         setFilterByAsMap(null);
         setSelectedRowKeys(null);
@@ -860,26 +858,6 @@ public class DataTable extends DataTableBase {
                 }
             }
         }
-    }
-
-    @Override
-    public boolean isDefaultSort() {
-        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort));
-    }
-
-    @Override
-    public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put(InternalPropertyKeys.defaultSort, defaultSort);
-    }
-
-    @Override
-    public boolean isDefaultFilter() {
-        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter));
-    }
-
-    @Override
-    public void setDefaultFilter(boolean defaultFilter) {
-        getStateHelper().put(InternalPropertyKeys.defaultFilter, defaultFilter);
     }
 
     public Locale resolveDataLocale() {

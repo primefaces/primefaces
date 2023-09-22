@@ -532,10 +532,7 @@ public class TreeTable extends TreeTableBase {
     public void reset() {
         setValue(null);
         setFilteredValue(null);
-
         setFirst(0);
-        setDefaultSort(false);
-        setDefaultFilter(false);
         setSortByAsMap(null);
         setFilterByAsMap(null);
     }
@@ -558,26 +555,6 @@ public class TreeTable extends TreeTableBase {
     @Override
     public void setFilterByAsMap(Map<String, FilterMeta> filterBy) {
         getStateHelper().put(InternalPropertyKeys.filterByAsMap.name(), filterBy);
-    }
-
-    @Override
-    public boolean isDefaultSort() {
-        return getSortByAsMap() != null && Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultSort.name()));
-    }
-
-    @Override
-    public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put(InternalPropertyKeys.defaultSort.name(), defaultSort);
-    }
-
-    @Override
-    public boolean isDefaultFilter() {
-        return Boolean.TRUE.equals(getStateHelper().get(InternalPropertyKeys.defaultFilter.name()));
-    }
-
-    @Override
-    public void setDefaultFilter(boolean defaultFilter) {
-        getStateHelper().put(InternalPropertyKeys.defaultFilter.name(), defaultFilter);
     }
 
     @Override
