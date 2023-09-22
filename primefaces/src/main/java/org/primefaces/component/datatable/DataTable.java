@@ -177,9 +177,7 @@ public class DataTable extends DataTableBase {
     private final Map<String, AjaxBehaviorEvent> deferredEvents = new HashMap<>(1);
 
     protected enum InternalPropertyKeys {
-        defaultFilter,
         filterByAsMap,
-        defaultSort,
         sortByAsMap,
         visibleColumnsAsMap,
         resizableColumnsAsMap,
