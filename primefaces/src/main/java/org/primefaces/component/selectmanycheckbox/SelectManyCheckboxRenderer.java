@@ -80,7 +80,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
-        else if ("grid".equals(layout)) {
+        else if ("grid".equals(layout) || "lineDirection".equals(layout) || "pageDirection".equals(layout)) {
             encodeLegacyTabularLayout(context, checkbox, layout);
         }
         else {
