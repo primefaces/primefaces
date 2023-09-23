@@ -142,6 +142,17 @@
     vertical-align: top;
 }
 
+.ui-selectmanycheckbox.layout-line-direction.ui-grid-responsive > div,
+.ui-selectmanycheckbox.layout-line-direction.ui-grid-responsive > div label {
+    display: inline;
+}
+.ui-selectmanycheckbox.ui-grid-responsive > div > div {
+    display:inline-flex;
+}
+.ui-selectmanycheckbox.ui-grid-responsive > div label {
+    flex-grow: 1;
+}
+
 .ui-selectmanycheckbox label {
     vertical-align: middle;
     cursor: pointer;
