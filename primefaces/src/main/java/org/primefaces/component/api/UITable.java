@@ -583,7 +583,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
      * Resets all column related state after adding/removing/moving columns.
      */
     default void resetColumns() {
-        resetDynamicColumns();
         setColumns(null);
         setSortByAsMap(null);
         setFilterByAsMap(null);

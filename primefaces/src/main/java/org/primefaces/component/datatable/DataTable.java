@@ -676,15 +676,12 @@ public class DataTable extends DataTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = collectColumns();
-
-        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
-        // see https://github.com/primefaces/primefaces/issues/2110
-        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            this.columns = columns;
+        List<UIColumn> columnsTmp = collectColumns();
+        if (isCacheableColumns(columnsTmp)) {
+            this.columns = columnsTmp;
         }
 
-        return columns;
+        return columnsTmp;
     }
 
     @Override
@@ -900,38 +897,12 @@ public class DataTable extends DataTableBase {
             setValue(null);
         }
 
-        resetDynamicColumns();
-
         // reset component for MyFaces view pooling
         deferredEvents.clear();
         reset = false;
         columns = null;
 
         return super.saveState(context);
-    }
-
-    @Override
-    protected void preDecode(FacesContext context) {
-        resetDynamicColumns();
-        super.preDecode(context);
-    }
-
-    @Override
-    protected void preValidate(FacesContext context) {
-        resetDynamicColumns();
-        super.preValidate(context);
-    }
-
-    @Override
-    protected void preUpdate(FacesContext context) {
-        resetDynamicColumns();
-        super.preUpdate(context);
-    }
-
-    @Override
-    protected void preEncode(FacesContext context) {
-        resetDynamicColumns();
-        super.preEncode(context);
     }
 
     @Override
@@ -1159,5 +1130,14 @@ public class DataTable extends DataTableBase {
         }
 
         return value;
+    }
+
+    protected boolean isCacheableColumns(List<UIColumn> columns) {
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        // do not cache if nested in iterator component and contains dynamic columns since number of columns may vary per iteration
+        // see https://github.com/primefaces/primefaces/issues/2154
+        return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
+                && (!isNestedWithinIterator() || columns.stream().noneMatch(DynamicColumn.class::isInstance));
     }
 }

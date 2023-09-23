@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.treetable.feature.FilterFeature;
 import org.primefaces.component.treetable.feature.TreeTableFeatures;
@@ -320,15 +321,12 @@ public class TreeTable extends TreeTableBase {
             return this.columns;
         }
 
-        List<UIColumn> columns = collectColumns();
-
-        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
-        // see https://github.com/primefaces/primefaces/issues/2110
-        if (getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            this.columns = columns;
+        List<UIColumn> columnsTmp = collectColumns();
+        if (isCacheableColumns(columnsTmp)) {
+            this.columns = columnsTmp;
         }
 
-        return columns;
+        return columnsTmp;
     }
 
     @Override
@@ -338,8 +336,6 @@ public class TreeTable extends TreeTableBase {
 
     @Override
     public Object saveState(FacesContext context) {
-        resetDynamicColumns();
-
         // reset value when filtering is enabled
         // filtering stores the filtered values the value property, so it needs to be reset; see #7336
         if (isFilteringEnabled()) {
@@ -465,30 +461,6 @@ public class TreeTable extends TreeTableBase {
     }
 
     @Override
-    protected void preDecode(FacesContext context) {
-        resetDynamicColumns();
-        super.preDecode(context);
-    }
-
-    @Override
-    protected void preValidate(FacesContext context) {
-        resetDynamicColumns();
-        super.preValidate(context);
-    }
-
-    @Override
-    protected void preUpdate(FacesContext context) {
-        resetDynamicColumns();
-        super.preUpdate(context);
-    }
-
-    @Override
-    protected void preEncode(FacesContext context) {
-        resetDynamicColumns();
-        super.preEncode(context);
-    }
-
-    @Override
     protected boolean requiresColumns() {
         return true;
     }
@@ -606,4 +578,12 @@ public class TreeTable extends TreeTableBase {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_encodeFeature");
     }
 
+    protected boolean isCacheableColumns(List<UIColumn> columns) {
+        // lets cache it only when RENDER_RESPONSE is reached, the columns might change before reaching that phase
+        // see https://github.com/primefaces/primefaces/issues/2110
+        // do not cache if nested in iterator component and contains dynamic columns since number of columns may vary per iteration
+        // see https://github.com/primefaces/primefaces/issues/2154
+        return getFacesContext().getCurrentPhaseId() == PhaseId.RENDER_RESPONSE
+                && (!ComponentUtils.isNestedWithinIterator(this) || columns.stream().noneMatch(DynamicColumn.class::isInstance));
+    }
 }

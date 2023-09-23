@@ -120,4 +120,11 @@ public class Columns extends ColumnsBase {
         this.dynamicColumns = dynamicColumns;
     }
 
+    @Override
+    public Object saveState(FacesContext context) {
+        dynamicColumns = null;
+        cellEditor = null;
+
+        return super.saveState(context);
+    }
 }

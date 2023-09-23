@@ -313,6 +313,7 @@ public interface ColumnAware {
             }
             else if (child instanceof Columns) {
                 Columns uiColumns = (Columns) child;
+                uiColumns.setRowIndex(-1);
                 for (int j = 0; j < uiColumns.getRowCount(); j++) {
                     DynamicColumn dynaColumn = new DynamicColumn(j, uiColumns, context);
                     columns.add(dynaColumn);
@@ -382,16 +383,6 @@ public interface ColumnAware {
         });
 
         return columnsCountWithSpan.intValue();
-    }
-
-    default void resetDynamicColumns() {
-        forEachColumn(false, false, false, column ->  {
-            if (column instanceof Columns) {
-                ((Columns) column).setRowIndex(-1);
-                setColumns(null);
-            }
-            return true;
-        });
     }
 
     Map<String, ColumnMeta> getColumnMeta();
