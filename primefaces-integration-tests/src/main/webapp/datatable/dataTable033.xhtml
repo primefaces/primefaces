@@ -32,6 +32,9 @@
                         </f:facet>
                     </p:columns>
 
+                    <p:columns value="#{dataTable033.columns2}" var="column" headerText="#{column.header}" field="#{column.property}" />
+
+                    <p:column field="activity" />
                 </p:dataTable>
             </h:form>
 

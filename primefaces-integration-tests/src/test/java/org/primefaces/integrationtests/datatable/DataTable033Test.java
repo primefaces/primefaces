@@ -23,6 +23,10 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +35,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.InputText;
+import org.primefaces.selenium.component.model.datatable.Header;
 
 public class DataTable033Test extends AbstractDataTableTest {
 
@@ -59,6 +64,40 @@ public class DataTable033Test extends AbstractDataTableTest {
         // reset filter
         page.dataTable.filter("ID", "");
         Assertions.assertSame(allRowsCount, page.dataTable.getRows().size());
+    }
+
+    @Test
+    @DisplayName("DataTable: multiple p:columns")
+    public void testHybridColumns(Page page) {
+        // switch column order now
+        page.template.setValue("id");
+        page.updateColumns.click();
+
+        Header header = page.dataTable.getHeader();
+        Assertions.assertEquals(4, header.getCells().size());
+        Assertions.assertEquals("ID", header.getCell(0).getColumnTitle().getText());
+        Assertions.assertEquals("NAME", header.getCell(1).getColumnTitle().getText());
+        Assertions.assertEquals("COUNTRY", header.getCell(2).getColumnTitle().getText());
+        Assertions.assertEquals("Activity", header.getCell(3).getColumnTitle().getText());
+
+        // test filter
+        long countryCount = page.dataTable.getRows().stream().filter(r -> r.getCell(1).getText().equals("Aruna Figeroa")).count();
+        page.dataTable.filter(1, "Aruna Figeroa");
+        Assertions.assertEquals(countryCount, page.dataTable.getRows().size());
+
+        // reset filter
+        page.dataTable.filter("NAME", "");
+
+        // test sort
+        List<String> sortedList = page.dataTable.getRows().stream()
+                .sorted(Comparator.comparing(r -> r.getCell(1).getText()))
+                .map(r -> r.getCell(1).getText())
+                .collect(Collectors.toList());
+        page.dataTable.sort("NAME");
+
+        List<String> sortedListPostFilter = page.dataTable.getRows().stream().map(r -> r.getCell(1).getText()).collect(Collectors.toList());
+        Assertions.assertEquals(sortedList.size(), sortedListPostFilter.size());
+        Assertions.assertLinesMatch(sortedList, sortedListPostFilter);
     }
 
     public static class Page extends AbstractPrimePage {
