@@ -95,7 +95,9 @@ public class DataTable033Test extends AbstractDataTableTest {
                 .collect(Collectors.toList());
         page.dataTable.sort("NAME");
 
-        List<String> sortedListPostFilter = page.dataTable.getRows().stream().map(r -> r.getCell(1).getText()).collect(Collectors.toList());
+        List<String> sortedListPostFilter = page.dataTable.getRows().stream()
+                .map(r -> r.getCell(1).getText())
+                .collect(Collectors.toList());
         Assertions.assertEquals(sortedList.size(), sortedListPostFilter.size());
         Assertions.assertLinesMatch(sortedList, sortedListPostFilter);
     }
