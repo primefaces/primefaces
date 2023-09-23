@@ -56,17 +56,19 @@ public class CurrencyValidatorTest {
     }
 
     private static int getVersion() {
-        String version = System.getProperty("java.version");
-        if (version.startsWith("1.")) {
-            version = version.substring(2, 3);
-        }
-        else {
-            int dot = version.indexOf(".");
-            if (dot != -1) {
-                version = version.substring(0, dot);
+        String javaVersion = System.getProperty("java.version");
+        // The version string typically follows the pattern "1.x.y" or "x.y.z"
+        // We'll extract the major version number as an integer.
+        String[] parts = javaVersion.split("\\.");
+        if (parts.length > 0) {
+            try {
+                return Integer.parseInt(parts[0]);
+            }
+            catch (NumberFormatException e) {
+                e.printStackTrace();
             }
         }
-        return Integer.parseInt(version);
+        return -1; // Default value if parsing fails
     }
 
     /**
