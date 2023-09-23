@@ -55,21 +55,6 @@ public class CurrencyValidatorTest {
         customCurrencySymbol = custom.getDecimalFormatSymbols().getCurrencySymbol();
     }
 
-    private static int getVersion() {
-        String javaVersion = System.getProperty("java.version");
-        // The version string typically follows the pattern "1.x.y" or "x.y.z"
-        // We'll extract the major version number as an integer.
-        String[] parts = javaVersion.split("\\.");
-        if (parts.length > 0) {
-            try {
-                return Integer.parseInt(parts[0]);
-            }
-            catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
-        return -1; // Default value if parsing fails
-    }
 
     /**
      * Test Valid currency values
@@ -94,12 +79,7 @@ public class CurrencyValidatorTest {
         assertEquals(oneDecimal, validator.validate(usDollar + "1,234.5", us), "US 1 decimal");
         assertEquals(expected, validator.validate(usDollar + "1,234.567", us), "US 3 decimal");
         assertEquals(expected, validator.validate("1,234.56", us), "US no symbol");
-        if (getVersion() > 8) {
-            assertEquals(negative, validator.validate("-" + usDollar + "1,234.56", us), "US negative");
-        }
-        else {
-            assertEquals(negative, validator.validate("(" + usDollar + "1,234.56)", us), "US negative");
-        }
+        assertEquals(negative, validator.validate("-" + usDollar + "1,234.56", us), "US negative");
     }
 
     /**
@@ -115,12 +95,7 @@ public class CurrencyValidatorTest {
         assertEquals(negative, validator.validate("-" + ukPound + "1,234", uk), "UK negative");
 
         assertEquals(expected, validator.validate(usDollar + "1,234", us), "US locale");
-        if (getVersion() > 8) {
-            assertEquals(negative, validator.validate("-" + usDollar + "1,234", us), "US negative");
-        }
-        else {
-            assertEquals(negative, validator.validate("(" + usDollar + "1,234)", us), "US negative");
-        }
+        assertEquals(negative, validator.validate("-" + usDollar + "1,234", us), "US negative");
     }
 
     /**
