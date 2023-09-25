@@ -51,7 +51,7 @@ public class Rating001 implements Serializable {
     }
 
     public void oncancel() {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset:" + rating1);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

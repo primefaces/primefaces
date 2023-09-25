@@ -61,7 +61,7 @@ public class Rating001Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertNull(rating.getValue());
         Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Rate Reset", messages.getMessage(0).getDetail());
+        Assertions.assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
@@ -88,7 +88,7 @@ public class Rating001Test extends AbstractPrimePageTest {
         // Assert
         Assertions.assertNull(rating.getValue());
         Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Rate Reset", messages.getMessage(0).getDetail());
+        Assertions.assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
@@ -254,6 +254,28 @@ public class Rating001Test extends AbstractPrimePageTest {
         // Assert
         // 4 is the exact middle between min=0 max=8 which is range default
         Assertions.assertEquals(4L, rating.getValue());
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("Rating: cancel the value and check it should be NULL server side")
+    public void testCancelSetsNull(Page page) {
+        // Arrange
+        Rating rating = page.ratingAjax;
+        Messages messages = page.messages;
+        Assertions.assertNull(rating.getValue());
+
+        // Act
+        rating.setValue(3);
+        rating.cancel();
+        Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
+        Assertions.assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
+
+        // Act
+        page.submit.click();
+
+        // Assert
+        Assertions.assertNull(rating.getValue());
     }
 
     private JSONObject assertConfiguration(JSONObject cfg) {
