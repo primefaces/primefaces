@@ -523,6 +523,13 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * @param {JQuery} newPanel New tab to be shown.
      */
     show: function(newPanel) {
+        var oldPanel = this.panelContainer.children('.ui-tabs-panel:visible');
+        
+        // it is possible the current panel has been removed from the DOM with rendered flag
+        if (!newPanel || newPanel.length === 0) {
+            newPanel = oldPanel;
+        }
+        
         var headers = this.headerContainer,
         actionsQuery = '.ui-tabs-actions:not(.ui-tabs-actions-global)',
         oldHeader = headers.filter('.ui-state-active'),
@@ -532,7 +539,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         newActions = newHeader.next(actionsQuery),
         hasNewActions = newActions.length,
         globalActions = this.navContainer.children('.ui-tabs-actions.ui-tabs-actions-global'),
-        oldPanel = this.panelContainer.children('.ui-tabs-panel:visible'),
         $this = this;
 
         globalActions.hide();
