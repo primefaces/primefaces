@@ -911,7 +911,7 @@ if (!PrimeFaces.ajax) {
                         }
 
                         if(global) {
-                            (document).trigger('pfAjaxComplete', [xhr, this, xhr.pfArgs]);
+                            $(document).trigger('pfAjaxComplete', [xhr, this, xhr.pfArgs]);
                         }
 
                         PrimeFaces.debug('Response completed.');
