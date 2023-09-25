@@ -48,10 +48,10 @@ public class AjaxStatusRenderer extends CoreRenderer {
         wb.init("AjaxStatus", status);
         wb.attr("delay", status.getDelay());
 
-        wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
-                .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
-                .callback(AjaxStatus.SUCCESS, AjaxStatus.CALLBACK_SIGNATURE, status.getOnsuccess())
-                .callback(AjaxStatus.COMPLETE, AjaxStatus.CALLBACK_SIGNATURE, status.getOncomplete());
+        wb.callback(AjaxStatus.START, "function()", status.getOnstart())
+                .callback(AjaxStatus.ERROR, "function()", status.getOnerror())
+                .callback(AjaxStatus.SUCCESS, "function(xhr,settings,args)", status.getOnsuccess())
+                .callback(AjaxStatus.COMPLETE, "function(xhr,settings,args)", status.getOncomplete());
 
         wb.finish();
     }

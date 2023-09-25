@@ -71,11 +71,11 @@
  */
 PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
 
-	/**
-	 * @override
-	 * @inheritdoc
+    /**
+     * @override
+     * @inheritdoc
      * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
-	 */
+     */
     init: function(cfg) {
         this._super(cfg);
 
@@ -99,13 +99,13 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             $this.trigger('error', arguments);
         })
         .on('pfAjaxSuccess', function() {
-            $this.trigger('success', arguments);
+            $this.trigger('success', [arguments[1], arguments[2], arguments[3]]);
         })
         .on('pfAjaxComplete', function() {
             if($this.timeout) {
                 $this.deleteTimeout();
             }
-            $this.trigger('complete', arguments);
+            $this.trigger('complete', [arguments[1], arguments[2], arguments[3]]);
         });
 
         // also bind to JSF (f:ajax) events

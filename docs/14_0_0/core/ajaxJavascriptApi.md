@@ -107,6 +107,6 @@ $(document).on('pfAjaxComplete', function() {
 | [pfAjaxSend](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxSend) | xhr, settings | Executed before sending the XHR.
 | [pfAjaxError](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxError) | xhr, settings, error | Executed when sending the request or receiving the response failed.
 | [pfAjaxSuccess](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxSuccess) | xhr, settings | Executed after the response was received but before processing the response / replace DOM elements.
-| [pfAjaxUpdated](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxUpdated) | xhr, settings | Executed after the response was received but after the DOM elements have been updated.
-| [pfAjaxComplete](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxComplete) | xhr, settings | Executed after the AJAX lifecycle has been completed, independent of success or error.
+| [pfAjaxUpdated](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxUpdated) | xhr, settings, args | Executed after the response was received but after the DOM elements have been updated.
+| [pfAjaxComplete](../jsdocs/interfaces/src_PrimeFaces.JQuery.TypeToTriggeredEventMap.html#pfAjaxComplete) | xhr, settings, args | Executed after the AJAX lifecycle has been completed, independent of success or error.
 

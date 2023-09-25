@@ -878,7 +878,7 @@ if (!PrimeFaces.ajax) {
                             }
 
                             if(global) {
-                                $(document).trigger('pfAjaxSuccess', [xhr, this]);
+                                $(document).trigger('pfAjaxSuccess', [xhr, this, xhr.pfArgs]);
                             }
 
                             //do not execute default handler as response already has been parsed
@@ -894,7 +894,7 @@ if (!PrimeFaces.ajax) {
                         }
 
                         if(global) {
-                            $(document).trigger('pfAjaxUpdated', [xhr, this]);
+                            $(document).trigger('pfAjaxUpdated', [xhr, this, xhr.pfArgs]);
                         }
 
                         PrimeFaces.debug('DOM is updated.');
@@ -911,7 +911,7 @@ if (!PrimeFaces.ajax) {
                         }
 
                         if(global) {
-                            $(document).trigger('pfAjaxComplete', [xhr, this]);
+                            (document).trigger('pfAjaxComplete', [xhr, this, xhr.pfArgs]);
                         }
 
                         PrimeFaces.debug('Response completed.');
@@ -1191,6 +1191,7 @@ if (!PrimeFaces.ajax) {
 
                     switch (currentNode.nodeName) {
                         case "redirect":
+                            xhr.pfArgs.redirect = true;
                             PrimeFaces.ajax.ResponseProcessor.doRedirect(currentNode);
                             break;
 

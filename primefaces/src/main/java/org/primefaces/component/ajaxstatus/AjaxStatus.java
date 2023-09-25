@@ -40,7 +40,6 @@ public class AjaxStatus extends AjaxStatusBase {
     public static final String ERROR = "error";
 
     public static final String DEFAULT = "default";
-    public static final String CALLBACK_SIGNATURE = "function()";
 
     public static final List<String> EVENTS = LangUtils.unmodifiableList(START, SUCCESS, COMPLETE, ERROR);
 }
