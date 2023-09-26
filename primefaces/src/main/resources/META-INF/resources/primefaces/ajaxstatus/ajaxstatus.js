@@ -154,11 +154,19 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             callback.apply(document, args);
         }
 
-        if (event !== 'complete' || this.jq.children().filter(this.toFacetId('complete')).length) {
-            var facets = this.jq.children();
-            facets.hide(); // hide all other facets first
-            facets.filter(this.toFacetId(event)).show();
+        // We have the following events:
+        // 1) start
+        // 2) success or error
+        // 3) complete
+        var facets = this.jq.children();
+        var hasCompleteFacet = facets.filter(this.toFacetId('complete')).length > 0;
+
+        // skip hiding 2) when no complet-facet is defined
+        var hidePreviousFacets = !(event === 'complete' && !hasCompleteFacet);
+        if (hidePreviousFacets) {
+            facets.hide();
         }
+        facets.filter(this.toFacetId(event)).show();
     },
 
     /**
