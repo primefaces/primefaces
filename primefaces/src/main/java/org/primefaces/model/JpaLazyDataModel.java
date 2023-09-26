@@ -49,6 +49,7 @@ import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
+import org.primefaces.util.SerializableConsumer;
 import org.primefaces.util.SerializableSupplier;
 
 /**
@@ -65,6 +66,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected String rowKey;
     protected boolean caseSensitive = true;
     protected boolean wildcardSupport = false;
+    protected SerializableConsumer<TypedQuery<T>> enricher;
 
     private transient Lazy<Method> rowKeyGetter;
 
@@ -126,7 +128,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         applyFilters(cb, cq, root, filterBy);
 
-        return em.createQuery(cq).getSingleResult().intValue();
+        TypedQuery<Long> query = em.createQuery(cq);
+        return query.getSingleResult().intValue();
     }
 
     @Override
@@ -144,6 +147,10 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         TypedQuery<T> query = em.createQuery(cq);
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
+
+        if (enricher != null) {
+            enricher.accept(query);
+        }
 
         List<T> result = query.getResultList();
 
@@ -462,6 +469,14 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         this.wildcardSupport = wildcardSupport;
     }
 
+    public SerializableConsumer<TypedQuery<T>> getEnricher() {
+        return enricher;
+    }
+
+    public void setEnricher(SerializableConsumer<TypedQuery<T>> enricher) {
+        this.enricher = enricher;
+    }
+
     public static <T> Builder<T> builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
         return new Builder<>(entityClass, entityManager);
     }
@@ -473,6 +488,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         private Converter<T> rowKeyConverter;
         private boolean caseSensitive = true;
         private boolean wildcardSupport = false;
+        private SerializableConsumer<TypedQuery<T>> enricher;
 
         public Builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
             this.entityClass = entityClass;
@@ -504,11 +520,17 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        public Builder<T> enricher(SerializableConsumer<TypedQuery<T>> enricher) {
+            this.enricher = enricher;
+            return this;
+        }
+
         public JpaLazyDataModel<T> build() {
             JpaLazyDataModel<T> model = new JpaLazyDataModel<>(entityClass, entityManager);
             model.rowKey = rowKey;
             model.caseSensitive = caseSensitive;
             model.wildcardSupport = wildcardSupport;
+            model.enricher = enricher;
             if (rowKeyConverter != null) {
                 model.setRowKeyConverter(rowKeyConverter);
             }
