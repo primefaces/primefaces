@@ -91,8 +91,8 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         $this = this;
 
         doc.on('pfAjaxStart', function() {
-            $this.timeout = PrimeFaces.queueTask(function () {
-                    $this.trigger('start', arguments);
+            $this.timeout = PrimeFaces.queueTask(function() {
+                $this.trigger('start', arguments);
             }, $this.cfg.delay);
         })
         .on('pfAjaxError', function() {
@@ -155,7 +155,9 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if (event !== 'complete' || this.jq.children().filter(this.toFacetId('complete')).length) {
-            this.jq.children().hide().filter(this.toFacetId(event)).show();
+            var facets = this.jq.children();
+            facets.hide(); // hide all other facets first
+            facets.filter(this.toFacetId(event)).show();
         }
     },
 
