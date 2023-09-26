@@ -76,12 +76,14 @@ PrimeFaces.widget.Splitter = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if (!initialized) {
+            this.jq.hide();
             this.panels.each(function(i, panel) {
                 var panelInitialSize = panel.dataset && panel.dataset.size;
                 var panelSize = panelInitialSize || (100 / $this.panels.length);
                 $this.panelSizes[i] = panelSize;
                 panel.style.flexBasis = 'calc(' + panelSize + '% - ' + (($this.panels.length - 1) * $this.cfg.gutterSize) + 'px)';
             });
+            this.jq.show();
         }
     },
 
