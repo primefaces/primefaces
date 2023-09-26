@@ -96,10 +96,10 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             }, $this.cfg.delay);
         })
         .on('pfAjaxError', function() {
-            $this.trigger('error', arguments);
+            $this.trigger('error', [arguments[1], arguments[2], arguments[3]]);
         })
         .on('pfAjaxSuccess', function() {
-            $this.trigger('success', [arguments[1], arguments[2], arguments[3]]);
+            $this.trigger('success', [arguments[1], arguments[2]]);
         })
         .on('pfAjaxComplete', function() {
             if($this.timeout) {
@@ -159,14 +159,33 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
         // 2) success or error
         // 3) complete
         var facets = this.jq.children();
-        var hasCompleteFacet = facets.filter(this.toFacetId('complete')).length > 0;
-
-        // skip hiding 2) when no complet-facet is defined
-        var hidePreviousFacets = !(event === 'complete' && !hasCompleteFacet);
-        if (hidePreviousFacets) {
+        var facet = facets.filter(this.toFacetId(event));
+        if (event === 'start') {
             facets.hide();
+            facet.show();
         }
-        facets.filter(this.toFacetId(event)).show();
+        else if (event === 'success' || event === 'error') {
+            // we now expect that either a complete or success/error facet is defined
+            // if no success/error is defined, lets just rely upon the complete-facet
+            if (facet.length > 0) {
+                facets.hide();
+                facet.show();
+            }
+        }
+        else if (event === 'complete') {
+            // if the current request leads in a redirect, skip hiding the previous facet (in best case this is the start-facet)
+            // when a sucess/error-facet is defined, this wont work as expected as the 'redirect' information is not available before
+            var pfArgs = args[2];
+            if (pfArgs.redirect) {
+                return;
+            }
+
+            // skip hiding success/error, if no complete-facet is defined
+            if (facet.length > 0) {
+                facets.hide();
+                facet.show(); 
+            }
+        }
     },
 
     /**

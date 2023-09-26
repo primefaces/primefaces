@@ -49,8 +49,8 @@ public class AjaxStatusRenderer extends CoreRenderer {
         wb.attr("delay", status.getDelay());
 
         wb.callback(AjaxStatus.START, "function()", status.getOnstart())
-                .callback(AjaxStatus.ERROR, "function()", status.getOnerror())
-                .callback(AjaxStatus.SUCCESS, "function(xhr,settings,args)", status.getOnsuccess())
+                .callback(AjaxStatus.ERROR, "function(xhr,settings,error)", status.getOnerror())
+                .callback(AjaxStatus.SUCCESS, "function(xhr,settings)", status.getOnsuccess())
                 .callback(AjaxStatus.COMPLETE, "function(xhr,settings,args)", status.getOncomplete());
 
         wb.finish();

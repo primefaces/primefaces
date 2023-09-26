@@ -878,7 +878,7 @@ if (!PrimeFaces.ajax) {
                             }
 
                             if(global) {
-                                $(document).trigger('pfAjaxSuccess', [xhr, this, xhr.pfArgs]);
+                                $(document).trigger('pfAjaxSuccess', [xhr, this]);
                             }
 
                             //do not execute default handler as response already has been parsed
