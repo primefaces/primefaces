@@ -194,7 +194,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
             if ($this.isXhrSource(settings)) {
                 $this.ajaxCount--;
-                if ($this.ajaxCount > 0) {
+                if ($this.ajaxCount > 0 || args.redirect) {
                     return;
                 }
                 $this.button.removeClass('ui-state-loading');

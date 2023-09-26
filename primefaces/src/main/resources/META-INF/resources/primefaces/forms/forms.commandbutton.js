@@ -64,7 +64,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                 $this.ajaxCount--;
-                if ($this.ajaxCount > 0) {
+                if ($this.ajaxCount > 0 || args.redirect) {
                     return;
                 }
                 $this.jq.removeClass('ui-state-loading');
