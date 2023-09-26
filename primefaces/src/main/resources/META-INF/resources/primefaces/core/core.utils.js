@@ -609,7 +609,16 @@ if (!PrimeFaces.utils) {
                 case 'Enter':
                 case 'Delete':
                     return false;
-                    break;
+                case 'a':
+                case 'A':
+                case 'c':
+                case 'C':
+                case 'x':
+                case 'X':
+                case 'v':
+                case 'V':
+                    // allow select all, cut, copy, paste
+                    return PrimeFaces.utils.isMetaKey(e);
                 default:
                     return !PrimeFaces.utils.isPrintableKey(e);
             }
