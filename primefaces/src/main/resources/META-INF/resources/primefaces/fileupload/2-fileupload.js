@@ -352,12 +352,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(data.result, data.textStatus, data.jqXHR, null);
                 
                 if($this.cfg.global) {
-                    $(document).trigger('pfAjaxSuccess');
+                    $(document).trigger('pfAjaxSuccess', [data.jqXHR, this]);
                 }
             },
             always: function(e, data) {
                 if($this.cfg.global) {
-                    $(document).trigger('pfAjaxComplete');
+                    $(document).trigger('pfAjaxComplete', [data.jqXHR, this, data.jqXHR.pfArgs]);
                 }
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs, data);

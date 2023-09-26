@@ -58,7 +58,7 @@ PrimeFaces.widget.CommandLink = PrimeFaces.widget.BaseWidget.extend({
                     $this.jq.addClass('ui-state-loading');
                     $this.disable();
                 }
-            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
                 $this.ajaxCount--;
                 if ($this.ajaxCount > 0) {
                     return;

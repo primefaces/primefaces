@@ -319,7 +319,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                 $this.clear();
 
                 if($this.cfg.global) {
-                    $(document).trigger('pfAjaxComplete', [xhr, this]);
+                    $(document).trigger('pfAjaxComplete', [xhr, this, xhr.pfArgs]);
                 }
             });
 

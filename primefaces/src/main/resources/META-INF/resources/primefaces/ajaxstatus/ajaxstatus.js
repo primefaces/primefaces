@@ -95,17 +95,17 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
                 $this.trigger('start', arguments);
             }, $this.cfg.delay);
         })
-        .on('pfAjaxError', function() {
-            $this.trigger('error', [arguments[1], arguments[2], arguments[3]]);
+        .on('pfAjaxError', function(e, xhr, settings, error) {
+            $this.trigger('error', [xhr, settings, error]);
         })
-        .on('pfAjaxSuccess', function() {
-            $this.trigger('success', [arguments[1], arguments[2]]);
+        .on('pfAjaxSuccess', function(e, xhr, settings) {
+            $this.trigger('success', [xhr, settings]);
         })
-        .on('pfAjaxComplete', function() {
+        .on('pfAjaxComplete', function(e, xhr, settings, args) {
             if($this.timeout) {
                 $this.deleteTimeout();
             }
-            $this.trigger('complete', [arguments[1], arguments[2], arguments[3]]);
+            $this.trigger('complete', [xhr, settings, args]);
         });
 
         // also bind to JSF (f:ajax) events

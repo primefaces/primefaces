@@ -191,7 +191,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 }
                 $this.button.prepend(loadIcon);
             }
-        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
             if ($this.isXhrSource(settings)) {
                 $this.ajaxCount--;
                 if ($this.ajaxCount > 0) {

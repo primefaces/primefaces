@@ -61,7 +61,7 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
                 }
                 $this.jq.prepend(loadIcon);
             }
-        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
             if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
                 $this.ajaxCount--;
                 if ($this.ajaxCount > 0) {
