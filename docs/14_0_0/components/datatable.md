@@ -983,14 +983,13 @@ JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.cla
     .build();
 ```
 
-Also you can add global filters via:
+Also you can add global filters or manipulate generated predicates (from the DataTable columns) via:
 ```java
-new JpaLazyDataModel<>(MyEntity.class, () -> entityManager) {
-    @Override
-    protected void applyGlobalFilters(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<MyEntity> root, List<Predicate> predicates) {
+JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
+    .filterEnricher((filterBy, cb, cq, root, predicates) -> {
         predicates.add(cb.isNull(root.get("id")));
-    }
-};
+    })
+    .build();
 ```
 
 ## Sticky Header
