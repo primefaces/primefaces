@@ -271,7 +271,6 @@ if (!PrimeFaces.dialog) {
                         headerElement: cfg.options.headerElement,
                         responsive: cfg.options.responsive,
                         closeOnEscape: cfg.options.closeOnEscape,
-                        focus: cfg.options.focus,
                         fitViewport: cfg.options.fitViewport,
                         resizeObserver: cfg.options.resizeObserver,
                         resizeObserverCenter: cfg.options.resizeObserverCenter
