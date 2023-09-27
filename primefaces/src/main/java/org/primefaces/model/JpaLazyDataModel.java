@@ -49,7 +49,6 @@ import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
-import org.primefaces.util.SerializableConsumer;
 import org.primefaces.util.SerializableSupplier;
 
 /**
@@ -66,7 +65,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected String rowKey;
     protected boolean caseSensitive = true;
     protected boolean wildcardSupport = false;
-    protected SerializableConsumer<TypedQuery<T>> enricher;
+    protected QueryEnricher<T> queryEnricher;
+    protected FilterEnricher<T> filterEnricher;
+    protected SortEnricher<T> sortEnricher;
 
     private transient Lazy<Method> rowKeyGetter;
 
@@ -148,8 +149,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
 
-        if (enricher != null) {
-            enricher.accept(query);
+        if (queryEnricher != null) {
+            queryEnricher.enrich(query);
         }
 
         List<T> result = query.getResultList();
@@ -191,12 +192,20 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             }
         }
 
+        if (filterEnricher != null) {
+            filterEnricher.enrich(filterBy, cb, cq, root, predicates);
+        }
+
         if (!predicates.isEmpty()) {
             cq.where(
                 cb.and(predicates.toArray(new Predicate[predicates.size()])));
         }
     }
 
+    /**
+     * @deprecated use the builder and filterEnricher instead
+     */
+    @Deprecated
     protected void applyGlobalFilters(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq,
             Root<T> root, List<Predicate> predicates) {
 
@@ -284,24 +293,25 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                              Root<T> root,
                              Map<String, SortMeta> sortBy) {
 
+        List<Order> orders = new ArrayList<>();
+
         if (sortBy != null) {
-            List<Order> orders = null;
             for (SortMeta sort : sortBy.values().stream().sorted().collect(Collectors.toList())) {
                 if (sort.getField() == null || sort.getOrder() == SortOrder.UNSORTED) {
                     continue;
                 }
 
-                if (orders == null) {
-                    orders = new ArrayList<>();
-                }
-
                 Expression<?> fieldExpression = resolveFieldExpression(cb, cq, root, sort.getField());
                 orders.add(sort.getOrder() == SortOrder.ASCENDING ? cb.asc(fieldExpression) : cb.desc(fieldExpression));
             }
+        }
 
-            if (orders != null) {
-                cq.orderBy(orders);
-            }
+        if (sortEnricher != null) {
+            sortEnricher.enrich(sortBy, cb, cq, root, orders);
+        }
+
+        if (!orders.isEmpty()) {
+            cq.orderBy(orders);
         }
     }
 
@@ -469,13 +479,33 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         this.wildcardSupport = wildcardSupport;
     }
 
-    public SerializableConsumer<TypedQuery<T>> getEnricher() {
-        return enricher;
+    public QueryEnricher<T> getQueryEnricher() {
+        return queryEnricher;
     }
 
-    public void setEnricher(SerializableConsumer<TypedQuery<T>> enricher) {
-        this.enricher = enricher;
+    public void setQueryEnricher(QueryEnricher<T> queryEnricher) {
+        this.queryEnricher = queryEnricher;
     }
+
+    public FilterEnricher<T> getFilterEnricher() {
+        return filterEnricher;
+    }
+
+    public void setFilterEnricher(FilterEnricher<T> filterEnricher) {
+        this.filterEnricher = filterEnricher;
+    }
+
+    public SortEnricher<T> getSortEnricher() {
+        return sortEnricher;
+    }
+
+    public void setSortEnricher(SortEnricher<T> sortEnricher) {
+        this.sortEnricher = sortEnricher;
+    }
+
+
+
+
 
     public static <T> Builder<T> builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
         return new Builder<>(entityClass, entityManager);
@@ -488,7 +518,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         private Converter<T> rowKeyConverter;
         private boolean caseSensitive = true;
         private boolean wildcardSupport = false;
-        private SerializableConsumer<TypedQuery<T>> enricher;
+        private QueryEnricher<T> queryEnricher;
+        private FilterEnricher<T> filterEnricher;
+        private SortEnricher<T> sortEnricher;
 
         public Builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
             this.entityClass = entityClass;
@@ -520,8 +552,18 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> enricher(SerializableConsumer<TypedQuery<T>> enricher) {
-            this.enricher = enricher;
+        public Builder<T> queryEnricher(QueryEnricher<T> queryEnricher) {
+            this.queryEnricher = queryEnricher;
+            return this;
+        }
+
+        public Builder<T> filterEnricher(FilterEnricher<T> filterEnricher) {
+            this.filterEnricher = filterEnricher;
+            return this;
+        }
+
+        public Builder<T> sortEnricher(SortEnricher<T> sortEnricher) {
+            this.sortEnricher = sortEnricher;
             return this;
         }
 
@@ -530,11 +572,30 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             model.rowKey = rowKey;
             model.caseSensitive = caseSensitive;
             model.wildcardSupport = wildcardSupport;
-            model.enricher = enricher;
-            if (rowKeyConverter != null) {
-                model.setRowKeyConverter(rowKeyConverter);
-            }
+            model.queryEnricher = queryEnricher;
+            model.filterEnricher = filterEnricher;
+            model.sortEnricher = sortEnricher;
+            model.setRowKeyConverter(rowKeyConverter);
+
             return model;
         }
+    }
+
+    @FunctionalInterface
+    public static interface QueryEnricher<T> extends Serializable {
+
+        void enrich(TypedQuery<T> query);
+    }
+
+    @FunctionalInterface
+    public static interface SortEnricher<T> extends Serializable {
+
+        void enrich(Map<String, SortMeta> sortBy, CriteriaBuilder cb, CriteriaQuery<T> cq, Root<T> root, List<Order> orders);
+    }
+
+    @FunctionalInterface
+    public static interface FilterEnricher<T> extends Serializable {
+
+        void enrich(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, List<Predicate> predicates);
     }
 }
