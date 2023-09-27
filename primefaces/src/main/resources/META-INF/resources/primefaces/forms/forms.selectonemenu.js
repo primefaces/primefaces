@@ -1007,6 +1007,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 onExited: function() {
                     $this.panel.css('z-index', '');
                     $this.keyboardTarget.attr('aria-expanded', false);
+                    $this.keyboardTarget.trigger('focus.ui-selectonemenu');
                 }
             });
         }
