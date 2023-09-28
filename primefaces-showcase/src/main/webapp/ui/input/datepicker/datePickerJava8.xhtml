@@ -223,8 +223,7 @@
                 <div class="ui-fluid grid formgrid">
                     <div class="field col-12 md:col-4">
                         <p:outputLabel for="time1" value="Time (with Select Event)"/>
-                        <p:datePicker id="time1" value="#{calendarJava8View.dateTime1}"
-                                     >
+                        <p:datePicker id="time1" value="#{calendarJava8View.dateTime1}" showButtonBar="true">
                             <p:ajax event="dateSelect" listener="#{calendarJava8View.onDateTimeSelect}"
                                     update="msgs"/>
                         </p:datePicker>
@@ -234,7 +233,7 @@
                         <p:outputLabel for="time3" value="Time (Min-Max)"/>
                         <p:datePicker id="time3" value="#{calendarJava8View.dateTime3}"
                                     mindate="#{calendarJava8View.minDateTime}"
-                                    maxdate="#{calendarJava8View.maxDateTime}"
+                                    maxdate="#{calendarJava8View.maxDateTime}"                                      showButtonBar="true"
                                    />
                     </div>
 
