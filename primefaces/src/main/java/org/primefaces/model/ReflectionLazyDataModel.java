@@ -187,7 +187,7 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
                 }
 
                 for (FilterMeta filterMeta : filterBy.values()) {
-                    if (filterMeta.isGlobalFilter() || !filterMeta.isActive()) {
+                    if (filterMeta.getField() == null || filterMeta.getFilterValue() == null || filterMeta.isGlobalFilter()) {
                         continue;
                     }
 
