@@ -49,7 +49,9 @@ public abstract class ComparableFilterConstraint implements FilterConstraint {
 
     static void assertAssignable(Object filter, Object value) {
         if (!filter.getClass().isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException("Filter cannot be casted to value type. Forgot to add a converter?");
+            String msg = String.format("Filter '%s' of type '%s' cannot be casted to value type '%s'. Forgot to add a converter?",
+                    filter, filter.getClass().getName(), value);
+            throw new IllegalArgumentException(msg);
         }
     }
 
