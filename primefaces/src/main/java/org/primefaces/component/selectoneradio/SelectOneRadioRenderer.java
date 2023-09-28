@@ -109,6 +109,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                 .add(GridLayoutUtils.getResponsiveClass(flex))
                 .add(radio.getStyleClass())
                 .add(SelectOneRadio.STYLE_CLASS)
+                .add(radio.isReadonly(), "ui-state-readonly")
                 .build();
         String labelledBy = radio.getLabel();
 
@@ -193,6 +194,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String styleClass = getStyleClassBuilder(context)
                 .add(radio.getStyleClass())
                 .add(SelectOneRadio.STYLE_CLASS)
+                .add(radio.isReadonly(), "ui-state-readonly")
                 .build();
         String labelledBy = radio.getLabel();
 
@@ -242,6 +244,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             String styleClass = getStyleClassBuilder(context)
                     .add(radio.getStyleClass())
                     .add(SelectOneRadio.STYLE_CLASS)
+                    .add(radio.isReadonly(), "ui-state-readonly")
                     .build();
             String labelledBy = radio.getLabel();
             writer.startElement("span", radio);
