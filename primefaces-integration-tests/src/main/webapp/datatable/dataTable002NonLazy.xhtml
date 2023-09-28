@@ -16,7 +16,8 @@
                 <p:autoUpdate/>
             </p:messages>
 
-            <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable002.lazyDataModel}" var="lang"
+            <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable002.programmingLanguages}" var="lang"
+                         rowKey="#{lang.id}"
                          paginator="true" rows="10" selectionMode="single" filterEvent="enter"
                          selection="#{dataTable002.selectedProgrammingLanguage}">
                 <p:ajax event="rowSelect" listener="#{dataTable002.onRowSelect}"/>
@@ -25,7 +26,7 @@
 
                 <p:column field="name" filterMatchMode="contains"/>
 
-                <p:column field="firstAppeared" filterMatchMode="gte"/>
+                <p:column field="firstAppeared" filterMatchMode="gte" converter="javax.faces.Integer"/>
 
                 <p:column field="type" filterMatchMode="in">
                     <f:facet name="filter">

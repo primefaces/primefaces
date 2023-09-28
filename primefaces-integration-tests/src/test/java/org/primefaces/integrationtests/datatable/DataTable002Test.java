@@ -340,7 +340,9 @@ public class DataTable002Test extends AbstractDataTableTest {
     private static Stream<Arguments> provideXhtmls() {
         return Stream.of(
                 Arguments.of("datatable/dataTable002.xhtml"),
-                Arguments.of("datatable/dataTable002RowCountOtherImpl.xhtml"));
+                Arguments.of("datatable/dataTable002RowCountOtherImpl.xhtml"),
+                Arguments.of("datatable/dataTable002NonLazy.xhtml"),
+                Arguments.of("datatable/dataTable002ReflectionLazyDataModel.xhtml"));
     }
 
     private DataTable getDataTable() {

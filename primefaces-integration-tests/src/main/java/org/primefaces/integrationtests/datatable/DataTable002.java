@@ -31,6 +31,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
+import org.primefaces.model.ReflectionLazyDataModel;
 
 @Named
 @ViewScoped
@@ -39,13 +41,22 @@ public class DataTable002 implements Serializable {
 
     private static final long serialVersionUID = -7518459955779385834L;
 
+    protected ArrayList<ProgrammingLanguage> programmingLanguages;
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
-
+    protected ReflectionLazyDataModel<ProgrammingLanguage> reflectionLazyDataModel;
     protected ProgrammingLanguage selectedProgrammingLanguage;
 
     @PostConstruct
     public void init() {
+        programmingLanguages = new ArrayList<>();
+        for (int i = 1; i <= 75; i++) {
+            programmingLanguages.add(new ProgrammingLanguage(i, "Language " + i, 1990 + (i % 10),
+                    ((i % 2) == 0) ? ProgrammingLanguage.ProgrammingLanguageType.COMPILED : ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED));
+        }
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
+        reflectionLazyDataModel = ReflectionLazyDataModel.builder(() -> programmingLanguages)
+                .rowKeyProvider((obj) -> Integer.toString(obj.getId()))
+                .build();
     }
 
     public void onRowSelect(SelectEvent<ProgrammingLanguage> event) {
@@ -54,6 +65,9 @@ public class DataTable002 implements Serializable {
 
     public void delete(ProgrammingLanguage language) {
         lazyDataModel.delete(language);
+        if (programmingLanguages != null) {
+            programmingLanguages.remove(language);
+        }
         TestUtils.addMessage("ProgrammingLanguage Deleted", language.getId() + " - " + language.getName());
     }
 
