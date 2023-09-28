@@ -49,6 +49,7 @@ import org.primefaces.util.BeanUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.Lazy;
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.SerializableSupplier;
 
 /**
@@ -168,6 +169,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         applyGlobalFilters(filterBy, cb, cq, root, predicates);
 
         if (filterBy != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Locale locale = LocaleUtils.getCurrentLocale(context);
+
             for (FilterMeta filter : filterBy.values()) {
                 if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
@@ -187,7 +191,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
 
-                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, convertedFilterValue);
+                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, convertedFilterValue, locale);
                 predicates.add(predicate);
             }
         }
@@ -212,7 +216,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     protected Predicate createPredicate(FilterMeta filter, Field filterField,
-            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue) {
+            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue, Locale locale) {
 
         Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> caseSensitive
                 ? fieldExpression.as(String.class)
@@ -223,19 +227,19 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
-                return cb.like(fieldExpressionAsString.get(), getStringFilterValue(filterValue) + "%");
+                return cb.like(fieldExpressionAsString.get(), getStringFilterValue(filterValue, locale) + "%");
             case NOT_STARTS_WITH:
-                return cb.notLike(fieldExpressionAsString.get(), getStringFilterValue(filterValue) + "%");
+                return cb.notLike(fieldExpressionAsString.get(), getStringFilterValue(filterValue, locale) + "%");
             case ENDS_WITH:
-                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue));
+                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue, locale));
             case NOT_ENDS_WITH:
-                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue));
+                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue, locale));
             case CONTAINS:
-                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
+                return cb.like(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue, locale) + "%");
             case NOT_CONTAINS:
-                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue) + "%");
+                return cb.notLike(fieldExpressionAsString.get(), "%" + getStringFilterValue(filterValue, locale) + "%");
             case EXACT:
-                String exactValue = getStringFilterValue(filterValue);
+                String exactValue = getStringFilterValue(filterValue, locale);
                 if (wildcardSupport && (exactValue.contains("%") || exactValue.contains("_"))) {
                     return cb.like(fieldExpressionAsString.get(), exactValue);
                 }
@@ -278,9 +282,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         return null;
     }
 
-    protected String getStringFilterValue(Object filterValue) {
+    protected String getStringFilterValue(Object filterValue, Locale locale) {
         String value = Objects.toString(filterValue, Constants.EMPTY_STRING);
-        value = caseSensitive ? value : value.toUpperCase(Locale.getDefault());
+        value = caseSensitive ? value : value.toUpperCase(locale);
         if (wildcardSupport) {
             value = value.replace("*", "%");
             value = value.replace("?", "_");
