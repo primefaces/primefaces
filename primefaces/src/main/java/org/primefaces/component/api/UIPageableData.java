@@ -208,12 +208,10 @@ public class UIPageableData extends UIData implements Pageable, TouchAware {
             //ValueExpression --> remove state to ensure the VE is re-evaluated
             getStateHelper().remove(PropertyKeys.rows);
         }
-        else {
-            //normal attribute value --> restore inital rows
-            Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
-            if (rows != null) {
-                setRows((int) rows);
-            }
+        //normal attribute value --> restore inital rows
+        Object rows = getStateHelper().eval(InternalPropertyKeys.rowsInitialValue);
+        if (rows != null) {
+            setRows((int) rows);
         }
     }
 
