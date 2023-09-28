@@ -169,6 +169,9 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         applyGlobalFilters(filterBy, cb, cq, root, predicates);
 
         if (filterBy != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Locale locale = LocaleUtils.getCurrentLocale(context);
+
             for (FilterMeta filter : filterBy.values()) {
                 if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
@@ -188,7 +191,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
 
-                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, convertedFilterValue);
+                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, convertedFilterValue, locale);
                 predicates.add(predicate);
             }
         }
@@ -213,7 +216,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     protected Predicate createPredicate(FilterMeta filter, Field filterField,
-            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue) {
+            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue, Locale locale) {
 
         Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> caseSensitive
                 ? fieldExpression.as(String.class)
@@ -221,8 +224,6 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         Lazy<Collection<Object>> filterValueAsCollection = new Lazy(
                 () -> filterValue.getClass().isArray() ? Arrays.asList((Object[]) filterValue)
                         : (Collection<Object>) filterValue);
-        FacesContext context = FacesContext.getCurrentInstance();
-        Locale locale = LocaleUtils.getCurrentLocale(context);
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
