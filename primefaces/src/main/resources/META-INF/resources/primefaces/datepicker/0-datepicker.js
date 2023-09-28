@@ -2778,6 +2778,9 @@
                 dateMeta = { day: today.getDate(), month: today.getMonth(), year: today.getFullYear(), today: true, selectable: true };
 
             this.updateViewDate(event, today);
+            if (this.options.showTime) {
+                this.updateTime(event, today, today.getMinutes(), today.getSeconds(), today.getMilliseconds());
+            }
             this.onDateSelect(event, dateMeta);
 
             if (this.options.onTodayButtonClick) {

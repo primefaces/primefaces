@@ -171,7 +171,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         // Assert - today button reset to NOW
         LocalDateTime now = LocalDateTime.now();
         assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, "22", "20", "19");
+        assertTime(panel, Objects.toString(now.getHour()), Objects.toString(now.getMinute()), null);
         Assertions.assertNotNull(datePicker.getValue());
     }
 
@@ -251,7 +251,7 @@ public class DatePicker004Test extends AbstractDatePickerTest {
         // Assert - today button reset to NOW
         LocalDateTime now = LocalDateTime.now();
         assertDate(panel, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(panel, "23", "22", "21", "019");
+        assertTime(panel, Objects.toString(now.getHour()), Objects.toString(now.getMinute()), null);
         Assertions.assertNotNull(datePicker.getValue());
     }
 
