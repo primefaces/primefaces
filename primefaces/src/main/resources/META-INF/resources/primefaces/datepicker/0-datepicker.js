@@ -2618,11 +2618,11 @@
             if (reg.test(value)) {
                 newHours = parseInt(value);
                 if (this.options.hourFormat === '12') {
-                    if (newHours >= 1 || newHours <= 12) {
+                    if (newHours >= 1 && newHours <= 12) {
                         valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
                     }
                 } else {
-                    if (newHours >= 0 || newHours <= 23) {
+                    if (newHours >= 0 && newHours <= 23) {
                         valid = this.validateTime(newHours, currentTime.getMinutes(), currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
                     }
                 }
@@ -2649,7 +2649,7 @@
             var reg = new RegExp('^([0-9]){1,2}$');
             if (reg.test(value)) {
                 newMinutes = parseInt(value);
-                if (newMinutes >= 0 || newMinutes <= 59) {
+                if (newMinutes >= 0 && newMinutes <= 59) {
                     valid = this.validateTime(currentTime.getHours(), newMinutes, currentTime.getSeconds(), currentTime.getMilliseconds(), currentTime);
                 }
             }
@@ -2675,7 +2675,7 @@
             var reg = new RegExp('^([0-9]){1,2}$');
             if (reg.test(value)) {
                 newSeconds = parseInt(value);
-                if (newSeconds >= 0 || newSeconds <= 59) {
+                if (newSeconds >= 0 && newSeconds <= 59) {
                     valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), newSeconds, currentTime.getMilliseconds(), currentTime);
                 }
             }
@@ -2701,7 +2701,7 @@
             var reg = new RegExp('^([0-9]){1,3}$');
             if (reg.test(value)) {
                 newMilliseconds = parseInt(value);
-                if (newMilliseconds >= 0 || newMilliseconds <= 999) {
+                if (newMilliseconds >= 0 && newMilliseconds <= 999) {
                     valid = this.validateTime(currentTime.getHours(), currentTime.getMinutes(), currentTime.getSeconds(), newMilliseconds, currentTime);
                 }
             }
