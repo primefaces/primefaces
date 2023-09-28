@@ -32,7 +32,7 @@ You can use the `builder()` method to create an instance of the `DefaultStreamed
 public class FileBean {
     private StreamedContent file;
 
-    public FileDownloadController() {
+    public FileBean() {
         file = DefaultStreamedContent.builder()
                     .contentType("application/pdf")
                     .name("downloaded_file.pdf")

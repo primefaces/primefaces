@@ -29,7 +29,7 @@ stream, second is the mimeType and the third parameter is the name of the file.
 public class FileBean {
     private StreamedContent file;
 
-    public FileDownloadController() {
+    public FileBean() {
         InputStream stream = this.getClass().getResourceAsStream("yourfile.pdf");
         file = new DefaultStreamedContent(stream, "application/pdf", "downloaded_file.pdf");
     }
