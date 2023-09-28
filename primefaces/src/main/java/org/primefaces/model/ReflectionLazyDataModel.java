@@ -45,12 +45,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.faces.convert.Converter;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.LocaleUtils;
 
 public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
-
-    // TODO AppScoped
-    protected static ConcurrentHashMap<String, Map<String, PropertyDescriptor>> pdCache = new ConcurrentHashMap<>();
 
     private SerializableSupplier<List<T>> valuesSupplier;
     private String rowKey;
@@ -102,13 +100,14 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
+        PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(context);
         Locale locale = LocaleUtils.getCurrentLocale(context);
         Collator collator = Collator.getInstance(locale);
 
         values.sort((obj1, obj2) -> {
             for (SortMeta sortMeta : sortBy.values()) {
-                Object value1 = getFieldValue(obj1, sortMeta.getField());
-                Object value2 = getFieldValue(obj2, sortMeta.getField());
+                Object value1 = getFieldValue(primeApplicationContext, obj1, sortMeta.getField());
+                Object value2 = getFieldValue(primeApplicationContext, obj2, sortMeta.getField());
 
                 try {
                     int result;
@@ -163,6 +162,7 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
+        PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(context);
         Locale locale = LocaleUtils.getCurrentLocale(context);
 
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
@@ -191,7 +191,7 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
                         continue;
                     }
 
-                    Object fieldValue = getFieldValue(obj, filterMeta.getField());
+                    Object fieldValue = getFieldValue(primeApplicationContext, obj, filterMeta.getField());
                     Object filterValue = filterMeta.getFilterValue();
                     Object convertedFilterValue;
 
@@ -200,7 +200,8 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
                         convertedFilterValue = filterValue;
                     }
                     else {
-                        convertedFilterValue = convertToType(filterValue, getFieldType(fieldValue, filterMeta.getField()));
+                        Class<?> fieldType = getFieldType(primeApplicationContext, fieldValue, filterMeta.getField());
+                        convertedFilterValue = convertToType(filterValue, fieldType);
                     }
 
                     localMatch = filterMeta.getConstraint().isMatching(context, fieldValue, convertedFilterValue, locale);
@@ -218,31 +219,31 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
             .collect(Collectors.toList());
     }
 
-    protected Class<?> getFieldType(Object obj, String fieldName) {
+    protected Class<?> getFieldType(PrimeApplicationContext primeApplicationContext, Object obj, String fieldName) {
         // join if required; e.g. company.name -> join to company and get "name" field from the joined object
         while (fieldName.contains(".")) {
             String currentName = fieldName.substring(0, fieldName.indexOf("."));
             fieldName = fieldName.substring(currentName.length() + 1);
 
             try {
-                obj = getPropertyDescriptor(obj.getClass(), fieldName).getReadMethod().invoke(obj);
+                obj = getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
             }
             catch (IllegalAccessException | InvocationTargetException e) {
                 throw new FacesException(e);
             }
         }
 
-        return getPropertyDescriptor(obj.getClass(), fieldName).getReadMethod().getReturnType();
+        return getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().getReturnType();
     }
 
-    protected Object getFieldValue(Object obj, String fieldName) {
+    protected Object getFieldValue(PrimeApplicationContext primeApplicationContext, Object obj, String fieldName) {
         // join if required; e.g. company.name -> join to company and get "name" field from the joined object
         while (fieldName.contains(".")) {
             String currentName = fieldName.substring(0, fieldName.indexOf("."));
             fieldName = fieldName.substring(currentName.length() + 1);
 
             try {
-                obj = getPropertyDescriptor(obj.getClass(), fieldName).getReadMethod().invoke(obj);
+                obj = getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
             }
             catch (IllegalAccessException | InvocationTargetException e) {
                 throw new FacesException(e);
@@ -250,7 +251,7 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
         }
 
         try {
-            return getPropertyDescriptor(obj.getClass(), fieldName).getReadMethod().invoke(obj);
+            return getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
         }
         catch (IllegalAccessException | InvocationTargetException e) {
             throw new FacesException(e);
@@ -270,13 +271,16 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
                 return null;
             }
 
+            PrimeApplicationContext primeApplicationContext =
+                    PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+
             for (T obj : values) {
                 String currentRowKey;
                 if (this.rowKeyProvider != null) {
                     currentRowKey = this.rowKeyProvider.apply(obj);
                 }
                 else {
-                    Object temp = getFieldValue(obj, this.rowKey);
+                    Object temp = getFieldValue(primeApplicationContext, obj, this.rowKey);
                     currentRowKey = temp == null ? null : temp.toString();
                 }
 
@@ -305,7 +309,10 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
         }
 
         if (this.rowKey != null) {
-            Object rowKeyValue = getFieldValue(obj, rowKey);
+            PrimeApplicationContext primeApplicationContext =
+                    PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+
+            Object rowKeyValue = getFieldValue(primeApplicationContext, obj, rowKey);
             return rowKeyValue == null ? null : rowKeyValue.toString();
         }
 
@@ -314,14 +321,14 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    protected PropertyDescriptor getPropertyDescriptor(Class<?> clazz, String fieldName) {
+    protected PropertyDescriptor getPropertyDescriptor(PrimeApplicationContext primeApplicationContext, Class<?> clazz, String fieldName) {
         // use classname instead of clazz, its faster
-        Map<String, PropertyDescriptor> classCache = pdCache.get(clazz.getClass().getName());
+        Map<String, PropertyDescriptor> classCache = primeApplicationContext.getPropertyDescriptorCache().get(clazz.getClass().getName());
 
         // dont use computeIfAbsent, its bit slower
         if (classCache == null) {
             classCache = new ConcurrentHashMap<>();
-            pdCache.put(clazz.getClass().getName(), classCache);
+            primeApplicationContext.getPropertyDescriptorCache().put(clazz.getClass().getName(), classCache);
         }
 
         PropertyDescriptor pd = classCache.get(fieldName);

@@ -23,6 +23,7 @@
  */
 package org.primefaces.context;
 
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -96,6 +97,8 @@ public class PrimeApplicationContext {
     private FileUploadDecoder fileUploadDecoder;
     private String fileUploadResumeUrl;
 
+    private ConcurrentHashMap<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
+
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
         config = new PrimeConfiguration(facesContext, environment);
@@ -105,6 +108,8 @@ public class PrimeApplicationContext {
         exporters = new ConcurrentHashMap<>();
         beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
         metadataTransformers = new CopyOnWriteArrayList<>();
+
+        propertyDescriptorCache = new ConcurrentHashMap<>();
 
         ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
@@ -352,5 +357,9 @@ public class PrimeApplicationContext {
 
     public List<MetadataTransformer> getMetadataTransformers() {
         return metadataTransformers;
+    }
+
+    public ConcurrentHashMap<String, Map<String, PropertyDescriptor>> getPropertyDescriptorCache() {
+        return propertyDescriptorCache;
     }
 }
