@@ -48,14 +48,23 @@ public class InFilterConstraint implements FilterConstraint {
             collection = Collections.singletonList(filter);
         }
 
-        for (Object o : collection) {
-            if (Objects.equals(value, o)) {
+        for (Object filterValue : collection) {
+            if (Objects.equals(value, filterValue)) {
                 return true;
             }
 
             // GitHub #8106 check for "" comparison
-            if (o instanceof String && LangUtils.isEmpty((String) o) && value == null) {
+            if (filterValue instanceof String && LangUtils.isEmpty((String) filterValue) && value == null) {
                 return true;
+            }
+
+            // #10730
+            // the value might be a enum but the filter is a string
+            if (filterValue instanceof String && LangUtils.isNotEmpty((String) filterValue)
+                    && value != null && value.getClass().isEnum()) {
+                if (Objects.equals(value.toString(), filterValue)) {
+                    return true;
+                }
             }
         }
 
