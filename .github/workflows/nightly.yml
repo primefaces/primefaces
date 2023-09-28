@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 17, 21+35-ea-beta]
+        java: [11, 17, 21-ea-beta]
         profile: [ 'firefox,theme-saga,myfaces-2.3', 'firefox,csp,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-2.3', 'chrome,theme-saga,myfaces-next-2.3','chrome,csp,theme-nova,myfaces-2.3', 'chrome,csp,theme-nova,mojarra-2.3', 'chrome,client-state-saving,theme-nova,mojarra-2.3' ]
 
     steps:
