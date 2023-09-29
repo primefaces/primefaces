@@ -28,28 +28,18 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.primefaces.util.Constants;
 import org.primefaces.util.FileUploadUtils;
 
 public class FileUploadChunksServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(FileUploadChunksServlet.class.getName());
-
-    @Override
-    public void init() throws ServletException {
-        String uploader = getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-        if ("commons".equals(uploader)) {
-            throw new ServletException("Resuming chunked file uploads is not supported with commons uploader.");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -37,7 +37,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean interpretEmptyStringAsNull = false;
     private String  theme = null;
     private boolean clientSideValidationEnabled = false;
-    private String  uploader = null;
     private boolean transformMetadataEnabled = false;
     private boolean legacyWidgetNamespace = false;
     private boolean beanValidationDisabled = false;
@@ -106,15 +105,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     public void setClientSideValidationEnabled(boolean clientSideValidationEnabled) {
         this.clientSideValidationEnabled = clientSideValidationEnabled;
-    }
-
-    @Override
-    public String getUploader() {
-        return uploader;
-    }
-
-    public void setUploader(String uploader) {
-        this.uploader = uploader;
     }
 
     @Override

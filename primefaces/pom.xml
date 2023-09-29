@@ -116,13 +116,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- File Upload -->
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- FeedReader -->
         <dependency>
             <groupId>com.rometools</groupId>

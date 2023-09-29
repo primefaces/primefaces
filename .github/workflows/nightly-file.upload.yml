@@ -17,10 +17,8 @@ jobs:
       matrix:
         java: [11, 17]
         profile: [
-          'headless,firefox,myfaces-2.3,uploader-native', 'headless,firefox,mojarra-2.3,uploader-native',
-          'headless,firefox,myfaces-2.3,uploader-commons', 'headless,firefox,mojarra-2.3,uploader-commons',
-          'headless,chrome,myfaces-2.3,uploader-native', 'headless,chrome,mojarra-2.3,uploader-native',
-          'headless,chrome,myfaces-2.3,uploader-commons', 'headless,chrome,mojarra-2.3,uploader-commons'
+          'headless,firefox,myfaces-2.3', 'headless,firefox,mojarra-2.3',
+          'headless,chrome,myfaces-2.3', 'headless,chrome,mojarra-2.3',
         ]
 
     steps:

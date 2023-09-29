@@ -62,7 +62,7 @@ public class BarCorner {
     }
     /**
      * Set the bottom left corner radius in pixel
-     * @return the radius
+     * @param bottomLeft the radius
      */
     public void setBottomLeft(int bottomLeft) {
         this.bottomLeft = bottomLeft;

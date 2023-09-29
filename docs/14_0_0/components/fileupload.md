@@ -83,43 +83,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | widgetVar | null | String | Name of the client side widget.
 
 ## Getting started with FileUpload
-FileUpload engine on the server side can either be servlet 3.0 or commons fileupload. PrimeFaces
-selects the most appropriate uploader engine by detection and it is possible to force one or the other
-using an **optional** configuration param.
-
-```xml
-<context-param>
-    <param-name>primefaces.UPLOADER</param-name>
-    <param-value>auto|native|commons</param-value>
-</context-param>
-```
-**auto**: This is the default mode and PrimeFaces tries to detect the best method by checking the
-runtime environment, if JSF runtime is at least 2.2 native uploader is selected, otherwise commons.
-
-**native:** Native mode uses servlet 3.x Part API to upload the files, and if JSF runtime is less than 2.2,
-an exception is being thrown.
-
-**commons**: This option chooses commons fileupload regardless of the environment, advantage of
-this option is that it works even on a Servlet 2.5 environment.
-
-If you have decided to choose commons fileupload, it requires the following filter configuration in
-your web deployment descriptor.
-
-
-```xml
-<filter>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-</filter>
-<filter-mapping>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-</filter-mapping>
-```
-Note that the servlet-name should match the configured name of the JSF servlet which is `Faces Servlet` in this case.
-Alternatively you can do a configuration based on url-pattern as well.
-
-
+FileUpload engine on the server side is based on servlet 3.0.
 ## Simple FileUpload
 Simple FileUpload mode works with a plain HTML `input type=file`.
 AJAX uploads are not supported in simple upload, however AJAX is used to automatically upload the file when using `auto=true`.
@@ -352,36 +316,6 @@ For legacy browsers, that do not support HMTL5 features like canvas or file api,
 (iframe is used for transport, detailed file informations are not shown,  GIF animation instead of progress bar).
 It is suggested to offer simple uploader as a fallback.
 
-## Filter Configuration
-
-Filter configuration is required if you are using commons uploader only. Two configuration options
-exist, threshold size and temporary file upload location.
-
-| Parameter Name | Description |
-| --- | --- |
-| thresholdSize | Maximum file size in bytes to keep uploaded files in memory. If a file exceeds this limit, it’ll be temporarily written to disk.
-| uploadDirectory | Disk repository path to keep temporary files that exceeds the threshold size. By default it is System.getProperty("java.io.tmpdir")
-
-An example configuration below defined thresholdSize to be 50kb and uploads to users temporary
-folder.
-
-```xml
-<filter>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-    <init-param>
-        <param-name>thresholdSize</param-name>
-        <param-value>51200</param-value>
-    </init-param>
-    <init-param>
-        <param-name>uploadDirectory</param-name>
-        <param-value>/Users/primefaces/temp</param-value>
-    </init-param>
-</filter>
-```
-**Note** that uploadDirectory is used internally, you always need to implement the logic to save the file
-contents yourself in your backing bean.
-
 ## Chunking and Resume
 FileUpload supports chunked upload using the `maxChunkSize` attribute but only in advanced mode!
 
@@ -407,14 +341,7 @@ At first, you'll need to enable chunking and add this servlet:
 For Servlet 3.0 and later versions, uploaded files are automatically removed from the internal
 upload directory after the request is destroyed.
 
-If you're running a Servlet 2.5 container, you'll need to add the following listener to your web.xml:
-```xml
-<listener>
-	<listener-class>org.primefaces.webapp.UploadedFileCleanerListener</listener-class>
-</listener>
-```
-
-Chunks file are put either into directory from Apache Commons or Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
+Chunks file are put into a directory from Servlet 3.0, if not defined then into internal temporary upload directory [ServletContext.TMP_DIR](https://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html#TEMPDIR). They get removed:
 1. after the last chunk is uploaded and the merged file is created
 2. when the user aborts the upload.
 

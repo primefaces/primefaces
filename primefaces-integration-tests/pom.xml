@@ -24,7 +24,6 @@
         <webdriver.browser>chrome</webdriver.browser>
         <primefaces.CSP>false</primefaces.CSP>
         <primefaces.THEME>saga</primefaces.THEME>
-        <primefaces.UPLOADER>auto</primefaces.UPLOADER>
         <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
         <javax.faces.STATE_SAVING_METHOD>server</javax.faces.STATE_SAVING_METHOD>
 
@@ -218,12 +217,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.13.0</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
             <scope>runtime</scope>
         </dependency>
         
@@ -447,7 +440,6 @@
                             <systemPropertyVariables>
                                 <webdriver.headless>${webdriver.headless}</webdriver.headless>
                                 <primefaces.CSP>${primefaces.CSP}</primefaces.CSP>
-                                <primefaces.UPLOADER>${primefaces.UPLOADER}</primefaces.UPLOADER>
                                 <primefaces.THEME>${primefaces.THEME}</primefaces.THEME>
                                 <junit.jupiter.execution.parallel.enabled>${junit.jupiter.execution.parallel.enabled}</junit.jupiter.execution.parallel.enabled>
                                 <junit.jupiter.execution.parallel.mode.default>same_thread</junit.jupiter.execution.parallel.mode.default>
@@ -498,18 +490,6 @@
             <id>csp</id>
             <properties>
                 <primefaces.CSP>true</primefaces.CSP>
-            </properties>
-        </profile>
-        <profile>
-            <id>uploader-native</id>
-            <properties>
-                <primefaces.UPLOADER>native</primefaces.UPLOADER>
-            </properties>
-        </profile>
-        <profile>
-            <id>uploader-commons</id>
-            <properties>
-                <primefaces.UPLOADER>commons</primefaces.UPLOADER>
             </properties>
         </profile>
         <profile>
