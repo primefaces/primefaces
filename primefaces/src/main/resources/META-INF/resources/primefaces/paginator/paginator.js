@@ -216,6 +216,9 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             pageNumber = parseInt(link.text());
 
             link.attr('aria-label', $this.cfg.ariaPageLabel.replace('{0}', (pageNumber)));
+            if (link.hasClass('ui-state-active')) {
+                link.attr('aria-current', 'page');
+            }
         });
 
         pageLinks.on('click.paginator', function(e) {
@@ -388,13 +391,15 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.pagesContainer.children().remove();
         for(var i = start; i <= end; i++) {
             var styleClass = 'ui-paginator-page ui-state-default ui-corner-all',
-            ariaLabel = this.cfg.ariaPageLabel.replace('{0}', (i+1));
+            ariaLabel = this.cfg.ariaPageLabel.replace('{0}', (i+1)),
+            ariaCurrentPage = '';
 
             if(this.cfg.page == i) {
-                styleClass += " ui-state-active";
+                styleClass += ' ui-state-active';
+                ariaCurrentPage = 'aria-current="page"';
             }
 
-            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" tabindex="0" href="#">' + (i + 1) + '</a>');
+            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" ' + ariaCurrentPage + ' tabindex="0" href="#">' + (i + 1) + '</a>');
         }
 
         if(focusContainer) {
