@@ -11,8 +11,8 @@ any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 | Expression Language | | | 2.2+ | Required | Apache Tomcat, Eclipse Jetty, ... |
 | Bean Validation | | | 1.1+ | Optional | Apache BVal, Hibernate Validator, ... |
 | Libre OpenPDF | com.github.librepdf | openpdf | 1.3.29 | Optional | DataExporter (PDF) |
-| Apache POI | org.apache.poi | poi | 5.2.3 | Optional | DataExporter (Excel XLS or XML) |
-| Apache POI | org.apache.poi | poi-ooxml | 5.2.3 | Optional | DataExporter (Excel XLSX Office 2003) |
+| Apache POI | org.apache.poi | poi | 5.2.4 | Optional | DataExporter (Excel XLS or XML) |
+| Apache POI | org.apache.poi | poi-ooxml | 5.2.4 | Optional | DataExporter (Excel XLSX Office 2003) |
 | Rome | com.rometools | rome | 1.15.0 | Optional | FeedReader |
 | Apache Commons FileUpload | commons-fileupload | commons-fileupload | 1.5 | Optional | FileUpload |
 | barcode4j-light | org.primefaces.extensions | barcode4j-light | 2.3.0 | Optional | Barcode |
