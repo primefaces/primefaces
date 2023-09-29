@@ -97,7 +97,7 @@ public class PrimeApplicationContext {
     private FileUploadDecoder fileUploadDecoder;
     private String fileUploadResumeUrl;
 
-    private ConcurrentHashMap<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
+    private final Map<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -359,7 +359,7 @@ public class PrimeApplicationContext {
         return metadataTransformers;
     }
 
-    public ConcurrentHashMap<String, Map<String, PropertyDescriptor>> getPropertyDescriptorCache() {
+    public Map<String, Map<String, PropertyDescriptor>> getPropertyDescriptorCache() {
         return propertyDescriptorCache;
     }
 }

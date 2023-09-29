@@ -23,14 +23,14 @@
  */
 package org.primefaces.model;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
 import javax.faces.model.DataModelListener;
 
@@ -39,11 +39,11 @@ import javax.faces.model.DataModelListener;
  *
  * @param <T> The model class.
  */
-public abstract class LazyDataModel<T> extends ListDataModel<T> implements SelectableDataModel<T>, Serializable {
+public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Converter<T> rowKeyConverter;
+    protected Converter<T> rowKeyConverter;
     private int rowCount;
     private int pageSize;
 

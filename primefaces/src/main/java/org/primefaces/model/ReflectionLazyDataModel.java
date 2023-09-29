@@ -23,32 +23,28 @@
  */
 package org.primefaces.model;
 
-import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.util.SerializableFunction;
-import org.primefaces.util.SerializableSupplier;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.text.Collator;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.LocaleUtils;
 
-public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.SerializableFunction;
+import org.primefaces.util.SerializableSupplier;
+
+public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
 
     private SerializableSupplier<List<T>> valuesSupplier;
     private String rowKey;
@@ -57,6 +53,8 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
     private SerializableFunction<T, Boolean> skipFiltering;
     private Sorter<T> sorter;
 
+    private final Pattern NESTED_EXPRESSION_PATTERN = Pattern.compile("\\.");
+
     /**
      * For serialization only
      */
@@ -64,15 +62,10 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
 
     }
 
-    public ReflectionLazyDataModel(SerializableSupplier<List<T>> valuesSupplier) {
-        this.valuesSupplier = valuesSupplier;
-    }
-
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
         List<T> values = this.valuesSupplier.get();
         List<T> filteredValues = filter(values, filterBy);
-
         return filteredValues.size();
     }
 
@@ -139,12 +132,11 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
                         }
                     }
                     else {
-                        result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[] {value1, value2});
+                        result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
                     }
 
                     return sortMeta.getOrder().isAscending() ? result : -1 * result;
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     throw new FacesException(e);
                 }
             }
@@ -169,54 +161,54 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
         boolean hasGlobalFilter = (globalFilter != null && globalFilter.isActive()) || filter != null;
 
         return values.stream()
-            .filter(obj -> {
-                if (skipFiltering != null && Boolean.TRUE.equals(skipFiltering.apply(obj))) {
-                    return true;
-                }
-
-                boolean localMatch = true;
-                boolean globalMatch = false;
-
-                if (hasGlobalFilter) {
-                    if (globalFilter != null && globalFilter.isActive()) {
-                        globalMatch = globalFilter.getConstraint().isMatching(context, obj, globalFilter.getFilterValue(), locale);
-                    }
-                    if (filter != null && !globalMatch) {
-                        globalMatch = filter.isMatching(context, obj, null, locale);
-                    }
-                }
-
-                for (FilterMeta filterMeta : filterBy.values()) {
-                    if (filterMeta.getField() == null || filterMeta.getFilterValue() == null || filterMeta.isGlobalFilter()) {
-                        continue;
+                .filter(obj -> {
+                    if (skipFiltering != null && Boolean.TRUE.equals(skipFiltering.apply(obj))) {
+                        return true;
                     }
 
-                    Object fieldValue = getFieldValue(primeApplicationContext, obj, filterMeta.getField());
-                    Object filterValue = filterMeta.getFilterValue();
-                    Object convertedFilterValue;
+                    boolean localMatch = true;
+                    boolean globalMatch = false;
 
-                    Class<?> filterValueClass = filterValue.getClass();
-                    if (filterValueClass.isArray() || Collection.class.isAssignableFrom(filterValueClass)) {
-                        convertedFilterValue = filterValue;
-                    }
-                    else {
-                        Class<?> fieldType = getFieldType(primeApplicationContext, fieldValue, filterMeta.getField());
-                        convertedFilterValue = convertToType(filterValue, fieldType);
+                    if (hasGlobalFilter) {
+                        if (globalFilter != null && globalFilter.isActive()) {
+                            globalMatch = globalFilter.getConstraint().isMatching(context, obj, globalFilter.getFilterValue(), locale);
+                        }
+                        if (filter != null && !globalMatch) {
+                            globalMatch = filter.isMatching(context, obj, null, locale);
+                        }
                     }
 
-                    localMatch = filterMeta.getConstraint().isMatching(context, fieldValue, convertedFilterValue, locale);
-                    if (!localMatch) {
-                        break;
-                    }
-                }
+                    for (FilterMeta filterMeta : filterBy.values()) {
+                        if (filterMeta.getField() == null || filterMeta.getFilterValue() == null || filterMeta.isGlobalFilter()) {
+                            continue;
+                        }
 
-                boolean matches = localMatch;
-                if (hasGlobalFilter) {
-                    matches = matches && globalMatch;
-                }
-                return matches;
-            })
-            .collect(Collectors.toList());
+                        Object fieldValue = getFieldValue(primeApplicationContext, obj, filterMeta.getField());
+                        Object filterValue = filterMeta.getFilterValue();
+                        Object convertedFilterValue;
+
+                        Class<?> filterValueClass = filterValue.getClass();
+                        if (filterValueClass.isArray() || Collection.class.isAssignableFrom(filterValueClass)) {
+                            convertedFilterValue = filterValue;
+                        }
+                        else {
+                            Class<?> fieldType = getFieldType(primeApplicationContext, fieldValue, filterMeta.getField());
+                            convertedFilterValue = LangUtils.convertToType(filterValue, fieldType, getClass());
+                        }
+
+                        localMatch = filterMeta.getConstraint().isMatching(context, fieldValue, convertedFilterValue, locale);
+                        if (!localMatch) {
+                            break;
+                        }
+                    }
+
+                    boolean matches = localMatch;
+                    if (hasGlobalFilter) {
+                        matches = matches && globalMatch;
+                    }
+                    return matches;
+                })
+                .collect(Collectors.toList());
     }
 
     protected Class<?> getFieldType(PrimeApplicationContext primeApplicationContext, Object obj, String fieldName) {
@@ -227,8 +219,7 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
 
             try {
                 obj = getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
-            }
-            catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new FacesException(e);
             }
         }
@@ -244,18 +235,26 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
 
             try {
                 obj = getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
-            }
-            catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new FacesException(e);
             }
         }
 
         try {
             return getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
-        }
-        catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             throw new FacesException(e);
         }
+    }
+
+    private PropertyDescriptor foo(PrimeApplicationContext primeAppContext, Object obj, String expression) {
+        String[] fields = NESTED_EXPRESSION_PATTERN.split(expression);
+        for (int i = 0; i < fields.length -1; i++) {
+            obj = getPropertyDescriptor(primeAppContext, obj.getClass(), fields[i]).getReadMethod().invoke(obj);
+        }
+
+        String last = fields[fields.length - 1];
+        return getPropertyDescriptor(primeAppContext, obj.getClass(), last).getReadMethod().invoke(obj);
     }
 
     @Override
@@ -321,134 +320,73 @@ public class ReflectionLazyDataModel<T> extends AbstractLazyDataModel<T> {
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
-    protected PropertyDescriptor getPropertyDescriptor(PrimeApplicationContext primeApplicationContext, Class<?> clazz, String fieldName) {
-        // use classname instead of clazz, its faster
-        Map<String, PropertyDescriptor> classCache = primeApplicationContext.getPropertyDescriptorCache().get(clazz.getClass().getName());
-
-        // dont use computeIfAbsent, its bit slower
-        if (classCache == null) {
-            classCache = new ConcurrentHashMap<>();
-            primeApplicationContext.getPropertyDescriptorCache().put(clazz.getClass().getName(), classCache);
-        }
-
-        PropertyDescriptor pd = classCache.get(fieldName);
-        if (pd == null) {
+    protected PropertyDescriptor getPropertyDescriptor(PrimeApplicationContext primeAppContext, Class<?> clazz, String field) {
+        String cacheKey = clazz.getName();
+        Map<String, PropertyDescriptor> classCache = primeAppContext.getPropertyDescriptorCache()
+                .computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
+        return classCache.computeIfAbsent(field, k -> {
             try {
-                pd = new PropertyDescriptor(fieldName, clazz);
-                classCache.put(fieldName, pd);
-            }
-            catch (IntrospectionException e) {
+                return new PropertyDescriptor(field, clazz);
+            } catch (IntrospectionException e) {
                 throw new FacesException(e);
             }
-        }
-
-        return pd;
+        });
     }
 
-    public String getRowKey() {
-        return rowKey;
-    }
-
-    public void setRowKey(String rowKey) {
-        this.rowKey = rowKey;
-    }
-
-    public Function<T, String> getRowKeyProvider() {
-        return rowKeyProvider;
-    }
-
-    public void setRowKeyProvider(Function<T, String> rowKeyProvider) {
-        this.rowKeyProvider = rowKeyProvider;
-    }
-
-    public FilterConstraint getFilter() {
-        return filter;
-    }
-
-    public void setFilter(FilterConstraint filter) {
-        this.filter = filter;
-    }
-
-    public SerializableFunction<T, Boolean> getSkipFiltering() {
-        return skipFiltering;
-    }
-
-    public void setSkipFiltering(SerializableFunction<T, Boolean> skipFiltering) {
-        this.skipFiltering = skipFiltering;
-    }
-
-    public Sorter<T> getSorter() {
-        return sorter;
-    }
-
-    public void setSorter(Sorter<T> sorter) {
-        this.sorter = sorter;
-    }
-
-
-
-    public static <T> Builder<T> builder(SerializableSupplier<List<T>> valuesSupplier) {
-        return new Builder<>(valuesSupplier);
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
     }
 
     public static class Builder<T> {
-        private final SerializableSupplier<List<T>> valuesSupplier;
-        private String rowKey;
-        private SerializableFunction<T, String> rowKeyProvider;
-        private Converter<T> rowKeyConverter;
-        private FilterConstraint filter;
-        private SerializableFunction<T, Boolean> skipFiltering;
-        private Sorter<T> sorter;
+        final ReflectionLazyDataModel<T> model;
 
-        public Builder(SerializableSupplier<List<T>> valuesSupplier) {
-            this.valuesSupplier = valuesSupplier;
+        public Builder() {
+            model = new ReflectionLazyDataModel<>();
+        }
+
+        public Builder<T> valueSupplier(SerializableSupplier<List<T>> valuesSupplier) {
+            model.valuesSupplier = valuesSupplier;
+            return this;
         }
 
         public Builder<T> rowKey(String rowKey) {
-            this.rowKey = rowKey;
+            model.rowKey = rowKey;
             return this;
         }
 
         public Builder<T> rowKeyProvider(SerializableFunction<T, String> rowKeyProvider) {
-            this.rowKeyProvider = rowKeyProvider;
+            model.rowKeyProvider = rowKeyProvider;
             return this;
         }
 
         public Builder<T> rowKeyConverter(Converter<T> rowKeyConverter) {
-            this.rowKeyConverter = rowKeyConverter;
+            model.rowKeyConverter = rowKeyConverter;
             return this;
         }
 
         public Builder<T> filter(FilterConstraint filter) {
-            this.filter = filter;
+            model.filter = filter;
             return this;
         }
 
         public Builder<T> skipFiltering(SerializableFunction<T, Boolean> skipFiltering) {
-            this.skipFiltering = skipFiltering;
+            model.skipFiltering = skipFiltering;
             return this;
         }
 
         public Builder<T> sorter(Sorter<T> sorter) {
-            this.sorter = sorter;
+            model.sorter = sorter;
             return this;
         }
 
         public ReflectionLazyDataModel<T> build() {
-            ReflectionLazyDataModel<T> model = new ReflectionLazyDataModel<>(valuesSupplier);
-            model.rowKey = rowKey;
-            model.rowKeyProvider = rowKeyProvider;
-            model.filter = filter;
-            model.skipFiltering = skipFiltering;
-            model.sorter = sorter;
-            model.setRowKeyConverter(rowKeyConverter);
-
+            Objects.requireNonNull(model.valuesSupplier, "Value supplier not set");
             return model;
         }
     }
 
     @FunctionalInterface
-    public static interface Sorter<T> extends Comparator<T>, Serializable {
+    public interface Sorter<T> extends Comparator<T>, Serializable {
 
     }
 }

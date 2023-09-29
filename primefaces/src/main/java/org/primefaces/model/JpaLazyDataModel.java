@@ -30,9 +30,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -41,20 +39,14 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.SerializableSupplier;
+import org.primefaces.util.*;
 
 /**
  * Basic {@link LazyDataModel} implementation with JPA and Criteria API.
  *
  * @param <T> The model class.
  */
-public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Serializable {
-
-    private static final Logger LOG = Logger.getLogger(JpaLazyDataModel.class.getName());
+public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
     protected Class<T> entityClass;
     protected SerializableSupplier<EntityManager> entityManager;
@@ -80,6 +72,7 @@ public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Ser
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
      */
+    @Deprecated
     public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
@@ -181,7 +174,7 @@ public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Ser
                     convertedFilterValue = filterValue;
                 }
                 else {
-                    convertedFilterValue = convertToType(filterValue, filterField.getType());
+                    convertedFilterValue = LangUtils.convertToType(filterValue, filterField.getType(), getClass());;
                 }
 
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
@@ -217,8 +210,9 @@ public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Ser
                 ? fieldExpression.as(String.class)
                 : cb.upper(fieldExpression.as(String.class)));
         Lazy<Collection<Object>> filterValueAsCollection = new Lazy(
-                () -> filterValue.getClass().isArray() ? Arrays.asList((Object[]) filterValue)
-                        : (Collection<Object>) filterValue);
+                () -> filterValue.getClass().isArray()
+                        ? Arrays.asList((Object[]) filterValue)
+                        : filterValue);
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
@@ -341,7 +335,7 @@ public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Ser
         }
 
         if (this.rowKey != null) {
-            Object convertedRowKey = convertToType(rowKey, getRowKeyGetter().getReturnType());
+            Object convertedRowKey = LangUtils.convertToType(rowKey, getRowKeyGetter().getReturnType(), getClass());
 
             EntityManager em = this.entityManager.get();
 
@@ -399,7 +393,7 @@ public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Ser
         return rowKey;
     }
 
-    public void setRowKey(String rowKey) {
+    void setRowKey(String rowKey) {
         // reset cache
         if (!Objects.equals(rowKey, this.rowKey)) {
             rowKeyGetter = null;
@@ -407,7 +401,7 @@ public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Ser
         this.rowKey = rowKey;
     }
 
-    public void setRowKey(SingularAttribute<T, ?> rowKeyMetamodel) {
+    void setRowKey(SingularAttribute<T, ?> rowKeyMetamodel) {
         setRowKey(rowKeyMetamodel.getName());
     }
 
@@ -415,134 +409,78 @@ public class JpaLazyDataModel<T> extends AbstractLazyDataModel<T> implements Ser
         return caseSensitive;
     }
 
-    public void setCaseSensitive(boolean caseSensitive) {
-        this.caseSensitive = caseSensitive;
-    }
-
-    public boolean isWildcardSupport() {
-        return wildcardSupport;
-    }
-
-    public void setWildcardSupport(boolean wildcardSupport) {
-        this.wildcardSupport = wildcardSupport;
-    }
-
-    public QueryEnricher<T> getQueryEnricher() {
-        return queryEnricher;
-    }
-
-    public void setQueryEnricher(QueryEnricher<T> queryEnricher) {
-        this.queryEnricher = queryEnricher;
-    }
-
-    public FilterEnricher<T> getFilterEnricher() {
-        return filterEnricher;
-    }
-
-    public void setFilterEnricher(FilterEnricher<T> filterEnricher) {
-        this.filterEnricher = filterEnricher;
-    }
-
-    public SortEnricher<T> getSortEnricher() {
-        return sortEnricher;
-    }
-
-    public void setSortEnricher(SortEnricher<T> sortEnricher) {
-        this.sortEnricher = sortEnricher;
-    }
-
-
-
-
-
-    public static <T> Builder<T> builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
-        return new Builder<>(entityClass, entityManager);
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
     }
 
     public static class Builder<T> {
-        private final Class<T> entityClass;
-        private final SerializableSupplier<EntityManager> entityManager;
-        private String rowKey;
-        private Converter<T> rowKeyConverter;
-        private boolean caseSensitive = true;
-        private boolean wildcardSupport = false;
-        private QueryEnricher<T> queryEnricher;
-        private FilterEnricher<T> filterEnricher;
-        private SortEnricher<T> sortEnricher;
+        private final JpaLazyDataModel<T> model;
 
-        public Builder(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
-            this.entityClass = entityClass;
-            this.entityManager = entityManager;
+        public Builder() {
+            model = new JpaLazyDataModel<>(null, null, (String) null);
         }
 
         public Builder<T> rowKeyConverter(Converter<T> rowKeyConverter) {
-            this.rowKeyConverter = rowKeyConverter;
+            model.rowKeyConverter = rowKeyConverter;
             return this;
         }
 
         public Builder<T> rowKey(String rowKey) {
-            this.rowKey = rowKey;
+            model.rowKey = rowKey;
             return this;
         }
 
         public Builder<T> rowKey(SingularAttribute<T, ?> rowKeyMetamodel) {
-            this.rowKey = rowKeyMetamodel.getName();
+            model.rowKey = rowKeyMetamodel.getName();
             return this;
         }
 
         public Builder<T> caseSensitive(boolean caseSensitive) {
-            this.caseSensitive = caseSensitive;
+            model.caseSensitive = caseSensitive;
             return this;
         }
 
         public Builder<T> wildcardSupport(boolean wildcardSupport) {
-            this.wildcardSupport = wildcardSupport;
+            model.wildcardSupport = wildcardSupport;
             return this;
         }
 
         public Builder<T> queryEnricher(QueryEnricher<T> queryEnricher) {
-            this.queryEnricher = queryEnricher;
+            model.queryEnricher = queryEnricher;
             return this;
         }
 
         public Builder<T> filterEnricher(FilterEnricher<T> filterEnricher) {
-            this.filterEnricher = filterEnricher;
+            model.filterEnricher = filterEnricher;
             return this;
         }
 
         public Builder<T> sortEnricher(SortEnricher<T> sortEnricher) {
-            this.sortEnricher = sortEnricher;
+            model.sortEnricher = sortEnricher;
             return this;
         }
 
         public JpaLazyDataModel<T> build() {
-            JpaLazyDataModel<T> model = new JpaLazyDataModel<>(entityClass, entityManager);
-            model.rowKey = rowKey;
-            model.caseSensitive = caseSensitive;
-            model.wildcardSupport = wildcardSupport;
-            model.queryEnricher = queryEnricher;
-            model.filterEnricher = filterEnricher;
-            model.sortEnricher = sortEnricher;
-            model.setRowKeyConverter(rowKeyConverter);
-
+            Objects.requireNonNull(model.entityClass);
+            Objects.requireNonNull(model.entityManager);
             return model;
         }
     }
 
     @FunctionalInterface
-    public static interface QueryEnricher<T> extends Serializable {
+    public interface QueryEnricher<T> extends Serializable {
 
         void enrich(TypedQuery<T> query);
     }
 
     @FunctionalInterface
-    public static interface SortEnricher<T> extends Serializable {
+    public interface SortEnricher<T> extends Serializable {
 
         void enrich(Map<String, SortMeta> sortBy, CriteriaBuilder cb, CriteriaQuery<T> cq, Root<T> root, List<Order> orders);
     }
 
     @FunctionalInterface
-    public static interface FilterEnricher<T> extends Serializable {
+    public interface FilterEnricher<T> extends Serializable {
 
         void enrich(Map<String, FilterMeta> filterBy, CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, List<Predicate> predicates);
     }
