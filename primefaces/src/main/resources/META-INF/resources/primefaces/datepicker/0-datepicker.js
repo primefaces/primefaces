@@ -131,6 +131,10 @@
             if (this.options.userLocale && typeof this.options.userLocale === 'object') {
                 $.extend(this.options.locale, this.options.userLocale);
             }
+            
+            if (this.options.timeOnly) {
+                this.options.showTime = true;
+            }
 
             if (this.options.showWeek && !this.options.weekCalculator) {
                 this.options.weekCalculator = this.calculateWeekNumber.bind(this);
