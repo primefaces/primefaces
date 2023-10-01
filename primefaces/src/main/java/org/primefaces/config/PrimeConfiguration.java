@@ -48,6 +48,7 @@ public class PrimeConfiguration {
     private final boolean primeIconsEnabled;
     private final boolean clientSideLocalizationEnabled;
     private final boolean clientSideValidationEnabled;
+    @Deprecated(forRemoval = true, since = "14.0.0")
     private final String uploader;
     private final boolean transformMetadataEnabled;
     private final boolean legacyWidgetNamespace;

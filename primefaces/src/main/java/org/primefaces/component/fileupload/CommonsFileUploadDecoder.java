@@ -38,6 +38,7 @@ import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.webapp.MultipartRequest;
 
+@Deprecated(forRemoval = true, since = "14.0.0")
 public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
 
     @Override

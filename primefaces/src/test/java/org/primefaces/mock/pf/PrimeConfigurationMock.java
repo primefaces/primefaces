@@ -37,6 +37,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean interpretEmptyStringAsNull = false;
     private String  theme = null;
     private boolean clientSideValidationEnabled = false;
+    @Deprecated(forRemoval = true, since = "14.0.0")
     private String  uploader = null;
     private boolean transformMetadataEnabled = false;
     private boolean legacyWidgetNamespace = false;
