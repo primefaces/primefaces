@@ -19,6 +19,7 @@ locales/locale-es.js
 locales/locale-fa.js
 locales/locale-fi.js
 locales/locale-fr.js
+locales/locale-he.js
 locales/locale-hi.js
 locales/locale-hr.js
 locales/locale-hu.js
