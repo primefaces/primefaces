@@ -513,33 +513,21 @@ public class LangUtils {
         return true;
     }
 
-    public static Field getFieldRecursive(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
+    public static Field getFieldRecursive(Class<?> clazz, String expression) {
+        Objects.requireNonNull(clazz, "clazz must not be null");
+        Objects.requireNonNull(expression, "expression must not be null");
 
-        Class<?> nextClazz = clazz;
-        String nextName = name;
-        while (nextName.contains(".")) {
-            String currentName = nextName.substring(0, nextName.indexOf("."));
-            nextName = nextName.substring(currentName.length() + 1, nextName.length());
-            Field field = getField(nextClazz, currentName);
-            nextClazz = field.getType();
+        Field field = null;
+        for (String name : expression.split("\\.")) {
+            field = getField(clazz, name);
+            clazz = field.getType();
         }
-
-        return getField(nextClazz, nextName);
+        return field;
     }
 
     public static Field getField(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
+        Objects.requireNonNull(clazz, "clazz must not be null");
+        Objects.requireNonNull(name, "name must not be null");
 
         Class<?> current = clazz;
         while (current != null && current != Object.class) {

@@ -23,7 +23,6 @@
  */
 package org.primefaces.context;
 
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,6 +46,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.primefaces.application.PropertyDescriptorResolver;
+import org.primefaces.application.PropertyUtilsBeanResolver;
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
 import org.primefaces.component.datatable.DataTable;
@@ -96,8 +97,7 @@ public class PrimeApplicationContext {
     private FileTypeDetector fileTypeDetector;
     private FileUploadDecoder fileUploadDecoder;
     private String fileUploadResumeUrl;
-
-    private final Map<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
+    private PropertyDescriptorResolver propertyDescriptorResolver;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -108,8 +108,6 @@ public class PrimeApplicationContext {
         exporters = new ConcurrentHashMap<>();
         beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
         metadataTransformers = new CopyOnWriteArrayList<>();
-
-        propertyDescriptorCache = new ConcurrentHashMap<>();
 
         ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
@@ -179,6 +177,8 @@ public class PrimeApplicationContext {
         resolveFileTypeDetector();
 
         registerDefaultExporters();
+
+        resolvePropertyDescriptorResolver();
     }
 
     private void registerDefaultExporters() {
@@ -261,6 +261,23 @@ public class PrimeApplicationContext {
                 .filter(d -> d.getName().equals(finalUploader))
                 .findFirst()
                 .orElseThrow(() -> new FacesException("FileUploaderDecoder '" + finalUploader + "' not found"));
+    }
+
+    private void resolvePropertyDescriptorResolver() {
+        if(LangUtils.isClassAvailable("org.apache.commons.beanutils.PropertyUtils")) {
+            propertyDescriptorResolver = new PropertyUtilsBeanResolver();
+        }
+        else if (LangUtils.isBlank(config.getPropertyDescriptorResolver())) {
+            propertyDescriptorResolver = new PropertyDescriptorResolver.DefaultPropertyDescriptorResolver();
+        }
+        else {
+            try {
+                propertyDescriptorResolver = (PropertyDescriptorResolver)
+                        Class.forName(config.getPropertyDescriptorResolver()).getConstructor().newInstance();
+            } catch (ReflectiveOperationException e) {
+                throw new FacesException(e);
+            }
+        }
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -359,7 +376,7 @@ public class PrimeApplicationContext {
         return metadataTransformers;
     }
 
-    public Map<String, Map<String, PropertyDescriptor>> getPropertyDescriptorCache() {
-        return propertyDescriptorCache;
+    public PropertyDescriptorResolver getPropertyDescriptorResolver() {
+        return propertyDescriptorResolver;
     }
 }

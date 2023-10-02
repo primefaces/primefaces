@@ -23,13 +23,10 @@
  */
 package org.primefaces.model;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -39,6 +36,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.*;
 
 /**
@@ -50,14 +48,14 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     protected Class<T> entityClass;
     protected SerializableSupplier<EntityManager> entityManager;
-    protected String rowKey;
+    protected String rowKeyField;
     protected boolean caseSensitive = true;
     protected boolean wildcardSupport = false;
     protected QueryEnricher<T> queryEnricher;
     protected FilterEnricher<T> filterEnricher;
     protected SortEnricher<T> sortEnricher;
-
-    private transient Lazy<Method> rowKeyGetter;
+    private Function<T, String> rowKeyProvider;
+    private Class<?> rowKeyType = Long.class;
 
     /**
      * For serialization only
@@ -83,13 +81,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      *
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
-     * @param rowKey The name of the rowKey property (e.g. "id")
+     * @param rowKeyField The name of the rowKey property (e.g. "id")
      * @deprecated use the builder instead
      */
     @Deprecated
-    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKey) {
+    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
         this(entityClass, entityManager);
-        this.rowKey = rowKey;
+        this.rowKeyField = rowKeyField;
     }
 
     /**
@@ -109,7 +107,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
-        EntityManager em = this.entityManager.get();
+        EntityManager em = entityManager.get();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -124,7 +122,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        EntityManager em = this.entityManager.get();
+        EntityManager em = entityManager.get();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(entityClass);
@@ -142,9 +140,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             queryEnricher.enrich(query);
         }
 
-        List<T> result = query.getResultList();
-
-        return result;
+        return query.getResultList();
     }
 
     protected void applyFilters(CriteriaBuilder cb,
@@ -159,7 +155,6 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
-
             for (FilterMeta filter : filterBy.values()) {
                 if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
@@ -190,7 +185,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         if (!predicates.isEmpty()) {
             cq.where(
-                cb.and(predicates.toArray(new Predicate[predicates.size()])));
+                cb.and(predicates.toArray(new Predicate[0])));
         }
     }
 
@@ -206,7 +201,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected Predicate createPredicate(FilterMeta filter, Field filterField,
             Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue, Locale locale) {
 
-        Lazy<Expression<String>> fieldExpressionAsString = new Lazy(() -> caseSensitive
+        Lazy<Expression<String>> fieldExpressionAsString = new Lazy<>(() -> caseSensitive
                 ? fieldExpression.as(String.class)
                 : cb.upper(fieldExpression.as(String.class)));
         Lazy<Collection<Object>> filterValueAsCollection = new Lazy(
@@ -310,21 +305,15 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     protected Expression resolveFieldExpression(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, String fieldName) {
         Join<?, ?> join = null;
-
-        // join if required; e.g. company.name -> join to company and get "name" field from the joined table
-        while (fieldName.contains(".")) {
-            String currentName = fieldName.substring(0, fieldName.indexOf("."));
-            fieldName = fieldName.substring(currentName.length() + 1);
-
+        for(String field : fieldName.split("\\.")) {
             if (join == null) {
-                join = root.join(currentName, JoinType.INNER);
+                join = root.join(field, JoinType.INNER);
             }
             else {
-                join = join.join(currentName, JoinType.INNER);
+                join = join.join(field, JoinType.INNER);
             }
         }
-
-        return join == null ? root.get(fieldName) : join.get(fieldName);
+        return join;
     }
 
     @Override
@@ -334,79 +323,22 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return super.getRowData(rowKey);
         }
 
-        if (this.rowKey != null) {
-            Object convertedRowKey = LangUtils.convertToType(rowKey, getRowKeyGetter().getReturnType(), getClass());
+        Object convertedRowKey = LangUtils.convertToType(rowKey, rowKeyType, getClass());
 
-            EntityManager em = this.entityManager.get();
+        EntityManager em = entityManager.get();
 
-            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-            CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
-            Root<T> root = cq.from(entityClass);
-            cq.select(root).where(criteriaBuilder.equal(root.get(this.rowKey), convertedRowKey));
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
+        Root<T> root = cq.from(entityClass);
+        cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField), convertedRowKey));
 
-            TypedQuery<T> query = em.createQuery(cq);
-            return query.getSingleResult();
-        }
-
-        throw new UnsupportedOperationException(
-                getMessage("Provide a rowKey / rowKey-Converter or implement getRowData(String rowKey) in %s"
-                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
+        TypedQuery<T> query = em.createQuery(cq);
+        return query.getSingleResult();
     }
 
     @Override
-    public String getRowKey(T object) {
-        Converter<T> rowKeyConverter = getRowKeyConverter();
-        if (rowKeyConverter != null) {
-            return super.getRowKey(object);
-        }
-
-        if (this.rowKey != null) {
-            try {
-                Object rowKeyValue = getRowKeyGetter().invoke(object);
-                return rowKeyValue == null ? null : rowKeyValue.toString();
-            }
-            catch (InvocationTargetException | IllegalAccessException e) {
-                throw new FacesException("Could not invoke getter for " + this.rowKey + " on " + entityClass.getName(), e);
-            }
-        }
-
-        throw new UnsupportedOperationException(
-                getMessage("Provide a rowKey / rowKey-Converter or implement getRowKey(T object) in %s"
-                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
-    }
-
-    protected Method getRowKeyGetter() {
-        if (rowKeyGetter == null) {
-            rowKeyGetter = new Lazy<>(() -> {
-                try {
-                    return new PropertyDescriptor(rowKey, entityClass).getReadMethod();
-                }
-                catch (IntrospectionException e) {
-                    throw new FacesException("Could not access " + rowKey + " on " + entityClass.getName(), e);
-                }
-            });
-        }
-        return rowKeyGetter.get();
-    }
-
-    public String getRowKey() {
-        return rowKey;
-    }
-
-    void setRowKey(String rowKey) {
-        // reset cache
-        if (!Objects.equals(rowKey, this.rowKey)) {
-            rowKeyGetter = null;
-        }
-        this.rowKey = rowKey;
-    }
-
-    void setRowKey(SingularAttribute<T, ?> rowKeyMetamodel) {
-        setRowKey(rowKeyMetamodel.getName());
-    }
-
-    public boolean isCaseSensitive() {
-        return caseSensitive;
+    public String getRowKey(T obj) {
+        return rowKeyProvider.apply(obj);
     }
 
     public static <T> Builder<T> builder() {
@@ -425,16 +357,28 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        @Deprecated
         public Builder<T> rowKey(String rowKey) {
-            model.rowKey = rowKey;
+            model.rowKeyField = rowKey;
             return this;
         }
 
+        @Deprecated
         public Builder<T> rowKey(SingularAttribute<T, ?> rowKeyMetamodel) {
-            model.rowKey = rowKeyMetamodel.getName();
+            model.rowKeyField = rowKeyMetamodel.getName();
             return this;
         }
 
+        public Builder<T> rowKeyField(String rowKey) {
+            model.rowKeyField = rowKey;
+            return this;
+        }
+
+        public Builder<T> rowKeyField(SingularAttribute<T, ?> rowKeyMetamodel) {
+            model.rowKeyField = rowKeyMetamodel.getName();
+            return this;
+        }
+        
         public Builder<T> caseSensitive(boolean caseSensitive) {
             model.caseSensitive = caseSensitive;
             return this;
@@ -460,9 +404,37 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        public Builder<T> rowKeyType(Class<?> rowKeyType) {
+            model.rowKeyType = rowKeyType;
+            return this;
+        }
+
         public JpaLazyDataModel<T> build() {
-            Objects.requireNonNull(model.entityClass);
-            Objects.requireNonNull(model.entityManager);
+            Objects.requireNonNull(model.entityClass, "entityClass not set");
+            Objects.requireNonNull(model.entityManager, "entityManager not set");
+
+            if (model.rowKeyProvider == null) {
+                if (model.rowKeyConverter != null) {
+                    model.rowKeyProvider = model::getRowKeyFromConverter;
+                }
+                else {
+                    Objects.requireNonNull(model.rowKeyField, "rowKeyField is mandatory if no rowKeyProvider nor converter is provided");
+                    model.rowKeyType = Objects.requireNonNullElseGet(model.rowKeyType, () -> {
+                        try {
+                            return model.entityClass.getField(model.rowKeyField).getType();
+                        } catch (NoSuchFieldException e) {
+                            throw new FacesException(e);
+                        }
+                    });
+
+                    model.rowKeyProvider = obj -> {
+                        PrimeApplicationContext primeAppContext =
+                                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+                        Object rowKeyValue = primeAppContext.getPropertyDescriptorResolver().getValue(obj, model.rowKeyField);
+                        return Objects.toString(rowKeyValue, null);
+                    };
+                }
+            }
             return model;
         }
     }

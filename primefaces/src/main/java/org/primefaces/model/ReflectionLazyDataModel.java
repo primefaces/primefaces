@@ -23,15 +23,10 @@
  */
 package org.primefaces.model;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.text.Collator;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -47,13 +42,11 @@ import org.primefaces.util.SerializableSupplier;
 public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
 
     private SerializableSupplier<List<T>> valuesSupplier;
-    private String rowKey;
+    private String rowKeyField;
     private Function<T, String> rowKeyProvider;
     private FilterConstraint filter;
     private SerializableFunction<T, Boolean> skipFiltering;
     private Sorter<T> sorter;
-
-    private final Pattern NESTED_EXPRESSION_PATTERN = Pattern.compile("\\.");
 
     /**
      * For serialization only
@@ -64,14 +57,14 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
 
     @Override
     public int count(Map<String, FilterMeta> filterBy) {
-        List<T> values = this.valuesSupplier.get();
+        List<T> values = valuesSupplier.get();
         List<T> filteredValues = filter(values, filterBy);
         return filteredValues.size();
     }
 
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        List<T> values = this.valuesSupplier.get();
+        List<T> values = valuesSupplier.get();
         List<T> filteredValues = filter(values, filterBy);
 
         sort(sortBy, filteredValues);
@@ -93,14 +86,14 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(context);
         Locale locale = LocaleUtils.getCurrentLocale(context);
         Collator collator = Collator.getInstance(locale);
 
         values.sort((obj1, obj2) -> {
             for (SortMeta sortMeta : sortBy.values()) {
-                Object value1 = getFieldValue(primeApplicationContext, obj1, sortMeta.getField());
-                Object value2 = getFieldValue(primeApplicationContext, obj2, sortMeta.getField());
+                Object value1 = primeAppContext.getPropertyDescriptorResolver().getValue(obj1, sortMeta.getField());
+                Object value2 = primeAppContext.getPropertyDescriptorResolver().getValue(obj2, sortMeta.getField());
 
                 try {
                     int result;
@@ -154,7 +147,7 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        PrimeApplicationContext primeApplicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(context);
         Locale locale = LocaleUtils.getCurrentLocale(context);
 
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
@@ -183,7 +176,8 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
                             continue;
                         }
 
-                        Object fieldValue = getFieldValue(primeApplicationContext, obj, filterMeta.getField());
+                        Object fieldValue = primeAppContext.getPropertyDescriptorResolver().getValue(obj, filterMeta.getField());
+
                         Object filterValue = filterMeta.getFilterValue();
                         Object convertedFilterValue;
 
@@ -192,7 +186,7 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
                             convertedFilterValue = filterValue;
                         }
                         else {
-                            Class<?> fieldType = getFieldType(primeApplicationContext, fieldValue, filterMeta.getField());
+                            Class<?> fieldType = primeAppContext.getPropertyDescriptorResolver().getType(obj, filterMeta.getField());
                             convertedFilterValue = LangUtils.convertToType(filterValue, fieldType, getClass());
                         }
 
@@ -211,126 +205,22 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
                 .collect(Collectors.toList());
     }
 
-    protected Class<?> getFieldType(PrimeApplicationContext primeApplicationContext, Object obj, String fieldName) {
-        // join if required; e.g. company.name -> join to company and get "name" field from the joined object
-        while (fieldName.contains(".")) {
-            String currentName = fieldName.substring(0, fieldName.indexOf("."));
-            fieldName = fieldName.substring(currentName.length() + 1);
-
-            try {
-                obj = getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new FacesException(e);
-            }
-        }
-
-        return getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().getReturnType();
-    }
-
-    protected Object getFieldValue(PrimeApplicationContext primeApplicationContext, Object obj, String fieldName) {
-        // join if required; e.g. company.name -> join to company and get "name" field from the joined object
-        while (fieldName.contains(".")) {
-            String currentName = fieldName.substring(0, fieldName.indexOf("."));
-            fieldName = fieldName.substring(currentName.length() + 1);
-
-            try {
-                obj = getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new FacesException(e);
-            }
-        }
-
-        try {
-            return getPropertyDescriptor(primeApplicationContext, obj.getClass(), fieldName).getReadMethod().invoke(obj);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new FacesException(e);
-        }
-    }
-
-    private PropertyDescriptor foo(PrimeApplicationContext primeAppContext, Object obj, String expression) {
-        String[] fields = NESTED_EXPRESSION_PATTERN.split(expression);
-        for (int i = 0; i < fields.length -1; i++) {
-            obj = getPropertyDescriptor(primeAppContext, obj.getClass(), fields[i]).getReadMethod().invoke(obj);
-        }
-
-        String last = fields[fields.length - 1];
-        return getPropertyDescriptor(primeAppContext, obj.getClass(), last).getReadMethod().invoke(obj);
-    }
-
     @Override
     public T getRowData(String rowKey) {
-        Converter<T> rowKeyConverter = getRowKeyConverter();
-        if (rowKeyConverter != null) {
-            return super.getRowData(rowKey);
+        List<T> values = Objects.requireNonNullElseGet(valuesSupplier.get(), Collections::emptyList);
+        for (T obj : values) {
+            String currentRowKey  = rowKeyProvider.apply(obj);
+            if (Objects.equals(rowKey, currentRowKey)) {
+                return obj;
+            }
         }
 
-        if (this.rowKeyProvider != null || this.rowKey != null) {
-            List<T> values = this.valuesSupplier.get();
-            if (values == null || values.isEmpty()) {
-                return null;
-            }
-
-            PrimeApplicationContext primeApplicationContext =
-                    PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
-
-            for (T obj : values) {
-                String currentRowKey;
-                if (this.rowKeyProvider != null) {
-                    currentRowKey = this.rowKeyProvider.apply(obj);
-                }
-                else {
-                    Object temp = getFieldValue(primeApplicationContext, obj, this.rowKey);
-                    currentRowKey = temp == null ? null : temp.toString();
-                }
-
-                if (Objects.equals(rowKey, currentRowKey)) {
-                    return obj;
-                }
-            }
-
-            return null;
-        }
-
-        throw new UnsupportedOperationException(
-                getMessage("Provide a rowKey / rowKey-Provider / rowKey-Converter or implement getRowData(String rowKey) in %s"
-                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
+        return null;
     }
 
     @Override
     public String getRowKey(T obj) {
-        Converter<T> rowKeyConverter = getRowKeyConverter();
-        if (rowKeyConverter != null) {
-            return super.getRowKey(obj);
-        }
-
-        if (this.rowKeyProvider != null) {
-            return rowKeyProvider.apply(obj);
-        }
-
-        if (this.rowKey != null) {
-            PrimeApplicationContext primeApplicationContext =
-                    PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
-
-            Object rowKeyValue = getFieldValue(primeApplicationContext, obj, rowKey);
-            return rowKeyValue == null ? null : rowKeyValue.toString();
-        }
-
-        throw new UnsupportedOperationException(
-                getMessage("Provide a rowKey / rowKey-Provider / rowKey-Converter or implement getRowKey(T object) in %s"
-                        + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
-    }
-
-    protected PropertyDescriptor getPropertyDescriptor(PrimeApplicationContext primeAppContext, Class<?> clazz, String field) {
-        String cacheKey = clazz.getName();
-        Map<String, PropertyDescriptor> classCache = primeAppContext.getPropertyDescriptorCache()
-                .computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
-        return classCache.computeIfAbsent(field, k -> {
-            try {
-                return new PropertyDescriptor(field, clazz);
-            } catch (IntrospectionException e) {
-                throw new FacesException(e);
-            }
-        });
+        return rowKeyProvider.apply(obj);
     }
 
     public static <T> Builder<T> builder() {
@@ -349,8 +239,8 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public Builder<T> rowKey(String rowKey) {
-            model.rowKey = rowKey;
+        public Builder<T> rowKeyField(String rowKey) {
+            model.rowKeyField = rowKey;
             return this;
         }
 
@@ -381,6 +271,21 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
 
         public ReflectionLazyDataModel<T> build() {
             Objects.requireNonNull(model.valuesSupplier, "Value supplier not set");
+
+            if (model.rowKeyProvider == null) {
+                if (model.rowKeyConverter != null) {
+                    model.rowKeyProvider = model::getRowKeyFromConverter;
+                }
+                else {
+                    Objects.requireNonNull(model.rowKeyField, "rowKeyField is mandatory if no rowKeyProvider nor converter is provided");
+                    model.rowKeyProvider = obj -> {
+                        PrimeApplicationContext primeAppContext =
+                                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+                        Object rowKeyValue = primeAppContext.getPropertyDescriptorResolver().getValue(obj, model.rowKeyField);
+                        return Objects.toString(rowKeyValue, null);
+                    };
+                }
+            }
             return model;
         }
     }

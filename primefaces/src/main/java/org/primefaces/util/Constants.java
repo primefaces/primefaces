@@ -58,7 +58,7 @@ public class Constants {
         public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
         @Deprecated(forRemoval = true, since = "14.0.0")
         public static final String UPLOADER = "primefaces.UPLOADER";
-
+        public static final String PROPERTY_DESCRIPTOR_RESOLVER = "primefaces.PROPERTY_DESCRIPTOR_RESOLVER";
         private ContextParams() {
 
         }

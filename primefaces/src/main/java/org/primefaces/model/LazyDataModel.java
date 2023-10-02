@@ -135,13 +135,17 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     @Override
     public String getRowKey(T object) {
         if (rowKeyConverter != null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            return rowKeyConverter.getAsString(context, UIComponent.getCurrentComponent(context), object);
+            return getRowKeyFromConverter(object);
         }
 
         throw new UnsupportedOperationException(
                 getMessage("Provide a Converter via constructor or implement getRowKey(T object) in %s"
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    protected String getRowKeyFromConverter(T object) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return rowKeyConverter.getAsString(context, UIComponent.getCurrentComponent(context), object);
     }
 
     protected String getMessage(String msg) {
@@ -151,7 +155,6 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
         return String.format(msg, getClass().getName(), clientId, viewId);
     }
-
 
     @Override
     public boolean isRowAvailable() {
