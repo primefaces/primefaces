@@ -51,7 +51,7 @@ PrimeFaces.locales['fi'] = {
     "pm": "pm",
     "today": "Tänään",
     "weekHeader": "Vko",
-    "firstDayofWeek": 1,
+    "firstDayOfWeek": 1,
     "showMonthAfterYear": false,
     "dateFormat": "dd/mm/yy",
     "weak": "Heikko",
