@@ -1535,6 +1535,7 @@
             "am": "AM",
             "pm": "PM",
             "today": "Today",
+            "now": "Now",
             "weekHeader": "Wk",
             "firstDayOfWeek": 0,
             "showMonthAfterYear": false,
