@@ -75,6 +75,7 @@
                 monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 today: 'Today',
                 clear: 'Clear',
+                now: 'Now',
                 year: 'Year',
                 month: 'Month',
                 week: 'Week',
@@ -1294,10 +1295,22 @@
             var grid = this.options.flex ? 'grid' : 'ui-g';
             var today = this.options.flex ? 'col-6 text-left' : 'ui-g-6';
             var clear = this.options.flex ? 'col-6 text-right' : 'ui-g-6';
+            var todayLabel =  this.options.locale.today;
+            var now = new Date();
+            var minDate = this.options.minDate;
+            var maxDate = this.options.maxDate;
+            var todayStyleClass = 'ui-today-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.todayButtonStyleClass;
+
+            if (this.options.showTime){
+               todayLabel = this.options.locale.now;
+            }
+            if ((minDate && minDate > now) || (maxDate && maxDate < now)) {
+                todayStyleClass += ' ui-helper-hidden';
+            }
             return '<div class="ui-datepicker-buttonbar ui-widget-header">' +
-                '<div class="'+grid+'">' +
-                '<div class="'+today+'">' +
-                '<button type="button" class="ui-today-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.todayButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.today + '</span></button>' +
+                '<div class="' + grid + '">' +
+                '<div class="' + today + '">' +
+                '<button type="button" class="' + todayStyleClass + '"><span class="ui-button-text">' + todayLabel + '</span></button>' +
                 '</div>' +
                 '<div class="'+clear+'">' +
                 '<button type="button" class="ui-clear-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ' + this.options.clearButtonStyleClass + '"><span class="ui-button-text">' + this.options.locale.clear + '</span></button>' +

@@ -1427,6 +1427,7 @@
             month: 'Month',
             week: 'Week',
             day: 'Day',
+            now: 'Now',
             list: 'Agenda',
             allDayText: 'All Day',
             moreLinkText: 'More...',
