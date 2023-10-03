@@ -141,7 +141,7 @@ if (!PrimeFaces.utils) {
                 ,'aria-live': 'polite'
             });
 
-            PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
+            PrimeFaces.utils.preventTabbing(widget, id, zIndex, tabbablesCallback);
 
             if (widget.cfg.blockScroll) {
                 PrimeFaces.utils.preventScrolling();
@@ -158,17 +158,19 @@ if (!PrimeFaces.utils) {
         /**
          * Given a modal overlay, prevents navigating via the tab key to elements outside of that modal overlay. Use
          * `PrimeFaces.utils.enableTabbing` to restore the original behavior.
+         * @param {PrimeFaces.widget.BaseWidget} widget An overlay widget instance.
          * @param {string} id ID of a modal overlay widget.
          * @param {number} zIndex The z-index of the modal overlay.
          * @param {() => JQuery} tabbablesCallback A supplier function that return a list of tabbable elements. A
          * tabbable element is an element to which the user can navigate to via the tab key.
          */
-        preventTabbing: function(id, zIndex, tabbablesCallback) {
+        preventTabbing: function(widget, id, zIndex, tabbablesCallback) {
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
-            var $document = $(document);
+            var $documentInIframe = widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0).contentWindow.document : undefined;
+            var $document = $($documentInIframe ? [document, $documentInIframe] : document);
             $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
                 var target = $(event.target);
-                if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
+                if (!target.is(document.body) && (!$documentInIframe && target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
@@ -213,7 +215,7 @@ if (!PrimeFaces.utils) {
                     // #8965 allow cut, copy, paste
                     return;
                 }
-                else if (!target.is(document.body) && (target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
+                else if (!target.is(document.body) && (!$documentInIframe && target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
                     event.preventDefault();
                 }
             });
@@ -246,16 +248,20 @@ if (!PrimeFaces.utils) {
             if (widget.cfg.blockScroll) {
                 PrimeFaces.utils.enableScrolling();
             }
-            PrimeFaces.utils.enableTabbing(id);
+            PrimeFaces.utils.enableTabbing(widget, id);
         },
 
         /**
          * Enables navigating to an element via the tab key outside an overlay widget. Usually called when a modal
          * overlay is removed. This reverts the changes as made by `PrimeFaces.utils.preventTabbing`.
+         * @param {PrimeFaces.widget.BaseWidget} widget A modal overlay widget instance.
          * @param {string} id ID of a modal overlay, usually the widget ID.
          */
-        enableTabbing: function(id) {
-            $(document).off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
+        enableTabbing: function(widget, id) {
+            var $documentInIframe = widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0).contentWindow.document : undefined;
+            var $document = $($documentInIframe ? [document, $documentInIframe] : document);
+
+            $document.off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
         },
 
         /**

@@ -259,10 +259,14 @@ if (!PrimeFaces.dialog) {
 
                             rootWindow.PrimeFaces.widgets[dialogWidgetVar] = undefined;
                         },
+                        getModalTabbables: function(){
+                            return $frame.contents().find(':tabbable');
+                        },
                         modal: cfg.options.modal,
                         blockScroll: cfg.options.blockScroll,
                         resizable: cfg.options.resizable,
                         hasIframe: true,
+                        iframe: $frame,
                         draggable: cfg.options.draggable,
                         width: cfg.options.width,
                         height: cfg.options.height,
