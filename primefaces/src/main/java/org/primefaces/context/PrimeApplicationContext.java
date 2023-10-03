@@ -47,7 +47,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.primefaces.application.PropertyDescriptorResolver;
-import org.primefaces.application.PropertyUtilsBeanResolver;
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
 import org.primefaces.component.datatable.DataTable;
@@ -264,11 +263,8 @@ public class PrimeApplicationContext {
     }
 
     private void resolvePropertyDescriptorResolver() {
-        if(LangUtils.isClassAvailable("org.apache.commons.beanutils.PropertyUtils")) {
-            propertyDescriptorResolver = new PropertyUtilsBeanResolver();
-        }
-        else if (LangUtils.isBlank(config.getPropertyDescriptorResolver())) {
-            propertyDescriptorResolver = new PropertyDescriptorResolver.DefaultPropertyDescriptorResolver();
+        if (LangUtils.isBlank(config.getPropertyDescriptorResolver())) {
+            propertyDescriptorResolver = new PropertyDescriptorResolver.DefaultResolver();
         }
         else {
             try {

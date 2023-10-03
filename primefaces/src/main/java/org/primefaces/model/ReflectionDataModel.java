@@ -39,7 +39,7 @@ import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.SerializableFunction;
 import org.primefaces.util.SerializableSupplier;
 
-public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
+public class ReflectionDataModel<T> extends LazyDataModel<T> {
 
     private SerializableSupplier<List<T>> valuesSupplier;
     private String rowKeyField;
@@ -51,7 +51,7 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
     /**
      * For serialization only
      */
-    public ReflectionLazyDataModel() {
+    public ReflectionDataModel() {
 
     }
 
@@ -228,10 +228,10 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
     }
 
     public static class Builder<T> {
-        final ReflectionLazyDataModel<T> model;
+        final ReflectionDataModel<T> model;
 
         public Builder() {
-            model = new ReflectionLazyDataModel<>();
+            model = new ReflectionDataModel<>();
         }
 
         public Builder<T> valueSupplier(SerializableSupplier<List<T>> valuesSupplier) {
@@ -269,7 +269,7 @@ public class ReflectionLazyDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public ReflectionLazyDataModel<T> build() {
+        public ReflectionDataModel<T> build() {
             Objects.requireNonNull(model.valuesSupplier, "Value supplier not set");
 
             if (model.rowKeyProvider == null) {

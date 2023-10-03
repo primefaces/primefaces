@@ -23,35 +23,37 @@
  */
 package org.primefaces.showcase.view.data.datatable;
 
-import javax.faces.view.ViewScoped;
-import org.primefaces.showcase.domain.Product;
-import org.primefaces.showcase.service.ProductService;
-
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
+
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.ReflectionDataModel;
+import org.primefaces.showcase.domain.Product;
+import org.primefaces.showcase.service.ProductService;
 
 @Named("dtBasicView")
 @ViewScoped
 public class BasicView implements Serializable {
 
-    private List<Product> products;
+    private LazyDataModel<Product> products;
 
     @Inject
     private ProductService service;
 
     @PostConstruct
     public void init() {
-        products = service.getProducts(10);
+        products = ReflectionDataModel.<Product>builder().valueSupplier(() -> service.getProducts(1000)).rowKeyField("id").build();
     }
 
-    public List<Product> getProducts() {
+    public LazyDataModel<Product> getProducts() {
         return products;
     }
 
     public void setService(ProductService service) {
         this.service = service;
     }
+
 }

@@ -23,12 +23,12 @@
  */
 package org.primefaces.model;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.persistence.EntityManager;
@@ -36,8 +36,12 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.*;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.SerializableSupplier;
 
 /**
  * Basic {@link LazyDataModel} implementation with JPA and Criteria API.
@@ -155,12 +159,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         if (filterBy != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             Locale locale = LocaleUtils.getCurrentLocale(context);
+            PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
             for (FilterMeta filter : filterBy.values()) {
                 if (filter.getField() == null || filter.getFilterValue() == null || filter.isGlobalFilter()) {
                     continue;
                 }
 
-                Field filterField = LangUtils.getFieldRecursive(entityClass, filter.getField());
+                PropertyDescriptor pd = propResolver.get(entityClass, filter.getField());
                 Object filterValue = filter.getFilterValue();
                 Object convertedFilterValue;
 
@@ -169,12 +174,12 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     convertedFilterValue = filterValue;
                 }
                 else {
-                    convertedFilterValue = LangUtils.convertToType(filterValue, filterField.getType(), getClass());;
+                    convertedFilterValue = LangUtils.convertToType(filterValue, pd.getPropertyType(), getClass());
                 }
 
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
 
-                Predicate predicate = createPredicate(filter, filterField, root, cb, fieldExpression, convertedFilterValue, locale);
+                Predicate predicate = createPredicate(filter, pd, root, cb, fieldExpression, convertedFilterValue, locale);
                 predicates.add(predicate);
             }
         }
@@ -198,16 +203,28 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     }
 
-    protected Predicate createPredicate(FilterMeta filter, Field filterField,
-            Root<T> root, CriteriaBuilder cb, Expression fieldExpression, Object filterValue, Locale locale) {
+    protected Predicate createPredicate(FilterMeta filter,
+                                        PropertyDescriptor pd,
+                                        Root<T> root,
+                                        CriteriaBuilder cb,
+                                        Expression fieldExpression,
+                                        Object filterValue,
+                                        Locale locale) {
 
-        Lazy<Expression<String>> fieldExpressionAsString = new Lazy<>(() -> caseSensitive
+        Supplier<Expression<String>> fieldExpressionAsString = () -> caseSensitive
                 ? fieldExpression.as(String.class)
-                : cb.upper(fieldExpression.as(String.class)));
-        Lazy<Collection<Object>> filterValueAsCollection = new Lazy(
-                () -> filterValue.getClass().isArray()
+                : cb.upper(fieldExpression.as(String.class));
+        Supplier<Collection<Object>> filterValueAsCollection = () -> filterValue.getClass().isArray()
                         ? Arrays.asList((Object[]) filterValue)
-                        : filterValue);
+                        : (Collection<Object>) filterValue;
+
+//        JPAFilterConstraints.builder()
+//                .matchMode()
+//                .wildcardSupport()
+//                .caseSensitive()
+//                .fieldExpression()
+//                .filterValue()
+//                .build();
 
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
@@ -419,18 +436,13 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 }
                 else {
                     Objects.requireNonNull(model.rowKeyField, "rowKeyField is mandatory if no rowKeyProvider nor converter is provided");
-                    model.rowKeyType = Objects.requireNonNullElseGet(model.rowKeyType, () -> {
-                        try {
-                            return model.entityClass.getField(model.rowKeyField).getType();
-                        } catch (NoSuchFieldException e) {
-                            throw new FacesException(e);
-                        }
-                    });
+                    PropertyDescriptorResolver propResolver =
+                            PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getPropertyDescriptorResolver();
+                    model.rowKeyType = Objects.requireNonNullElseGet(model.rowKeyType,
+                            () -> propResolver.get(model.entityClass, model.rowKeyField).getPropertyType());
 
                     model.rowKeyProvider = obj -> {
-                        PrimeApplicationContext primeAppContext =
-                                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
-                        Object rowKeyValue = primeAppContext.getPropertyDescriptorResolver().getValue(obj, model.rowKeyField);
+                        Object rowKeyValue = propResolver.getValue(obj, model.rowKeyField);
                         return Objects.toString(rowKeyValue, null);
                     };
                 }

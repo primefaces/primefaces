@@ -45,13 +45,13 @@ public interface PropertyDescriptorResolver {
 
     void flush();
 
-    class DefaultPropertyDescriptorResolver implements PropertyDescriptorResolver {
+    class DefaultResolver implements PropertyDescriptorResolver {
 
         private final Map<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
 
         private final Pattern NESTED_EXPRESSION_PATTERN = Pattern.compile("\\.");
 
-        public DefaultPropertyDescriptorResolver() {
+        public DefaultResolver() {
             propertyDescriptorCache = new ConcurrentHashMap<>();
         }
 
