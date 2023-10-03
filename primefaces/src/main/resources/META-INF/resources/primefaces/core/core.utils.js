@@ -168,6 +168,12 @@ if (!PrimeFaces.utils) {
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
             var $documentInIframe = widget.cfg && widget.cfg.iframe ? widget.cfg.iframe.get(0).contentWindow.document : undefined;
             var $document = $($documentInIframe ? [document, $documentInIframe] : document);
+            $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
+                var target = $(event.target);
+                if (!target.is(document.body) && (!$documentInIframe && target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
+                    event.preventDefault();
+                }
+            });
             $document.on('keydown.' + id, function(event) {
                 var target = $(event.target);
                 if (event.key === 'Tab') {
@@ -208,6 +214,9 @@ if (!PrimeFaces.utils) {
                 else if (event.ctrlKey) { 
                     // #8965 allow cut, copy, paste
                     return;
+                }
+                else if (!target.is(document.body) && (!$documentInIframe && target.zIndex() < zIndex && target.parent().zIndex() < zIndex)) {
+                    event.preventDefault();
                 }
             });
         },
