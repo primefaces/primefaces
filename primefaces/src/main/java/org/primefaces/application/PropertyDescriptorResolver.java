@@ -26,13 +26,12 @@ package org.primefaces.application;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
 
 public interface PropertyDescriptorResolver {
-
-    PropertyDescriptor get(Object bean, String name);
 
     PropertyDescriptor get(Class<?> klazz, String name);
 
@@ -41,6 +40,10 @@ public interface PropertyDescriptorResolver {
     default Class<?> getType(Object bean, String name) {
         PropertyDescriptor pd = get(bean, name);
         return pd.getPropertyType();
+    }
+
+    default PropertyDescriptor get(Object bean, String name) {
+        return get(bean.getClass(), name);
     }
 
     void flush();
@@ -56,30 +59,23 @@ public interface PropertyDescriptorResolver {
         }
 
         @Override
-        public PropertyDescriptor get(Object bean, String name) {
-            return get(bean.getClass(), name);
-        }
+        public PropertyDescriptor get(Class<?> klazz, String expression) {
+            PropertyDescriptor pd = null;
+            Class<?> parent = klazz;
 
-        @Override
-        public PropertyDescriptor get(Class<?> klazz, String name) {
-            String cacheKey = klazz.getName();
-            Map<String, PropertyDescriptor> classCache = propertyDescriptorCache
-                    .computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
-            return classCache.computeIfAbsent(name, k -> {
-                try {
-                    return new PropertyDescriptor(name, klazz);
-                }
-                catch (IntrospectionException e) {
-                    throw new FacesException(e);
-                }
-            });
+            for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
+                pd = getSimpleProperty(parent, field);
+                parent = pd.getPropertyType();
+            }
+
+            return Objects.requireNonNull(pd);
         }
 
         @Override
         public Object getValue(Object bean, String expression) {
             try {
                 for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
-                    bean = get(bean, field).getReadMethod().invoke(bean);
+                    bean = getSimpleProperty(bean.getClass(), field).getReadMethod().invoke(bean);
                 }
 
                 return bean;
@@ -92,6 +88,19 @@ public interface PropertyDescriptorResolver {
         @Override
         public void flush() {
             propertyDescriptorCache.clear();
+        }
+
+        private PropertyDescriptor getSimpleProperty(Class<?> klazz, String field) {
+            String cacheKey = klazz.getName();
+            Map<String, PropertyDescriptor> classCache = propertyDescriptorCache
+                    .computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
+            return classCache.computeIfAbsent(field, k -> {
+                try {
+                    return new PropertyDescriptor(k, klazz);
+                } catch (IntrospectionException e) {
+                    throw new FacesException(e);
+                }
+            });
         }
     }
 }
