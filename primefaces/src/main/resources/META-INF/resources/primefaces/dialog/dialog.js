@@ -222,8 +222,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
      * @inheritdoc
      * @return {JQuery} The DOM elements which are allowed to be focused via tabbing.
      */
-    getModalTabbables: function(){
-        return this.jq.find(':tabbable').add(this.footer.find(':tabbable'));
+    getModalTabbables: function() {
+        var tabbablesInIframe = this.cfg.getModalTabbables ? this.cfg.getModalTabbables() : undefined;
+        
+        return this.jq.find(':tabbable').add(tabbablesInIframe).add(this.footer.find(':tabbable'));
     },
 
     /**

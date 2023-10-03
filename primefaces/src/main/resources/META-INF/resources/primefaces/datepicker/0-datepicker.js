@@ -2630,7 +2630,7 @@
                 $(document).on('click', this.documentClickListener);
 
                 // prevent tabbing outside of panel
-                PrimeFaces.utils.preventTabbing($this.panel.id, $this.panel.zIndex(), function() {
+                PrimeFaces.utils.preventTabbing($this, $this.panel.id, $this.panel.zIndex(), function() {
                     return $this.panel.find(':tabbable');
                 });
             }
@@ -2639,7 +2639,7 @@
         unbindDocumentClickListener: function() {
             if (this.documentClickListener) {
                 $(document).off('click', this.documentClickListener);
-                PrimeFaces.utils.enableTabbing(this.panel.id);
+                PrimeFaces.utils.enableTabbing(this, this.panel.id);
                 this.documentClickListener = null;
             }
         },
