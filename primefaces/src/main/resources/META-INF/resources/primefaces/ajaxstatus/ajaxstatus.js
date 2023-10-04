@@ -102,7 +102,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             $this.trigger('success', [xhr, settings]);
         })
         .on('pfAjaxComplete', function(e, xhr, settings, args) {
-            if($this.timeout) {
+            if($this.timeout && !args.redirect) {
                 $this.deleteTimeout();
             }
             $this.trigger('complete', [xhr, settings, args]);
