@@ -564,7 +564,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 }
             }
             else {
-                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
+                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2, sortMeta});
             }
 
             return sortMeta.getOrder().isAscending() ? result : -1 * result;
