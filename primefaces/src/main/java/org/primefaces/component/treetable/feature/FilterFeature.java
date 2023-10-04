@@ -243,6 +243,9 @@ public class FilterFeature implements TreeTableFeature {
                 try {
                     Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(node.getClass());
                     clone = ctor.newInstance(node);
+                    if (parent != null) {
+                        parent.getChildren().add(clone);
+                    }
                 }
                 catch (NoSuchMethodException e) {
                     // ignore
