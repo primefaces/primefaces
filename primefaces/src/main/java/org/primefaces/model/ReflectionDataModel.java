@@ -32,6 +32,7 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
+import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.util.LangUtils;
@@ -147,7 +148,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(context);
+        PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
         Locale locale = LocaleUtils.getCurrentLocale(context);
 
         FilterMeta globalFilter = filterBy.get(FilterMeta.GLOBAL_FILTER_KEY);
@@ -176,7 +177,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
                             continue;
                         }
 
-                        Object fieldValue = primeAppContext.getPropertyDescriptorResolver().getValue(obj, filterMeta.getField());
+                        Object fieldValue = propResolver.getValue(obj, filterMeta.getField());
 
                         Object filterValue = filterMeta.getFilterValue();
                         Object convertedFilterValue;
@@ -186,7 +187,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
                             convertedFilterValue = filterValue;
                         }
                         else {
-                            Class<?> fieldType = primeAppContext.getPropertyDescriptorResolver().getType(obj, filterMeta.getField());
+                            Class<?> fieldType = propResolver.get(obj.getClass(), filterMeta.getField()).getPropertyType();
                             convertedFilterValue = LangUtils.convertToType(filterValue, fieldType, getClass());
                         }
 

@@ -37,15 +37,6 @@ public interface PropertyDescriptorResolver {
 
     Object getValue(Object bean, String name);
 
-    default Class<?> getType(Object bean, String name) {
-        PropertyDescriptor pd = get(bean, name);
-        return pd.getPropertyType();
-    }
-
-    default PropertyDescriptor get(Object bean, String name) {
-        return get(bean.getClass(), name);
-    }
-
     void flush();
 
     class DefaultResolver implements PropertyDescriptorResolver {

@@ -218,14 +218,6 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                         ? Arrays.asList((Object[]) filterValue)
                         : (Collection<Object>) filterValue;
 
-//        JPAFilterConstraints.builder()
-//                .matchMode()
-//                .wildcardSupport()
-//                .caseSensitive()
-//                .fieldExpression()
-//                .filterValue()
-//                .build();
-
         switch (filter.getMatchMode()) {
             case STARTS_WITH:
                 return cb.like(fieldExpressionAsString.get(), getStringFilterValue(filterValue, locale) + "%");
@@ -322,15 +314,21 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     protected Expression resolveFieldExpression(CriteriaBuilder cb, CriteriaQuery<?> cq, Root<T> root, String fieldName) {
         Join<?, ?> join = null;
-        for(String field : fieldName.split("\\.")) {
+
+        // join if required; e.g. company.name -> join to company and get "name" field from the joined table
+        while (fieldName.contains(".")) {
+            String currentName = fieldName.substring(0, fieldName.indexOf("."));
+            fieldName = fieldName.substring(currentName.length() + 1);
+
             if (join == null) {
-                join = root.join(field, JoinType.INNER);
+                join = root.join(currentName, JoinType.INNER);
             }
             else {
-                join = join.join(field, JoinType.INNER);
+                join = join.join(currentName, JoinType.INNER);
             }
         }
-        return join;
+
+        return join == null ? root.get(fieldName) : join.get(fieldName);
     }
 
     @Override

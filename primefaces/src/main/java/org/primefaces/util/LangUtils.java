@@ -513,42 +513,6 @@ public class LangUtils {
         return true;
     }
 
-    public static Field getFieldRecursive(Class<?> clazz, String expression) {
-        Objects.requireNonNull(clazz, "clazz must not be null");
-        Objects.requireNonNull(expression, "expression must not be null");
-
-        Field field = null;
-        for (String name : expression.split("\\.")) {
-            field = getField(clazz, name);
-            clazz = field.getType();
-        }
-        return field;
-    }
-
-    public static Field getField(Class<?> clazz, String name) {
-        Objects.requireNonNull(clazz, "clazz must not be null");
-        Objects.requireNonNull(name, "name must not be null");
-
-        Class<?> current = clazz;
-        while (current != null && current != Object.class) {
-            try {
-                Field field = current.getDeclaredField(name);
-                field.setAccessible(true);
-                return field;
-            }
-            catch (NoSuchFieldException e) {
-                // Try parent
-            }
-            catch (Exception e) {
-                throw new IllegalArgumentException("Cannot access field " + name + " in " + clazz.getName(), e);
-            }
-
-            current = current.getSuperclass();
-        }
-
-        throw new IllegalArgumentException("Cannot find field " + name + " in " + clazz.getName());
-    }
-
     public static Object convertToType(Object value, Class<?> valueType, Class<?> logContext) {
         // skip null
         if (value == null) {
