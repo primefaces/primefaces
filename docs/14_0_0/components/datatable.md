@@ -992,6 +992,26 @@ JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.cla
     .build();
 ```
 
+### ReflectionLazyDataModel
+
+`ReflectionLazyDataModel` is a `LazyDataModel` implementation which takes a supplier as datasource and implements filtering and sorting via reflection.
+It can be used for cases where you would dynamically load the datasource e.g. from a webservice.
+
+Also it can be used as replacement for binding a simple List as it has some benefits:
+1) reflection is a performance boost for big lists, compared to restoring component states, rowindex, loop components, create/apply EL
+2) often people store the data source (`List<MyPojo>`) in a `@ViewScoped` bean, which can lead to unexpected serialization, big sessions or old data references. The supplier should directly call your service, without storing the list in the current bean.
+3) it allows some additional features like applying additional filtering or sorting via lambda.
+
+```java
+private ReflectionLazyDataModel<MyPojo> dataModel;
+
+@PostConstruct
+public void init() {
+    dataModel = ReflectionLazyDataModel.builder(() -> service.getListOfMyPojos())
+        .rowKeyProvider((o) -> Integer.toString(o.getId())) // required for selection
+        .build();
+```
+
 ## Sticky Header
 Sticky Header feature makes the datatable header visible on page scrolling.
 
