@@ -336,6 +336,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             e.preventDefault();
             e.stopPropagation();
         });
+        
+        this.input.off('focus.ui-selectonemenu').on('focus.ui-selectonemenu', function() {
+            $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+        });
 
         this.keyboardTarget.on('focus.ui-selectonemenu', function(e) {
             $this.jq.addClass('ui-state-focus');
