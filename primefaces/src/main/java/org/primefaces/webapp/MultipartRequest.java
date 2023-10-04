@@ -44,6 +44,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import java.util.Map.Entry;
 
+@Deprecated(forRemoval = true, since = "14.0.0")
 public class MultipartRequest extends HttpServletRequestWrapper {
 
     private static final Logger LOGGER = Logger.getLogger(MultipartRequest.class.getName());

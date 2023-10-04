@@ -44,6 +44,7 @@ import org.apache.commons.io.FileCleaningTracker;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
+@Deprecated(forRemoval = true, since = "14.0.0")
 public class FileUploadFilter implements Filter {
 
     private static final Logger LOGGER = Logger.getLogger(FileUploadFilter.class.getName());
@@ -69,6 +70,9 @@ public class FileUploadFilter implements Filter {
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("FileUploadFilter initiated successfully");
+        }
+        if (LOGGER.isLoggable(Level.WARNING)) {
+            LOGGER.warning("FileUploadFilter is deprecated. Please try native Servlet 3.0 uploading and report any issues if it does not work.");
         }
     }
 

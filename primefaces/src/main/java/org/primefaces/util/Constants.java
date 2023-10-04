@@ -56,6 +56,7 @@ public class Constants {
         public static final String THEME = "primefaces.THEME";
         public static final String TOUCHABLE = "primefaces.TOUCHABLE";
         public static final String TRANSFORM_METADATA = "primefaces.TRANSFORM_METADATA";
+        @Deprecated(forRemoval = true, since = "14.0.0")
         public static final String UPLOADER = "primefaces.UPLOADER";
 
         private ContextParams() {
