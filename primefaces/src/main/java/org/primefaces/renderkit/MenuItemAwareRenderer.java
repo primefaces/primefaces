@@ -57,17 +57,37 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         decodeDynamicMenuItem(context, component);
     }
 
+    protected boolean isMenuItemLink(FacesContext context, UIComponent source, MenuItem menuitem) {
+        return LangUtils.isNotBlank(menuitem.getUrl()) || LangUtils.isNotBlank(menuitem.getOutcome());
+    }
+
+    protected boolean isMenuItemSubmitting(FacesContext context, UIComponent source, MenuItem menuitem) {
+        boolean submitting;
+
+        // #1 first check for assigned server side callbacks
+        submitting = menuitem.getFunction() != null || LangUtils.isNotBlank(menuitem.getCommand());
+        if (!submitting && menuitem instanceof UIMenuItem) {
+            submitting = ((UIMenuItem) menuitem).getActionExpression() != null
+                    || ((UIMenuItem) menuitem).getActionListeners().length > 0;
+        }
+
+        // 2# AJAX
+        if (!submitting && menuitem.isAjax()) {
+            submitting = menuitem.isResetValues()
+                    || LangUtils.isNotBlank(menuitem.getUpdate())
+                    || LangUtils.isNotBlank(menuitem.getProcess());
+        }
+
+        return submitting;
+    }
+
     protected void encodeOnClick(FacesContext context, UIComponent source, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         setConfirmationScript(context, menuitem);
 
         String onclick = menuitem.getOnclick();
-        boolean isLink = LangUtils.isNotBlank(menuitem.getUrl()) || LangUtils.isNotBlank(menuitem.getOutcome());
-        boolean isCommand = LangUtils.isNotBlank(menuitem.getCommand());
-        if (!isCommand && menuitem instanceof UIMenuItem) {
-            UIMenuItem uim = (UIMenuItem) menuitem;
-            isCommand = uim.getActionExpression() != null || uim.getActionListeners().length > 0;
-        }
+        boolean isLink = isMenuItemLink(context, source, menuitem);
+        boolean isSubmitting = isMenuItemSubmitting(context, source, menuitem);
 
         //GET
         if (isLink) {
@@ -83,7 +103,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("href", "#", null);
         }
 
-        if (isCommand) {
+        if (isSubmitting) {
             String menuClientId = source.getClientId(context);
             UIForm form = ComponentTraversalUtils.closestForm(source);
             if (form == null) {

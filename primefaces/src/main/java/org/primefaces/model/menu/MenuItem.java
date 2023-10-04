@@ -121,4 +121,9 @@ public interface MenuItem extends MenuElement, Confirmable {
 
     Object getBadge();
 
+    String getUpdate();
+
+    String getProcess();
+
+    boolean isResetValues();
 }
