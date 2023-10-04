@@ -23,16 +23,10 @@
  */
 package org.primefaces.util;
 
-import java.lang.reflect.Field;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LangUtilsTest {
 
