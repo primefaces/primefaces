@@ -117,8 +117,8 @@ DataTable displays data in tabular format.
 | partialUpdate             | true               | Boolean          | When disabled, it updates the whole table instead of updating a specific field such as body element in the client requests of the dataTable.
 | showSelectAll             | true               | Boolean          | Whether to show the select all checkbox inside the column's header.
 
-## Getting started with the DataTable
-We will be using the same Car and CarBean classes described in DataGrid section.
+## Getting started
+
 Here is the simplest way to get started:
 
 ```xhtml
@@ -135,7 +135,68 @@ Here is the simplest way to get started:
 </p:dataTable>
 ```
 
+```java
+public class Car {
+    private String model;
+    private int year;
+    private String manufacturer;
+    private String color;
+    ...
+}
+```
+
+```java
+@Named
+@RequestScoped
+public class CarBean {
+    private List<Car> cars;
+
+    @PostConstruct
+    public void init() {
+        cars = new ArrayList<Car>();
+        cars.add(new Car("myModel",2005,"ManufacturerX","blue"));
+        //add more cars
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+}
+```
+
 In case no children are present in columns, value from `var` and `field` will be displayed.
+
+
+## Data binding
+
+We suggest you to not store your data model inside a longer-living scope like `@ViewScoped`, to avoid big sessions and serialization.
+
+So either you use a `@RequestScoped` like in the _Getting started_, or use a `LazyDataModel` to load your data on-the-fly.   
+PrimeFaces comes with 2 built-in `LazyDataModel`:
+- `JpaLazyDataModel`: implementation to load the data via JPA
+- `ReflectionLazyDataModel`: implementation which loads the data via lambda. It also performance better (up to 30%) compared to binding a simple List.
+
+
+```java
+@Named
+@RequestScoped
+public class CarBean {
+    @Inject private CarService carService;
+
+    private LazyDataModel<Car> cars;
+
+    @PostConstruct
+    public void init() {
+        cars = ReflectionLazyDataModel.builder(() -> carService.getCars())
+                .rowKeyProvider((car) -> Integer.toString(car.getId())) // required for selection
+                .build();
+    }
+
+    public LazyDataModel<Car> getCars() {
+        return cars;
+    }
+}
+```
 
 ## Header and Footer
 Both datatable itself and columns can have custom content in their headers and footers using header
