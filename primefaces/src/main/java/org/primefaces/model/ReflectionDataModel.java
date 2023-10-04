@@ -53,7 +53,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
      * For serialization only
      */
     public ReflectionDataModel() {
-
+        // NOOP
     }
 
     @Override

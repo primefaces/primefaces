@@ -24,13 +24,10 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.text.Collator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
@@ -152,63 +149,6 @@ public class SortFeature implements DataTableFeature {
         }
         else {
             context.getExternalContext().getRequestMap().put(var, varBackup);
-        }
-    }
-
-    public static int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
-            Collator collator, Locale locale) {
-
-        ValueExpression ve = sortMeta.getSortBy();
-
-        context.getExternalContext().getRequestMap().put(var, o1);
-        Object value1 = ve.getValue(context.getELContext());
-
-        context.getExternalContext().getRequestMap().put(var, o2);
-        Object value2 = ve.getValue(context.getELContext());
-
-        return compare(context, sortMeta, value1, value2, collator, locale);
-    }
-
-    public static int compare(FacesContext context, SortMeta sortMeta, Object value1, Object value2,
-            Collator collator, Locale locale) {
-
-        try {
-            int result;
-
-            if (sortMeta.getFunction() == null) {
-                //Empty check
-                if (value1 == null && value2 == null) {
-                    result = 0;
-                }
-                else if (value1 == null) {
-                    result = sortMeta.getNullSortOrder();
-                }
-                else if (value2 == null) {
-                    result = -1 * sortMeta.getNullSortOrder();
-                }
-                else if (value1 instanceof String && value2 instanceof String) {
-                    if (sortMeta.isCaseSensitiveSort()) {
-                        result = collator.compare(value1, value2);
-                    }
-                    else {
-                        String str1 = (((String) value1).toLowerCase(locale));
-                        String str2 = (((String) value2).toLowerCase(locale));
-
-                        result = collator.compare(str1, str2);
-                    }
-                }
-                else {
-                    result = ((Comparable<Object>) value1).compareTo(value2);
-                }
-            }
-            else {
-                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2, sortMeta});
-            }
-
-            return sortMeta.getOrder().isAscending() ? result : -1 * result;
-        }
-        catch (Exception e) {
-            throw new FacesException(e);
         }
     }
 
