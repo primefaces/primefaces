@@ -1,13 +1,13 @@
 package org.primefaces.model;
 
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 import java.text.Collator;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.component.api.UITable;
@@ -55,7 +55,6 @@ public class BeanPropertyComparator implements Comparator<Object> {
                 // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
                 // and can't use sortMeta.getComponent()
                 // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
-
                 table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
                     result.set(compare(context, sortMeta, fv1, fv2, collator, locale));
                 });
@@ -130,6 +129,6 @@ public class BeanPropertyComparator implements Comparator<Object> {
     @FunctionalInterface
     public interface ExtractPropertyMapper {
 
-        Object extract(FacesContext context, String var, SortMeta sortMeta, Object o1);
+        Object extract(FacesContext context, String var, SortMeta sortMeta, Object obj);
     }
 }
