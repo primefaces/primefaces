@@ -270,7 +270,8 @@ public class PrimeApplicationContext {
             try {
                 propertyDescriptorResolver = (PropertyDescriptorResolver)
                         Class.forName(config.getPropertyDescriptorResolver()).getConstructor().newInstance();
-            } catch (ReflectiveOperationException e) {
+            }
+            catch (ReflectiveOperationException e) {
                 throw new FacesException(e);
             }
         }

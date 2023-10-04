@@ -1,3 +1,26 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2023 PrimeTek Informatics
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package org.primefaces.model;
 
 import java.text.Collator;
@@ -21,9 +44,9 @@ public class BeanPropertyComparator implements Comparator<Object> {
     private final Locale locale;
     private final String var;
     private final Collator collator;
-    private final ExtractPropertyMapper mapper;
+    private final BeanPropertyMapper mapper;
 
-    public BeanPropertyComparator(FacesContext context, UITable table, Collection<SortMeta> sortBy, ExtractPropertyMapper mapper) {
+    public BeanPropertyComparator(FacesContext context, UITable table, Collection<SortMeta> sortBy, BeanPropertyMapper mapper) {
         this.context = context;
         this.sortBy = sortBy;
         this.table = table;
@@ -45,8 +68,8 @@ public class BeanPropertyComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) {
         AtomicInteger result = new AtomicInteger(0);
         for (SortMeta sortMeta : sortBy) {
-            final Object fv1 = mapper.extract(context, var, sortMeta, o1);
-            final Object fv2 = mapper.extract(context, var, sortMeta, o2);
+            final Object fv1 = mapper.map(context, var, sortMeta, o1);
+            final Object fv2 = mapper.map(context, var, sortMeta, o2);
 
             if (sortMeta.isHeaderRow()) {
                 result.set(compare(context, sortMeta, fv1, fv2, collator, locale));
@@ -110,7 +133,7 @@ public class BeanPropertyComparator implements Comparator<Object> {
         }
     }
 
-    public static ExtractPropertyMapper valueExprMapper() {
+    public static BeanPropertyMapper valueExprMapper() {
         return (context, var, sortMeta, o1) -> {
             ValueExpression ve = sortMeta.getSortBy();
             context.getExternalContext().getRequestMap().put(var, o1);
@@ -118,7 +141,7 @@ public class BeanPropertyComparator implements Comparator<Object> {
         };
     }
 
-    public static ExtractPropertyMapper reflectionMapper() {
+    public static BeanPropertyMapper reflectionMapper() {
         return (context, var, sortMeta, o1) -> {
             PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context)
                     .getPropertyDescriptorResolver();
@@ -127,8 +150,8 @@ public class BeanPropertyComparator implements Comparator<Object> {
     }
 
     @FunctionalInterface
-    public interface ExtractPropertyMapper {
+    public interface BeanPropertyMapper {
 
-        Object extract(FacesContext context, String var, SortMeta sortMeta, Object obj);
+        Object map(FacesContext context, String var, SortMeta sortMeta, Object obj);
     }
 }

@@ -41,9 +41,8 @@ public interface PropertyDescriptorResolver {
 
     class DefaultResolver implements PropertyDescriptorResolver {
 
+        private static final Pattern NESTED_EXPRESSION_PATTERN = Pattern.compile("\\.");
         private final Map<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
-
-        private final Pattern NESTED_EXPRESSION_PATTERN = Pattern.compile("\\.");
 
         public DefaultResolver() {
             propertyDescriptorCache = new ConcurrentHashMap<>();
@@ -88,7 +87,8 @@ public interface PropertyDescriptorResolver {
             return classCache.computeIfAbsent(field, k -> {
                 try {
                     return new PropertyDescriptor(k, klazz);
-                } catch (IntrospectionException e) {
+                }
+                catch (IntrospectionException e) {
                     throw new FacesException(e);
                 }
             });

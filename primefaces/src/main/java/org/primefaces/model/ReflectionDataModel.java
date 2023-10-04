@@ -24,11 +24,9 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.text.Collator;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -83,7 +81,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
         return filteredValues.subList(first, last);
     }
 
-    public void sort(Map<String, SortMeta> sortBy, List<T> values) {
+    protected void sort(Map<String, SortMeta> sortBy, List<T> values) {
         if (values == null || values.isEmpty()) {
             return;
         }
@@ -96,7 +94,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
         }
     }
 
-    public List<T> filter(List<T> values, Map<String, FilterMeta> filterBy) {
+    protected List<T> filter(List<T> values, Map<String, FilterMeta> filterBy) {
         if (values == null || values.isEmpty()) {
             return Collections.emptyList();
         }

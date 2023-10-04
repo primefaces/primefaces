@@ -393,7 +393,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             model.rowKeyField = rowKeyMetamodel.getName();
             return this;
         }
-        
+
         public Builder<T> caseSensitive(boolean caseSensitive) {
             model.caseSensitive = caseSensitive;
             return this;

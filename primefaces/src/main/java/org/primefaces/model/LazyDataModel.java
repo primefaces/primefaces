@@ -99,7 +99,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     public T getRowData(String rowKey) {
         if (rowKeyConverter != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return (T) rowKeyConverter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+            return rowKeyConverter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
         }
 
         throw new UnsupportedOperationException(
@@ -247,10 +247,6 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         return rowKeyConverter;
     }
 
-    public void setRowKeyConverter(Converter<T> rowKeyConverter) {
-        this.rowKeyConverter = rowKeyConverter;
-    }
-
     /**
      *
      * @return
@@ -259,15 +255,5 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     @Deprecated
     public Converter<T> getConverter() {
         return rowKeyConverter;
-    }
-
-    /**
-     *
-     * @param rowKeyConverter
-     * @@deprecated please use {@link #setRowKeyConverter(javax.faces.convert.Converter)}
-     */
-    @Deprecated
-    public void setConverter(Converter<T> rowKeyConverter) {
-        this.rowKeyConverter = rowKeyConverter;
     }
 }
