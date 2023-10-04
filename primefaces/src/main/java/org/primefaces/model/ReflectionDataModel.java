@@ -29,10 +29,12 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 import org.primefaces.application.PropertyDescriptorResolver;
+import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.util.LangUtils;
@@ -87,55 +89,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        PrimeApplicationContext primeAppContext = PrimeApplicationContext.getCurrentInstance(context);
-        Locale locale = LocaleUtils.getCurrentLocale(context);
-        Collator collator = Collator.getInstance(locale);
-
-        values.sort((obj1, obj2) -> {
-            for (SortMeta sortMeta : sortBy.values()) {
-                Object value1 = primeAppContext.getPropertyDescriptorResolver().getValue(obj1, sortMeta.getField());
-                Object value2 = primeAppContext.getPropertyDescriptorResolver().getValue(obj2, sortMeta.getField());
-
-                try {
-                    int result;
-
-                    if (sortMeta.getFunction() == null) {
-                        //Empty check
-                        if (value1 == null && value2 == null) {
-                            result = 0;
-                        }
-                        else if (value1 == null) {
-                            result = sortMeta.getNullSortOrder();
-                        }
-                        else if (value2 == null) {
-                            result = -1 * sortMeta.getNullSortOrder();
-                        }
-                        else if (value1 instanceof String && value2 instanceof String) {
-                            if (sortMeta.isCaseSensitiveSort()) {
-                                result = collator.compare(value1, value2);
-                            }
-                            else {
-                                String str1 = (((String) value1).toLowerCase(locale));
-                                String str2 = (((String) value2).toLowerCase(locale));
-
-                                result = collator.compare(str1, str2);
-                            }
-                        }
-                        else {
-                            result = ((Comparable<Object>) value1).compareTo(value2);
-                        }
-                    }
-                    else {
-                        result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2});
-                    }
-
-                    return sortMeta.getOrder().isAscending() ? result : -1 * result;
-                } catch (Exception e) {
-                    throw new FacesException(e);
-                }
-            }
-            return 0;
-        });
+        values.sort(BeanPropertyComparator.reflectionBased(context, (UITable) UIComponent.getCurrentComponent(context), sortBy.values()));
 
         if (sorter != null) {
             values.sort(sorter);

@@ -45,6 +45,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -604,7 +605,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         return false;
     }
 
+    default Locale resolveDataLocale(FacesContext context) {
+        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
+    }
+
     int getChildCount();
 
     List<UIComponent> getChildren();
+
+    Object getDataLocale();
 }

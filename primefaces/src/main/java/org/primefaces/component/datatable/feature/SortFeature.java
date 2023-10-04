@@ -42,6 +42,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
+import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
@@ -141,39 +142,12 @@ public class SortFeature implements DataTableFeature {
         }
 
         List<?> list = resolveList(value);
-        Locale locale = table.resolveDataLocale();
         String var = table.getVar();
-        Collator collator = Collator.getInstance(locale);
-        AtomicInteger comparisonResult = new AtomicInteger();
         Map<String, SortMeta> sortBy = table.getActiveSortMeta();
 
         Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-        list.sort((o1, o2) -> {
-            for (SortMeta sortMeta : sortBy.values()) {
-                comparisonResult.set(0);
-
-                if (sortMeta.isHeaderRow()) {
-                    int result = compare(context, var, sortMeta, o1, o2, collator, locale);
-                    comparisonResult.set(result);
-                }
-                else {
-                    // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
-                    // and can't use sortMeta.getComponent()
-                    // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
-                    table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                        int result = compare(context, var, sortMeta, o1, o2, collator, locale);
-                        comparisonResult.set(result);
-                    });
-                }
-
-                if (comparisonResult.get() != 0) {
-                    return comparisonResult.get();
-                }
-            }
-
-            return 0;
-        });
+        list.sort(BeanPropertyComparator.valueExprBased(context, table, sortBy.values()));
 
         if (varBackup == null) {
             context.getExternalContext().getRequestMap().remove(var);
