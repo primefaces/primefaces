@@ -55,7 +55,10 @@ public class DataTable001 implements Serializable {
     @PostConstruct
     public void init() {
         progLanguages = service.getLangs();
-        progLanguagesLazyDataModel = ReflectionDataModel.<ProgrammingLanguage>builder().valueSupplier(() -> service.getLangs()).build();
+        progLanguagesLazyDataModel = ReflectionDataModel.<ProgrammingLanguage>builder()
+                .valueSupplier(() -> service.getLangs())
+                .rowKeyField("id")
+                .build();
         globalFilterOnly = false;
     }
 
