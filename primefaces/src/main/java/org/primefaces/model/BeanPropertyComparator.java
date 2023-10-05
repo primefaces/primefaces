@@ -68,18 +68,15 @@ public class BeanPropertyComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) {
         AtomicInteger result = new AtomicInteger(0);
         for (SortMeta sortMeta : sortBy) {
-            final Object fv1 = mapper.map(context, var, sortMeta, o1);
-            final Object fv2 = mapper.map(context, var, sortMeta, o2);
-
             if (sortMeta.isHeaderRow()) {
-                result.set(compare(context, sortMeta, fv1, fv2, collator, locale));
+                result.set(compareWithMapper(sortMeta, o1, o2));
             }
             else {
                 // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
                 // and can't use sortMeta.getComponent()
                 // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
                 table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                    result.set(compare(context, sortMeta, fv1, fv2, collator, locale));
+                    result.set(compareWithMapper(sortMeta, o1, o2));
                 });
             }
 
@@ -89,6 +86,12 @@ public class BeanPropertyComparator implements Comparator<Object> {
         }
 
         return 0;
+    }
+
+    private int compareWithMapper(SortMeta sortMeta, Object o1, Object o2) {
+        final Object fv1 = mapper.map(context, var, sortMeta, o1);
+        final Object fv2 = mapper.map(context, var, sortMeta, o2);
+        return compare(context, sortMeta, fv1, fv2, collator, locale);
     }
 
     public static int compare(FacesContext context, SortMeta sortMeta, Object value1, Object value2,
