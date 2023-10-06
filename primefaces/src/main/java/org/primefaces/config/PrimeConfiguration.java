@@ -62,7 +62,6 @@ public class PrimeConfiguration {
     private String[] exceptionTypesToIgnoreInLogging;
     private final String multiViewStateStore;
     private final boolean markInputAsInvalidOnErrorMsg;
-    private final String propertyDescriptorResolver;
 
     // internal config
     private final boolean stringConverterAvailable;
@@ -129,8 +128,6 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.HTML5_COMPLIANCE);
         html5Compliance = Boolean.parseBoolean(value);
-
-        propertyDescriptorResolver = externalContext.getInitParameter(Constants.ContextParams.PROPERTY_DESCRIPTOR_RESOLVER);
 
         value = Objects.toString(externalContext.getInitParameter(Constants.ContextParams.CSP));
         switch (value) {
@@ -311,9 +308,5 @@ public class PrimeConfiguration {
 
     public String getCookiesSameSite() {
         return cookiesSameSite;
-    }
-
-    public String getPropertyDescriptorResolver() {
-        return propertyDescriptorResolver;
     }
 }

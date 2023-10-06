@@ -263,18 +263,10 @@ public class PrimeApplicationContext {
     }
 
     private void resolvePropertyDescriptorResolver() {
-        if (LangUtils.isBlank(config.getPropertyDescriptorResolver())) {
-            propertyDescriptorResolver = new PropertyDescriptorResolver.DefaultResolver();
-        }
-        else {
-            try {
-                propertyDescriptorResolver = (PropertyDescriptorResolver)
-                        Class.forName(config.getPropertyDescriptorResolver()).getConstructor().newInstance();
-            }
-            catch (ReflectiveOperationException e) {
-                throw new FacesException(e);
-            }
-        }
+        propertyDescriptorResolver = ServiceLoader.load(PropertyDescriptorResolver.class, applicationClassLoader).stream()
+                .findFirst()
+                .map(ServiceLoader.Provider::get)
+                .orElseThrow(() -> new FacesException("Error while loading PropertyDescriptorResolver SPI service"));
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -285,6 +277,7 @@ public class PrimeApplicationContext {
         if (facesContext == null || facesContext.getExternalContext() == null) {
             return null;
         }
+
 
         PrimeApplicationContext applicationContext =
                 (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);

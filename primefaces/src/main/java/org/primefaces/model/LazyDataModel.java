@@ -242,18 +242,4 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
-
-    public Converter<T> getRowKeyConverter() {
-        return rowKeyConverter;
-    }
-
-    /**
-     *
-     * @return
-     * @deprecated please use {@link #getRowKeyConverter()}
-     */
-    @Deprecated
-    public Converter<T> getConverter() {
-        return rowKeyConverter;
-    }
 }

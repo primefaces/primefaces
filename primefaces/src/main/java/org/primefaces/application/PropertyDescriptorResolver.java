@@ -42,10 +42,10 @@ public interface PropertyDescriptorResolver {
     class DefaultResolver implements PropertyDescriptorResolver {
 
         private static final Pattern NESTED_EXPRESSION_PATTERN = Pattern.compile("\\.");
-        private final Map<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
+        private final Map<String, Map<String, PropertyDescriptor>> pdCache;
 
         public DefaultResolver() {
-            propertyDescriptorCache = new ConcurrentHashMap<>();
+            pdCache = new ConcurrentHashMap<>();
         }
 
         @Override
@@ -77,13 +77,12 @@ public interface PropertyDescriptorResolver {
 
         @Override
         public void flush() {
-            propertyDescriptorCache.clear();
+            pdCache.clear();
         }
 
         private PropertyDescriptor getSimpleProperty(Class<?> klazz, String field) {
             String cacheKey = klazz.getName();
-            Map<String, PropertyDescriptor> classCache = propertyDescriptorCache
-                    .computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
+            Map<String, PropertyDescriptor> classCache = pdCache.computeIfAbsent(cacheKey, k -> new ConcurrentHashMap<>());
             return classCache.computeIfAbsent(field, k -> {
                 try {
                     return new PropertyDescriptor(k, klazz);
