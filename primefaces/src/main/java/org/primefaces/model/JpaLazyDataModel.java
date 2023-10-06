@@ -26,7 +26,6 @@ package org.primefaces.model;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.faces.context.FacesContext;
@@ -38,10 +37,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.SerializableSupplier;
+import org.primefaces.util.*;
 
 /**
  * Basic {@link LazyDataModel} implementation with JPA and Criteria API.
@@ -51,21 +47,21 @@ import org.primefaces.util.SerializableSupplier;
 public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
     protected Class<T> entityClass;
-    protected SerializableSupplier<EntityManager> entityManager;
     protected String rowKeyField;
     protected boolean caseSensitive = true;
     protected boolean wildcardSupport = false;
+    protected Class<?> rowKeyType = Long.class;
     protected QueryEnricher<T> queryEnricher;
     protected FilterEnricher<T> filterEnricher;
     protected SortEnricher<T> sortEnricher;
-    private Function<T, String> rowKeyProvider;
-    private Class<?> rowKeyType = Long.class;
+    protected SerializableSupplier<EntityManager> entityManager;
+    protected SerializableFunction<T, Object> rowKeyProvider;
 
     /**
      * For serialization only
      */
     public JpaLazyDataModel() {
-
+        // NOOP
     }
 
     /**
@@ -353,7 +349,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public String getRowKey(T obj) {
-        return rowKeyProvider.apply(obj);
+        return String.valueOf(rowKeyProvider.apply(obj));
     }
 
     public static <T> Builder<T> builder() {
@@ -434,15 +430,12 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                 }
                 else {
                     Objects.requireNonNull(model.rowKeyField, "rowKeyField is mandatory if no rowKeyProvider nor converter is provided");
+
                     PropertyDescriptorResolver propResolver =
                             PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getPropertyDescriptorResolver();
                     model.rowKeyType = Objects.requireNonNullElseGet(model.rowKeyType,
                             () -> propResolver.get(model.entityClass, model.rowKeyField).getPropertyType());
-
-                    model.rowKeyProvider = obj -> {
-                        Object rowKeyValue = propResolver.getValue(obj, model.rowKeyField);
-                        return Objects.toString(rowKeyValue, null);
-                    };
+                    model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
                 }
             }
             return model;

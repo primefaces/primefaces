@@ -158,8 +158,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
     public T getRowData(String rowKey) {
         List<T> values = Objects.requireNonNullElseGet(valuesSupplier.get(), Collections::emptyList);
         for (T obj : values) {
-            String currentRowKey  = getRowKey(obj);
-            if (Objects.equals(rowKey, currentRowKey)) {
+            if (Objects.equals(rowKey, getRowKey(obj))) {
                 return obj;
             }
         }
@@ -227,11 +226,10 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
                 }
                 else {
                     Objects.requireNonNull(model.rowKeyField, "rowKeyField is mandatory if no rowKeyProvider nor converter is provided");
-                    model.rowKeyProvider = obj -> {
-                        PrimeApplicationContext primeAppContext =
-                                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
-                        return primeAppContext.getPropertyDescriptorResolver().getValue(obj, model.rowKeyField);
-                    };
+
+                    PropertyDescriptorResolver propResolver =
+                            PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getPropertyDescriptorResolver();
+                    model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
                 }
             }
             return model;
