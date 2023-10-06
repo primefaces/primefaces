@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-core</artifactId>
-            <version>5.1.1.Final</version>
+            <version>5.1.2.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>jakarta.el</groupId>
