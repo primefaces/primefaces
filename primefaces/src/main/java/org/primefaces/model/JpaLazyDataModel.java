@@ -329,7 +329,6 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public T getRowData(String rowKey) {
-        Converter<T> rowKeyConverter = getRowKeyConverter();
         if (rowKeyConverter != null) {
             return super.getRowData(rowKey);
         }

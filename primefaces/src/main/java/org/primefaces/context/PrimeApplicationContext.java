@@ -266,7 +266,7 @@ public class PrimeApplicationContext {
         propertyDescriptorResolver = ServiceLoader.load(PropertyDescriptorResolver.class, applicationClassLoader).stream()
                 .findFirst()
                 .map(ServiceLoader.Provider::get)
-                .orElseThrow(() -> new FacesException("Error while loading PropertyDescriptorResolver SPI service"));
+                .orElseThrow(() -> new FacesException("No PropertyDescriptorResolver SPI service found"));
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -277,7 +277,6 @@ public class PrimeApplicationContext {
         if (facesContext == null || facesContext.getExternalContext() == null) {
             return null;
         }
-
 
         PrimeApplicationContext applicationContext =
                 (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
