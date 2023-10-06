@@ -23,17 +23,16 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import lombok.Data;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.integrationtests.general.utilities.TestUtils;
-
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
+import lombok.Data;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.integrationtests.general.utilities.TestUtils;
 import org.primefaces.model.ReflectionDataModel;
 
 @Named
@@ -58,7 +57,7 @@ public class DataTable002 implements Serializable {
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
         reflectionLazyDataModel = ReflectionDataModel.<ProgrammingLanguage>builder()
                 .valueSupplier(() -> programmingLanguages)
-                .rowKeyProvider((obj) -> Integer.toString(obj.getId()))
+                .rowKeyProvider(ProgrammingLanguage::getId)
                 .build();
     }
 

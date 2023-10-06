@@ -25,7 +25,6 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,19 +34,16 @@ import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.SerializableFunction;
-import org.primefaces.util.SerializableSupplier;
+import org.primefaces.util.*;
 
 public class ReflectionDataModel<T> extends LazyDataModel<T> {
 
-    private SerializableSupplier<List<T>> valuesSupplier;
     private String rowKeyField;
-    private Function<T, String> rowKeyProvider;
     private FilterConstraint filter;
-    private SerializableFunction<T, Boolean> skipFiltering;
     private Sorter<T> sorter;
+    private SerializableSupplier<List<T>> valuesSupplier;
+    private SerializableFunction<T, Object> rowKeyProvider;
+    private SerializablePredicate<T> skipFiltering;
 
     /**
      * For serialization only
@@ -108,7 +104,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
 
         return values.stream()
                 .filter(obj -> {
-                    if (skipFiltering != null && Boolean.TRUE.equals(skipFiltering.apply(obj))) {
+                    if (skipFiltering != null && Boolean.TRUE.equals(skipFiltering.test(obj))) {
                         return true;
                     }
 
@@ -162,7 +158,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
     public T getRowData(String rowKey) {
         List<T> values = Objects.requireNonNullElseGet(valuesSupplier.get(), Collections::emptyList);
         for (T obj : values) {
-            String currentRowKey  = rowKeyProvider.apply(obj);
+            String currentRowKey  = String.valueOf(rowKeyProvider.apply(obj));
             if (Objects.equals(rowKey, currentRowKey)) {
                 return obj;
             }
@@ -173,7 +169,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
 
     @Override
     public String getRowKey(T obj) {
-        return rowKeyProvider.apply(obj);
+        return String.valueOf(rowKeyProvider.apply(obj));
     }
 
     public static <T> Builder<T> builder() {
@@ -197,7 +193,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public Builder<T> rowKeyProvider(SerializableFunction<T, String> rowKeyProvider) {
+        public Builder<T> rowKeyProvider(SerializableFunction<T, Object> rowKeyProvider) {
             model.rowKeyProvider = rowKeyProvider;
             return this;
         }
@@ -212,7 +208,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public Builder<T> skipFiltering(SerializableFunction<T, Boolean> skipFiltering) {
+        public Builder<T> skipFiltering(SerializablePredicate<T> skipFiltering) {
             model.skipFiltering = skipFiltering;
             return this;
         }
@@ -234,8 +230,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
                     model.rowKeyProvider = obj -> {
                         PrimeApplicationContext primeAppContext =
                                 PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
-                        Object rowKeyValue = primeAppContext.getPropertyDescriptorResolver().getValue(obj, model.rowKeyField);
-                        return Objects.toString(rowKeyValue, null);
+                        return primeAppContext.getPropertyDescriptorResolver().getValue(obj, model.rowKeyField);
                     };
                 }
             }
