@@ -158,7 +158,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
     public T getRowData(String rowKey) {
         List<T> values = Objects.requireNonNullElseGet(valuesSupplier.get(), Collections::emptyList);
         for (T obj : values) {
-            String currentRowKey  = String.valueOf(rowKeyProvider.apply(obj));
+            String currentRowKey  = getRowKey(obj);
             if (Objects.equals(rowKey, currentRowKey)) {
                 return obj;
             }
