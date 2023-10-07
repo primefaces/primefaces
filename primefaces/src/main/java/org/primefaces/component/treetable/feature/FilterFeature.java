@@ -241,7 +241,7 @@ public class FilterFeature implements TreeTableFeature {
                 }
             }
             catch (ReflectiveOperationException e) {
-                LOGGER.warning("Calling copy constructor of " + node.getClass().getName() + " failed: " + e.getMessage());
+                LOGGER.warning("Calling copy constructor of " + node.getClass().getSimpleName() + " failed: " + e.getMessage());
             }
 
             if (clone == null) {
