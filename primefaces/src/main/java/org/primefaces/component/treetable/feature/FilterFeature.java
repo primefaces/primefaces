@@ -110,7 +110,7 @@ public class FilterFeature implements TreeTableFeature {
         collectFilteredRowKeys(context, tt, root, root, filterBy, filterLocale, filteredRowKeys);
 
         // recreate tree node
-        TreeNode filteredValue = cloneTreeNode(tt, root, root.getParent());
+        TreeNode filteredValue = cloneTreeNode(root, root.getParent());
         createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
 
         tt.updateFilteredValue(context, filteredValue);
@@ -199,7 +199,7 @@ public class FilterFeature implements TreeTableFeature {
 
             for (String rk : filteredRowKeys) {
                 if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
-                    TreeNode newNode = cloneTreeNode(tt, childNode, filteredNode);
+                    TreeNode newNode = cloneTreeNode(childNode, filteredNode);
                     if (rk.startsWith(rowKeyOfChildNode + "_")) {
                         newNode.setExpanded(true);
                     }
@@ -211,7 +211,7 @@ public class FilterFeature implements TreeTableFeature {
         }
     }
 
-    protected TreeNode cloneTreeNode(TreeTable tt, TreeNode<?> node, TreeNode<?> parent) {
+    protected TreeNode cloneTreeNode(TreeNode<?> node, TreeNode<?> parent) {
         TreeNode clone = null;
 
         // equals check instead of instanceof to allow subclassing

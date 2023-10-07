@@ -40,7 +40,7 @@ public class TreeTableFilterFeatureTest {
         CustomNode<String> customNode = new CustomNode<>("Type", "Name", root);
         TreeTable treeTable = new TreeTable();
 
-        TreeNode cloneCustomNode = filterFeature.cloneTreeNode(treeTable, customNode, cloneRoot);
+        TreeNode cloneCustomNode = filterFeature.cloneTreeNode(customNode, cloneRoot);
 
         Assertions.assertEquals(1, cloneRoot.getChildren().size());
         Assertions.assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
@@ -55,7 +55,7 @@ public class TreeTableFilterFeatureTest {
         DefaultTreeNode<String> regularNode = new DefaultTreeNode<>("Type", "Name", root);
         TreeTable treeTable = new TreeTable();
 
-        TreeNode cloneCustomNode = filterFeature.cloneTreeNode(treeTable, regularNode, cloneRoot);
+        TreeNode cloneCustomNode = filterFeature.cloneTreeNode(regularNode, cloneRoot);
 
         Assertions.assertEquals(1, cloneRoot.getChildren().size());
         Assertions.assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
