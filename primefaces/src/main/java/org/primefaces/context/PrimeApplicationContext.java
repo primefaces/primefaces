@@ -25,18 +25,20 @@ package org.primefaces.context;
 
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.spi.FileTypeDetector;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -118,14 +120,11 @@ public class PrimeApplicationContext {
                 // Reflectively call getClassLoader() on the context in order to be compatible with both the Portlet 3.0
                 // API and the Servlet API without depending on the Portlet API directly.
                 Method getClassLoaderMethod = context.getClass().getMethod("getClassLoader");
-
-                if (getClassLoaderMethod != null) {
-                    classLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
-                }
+                classLoader = (ClassLoader) getClassLoaderMethod.invoke(context);
             }
-            catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | AbstractMethodError |
-                NoSuchMethodError | UnsupportedOperationException e) {
-                // Do nothing.
+            catch (ReflectiveOperationException | AbstractMethodError
+                   | NoSuchMethodError | UnsupportedOperationException e) {
+                // NOOP
             }
             catch (Throwable t) {
                 LOGGER.log(Level.WARNING, "An unexpected Exception or Error was thrown when calling " +
@@ -165,8 +164,7 @@ public class PrimeApplicationContext {
                     Class<? extends CacheProvider> cacheProviderClazz = LangUtils.loadClassForName(cacheProviderConfigValue);
                     return cacheProviderClazz.getConstructor().newInstance();
                 }
-                catch (NoSuchMethodException | ClassNotFoundException | InstantiationException
-                        | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                catch (ReflectiveOperationException | IllegalArgumentException ex) {
                     throw new FacesException(ex);
                 }
             }
@@ -202,13 +200,10 @@ public class PrimeApplicationContext {
     }
 
     private void resolveFileTypeDetector() {
-        ServiceLoader<FileTypeDetector> loader = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader);
-
         // collect all first to avoid concurrency issues #8797
-        List<FileTypeDetector> detectors = new ArrayList<>();
-        for (FileTypeDetector detector : loader) {
-            detectors.add(detector);
-        }
+        List<FileTypeDetector> detectors = ServiceLoader.load(FileTypeDetector.class, applicationClassLoader).stream()
+                .map(ServiceLoader.Provider::get)
+                .collect(Collectors.toList());
 
         fileTypeDetector = new FileTypeDetector() {
 
@@ -257,7 +252,8 @@ public class PrimeApplicationContext {
         }
 
         String finalUploader = uploader;
-        fileUploadDecoder = StreamSupport.stream(ServiceLoader.load(FileUploadDecoder.class, applicationClassLoader).spliterator(), false)
+        fileUploadDecoder = ServiceLoader.load(FileUploadDecoder.class, applicationClassLoader).stream()
+                .map(ServiceLoader.Provider::get)
                 .filter(d -> d.getName().equals(finalUploader))
                 .findFirst()
                 .orElseThrow(() -> new FacesException("FileUploaderDecoder '" + finalUploader + "' not found"));
