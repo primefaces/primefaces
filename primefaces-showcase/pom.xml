@@ -233,6 +233,7 @@
                     <noSourceMap>true</noSourceMap>
                     <style>COMPRESSED</style>
                     <quiet>false</quiet>
+                    <version>1.68.0</version>
                 </configuration>
             </plugin>
             <plugin>

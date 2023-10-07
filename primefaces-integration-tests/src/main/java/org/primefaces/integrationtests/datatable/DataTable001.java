@@ -34,7 +34,7 @@ import javax.inject.Named;
 import lombok.Data;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.ReflectionDataModel;
+import org.primefaces.model.NonLazyDataModel;
 
 @Named
 @ViewScoped
@@ -55,7 +55,7 @@ public class DataTable001 implements Serializable {
     @PostConstruct
     public void init() {
         progLanguages = service.getLangs();
-        progLanguagesLazyDataModel = ReflectionDataModel.<ProgrammingLanguage>builder()
+        progLanguagesLazyDataModel = NonLazyDataModel.<ProgrammingLanguage>builder()
                 .valueSupplier(() -> service.getLangs())
                 .rowKeyProvider(ProgrammingLanguage::getId)
                 .build();

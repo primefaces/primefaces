@@ -30,13 +30,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
-import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.util.*;
 
-public class ReflectionDataModel<T> extends LazyDataModel<T> {
+public class NonLazyDataModel<T> extends LazyDataModel<T> {
 
     private String rowKeyField;
     private FilterConstraint filter;
@@ -48,7 +47,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
     /**
      * For serialization only
      */
-    public ReflectionDataModel() {
+    public NonLazyDataModel() {
         // NOOP
     }
 
@@ -176,10 +175,10 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
     }
 
     public static class Builder<T> {
-        final ReflectionDataModel<T> model;
+        final NonLazyDataModel<T> model;
 
         public Builder() {
-            model = new ReflectionDataModel<>();
+            model = new NonLazyDataModel<>();
         }
 
         public Builder<T> valueSupplier(SerializableSupplier<List<T>> valuesSupplier) {
@@ -217,7 +216,7 @@ public class ReflectionDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public ReflectionDataModel<T> build() {
+        public NonLazyDataModel<T> build() {
             Objects.requireNonNull(model.valuesSupplier, "Value supplier not set");
 
             if (model.rowKeyProvider == null) {

@@ -37,6 +37,11 @@ import javax.faces.model.DataModelListener;
 /**
  * DataModel to deal with huge datasets with by lazy loading, page by page.
  *
+ * As long {@link DataModel} is not serializable,
+ * see <a href="https://github.com/jakartaee/faces/issues/1585">...</a>,
+ * do no extend from {@link javax.faces.model.ListDataModel}
+ * see #7699
+ *
  * @param <T> The model class.
  */
 public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {

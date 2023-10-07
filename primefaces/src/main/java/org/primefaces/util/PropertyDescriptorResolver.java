@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.application;
+package org.primefaces.util;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;

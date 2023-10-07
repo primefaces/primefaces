@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.model;
+package org.primefaces.util;
 
 import java.text.Collator;
 import java.util.Collection;
@@ -32,9 +32,9 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.model.SortMeta;
 
 public class BeanPropertyComparator implements Comparator<Object> {
 

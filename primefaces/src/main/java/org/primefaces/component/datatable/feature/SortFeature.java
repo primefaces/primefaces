@@ -37,9 +37,9 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
-import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
+import org.primefaces.util.BeanPropertyComparator;
 import org.primefaces.util.ComponentUtils;
 
 public class SortFeature implements DataTableFeature {

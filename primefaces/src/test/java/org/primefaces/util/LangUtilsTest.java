@@ -119,41 +119,6 @@ public class LangUtilsTest {
         assertEquals("My Über String", LangUtils.toCapitalCase("myÜberString"));
     }
 
-//    @Test
-//    public void getField() {
-//        Field field = null;
-//
-//        field = LangUtils.getValueByReflection(AbstractClass.class, "container.string");
-//        Assertions.assertNotNull(field);
-//        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-//        Assertions.assertEquals("string", field.getName());
-//
-//        field = LangUtils.getValueByReflection(AbstractClass.class, "container.container.string");
-//        Assertions.assertNotNull(field);
-//        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-//        Assertions.assertEquals("string", field.getName());
-//
-//        field = LangUtils.getValueByReflection(AbstractClass.class, "container.container");
-//        Assertions.assertNotNull(field);
-//        Assertions.assertEquals(Container.class, field.getDeclaringClass());
-//        Assertions.assertEquals("container", field.getName());
-//
-//        field = LangUtils.getField(SimpleClass.class, "strings");
-//        Assertions.assertNotNull(field);
-//        Assertions.assertEquals(SimpleClass.class, field.getDeclaringClass());
-//        Assertions.assertEquals("strings", field.getName());
-//
-//        Assertions.assertNotNull(LangUtils.getField(AbstractClass.class, "ints"));
-//        Assertions.assertNotNull(LangUtils.getField(ConcreteClass.class, "ints"));
-//        Assertions.assertNotNull(LangUtils.getField(AbstractGenericClass.class, "values"));
-//        Assertions.assertNotNull(LangUtils.getField(ConcreteGenericClass.class, "values"));
-//        Assertions.assertNotNull(LangUtils.getField(DetailedConcreteGenericClass.class, "values"));
-//
-//        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getField(DetailedConcreteGenericClass.class, "rasdasd"));
-//        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getValueByReflection(AbstractClass.class, "container2.stringss"));
-//        Assertions.assertThrows(IllegalArgumentException.class, () -> LangUtils.getValueByReflection(AbstractClass.class, "container.stringss"));
-//    }
-
     class SimpleClass {
 
         private List<String> strings;

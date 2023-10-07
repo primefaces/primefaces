@@ -35,7 +35,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.primefaces.application.PropertyDescriptorResolver;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.*;
 
