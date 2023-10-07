@@ -26,7 +26,7 @@ package org.primefaces.component.api;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
-
+import java.util.function.BiConsumer;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -46,7 +46,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.ConsumerTwo;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
@@ -1338,11 +1337,11 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return Boolean.parseBoolean(paramValue);
     }
 
-    public void forEachTab(ConsumerTwo<Tab, Integer> callback) {
+    public void forEachTab(BiConsumer<Tab, Integer> callback) {
         forEachTab(callback, true);
     }
 
-    public void forEachTab(ConsumerTwo<Tab, Integer> callback, boolean skipUnrendered) {
+    public void forEachTab(BiConsumer<Tab, Integer> callback, boolean skipUnrendered) {
         if (isRepeating()) {
             Tab tab = getDynamicTab();
 
