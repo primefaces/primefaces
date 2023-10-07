@@ -267,7 +267,7 @@ public class LangUtils {
         return tryToLoadClassForName(name) != null;
     }
 
-    public static Class tryToLoadClassForName(String name) {
+    public static <T> Class<T> tryToLoadClassForName(String name) {
         try {
             return loadClassForName(name);
         }
@@ -285,12 +285,12 @@ public class LangUtils {
         }
     }
 
-    public static Class loadClassForName(String name) throws ClassNotFoundException {
+    public static <T> Class<T> loadClassForName(String name) throws ClassNotFoundException {
         try {
-            return Class.forName(name, false, LangUtils.class.getClassLoader());
+            return (Class<T>) Class.forName(name, false, LangUtils.class.getClassLoader());
         }
         catch (ClassNotFoundException e) {
-            return Class.forName(name, false, getContextClassLoader());
+            return (Class<T>) Class.forName(name, false, getContextClassLoader());
         }
     }
 
