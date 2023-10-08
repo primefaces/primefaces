@@ -39,7 +39,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
 
     private List<TreeNode<T>> children;
 
-    private TreeNode parent;
+    private TreeNode<T> parent;
 
     private boolean expanded;
 
@@ -60,7 +60,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         this.data = data;
     }
 
-    public DefaultTreeNode(T data, TreeNode parent) {
+    public DefaultTreeNode(T data, TreeNode<T> parent) {
         this.type = DEFAULT_TYPE;
         this.data = data;
         this.children = initChildren();
@@ -69,7 +69,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         }
     }
 
-    public DefaultTreeNode(String type, T data, TreeNode parent) {
+    public DefaultTreeNode(String type, T data, TreeNode<T> parent) {
         this.type = type;
         this.data = data;
         this.children = initChildren();
@@ -79,7 +79,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     protected List<TreeNode<T>> initChildren() {
-        return new TreeNodeChildren(this);
+        return new TreeNodeChildren<>(this);
     }
 
     @Override
@@ -111,18 +111,18 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
             this.children = children;
         }
         else {
-            this.children = new TreeNodeChildren(this);
+            this.children = new TreeNodeChildren<>(this);
             this.children.addAll(children);
         }
     }
 
     @Override
-    public TreeNode getParent() {
+    public TreeNode<T> getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(TreeNode parent) {
+    public void setParent(TreeNode<T> parent) {
         this.parent = parent;
     }
 
@@ -209,7 +209,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
             return false;
         }
 
-        DefaultTreeNode other = (DefaultTreeNode) obj;
+        DefaultTreeNode<T> other = (DefaultTreeNode<T>) obj;
         if (data == null) {
             if (other.data != null) {
                 return false;
@@ -220,15 +220,10 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         }
 
         if (rowKey == null) {
-            if (other.rowKey != null) {
-                return false;
-            }
-        }
-        else if (!rowKey.equals(other.rowKey)) {
-            return false;
+            return other.rowKey == null;
         }
 
-        return true;
+        return rowKey.equals(other.rowKey);
     }
 
     @Override
