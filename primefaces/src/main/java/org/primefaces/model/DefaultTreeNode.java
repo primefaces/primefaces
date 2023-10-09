@@ -50,23 +50,15 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     private String rowKey;
 
     public DefaultTreeNode() {
-        this.type = DEFAULT_TYPE;
-        this.children = initChildren();
+        this(null);
     }
 
     public DefaultTreeNode(T data) {
-        this.type = DEFAULT_TYPE;
-        this.children = initChildren();
-        this.data = data;
+        this(data, null);
     }
 
     public DefaultTreeNode(T data, TreeNode parent) {
-        this.type = DEFAULT_TYPE;
-        this.data = data;
-        this.children = initChildren();
-        if (parent != null) {
-            parent.getChildren().add(this);
-        }
+        this(DEFAULT_TYPE, data, parent);
     }
 
     public DefaultTreeNode(String type, T data, TreeNode parent) {
@@ -79,7 +71,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     protected List<TreeNode<T>> initChildren() {
-        return new TreeNodeChildren(this);
+        return new TreeNodeChildren<>(this);
     }
 
     @Override
@@ -111,7 +103,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
             this.children = children;
         }
         else {
-            this.children = new TreeNodeChildren(this);
+            this.children = new TreeNodeChildren<>(this);
             this.children.addAll(children);
         }
     }
@@ -209,7 +201,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
             return false;
         }
 
-        DefaultTreeNode other = (DefaultTreeNode) obj;
+        DefaultTreeNode<T> other = (DefaultTreeNode<T>) obj;
         if (data == null) {
             if (other.data != null) {
                 return false;
@@ -220,15 +212,10 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         }
 
         if (rowKey == null) {
-            if (other.rowKey != null) {
-                return false;
-            }
-        }
-        else if (!rowKey.equals(other.rowKey)) {
-            return false;
+            return other.rowKey == null;
         }
 
-        return true;
+        return rowKey.equals(other.rowKey);
     }
 
     @Override
