@@ -1,8 +1,10 @@
 # Dialog Framework
 
-Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated dynamically on runtime.
-This is quite different to regular usage of dialogs with declarative p:dialog components as DF is based on a programmatic API where dialogs are created and destroyed at
-runtime.
+Dialog Framework (DF) is used to open an xhtml page in a iframe embedded inside a dynamically generated dialog.  
+This is quite different to regular usage of dialogs with declarative `p:dialog` components, as DF is based on a programmatic API where dialogs are created and destroyed at
+runtime.  
+
+!> As the xhtml is rendered in a iframe, it's a completely new view from a Faces perspective. The view-state and therefore `@ViewScoped` bean instances are not shared between the parent page and the dialog.
 
 Note that DF and the declarative approach are two different ways and both can even be used together.
 Usage is quite simple, PrimeFaces.current().dialog() has _openDynamic_ and _closeDynamic_ methods;
