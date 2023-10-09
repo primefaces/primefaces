@@ -128,6 +128,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.panelId = this.jqId + '_panel';
         this.labelId = this.id + '_label';
         this.panel = $(this.panelId);
+        this.widthAligned = false;
         this.itemContainerWrapper = this.panel.children('.ui-selectcheckboxmenu-items-wrapper');
         this.keyboardTarget = $(this.jqId + '_focus');
         this.tabindex = this.keyboardTarget.attr('tabindex');
