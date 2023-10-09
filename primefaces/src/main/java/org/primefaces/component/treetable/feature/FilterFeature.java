@@ -241,7 +241,9 @@ public class FilterFeature implements TreeTableFeature {
                 }
             }
             catch (ReflectiveOperationException e) {
-                LOGGER.warning("Calling copy constructor of " + node.getClass().getSimpleName() + " failed: " + e.getMessage());
+                if (!(e instanceof NoSuchMethodException)) {
+                    throw new FacesException("Calling copy constructor of " + node.getClass().getSimpleName() + " failed: " + e.getMessage());
+                }
             }
 
             if (clone == null) {
@@ -250,9 +252,17 @@ public class FilterFeature implements TreeTableFeature {
                     clone = ctor.newInstance(node.getType(), node.getData(), parent);
                 }
                 catch (ReflectiveOperationException e) {
-                    throw new FacesException("Calling constructor " + node.getClass().getSimpleName()
-                            + "(String type, Object data, TreeNode parent) failed", e);
+                    if (!(e instanceof NoSuchMethodException)) {
+                        throw new FacesException("Calling constructor " + node.getClass().getSimpleName()
+                                + "(String type, Object data, TreeNode parent) failed", e);
+                    }
                 }
+            }
+
+            if (clone == null) {
+                throw new FacesException("Custom node requires to implement either Cloneable, "
+                        + "a constructor: " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent), "
+                        + "or a copy contructor");
             }
         }
 
