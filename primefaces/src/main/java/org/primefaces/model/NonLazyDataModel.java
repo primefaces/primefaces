@@ -134,7 +134,7 @@ public class NonLazyDataModel<T> extends LazyDataModel<T> {
                                 convertedFilterValue = filterValue;
                             }
                             else {
-                                convertedFilterValue = ComponentUtils.convertToType(filterValue, filterValueClass, getClass());
+                                convertedFilterValue = ComponentUtils.convertToType(filterValue, fieldValue.getClass(), getClass());
                             }
                         }
 
