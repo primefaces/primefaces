@@ -82,7 +82,7 @@ public class NonLazyDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        values.sort(BeanPropertyComparator.reflectionBased(context, (UITable) UIComponent.getCurrentComponent(context), sortBy.values()));
+        values.sort(SortMetaComparator.reflectionBased(context, (UITable) UIComponent.getCurrentComponent(context), sortBy.values()));
 
         if (sorter != null) {
             values.sort(sorter);

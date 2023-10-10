@@ -39,8 +39,8 @@ import org.primefaces.component.datatable.DataTableState;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
-import org.primefaces.util.BeanPropertyComparator;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.SortMetaComparator;
 
 public class SortFeature implements DataTableFeature {
 
@@ -142,7 +142,7 @@ public class SortFeature implements DataTableFeature {
 
         Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-        list.sort(BeanPropertyComparator.valueExprBased(context, table, sortBy.values()));
+        list.sort(SortMetaComparator.valueExprBased(context, table, sortBy.values()));
 
         if (varBackup == null) {
             context.getExternalContext().getRequestMap().remove(var);

@@ -36,7 +36,7 @@ import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.SortMeta;
 
-public class BeanPropertyComparator implements Comparator<Object> {
+public class SortMetaComparator implements Comparator<Object> {
 
     private final FacesContext context;
     private final Collection<SortMeta> sortBy;
@@ -46,7 +46,7 @@ public class BeanPropertyComparator implements Comparator<Object> {
     private final Collator collator;
     private final BeanPropertyMapper mapper;
 
-    public BeanPropertyComparator(FacesContext context, UITable table, Collection<SortMeta> sortBy, BeanPropertyMapper mapper) {
+    public SortMetaComparator(FacesContext context, UITable table, Collection<SortMeta> sortBy, BeanPropertyMapper mapper) {
         this.context = context;
         this.sortBy = sortBy;
         this.table = table;
@@ -57,11 +57,11 @@ public class BeanPropertyComparator implements Comparator<Object> {
     }
 
     public static Comparator<Object> valueExprBased(FacesContext context, UITable table, Collection<SortMeta> sortBy) {
-        return new BeanPropertyComparator(context, table, sortBy, valueExprMapper());
+        return new SortMetaComparator(context, table, sortBy, valueExprMapper());
     }
 
     public static Comparator<Object> reflectionBased(FacesContext context, UITable table, Collection<SortMeta> sortBy) {
-        return new BeanPropertyComparator(context, table, sortBy, reflectionMapper());
+        return new SortMetaComparator(context, table, sortBy, reflectionMapper());
     }
 
     @Override
