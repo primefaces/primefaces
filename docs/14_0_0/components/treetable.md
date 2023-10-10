@@ -23,7 +23,6 @@ id | null | String | Unique identifier of the component
 allowUnsorting | false | Boolean | Defines whether columns are allowed to be unsorted. Default is false.
 binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
 cellSeparator | null | String | Separator text to use in output mode of editable cells with multiple components.
-cloneOnFilter | false | Boolean | Defines if nodes should be cloned on filter via Cloneable interface or Copy-Constructor (CustomNode(CustomNode original) or CustomNode(String type, Object data, TreeNode parent)). Normally the filtered nodes are new instanceof of DefaultTreeNode.
 currentPageReportTemplate | null | String | Template of the currentPageReport UI.
 dataLocale | null | Object | Locale to be used in features such as sorting, defaults to view locale.
 disabledTextSelection | true | Boolean | Disables text selection on row click.

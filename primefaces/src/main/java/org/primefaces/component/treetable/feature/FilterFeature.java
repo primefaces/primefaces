@@ -23,18 +23,18 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import javax.el.ELContext;
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
+import javax.el.ELContext;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.treetable.TreeTable;
@@ -110,7 +110,7 @@ public class FilterFeature implements TreeTableFeature {
         collectFilteredRowKeys(context, tt, root, root, filterBy, filterLocale, filteredRowKeys);
 
         // recreate tree node
-        TreeNode filteredValue = cloneTreeNode(tt, root, root.getParent());
+        TreeNode filteredValue = cloneTreeNode(root, root.getParent());
         createFilteredValueFromRowKeys(tt, root, filteredValue, filteredRowKeys);
 
         tt.updateFilteredValue(context, filteredValue);
@@ -199,7 +199,7 @@ public class FilterFeature implements TreeTableFeature {
 
             for (String rk : filteredRowKeys) {
                 if (rk.equals(rowKeyOfChildNode) || rk.startsWith(rowKeyOfChildNode + "_") || rowKeyOfChildNode.startsWith(rk + "_")) {
-                    TreeNode newNode = cloneTreeNode(tt, childNode, filteredNode);
+                    TreeNode newNode = cloneTreeNode(childNode, filteredNode);
                     if (rk.startsWith(rowKeyOfChildNode + "_")) {
                         newNode.setExpanded(true);
                     }
@@ -211,7 +211,7 @@ public class FilterFeature implements TreeTableFeature {
         }
     }
 
-    protected TreeNode cloneTreeNode(TreeTable tt, TreeNode<?> node, TreeNode<?> parent) {
+    protected TreeNode cloneTreeNode(TreeNode<?> node, TreeNode<?> parent) {
         TreeNode clone = null;
 
         // equals check instead of instanceof to allow subclassing
@@ -222,61 +222,47 @@ public class FilterFeature implements TreeTableFeature {
         else if (DefaultTreeNode.class.equals(node.getClass())) {
             clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
         }
-
-        if (clone == null && tt.isCloneOnFilter()) {
-            if (node instanceof Cloneable) {
-                try {
-                    Method cloneMethod = node.getClass().getMethod("clone");
-                    if (cloneMethod != null) {
-                        cloneMethod.setAccessible(true);
-                        clone = (TreeNode) cloneMethod.invoke(node);
-                    }
-                }
-                catch (NoSuchMethodException e) {
-                    LOGGER.warning(node.getClass().getName() + " declares Cloneable but no clone() method found!");
-                }
-                catch (InvocationTargetException | IllegalAccessException e) {
-                    LOGGER.warning(node.getClass().getName() + "#clone() not accessible!");
-                }
+        else if (node instanceof Cloneable) {
+            try {
+                Method cloneMethod = node.getClass().getMethod("clone");
+                cloneMethod.setAccessible(true);
+                clone = (TreeNode) cloneMethod.invoke(node);
             }
-            else {
-                try {
-                    Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(node.getClass());
-                    clone = ctor.newInstance(node);
-                    if (parent != null) {
-                        parent.getChildren().add(clone);
-                    }
-                }
-                catch (NoSuchMethodException e) {
-                    // ignore
-                }
-                catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
-                    LOGGER.warning("Could not clone " + node.getClass().getName()
-                            + " via public " + node.getClass().getSimpleName() + "() constructor!");
-                }
-
-                if (clone == null) {
-                    try {
-                        Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
-                        clone = ctor.newInstance(node.getType(), node.getData(), parent);
-                    }
-                    catch (NoSuchMethodException e) {
-                        // ignore
-                    }
-                    catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
-                        LOGGER.warning("Could not clone " + node.getClass().getName()
-                                + " via public " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent) constructor!");
-                    }
-                }
+            catch (ReflectiveOperationException e) {
+                throw new FacesException("Cloning using " + node.getClass().getSimpleName() + "#clone() failed", e);
             }
         }
-
-        if (clone == null) {
-            if (node instanceof CheckboxTreeNode) {
-                clone = new CheckboxTreeNode(node.getType(), node.getData(), parent);
+        else {
+            try {
+                Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(node.getClass());
+                clone = ctor.newInstance(node);
+                if (parent != null) {
+                    parent.getChildren().add(clone);
+                }
             }
-            else {
-                clone = new DefaultTreeNode(node.getType(), node.getData(), parent);
+            catch (ReflectiveOperationException e) {
+                if (!(e instanceof NoSuchMethodException)) {
+                    throw new FacesException("Calling copy constructor of " + node.getClass().getSimpleName() + " failed: " + e.getMessage());
+                }
+            }
+
+            if (clone == null) {
+                try {
+                    Constructor<? extends TreeNode> ctor = node.getClass().getConstructor(String.class, Object.class, TreeNode.class);
+                    clone = ctor.newInstance(node.getType(), node.getData(), parent);
+                }
+                catch (ReflectiveOperationException e) {
+                    if (!(e instanceof NoSuchMethodException)) {
+                        throw new FacesException("Calling constructor " + node.getClass().getSimpleName()
+                                + "(String type, Object data, TreeNode parent) failed", e);
+                    }
+                }
+            }
+
+            if (clone == null) {
+                throw new FacesException("Custom node requires to implement either Cloneable, "
+                        + "a constructor: " + node.getClass().getSimpleName() + "(String type, Object data, TreeNode parent), "
+                        + "or a copy contructor");
             }
         }
 
