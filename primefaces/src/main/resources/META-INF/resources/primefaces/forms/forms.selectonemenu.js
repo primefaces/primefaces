@@ -31,6 +31,7 @@
  * @prop {PrimeFaces.UnbindCallback} [hideOverlayHandler] Unbind callback for the hide overlay handler.
  * @prop {JQuery} input The DOM element for the hidden input with the current value.
  * @prop {boolean} isDynamicLoaded Whether the contents of the overlay panel were loaded.
+ * @prop {boolean} isTabbing Whether the current process is handling the tab key.
  * @prop {JQuery} [items] The DOM elements for the available selectable options.
  * @prop {JQuery} [itemsContainer] The DOM element for the container with the available selectable options.
  * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable options.
@@ -117,9 +118,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.appendTo = PrimeFaces.utils.resolveAppendTo(this, this.jq, this.panel);
         this.cfg.renderPanelContentOnClient = this.cfg.renderPanelContentOnClient === true;
         this.isDynamicLoaded = false;
-
+        this.isTabbing = false;
         this.searchValue = '';
-
+        
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
@@ -660,7 +661,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case 'Tab':
-                    $this.handleTabKey();
+                    $this.handleTabKey(e);
                 break;
 
                 case 'Escape':
@@ -808,7 +809,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case 'Tab':
-                    $this.handleTabKey();
+                    $this.handleTabKey(e);
                 break;
 
                 case 'Escape':
@@ -939,9 +940,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * Callback for when the tab key was pressed. Selects the next option.
      * @private
+     * @param {JQuery.TriggeredEvent} event The keyboard event for the TAB.
      */
-    handleTabKey: function() {
-        if(this.panel.is(':visible')) {
+    handleTabKey: function(event) {
+        this.isTabbing = this.panel.is(':visible');
+        if(this.isTabbing) {
             this.selectItem(this.getActiveItem());
         }
     },
@@ -1011,7 +1014,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 onExited: function() {
                     $this.panel.css('z-index', '');
                     $this.keyboardTarget.attr('aria-expanded', false);
-                    $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+                    if (!$this.isTabbing) {
+                        $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+                    }
+                    $this.isTabbing = false;
                 }
             });
         }
