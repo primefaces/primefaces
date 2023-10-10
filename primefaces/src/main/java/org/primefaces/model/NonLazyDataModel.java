@@ -125,17 +125,17 @@ public class NonLazyDataModel<T> extends LazyDataModel<T> {
                         }
 
                         Object fieldValue = propResolver.getValue(obj, filterMeta.getField());
-
                         Object filterValue = filterMeta.getFilterValue();
-                        Object convertedFilterValue;
+                        Object convertedFilterValue = null;
 
-                        Class<?> filterValueClass = filterValue.getClass();
-                        if (filterValueClass.isArray() || Collection.class.isAssignableFrom(filterValueClass)) {
-                            convertedFilterValue = filterValue;
-                        }
-                        else {
-                            Class<?> fieldType = propResolver.get(obj.getClass(), filterMeta.getField()).getPropertyType();
-                            convertedFilterValue = LangUtils.convertToType(filterValue, fieldType, getClass());
+                        if (fieldValue != null) {
+                            Class<?> filterValueClass = filterValue.getClass();
+                            if (filterValueClass.isArray() || Collection.class.isAssignableFrom(filterValueClass)) {
+                                convertedFilterValue = filterValue;
+                            }
+                            else {
+                                convertedFilterValue = ComponentUtils.convertToType(filterValue, filterValueClass, getClass());
+                            }
                         }
 
                         localMatch = filterMeta.getConstraint().isMatching(context, fieldValue, convertedFilterValue, locale);
@@ -219,7 +219,8 @@ public class NonLazyDataModel<T> extends LazyDataModel<T> {
         public NonLazyDataModel<T> build() {
             Objects.requireNonNull(model.valuesSupplier, "Value supplier not set");
 
-            if (model.rowKeyProvider == null) {
+            boolean requiresRowKeyProvider = model.rowKeyProvider == null && (model.rowKeyConverter != null || model.rowKeyField != null);
+            if (requiresRowKeyProvider) {
                 if (model.rowKeyConverter != null) {
                     model.rowKeyProvider = model::getRowKeyFromConverter;
                 }

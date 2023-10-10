@@ -169,7 +169,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     convertedFilterValue = filterValue;
                 }
                 else {
-                    convertedFilterValue = LangUtils.convertToType(filterValue, pd.getPropertyType(), getClass());
+                    convertedFilterValue = ComponentUtils.convertToType(filterValue, pd.getPropertyType(), getClass());
                 }
 
                 Expression fieldExpression = resolveFieldExpression(cb, cq, root, filter.getField());
@@ -332,7 +332,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return super.getRowData(rowKey);
         }
 
-        Object convertedRowKey = LangUtils.convertToType(rowKey, rowKeyType, getClass());
+        Object convertedRowKey = ComponentUtils.convertToType(rowKey, rowKeyType, getClass());
 
         EntityManager em = entityManager.get();
 
@@ -422,7 +422,8 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             Objects.requireNonNull(model.entityClass, "entityClass not set");
             Objects.requireNonNull(model.entityManager, "entityManager not set");
 
-            if (model.rowKeyProvider == null) {
+            boolean requiresRowKeyProvider = model.rowKeyProvider == null && (model.rowKeyConverter != null || model.rowKeyField != null);
+            if (requiresRowKeyProvider) {
                 if (model.rowKeyConverter != null) {
                     model.rowKeyProvider = model::getRowKeyFromConverter;
                 }

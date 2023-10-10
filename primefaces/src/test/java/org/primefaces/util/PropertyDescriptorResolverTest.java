@@ -59,13 +59,17 @@ public class PropertyDescriptorResolverTest {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         B b = new B("b", true, Boolean.FALSE, DummyEnum.X);
-        C c = new C(b);
+        D d = new D("d", false, Boolean.FALSE, DummyEnum.Z, 123);
+        C c = new C(d);
 
-        Object obj = propResolver.getValue(c, "b.dummyEnum");
-        Assertions.assertEquals(DummyEnum.X, obj);
+        Object obj = propResolver.getValue(c, "b");
+        Assertions.assertEquals(d, obj);
 
-        obj = propResolver.getValue(c, "b");
-        Assertions.assertEquals(b, obj);
+        obj = propResolver.getValue(c, "b.dummyEnum");
+        Assertions.assertEquals(DummyEnum.Z, obj);
+
+        obj = propResolver.getValue(c, "b.foo");
+        Assertions.assertEquals(123, obj);
 
         Assertions.assertThrows(FacesException.class, () -> propResolver.getValue(b, "unknown"));
     }
@@ -122,6 +126,24 @@ public class PropertyDescriptorResolverTest {
 
         public void setDummyEnum(DummyEnum dummyEnum) {
             this.dummyEnum = dummyEnum;
+        }
+    }
+
+    private class D extends B {
+
+        private int foo;
+
+        public D(String name, boolean bool1, Boolean bool2, DummyEnum dummyEnum, int foo) {
+            super(name, bool1, bool2, dummyEnum);
+            this.foo = foo;
+        }
+
+        public int getFoo() {
+            return foo;
+        }
+
+        public void setFoo(int foo) {
+            this.foo = foo;
         }
     }
 
