@@ -182,7 +182,7 @@
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>9.0.80</version>
+            <version>9.0.81</version>
             <scope>test</scope>
         </dependency>
         <!-- Content type validation in FileUploadUtilsTest -->
