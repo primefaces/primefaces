@@ -24,6 +24,7 @@
 package org.primefaces.application.resource;
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.matches;
@@ -31,6 +32,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
+import javax.faces.FacesException;
 import javax.faces.context.ResponseWriter;
 
 import org.junit.jupiter.api.Assertions;
@@ -247,6 +249,32 @@ public class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter).writeAttribute("src", "include", null);
         verify(wrappedWriter).writeAttribute("charset", "UTF-8", null);
         verify(wrappedWriter).write(contains("inline"));
+    }
+
+    @Test
+    public void testDuplicateHtmlElements() throws IOException {
+        writer.startElement("HTML", null);
+        verify(wrappedWriter).startElement("HTML", null);
+
+
+        FacesException exception = assertThrows(FacesException.class, () -> {
+            writer.startElement("HtmL", null);
+        });
+        Assertions.assertEquals("Duplicate <html> elements were found in the response.", exception.getMessage());
+    }
+
+    @Test
+    public void testDuplicateBodyElements() throws IOException {
+        writer.startElement("HTML", null);
+        verify(wrappedWriter).startElement("HTML", null);
+        writer.startElement("BODY", null);
+        verify(wrappedWriter).startElement("BODY", null);
+
+
+        FacesException exception = assertThrows(FacesException.class, () -> {
+            writer.startElement("BoDy", null);
+        });
+        Assertions.assertEquals("Duplicate <body> elements were found in the response.", exception.getMessage());
     }
 
 }
