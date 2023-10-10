@@ -28199,7 +28199,7 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Whether to focus the first tab that contains an error after form submission.]]>
+                <![CDATA[Whether to focus the first tab that contains an error after form submission. Default is false.]]>
             </description>
             <name>focusOnError</name>
             <required>false</required>
@@ -28207,7 +28207,7 @@
         </attribute>
          <attribute>
             <description>
-                <![CDATA[Whether to focus on the last active tab that a user selected.]]>
+                <![CDATA[Whether to focus on the last active tab that a user selected. Default is false.]]>
             </description>
             <name>focusOnLastActiveTab</name>
             <required>false</required>
