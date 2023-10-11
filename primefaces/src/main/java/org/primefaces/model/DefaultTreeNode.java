@@ -71,7 +71,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     protected List<TreeNode<T>> initChildren() {
-        return new TreeNodeChildren<>(this);
+        return new TreeNodeChildren(this);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
             this.children = children;
         }
         else {
-            this.children = new TreeNodeChildren<>(this);
+            this.children = new TreeNodeChildren(this);
             this.children.addAll(children);
         }
     }
@@ -201,7 +201,7 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
             return false;
         }
 
-        DefaultTreeNode<T> other = (DefaultTreeNode<T>) obj;
+        DefaultTreeNode other = (DefaultTreeNode) obj;
         if (data == null) {
             if (other.data != null) {
                 return false;
