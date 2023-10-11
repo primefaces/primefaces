@@ -33,7 +33,7 @@ import javax.inject.Named;
 import lombok.Data;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.integrationtests.general.utilities.TestUtils;
-import org.primefaces.model.NonLazyDataModel;
+import org.primefaces.model.DefaultLazyDataModel;
 
 @Named
 @ViewScoped
@@ -44,7 +44,7 @@ public class DataTable002 implements Serializable {
 
     protected List<ProgrammingLanguage> programmingLanguages;
     protected ProgrammingLanguageLazyDataModel lazyDataModel;
-    protected NonLazyDataModel<ProgrammingLanguage> reflectionLazyDataModel;
+    protected DefaultLazyDataModel<ProgrammingLanguage> reflectionLazyDataModel;
     protected ProgrammingLanguage selectedProgrammingLanguage;
 
     @PostConstruct
@@ -55,7 +55,7 @@ public class DataTable002 implements Serializable {
                     ((i % 2) == 0) ? ProgrammingLanguage.ProgrammingLanguageType.COMPILED : ProgrammingLanguage.ProgrammingLanguageType.INTERPRETED));
         }
         lazyDataModel = new ProgrammingLanguageLazyDataModel();
-        reflectionLazyDataModel = NonLazyDataModel.<ProgrammingLanguage>builder()
+        reflectionLazyDataModel = DefaultLazyDataModel.<ProgrammingLanguage>builder()
                 .valueSupplier(() -> programmingLanguages)
                 .rowKeyProvider(ProgrammingLanguage::getId)
                 .build();

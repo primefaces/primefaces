@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.NonLazyDataModel;
+import org.primefaces.model.DefaultLazyDataModel;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
 
@@ -45,7 +45,7 @@ public class BasicView implements Serializable {
 
     @PostConstruct
     public void init() {
-        products = NonLazyDataModel.<Product>builder().valueSupplier(() -> service.getProducts(1000)).rowKeyField("id").build();
+        products = DefaultLazyDataModel.<Product>builder().valueSupplier(() -> service.getProducts(1000)).rowKeyField("id").build();
     }
 
     public LazyDataModel<Product> getProducts() {

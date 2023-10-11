@@ -35,7 +35,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.util.*;
 
-public class NonLazyDataModel<T> extends LazyDataModel<T> {
+public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
     private String rowKeyField;
     private FilterConstraint filter;
@@ -47,7 +47,7 @@ public class NonLazyDataModel<T> extends LazyDataModel<T> {
     /**
      * For serialization only
      */
-    public NonLazyDataModel() {
+    public DefaultLazyDataModel() {
         // NOOP
     }
 
@@ -175,10 +175,10 @@ public class NonLazyDataModel<T> extends LazyDataModel<T> {
     }
 
     public static class Builder<T> {
-        final NonLazyDataModel<T> model;
+        final DefaultLazyDataModel<T> model;
 
         public Builder() {
-            model = new NonLazyDataModel<>();
+            model = new DefaultLazyDataModel<>();
         }
 
         public Builder<T> valueSupplier(SerializableSupplier<List<T>> valuesSupplier) {
@@ -216,7 +216,7 @@ public class NonLazyDataModel<T> extends LazyDataModel<T> {
             return this;
         }
 
-        public NonLazyDataModel<T> build() {
+        public DefaultLazyDataModel<T> build() {
             Objects.requireNonNull(model.valuesSupplier, "Value supplier not set");
 
             boolean requiresRowKeyProvider = model.rowKeyProvider == null && (model.rowKeyConverter != null || model.rowKeyField != null);
