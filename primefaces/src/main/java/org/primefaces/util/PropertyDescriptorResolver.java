@@ -65,10 +65,8 @@ public interface PropertyDescriptorResolver {
         public Object getValue(Object bean, String expression) {
             try {
                 for (String field : NESTED_EXPRESSION_PATTERN.split(expression)) {
-                    if (bean != null) {
-                        bean = getSimpleProperty(bean.getClass(), field).getReadMethod().invoke(bean);
-                    }
-                    else {
+                    bean = getSimpleProperty(bean.getClass(), field).getReadMethod().invoke(bean);
+                    if (bean == null) {
                         break;
                     }
                 }
