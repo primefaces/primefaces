@@ -202,7 +202,7 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
         partialSelected = false;
 
         for (int i = 0; i < getChildCount(); i++) {
-            TreeNode<T> childNode = getChildren().get(i);
+            TreeNode childNode = getChildren().get(i);
 
             boolean childSelected = childNode.isSelected();
             boolean childPartialSelected = childNode.isPartialSelected();
