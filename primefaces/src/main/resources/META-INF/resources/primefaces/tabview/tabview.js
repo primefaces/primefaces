@@ -78,7 +78,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         this.focusedTabHeader = null;
         this.tabindex = this.cfg.tabindex||0;
         this.cfg.focusOnError = this.cfg.focusOnError || false;
-        this.cfg.focusOnLastActiveTab = this.cfg.focusOnLastActiveTab === undefined ? true : this.cfg.focusOnLastActiveTab;
+        this.cfg.focusOnLastActiveTab = this.cfg.focusOnLastActiveTab || false;
 
         if(this.cfg.scrollable) {
             this.navscroller = this.jq.children('.ui-tabs-navscroller');

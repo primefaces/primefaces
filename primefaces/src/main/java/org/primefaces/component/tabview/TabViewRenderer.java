@@ -119,7 +119,7 @@ public class TabViewRenderer extends CoreRenderer {
                 .attr("scrollable", tabView.isScrollable())
                 .attr("tabindex", tabView.getTabindex(), null)
                 .attr("focusOnError", tabView.isFocusOnError(), false)
-                .attr("focusOnLastActiveTab", tabView.isFocusOnLastActiveTab(), true)
+                .attr("focusOnLastActiveTab", tabView.isFocusOnLastActiveTab(), false)
                 .attr("touchable", ComponentUtils.isTouchable(context, tabView),  true)
                 .attr("multiViewState", tabView.isMultiViewState(), false);
 
