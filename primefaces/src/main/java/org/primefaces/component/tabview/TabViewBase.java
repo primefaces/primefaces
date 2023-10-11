@@ -188,7 +188,7 @@ public abstract class TabViewBase extends UITabPanel implements Widget, RTLAware
     }
 
     public boolean isFocusOnLastActiveTab() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnLastActiveTab, false);
     }
 
     public void setFocusOnLastActiveTab(boolean focusOnLastActiveTab) {
