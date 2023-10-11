@@ -40,28 +40,28 @@ public class SortMetaComparator implements Comparator<Object> {
 
     private final FacesContext context;
     private final Collection<SortMeta> sortBy;
-    private final UITable table;
+    private final UITable<?> table;
     private final Locale locale;
     private final String var;
     private final Collator collator;
     private final BeanPropertyMapper mapper;
 
-    public SortMetaComparator(FacesContext context, UITable table, Collection<SortMeta> sortBy, BeanPropertyMapper mapper) {
+    public SortMetaComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper) {
         this.context = context;
-        this.sortBy = sortBy;
         this.table = table;
+        this.sortBy = table.getActiveSortMeta().values();
         this.var = table.getVar();
         this.locale = table.resolveDataLocale(context);
         this.collator = Collator.getInstance(locale);
         this.mapper = mapper;
     }
 
-    public static Comparator<Object> valueExprBased(FacesContext context, UITable table, Collection<SortMeta> sortBy) {
-        return new SortMetaComparator(context, table, sortBy, valueExprMapper());
+    public static Comparator<Object> valueExprBased(FacesContext context, UITable<?> table) {
+        return new SortMetaComparator(context, table, valueExprMapper());
     }
 
-    public static Comparator<Object> reflectionBased(FacesContext context, UITable table, Collection<SortMeta> sortBy) {
-        return new SortMetaComparator(context, table, sortBy, reflectionMapper());
+    public static Comparator<Object> reflectionBased(FacesContext context, UITable<?> table) {
+        return new SortMetaComparator(context, table, reflectionMapper());
     }
 
     @Override

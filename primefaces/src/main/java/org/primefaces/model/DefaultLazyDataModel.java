@@ -63,7 +63,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         List<T> values = valuesSupplier.get();
         List<T> filteredValues = filter(values, filterBy);
 
-        sort(sortBy, filteredValues);
+        sort(filteredValues);
 
         if (pageSize == 0) {
             return filteredValues;
@@ -76,13 +76,13 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         return filteredValues.subList(first, last);
     }
 
-    protected void sort(Map<String, SortMeta> sortBy, List<T> values) {
+    protected void sort(List<T> values) {
         if (values == null || values.isEmpty()) {
             return;
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        values.sort(SortMetaComparator.reflectionBased(context, (UITable) UIComponent.getCurrentComponent(context), sortBy.values()));
+        values.sort(SortMetaComparator.reflectionBased(context, (UITable) UIComponent.getCurrentComponent(context)));
 
         if (sorter != null) {
             values.sort(sorter);

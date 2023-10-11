@@ -43,7 +43,7 @@ import org.primefaces.util.*;
  *
  * @param <T> The model class.
  */
-public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializable {
+public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializable {
 
     protected Class<T> entityClass;
     protected String rowKeyField;
@@ -59,7 +59,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     /**
      * For serialization only
      */
-    public JpaLazyDataModel() {
+    public JPALazyDataModel() {
         // NOOP
     }
 
@@ -70,7 +70,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityManager The {@link EntityManager}
      */
     @Deprecated
-    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
+    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
     }
@@ -84,7 +84,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @deprecated use the builder instead
      */
     @Deprecated
-    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
+    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
         this(entityClass, entityManager);
         this.rowKeyField = rowKeyField;
     }
@@ -98,7 +98,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @deprecated use the builder instead
      */
     @Deprecated
-    public JpaLazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> rowKeyConverter) {
+    public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> rowKeyConverter) {
         super(rowKeyConverter);
         this.entityClass = entityClass;
         this.entityManager = entityManager;
@@ -355,10 +355,10 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     }
 
     public static class Builder<T> {
-        private final JpaLazyDataModel<T> model;
+        private final JPALazyDataModel<T> model;
 
         public Builder() {
-            model = new JpaLazyDataModel<>(null, null, (String) null);
+            model = new JPALazyDataModel<>(null, null, (String) null);
         }
 
         public Builder<T> rowKeyConverter(Converter<T> rowKeyConverter) {
@@ -418,7 +418,7 @@ public class JpaLazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public JpaLazyDataModel<T> build() {
+        public JPALazyDataModel<T> build() {
             Objects.requireNonNull(model.entityClass, "entityClass not set");
             Objects.requireNonNull(model.entityManager, "entityManager not set");
 
