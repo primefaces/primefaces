@@ -4630,11 +4630,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.uncheckHeaderCheckbox();
             this.disableHeaderCheckbox();
         }
-        else if(!this.cfg.selectionPageOnly) {
-            if(this.selection.includes('@all')) {
-                this.enableHeaderCheckbox();
-                this.checkHeaderCheckbox();
-            }
+        else if(!this.cfg.selectionPageOnly && this.selection.includes('@all')) {
+            this.enableHeaderCheckbox();
+            this.checkHeaderCheckbox();
         }
         else {
             var checkboxes, selectedCheckboxes, enabledCheckboxes, disabledCheckboxes;
