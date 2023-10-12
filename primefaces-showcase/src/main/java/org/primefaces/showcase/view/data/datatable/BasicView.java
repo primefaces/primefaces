@@ -24,13 +24,12 @@
 package org.primefaces.showcase.view.data.datatable;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.DefaultLazyDataModel;
 import org.primefaces.showcase.domain.Product;
 import org.primefaces.showcase.service.ProductService;
 
@@ -38,17 +37,17 @@ import org.primefaces.showcase.service.ProductService;
 @ViewScoped
 public class BasicView implements Serializable {
 
-    private LazyDataModel<Product> products;
+    private List<Product> products;
 
     @Inject
     private ProductService service;
 
     @PostConstruct
     public void init() {
-        products = DefaultLazyDataModel.<Product>builder().valueSupplier(() -> service.getProducts(1000)).rowKeyField("id").build();
+        products = service.getProducts(10);
     }
 
-    public LazyDataModel<Product> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
