@@ -7,9 +7,9 @@
         <cve>CVE-2020-8908</cve>
     </suppress>
     <suppress>
-       <notes><![CDATA[file name: guava.jar PrimeFaces does not use the temp directory functionality that is vulnerable]]></notes>
-       <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
-       <cve>CVE-2023-2976</cve>
+        <notes><![CDATA[file name: guava.jar PrimeFaces does not use the temp directory functionality that is vulnerable]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
+        <cve>CVE-2023-2976</cve>
     </suppress>
     <suppress>
         <notes>
@@ -28,8 +28,13 @@
         <cve>CVE-2021-41568</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[ file name: json-20230227.jar JSON has been fixed but is still being reported. ]]></notes>
+        <notes><![CDATA[file name: hazelcast-5.3.0.jar (shaded: org.json:json:20230227)]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
-        <cve>CVE-2022-45688</cve>
+        <cpe>cpe:/a:json-java_project:json-java</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: hazelcast-5.3.0.jar (shaded: org.json:json:20230227)]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
+        <vulnerabilityName>CVE-2023-5072</vulnerabilityName>
     </suppress>
 </suppressions>
