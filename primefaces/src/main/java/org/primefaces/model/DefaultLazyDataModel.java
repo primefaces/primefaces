@@ -82,7 +82,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        values.sort(SortMetaComparator.reflectionBased(context, (UITable) UIComponent.getCurrentComponent(context)));
+        values.sort(SortMetaComparator.fieldBased(context, (UITable) UIComponent.getCurrentComponent(context)));
 
         if (sorter != null) {
             values.sort(sorter);
@@ -103,7 +103,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
 
         return values.stream()
                 .filter(obj -> {
-                    if (skipFiltering != null && Boolean.TRUE.equals(skipFiltering.test(obj))) {
+                    if (skipFiltering != null && skipFiltering.test(obj)) {
                         return true;
                     }
 

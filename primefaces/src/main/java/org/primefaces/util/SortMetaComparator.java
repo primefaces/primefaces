@@ -45,8 +45,9 @@ public class SortMetaComparator implements Comparator<Object> {
     private final String var;
     private final Collator collator;
     private final BeanPropertyMapper mapper;
+    private final boolean valueExprBased;
 
-    public SortMetaComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper) {
+    public SortMetaComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper, boolean valueExprBased) {
         this.context = context;
         this.table = table;
         this.sortBy = table.getActiveSortMeta().values();
@@ -54,30 +55,30 @@ public class SortMetaComparator implements Comparator<Object> {
         this.locale = table.resolveDataLocale(context);
         this.collator = Collator.getInstance(locale);
         this.mapper = mapper;
+        this.valueExprBased = valueExprBased;
     }
 
     public static Comparator<Object> valueExprBased(FacesContext context, UITable<?> table) {
-        return new SortMetaComparator(context, table, valueExprMapper());
+        return new SortMetaComparator(context, table, valueExprMapper(), true);
     }
 
     public static Comparator<Object> reflectionBased(FacesContext context, UITable<?> table) {
-        return new SortMetaComparator(context, table, reflectionMapper());
+        return new SortMetaComparator(context, table, reflectionMapper(), false);
     }
 
     @Override
     public int compare(Object o1, Object o2) {
         AtomicInteger result = new AtomicInteger(0);
         for (SortMeta sortMeta : sortBy) {
-            if (sortMeta.isHeaderRow()) {
-                result.set(compareWithMapper(sortMeta, o1, o2));
-            }
-            else {
+            if (valueExprBased && sortMeta.isDynamic()) {
                 // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
                 // and can't use sortMeta.getComponent()
                 // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
                 table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
                     result.set(compareWithMapper(sortMeta, o1, o2));
                 });
+            } else {
+                result.set(compareWithMapper(sortMeta, o1, o2));
             }
 
             if (result.get() != 0) {
@@ -136,7 +137,7 @@ public class SortMetaComparator implements Comparator<Object> {
         }
     }
 
-    public static BeanPropertyMapper valueExprMapper() {
+    public static BeanPropertyMapper sortByVEMapper() {
         return (context, var, sortMeta, o1) -> {
             ValueExpression ve = sortMeta.getSortBy();
             context.getExternalContext().getRequestMap().put(var, o1);
@@ -144,7 +145,7 @@ public class SortMetaComparator implements Comparator<Object> {
         };
     }
 
-    public static BeanPropertyMapper reflectionMapper() {
+    public static BeanPropertyMapper fieldMapper() {
         return (context, var, sortMeta, o1) -> {
             PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context)
                     .getPropertyDescriptorResolver();
