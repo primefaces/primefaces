@@ -45,9 +45,9 @@ public class SortTableComparator implements Comparator<Object> {
     private final String var;
     private final Collator collator;
     private final BeanPropertyMapper mapper;
-    private final boolean applyModelOnColIfDynamic;
+    private final boolean sortByVEBased;
 
-    public SortTableComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper, boolean applyModelOnColIfDynamic) {
+    public SortTableComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper, boolean sortByVEBased) {
         this.context = context;
         this.table = table;
         this.sortBy = table.getActiveSortMeta().values();
@@ -55,7 +55,7 @@ public class SortTableComparator implements Comparator<Object> {
         this.locale = table.resolveDataLocale(context);
         this.collator = Collator.getInstance(locale);
         this.mapper = mapper;
-        this.applyModelOnColIfDynamic = applyModelOnColIfDynamic;
+        this.sortByVEBased = sortByVEBased;
     }
 
     public static Comparator<Object> sortByVEBased(FacesContext context, UITable<?> table) {
@@ -70,14 +70,15 @@ public class SortTableComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) {
         AtomicInteger result = new AtomicInteger(0);
         for (SortMeta sortMeta : sortBy) {
-            if (applyModelOnColIfDynamic) {
+            if (sortByVEBased) {
                 // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
                 // and can't use sortMeta.getComponent()
                 // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
                 table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
                     result.set(compareWithMapper(sortMeta, o1, o2));
                 });
-            } else {
+            }
+            else {
                 result.set(compareWithMapper(sortMeta, o1, o2));
             }
 
