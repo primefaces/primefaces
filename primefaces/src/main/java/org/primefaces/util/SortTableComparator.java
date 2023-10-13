@@ -36,7 +36,7 @@ import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.SortMeta;
 
-public class SortMetaComparator implements Comparator<Object> {
+public class SortTableComparator implements Comparator<Object> {
 
     private final FacesContext context;
     private final Collection<SortMeta> sortBy;
@@ -45,9 +45,9 @@ public class SortMetaComparator implements Comparator<Object> {
     private final String var;
     private final Collator collator;
     private final BeanPropertyMapper mapper;
-    private final boolean valueExprBased;
+    private final boolean applyModelOnColIfDynamic;
 
-    public SortMetaComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper, boolean valueExprBased) {
+    public SortTableComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper, boolean applyModelOnColIfDynamic) {
         this.context = context;
         this.table = table;
         this.sortBy = table.getActiveSortMeta().values();
@@ -55,22 +55,22 @@ public class SortMetaComparator implements Comparator<Object> {
         this.locale = table.resolveDataLocale(context);
         this.collator = Collator.getInstance(locale);
         this.mapper = mapper;
-        this.valueExprBased = valueExprBased;
+        this.applyModelOnColIfDynamic = applyModelOnColIfDynamic;
     }
 
-    public static Comparator<Object> valueExprBased(FacesContext context, UITable<?> table) {
-        return new SortMetaComparator(context, table, valueExprMapper(), true);
+    public static Comparator<Object> sortByVEBased(FacesContext context, UITable<?> table) {
+        return new SortTableComparator(context, table, sortByVEMapper(), true);
     }
 
-    public static Comparator<Object> reflectionBased(FacesContext context, UITable<?> table) {
-        return new SortMetaComparator(context, table, reflectionMapper(), false);
+    public static Comparator<Object> fieldBased(FacesContext context, UITable<?> table) {
+        return new SortTableComparator(context, table, fieldMapper(), false);
     }
 
     @Override
     public int compare(Object o1, Object o2) {
         AtomicInteger result = new AtomicInteger(0);
         for (SortMeta sortMeta : sortBy) {
-            if (valueExprBased && sortMeta.isDynamic()) {
+            if (applyModelOnColIfDynamic) {
                 // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
                 // and can't use sortMeta.getComponent()
                 // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
