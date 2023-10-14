@@ -229,7 +229,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
         for (List<ColumnNode> rows : matrix) {
             for (int colIndex = 0; colIndex < rows.size(); colIndex++) {
                 ColumnNode node = rows.get(colIndex);
-                String text = ExporterUtils.getColumnFacetValue(context, node.getUIComp(), columnType);
+                ColumnValue colValue = ExporterUtils.getColumnFacetValue(context, node.getUIComp(), columnType);
 
                 int colSpan = node.getColspan();
                 int rowSpan = node.getUIComp() instanceof UIColumn
@@ -240,7 +240,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                         table,
                         colIndex,
                         rows.size(),
-                        () -> exportColumnGroupFacetValue(context, table, node, rowSpan, colSpan, text));
+                        () -> exportColumnGroupFacetValue(context, table, node, rowSpan, colSpan, colValue));
             }
         }
     }
@@ -270,7 +270,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
     }
 
     protected void exportColumnGroupFacetValue(FacesContext context, T table, ColumnNode column,
-                                               int rowspan, int colspan, String text) {
+                                               int rowspan, int colspan, ColumnValue columnValue) {
         if (supportedFacetTypes.contains(FacetType.COLUMN_GROUP)) {
             throw new UnsupportedOperationException(getClass().getName() + "#exportColumnGroupFacetValue() must be implemented");
         }

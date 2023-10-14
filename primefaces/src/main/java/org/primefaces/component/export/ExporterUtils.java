@@ -206,18 +206,18 @@ public final class ExporterUtils {
         return columnValue;
     }
 
-    public static String getColumnFacetValue(FacesContext context, Object component, TableExporter.ColumnType columnType) {
+    public static ColumnValue getColumnFacetValue(FacesContext context, Object component, TableExporter.ColumnType columnType) {
         if (component instanceof UIColumn) {
             return getColumnFacetValue(context, (UIColumn) component, columnType);
         }
         else if (component instanceof ColumnGroup) {
             ColumnGroup group = (ColumnGroup) component;
             if (TableExporter.ColumnType.HEADER == columnType) {
-                return group.getHeaderText();
+                return ColumnValue.of(group.getHeaderText());
             }
         }
 
-        return Constants.EMPTY_STRING;
+        return ColumnValue.EMPTY_VALUE;
     }
 
     public static String getColumnExportTag(FacesContext context, UIColumn column) {

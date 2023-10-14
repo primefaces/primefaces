@@ -54,6 +54,7 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspResponseWriter;
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
 

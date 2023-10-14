@@ -115,7 +115,7 @@
                     <p:column field="name" />
 
                     <p:columnGroup headerText="Goals">
-                        <p:columns value="#{dtGroupView.years}" var="year" headerText="#{year}" rendered="#{year ne 2010}">
+                        <p:columns var="year" value="#{dtGroupView.years}" sortBy="#{player.getGoals(year)}" filterBy="#{player.getGoals(year)}" headerText="#{year}">
                             <h:outputText value="#{player.getGoals(year)}"/>
                         </p:columns>
                     </p:columnGroup>

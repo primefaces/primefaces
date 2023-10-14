@@ -113,8 +113,8 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
     }
 
     @Override
-    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, UIColumn column,
-                                               AtomicInteger colIndex, ColumnValue columnValue) {
+    protected void exportColumnGroupFacetValueLegacy(FacesContext context, DataTable table, UIColumn column,
+                                                     AtomicInteger colIndex, ColumnValue columnValue) {
         Sheet sheet = sheet();
         int rowIndex = sheet.getLastRowNum();
 
@@ -160,7 +160,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
     }
 
     @Override
-    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, ColumnNode column, int rowspan, int colspan, String text) {
+    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, ColumnNode column, int rowspan, int colspan, ColumnValue colValue) {
         Sheet sheet = sheet();
         int rowIndex = sheet.getLastRowNum();
         Row row = row();
@@ -177,7 +177,7 @@ public class DataTableExcelExporter extends DataTableExporter<Workbook, ExcelOpt
             );
         }
 
-        exportColumnFacetValue(context, table, text, colIndex);
+        exportColumnFacetValue(context, table, colValue, colIndex);
     }
 
     @Override
