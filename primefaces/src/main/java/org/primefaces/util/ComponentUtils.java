@@ -62,6 +62,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.primefaces.renderkit.RendererUtils.getRenderKit;
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
 

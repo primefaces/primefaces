@@ -126,7 +126,7 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
     }
 
     @Override
-    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, UIColumn column,
+    protected void exportColumnGroupFacetValueLegacy(FacesContext context, DataTable table, UIColumn column,
                                                AtomicInteger colIndex, ColumnValue columnValue) {
         int rowSpan = column.getExportRowspan() != 0 ? column.getExportRowspan() : column.getRowspan();
         int colSpan = column.getExportColspan() != 0 ? column.getExportColspan() : column.getColspan();
@@ -134,8 +134,8 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
     }
 
     @Override
-    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, ColumnNode column, int rowspan, int colspan, String text) {
-        addFacetValue(rowspan, colspan, text);
+    protected void exportColumnGroupFacetValue(FacesContext context, DataTable table, ColumnNode column, int rowspan, int colspan, ColumnValue colValue) {
+        addFacetValue(rowspan, colspan, colValue);
     }
 
     @Override
