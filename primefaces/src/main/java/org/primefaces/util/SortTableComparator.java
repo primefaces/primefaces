@@ -40,7 +40,7 @@ import org.primefaces.model.TreeNode;
 
 public class SortTableComparator implements Comparator<Object> {
 
-    public static final BeanPropertyMapper SORTBY_VE_MAPPER = new SortByVEMapper();
+    public static final BeanPropertyMapper SORT_BY_VE_MAPPER = new SortByVEMapper();
     public static final BeanPropertyMapper FIELD_MAPPER = new FieldMapper();
     public static final BeanPropertyMapper TREE_NODE_MAPPER = new TreeNodeMapper();
 
@@ -51,7 +51,7 @@ public class SortTableComparator implements Comparator<Object> {
     private final String var;
     private final Collator collator;
     private final BeanPropertyMapper mapper;
-    private final AtomicInteger compareResult = new AtomicInteger(0); // don't put it local, avoid redundant creation by setting 0
+    private final AtomicInteger compareResult = new AtomicInteger(0);
 
     public SortTableComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper) {
         this.context = context;
@@ -63,21 +63,9 @@ public class SortTableComparator implements Comparator<Object> {
         this.mapper = Objects.requireNonNull(mapper, "mapper is necessary to extract property value");
     }
 
-    public static Comparator<Object> sortByVEBased(FacesContext context, UITable<?> table) {
-        return new SortTableComparator(context, table, SORTBY_VE_MAPPER);
-    }
-
-    public static Comparator<Object> fieldBased(FacesContext context, UITable<?> table) {
-        return new SortTableComparator(context, table, FIELD_MAPPER);
-    }
-
-    public static Comparator<Object> sortByVETreeNodeBased(FacesContext context, UITable<?> table) {
-        return new SortTableComparator(context, table, TREE_NODE_MAPPER);
-    }
-
     @Override
     public int compare(Object o1, Object o2) {
-        compareResult.set(0);
+        compareResult.set(0); //no local variable, avoid redundant creation: reset to 0
 
         for (SortMeta sortMeta : sortBy) {
             if (mapper.isValueExprBased() && sortMeta.isDynamic()) {
@@ -143,6 +131,18 @@ public class SortTableComparator implements Comparator<Object> {
         catch (Exception e) {
             throw new FacesException(e);
         }
+    }
+
+    public static Comparator<Object> sortByVEBased(FacesContext context, UITable<?> table) {
+        return new SortTableComparator(context, table, SORT_BY_VE_MAPPER);
+    }
+
+    public static Comparator<Object> fieldBased(FacesContext context, UITable<?> table) {
+        return new SortTableComparator(context, table, FIELD_MAPPER);
+    }
+
+    public static Comparator<Object> sortByVETreeNodeBased(FacesContext context, UITable<?> table) {
+        return new SortTableComparator(context, table, TREE_NODE_MAPPER);
     }
 
     public static class SortByVEMapper implements BeanPropertyMapper {
