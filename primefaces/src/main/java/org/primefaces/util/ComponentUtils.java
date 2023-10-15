@@ -41,6 +41,7 @@ import javax.faces.component.*;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.html.HtmlOutputFormat;
+import javax.faces.component.search.UntargetableComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.ExternalContext;
@@ -740,14 +741,8 @@ public class ComponentUtils {
         return component.getClass().getName().endsWith("UIRepeat");
     }
 
-    /**
-     * Method to check if component is a UIInstruction
-     * Since {@link javax.faces.component.search.UntargetableComponent} is introduced in 2.3
-     * Check is based on class name
-     */
     public static boolean isUntargetableComponent(UIComponent component) {
-        String clazz = component.getClass().getSimpleName();
-        return clazz.contains("UIInstructions") || clazz.contains("UILeaf");
+        return component instanceof UntargetableComponent; // like UIInstructions
     }
 
     public static boolean isTargetableComponent(UIComponent component) {

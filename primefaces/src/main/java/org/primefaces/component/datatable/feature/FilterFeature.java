@@ -34,6 +34,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
@@ -129,39 +132,41 @@ public class FilterFeature implements DataTableFeature {
             }
 
             final int rowIndex = i;
-            table.forEachColumn(column -> {
-                FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
-                if (filter == null || filter.isGlobalFilter()) {
-                    return true;
-                }
-
-                Object columnValue = filter.getLocalValue(elContext, column);
-
-                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
-                    FilterConstraint constraint = globalFilter.getConstraint();
-                    Object filterValue = globalFilter.getFilterValue();
-                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                }
-
-                if (!filter.isActive()) {
-                    return true;
-                }
-
-                FilterConstraint constraint = filter.getConstraint();
-                Object filterValue = filter.getFilterValue();
-                if (filterValue instanceof String && column instanceof ColumnBase) {
-                    ColumnBase columnBase = (ColumnBase) column;
-                    try {
-                        filterValue = ComponentUtils.getConvertedValue(
-                                context, columnBase, columnBase.getConverter(), filterValue);
+            ForEachRowColumn.from(table).invoke(new RowColumnVisitor.Adapter() {
+                @Override
+                public void visitColumn(int index, UIColumn column) throws IOException {
+                    FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
+                    if (filter == null || filter.isGlobalFilter()) {
+                        return;
                     }
-                    catch (Exception ex) {
-                        filterValue = null;
-                    }
-                }
 
-                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                return localMatch.get();
+                    Object columnValue = filter.getLocalValue(elContext, column);
+
+                    if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
+                        FilterConstraint constraint = globalFilter.getConstraint();
+                        Object filterValue = globalFilter.getFilterValue();
+                        globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                    }
+
+                    if (!filter.isActive()) {
+                        return;
+                    }
+
+                    FilterConstraint constraint = filter.getConstraint();
+                    Object filterValue = filter.getFilterValue();
+                    if (filterValue instanceof String && column instanceof ColumnBase) {
+                        ColumnBase columnBase = (ColumnBase) column;
+                        try {
+                            filterValue = ComponentUtils.getConvertedValue(
+                                    context, columnBase, columnBase.getConverter(), filterValue);
+                        }
+                        catch (Exception ex) {
+                            filterValue = null;
+                        }
+                    }
+
+                    localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                }
             });
 
             boolean matches = localMatch.get();

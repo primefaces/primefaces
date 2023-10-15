@@ -31,13 +31,15 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;
@@ -161,9 +163,12 @@ public class SortFeature implements DataTableFeature {
                     // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
                     // and can't use sortMeta.getComponent()
                     // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
-                    table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                        int result = compare(context, var, sortMeta, o1, o2, collator, locale);
-                        comparisonResult.set(result);
+                    ForEachRowColumn.from(table).columnKey(sortMeta.getColumnKey()).invoke(new RowColumnVisitor.Adapter() {
+                        @Override
+                        public void visitColumn(int index, UIColumn column) throws IOException {
+                            int result = compare(context, var, sortMeta, o1, o2, collator, locale);
+                            comparisonResult.set(result);
+                        }
                     });
                 }
 

@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import java.io.IOException;
 import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -182,45 +183,42 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     params.get(((UIComponent) this).getClientId(context) + separator + FilterMeta.GLOBAL_FILTER_KEY));
         }
 
-        forEachColumn(column -> {
-            FilterMeta filterMeta = filterBy.get(column.getColumnKey());
-            if (filterMeta == null || filterMeta.isGlobalFilter()) {
-                return true;
-            }
-
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyModel();
-            }
-
-            UIComponent filterFacet = column.getFilterComponent();
-            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
-
-            Object filterValue;
-            if (hasCustomFilter) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
-            }
-            else {
-                String valueHolderClientId = column instanceof DynamicColumn
-                        ? column.getContainerClientId(context) + separator + "filter"
-                        : column.getClientId(context) + separator + "filter";
-                filterValue = params.get(valueHolderClientId);
-            }
-
-            if (filterValue != null) {
-                // this is not absolutely necessary, but in case the result is null, it prevents to execution of the next statement
-                filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
-            }
-
-            if (filterValue != null) {
-                ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
-                if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
-                    filterValue = Arrays.asList((Object[]) filterValue);
+        ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.Adapter() {
+            @Override
+            public void visitColumn(int index, UIColumn column) throws IOException {
+                FilterMeta filterMeta = filterBy.get(column.getColumnKey());
+                if (filterMeta == null || filterMeta.isGlobalFilter()) {
+                    return;
                 }
+
+                UIComponent filterFacet = column.getFilterComponent();
+                boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
+
+                Object filterValue;
+                if (hasCustomFilter) {
+                    filterValue = ((ValueHolder) filterFacet).getLocalValue();
+                }
+                else {
+                    String valueHolderClientId = column instanceof DynamicColumn
+                            ? column.getContainerClientId(context) + separator + "filter"
+                            : column.getClientId(context) + separator + "filter";
+                    filterValue = params.get(valueHolderClientId);
+                }
+
+                if (filterValue != null) {
+                    // this is not absolutely necessary, but in case the result is null, it prevents to execution of the next statement
+                    filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
+                }
+
+                if (filterValue != null) {
+                    ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
+                    if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
+                        filterValue = Arrays.asList((Object[]) filterValue);
+                    }
+                }
+
+                filterMeta.setFilterValue(filterValue);
             }
-
-            filterMeta.setFilterValue(filterValue);
-
-            return true;
         });
     }
 
@@ -639,22 +637,16 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
                 if (child instanceof Columns) {
                     Columns columns = (Columns) child;
-                    List<DynamicColumn> dynaColumns = columns.getDynamicColumns();
-                    dynaColumns.forEach(col -> {
-                        col.applyStatelessModel();
-                        if (col.isRendered()) {
-                            row.add(new ColumnNode(root, col));
-                        }
+                    columns.forEachDynamicColumn(false, (col, pos) -> {
+                        row.add(new ColumnNode(root, col));
                     });
                 }
-                else if (child.isRendered()) {
-                    if (child instanceof Column) {
-                        row.add(new ColumnNode(root, child));
-                    }
-                    else if (child instanceof ColumnGroup) {
-                        ColumnNode column = new ColumnNode(root, child);
-                        row.add(column);
-                        treeColumnsTo2DArray(column, nodes, columnStart, columnEnd);
+                else if (child.isRendered()
+                        && (child instanceof Column || child instanceof ColumnGroup)) {
+                    ColumnNode node = new ColumnNode(root, child);
+                    row.add(node);
+                    if (child instanceof ColumnGroup) {
+                        treeColumnsTo2DArray(node, nodes, columnStart, columnEnd);
                     }
                 }
             }
