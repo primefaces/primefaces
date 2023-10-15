@@ -27,6 +27,7 @@ import java.text.Collator;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -35,8 +36,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.UITable;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.TreeNode;
 
 public class SortTableComparator implements Comparator<Object> {
+
+    public static final BeanPropertyMapper SORTBY_VE_MAPPER = new SortByVEMapper();
+    public static final BeanPropertyMapper FIELD_MAPPER = new FieldMapper();
+    public static final BeanPropertyMapper TREE_NODE_MAPPER = new TreeNodeMapper();
 
     private final FacesContext context;
     private final Collection<SortMeta> sortBy;
@@ -45,42 +51,46 @@ public class SortTableComparator implements Comparator<Object> {
     private final String var;
     private final Collator collator;
     private final BeanPropertyMapper mapper;
-    private final boolean sortByVEBased;
+    private final AtomicInteger compareResult = new AtomicInteger(0); // don't put it local, avoid redundant creation by setting 0
 
-    public SortTableComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper, boolean sortByVEBased) {
+    public SortTableComparator(FacesContext context, UITable<?> table, BeanPropertyMapper mapper) {
         this.context = context;
         this.table = table;
         this.sortBy = table.getActiveSortMeta().values();
         this.var = table.getVar();
         this.locale = table.resolveDataLocale(context);
         this.collator = Collator.getInstance(locale);
-        this.mapper = mapper;
-        this.sortByVEBased = sortByVEBased;
+        this.mapper = Objects.requireNonNull(mapper, "mapper is necessary to extract property value");
     }
 
     public static Comparator<Object> sortByVEBased(FacesContext context, UITable<?> table) {
-        return new SortTableComparator(context, table, sortByVEMapper(), true);
+        return new SortTableComparator(context, table, SORTBY_VE_MAPPER);
     }
 
     public static Comparator<Object> fieldBased(FacesContext context, UITable<?> table) {
-        return new SortTableComparator(context, table, fieldMapper(), false);
+        return new SortTableComparator(context, table, FIELD_MAPPER);
+    }
+
+    public static Comparator<Object> sortByVETreeNodeBased(FacesContext context, UITable<?> table) {
+        return new SortTableComparator(context, table, TREE_NODE_MAPPER);
     }
 
     @Override
     public int compare(Object o1, Object o2) {
-        AtomicInteger result = new AtomicInteger(0);
+        compareResult.set(0);
+
         for (SortMeta sortMeta : sortBy) {
-            if (sortByVEBased && sortMeta.isDynamic()) {
+            if (mapper.isValueExprBased() && sortMeta.isDynamic()) {
                 table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
-                    result.set(compareWithMapper(sortMeta, o1, o2));
+                    compareResult.set(compareWithMapper(sortMeta, o1, o2));
                 });
             }
             else {
-                result.set(compareWithMapper(sortMeta, o1, o2));
+                compareResult.set(compareWithMapper(sortMeta, o1, o2));
             }
 
-            if (result.get() != 0) {
-                return result.get();
+            if (compareResult.get() != 0) {
+                return compareResult.get();
             }
         }
 
@@ -135,24 +145,47 @@ public class SortTableComparator implements Comparator<Object> {
         }
     }
 
-    public static BeanPropertyMapper sortByVEMapper() {
-        return (context, var, sortMeta, o1) -> {
+    public static class SortByVEMapper implements BeanPropertyMapper {
+
+        @Override
+        public boolean isValueExprBased() {
+            return true;
+        }
+
+        @Override
+        public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
             ValueExpression ve = sortMeta.getSortBy();
-            context.getExternalContext().getRequestMap().put(var, o1);
+            context.getExternalContext().getRequestMap().put(var, obj);
             return ve.getValue(context.getELContext());
-        };
+        }
     }
 
-    public static BeanPropertyMapper fieldMapper() {
-        return (context, var, sortMeta, o1) -> {
-            PropertyDescriptorResolver propResolver = PrimeApplicationContext.getCurrentInstance(context)
-                    .getPropertyDescriptorResolver();
-            return propResolver.getValue(o1, sortMeta.getField());
-        };
+    public static class TreeNodeMapper extends SortByVEMapper {
+
+        @Override
+        public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
+            return super.map(context, var, sortMeta, ((TreeNode) obj).getData());
+        }
     }
 
-    @FunctionalInterface
+    public static class FieldMapper implements BeanPropertyMapper {
+
+        @Override
+        public boolean isValueExprBased() {
+            return false;
+        }
+
+        @Override
+        public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
+            PropertyDescriptorResolver propResolver =
+                    PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
+            return propResolver.getValue(obj, sortMeta.getField());
+        }
+    }
+
     public interface BeanPropertyMapper {
+
+        boolean isValueExprBased();
 
         Object map(FacesContext context, String var, SortMeta sortMeta, Object obj);
     }
