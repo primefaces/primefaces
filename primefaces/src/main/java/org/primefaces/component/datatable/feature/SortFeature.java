@@ -33,6 +33,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 
 import org.primefaces.PrimeFaces;
+import org.primefaces.component.api.ForEachRowColumn;
+import org.primefaces.component.api.RowColumnVisitor;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.DataTableState;

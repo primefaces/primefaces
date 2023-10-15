@@ -128,29 +128,28 @@ public class FilterFeature implements DataTableFeature {
             }
 
             final int rowIndex = i;
-            table.forEachColumn(column -> {
-                FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
-                if (filter == null || filter.isGlobalFilter()) {
-                    return true;
-                }
+            ForEachRowColumn.from(table).invoke(new RowColumnVisitor.Adapter() {
+                @Override
+                public void visitColumn(int index, UIColumn column) throws IOException {
+                    FilterMeta filter = filterBy.get(column.getColumnKey(table, rowIndex));
+                    if (filter == null || filter.isGlobalFilter()) {
+                        return;
+                    }
 
-                Object columnValue = filter.getLocalValue(elContext, column);
+                    Object columnValue = filter.getLocalValue(elContext, column);
 
-                if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
-                    FilterConstraint constraint = globalFilter.getConstraint();
-                    Object filterValue = globalFilter.getFilterValue();
-                    globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                }
+                    if (globalFilter != null && globalFilter.isActive() && !globalMatch.get() && !hasGlobalFilterFunction) {
+                        FilterConstraint constraint = globalFilter.getConstraint();
+                        Object filterValue = globalFilter.getFilterValue();
+                        globalMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
+                    }
 
-                if (!filter.isActive()) {
-                    return true;
-                }
+                    if (!filter.isActive()) {
+                        return;
+                    }
 
                 FilterConstraint constraint = filter.getConstraint();
                 Object filterValue = filter.getFilterValue();
-
-                localMatch.set(constraint.isMatching(context, columnValue, filterValue, filterLocale));
-                return localMatch.get();
             });
 
             boolean matches = localMatch.get();

@@ -880,20 +880,16 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected List<UIComponent> getIterableChildren() {
-        if (isColumnGroupLegacyEnabled()) {
-            List<UIComponent> iterableChildren = new ArrayList<>(getChildCount());
+        List<UIComponent> iterableChildren = new ArrayList<>(getChildCount());
 
-            for (int i = 0; i < getChildCount(); i++) {
-                UIComponent child = getChildren().get(i);
-                if (!(child instanceof ColumnGroup)) {
-                    iterableChildren.add(child);
-                }
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if (!(child instanceof ColumnGroup)) {
+                iterableChildren.add(child);
             }
-
-            return iterableChildren;
         }
 
-        return getChildren();
+        return iterableChildren;
     }
 
     public List<?> getFilteredValue() {

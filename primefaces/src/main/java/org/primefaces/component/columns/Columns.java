@@ -26,6 +26,7 @@ package org.primefaces.component.columns;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -92,19 +93,31 @@ public class Columns extends ColumnsBase {
         return headerText;
     }
 
+    @Deprecated
     public List<DynamicColumn> getDynamicColumns() {
         if (dynamicColumns == null) {
-            FacesContext context = getFacesContext();
-            setRowIndex(-1);
             dynamicColumns = new ArrayList<>(getRowCount());
-
-            for (int i = 0; i < getRowCount(); i++) {
-                DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
-                dynamicColumns.add(dynaColumn);
-            }
+            forEachDynamicColumn(false, (col, index) -> dynamicColumns.add(col));
         }
 
         return dynamicColumns;
+    }
+
+    public void forEachDynamicColumn(boolean applyModel, BiConsumer<DynamicColumn, Integer> column) {
+        FacesContext context = getFacesContext();
+        setRowIndex(-1);
+        for (int i = 0; i < getRowCount(); i++) {
+            DynamicColumn dynaColumn = new DynamicColumn(i, this, context);
+            if (applyModel) {
+                dynaColumn.applyModel();
+            }
+            else {
+                dynaColumn.applyStatelessModel();
+            }
+            if (dynaColumn.isRendered()) {
+                column.accept(dynaColumn, i);
+            }
+        }
     }
 
     public void setDynamicColumns(List<DynamicColumn> dynamicColumns) {

@@ -38,7 +38,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
-import javax.faces.model.*;
+import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
@@ -911,7 +911,6 @@ public class UIData extends javax.faces.component.UIData {
         return false;
     }
 
-    @Deprecated
     protected List<UIComponent> getIterableChildren() {
         return getChildren();
     }

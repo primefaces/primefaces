@@ -31,6 +31,7 @@ import java.util.function.Predicate;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -75,6 +76,8 @@ public class ForEachRowColumn {
 
     private RowColumnVisitor callback;
 
+    private String columnKey;
+
     public static ForEachRowColumn from(UIComponent root) {
         ForEachRowColumn visitor = new ForEachRowColumn();
         visitor.root = root;
@@ -93,6 +96,11 @@ public class ForEachRowColumn {
 
     public ForEachRowColumn columnEnd(int columnEnd) {
         this.columnEnd = columnEnd;
+        return this;
+    }
+
+    public ForEachRowColumn columnKey(String columnKey) {
+        this.columnKey = columnKey;
         return this;
     }
 
@@ -131,10 +139,14 @@ public class ForEachRowColumn {
 
     protected void visitChildren(UIComponent target) throws IOException {
         if (target.getChildCount() > 0) {
-            // ignore column start/end in case it's not a column container like UIPanel
-            boolean columnAware = isColumnAware(target);
-            int offset = columnAware && columnStart != null ? columnStart : 0;
-            int end = columnAware && columnEnd != null ? Math.min(columnEnd, target.getChildCount()) : target.getChildCount();
+            int offset = 0;
+            int end = target.getChildCount();
+
+            // column truncation only for column container unlike UIPanel
+            if (columnStart != null && columnEnd != null && isColumnAware(target)) {
+                offset = columnStart;
+                end = Math.min(columnEnd, target.getChildCount());
+            }
 
             int idx = 0; // relative position of child to his parent
 
@@ -164,7 +176,6 @@ public class ForEachRowColumn {
         return VisitResult.REJECT;
     }
 
-
     private VisitResult handleColumnGroup(int index, ColumnGroup target) throws IOException {
         if (isVisitable(target)) {
             callback.visitColumnGroup(index, target);
@@ -177,8 +188,9 @@ public class ForEachRowColumn {
     private VisitResult handleColumn(int index, UIColumn target) throws IOException {
         if (target instanceof Columns) {
             Columns cols = (Columns) target;
-            for (int i = 0; i < cols.getDynamicColumns().size(); i++) {
-                DynamicColumn column = cols.getDynamicColumns().get(i);
+            cols.setRowIndex(-1);
+            for (int i = 0; i < cols.getRowCount(); i++) {
+                DynamicColumn column = new DynamicColumn(i, cols, FacesContext.getCurrentInstance());
                 visitIfPossible(index + i, column);
             }
         }
@@ -203,7 +215,9 @@ public class ForEachRowColumn {
     }
 
     private boolean isVisitable(Object target) {
-        return hints.stream().allMatch(o -> o.test(target));
+        return !(columnKey != null
+                && target instanceof UIColumn && !columnKey.equals(((UIColumn) target).getColumnKey()))
+                && hints.stream().allMatch(o -> o.test(target));
     }
 
     private static boolean isColumnAware(UIComponent component) {

@@ -185,15 +185,16 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             globalFilter.setFilterValue(filterValue);
         }
 
-        forEachColumn(column -> {
-            FilterMeta filterMeta = filterBy.get(column.getColumnKey());
-            if (filterMeta == null || filterMeta.isGlobalFilter()) {
-                return true;
-            }
+        ForEachRowColumn.from((UIComponent) this).invoke(new RowColumnVisitor.Adapter() {
+            @Override
+            public void visitColumn(int index, UIColumn column) throws IOException {
+                FilterMeta filterMeta = filterBy.get(column.getColumnKey());
+                if (filterMeta == null || filterMeta.isGlobalFilter()) {
+                    return;
+                }
 
-            if (column instanceof DynamicColumn) {
-                ((DynamicColumn) column).applyModel();
-            }
+                UIComponent filterFacet = column.getFilterComponent();
+                boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
 
             boolean hasCustomFilter = column.getFacet("filter") != null;
 
@@ -216,10 +217,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 }
             }
 
-            if (filterValue != null) {
-                // this is not absolutely necessary, but in case the result is null, it prevents to execution of the next statement
-                filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
-            }
+                if (filterValue != null) {
+                    ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
+                    if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
+                        filterValue = Arrays.asList((Object[]) filterValue);
+                    }
+                }
 
             if (filterValue != null && filterValue.getClass().isArray()) {
                 ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
@@ -227,10 +230,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     filterValue = Arrays.asList((Object[]) filterValue);
                 }
             }
-
-            filterMeta.setFilterValue(filterValue);
-
-            return true;
         });
     }
 
@@ -601,22 +600,16 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
                 if (child instanceof Columns) {
                     Columns columns = (Columns) child;
-                    List<DynamicColumn> dynaColumns = columns.getDynamicColumns();
-                    dynaColumns.forEach(col -> {
-                        col.applyStatelessModel();
-                        if (col.isRendered()) {
-                            row.add(new ColumnNode(root, col));
-                        }
+                    columns.forEachDynamicColumn(false, (col, pos) -> {
+                        row.add(new ColumnNode(root, col));
                     });
                 }
-                else if (child.isRendered()) {
-                    if (child instanceof Column) {
-                        row.add(new ColumnNode(root, child));
-                    }
-                    else if (child instanceof ColumnGroup) {
-                        ColumnNode column = new ColumnNode(root, child);
-                        row.add(column);
-                        treeColumnsTo2DArray(column, nodes, columnStart, columnEnd);
+                else if (child.isRendered()
+                        && (child instanceof Column || child instanceof ColumnGroup)) {
+                    ColumnNode node = new ColumnNode(root, child);
+                    row.add(node);
+                    if (child instanceof ColumnGroup) {
+                        treeColumnsTo2DArray(node, nodes, columnStart, columnEnd);
                     }
                 }
             }
