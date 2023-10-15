@@ -70,10 +70,7 @@ public class SortTableComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) {
         AtomicInteger result = new AtomicInteger(0);
         for (SortMeta sortMeta : sortBy) {
-            if (sortByVEBased) {
-                // Currently ColumnGrouping supports ui:repeat, therefore we have to use a callback
-                // and can't use sortMeta.getComponent()
-                // Later when we refactored ColumnGrouping, we may remove #invokeOnColumn as we dont support ui:repeat in other cases
+            if (sortByVEBased && sortMeta.isDynamic()) {
                 table.invokeOnColumn(sortMeta.getColumnKey(), column -> {
                     result.set(compareWithMapper(sortMeta, o1, o2));
                 });
