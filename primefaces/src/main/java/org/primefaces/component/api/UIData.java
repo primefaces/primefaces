@@ -198,11 +198,7 @@ public class UIData extends javax.faces.component.UIData {
     protected void processColumnFacets(FacesContext context, UIComponent root, PhaseId phaseId) {
         for (int i = 0; i < root.getChildCount(); i++) {
             UIComponent child = root.getChildren().get(i);
-            if (child.isRendered() && (child.getFacetCount() > 0)) {
-                for (UIComponent facet : child.getFacets().values()) {
-                    process(context, facet, phaseId);
-                }
-            }
+            processFacets(context, child, phaseId);
         }
     }
 

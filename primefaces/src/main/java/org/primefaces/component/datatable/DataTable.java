@@ -446,6 +446,7 @@ public class DataTable extends DataTableBase {
         }
     }
 
+    @Override
     public boolean hasFooterColumn() {
         return hasFooterColumn(this);
     }
