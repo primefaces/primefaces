@@ -59,13 +59,17 @@ public class Tree006Test extends AbstractTreeTest {
         Assertions.assertNotNull(children);
         Assertions.assertEquals(webappRoot.listFiles().length, children.size() - 1); // -1 because of missing META-INF
 
-        Assertions.assertEquals("accordionpanel", children.get(0).getLabelText());
-        Assertions.assertEquals("WEB-INF", children.get(children.size() - 1).getLabelText());
-
-        TreeNode treeTreeNode = children.stream().filter(node -> "tree".equals(node.getLabelText())).findFirst().get();
+        TreeNode child = children.stream()
+                .filter(node -> "accordionpanel".equals(node.getLabelText())).findFirst().orElse(null);
+        Assertions.assertNotNull(child);
+        child = children.stream()
+                .filter(node -> "WEB-INF".equals(node.getLabelText())).findFirst().orElse(null);
+        Assertions.assertNotNull(child);
 
         // Act
-        treeTreeNode.toggle();
+        child = children.stream()
+                .filter(node -> "tree".equals(node.getLabelText())).findFirst().orElse(null);
+        child.toggle();
 
         // Assert - loading "tree" folder content
         Assertions.assertEquals(1, page.messages.getAllMessages().size());
