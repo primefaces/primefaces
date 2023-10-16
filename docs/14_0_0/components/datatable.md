@@ -1053,6 +1053,11 @@ JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.cla
     .build();
 ```
 
+### FlowLogix JPALazyDataModel
+Fully LazyDataModel that's integrated with Jakarta EE and `@Inject`able.
+https://docs.flowlogix.com/#section-jpa-lazymodel
+TBD
+
 ### ReflectionLazyDataModel
 
 `ReflectionLazyDataModel` is a `LazyDataModel` implementation which takes a supplier as datasource and implements filtering and sorting via reflection.
