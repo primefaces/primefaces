@@ -422,19 +422,21 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             Objects.requireNonNull(model.entityClass, "entityClass not set");
             Objects.requireNonNull(model.entityManager, "entityManager not set");
 
-            boolean requiresRowKeyProvider = model.rowKeyProvider == null && (model.rowKeyConverter != null || model.rowKeyField != null);
-            if (requiresRowKeyProvider) {
-                if (model.rowKeyConverter != null) {
-                    model.rowKeyProvider = model::getRowKeyFromConverter;
-                }
-                else {
-                    Objects.requireNonNull(model.rowKeyField, "rowKeyField is mandatory if no rowKeyProvider nor converter is provided");
+            boolean selectionEnabled = model.rowKeyProvider != null || model.rowKeyConverter != null || model.rowKeyField != null;
+            if (selectionEnabled) {
+                Objects.requireNonNull(model.rowKeyField, "rowKeyField is mandatory for selection");
 
-                    PropertyDescriptorResolver propResolver =
-                            PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getPropertyDescriptorResolver();
-                    model.rowKeyType = Objects.requireNonNullElseGet(model.rowKeyType,
-                            () -> propResolver.get(model.entityClass, model.rowKeyField).getPropertyType());
-                    model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
+                if (model.rowKeyProvider == null) {
+                    if (model.rowKeyConverter != null) {
+                        model.rowKeyProvider = model::getRowKeyFromConverter;
+                    }
+                    else {
+                        PropertyDescriptorResolver propResolver =
+                                PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getPropertyDescriptorResolver();
+                        model.rowKeyType = Objects.requireNonNullElseGet(model.rowKeyType,
+                                () -> propResolver.get(model.entityClass, model.rowKeyField).getPropertyType());
+                        model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
+                    }
                 }
             }
             return model;
