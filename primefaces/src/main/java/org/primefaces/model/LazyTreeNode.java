@@ -21,29 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.data.tree;
+package org.primefaces.model;
 
 import java.util.Collections;
-import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.TreeNode;
-
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.primefaces.model.TreeNodeChildren;
 
-public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
+import org.primefaces.util.SerializableFunction;
 
-    private Function<String, List<FileInfo>> loadFunction;
-    private boolean lazyLoaded;
+public class LazyTreeNode<T> extends DefaultTreeNode<T> {
 
-    public LazyLoadingTreeNode(FileInfo data, Function<String, List<FileInfo>> loadFunction) {
+    private SerializableFunction<T, List<T>> loadFunction;
+    private SerializableFunction<T, Boolean> leafFunction;
+    private boolean loaded;
+
+    // serialization
+    public LazyTreeNode() {
+    }
+
+    public LazyTreeNode(T data,
+            SerializableFunction<T, List<T>> loadFunction,
+            SerializableFunction<T, Boolean> leafFunction) {
         super(data);
         this.loadFunction = loadFunction;
+        this.leafFunction = leafFunction;
     }
 
     @Override
-    public List<TreeNode<FileInfo>> getChildren() {
+    public List<TreeNode<T>> getChildren() {
         if (isLeaf()) {
             return Collections.emptyList();
         }
@@ -66,49 +71,58 @@ public class LazyLoadingTreeNode extends DefaultTreeNode<FileInfo> {
 
     @Override
     public boolean isLeaf() {
-        return !getData().isDirectory();
+        return leafFunction.apply(getData());
     }
 
-    private void lazyLoad() {
-        if (!lazyLoaded) {
-            lazyLoaded = true;
+    public boolean isLoaded() {
+        return loaded;
+    }
 
-            String parentId = ((FileInfo) getData()).getPath();
+    protected void lazyLoad() {
+        if (!loaded) {
+            loaded = true;
 
-            List<LazyLoadingTreeNode> childNodes = loadFunction.apply(parentId).stream()
-                    .map(f -> new LazyLoadingTreeNode(f, loadFunction)).collect(Collectors.toList());
+            List<T> childData = loadFunction.apply(getData());
+            List<LazyTreeNode<T>> childNodes = childData
+                    .stream()
+                    .map(f -> new LazyTreeNode<>(f, loadFunction, leafFunction))
+                    .collect(Collectors.toList());
             super.getChildren().addAll(childNodes);
         }
     }
 
     @Override
-    protected List<TreeNode<FileInfo>> initChildren() {
-        return new LazyLoadingTreeNodeChildren(this);
+    protected List<TreeNode<T>> initChildren() {
+        return new LazyTreeNodeChildren(this);
     }
 
-    public static class LazyLoadingTreeNodeChildren extends TreeNodeChildren<FileInfo> {
+    public static class LazyTreeNodeChildren<T> extends TreeNodeChildren<T> {
 
-        public LazyLoadingTreeNodeChildren(LazyLoadingTreeNode parent) {
+        // serialization
+        public LazyTreeNodeChildren() {
+        }
+
+        public LazyTreeNodeChildren(LazyTreeNode parent) {
             super(parent);
         }
 
         @Override
-        protected void updateRowKeys(TreeNode<?> node) {
-            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+        protected void updateRowKeys(TreeNode node) {
+            if (((LazyTreeNode) node).loaded) {
                 super.updateRowKeys(node);
             }
         }
 
         @Override
-        protected void updateRowKeys(int index, TreeNode<?> node) {
-            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+        protected void updateRowKeys(int index, TreeNode node) {
+            if (((LazyTreeNode) node).loaded) {
                 super.updateRowKeys(index, node);
             }
         }
 
         @Override
-        protected void updateRowKeys(TreeNode<?> node, TreeNode<?> childNode, int i) {
-            if (((LazyLoadingTreeNode) node).lazyLoaded) {
+        protected void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
+            if (((LazyTreeNode) node).loaded) {
                 super.updateRowKeys(node, childNode, i);
             }
         }
