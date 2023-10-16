@@ -32,7 +32,7 @@ import org.primefaces.util.SerializableFunction;
 public class LazyTreeNode<T> extends DefaultTreeNode<T> {
 
     private SerializableFunction<T, List<T>> loadFunction;
-    private SerializableFunction<T, Boolean> isLeafFunction;
+    private SerializableFunction<T, Boolean> leafFunction;
     private boolean loaded;
 
     // serialization
@@ -41,10 +41,10 @@ public class LazyTreeNode<T> extends DefaultTreeNode<T> {
 
     public LazyTreeNode(T data,
             SerializableFunction<T, List<T>> loadFunction,
-            SerializableFunction<T, Boolean> isLeafFunction) {
+            SerializableFunction<T, Boolean> leafFunction) {
         super(data);
         this.loadFunction = loadFunction;
-        this.isLeafFunction = isLeafFunction;
+        this.leafFunction = leafFunction;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class LazyTreeNode<T> extends DefaultTreeNode<T> {
 
     @Override
     public boolean isLeaf() {
-        return isLeafFunction.apply(getData());
+        return leafFunction.apply(getData());
     }
 
     public boolean isLoaded() {
@@ -85,7 +85,7 @@ public class LazyTreeNode<T> extends DefaultTreeNode<T> {
             List<T> childData = loadFunction.apply(getData());
             List<LazyTreeNode<T>> childNodes = childData
                     .stream()
-                    .map(f -> new LazyTreeNode<>(f, loadFunction, isLeafFunction))
+                    .map(f -> new LazyTreeNode<>(f, loadFunction, leafFunction))
                     .collect(Collectors.toList());
             super.getChildren().addAll(childNodes);
         }

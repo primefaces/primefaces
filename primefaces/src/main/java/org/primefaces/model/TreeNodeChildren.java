@@ -33,7 +33,6 @@ public class TreeNodeChildren<T> extends TreeNodeList<T> {
 
     private TreeNode<T> parent;
 
-    // serialization
     public TreeNodeChildren() {
     }
 
