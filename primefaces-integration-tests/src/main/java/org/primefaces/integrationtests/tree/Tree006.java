@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.primefaces.showcase.view.data.tree;
+package org.primefaces.integrationtests.tree;
 
 import java.io.File;
 import javax.faces.view.ViewScoped;
@@ -32,12 +32,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import lombok.Getter;
 import org.primefaces.model.LazyTreeNode;
 
-@Named("treeLazyLoadingView")
+@Named
 @ViewScoped
-public class LazyLoadingView implements Serializable {
+public class Tree006 implements Serializable {
 
     private TreeNode<FileInfo> root;
 
@@ -50,6 +52,8 @@ public class LazyLoadingView implements Serializable {
     }
 
     public static List<FileInfo> listFiles(FileInfo parentFolder) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Lazy load", parentFolder.getPath()));
+
         List<FileInfo> result = new ArrayList<>();
 
         File[] files = new File(parentFolder.getPath()).listFiles();
@@ -62,7 +66,28 @@ public class LazyLoadingView implements Serializable {
         return result;
     }
 
+
     public TreeNode getRoot() {
         return root;
+    }
+
+    @Getter
+    public static class FileInfo implements Serializable {
+
+        private String path;
+        private String name;
+        private boolean directory;
+
+        public FileInfo(String path, boolean directory) {
+            this.path = path;
+            if (this.path.equals(File.separator)) {
+                this.name = this.path;
+            }
+            else {
+                String[] parts = path.split(File.separator.equals("\\") ? "\\\\" : File.separator);
+                this.name = parts[parts.length - 1];
+            }
+            this.directory = directory;
+        }
     }
 }

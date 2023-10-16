@@ -124,11 +124,78 @@ and tree is created, this mode is suitable for relatively small datasets and pro
 interaction. On the otherhand it’s not suitable for large data since all the data is sent to the client also
 client side tree is stateless.
 
-_Dynamic:_ Dynamic mode uses ajax to fetch the treenodes from server side on demand, compared to
+_Dynamic:_ Dynamic mode uses AJAX to fetch the treenodes from server side on demand, compared to
 the client toggling, dynamic mode has the advantage of dealing with large data because only the
 child nodes of the root node is sent to the client initially and whole tree is lazily populated. When a
 node is expanded, tree only loads the children of the particular expanded node and send to the client
 for display.
+
+## Lazy Loading
+As extension to the dynamic tree, we also offer the `LazyTreeNode` model, which enables lazy loading of child nodes.  
+It takes 2 functions: 
+- one to load the child data
+- one to decide if the current data has children or not (leaf)
+
+```xhtml
+<p:tree value="#{treeBean.root}" var="node">
+    <p:treeNode>
+        <h:outputText value="#{node}"/>
+    </p:treeNode>
+</p:tree>
+```
+```java
+@Named
+@ViewScoped
+public class TreeBean implements Serializable {
+
+    private TreeNode<FileInfo> root;
+
+    @PostConstruct
+    public void init() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        root = new LazyTreeNode<>(new FileInfo(context.getExternalContext().getRealPath("/"), true),
+                (fileInfo) -> listFiles(fileInfo),
+                (fileInfo) -> !fileInfo.isDirectory());
+    }
+
+    public static List<FileInfo> listFiles(FileInfo parentFolder) {
+        List<FileInfo> result = new ArrayList<>();
+
+        File[] files = new File(parentFolder.getPath()).listFiles();
+        if (files != null) {
+            for (File file : files) {
+                result.add(new FileInfo(file.getAbsolutePath(), file.isDirectory()));
+            }
+        }
+
+        return result;
+    }
+
+    public TreeNode getRoot() {
+        return root;
+    }
+
+    @Getter
+    public static class FileInfo implements Serializable {
+
+        private String path;
+        private String name;
+        private boolean directory;
+
+        public FileInfo(String path, boolean directory) {
+            this.path = path;
+            if (this.path.equals(File.separator)) {
+                this.name = this.path;
+            }
+            else {
+                String[] parts = path.split(File.separator.equals("\\") ? "\\\\" : File.separator);
+                this.name = parts[parts.length - 1];
+            }
+            this.directory = directory;
+        }
+    }
+}
+```
 
 ## Multiple TreeNode Types
 It’s a common requirement to display different TreeNode types with a different UI (eg icon).
@@ -234,7 +301,7 @@ public boolean customFilter(TreeNode treeNode, Object filter, Locale locale) {
 ```
 
 ## Ajax Behavior Events
-Tree provides various ajax behavior events.
+Tree provides various AJAX behavior events.
 
 | Event | Listener Parameter | Fired |
 | --- | --- | --- |
