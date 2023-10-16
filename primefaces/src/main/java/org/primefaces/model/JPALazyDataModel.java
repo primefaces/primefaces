@@ -366,6 +366,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        public Builder<T> rowKeyProvider(SerializableFunction<T, Object> rowKeyProvider) {
+            model.rowKeyProvider = rowKeyProvider;
+            return this;
+        }
+
         @Deprecated
         public Builder<T> rowKey(String rowKey) {
             model.rowKeyField = rowKey;

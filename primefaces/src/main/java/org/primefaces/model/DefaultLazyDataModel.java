@@ -82,7 +82,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        values.sort(SortTableComparator.fieldBased(context, (UITable) UIComponent.getCurrentComponent(context)));
+        values.sort(SortTableComparator.comparingByField(context, (UITable) UIComponent.getCurrentComponent(context)));
 
         if (sorter != null) {
             values.sort(sorter);

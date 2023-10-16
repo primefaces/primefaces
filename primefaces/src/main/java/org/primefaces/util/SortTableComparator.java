@@ -42,7 +42,7 @@ public class SortTableComparator implements Comparator<Object> {
 
     public static final BeanPropertyMapper SORT_BY_VE_MAPPER = new SortByVEMapper();
     public static final BeanPropertyMapper FIELD_MAPPER = new FieldMapper();
-    public static final BeanPropertyMapper TREE_NODE_MAPPER = new TreeNodeMapper();
+    public static final BeanPropertyMapper TREE_NODE_MAPPER = new TreeNodeSortByVEMapper();
 
     private final FacesContext context;
     private final Collection<SortMeta> sortBy;
@@ -65,7 +65,7 @@ public class SortTableComparator implements Comparator<Object> {
 
     @Override
     public int compare(Object o1, Object o2) {
-        compareResult.set(0); //no local variable, avoid redundant creation: reset to 0
+        compareResult.set(0); //no local variable, avoid redundant creation: reset to 0 instead
 
         for (SortMeta sortMeta : sortBy) {
             if (mapper.isValueExprBased() && sortMeta.isDynamic()) {
@@ -133,15 +133,15 @@ public class SortTableComparator implements Comparator<Object> {
         }
     }
 
-    public static Comparator<Object> sortByVEBased(FacesContext context, UITable<?> table) {
+    public static Comparator<Object> comparingBySortByVE(FacesContext context, UITable<?> table) {
         return new SortTableComparator(context, table, SORT_BY_VE_MAPPER);
     }
 
-    public static Comparator<Object> fieldBased(FacesContext context, UITable<?> table) {
+    public static Comparator<Object> comparingByField(FacesContext context, UITable<?> table) {
         return new SortTableComparator(context, table, FIELD_MAPPER);
     }
 
-    public static Comparator<Object> sortByVETreeNodeBased(FacesContext context, UITable<?> table) {
+    public static Comparator<Object> comparingTreeNodeBySortByVE(FacesContext context, UITable<?> table) {
         return new SortTableComparator(context, table, TREE_NODE_MAPPER);
     }
 
@@ -160,7 +160,7 @@ public class SortTableComparator implements Comparator<Object> {
         }
     }
 
-    public static class TreeNodeMapper extends SortByVEMapper {
+    public static class TreeNodeSortByVEMapper extends SortByVEMapper {
 
         @Override
         public Object map(FacesContext context, String var, SortMeta sortMeta, Object obj) {
