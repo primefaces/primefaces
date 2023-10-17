@@ -55,6 +55,10 @@ public class TreeNode {
         return parent;
     }
 
+    public String getRowKey() {
+        return rowKey;
+    }
+
     public void toggle() {
         PrimeSelenium.guardAjax(getTreeToggler()).click();
     }
