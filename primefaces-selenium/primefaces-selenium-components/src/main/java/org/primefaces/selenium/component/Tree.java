@@ -23,12 +23,12 @@
  */
 package org.primefaces.selenium.component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.openqa.selenium.By;
 import org.primefaces.selenium.component.base.AbstractComponent;
 import org.primefaces.selenium.component.model.tree.TreeNode;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tree}.
@@ -42,12 +42,14 @@ public abstract class Tree extends AbstractComponent {
     public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
     public static final String NODE_CONTENT_CLASS = "ui-treenode-content";
     public static final String LEAF_NODE_CLASS = "ui-treenode-leaf";
+    public static final String SELECTED_NODE_CLASS = "ui-treenode-selected";
+    public static final String PARTIAL_SELECTED_NODE_CLASS = "ui-treenode-hasselected";
 
     public static final String CHILD_SELECTOR = ".ui-tree-container>.ui-treenode";
 
     public List<TreeNode> getChildren() {
         return findElements(By.cssSelector(CHILD_SELECTOR)).stream()
-                .map(e -> new TreeNode(e, CHILD_SELECTOR, this))
+                .map(e -> new TreeNode(this, e.getAttribute("data-rowkey"), null))
                 .collect(Collectors.toList());
     }
 

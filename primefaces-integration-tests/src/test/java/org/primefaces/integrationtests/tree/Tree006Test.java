@@ -40,7 +40,7 @@ public class Tree006Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
-    @DisplayName("Tree: Single selection")
+    @DisplayName("Tree: Lazy Loading")
     public void testSingleSelection(Page page) {
 
         File webappRoot = new File("src/main/webapp");

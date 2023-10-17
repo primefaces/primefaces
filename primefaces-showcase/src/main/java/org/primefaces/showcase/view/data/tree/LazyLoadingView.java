@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
-import org.primefaces.model.LazyTreeNode;
+import org.primefaces.model.LazyDefaultTreeNode;
 
 @Named("treeLazyLoadingView")
 @ViewScoped
@@ -44,7 +44,7 @@ public class LazyLoadingView implements Serializable {
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        root = new LazyTreeNode<>(new FileInfo(context.getExternalContext().getRealPath("/"), true),
+        root = new LazyDefaultTreeNode<>(new FileInfo(context.getExternalContext().getRealPath("/"), true),
                 (fileInfo) -> listFiles(fileInfo),
                 (fileInfo) -> !fileInfo.isDirectory());
     }

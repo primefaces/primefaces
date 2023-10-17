@@ -28,11 +28,10 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.model.CheckboxTreeNode;
+import org.primefaces.model.LazyTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -47,7 +46,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import java.io.IOException;
 import java.util.*;
-import org.primefaces.util.Lazy;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
@@ -270,19 +268,21 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public void buildRowKeys(TreeNode<?> node) {
-        if (node.isExpanded() || node.getParent() == null || node.getParent().isExpanded()) {
-            int childCount = node.getChildCount();
-            if (childCount > 0) {
-                for (int i = 0; i < childCount; i++) {
-                    TreeNode childNode = node.getChildren().get(i);
-                    if (childNode.isSelected()) {
-                        addToPreselection(childNode);
-                    }
+        if (node instanceof LazyTreeNode && !((LazyTreeNode) node).isLoaded()) {
+            return;
+        }
 
-                    String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
-                    childNode.setRowKey(childRowKey);
-                    buildRowKeys(childNode);
+        int childCount = node.getChildCount();
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
+                TreeNode childNode = node.getChildren().get(i);
+                if (childNode.isSelected()) {
+                    addToPreselection(childNode);
                 }
+
+                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
+                childNode.setRowKey(childRowKey);
+                buildRowKeys(childNode);
             }
         }
     }
@@ -292,19 +292,25 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return;
         }
 
-        if (node.isExpanded() || node.getParent() == null || node.getParent().isExpanded()) {
-            int childCount = node.getChildCount();
-            if (childCount > 0) {
-                for (int i = 0; i < childCount; i++) {
-                    TreeNode childNode = node.getChildren().get(i);
-                    keys.add(childNode.getRowKey());
-                    populateRowKeys(childNode, keys);
-                }
+        if (node instanceof LazyTreeNode && !((LazyTreeNode) node).isLoaded()) {
+            return;
+        }
+
+        int childCount = node.getChildCount();
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
+                TreeNode childNode = node.getChildren().get(i);
+                keys.add(childNode.getRowKey());
+                populateRowKeys(childNode, keys);
             }
         }
     }
 
     public void updateRowKeys(TreeNode<?> node) {
+        if (node instanceof LazyTreeNode && !((LazyTreeNode) node).isLoaded()) {
+            return;
+        }
+
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
