@@ -221,7 +221,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 filterValue = FilterMeta.resetToNullIfEmpty(filterValue);
             }
 
-            if (filterValue != null) {
+            if (filterValue != null && filterValue.getClass().isArray()) {
                 ValueExpression columnFilterValueVE = column.getValueExpression(ColumnBase.PropertyKeys.filterValue.toString());
                 if (columnFilterValueVE != null && List.class.isAssignableFrom(columnFilterValueVE.getType(context.getELContext()))) {
                     filterValue = Arrays.asList((Object[]) filterValue);
