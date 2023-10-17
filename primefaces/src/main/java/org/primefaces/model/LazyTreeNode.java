@@ -23,108 +23,11 @@
  */
 package org.primefaces.model;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+/**
+ * Interface to mark different implementations of a {@link TreeNode} as lazy,
+ * so that our rowKey generation algorithm can skip unloaded nodes and skip triggering lazy loading.
+ */
+public interface LazyTreeNode {
 
-import org.primefaces.util.SerializableFunction;
-
-public class LazyTreeNode<T> extends DefaultTreeNode<T> {
-
-    private SerializableFunction<T, List<T>> loadFunction;
-    private SerializableFunction<T, Boolean> isLeafFunction;
-    private boolean loaded;
-
-    // serialization
-    public LazyTreeNode() {
-    }
-
-    public LazyTreeNode(T data,
-            SerializableFunction<T, List<T>> loadFunction,
-            SerializableFunction<T, Boolean> isLeafFunction) {
-        super(data);
-        this.loadFunction = loadFunction;
-        this.isLeafFunction = isLeafFunction;
-    }
-
-    @Override
-    public List<TreeNode<T>> getChildren() {
-        if (isLeaf()) {
-            return Collections.emptyList();
-        }
-
-        lazyLoad();
-
-        return super.getChildren();
-    }
-
-    @Override
-    public int getChildCount() {
-        if (isLeaf()) {
-            return 0;
-        }
-
-        lazyLoad();
-
-        return super.getChildCount();
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return isLeafFunction.apply(getData());
-    }
-
-    public boolean isLoaded() {
-        return loaded;
-    }
-
-    protected void lazyLoad() {
-        if (!loaded) {
-            loaded = true;
-
-            List<T> childData = loadFunction.apply(getData());
-            List<LazyTreeNode<T>> childNodes = childData
-                    .stream()
-                    .map(f -> new LazyTreeNode<>(f, loadFunction, isLeafFunction))
-                    .collect(Collectors.toList());
-            super.getChildren().addAll(childNodes);
-        }
-    }
-
-    @Override
-    protected List<TreeNode<T>> initChildren() {
-        return new LazyTreeNodeChildren(this);
-    }
-
-    public static class LazyTreeNodeChildren<T> extends TreeNodeChildren<T> {
-
-        // serialization
-        public LazyTreeNodeChildren() {
-        }
-
-        public LazyTreeNodeChildren(LazyTreeNode parent) {
-            super(parent);
-        }
-
-        @Override
-        protected void updateRowKeys(TreeNode node) {
-            if (((LazyTreeNode) node).loaded) {
-                super.updateRowKeys(node);
-            }
-        }
-
-        @Override
-        protected void updateRowKeys(int index, TreeNode node) {
-            if (((LazyTreeNode) node).loaded) {
-                super.updateRowKeys(index, node);
-            }
-        }
-
-        @Override
-        protected void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
-            if (((LazyTreeNode) node).loaded) {
-                super.updateRowKeys(node, childNode, i);
-            }
-        }
-    }
+    boolean isLoaded();
 }

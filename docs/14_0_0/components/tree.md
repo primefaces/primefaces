@@ -131,7 +131,7 @@ node is expanded, tree only loads the children of the particular expanded node a
 for display.
 
 ## Lazy Loading
-As extension to the dynamic tree, we also offer the `LazyTreeNode` model, which enables lazy loading of child nodes.  
+As extension to the dynamic tree, we also offer the `LazyDefaultTreeNode` model, which enables lazy loading of child nodes.  
 It takes 2 functions: 
 - one to load the child data
 - one to decide if the current data has children or not (leaf)
@@ -153,7 +153,7 @@ public class TreeBean implements Serializable {
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        root = new LazyTreeNode<>(new FileInfo(context.getExternalContext().getRealPath("/"), true),
+        root = new LazyDefaultTreeNode<>(new FileInfo(context.getExternalContext().getRealPath("/"), true),
                 (fileInfo) -> listFiles(fileInfo),
                 (fileInfo) -> !fileInfo.isDirectory());
     }

@@ -33,33 +33,18 @@ import java.util.stream.Collectors;
 
 public class TreeNode {
 
-    private WebElement webElement;
     private TreeNode parent;
     private Tree tree;
-    private String selector;
-    private String childSelector;
+    private String rowKey;
 
-    public TreeNode(WebElement webElement, String selector, Tree tree) {
-        this.webElement = webElement;
-        this.selector = selector;
-        this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
+    public TreeNode(Tree tree, String rowKey, TreeNode parent) {
         this.tree = tree;
-    }
-
-    public TreeNode(WebElement webElement, String selector, TreeNode parent) {
-        this.webElement = webElement;
-        this.selector = selector;
-        this.childSelector = selector + ">.ui-treenode-children>.ui-treenode";
+        this.rowKey = rowKey;
         this.parent = parent;
-        this.tree = parent.getTree();
     }
 
     public WebElement getWebElement() {
-        return webElement;
-    }
-
-    public void setWebElement(WebElement webElement) {
-        this.webElement = webElement;
+        return tree.findElement(By.cssSelector(".ui-treenode[data-rowkey='" + rowKey + "']"));
     }
 
     public Tree getTree() {
@@ -68,14 +53,6 @@ public class TreeNode {
 
     public TreeNode getParent() {
         return parent;
-    }
-
-    public String getSelector() {
-        return selector;
-    }
-
-    public void setSelector(String selector) {
-        this.selector = selector;
     }
 
     public void toggle() {
@@ -88,7 +65,7 @@ public class TreeNode {
     }
 
     public WebElement getTreeToggler() {
-        return webElement.findElement(By.cssSelector(".ui-treenode-content .ui-tree-toggler"));
+        return getWebElement().findElement(By.cssSelector(".ui-treenode-content .ui-tree-toggler"));
     }
 
     public String getLabelText() {
@@ -96,12 +73,27 @@ public class TreeNode {
     }
 
     public WebElement getLabel() {
-        return webElement.findElement(By.cssSelector(".ui-treenode-content .ui-treenode-label"));
+        return getWebElement().findElement(By.cssSelector(".ui-treenode-content .ui-treenode-label"));
     }
 
     public List<TreeNode> getChildren() {
-        return webElement.findElements(By.cssSelector(childSelector)).stream().map(e -> new TreeNode(e, childSelector, this))
-                    .collect(Collectors.toList());
+        // we need a xpath selector as selenium doesnt support direct child selector like #findElements(">...")
+        return getWebElement()
+                .findElements(By.xpath("./ul/li[contains(@class, 'ui-treenode')]")).stream()
+                .map(e -> new TreeNode(tree, e.getAttribute("data-rowkey"), this))
+                .collect(Collectors.toList());
     }
 
+    public boolean isExpanded() {
+        WebElement children = getWebElement().findElement(By.xpath("./ul"));
+        return PrimeSelenium.isElementDisplayed(children);
+    }
+
+    public boolean isSelected() {
+        return PrimeSelenium.hasCssClass(getWebElement(), Tree.SELECTED_NODE_CLASS);
+    }
+
+    public boolean isPartialSelected() {
+        return PrimeSelenium.hasCssClass(getWebElement(), Tree.PARTIAL_SELECTED_NODE_CLASS);
+    }
 }
