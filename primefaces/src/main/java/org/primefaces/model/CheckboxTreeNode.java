@@ -51,23 +51,15 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
     private String rowKey;
 
     public CheckboxTreeNode() {
-        this.type = DEFAULT_TYPE;
-        this.children = new CheckboxTreeNodeChildren(this);
+        this(null);
     }
 
     public CheckboxTreeNode(T data) {
-        this.type = DEFAULT_TYPE;
-        this.children = new CheckboxTreeNodeChildren(this);
-        this.data = data;
+        this(data, null);
     }
 
     public CheckboxTreeNode(T data, TreeNode parent) {
-        this.type = DEFAULT_TYPE;
-        this.data = data;
-        this.children = new CheckboxTreeNodeChildren(this);
-        if (parent != null) {
-            parent.getChildren().add(this);
-        }
+        this(DEFAULT_TYPE, data, parent);
     }
 
     public CheckboxTreeNode(String type, T data, TreeNode parent) {
@@ -144,88 +136,88 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
         return this.selected;
     }
 
-    public void setSelected(boolean value, boolean propagateDown, boolean propagateUp) {
-        this.partialSelected = false;
-        this.selected = value;
+    public void setSelected(boolean selected, boolean propagateDown, boolean propagateUp) {
+        this.selected = selected;
+        partialSelected = false;
 
         if (propagateDown && propagateUp) {
-            this.setSelected(value);
+            setSelected(selected);
         }
         else if (!propagateDown && propagateUp) {
-            if (this.getParent() != null) {
-                ((CheckboxTreeNode) this.getParent()).propagateSelectionUp();
+            if (getParent() != null) {
+                ((CheckboxTreeNode) getParent()).propagateSelectionUp();
             }
         }
-        else if (propagateDown && !propagateUp) {
+        else if (propagateDown) {
             if (!isLeaf()) {
                 for (TreeNode child : children) {
-                    ((CheckboxTreeNode) child).propagateSelectionDown(value);
+                    ((CheckboxTreeNode) child).propagateSelectionDown(selected);
                 }
             }
         }
     }
 
-    public void setSelected(boolean value, boolean propagate) {
+    public void setSelected(boolean selected, boolean propagate) {
         if (propagate) {
-            this.setSelected(value);
+            setSelected(selected);
         }
         else {
-            this.selected = value;
+            this.selected = selected;
         }
     }
 
     @Override
-    public void setSelected(boolean value) {
-        this.selected = value;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
         this.partialSelected = false;
 
         if (!isLeaf()) {
             for (TreeNode child : children) {
-                ((CheckboxTreeNode) child).propagateSelectionDown(value);
+                ((CheckboxTreeNode) child).propagateSelectionDown(selected);
             }
         }
 
-        if (this.getParent() != null) {
-            ((CheckboxTreeNode) this.getParent()).propagateSelectionUp();
+        if (getParent() != null) {
+            ((CheckboxTreeNode) getParent()).propagateSelectionUp();
         }
     }
 
-    protected void propagateSelectionDown(boolean value) {
+    protected void propagateSelectionDown(boolean selected) {
         if (!this.isSelectable()) {
             return;
         }
-        this.selected = value;
+        this.selected = selected;
         this.partialSelected = false;
 
         for (TreeNode child : children) {
-            ((CheckboxTreeNode) child).propagateSelectionDown(value);
+            ((CheckboxTreeNode) child).propagateSelectionDown(selected);
         }
     }
 
     protected void propagateSelectionUp() {
-        if (!this.isSelectable()) {
+        if (!isSelectable()) {
             return;
         }
         boolean allChildrenSelected = true;
-        this.partialSelected = false;
+        partialSelected = false;
 
-        for (int i = 0; i < this.getChildCount(); i++) {
-            TreeNode childNode = this.getChildren().get(i);
+        for (int i = 0; i < getChildCount(); i++) {
+            TreeNode childNode = getChildren().get(i);
 
             boolean childSelected = childNode.isSelected();
             boolean childPartialSelected = childNode.isPartialSelected();
             allChildrenSelected = allChildrenSelected && childSelected;
-            this.partialSelected = this.partialSelected || childSelected || childPartialSelected;
+            partialSelected = partialSelected || childSelected || childPartialSelected;
         }
 
-        this.selected = allChildrenSelected;
+        selected = allChildrenSelected;
 
         if (allChildrenSelected) {
-            this.setPartialSelected(false);
+            setPartialSelected(false);
         }
 
-        if (this.getParent() != null) {
-            ((CheckboxTreeNode) this.getParent()).propagateSelectionUp();
+        if (getParent() != null) {
+            ((CheckboxTreeNode) getParent()).propagateSelectionUp();
         }
     }
 
@@ -298,15 +290,10 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
         }
 
         if (rowKey == null) {
-            if (other.rowKey != null) {
-                return false;
-            }
-        }
-        else if (!rowKey.equals(other.rowKey)) {
-            return false;
+            return other.rowKey == null;
         }
 
-        return true;
+        return rowKey.equals(other.rowKey);
     }
 
     @Override
@@ -325,7 +312,7 @@ public class CheckboxTreeNode<T> implements TreeNode<T>, Serializable {
     }
 
     @Override
-    public void setPartialSelected(boolean value) {
-        this.partialSelected = value;
+    public void setPartialSelected(boolean partialSelected) {
+        this.partialSelected = partialSelected;
     }
 }

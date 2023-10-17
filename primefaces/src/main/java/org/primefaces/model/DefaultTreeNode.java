@@ -50,23 +50,15 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
     private String rowKey;
 
     public DefaultTreeNode() {
-        this.type = DEFAULT_TYPE;
-        this.children = initChildren();
+        this(null);
     }
 
     public DefaultTreeNode(T data) {
-        this.type = DEFAULT_TYPE;
-        this.children = initChildren();
-        this.data = data;
+        this(data, null);
     }
 
     public DefaultTreeNode(T data, TreeNode parent) {
-        this.type = DEFAULT_TYPE;
-        this.data = data;
-        this.children = initChildren();
-        if (parent != null) {
-            parent.getChildren().add(this);
-        }
+        this(DEFAULT_TYPE, data, parent);
     }
 
     public DefaultTreeNode(String type, T data, TreeNode parent) {
@@ -220,15 +212,10 @@ public class DefaultTreeNode<T> implements TreeNode<T>, Serializable {
         }
 
         if (rowKey == null) {
-            if (other.rowKey != null) {
-                return false;
-            }
-        }
-        else if (!rowKey.equals(other.rowKey)) {
-            return false;
+            return other.rowKey == null;
         }
 
-        return true;
+        return rowKey.equals(other.rowKey);
     }
 
     @Override
