@@ -70,6 +70,9 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
             //events
             this.backNav.on("click", function() {_self.back();});
             this.nextNav.on("click", function() {_self.next();});
+            if (this.cfg.disableOnAjax) {
+                this.bindTriggers();
+            }
 
             if(currentStepIndex == 0)
                 this.backNav.hide();
@@ -261,6 +264,26 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
      */
     disableBackNav: function() {
         PrimeFaces.utils.disableButton(this.backNav);
-    }
+    },
+
+    /**
+     * Sets up the global event listeners on the navigation buttons.
+     * @private
+     */
+    bindTriggers: function() {
+        var $this = this;
+
+        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
+            if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                $this.disableBackNav();
+                $this.disableNextNav();
+            }
+        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
+            if (PrimeFaces.ajax.Utils.isXhrSource($this, settings)) {
+                $this.enableBackNav();
+                $this.enableNextNav();
+            }
+        });
+    },
 
 });

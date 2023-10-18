@@ -31151,6 +31151,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[If true, next and back navigation buttons will be disabled during Ajax requests triggered by them. Default is 'trie'.]]>
+            </description>
+            <name>disableOnAjax</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Javascript event handler to be invoked when flow goes back.]]>
             </description>
             <name>onback</name>

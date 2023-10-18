@@ -20,23 +20,24 @@ consists of several child tab components where each tab represents a step in the
 
 | Name | Default | Type | Description |
 | --- | --- | --- | --- |
-id | null | String | Unique identifier of the component.
-rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
-binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
-step | 0 | String | Id of the current step in flow
-style | null | String | Style of the main wizard container element.
-styleClass | null | String | Style class of the main wizard container element.
-flowListener | null | MethodExpr | Server side listener to invoke when wizard attempts to go forward or back.
-showNavBar | true | Boolean | Specifies visibility of default navigator arrows.
-showStepStatus | true | Boolean | Specifies visibility of default step title bar.
-onback | null | String | Javascript event handler to be invoked when flow goes back.
-onnext | null | String | Javascript event handler to be invoked when flow goes forward.
-nextLabel | null | String | Label of next navigation button.
-backLabel | null | String | Label of back navigation button.
-widgetVar | null | String | Name of the client side widget
-updateModelOnPrev | false | Boolean | If yes, the model will be updated when the "Back" button is clicked. Default is false.
-effect | null | String | Animation effect to use when showing and hiding wizard step. Default is no animation.
-effectDuration | 400 | Integer | Duration of the animation effect in milliseconds.
+| id | null | String | Unique identifier of the component.
+| rendered | true | Boolean | Boolean value to specify the rendering of the component, when set to false component will not be rendered.
+| binding | null | Object | An el expression that maps to a server side UIComponent instance in a backing bean
+| step | 0 | String | Id of the current step in flow
+| style | null | String | Style of the main wizard container element.
+| styleClass | null | String | Style class of the main wizard container element.
+| flowListener | null | MethodExpr | Server side listener to invoke when wizard attempts to go forward or back.
+| showNavBar | true | Boolean | Specifies visibility of default navigator arrows.
+| showStepStatus | true | Boolean | Specifies visibility of default step title bar.
+| disableOnAjax | true | Boolean | If true, back and next navigation buttons will be disabled during Ajax requests triggered by the button.
+| onback | null | String | Javascript event handler to be invoked when flow goes back.
+| onnext | null | String | Javascript event handler to be invoked when flow goes forward.
+| nextLabel | null | String | Label of next navigation button.
+| backLabel | null | String | Label of back navigation button.
+| widgetVar | null | String | Name of the client side widget
+| updateModelOnPrev | false | Boolean | If yes, the model will be updated when the "Back" button is clicked. Default is false.
+| effect | null | String | Animation effect to use when showing and hiding wizard step. Default is no animation.
+| effectDuration | 400 | Integer | Duration of the animation effect in milliseconds.
 
 ## Ajax Behavior Events
 Wizard provides custom ajax behavior events to configure the built-in AJAX requests.
