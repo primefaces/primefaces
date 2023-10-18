@@ -160,6 +160,39 @@ public class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter, times(2)).endElement("script");
     }
 
+    /**
+     * https://github.com/primefaces/primefaces/issues/10845
+     */
+    @Test
+    public void testMultipleInlineScriptsNonJavascript() throws IOException {
+        writer.startElement("body", null);
+        verify(wrappedWriter).startElement("body", null);
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "application/ld+json", null);
+        writer.writeText("JSONLinkingData1", null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        // default type is text/javascript
+        writer.writeText("javascript2", null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "application/ld+json", null);
+        writer.writeText("JSONLinkingData2", null);
+        writer.endElement("script");
+
+        writer.endElement("body");
+
+        // assert both LD files are still in their own inline script
+        verify(wrappedWriter, times(3)).startElement("script", null);
+        verify(wrappedWriter).write(matches("(?s).*JSONLinkingData1(?!.*javascript2.*).*"));
+        verify(wrappedWriter).write(matches("(?s).*javascript2(?!.*JSONLinkingData1.*).*"));
+        verify(wrappedWriter).write(matches("(?s).*JSONLinkingData2(?!.*javascript2.*).*"));
+        verify(wrappedWriter, times(3)).endElement("script");
+    }
+
     @Test
     public void testPassthroughAttributes() throws IOException {
         writer.startElement("body", null);
