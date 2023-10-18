@@ -26,7 +26,7 @@ Cache component is used to reduce page load time by caching the content after in
 
 ## Getting Started with Cache
 A cache store is required to use the cache component, two different providers are supported as cache
-implementation; Default (org.primefaces.cache.DefaultCacheProvider based on ConcurrentHashMap), EHCache 2 (org.primefaces.cache.EHCacheProvider), EHCache 3 (org.primefaces.cache.EHCache3Provider) and Hazelcast (org.primefaces.cache.HazelcastCacheProvider).
+implementation; Default (org.primefaces.cache.DefaultCacheProvider based on ConcurrentHashMap), EHCache 2 (org.primefaces.cache.EHCacheProvider), EHCache 3 (org.primefaces.cache.EHCache3Provider).
 
 Provider is configured via a context-param.
 
@@ -80,3 +80,118 @@ _PrimeRequestContext.getCurrentInstance().getApplicationContext().getCacheProvid
 For example using this API, all cache regions can be cleaned using _clear()_ method. Refer to javadoc
 of CacheProvider for the full list of available methods.
 
+## Hazelcast implementation
+
+[Hazelcast](https://hazelcast.com/) used to be included in the Primefaces JAR but has been removed.  You can simply implement the class below to use Hazelcast.
+
+```java
+package org.primefaces.cache;
+
+import com.hazelcast.config.Config;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
+
+public class HazelcastCacheProvider implements CacheProvider {
+
+    private final HazelcastInstance hazelcastInstance;
+
+    public HazelcastCacheProvider() {
+        Config config = new Config();
+        hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+    }
+
+    @Override
+    public Object get(String region, String key) {
+        IMap<String, Object> cacheRegion = getRegion(region);
+
+        return cacheRegion.get(key);
+    }
+
+    @Override
+    public void put(String region, String key, Object object) {
+        IMap<String, Object> cacheRegion = getRegion(region);
+
+        cacheRegion.put(key, object);
+    }
+
+    @Override
+    public void remove(String region, String key) {
+        IMap<String, Object> cacheRegion = getRegion(region);
+
+        cacheRegion.remove(key);
+    }
+
+    @Override
+    public void clear() {
+        // not supported by hazelcast
+    }
+
+    protected IMap<String, Object> getRegion(String name) {
+        IMap<String, Object> region = getHazelcastInstance().getMap(name);
+
+        return region;
+    }
+
+    public HazelcastInstance getHazelcastInstance() {
+        return hazelcastInstance;
+    }
+}
+
+```
+
+## Caffeine Implementation
+
+If you prefer to use [Caffeine](https://github.com/ben-manes/caffeine) cache implementation simply add this class and register it as the Cache provider.
+
+```java
+package org.primefaces.cache;
+
+import org.primefaces.cache.CacheProvider;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
+/**
+ * Caffeine Cache Provider
+ */
+public class CaffeineCacheProvider implements CacheProvider {
+
+    private Cache<String, Object> cache;
+
+    public CaffeineCacheProvider() {
+        this.cache = Caffeine.newBuilder()
+                    .maximumSize(200)
+                    .build();
+    }
+
+    @Override
+    public Object get(String region, String key) {
+        return cache.getIfPresent(region + key);
+    }
+
+    @Override
+    public void put(String region, String key, Object object) {
+        cache.put(region + key, object);
+    }
+
+    @Override
+    public void remove(String region, String key) {
+        cache.invalidate(region + key);
+    }
+
+    @Override
+    public void clear() {
+        cache.invalidateAll();
+    }
+
+    public Cache<String, Object> getCache() {
+        return cache;
+    }
+
+    public void setCache(Cache<String, Object> cache) {
+        this.cache = cache;
+    }
+}
+
+```

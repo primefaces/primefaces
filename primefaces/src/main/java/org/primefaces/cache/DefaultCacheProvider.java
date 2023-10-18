@@ -39,7 +39,7 @@ public class DefaultCacheProvider implements CacheProvider {
 
     public DefaultCacheProvider() {
         cache = new ConcurrentHashMap<>();
-        LOGGER.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache and HazelCast in production.");
+        LOGGER.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache, HazelCast, or Caffeine in production.");
     }
 
     @Override
