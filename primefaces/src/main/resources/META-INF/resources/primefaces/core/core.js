@@ -1009,7 +1009,8 @@
          * and checking on every change (AJAX request, tab change etc.) whether any of those have become visible. A
          * widgets should extend `PrimeFaces.widget.DeferredWidget` to make use of this functionality.
          *
-         * Adds a deferred render to the global list.
+         * Adds a deferred render to the global list.  If this widdget has already been added only the last instance
+         * will be added to the stack.
          *
          * @param {string} widgetId The ID of a deferred widget.
          * @param {string} containerId ID of the container that should be visible before the widget can be rendered.
@@ -1017,6 +1018,7 @@
          * return `true` when the widget was rendered, or `false` when the widget still needs to be rendered later.
          */
         addDeferredRender: function(widgetId, containerId, fn) {
+            this.removeDeferredRenders(widgetId); // remove existing
             this.deferredRenders.push({widget: widgetId, container: containerId, callback: fn});
         },
 
