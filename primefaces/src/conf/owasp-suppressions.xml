@@ -32,19 +32,4 @@
         <packageUrl regex="true">^pkg:maven/org\.apache\.geronimo\.specs/geronimo\-ws\-metadata_2\.0_spec@.*$</packageUrl>
         <cve>CVE-2021-41568</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[file name: hazelcast-5.3.2.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.hazelcast/hazelcast@.*$</packageUrl>
-        <cpe>cpe:/a:hazelcast:hazelcast</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: hazelcast-5.3.2.jar (shaded: org.json:json:20230227)]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
-        <vulnerabilityName>CVE-2023-5072</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: hazelcast-5.3.2.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.hazelcast/hazelcast@.*$</packageUrl>
-        <vulnerabilityName>CVE-2023-45860</vulnerabilityName>
-    </suppress>
 </suppressions>
