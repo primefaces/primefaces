@@ -2289,6 +2289,7 @@
             }
 
             var newViewDate = new Date(this.viewDate.getTime());
+            newViewDate.setDate(1);
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 0) {
@@ -2353,6 +2354,7 @@
             }
 
             var newViewDate = new Date(this.viewDate.getTime());
+            newViewDate.setDate(1);
 
             if (this.options.view === 'date') {
                 if (newViewDate.getMonth() === 11) {
@@ -2407,7 +2409,7 @@
         },
 
         setNavigationState: function(newViewDate) {
-            if (this.options.view !== 'date') {
+            if (!newViewDate || !this.options.showMinMaxRange || this.options.view !== 'date') {
                 return;
             }
 
@@ -2421,22 +2423,48 @@
             }
 
             // previous
-            var testDate = new Date(newViewDate.getTime()),
-                minDate = this.options.minDate;
-            testDate.setMonth(testDate.getMonth() + 1);
-            testDate.setHours(-1);
-            if (this.options.showMinMaxRange && minDate && minDate > testDate) {
-                navPrev.addClass('ui-state-disabled');
-            } else {
-                navPrev.removeClass('ui-state-disabled');
-            }
+            if (this.options.minDate) {
+                let firstDayOfMonth = new Date(newViewDate.getTime());
 
-            // next
-            var maxDate = this.options.maxDate;
-            if (this.options.showMinMaxRange && maxDate && maxDate < newViewDate) {
-                navNext.addClass('ui-state-disabled');
-            } else {
-                navNext.removeClass('ui-state-disabled');
+                if (firstDayOfMonth.getMonth() === 0) {
+                    firstDayOfMonth.setMonth(11, 1);
+                    firstDayOfMonth.setFullYear(firstDayOfMonth.getFullYear() - 1);
+                } else {
+                    firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
+                }
+
+                firstDayOfMonth.setHours(0);
+                firstDayOfMonth.setMinutes(0);
+                firstDayOfMonth.setSeconds(0);
+
+                if (this.options.minDate > firstDayOfMonth) {
+                    navPrev.addClass('ui-state-disabled');
+                } else {
+                    navPrev.removeClass('ui-state-disabled');
+                }
+            }
+            
+             // next (check last day of month at 11:59:59)
+            if (this.options.maxDate) {
+                let lastDayOfMonth = new Date(newViewDate.getTime());
+
+                if (lastDayOfMonth.getMonth() === 11) {
+                    lastDayOfMonth.setMonth(0, 1);
+                    lastDayOfMonth.setFullYear(lastDayOfMonth.getFullYear() + 1);
+                } else {
+                    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
+                }
+
+                lastDayOfMonth.setHours(0);
+                lastDayOfMonth.setMinutes(0);
+                lastDayOfMonth.setSeconds(0);
+                lastDayOfMonth.setSeconds(-1);
+
+                if (this.options.maxDate < lastDayOfMonth) {
+                    navNext.addClass('ui-state-disabled');
+                } else {
+                    navNext.removeClass('ui-state-disabled');
+                }
             }
         },
 
