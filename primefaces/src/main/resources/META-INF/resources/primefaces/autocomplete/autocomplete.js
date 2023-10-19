@@ -512,6 +512,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             $this.preventInputChangeEvent = true;
                             highlightedItem.trigger("click");
                             $this.itemSelectedWithEnter = true;
+                        } else {
+                            $this.hide();
                         }
 
                         e.preventDefault();
