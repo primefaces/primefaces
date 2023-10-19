@@ -30,6 +30,7 @@ PrimeFaces.locales['ru'] = {
     moreLinkText: 'Ещё...',
     noEventsText: 'Ничего нет',
     today: 'Сегодня',
+    now: 'Сейчас',
     clear: 'Очистить',
     aria: {
         'paginator.PAGE': 'Страница {0}',

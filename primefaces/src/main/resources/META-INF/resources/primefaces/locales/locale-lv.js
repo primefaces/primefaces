@@ -28,6 +28,7 @@ PrimeFaces.locales['lv'] = {
     moreLinkText: 'Vairāk...',
     noEventsText: 'Nav notikumu',
     today: 'Šodiena',
+    now: 'Tagad',
     clear: 'Notīrīt',
     aria: {
         'paginator.PAGE': 'Lapa {0}',

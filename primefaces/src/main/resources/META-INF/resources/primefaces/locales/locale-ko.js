@@ -30,6 +30,7 @@ PrimeFaces.locales['ko'] = {
     moreLinkText: "더...",
     noEventsText: "사건 없음",
     today: "오늘",
+    now: '현재',
     clear: "치우기",
     aria: {
         'paginator.PAGE': '페이지 {0}',

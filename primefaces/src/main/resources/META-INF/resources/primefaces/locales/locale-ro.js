@@ -28,6 +28,8 @@ PrimeFaces.locales['ro'] = {
     moreLinkText: 'Mai mult...',
     noEventsText: 'Fără Evenimente',
     clear: 'Resetați',
+    today: 'Astăzi',
+    now: 'Acum',
     aria: {
         'paginator.PAGE': 'Pagina {0}',
         'calendar.BUTTON': 'Afișează Calendarul',
