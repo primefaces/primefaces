@@ -31,6 +31,7 @@ PrimeFaces.locales['fr'] = {
     moreLinkText: "Plus...",
     noEventsText: "Pas d'événements",
     today: "Aujourd'hui",
+    now: "Maintenant",
     clear: "Effacer",
     aria: {
         'paginator.PAGE': 'Page {0}',
