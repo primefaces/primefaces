@@ -24,6 +24,7 @@
 package org.primefaces.application.resource;
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.matches;
@@ -31,6 +32,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
+import javax.faces.FacesException;
 import javax.faces.context.ResponseWriter;
 
 import org.junit.jupiter.api.Assertions;
@@ -158,6 +160,39 @@ public class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter, times(2)).endElement("script");
     }
 
+    /**
+     * https://github.com/primefaces/primefaces/issues/10845
+     */
+    @Test
+    public void testMultipleInlineScriptsNonJavascript() throws IOException {
+        writer.startElement("body", null);
+        verify(wrappedWriter).startElement("body", null);
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "application/ld+json", null);
+        writer.writeText("JSONLinkingData1", null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        // default type is text/javascript
+        writer.writeText("javascript2", null);
+        writer.endElement("script");
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "application/ld+json", null);
+        writer.writeText("JSONLinkingData2", null);
+        writer.endElement("script");
+
+        writer.endElement("body");
+
+        // assert both LD files are still in their own inline script
+        verify(wrappedWriter, times(3)).startElement("script", null);
+        verify(wrappedWriter).write(matches("(?s).*JSONLinkingData1(?!.*javascript2.*).*"));
+        verify(wrappedWriter).write(matches("(?s).*javascript2(?!.*JSONLinkingData1.*).*"));
+        verify(wrappedWriter).write(matches("(?s).*JSONLinkingData2(?!.*javascript2.*).*"));
+        verify(wrappedWriter, times(3)).endElement("script");
+    }
+
     @Test
     public void testPassthroughAttributes() throws IOException {
         writer.startElement("body", null);
@@ -247,6 +282,32 @@ public class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter).writeAttribute("src", "include", null);
         verify(wrappedWriter).writeAttribute("charset", "UTF-8", null);
         verify(wrappedWriter).write(contains("inline"));
+    }
+
+    @Test
+    public void testDuplicateHtmlElements() throws IOException {
+        writer.startElement("HTML", null);
+        verify(wrappedWriter).startElement("HTML", null);
+
+
+        FacesException exception = assertThrows(FacesException.class, () -> {
+            writer.startElement("HtmL", null);
+        });
+        Assertions.assertEquals("Duplicate <html> elements were found in the response.", exception.getMessage());
+    }
+
+    @Test
+    public void testDuplicateBodyElements() throws IOException {
+        writer.startElement("HTML", null);
+        verify(wrappedWriter).startElement("HTML", null);
+        writer.startElement("BODY", null);
+        verify(wrappedWriter).startElement("BODY", null);
+
+
+        FacesException exception = assertThrows(FacesException.class, () -> {
+            writer.startElement("BoDy", null);
+        });
+        Assertions.assertEquals("Duplicate <body> elements were found in the response.", exception.getMessage());
     }
 
 }

@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -56,7 +57,10 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private StringBuilder inline;
     private boolean scriptsRendered;
 
+    private boolean foundHtmlElement;
+    private boolean foundBodyElement;
     private boolean writeFouc;
+    private int counter = 0; // used to track non-JS files
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
@@ -66,6 +70,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         inScript = false;
         scriptsRendered = false;
         writeFouc = false;
+        foundHtmlElement = false;
+        foundBodyElement = false;
 
         includeAttributes = new LinkedHashMap<>(6);
         inline = new StringBuilder(75);
@@ -177,9 +183,24 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
             getWrapped().startElement(name, component);
 
-            if (BODY_TAG.equalsIgnoreCase(name) && isFirefox()) {
-                writeFouc = true;
+            if (BODY_TAG.equalsIgnoreCase(name)) {
+                if (foundBodyElement) {
+                    throw new FacesException("Duplicate <body> elements were found in the response.");
+                }
+                foundBodyElement = true;
+
+                if (isFirefox()) {
+                    writeFouc = true;
+                }
             }
+
+            if (HTML_TAG.equalsIgnoreCase(name)) {
+                if (foundHtmlElement) {
+                    throw new FacesException("Duplicate <html> elements were found in the response.");
+                }
+                foundHtmlElement = true;
+            }
+
         }
     }
 
@@ -220,7 +241,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
             // write inline scripts
             for (Map.Entry<String, List<String>> entry : state.getInlines().entrySet()) {
-                String type = entry.getKey();
+                // strip tracking _0, _1, _2 etc off the end of the string
+                String type = entry.getKey().replaceAll("_\\d+$", "");
                 List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();
@@ -260,7 +282,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 script.append("\n");
             }
             script.append(inlines.get(i));
-            script.append(";");
+
+            // append ; only if this is JS code
+            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
+                script.append(";");
+            }
         }
 
         String minimized = script.toString();
@@ -296,10 +322,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     protected void updateAttributes(String name, String value) {
         includeAttributes.put(name, value);
 
-        if (TYPE_ATTRIBUTE.equalsIgnoreCase(name)) {
-            if (LangUtils.isNotBlank(value)) {
-                scriptType = value;
-            }
+        // #10845 look for type attribute NOT equal to text/javascript
+        if (TYPE_ATTRIBUTE.equalsIgnoreCase(name) && !RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(value)) {
+            scriptType = value + "_" + counter++;
         }
     }
 
