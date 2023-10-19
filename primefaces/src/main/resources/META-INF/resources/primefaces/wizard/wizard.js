@@ -70,7 +70,7 @@ PrimeFaces.widget.Wizard = PrimeFaces.widget.BaseWidget.extend({
             //events
             this.backNav.on("click", function() {_self.back();});
             this.nextNav.on("click", function() {_self.next();});
-            if (this.cfg.disableOnAjax) {
+            if (this.cfg.disableOnAjax !== false) {
                 this.bindTriggers();
             }
 
