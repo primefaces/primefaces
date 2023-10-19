@@ -107,7 +107,8 @@ public class WizardRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Wizard", wizard)
                 .attr("showStepStatus", wizard.isShowStepStatus())
-                .attr("showNavBar", wizard.isShowNavBar());
+                .attr("showNavBar", wizard.isShowNavBar())
+                .attr("disableOnAjax", wizard.isDisableOnAjax(), true);
 
         String effect = wizard.getEffect();
         if (effect != null) {
