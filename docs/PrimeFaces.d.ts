@@ -26505,6 +26505,10 @@ declare namespace PrimeFaces.widget {
          * The number of rows per page.
          */
         rows: number;
+        /**
+         * The configured number of rows set per page.
+         */
+        rpp: string;
     }
 }
 declare namespace PrimeFaces.widget.Paginator {

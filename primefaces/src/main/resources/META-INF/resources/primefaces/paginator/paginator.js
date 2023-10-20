@@ -54,6 +54,7 @@
  * @prop {number} cfg.prevRows The number of rows per page for the dropdown.
  * @prop {number} cfg.rowCount Total number of rows (records) to be displayed.
  * @prop {number} cfg.rows The number of rows per page.
+ * @prop {number} cfg.rpp The configured number of rows set per page.
  */
 PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
@@ -486,7 +487,9 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} value The total number of items to set.
      */
     setTotalRecords: function(value) {
-        this.cfg.rows = this.cfg.rpp === '*' ? value : this.cfg.rows;
+        if (this.cfg.rpp === '*') {
+            this.cfg.rows = value;
+        }
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.cfg.page = 0;
