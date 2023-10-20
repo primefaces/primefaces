@@ -79,6 +79,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //metadata
         this.cfg.rows = this.cfg.rows == 0 ? this.cfg.rowCount : this.cfg.rows;
+        this.cfg.rpp = this.cfg.rows;
         this.cfg.prevRows = this.cfg.rows;
         this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
         this.cfg.pageLinks = this.cfg.pageLinks||10;
@@ -86,8 +87,6 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //aria messages
         this.configureAria();
-        
-
         //event bindings
         this.bindEvents();
     },
@@ -428,7 +427,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Switches this pagination to the given page.
      * @param {number} p 0-based index of the page to switch to.
-     * @param {boolean} [silent=false] `true` to not invoke any event listeners, `false` otherwise. 
+     * @param {boolean} [silent=false] `true` to not invoke any event listeners, `false` otherwise.
      */
     setPage: function(p, silent) {
         if(p >= 0 && p < this.cfg.pageCount && this.cfg.page != p){
@@ -454,6 +453,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      */
     setRowsPerPage: function(rpp) {
         this.rppSelect.find('option').removeAttr('selected');
+        this.cfg.rpp = rpp;
         if (rpp === '*') {
             this.cfg.rows = this.cfg.rowCount;
             this.cfg.pageCount = 1;
@@ -486,6 +486,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
      * @param {number} value The total number of items to set.
      */
     setTotalRecords: function(value) {
+        this.cfg.rows = this.cfg.rpp === '*' ? value : this.cfg.rows;
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.cfg.page = 0;
