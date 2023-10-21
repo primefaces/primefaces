@@ -558,6 +558,7 @@
                         <resourcesSet>
                             <includes>
                                 <include>calendar/**</include>
+                                <include>chart/**</include>
                                 <include>charts/**</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
@@ -608,6 +609,18 @@
                         <resourcesSet>
                             <includes>
                                 <include>chartjs/**</include>
+                            </includes>
+                            <aggregations>
+                                <aggregation>
+                                    <inputDir>${resources.dir.compressed}</inputDir>
+                                    <subDirMode>true</subDirMode>
+                                    <withoutCompress>true</withoutCompress>
+                                </aggregation>
+                            </aggregations>
+                        </resourcesSet>
+                        <resourcesSet>
+                            <includes>
+                                <include>chart/**</include>
                             </includes>
                             <aggregations>
                                 <aggregation>

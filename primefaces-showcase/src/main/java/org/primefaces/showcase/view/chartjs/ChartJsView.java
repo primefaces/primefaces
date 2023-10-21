@@ -24,10 +24,10 @@
 package org.primefaces.showcase.view.chartjs;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -58,11 +58,8 @@ import org.primefaces.model.charts.hbar.HorizontalBarChartModel;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
-import org.primefaces.model.charts.optionconfig.animation.Animation;
 import org.primefaces.model.charts.optionconfig.elements.Elements;
 import org.primefaces.model.charts.optionconfig.elements.ElementsLine;
-import org.primefaces.model.charts.optionconfig.legend.Legend;
-import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.model.charts.pie.PieChartDataSet;
@@ -73,6 +70,15 @@ import org.primefaces.model.charts.radar.RadarChartDataSet;
 import org.primefaces.model.charts.radar.RadarChartModel;
 import org.primefaces.model.charts.radar.RadarChartOptions;
 import org.primefaces.model.charts.scatter.ScatterChartModel;
+import software.xdev.chartjs.model.charts.BarChart;
+import software.xdev.chartjs.model.color.Color;
+import software.xdev.chartjs.model.data.BarData;
+import software.xdev.chartjs.model.dataset.BarDataset;
+import software.xdev.chartjs.model.options.BarOptions;
+import software.xdev.chartjs.model.options.Plugins;
+import software.xdev.chartjs.model.options.scales.BarScale;
+import software.xdev.chartjs.model.options.scales.Scales;
+import software.xdev.chartjs.model.options.ticks.CategoryTicks;
 
 @Named
 @RequestScoped
@@ -88,9 +94,9 @@ public class ChartJsView implements Serializable {
 
     private LineChartModel cartesianLinerModel;
 
-    private BarChartModel barModel;
+    private String barModel;
 
-    private BarChartModel barModel2;
+    private String barModel2;
 
     private HorizontalBarChartModel hbarModel;
 
@@ -342,157 +348,115 @@ public class ChartJsView implements Serializable {
     }
 
     public void createBarModel() {
-        barModel = new BarChartModel();
-        ChartData data = new ChartData();
-
-        BarChartDataSet barDataSet = new BarChartDataSet();
-        barDataSet.setLabel("My First Dataset");
-
-        List<Number> values = new ArrayList<>();
-        values.add(65);
-        values.add(59);
-        values.add(80);
-        values.add(81);
-        values.add(56);
-        values.add(55);
-        values.add(40);
-        barDataSet.setData(values);
-
-        List<String> bgColor = new ArrayList<>();
-        bgColor.add("rgba(255, 99, 132, 0.2)");
-        bgColor.add("rgba(255, 159, 64, 0.2)");
-        bgColor.add("rgba(255, 205, 86, 0.2)");
-        bgColor.add("rgba(75, 192, 192, 0.2)");
-        bgColor.add("rgba(54, 162, 235, 0.2)");
-        bgColor.add("rgba(153, 102, 255, 0.2)");
-        bgColor.add("rgba(201, 203, 207, 0.2)");
-        barDataSet.setBackgroundColor(bgColor);
-
-        List<String> borderColor = new ArrayList<>();
-        borderColor.add("rgb(255, 99, 132)");
-        borderColor.add("rgb(255, 159, 64)");
-        borderColor.add("rgb(255, 205, 86)");
-        borderColor.add("rgb(75, 192, 192)");
-        borderColor.add("rgb(54, 162, 235)");
-        borderColor.add("rgb(153, 102, 255)");
-        borderColor.add("rgb(201, 203, 207)");
-        barDataSet.setBorderColor(borderColor);
-        barDataSet.setBorderWidth(1);
-
-        data.addChartDataSet(barDataSet);
-
-        List<String> labels = new ArrayList<>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
-        data.setLabels(labels);
-        barModel.setData(data);
-
-        //Options
-        BarChartOptions options = new BarChartOptions();
-        options.setMaintainAspectRatio(false);
-        CartesianScales cScales = new CartesianScales();
-        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
-        linearAxes.setOffset(true);
-        linearAxes.setBeginAtZero(true);
-        CartesianLinearTicks ticks = new CartesianLinearTicks();
-        linearAxes.setTicks(ticks);
-        cScales.addYAxesData(linearAxes);
-        options.setScales(cScales);
-
-        Title title = new Title();
-        title.setDisplay(true);
-        title.setText("Bar Chart");
-        options.setTitle(title);
-
-        Legend legend = new Legend();
-        legend.setDisplay(true);
-        legend.setPosition("top");
-        LegendLabel legendLabels = new LegendLabel();
-        legendLabels.setFontStyle("italic");
-        legendLabels.setFontColor("#2980B9");
-        legendLabels.setFontSize(24);
-        legend.setLabels(legendLabels);
-        options.setLegend(legend);
-
-        // disable animation
-        Animation animation = new Animation();
-        animation.setDuration(0);
-        options.setAnimation(animation);
-
-        barModel.setOptions(options);
+        barModel = "{" +
+                "    \"type\": \"bar\"," +
+                "    \"data\": {" +
+                "        \"datasets\": [" +
+                "            {" +
+                "                \"type\": \"bar\"," +
+                "                \"data\": [" +
+                "                    65," +
+                "                    59," +
+                "                    80," +
+                "                    81," +
+                "                    56," +
+                "                    55," +
+                "                    40" +
+                "                ]," +
+                "                \"label\": \"My First Dataset\"," +
+                "                \"hidden\": false," +
+                "                \"backgroundColor\": \"rgba(255, 99, 132, 0.2)\"," +
+                "                \"borderColor\": \"rgb(255, 99, 132)\"," +
+                "                \"borderWidth\": 1" +
+                "            }," +
+                "            {" +
+                "                \"type\": \"bar\"," +
+                "                \"data\": [" +
+                "                    85," +
+                "                    69," +
+                "                    20," +
+                "                    51," +
+                "                    76," +
+                "                    75," +
+                "                    10" +
+                "                ]," +
+                "                \"label\": \"My Second Dataset\"," +
+                "                \"hidden\": false," +
+                "                \"backgroundColor\": \"rgba(255, 159, 64, 0.2)\"," +
+                "                \"borderColor\": \"rgb(255, 159, 64)\"," +
+                "                \"borderWidth\": 1" +
+                "            }" +
+                "        ]," +
+                "        \"labels\": [" +
+                "            \"January\"," +
+                "            \"February\"," +
+                "            \"March\"," +
+                "            \"April\"," +
+                "            \"May\"," +
+                "            \"June\"," +
+                "            \"July\"" +
+                "        ]" +
+                "    }," +
+                "    \"options\": {" +
+                "        \"responsive\": true," +
+                "        \"maintainAspectRatio\": false," +
+                "        \"barPercentage\": 0.9," +
+                "        \"indexAxis\": \"x\"," +
+                "        \"scales\": {" +
+                "            \"y\": {" +
+                "                \"offset\": true," +
+                "                \"stacked\": false," +
+                "                \"reverse\": false," +
+                "                \"beginAtZero\": true," +
+                "                \"ticks\": {" +
+                "                    \"autoSkip\": true," +
+                "                    \"mirror\": false" +
+                "                }" +
+                "            }" +
+                "        }," +
+                "        \"plugins\": {" +
+                "            \"title\": {" +
+                "                \"display\": true," +
+                "                \"text\": \"Bar Chart\"" +
+                "            }" +
+                "        }" +
+                "    }" +
+                "}";
     }
 
     public void createBarModel2() {
-        barModel2 = new BarChartModel();
-        ChartData data = new ChartData();
-
-        BarChartDataSet barDataSet = new BarChartDataSet();
-        barDataSet.setLabel("My First Dataset");
-        barDataSet.setBackgroundColor("rgba(255, 99, 132, 0.2)");
-        barDataSet.setBorderColor("rgb(255, 99, 132)");
-        barDataSet.setBorderWidth(1);
-        List<Number> values = new ArrayList<>();
-        values.add(65);
-        values.add(59);
-        values.add(80);
-        values.add(81);
-        values.add(56);
-        values.add(55);
-        values.add(40);
-        barDataSet.setData(values);
-
-        BarChartDataSet barDataSet2 = new BarChartDataSet();
-        barDataSet2.setLabel("My Second Dataset");
-        barDataSet2.setBackgroundColor("rgba(255, 159, 64, 0.2)");
-        barDataSet2.setBorderColor("rgb(255, 159, 64)");
-        barDataSet2.setBorderWidth(1);
-        List<Number> values2 = new ArrayList<>();
-        values2.add(85);
-        values2.add(69);
-        values2.add(20);
-        values2.add(51);
-        values2.add(76);
-        values2.add(75);
-        values2.add(10);
-        barDataSet2.setData(values2);
-
-        data.addChartDataSet(barDataSet);
-        data.addChartDataSet(barDataSet2);
-
-        List<String> labels = new ArrayList<>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
-        data.setLabels(labels);
-        barModel2.setData(data);
-
-        //Options
-        BarChartOptions options = new BarChartOptions();
-        options.setMaintainAspectRatio(false);
-        CartesianScales cScales = new CartesianScales();
-        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
-        linearAxes.setOffset(true);
-        linearAxes.setBeginAtZero(true);
-        CartesianLinearTicks ticks = new CartesianLinearTicks();
-        linearAxes.setTicks(ticks);
-        cScales.addYAxesData(linearAxes);
-        options.setScales(cScales);
-
-        Title title = new Title();
-        title.setDisplay(true);
-        title.setText("Bar Chart");
-        options.setTitle(title);
-
-        barModel2.setOptions(options);
+        barModel2 = new BarChart()
+                .setData(new BarData()
+                .addDataset(new BarDataset()
+                        .setData(65, 59, 80, 81, 56, 55, 40)
+                        .setLabel("My First Dataset")
+                        .setBackgroundColor(new Color(255, 99, 132, 0.2))
+                        .setBorderColor(new Color(255, 99, 132))
+                        .setBorderWidth(1))
+                .addDataset(new BarDataset()
+                        .setData(85, 69, 20, 51, 76, 75, 10)
+                        .setLabel("My Second Dataset")
+                        .setBackgroundColor(new Color(255, 159, 64, 0.2))
+                        .setBorderColor(new Color(255, 159, 64))
+                        .setBorderWidth(1)
+                )
+                .setLabels("January", "February", "March", "April", "May", "June", "July"))
+                .setOptions(new BarOptions()
+                        .setResponsive(true)
+                        .setMaintainAspectRatio(false)
+                        .setIndexAxis(BarOptions.IndexAxis.X)
+                        .setScales(new Scales().addScale(Scales.ScaleAxis.Y, new BarScale<CategoryTicks>()
+                                .setBarPercentage(BigDecimal.valueOf(0.9))
+                                .setStacked(false)
+                                .setTicks(new CategoryTicks()
+                                        .setAutoSkip(true)
+                                        .setMirror(true)))
+                        )
+                        .setPlugins(new Plugins()
+                                .setTitle(new software.xdev.chartjs.model.options.Title()
+                                        .setDisplay(true)
+                                        .setText("Bar Chart using XDEV java model")))
+                ).toJson();
     }
 
     public void createHorizontalBarModel() {
@@ -1016,19 +980,19 @@ public class ChartJsView implements Serializable {
         this.cartesianLinerModel = cartesianLinerModel;
     }
 
-    public BarChartModel getBarModel() {
+    public String getBarModel() {
         return barModel;
     }
 
-    public void setBarModel(BarChartModel barModel) {
+    public void setBarModel(String barModel) {
         this.barModel = barModel;
     }
 
-    public BarChartModel getBarModel2() {
+    public String getBarModel2() {
         return barModel2;
     }
 
-    public void setBarModel2(BarChartModel barModel2) {
+    public void setBarModel2(String barModel2) {
         this.barModel2 = barModel2;
     }
 

@@ -1,7 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
@@ -17,25 +16,24 @@
     <ui:param name="widgetLink" value="BarChart"/>
 
     <ui:define name="implementation">
-        <div class="card">
-            <h5>Basic</h5>
-            <p:barChart model="#{chartJsView.barModel}" style="width: 100%; height: 500px;"/>
-        </div>
+        <h:form>
+            <p:growl id="growl" showDetail="true"/>
 
-        <div class="card">
-            <h5>Horizontal</h5>
-            <p:barChart model="#{chartJsView.hbarModel}" style="width: 100%; height: 500px;"/>
-        </div>
+            <div class="card">
+                <h5>Plain JSON</h5>
+                <p:chart value="#{chartJsView.barModel}" style="width: 100%; height: 500px;">
+                    <p:ajax event="itemSelect" listener="#{chartJsView.itemSelect}" update="growl"/>
+                </p:chart>
+            </div>
 
-        <div class="card">
-            <h5>Stacked</h5>
-            <p:barChart model="#{chartJsView.stackedBarModel}" style="width: 100%; height: 500px;"/>
-        </div>
+            <div class="card">
+                <h5>XDEV ChartJS model</h5>
+                <p:chart value="#{chartJsView.barModel2}" style="width: 100%; height: 500px;">
+                    <p:ajax event="itemSelect" listener="#{chartJsView.itemSelect}" update="growl"/>
+                </p:chart>
+            </div>
 
-        <div class="card">
-            <h5>Stacked Group</h5>
-            <p:barChart model="#{chartJsView.stackedGroupBarModel}" style="width: 100%; height: 500px;"/>
-        </div>
+        </h:form>
     </ui:define>
 
 </ui:composition>
