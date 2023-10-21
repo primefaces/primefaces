@@ -59,6 +59,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private boolean foundHtmlElement;
     private boolean foundBodyElement;
     private boolean writeFouc;
+    private int counter = 0; // used to track non-JS files
 
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
         super(wrapped);
@@ -233,7 +234,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
             // write inline scripts
             for (Map.Entry<String, List<String>> entry : state.getInlines().entrySet()) {
-                String type = entry.getKey();
+                // strip tracking _0, _1, _2 etc off the end of the string
+                String type = entry.getKey().replaceAll("_\\d+$", "");
                 List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();
@@ -273,7 +275,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 script.append("\n");
             }
             script.append(inlines.get(i));
-            script.append(";");
+
+            // append ; only if this is JS code
+            if (RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(type)) {
+                script.append(";");
+            }
         }
 
         String minimized = script.toString();
@@ -309,10 +315,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     protected void updateAttributes(String name, String value) {
         includeAttributes.put(name, value);
 
-        if (TYPE_ATTRIBUTE.equalsIgnoreCase(name)) {
-            if (LangUtils.isNotBlank(value)) {
-                scriptType = value;
-            }
+        // #10845 look for type attribute NOT equal to text/javascript
+        if (TYPE_ATTRIBUTE.equalsIgnoreCase(name) && !RendererUtils.SCRIPT_TYPE.equalsIgnoreCase(value)) {
+            scriptType = value + "_" + counter++;
         }
     }
 
