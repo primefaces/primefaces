@@ -65,7 +65,7 @@ public class LocaleConverter implements Converter<Country> {
             return String.valueOf(value.getId());
         }
         else {
-            return null;
+            return "";
         }
     }
 }

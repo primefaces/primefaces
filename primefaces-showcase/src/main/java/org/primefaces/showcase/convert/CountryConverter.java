@@ -63,7 +63,7 @@ public class CountryConverter implements Converter<Country> {
             return String.valueOf(value.getId());
         }
         else {
-            return null;
+            return "";
         }
     }
 }

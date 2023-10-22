@@ -62,7 +62,7 @@ public class OrderConverter implements Converter<TimelineEvent<Order>>, Serializ
     @Override
     public String getAsString(FacesContext context, UIComponent component, TimelineEvent<Order> value) {
         if (value == null) {
-            return null;
+            return "";
         }
 
         return String.valueOf(value.getData().getNumber());
