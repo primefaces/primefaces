@@ -743,7 +743,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         filter.off('keydown.dataTable-blockenter ' + filterEventName)
         .on('keydown.dataTable-blockenter', PrimeFaces.utils.blockEnterKey)
         .on(filterEventName, function(e) {
-            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+            if (e.key && PrimeFaces.utils.ignoreFilterKey(e)) {
                 return;
             }
 
