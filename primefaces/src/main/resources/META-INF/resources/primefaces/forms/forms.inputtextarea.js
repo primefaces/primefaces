@@ -297,6 +297,10 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
         //dialog support
         this.setupDialogSupport();
+
+        if (!this.jq.hasClass('ui-state-disabled')) {
+            this.jq.data('primefaces-overlay-target', true);
+        }
     },
 
     /**
