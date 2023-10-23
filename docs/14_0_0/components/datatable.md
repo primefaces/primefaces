@@ -173,8 +173,8 @@ We suggest you to not store your data model inside a longer-living scope like `@
 
 So either you use a `@RequestScoped` like in the _Getting started_, or use a `LazyDataModel` to load your data on-the-fly.   
 PrimeFaces comes with 2 built-in `LazyDataModel`:
-- `JpaLazyDataModel`: implementation to load the data via JPA
-- `ReflectionLazyDataModel`: implementation which loads the data via lambda. It also performance better (up to 30%) compared to binding a simple List.
+- `JPALazyDataModel`: implementation to load the data via JPA
+- `DefaultLazyDataModel`: implementation which loads the data via lambda. It also performs better (up to 30%) compared to binding a simple List.
 
 
 ```java
@@ -187,8 +187,9 @@ public class CarBean {
 
     @PostConstruct
     public void init() {
-        cars = ReflectionLazyDataModel.builder(() -> carService.getCars())
-                .rowKeyProvider((car) -> Integer.toString(car.getId())) // required for selection
+        cars = DefaultLazyDataModel.<Car>builder()
+                .valueSupplier(() -> carService.getCars())
+                .rowKeyProvider(Car::getId) // required for selection
                 .build();
     }
 
@@ -994,44 +995,55 @@ public class CarBean {
 }
 ```
 
-### JpaLazyDataModel
+### JPALazyDataModel
 
 PrimeFaces provides a OOTB implementation for JPA users, which supports basic features.
 
 ```java
-new JpaLazyDataModel<>(MyEntity.class, () -> entityManager);
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .build();
 ```
 
 If you have selection enabled, you can either pass the rowKey via JPA metamodel:
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKey(MyEntity_.id)
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .rowKeyField(MyEntity_.id)
+        .build();
 ```
 
 or as plain String:
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKey("id")
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .rowKeyField("id")
+        .build();
 ```
 
 or provide a existing JSF `Converter`:
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .rowKeyConverter(myConverter)
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .rowKeyConverter(myConverter)
+        .build();
 ```
 
 or enable case insensitive searching:
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .caseSensitive(false)
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .caseSensitive(false)
+        .build();
 ```
 
 or enable wildcard support for characters `*`, `%`, `?` and `_`. Characters `*` and `%` means any characters 
@@ -1039,23 +1051,27 @@ while `?` and `_` mean replace a single character.  For example `Smith*` would f
 the word `Smith`. For single character replacement like `Te?t` would match words `Tent` and `Test`.
 
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .wildcardSupport(true)
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .wildcardSupport(true)
+        .build();
 ```
 
 Also you can add global filters or manipulate generated predicates (from the DataTable columns) via:
 ```java
-JpaLazyDataModel<MyEntity> lazyDataModel = JpaLazyDataModel.builder(MyEntity.class, () -> entityManager)
-    .filterEnricher((filterBy, cb, cq, root, predicates) -> {
-        predicates.add(cb.isNull(root.get("id")));
-    })
-    .build();
+JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
+        .entityClass(MyEntity.class)
+        .entityManager(() -> entityManager)
+        .filterEnricher((filterBy, cb, cq, root, predicates) -> {
+            predicates.add(cb.isNull(root.get("id")));
+        })
+        .build();
 ```
 
-### ReflectionLazyDataModel
+### DefaultLazyDataModel
 
-`ReflectionLazyDataModel` is a `LazyDataModel` implementation which takes a supplier as datasource and implements filtering and sorting via reflection.
+`DefaultLazyDataModel` is a `LazyDataModel` implementation which takes a supplier as datasource and implements filtering and sorting via reflection.
 It can be used for cases where you would dynamically load the datasource e.g. from a webservice.
 
 Also it can be used as replacement for binding a simple List as it has some benefits:
@@ -1064,12 +1080,13 @@ Also it can be used as replacement for binding a simple List as it has some bene
 3) it allows some additional features like applying additional filtering or sorting via lambda.
 
 ```java
-private ReflectionLazyDataModel<MyPojo> dataModel;
+private DefaultLazyDataModel<MyPojo> dataModel;
 
 @PostConstruct
 public void init() {
-    dataModel = ReflectionLazyDataModel.builder(() -> service.getListOfMyPojos())
-        .rowKeyProvider((o) -> Integer.toString(o.getId())) // required for selection
+    dataModel = DefaultLazyDataModel.<MyPojo>builder()
+        .valueSupplier(() -> service.getListOfMyPojos())
+        .rowKeyProvider(MyPojo::getId) // required for selection
         .build();
 ```
 

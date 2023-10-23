@@ -133,15 +133,15 @@ public class SortTableComparator implements Comparator<Object> {
         }
     }
 
-    public static Comparator<Object> comparingBySortByVE(FacesContext context, UITable<?> table) {
+    public static Comparator<Object> comparingSortByVE(FacesContext context, UITable<?> table) {
         return new SortTableComparator(context, table, SORT_BY_VE_MAPPER);
     }
 
-    public static Comparator<Object> comparingByField(FacesContext context, UITable<?> table) {
+    public static Comparator<Object> comparingField(FacesContext context, UITable<?> table) {
         return new SortTableComparator(context, table, FIELD_MAPPER);
     }
 
-    public static Comparator<Object> comparingTreeNodeBySortByVE(FacesContext context, UITable<?> table) {
+    public static Comparator<Object> comparingTreeNodeSortByVE(FacesContext context, UITable<?> table) {
         return new SortTableComparator(context, table, TREE_NODE_MAPPER);
     }
 

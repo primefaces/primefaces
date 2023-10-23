@@ -361,6 +361,16 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             model = new JPALazyDataModel<>(null, null, (String) null);
         }
 
+        public Builder<T> entityClass(Class<T> entityClass) {
+            model.entityClass = entityClass;
+            return this;
+        }
+
+        public Builder<T> entityManager(SerializableSupplier<EntityManager> entityManager) {
+            model.entityManager = entityManager;
+            return this;
+        }
+
         public Builder<T> rowKeyConverter(Converter<T> rowKeyConverter) {
             model.rowKeyConverter = rowKeyConverter;
             return this;

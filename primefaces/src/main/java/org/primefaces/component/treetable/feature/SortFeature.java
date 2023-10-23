@@ -138,7 +138,7 @@ public class SortFeature implements TreeTableFeature {
 
         if (children != null && !children.isEmpty()) {
             Object[] childrenArray = children.toArray();
-            Arrays.sort(childrenArray, SortTableComparator.comparingTreeNodeBySortByVE(context, table));
+            Arrays.sort(childrenArray, SortTableComparator.comparingTreeNodeSortByVE(context, table));
             for (int i = 0; i < childrenArray.length; i++) {
                 children.set(i, (TreeNode) childrenArray[i]);
             }

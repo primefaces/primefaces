@@ -140,7 +140,7 @@ public class SortFeature implements DataTableFeature {
         String var = table.getVar();
         Object varBackup = context.getExternalContext().getRequestMap().get(var);
 
-        list.sort(SortTableComparator.comparingBySortByVE(context, table));
+        list.sort(SortTableComparator.comparingSortByVE(context, table));
 
         if (varBackup == null) {
             context.getExternalContext().getRequestMap().remove(var);
