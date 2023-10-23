@@ -27,7 +27,10 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -504,53 +507,5 @@ public class LangUtils {
             }
         }
         return true;
-    }
-
-    public static Field getFieldRecursive(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
-
-        Class<?> nextClazz = clazz;
-        String nextName = name;
-        while (nextName.contains(".")) {
-            String currentName = nextName.substring(0, nextName.indexOf("."));
-            nextName = nextName.substring(currentName.length() + 1, nextName.length());
-            Field field = getField(nextClazz, currentName);
-            nextClazz = field.getType();
-        }
-
-        return getField(nextClazz, nextName);
-    }
-
-    public static Field getField(Class<?> clazz, String name) {
-        if (clazz == null) {
-            throw new IllegalArgumentException("clazz must not be null!");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("name must not be null!");
-        }
-
-        Class<?> current = clazz;
-        while (current != null && current != Object.class) {
-            try {
-                Field field = current.getDeclaredField(name);
-                field.setAccessible(true);
-                return field;
-            }
-            catch (NoSuchFieldException e) {
-                // Try parent
-            }
-            catch (Exception e) {
-                throw new IllegalArgumentException("Cannot access field " + name + " in " + clazz.getName(), e);
-            }
-
-            current = current.getSuperclass();
-        }
-
-        throw new IllegalArgumentException("Cannot find field " + name + " in " + clazz.getName());
     }
 }

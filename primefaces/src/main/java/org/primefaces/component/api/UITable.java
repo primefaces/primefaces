@@ -23,7 +23,6 @@
  */
 package org.primefaces.component.api;
 
-import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -45,6 +44,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.LocaleUtils;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
 
@@ -96,7 +96,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (FilterMeta.GLOBAL_FILTER_KEY.equals(entry.getKey())) {
                 UIComponent globalFilterComponent = SearchExpressionUtils.contextlessResolveComponent(
                         context, (UIComponent) this, GLOBAL_FILTER_COMPONENT_ID);
-                if (globalFilterComponent != null && globalFilterComponent instanceof ValueHolder) {
+                if (globalFilterComponent instanceof ValueHolder) {
                     ((ValueHolder) globalFilterComponent).setValue(entry.getValue().getFilterValue());
                 }
             }
@@ -404,7 +404,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         Map<String, ColumnMeta> columMeta = getColumnMeta();
-        columMeta.values().stream().forEach(s -> s.setVisible(null));
+        columMeta.values().forEach(s -> s.setVisible(null));
 
         if (LangUtils.isNotBlank(columnTogglerStateParam)) {
             String[] columnStates = columnTogglerStateParam.split(",");
@@ -416,7 +416,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 String columnKey = columnState.substring(0, seperatorIndex);
                 boolean visible = Boolean.parseBoolean(columnState.substring(seperatorIndex + 1));
 
-                ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                ColumnMeta meta = columMeta.computeIfAbsent(columnKey, ColumnMeta::new);
                 meta.setVisible(visible);
             }
         }
@@ -435,7 +435,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         Map<String, ColumnMeta> columMeta = getColumnMeta();
-        columMeta.values().stream().forEach(s -> s.setWidth(null));
+        columMeta.values().forEach(s -> s.setWidth(null));
 
         String tableWidth = null;
 
@@ -455,7 +455,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                     String columnKey = columnState.substring(0, seperatorIndex);
                     String width = columnState.substring(seperatorIndex + 1);
 
-                    ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+                    ColumnMeta meta = columMeta.computeIfAbsent(columnKey, ColumnMeta::new);
                     meta.setWidth(width);
                 }
             }
@@ -480,7 +480,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         }
 
         Map<String, ColumnMeta> columMeta = getColumnMeta();
-        columMeta.values().stream().forEach(s -> s.setDisplayPriority(0));
+        columMeta.values().forEach(s -> s.setDisplayPriority(0));
 
         String[] columnKeys = columnOrderParam.split(",");
         for (int i = 0; i < columnKeys.length; i++) {
@@ -489,7 +489,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 continue;
             }
 
-            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, k -> new ColumnMeta(k));
+            ColumnMeta meta = columMeta.computeIfAbsent(columnKey, ColumnMeta::new);
             meta.setDisplayPriority(i);
         }
 
@@ -508,8 +508,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
     }
 
     default Object getFieldValue(FacesContext context, UIColumn column) {
-        Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
-        return value;
+        return UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
     }
 
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
@@ -521,57 +520,6 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default boolean isFilteringCurrentlyActive() {
         return getFilterByAsMap().values().stream().anyMatch(FilterMeta::isActive);
-    }
-
-    default int compare(FacesContext context, String var, SortMeta sortMeta, Object o1, Object o2,
-            Collator collator, Locale locale) {
-
-        try {
-            ValueExpression ve = sortMeta.getSortBy();
-
-            context.getExternalContext().getRequestMap().put(var, o1);
-            Object value1 = ve.getValue(context.getELContext());
-
-            context.getExternalContext().getRequestMap().put(var, o2);
-            Object value2 = ve.getValue(context.getELContext());
-
-            int result;
-
-            if (sortMeta.getFunction() == null) {
-                //Empty check
-                if (value1 == null && value2 == null) {
-                    result = 0;
-                }
-                else if (value1 == null) {
-                    result = sortMeta.getNullSortOrder();
-                }
-                else if (value2 == null) {
-                    result = -1 * sortMeta.getNullSortOrder();
-                }
-                else if (value1 instanceof String && value2 instanceof String) {
-                    if (sortMeta.isCaseSensitiveSort()) {
-                        result = collator.compare(value1, value2);
-                    }
-                    else {
-                        String str1 = (((String) value1).toLowerCase(locale));
-                        String str2 = (((String) value2).toLowerCase(locale));
-
-                        result = collator.compare(str1, str2);
-                    }
-                }
-                else {
-                    result = ((Comparable<Object>) value1).compareTo(value2);
-                }
-            }
-            else {
-                result = (Integer) sortMeta.getFunction().invoke(context.getELContext(), new Object[]{value1, value2, sortMeta});
-            }
-
-            return sortMeta.getOrder().isAscending() ? result : -1 * result;
-        }
-        catch (Exception e) {
-            throw new FacesException(e);
-        }
     }
 
     /**
@@ -604,7 +552,13 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
         return false;
     }
 
+    default Locale resolveDataLocale(FacesContext context) {
+        return LocaleUtils.resolveLocale(context, getDataLocale(), getClientId(context));
+    }
+
     int getChildCount();
 
     List<UIComponent> getChildren();
+
+    Object getDataLocale();
 }

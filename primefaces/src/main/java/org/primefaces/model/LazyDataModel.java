@@ -23,27 +23,32 @@
  */
 package org.primefaces.model;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
 import javax.faces.model.DataModelListener;
 
 /**
  * DataModel to deal with huge datasets with by lazy loading, page by page.
  *
+ * As long {@link DataModel} is not serializable,
+ * see <a href="https://github.com/jakartaee/faces/issues/1585">...</a>,
+ * do no extend from {@link javax.faces.model.ListDataModel}
+ * see #7699
+ *
  * @param <T> The model class.
  */
-public abstract class LazyDataModel<T> extends ListDataModel<T> implements SelectableDataModel<T>, Serializable {
+public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Converter<T> rowKeyConverter;
+    protected Converter<T> rowKeyConverter;
     private int rowCount;
     private int pageSize;
 
@@ -99,7 +104,7 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     public T getRowData(String rowKey) {
         if (rowKeyConverter != null) {
             FacesContext context = FacesContext.getCurrentInstance();
-            return (T) rowKeyConverter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
+            return rowKeyConverter.getAsObject(context, UIComponent.getCurrentComponent(context), rowKey);
         }
 
         throw new UnsupportedOperationException(
@@ -135,13 +140,17 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
     @Override
     public String getRowKey(T object) {
         if (rowKeyConverter != null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            return rowKeyConverter.getAsString(context, UIComponent.getCurrentComponent(context), object);
+            return getRowKeyFromConverter(object);
         }
 
         throw new UnsupportedOperationException(
                 getMessage("Provide a Converter via constructor or implement getRowKey(T object) in %s"
                         + ", when basic rowKey algorithm is not used [component=%s,view=%s]."));
+    }
+
+    protected String getRowKeyFromConverter(T object) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return rowKeyConverter.getAsString(context, UIComponent.getCurrentComponent(context), object);
     }
 
     protected String getMessage(String msg) {
@@ -151,7 +160,6 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
         return String.format(msg, getClass().getName(), clientId, viewId);
     }
-
 
     @Override
     public boolean isRowAvailable() {
@@ -238,33 +246,5 @@ public abstract class LazyDataModel<T> extends ListDataModel<T> implements Selec
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
-    }
-
-    public Converter<T> getRowKeyConverter() {
-        return rowKeyConverter;
-    }
-
-    public void setRowKeyConverter(Converter<T> rowKeyConverter) {
-        this.rowKeyConverter = rowKeyConverter;
-    }
-
-    /**
-     *
-     * @return
-     * @deprecated please use {@link #getRowKeyConverter()}
-     */
-    @Deprecated
-    public Converter<T> getConverter() {
-        return rowKeyConverter;
-    }
-
-    /**
-     *
-     * @param rowKeyConverter
-     * @@deprecated please use {@link #setRowKeyConverter(javax.faces.convert.Converter)}
-     */
-    @Deprecated
-    public void setConverter(Converter<T> rowKeyConverter) {
-        this.rowKeyConverter = rowKeyConverter;
     }
 }

@@ -25,7 +25,6 @@ package org.primefaces.config;
 
 import java.util.Map;
 import java.util.Objects;
-
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;

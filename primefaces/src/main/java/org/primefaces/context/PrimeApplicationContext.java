@@ -23,7 +23,6 @@
  */
 package org.primefaces.context;
 
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -60,10 +59,7 @@ import org.primefaces.component.treetable.export.*;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.metadata.transformer.MetadataTransformer;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.Lazy;
-import org.primefaces.util.MapBuilder;
+import org.primefaces.util.*;
 import org.primefaces.validate.bean.ClientValidationConstraint;
 import org.primefaces.virusscan.VirusScannerService;
 import org.primefaces.webapp.FileUploadChunksServlet;
@@ -98,8 +94,7 @@ public class PrimeApplicationContext {
     private FileTypeDetector fileTypeDetector;
     private FileUploadDecoder fileUploadDecoder;
     private String fileUploadResumeUrl;
-
-    private ConcurrentHashMap<String, Map<String, PropertyDescriptor>> propertyDescriptorCache;
+    private PropertyDescriptorResolver propertyDescriptorResolver;
 
     public PrimeApplicationContext(FacesContext facesContext) {
         environment = new PrimeEnvironment(facesContext);
@@ -110,8 +105,6 @@ public class PrimeApplicationContext {
         exporters = new ConcurrentHashMap<>();
         beanValidationClientConstraintMapping = new ConcurrentHashMap<>();
         metadataTransformers = new CopyOnWriteArrayList<>();
-
-        propertyDescriptorCache = new ConcurrentHashMap<>();
 
         ClassLoader classLoader = null;
         Object context = facesContext.getExternalContext().getContext();
@@ -177,6 +170,8 @@ public class PrimeApplicationContext {
         resolveFileTypeDetector();
 
         registerDefaultExporters();
+
+        resolvePropertyDescriptorResolver();
     }
 
     private void registerDefaultExporters() {
@@ -257,6 +252,13 @@ public class PrimeApplicationContext {
                 .filter(d -> d.getName().equals(finalUploader))
                 .findFirst()
                 .orElseThrow(() -> new FacesException("FileUploaderDecoder '" + finalUploader + "' not found"));
+    }
+
+    private void resolvePropertyDescriptorResolver() {
+        propertyDescriptorResolver = ServiceLoader.load(PropertyDescriptorResolver.class, applicationClassLoader).stream()
+                .findFirst()
+                .map(ServiceLoader.Provider::get)
+                .orElseThrow(() -> new FacesException("No PropertyDescriptorResolver SPI service found"));
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -355,7 +357,7 @@ public class PrimeApplicationContext {
         return metadataTransformers;
     }
 
-    public ConcurrentHashMap<String, Map<String, PropertyDescriptor>> getPropertyDescriptorCache() {
-        return propertyDescriptorCache;
+    public PropertyDescriptorResolver getPropertyDescriptorResolver() {
+        return propertyDescriptorResolver;
     }
 }

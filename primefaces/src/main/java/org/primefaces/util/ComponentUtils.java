@@ -23,8 +23,6 @@
  */
 package org.primefaces.util;
 
-import static org.primefaces.renderkit.RendererUtils.getRenderKit;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
@@ -32,9 +30,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
@@ -50,6 +50,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.api.*;
@@ -57,6 +58,7 @@ import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.csp.CspResponseWriter;
+import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
 
@@ -740,5 +742,57 @@ public class ComponentUtils {
 
     public static boolean isUIRepeat(UIComponent component) {
         return component.getClass().getName().endsWith("UIRepeat");
+    }
+
+    public static Object convertToType(Object value, Class<?> valueType, Class<?> logContext) {
+        // skip null
+        if (value == null) {
+            return null;
+        }
+
+        // its already the same type
+        if (valueType.isAssignableFrom(value.getClass())) {
+            return value;
+        }
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        Logger logger = Logger.getLogger(logContext.getName());
+
+        // primivites dont need complex conversion, try the ELContext first
+        if (BeanUtils.isPrimitiveOrPrimitiveWrapper(valueType)) {
+            try {
+                return context.getELContext().convertToType(value, valueType);
+            }
+            catch (ELException e) {
+                logger.log(Level.INFO, e, () -> "Could not convert '" + value + "' to " + valueType + " via ELContext!");
+            }
+        }
+
+        Converter targetConverter = context.getApplication().createConverter(valueType);
+        if (targetConverter == null) {
+            logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + valueType
+                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+            return value;
+        }
+
+        Converter sourceConverter = context.getApplication().createConverter(value.getClass());
+        if (sourceConverter == null) {
+            logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + value.getClass()
+                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+        }
+
+        // first convert the object to string
+        String stringValue = sourceConverter == null
+                ? value.toString()
+                : sourceConverter.getAsString(context, UIComponent.getCurrentComponent(context), value);
+
+        // now convert the string to the required target
+        try {
+            return targetConverter.getAsObject(context, UIComponent.getCurrentComponent(context), stringValue);
+        }
+        catch (ConverterException e) {
+            logger.log(Level.INFO, e, () -> "Could not convert '" + stringValue + "' to " + valueType + " via " + targetConverter.getClass().getName());
+            return value;
+        }
     }
 }
