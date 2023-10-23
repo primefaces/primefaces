@@ -31,6 +31,12 @@ import javax.faces.event.BehaviorEvent;
 
 import org.primefaces.util.MapBuilder;
 
+/**
+*
+* @deprecated in 10.0 use ToggleSwitch
+*
+*/
+@Deprecated(since = "10.0", forRemoval  =  true)
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "inputswitch/inputswitch.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")

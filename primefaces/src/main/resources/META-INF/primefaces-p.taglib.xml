@@ -14099,7 +14099,7 @@
     </tag>
     <tag>
         <description>
-            <![CDATA[]]>
+            <![CDATA[Deprecated since 10.0 for removal in 15.0.0)]]>
         </description>
         <tag-name>inputSwitch</tag-name>
         <component>
