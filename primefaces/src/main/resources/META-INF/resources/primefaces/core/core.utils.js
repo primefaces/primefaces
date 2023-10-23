@@ -601,7 +601,7 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a printable key, or `false` otherwise.
          */
         isPrintableKey: function(e) {
-            return e.key.length === 1 || e.key === 'Unidentified';
+            return e && e.key && (e.key.length === 1 || e.key === 'Unidentified');
         },
 
         /**
