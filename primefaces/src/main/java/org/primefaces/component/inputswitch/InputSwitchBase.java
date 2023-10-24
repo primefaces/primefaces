@@ -29,6 +29,12 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 
+/**
+*
+* @deprecated in 10.0 use ToggleSwitch
+*
+*/
+@Deprecated(since = "10.0", forRemoval = true)
 public abstract class InputSwitchBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
