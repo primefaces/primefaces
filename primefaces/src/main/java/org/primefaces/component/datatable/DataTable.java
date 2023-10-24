@@ -508,9 +508,9 @@ public class DataTable extends DataTableBase {
 
         if (calculateFirst()) {
             offset = getFirst();
-            LOGGER.warning(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
+            LOGGER.fine(() -> "DataTable#loadLazyScrollData: offset has been recalculated due to overflow (first >= rowCount)");
             if (clientCacheRequest) {
-                LOGGER.warning(() -> "DataTable#loadLazyScrollData: fetching next page has been canceled due to overflow (first >= rowCount)");
+                LOGGER.fine(() -> "DataTable#loadLazyScrollData: fetching next page has been canceled due to overflow (first >= rowCount)");
                 return;
             }
         }
