@@ -17487,6 +17487,22 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>showDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.]]>
+            </description>
+            <name>hideDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
     </tag>
     <tag>
         <description>
@@ -28638,6 +28654,22 @@
             <name>toggleEvent</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.]]>
+            </description>
+            <name>showDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.]]>
+            </description>
+            <name>hideDelay</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
     <tag>

@@ -42,7 +42,8 @@ public class MenubarRenderer extends TieredMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Menubar", menubar)
                 .attr("autoDisplay", menubar.isAutoDisplay())
-                .attr("delay", menubar.getDelay())
+                .attr("showDelay", menubar.getShowDelay(), 0)
+                .attr("hideDelay", menubar.getHideDelay(), 0)
                 .attr("toggleEvent", menubar.getToggleEvent(), null);
 
         wb.finish();

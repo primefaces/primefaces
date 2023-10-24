@@ -27,7 +27,8 @@ model | null | MenuModel | MenuModel instance to create menus programmatically
 style | null | String | Inline style of menubar
 styleClass | null | String | Style class of menubar
 autoDisplay | false | Boolean | Defines whether the first level of submenus will be displayed on mouseover or not. When set to false, click event is required to display.
-delay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
+showDelay | 0 | int | Delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
+hideDelay | 0 | int | Delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
 tabindex | 0 | String | Position of the element in the tabbing order.
 toggleEvent | hover | String | Event to toggle the submenus, valid values are "hover" and "click".
 

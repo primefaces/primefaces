@@ -11,6 +11,7 @@
  * outside the menu.
  * @prop {JQuery} links DOM element with all links for the menu entries of this tiered menu.
  * @prop {JQuery} rootLinks DOM element with all links for the root (top-level) menu entries of this tiered menu.
+ * @prop {number} [timeoutId] Timeout ID, used for the animation when the menu is shown.
  * 
  * @interface {PrimeFaces.widget.TieredMenuCfg} cfg The configuration for the {@link  TieredMenu| TieredMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -19,6 +20,8 @@
  * 
  * @prop {boolean} cfg.autoDisplay Defines whether the first level of submenus will be displayed on mouseover or not.
  * When set to `false`, click event is required to display this tiered menu.
+ * @prop {number} cfg.showDelay Number of milliseconds before displaying menu. Default to 0 immediate.
+ * @prop {number} cfg.hideDelay Number of milliseconds before hiding menu, if 0 not hidden until document.click.
  * @prop {PrimeFaces.widget.TieredMenu.ToggleEvent} cfg.toggleEvent Event to toggle the submenus.
  */
 PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
@@ -31,7 +34,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.cfg.toggleEvent = this.cfg.toggleEvent||'hover';
+        this.cfg.toggleEvent = this.cfg.toggleEvent || 'hover';
+        this.cfg.showDelay = this.cfg.showDelay || 0;
+        this.cfg.hideDelay = this.cfg.hideDelay || 0;
         this.links = this.jq.find('a.ui-menuitem-link:not(.ui-state-disabled)');
         this.rootLinks = this.jq.find('> ul.ui-menu-list > .ui-menuitem > .ui-menuitem-link');
 
@@ -53,9 +58,9 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @protected
      */
     bindItemEvents: function() {
-        if(this.cfg.toggleEvent === 'click' || PrimeFaces.env.isTouchable(this.cfg))
+        if (this.cfg.toggleEvent === 'click' || PrimeFaces.env.isTouchable(this.cfg))
             this.bindClickModeEvents();
-        else if(this.cfg.toggleEvent === 'hover')
+        else if (this.cfg.toggleEvent === 'hover')
             this.bindHoverModeEvents();
     },
 
@@ -68,18 +73,18 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
         this.links.on("mouseenter", function() {
             var link = $(this),
-            menuitem = link.parent();
+                menuitem = link.parent();
 
             var activeSibling = menuitem.siblings('.ui-menuitem-active');
-            if(activeSibling.length === 1) {
+            if (activeSibling.length === 1) {
                 activeSibling.find('li.ui-menuitem-active').each(function() {
                     $this.deactivate($(this));
                 });
                 $this.deactivate(activeSibling);
             }
 
-            if($this.cfg.autoDisplay||$this.active) {
-                if(menuitem.hasClass('ui-menuitem-active'))
+            if ($this.cfg.autoDisplay || $this.active) {
+                if (menuitem.hasClass('ui-menuitem-active'))
                     $this.reactivate(menuitem);
                 else
                     $this.activate(menuitem);
@@ -91,13 +96,13 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
 
         this.rootLinks.on("click", function(e) {
             var link = $(this),
-            menuitem = link.parent(),
-            submenu = menuitem.children('ul.ui-menu-child');
+                menuitem = link.parent(),
+                submenu = menuitem.children('ul.ui-menu-child');
 
             $this.itemClick = true;
 
-            if(submenu.length === 1) {
-                if(submenu.is(':visible')) {
+            if (submenu.length === 1) {
+                if (submenu.is(':visible')) {
                     $this.active = false;
                     $this.deactivate(menuitem);
                 }
@@ -115,11 +120,17 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         });
 
         this.jq.find('ul.ui-menu-list').on("mouseleave", function(e) {
-           if($this.activeitem) {
-               $this.deactivate($this.activeitem);
-           }
+            if ($this.activeitem) {
+                $this.deactivate($this.activeitem);
+            }
+            
+            if ($this.cfg.hideDelay > 0) {
+                $this.timeoutId = PrimeFaces.queueTask(function() {
+                    $this.reset();
+                }, $this.cfg.hideDelay);
+            }
 
-           e.stopPropagation();
+            e.stopPropagation();
         });
     },
 
@@ -133,35 +144,34 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.links.on("mouseenter", function() {
             var menuitem = $(this).parent();
 
-            if(!menuitem.hasClass('ui-menuitem-active')) {
+            if (!menuitem.hasClass('ui-menuitem-active')) {
                 menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
             }
-        })
-        .on("mouseleave", function() {
+        }).on("mouseleave", function() {
             var menuitem = $(this).parent();
 
-            if(!menuitem.hasClass('ui-menuitem-active')) {
+            if (!menuitem.hasClass('ui-menuitem-active')) {
                 menuitem.removeClass('ui-menuitem-highlight').children('a.ui-menuitem-link').removeClass('ui-state-hover');
             }
         });
 
         this.links.filter('.ui-submenu-link').on('click.tieredMenu', function(e) {
             var link = $(this),
-            menuitem = link.parent(),
-            submenu = menuitem.children('ul.ui-menu-child');
+                menuitem = link.parent(),
+                submenu = menuitem.children('ul.ui-menu-child');
 
             $this.itemClick = true;
 
             var activeSibling = menuitem.siblings('.ui-menuitem-active');
-            if(activeSibling.length) {
+            if (activeSibling.length) {
                 activeSibling.find('li.ui-menuitem-active').each(function() {
                     $this.deactivate($(this));
                 });
                 $this.deactivate(activeSibling);
             }
 
-            if(submenu.length) {
-                if(submenu.is(':visible')) {
+            if (submenu.length) {
+                if (submenu.is(':visible')) {
                     $this.deactivate(menuitem);
                     menuitem.addClass('ui-menuitem-highlight').children('a.ui-menuitem-link').addClass('ui-state-hover');
                 }
@@ -191,10 +201,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      */
     bindDocumentHandler: function() {
         var $this = this,
-        clickNS = 'click.' + this.id;
+            clickNS = 'click.' + this.id;
 
         $(document.body).off(clickNS).on(clickNS, function(e) {
-            if($this.itemClick) {
+            if ($this.itemClick) {
                 $this.itemClick = false;
                 return;
             }
@@ -213,7 +223,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         menuitem.children('a.ui-menuitem-link').removeClass('ui-state-hover ui-state-active');
         menuitem.removeClass('ui-menuitem-active ui-menuitem-highlight');
 
-        if(animate)
+        if (animate)
             menuitem.children('ul.ui-menu-child').fadeOut('fast');
         else
             menuitem.children('ul.ui-menu-child').hide();
@@ -227,7 +237,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         this.highlight(menuitem);
 
         var submenu = menuitem.children('ul.ui-menu-child');
-        if(submenu.length == 1) {
+        if (submenu.length == 1) {
             this.showSubmenu(menuitem, submenu);
         }
     },
@@ -240,10 +250,10 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
     reactivate: function(menuitem) {
         this.activeitem = menuitem;
         var submenu = menuitem.children('ul.ui-menu-child'),
-        activeChilditem = submenu.children('li.ui-menuitem-active:first'),
-        _self = this;
+            activeChilditem = submenu.children('li.ui-menuitem-active:first'),
+            _self = this;
 
-        if(activeChilditem.length == 1) {
+        if (activeChilditem.length == 1) {
             _self.deactivate(activeChilditem);
         }
     },
@@ -264,7 +274,7 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
      * @param {JQuery} submenu A child of the menu item.
      */
     showSubmenu: function(menuitem, submenu) {
-        var pos ={
+        var pos = {
             my: 'left top',
             at: 'right top',
             of: menuitem,
@@ -274,6 +284,17 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
         submenu.css('z-index', PrimeFaces.nextZindex())
             .show()
             .position(pos);
+
+        //avoid queuing multiple runs
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = PrimeFaces.queueTask(function() {
+            submenu.css('z-index', PrimeFaces.nextZindex())
+                .show()
+                .position(pos);
+        }, this.cfg.showDelay);
     },
 
     /**
@@ -288,5 +309,5 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             $this.deactivate($(this), true);
         });
     }
-    
+
 });
