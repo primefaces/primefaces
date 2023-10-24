@@ -25,12 +25,14 @@ package org.primefaces.component.datatable.export;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -78,13 +80,14 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
             document.open();
         }
 
+        String encoding = Objects.toString(exportConfiguration.getEncodingType(), BaseFont.IDENTITY_H);
         if (options != null) {
-            applyFont(options.getFontName(), exportConfiguration.getEncodingType());
+            applyFont(options.getFontName(), encoding);
             applyFacetOptions(options);
             applyCellOptions(options);
         }
         else {
-            applyFont(FontFactory.TIMES, exportConfiguration.getEncodingType());
+            applyFont(FontFactory.TIMES, encoding);
         }
 
         return document;
@@ -214,8 +217,8 @@ public class DataTablePDFExporter extends DataTableExporter<Document, PDFOptions
         if (LangUtils.isBlank(newFont)) {
             newFont = FontFactory.TIMES;
         }
-        cellFont = FontFactory.getFont(newFont, encoding);
-        facetFont = FontFactory.getFont(newFont, encoding, Font.DEFAULTSIZE, Font.BOLD);
+        cellFont = FontFactory.getFont(newFont, encoding, BaseFont.EMBEDDED);
+        facetFont = FontFactory.getFont(newFont, encoding, BaseFont.EMBEDDED, Font.DEFAULTSIZE, Font.BOLD);
     }
 
     protected PdfPCell createCell(UIColumn column, Phrase phrase) {
