@@ -1014,8 +1014,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 onExited: function() {
                     $this.panel.css('z-index', '');
                     $this.keyboardTarget.attr('aria-expanded', false);
+
+                    // refocus input if not tabbing and active is owned by this component
                     if (!$this.isTabbing) {
-                        $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+                        var activeElement = $(document.activeElement);
+                        if ($this.jq.has(activeElement).length || $this.panel.has(activeElement).length) {
+                            $this.keyboardTarget.trigger('focus.ui-selectonemenu');
+                        }
                     }
                     $this.isTabbing = false;
                 }
