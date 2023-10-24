@@ -25,6 +25,7 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -36,6 +37,8 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.util.*;
 
 public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
+
+    private static final Logger LOGGER = Logger.getLogger(DefaultLazyDataModel.class.getName());
 
     private String rowKeyField;
     private FilterConstraint filter;
@@ -134,7 +137,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
                                 convertedFilterValue = filterValue;
                             }
                             else {
-                                convertedFilterValue = ComponentUtils.convertToType(filterValue, fieldValue.getClass(), getClass());
+                                convertedFilterValue = ComponentUtils.convertToType(filterValue, fieldValue.getClass(), LOGGER);
                             }
                         }
 
