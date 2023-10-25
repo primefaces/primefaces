@@ -51,6 +51,8 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("TieredMenu", menu)
                 .attr("autoDisplay", menu.isAutoDisplay())
+                .attr("showDelay", menu.getShowDelay(), 0)
+                .attr("hideDelay", menu.getHideDelay(), 0)
                 .attr("toggleEvent", menu.getToggleEvent(), null);
 
         if (menu.isOverlay()) {
