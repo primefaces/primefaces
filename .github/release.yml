@@ -3,6 +3,9 @@ changelog:
     - title: Breaking Changes 💥
       labels:
         - breaking-change
+    - title: Security 🔒
+      labels:
+        - ":lock: security"
     - title: New Features & Enhancements 🎉
       labels:
         - "new feature"

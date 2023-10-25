@@ -27,6 +27,7 @@ PrimeFaces.locales['es'] = {
     week: 'Semana',
     day: 'Día',
     today: 'Hoy',
+    now: 'Ahora',
     clear: 'Limpiar',
     list: 'Agenda',
     allDayText: 'Todo el día',

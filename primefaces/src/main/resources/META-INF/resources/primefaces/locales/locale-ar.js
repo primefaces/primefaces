@@ -26,6 +26,7 @@ PrimeFaces.locales['ar'] = {
     day: 'اليوم',
     allDayText: 'سا ئراليوم',
     clear: 'إعادة ضبط',
+    now: "الأن",
     aria: {
          'colorpicker.OPEN': 'فتح أداة انتقاء اللون',
          'colorpicker.CLOSE': 'اغلاق أداة انتقاء اللون',

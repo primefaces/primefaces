@@ -595,7 +595,7 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a printable key, or `false` otherwise.
          */
         isPrintableKey: function(e) {
-            return e.key.length === 1 || e.key === 'Unidentified';
+            return e && e.key && (e.key.length === 1 || e.key === 'Unidentified');
         },
 
         /**
@@ -913,18 +913,41 @@ if (!PrimeFaces.utils) {
          * Handles floating label CSS if wrapped in a floating label.
          * @private
          * @param {JQuery | undefined} element the to add the CSS classes to
-         * @param {JQuery | undefined} input the input to check if filled
+         * @param {JQuery | undefined} inputs the input(s) to check if filled
          * @param {boolean | undefined} hasFloatLabel true if this is wrapped in a floating label
          */
-        updateFloatLabel: function(element, input, hasFloatLabel) {
-            if (!element || !input || !hasFloatLabel) {
+        updateFloatLabel: function(element, inputs, hasFloatLabel) {
+            if (!element || !inputs || !hasFloatLabel) {
                 return;
             }
-            if (input.val() !== '' || element.find('.ui-chips-token').length !== 0) {
-                element.addClass('ui-inputwrapper-filled');
+
+            var isEmpty = true;
+            inputs.each(function() {
+                var input = $(this);
+                if (input.is('select')) {
+                    if (input.attr('multiple')) {
+                        isEmpty = input.find('option:selected').length === 0;
+                    }
+                    else {
+                        var value = input.find('option:selected').attr('value');
+                        isEmpty = value === null || value === '';
+                    }
+                }
+                else {
+                    var value = input.val();
+                    isEmpty = value === null || value === '';
+                }
+
+                if (!isEmpty) {
+                    return false;
+                }
+            });
+
+            if (isEmpty) {
+                element.removeClass('ui-inputwrapper-filled');
             }
             else {
-                element.removeClass('ui-inputwrapper-filled');
+                element.addClass('ui-inputwrapper-filled');
             }
         },
 

@@ -31,6 +31,7 @@
      moreLinkText: 'More...',
      noEventsText: 'No Events',
      today: 'Today',
+     now: 'Now',
      clear: 'Clear',
      aria: {
          'paginator.PAGE': 'Page {0}',
