@@ -1006,67 +1006,59 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
         .build();
 ```
 
-If you have selection enabled, you can either pass the rowKey via JPA metamodel:
+If you have selection enabled, we need a `rowKey`. 
+It's very likely that this is the mapped JPA `@Id`, so we try to auto-lookup per default.
+Otherwise you can also define it:
 
 ```java
 JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
-        .entityClass(MyEntity.class)
-        .entityManager(() -> entityManager)
-        .rowKeyField(MyEntity_.id)
-        .build();
-```
-
-or as plain String:
-
-```java
-JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
-        .entityClass(MyEntity.class)
-        .entityManager(() -> entityManager)
-        .rowKeyField("id")
-        .build();
+        ...
+        .rowKeyField(MyEntity_.id) // JPA MetaModel
+        .rowKeyField("id") // or as String
+        ...
 ```
 
 or provide a existing JSF `Converter`:
 
 ```java
 JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
-        .entityClass(MyEntity.class)
-        .entityManager(() -> entityManager)
+        ...
         .rowKeyConverter(myConverter)
-        .build();
+        ...
 ```
 
-or enable case insensitive searching:
+#### Case insensitive searching
+Per default the filters are case sensitive but you can also disable it:
 
 ```java
 JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
-        .entityClass(MyEntity.class)
-        .entityManager(() -> entityManager)
+        ...
         .caseSensitive(false)
-        .build();
+        ...
 ```
 
-or enable wildcard support for characters `*`, `%`, `?` and `_`. Characters `*` and `%` means any characters 
+#### Wildcards
+Enable wildcard support for characters `*`, `%`, `?` and `_`. Characters `*` and `%` means any characters 
 while `?` and `_` mean replace a single character.  For example `Smith*` would find all matches starting with 
 the word `Smith`. For single character replacement like `Te?t` would match words `Tent` and `Test`.
 
 ```java
 JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
-        .entityClass(MyEntity.class)
-        .entityManager(() -> entityManager)
+        ...
         .wildcardSupport(true)
-        .build();
+        ...
 ```
 
-Also you can add global filters or manipulate generated predicates (from the DataTable columns) via:
+#### Add global filters
+You can add global filters or manipulate generated predicates (from the DataTable columns) via:
+
 ```java
 JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
-        .entityClass(MyEntity.class)
-        .entityManager(() -> entityManager)
+        ...
         .filterEnricher((filterBy, cb, cq, root, predicates) -> {
             predicates.add(cb.isNull(root.get("id")));
         })
-        .build();
+        ...
 ```
 
 ### DefaultLazyDataModel

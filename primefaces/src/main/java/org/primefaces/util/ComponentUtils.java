@@ -744,7 +744,7 @@ public class ComponentUtils {
         return component.getClass().getName().endsWith("UIRepeat");
     }
 
-    public static Object convertToType(Object value, Class<?> valueType, Class<?> logContext) {
+    public static Object convertToType(Object value, Class<?> valueType, Logger logger) {
         // skip null
         if (value == null) {
             return null;
@@ -756,7 +756,6 @@ public class ComponentUtils {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        Logger logger = Logger.getLogger(logContext.getName());
 
         // primivites dont need complex conversion, try the ELContext first
         if (BeanUtils.isPrimitiveOrPrimitiveWrapper(valueType)) {
@@ -771,14 +770,14 @@ public class ComponentUtils {
         Converter targetConverter = context.getApplication().createConverter(valueType);
         if (targetConverter == null) {
             logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + valueType
-                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+                    + "; Create a JSF Converter for it!");
             return value;
         }
 
         Converter sourceConverter = context.getApplication().createConverter(value.getClass());
         if (sourceConverter == null) {
             logger.log(Level.FINE, () -> "Skip conversion as no converter was found for " + value.getClass()
-                    + "; Create a JSF Converter for it or overwrite Object convertToType(String value, Class<?> valueType)!");
+                    + "; Create a JSF Converter for it!");
         }
 
         // first convert the object to string
