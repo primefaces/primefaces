@@ -43,6 +43,7 @@ public class Badge extends BadgeBase {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
+    public static final String ICON_CLASS = "ui-badge-icon";
 
     public BadgeRenderer getRenderer() {
         return (BadgeRenderer) getFacesContext().getRenderKit().getRenderer(getFamily(), getRendererType());
@@ -59,6 +60,8 @@ public class Badge extends BadgeBase {
                 .size(getSize())
                 .style(getStyle())
                 .styleClass(getStyleClass())
+                .icon(getIcon())
+                .iconPos(getIconPos())
                 .visible(isVisible())
                 .build();
     }

@@ -49,4 +49,12 @@ public interface BadgeModel {
 
     void setVisible(boolean visible);
 
+    String getIcon();
+
+    void setIcon(String icon);
+
+    String getIconPos();
+
+    void setIconPos(String iconPos);
+
 }

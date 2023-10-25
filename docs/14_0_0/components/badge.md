@@ -25,6 +25,8 @@ Badge is a small status indicator for another element.
 | size | null | String | Size of the badge, valid options are "large" and "xlarge".
 | style | null | String | Style of the badge.
 | styleClass | null | String | StyleClass of the badge.
+| icon | null | String | Icon of the badge as a CSS class.
+| iconPos | left | String | Position of the icon.
 | visible | true | Boolean | Whether to hide the badge (but render the children).
 
 ## Getting Started

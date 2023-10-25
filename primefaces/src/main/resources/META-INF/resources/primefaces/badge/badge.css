@@ -36,3 +36,8 @@
 .ui-badge.ui-state-hidden {
     display: none;
 }
+
+.ui-badge .ui-badge-icon {
+  font-size: 0.75rem;
+  margin-top: 0.4rem;
+}

@@ -89,12 +89,15 @@ public class BadgeRenderer extends CoreRenderer {
         String value = model.getValue();
         boolean valueEmpty = LangUtils.isEmpty(value);
         String severity = model.getSeverity();
+        String icon = model.getIcon();
+        boolean iconEmpty = LangUtils.isEmpty(icon);
+        String iconPos = model.getIconPos();
         String size = model.getSize();
         String styleClass = getStyleClassBuilder(context)
                     .add(Badge.STYLE_CLASS)
                     .add(model.getStyleClass())
                     .add(!valueEmpty && value.length() == 1, Badge.NO_GUTTER_CLASS)
-                    .add(valueEmpty, Badge.DOT_CLASS)
+                    .add(valueEmpty && iconEmpty, Badge.DOT_CLASS)
                     .add(!model.isVisible(), "ui-state-hidden")
                     .add("large".equals(size), Badge.SIZE_LARGE_CLASS)
                     .add("xlarge".equals(size), Badge.SIZE_XLARGE_CLASS)
@@ -117,14 +120,46 @@ public class BadgeRenderer extends CoreRenderer {
             writer.writeAttribute("style", model.getStyle(), "style");
         }
 
-        if (!valueEmpty && model.isVisible()) {
-            writer.writeText(value, "value");
+        if (model.isVisible()) {
+            if (!iconEmpty) {
+                if ("left".equalsIgnoreCase(iconPos)) {
+                    // left icon
+                    encodeIcon(context, badge, icon);
+                    encodeValue(context, badge, value, valueEmpty);
+                }
+                else {
+                    // right icon
+                    encodeValue(context, badge, value, valueEmpty);
+                    encodeIcon(context, badge, icon);
+                }
+            }
+            else {
+                encodeValue(context, badge, value, valueEmpty);
+            }
         }
         writer.endElement("span");
 
         if (renderChildren) {
             renderChildren(context, badge);
             encodeOverlayEnd(context);
+        }
+    }
+
+    protected void encodeIcon(FacesContext context, Badge badge, String icon) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String iconStyleClass = getStyleClassBuilder(context)
+                .add(Badge.ICON_CLASS)
+                .add(icon)
+                .build();
+        writer.startElement("i", null);
+        writer.writeAttribute("class", iconStyleClass, null);
+        writer.endElement("i");
+    }
+
+    protected void encodeValue(FacesContext context, Badge badge, String value, boolean valueEmpty) throws IOException {
+        if (!valueEmpty) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.writeText(value, "value");
         }
     }
 
