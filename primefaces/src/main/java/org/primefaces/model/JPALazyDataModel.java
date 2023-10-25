@@ -383,11 +383,6 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> rowKeyProvider(SerializableFunction<T, Object> rowKeyProvider) {
-            model.rowKeyProvider = rowKeyProvider;
-            return this;
-        }
-
         @Deprecated
         public Builder<T> rowKey(String rowKey) {
             model.rowKeyField = rowKey;
@@ -436,66 +431,60 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
-        public Builder<T> rowKeyType(Class<?> rowKeyType) {
-            model.rowKeyType = rowKeyType;
-            return this;
-        }
-
         public JPALazyDataModel<T> build() {
             Objects.requireNonNull(model.entityClass, "entityClass not set");
             Objects.requireNonNull(model.entityManager, "entityManager not set");
 
-            FacesContext context = FacesContext.getCurrentInstance();
-            PropertyDescriptorResolver propResolver =
-                    PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
-
             // some notes about required options for the rowKey to implement #getRowData/#getRowKey,
-            //      which is actually mandatory as required for selection
-            // 1) rowKeyConverter
+            // which is actually mandatory as required for selection
+            // - rowKeyConverter
             //      this is the easiest way and often already available in applications for entities, we just reuse all of it
-            // 2) rowKeyField / rowKeyType
+            // - rowKeyField
             //      this is now required but we can try to read it via JPA metamodel first
             //      #getRowData needs it to fire a query with the rowKey in the WHERE clause
-            // 3) rowKeyProvider
+            // - rowKeyType
+            //      we will get the info from JPA or via reflection from rowKeyField
+            //      it's required for the internal implementation of #getRowData
+            // - rowKeyProvider
             //      it's just the internal implementation of #getRowKey
 
-            // try to lookup rowKeyField from JPA metamodel, if not defined by user
-            if (model.rowKeyField == null) {
-                EntityManagerFactory emf = model.entityManager.get().getEntityManagerFactory();
+            // rowKeyConverter (either rowKeyConverter or rowKeyField are required)
+            if (model.rowKeyConverter != null) {
+                model.rowKeyProvider = model::getRowKeyFromConverter;
+            }
+            // rowKeyField
+            else {
+                FacesContext context = FacesContext.getCurrentInstance();
 
-                EntityType<T> entityType = emf.getMetamodel().entity(model.entityClass);
-                Type<?> idType = entityType.getIdType();
-                if (idType.getPersistenceType() != Type.PersistenceType.BASIC) {
-                    throw new FacesException("Entity @Id is not a basic type. Define a rowKeyField!");
-                }
+                // try to lookup from JPA metamodel, if not defined by user
+                if (model.rowKeyField == null) {
+                    EntityManagerFactory emf = model.entityManager.get().getEntityManagerFactory();
 
-                if (!BeanUtils.isPrimitiveOrPrimitiveWrapper(idType.getJavaType())) {
-                    Converter converter = context.getApplication().createConverter(idType.getJavaType());
-                    if (converter == null) {
-                        throw new FacesException("Entity @Id is not a primitive and no Converter found for " + idType.getJavaType().getName()
-                                + "! Either define a rowKeyField or create a JSF Converter for it!");
+                    EntityType<T> entityType = emf.getMetamodel().entity(model.entityClass);
+                    Type<?> idType = entityType.getIdType();
+                    if (idType.getPersistenceType() != Type.PersistenceType.BASIC) {
+                        throw new FacesException("Entity @Id is not a basic type. Define a rowKeyField!");
                     }
-                }
 
-                SingularAttribute<?, ?> idAttribute = entityType.getDeclaredId(idType.getJavaType());
-                model.rowKeyField = idAttribute.getName();
-                model.rowKeyType = idType.getJavaType();
-                if (model.rowKeyProvider == null) {
+                    if (!BeanUtils.isPrimitiveOrPrimitiveWrapper(idType.getJavaType())) {
+                        Converter converter = context.getApplication().createConverter(idType.getJavaType());
+                        if (converter == null) {
+                            throw new FacesException("Entity @Id is not a primitive and no Converter found for " + idType.getJavaType().getName()
+                                    + "! Either define a rowKeyField or create a JSF Converter for it!");
+                        }
+                    }
+
+                    SingularAttribute<?, ?> idAttribute = entityType.getDeclaredId(idType.getJavaType());
+                    model.rowKeyField = idAttribute.getName();
+                    model.rowKeyType = idType.getJavaType();
                     model.rowKeyProvider = obj -> emf.getPersistenceUnitUtil().getIdentifier(obj);
                 }
-            }
-
-            // lookup rowKeyType via reflection by rowKeyField, if not defined by user
-            if (model.rowKeyType == null) {
-                model.rowKeyType = propResolver.get(model.entityClass, model.rowKeyField).getPropertyType();
-            }
-
-            // build internal implementation of #getRowKey, if not defined by user
-            if (model.rowKeyProvider == null) {
-                if (model.rowKeyConverter != null) {
-                    model.rowKeyProvider = model::getRowKeyFromConverter;
-                }
+                // user-defined rowKeyField
                 else {
+                    PropertyDescriptorResolver propResolver =
+                            PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
+
+                    model.rowKeyType = propResolver.get(model.entityClass, model.rowKeyField).getPropertyType();
                     model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
                 }
             }
