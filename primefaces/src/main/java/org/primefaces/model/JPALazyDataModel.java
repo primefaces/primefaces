@@ -56,7 +56,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     protected String rowKeyField;
     protected boolean caseSensitive = true;
     protected boolean wildcardSupport = false;
-    protected Class<?> rowKeyType = Long.class;
+    protected Class<?> rowKeyType;
     protected QueryEnricher<T> queryEnricher;
     protected FilterEnricher<T> filterEnricher;
     protected SortEnricher<T> sortEnricher;
@@ -383,6 +383,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
             return this;
         }
 
+        public Builder<T> rowKeyProvider(SerializableFunction<T, Object> rowKeyProvider) {
+            model.rowKeyProvider = rowKeyProvider;
+            return this;
+        }
+
         @Deprecated
         public Builder<T> rowKey(String rowKey) {
             model.rowKeyField = rowKey;
@@ -403,6 +408,11 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         public Builder<T> rowKeyField(SingularAttribute<T, ?> rowKeyMetamodel) {
             model.rowKeyField = rowKeyMetamodel.getName();
             model.rowKeyType = rowKeyMetamodel.getJavaType();
+            return this;
+        }
+
+        public Builder<T> rowKeyType(Class<?> rowKeyType) {
+            model.rowKeyType = rowKeyType;
             return this;
         }
 
@@ -476,16 +486,24 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
                     SingularAttribute<?, ?> idAttribute = entityType.getDeclaredId(idType.getJavaType());
                     model.rowKeyField = idAttribute.getName();
-                    model.rowKeyType = idType.getJavaType();
-                    model.rowKeyProvider = obj -> emf.getPersistenceUnitUtil().getIdentifier(obj);
+                    if (model.rowKeyType != null) {
+                        model.rowKeyType = idType.getJavaType();
+                    }
+                    if (model.rowKeyProvider != null) {
+                        model.rowKeyProvider = obj -> emf.getPersistenceUnitUtil().getIdentifier(obj);
+                    }
                 }
                 // user-defined rowKeyField
                 else {
                     PropertyDescriptorResolver propResolver =
                             PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
 
-                    model.rowKeyType = propResolver.get(model.entityClass, model.rowKeyField).getPropertyType();
-                    model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
+                    if (model.rowKeyType != null) {
+                        model.rowKeyType = propResolver.get(model.entityClass, model.rowKeyField).getPropertyType();
+                    }
+                    if (model.rowKeyProvider != null) {
+                        model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
+                    }
                 }
             }
 
