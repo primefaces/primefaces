@@ -23,20 +23,10 @@
  */
 package org.primefaces.showcase.view.chartjs;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
-
 import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
+import org.primefaces.model.charts.axes.cartesian.CartesianTime;
 import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
 import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
 import org.primefaces.model.charts.axes.radial.RadialScales;
@@ -49,6 +39,7 @@ import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.bubble.BubbleChartDataSet;
 import org.primefaces.model.charts.bubble.BubbleChartModel;
 import org.primefaces.model.charts.data.BubblePoint;
+import org.primefaces.model.charts.data.DatePoint;
 import org.primefaces.model.charts.data.NumericPoint;
 import org.primefaces.model.charts.donut.DonutChartDataSet;
 import org.primefaces.model.charts.donut.DonutChartModel;
@@ -73,6 +64,14 @@ import org.primefaces.model.charts.radar.RadarChartDataSet;
 import org.primefaces.model.charts.radar.RadarChartModel;
 import org.primefaces.model.charts.radar.RadarChartOptions;
 import org.primefaces.model.charts.scatter.ScatterChartModel;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.*;
 
 @Named
 @RequestScoped
@@ -161,7 +160,7 @@ public class ChartJsView implements Serializable {
         ChartData data = new ChartData();
 
         PolarAreaChartDataSet dataSet = new PolarAreaChartDataSet();
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(11);
         values.add(16);
         values.add(7);
@@ -348,7 +347,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet = new BarChartDataSet();
         barDataSet.setLabel("My First Dataset");
 
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(65);
         values.add(59);
         values.add(80);
@@ -436,7 +435,7 @@ public class ChartJsView implements Serializable {
         barDataSet.setBackgroundColor("rgba(255, 99, 132, 0.2)");
         barDataSet.setBorderColor("rgb(255, 99, 132)");
         barDataSet.setBorderWidth(1);
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(65);
         values.add(59);
         values.add(80);
@@ -451,7 +450,7 @@ public class ChartJsView implements Serializable {
         barDataSet2.setBackgroundColor("rgba(255, 159, 64, 0.2)");
         barDataSet2.setBorderColor("rgb(255, 159, 64)");
         barDataSet2.setBorderWidth(1);
-        List<Number> values2 = new ArrayList<>();
+        List<Object> values2 = new ArrayList<>();
         values2.add(85);
         values2.add(69);
         values2.add(20);
@@ -502,7 +501,7 @@ public class ChartJsView implements Serializable {
         HorizontalBarChartDataSet hbarDataSet = new HorizontalBarChartDataSet();
         hbarDataSet.setLabel("My First Dataset");
 
-        List<Number> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         values.add(65);
         values.add(59);
         values.add(80);
@@ -572,7 +571,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet = new BarChartDataSet();
         barDataSet.setLabel("Dataset 1");
         barDataSet.setBackgroundColor("rgb(255, 99, 132)");
-        List<Number> dataVal = new ArrayList<>();
+        List<Object> dataVal = new ArrayList<>();
         dataVal.add(62);
         dataVal.add(-58);
         dataVal.add(-49);
@@ -585,7 +584,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet2 = new BarChartDataSet();
         barDataSet2.setLabel("Dataset 2");
         barDataSet2.setBackgroundColor("rgb(54, 162, 235)");
-        List<Number> dataVal2 = new ArrayList<>();
+        List<Object> dataVal2 = new ArrayList<>();
         dataVal2.add(-1);
         dataVal2.add(32);
         dataVal2.add(-52);
@@ -598,7 +597,7 @@ public class ChartJsView implements Serializable {
         BarChartDataSet barDataSet3 = new BarChartDataSet();
         barDataSet3.setLabel("Dataset 3");
         barDataSet3.setBackgroundColor("rgb(75, 192, 192)");
-        List<Number> dataVal3 = new ArrayList<>();
+        List<Object> dataVal3 = new ArrayList<>();
         dataVal3.add(-44);
         dataVal3.add(25);
         dataVal3.add(15);
@@ -655,7 +654,7 @@ public class ChartJsView implements Serializable {
         barDataSet.setLabel("Dataset 1");
         barDataSet.setBackgroundColor("rgb(255, 99, 132)");
         barDataSet.setStack("Stack 0");
-        List<Number> dataVal = new ArrayList<>();
+        List<Object> dataVal = new ArrayList<>();
         dataVal.add(-32);
         dataVal.add(-70);
         dataVal.add(-33);
@@ -669,7 +668,7 @@ public class ChartJsView implements Serializable {
         barDataSet2.setLabel("Dataset 2");
         barDataSet2.setBackgroundColor("rgb(54, 162, 235)");
         barDataSet2.setStack("Stack 0");
-        List<Number> dataVal2 = new ArrayList<>();
+        List<Object> dataVal2 = new ArrayList<>();
         dataVal2.add(83);
         dataVal2.add(18);
         dataVal2.add(86);
@@ -683,7 +682,7 @@ public class ChartJsView implements Serializable {
         barDataSet3.setLabel("Dataset 3");
         barDataSet3.setBackgroundColor("rgb(75, 192, 192)");
         barDataSet3.setStack("Stack 1");
-        List<Number> dataVal3 = new ArrayList<>();
+        List<Object> dataVal3 = new ArrayList<>();
         dataVal3.add(-45);
         dataVal3.add(73);
         dataVal3.add(-25);
@@ -744,7 +743,7 @@ public class ChartJsView implements Serializable {
         radarDataSet.setPointBorderColor("#fff");
         radarDataSet.setPointHoverBackgroundColor("#fff");
         radarDataSet.setPointHoverBorderColor("rgb(255, 99, 132)");
-        List<Number> dataVal = new ArrayList<>();
+        List<Object> dataVal = new ArrayList<>();
         dataVal.add(65);
         dataVal.add(59);
         dataVal.add(90);
@@ -763,7 +762,7 @@ public class ChartJsView implements Serializable {
         radarDataSet2.setPointBorderColor("#fff");
         radarDataSet2.setPointHoverBackgroundColor("#fff");
         radarDataSet2.setPointHoverBorderColor("rgb(54, 162, 235)");
-        List<Number> dataVal2 = new ArrayList<>();
+        List<Object> dataVal2 = new ArrayList<>();
         dataVal2.add(28);
         dataVal2.add(48);
         dataVal2.add(40);
@@ -813,7 +812,7 @@ public class ChartJsView implements Serializable {
         radarDataSet.setPointHoverRadius(5);
         radarDataSet.setPointHoverBackgroundColor("#fff");
         radarDataSet.setPointHoverBorderColor("rgba(102, 153, 204, 1)");
-        List<Number> dataVal = new ArrayList<>();
+        List<Object> dataVal = new ArrayList<>();
         dataVal.add(2);
         dataVal.add(3);
         dataVal.add(2);
@@ -831,7 +830,7 @@ public class ChartJsView implements Serializable {
         radarDataSet2.setPointHoverRadius(5);
         radarDataSet2.setPointHoverBackgroundColor("#fff");
         radarDataSet2.setPointHoverBorderColor("rgba(255, 204, 102, 1)");
-        List<Number> dataVal2 = new ArrayList<>();
+        List<Object> dataVal2 = new ArrayList<>();
         dataVal2.add(2);
         dataVal2.add(3);
         dataVal2.add(3);
@@ -843,11 +842,11 @@ public class ChartJsView implements Serializable {
         data.addChartDataSet(radarDataSet2);
 
         List<List<String>> labels = new ArrayList<>();
-        labels.add(new ArrayList(Arrays.asList("Process", "Excellence")));
-        labels.add(new ArrayList(Arrays.asList("Problem", "Solving")));
-        labels.add(new ArrayList(Arrays.asList("Facilitation")));
-        labels.add(new ArrayList(Arrays.asList("Project", "Mgmt")));
-        labels.add(new ArrayList(Arrays.asList("Change", "Mgmt")));
+        labels.add(new ArrayList<>(Arrays.asList("Process", "Excellence")));
+        labels.add(new ArrayList<>(Arrays.asList("Problem", "Solving")));
+        labels.add(new ArrayList<>(Collections.singletonList("Facilitation")));
+        labels.add(new ArrayList<>(Arrays.asList("Project", "Mgmt")));
+        labels.add(new ArrayList<>(Arrays.asList("Change", "Mgmt")));
         data.setLabels(labels);
 
         /* Options */
@@ -900,11 +899,21 @@ public class ChartJsView implements Serializable {
         ChartData data = new ChartData();
 
         BarChartDataSet dataSet = new BarChartDataSet();
-        List<Number> values = new ArrayList<>();
-        values.add(10);
-        values.add(20);
-        values.add(30);
-        values.add(40);
+        List<Object> values = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -4);
+        cal.set(Calendar.DATE, 15);
+        cal.set(Calendar.HOUR, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 1);
+        values.add(new DatePoint(cal.getTime(), 10));
+        cal.add(Calendar.MONTH, 1);
+        values.add(new DatePoint(cal.getTime(), 30));
+        cal.add(Calendar.MONTH, 1);
+        values.add(new DatePoint(cal.getTime(), 40));
+        cal.add(Calendar.MONTH, 1);
+        values.add(new DatePoint(cal.getTime(), 45));
         dataSet.setData(values);
         dataSet.setLabel("Bar Dataset");
         dataSet.setBorderColor("rgb(255, 99, 132)");
@@ -912,10 +921,22 @@ public class ChartJsView implements Serializable {
 
         LineChartDataSet dataSet2 = new LineChartDataSet();
         List<Object> values2 = new ArrayList<>();
-        values2.add(50);
-        values2.add(50);
-        values2.add(50);
-        values2.add(50);
+        cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -4);
+        cal.set(Calendar.DATE, 14);
+        cal.set(Calendar.HOUR, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 998);
+        values2.add(new DatePoint(cal.getTime(), 50));
+        cal.add(Calendar.MONTH, 1);
+        values2.add(new DatePoint(cal.getTime(), 100));
+        cal.add(Calendar.MONTH, 1);
+        values2.add(new DatePoint(cal.getTime(), 50));
+        cal.add(Calendar.MONTH, 1);
+        values2.add(new DatePoint(cal.getTime(), 25));
+        cal.add(Calendar.MONTH, 1);
+        values2.add(new DatePoint(cal.getTime(), 50));
         dataSet2.setData(values2);
         dataSet2.setLabel("Line Dataset");
         dataSet2.setFill(false);
@@ -924,18 +945,30 @@ public class ChartJsView implements Serializable {
         data.addChartDataSet(dataSet);
         data.addChartDataSet(dataSet2);
 
-        List<String> labels = new ArrayList<>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        data.setLabels(labels);
-
         mixedModel.setData(data);
 
         //Options
         BarChartOptions options = new BarChartOptions();
         CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes xAxis = new CartesianLinearAxes();
+        xAxis.setType("time");
+        CartesianTime cartesianTime = new CartesianTime();
+//        Map<String, String> displayFormats = new HashMap<>();
+//        displayFormats.put("millisecond", "MMM YYYY");
+//        displayFormats.put("second", "MMM YYYY");
+//        displayFormats.put("minute", "MMM YYYY");
+//        displayFormats.put("hour", "MMM YYYY");
+//        displayFormats.put("day", "MMM YYYY");
+//        displayFormats.put("week", "MMM YYYY");
+//        displayFormats.put("month", "MMM YYYY");
+//        displayFormats.put("quarter", "MMM YYYY");
+//        displayFormats.put("year", "YYYY");
+
+//        cartesianTime.setDisplayFormats(displayFormats);
+        //cartesianTime.setUnit("month");
+        cartesianTime.setStepSize(30);
+        xAxis.setTime(cartesianTime);
+        cScales.addXAxesData(xAxis);
         CartesianLinearAxes linearAxes = new CartesianLinearAxes();
         linearAxes.setOffset(true);
         linearAxes.setBeginAtZero(true);

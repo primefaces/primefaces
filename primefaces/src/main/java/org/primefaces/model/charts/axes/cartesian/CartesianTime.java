@@ -23,35 +23,36 @@
  */
 package org.primefaces.model.charts.axes.cartesian;
 
-import java.io.IOException;
-import java.io.Serializable;
-
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Common time options for cartesian types
  * From ChartJs version 3.8.0
  * @see <a href="https://www.chartjs.org/docs/3.8.0/axes/cartesian/time.html#time-units">ChartJS Time</a>
  */
-public abstract class CartesianTime implements Serializable {
+public class CartesianTime implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Number isoWeekday = 1; // default to Monday
     private Number stepSize;
-    private String displayFormats;
+    private Map<String, String> displayFormats;
     private String parser;
     private String round;
     private String tooltipFormat;
     private String unit;
     private String minUnit;
 
-    public String getDisplayFormats() {
+    public Map<String, String> getDisplayFormats() {
         return displayFormats;
     }
 
-    public void setDisplayFormats(String displayFormats) {
+    public void setDisplayFormats(Map<String, String> displayFormats) {
         this.displayFormats = displayFormats;
     }
 

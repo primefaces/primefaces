@@ -23,12 +23,13 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.model.charts.data.BubblePoint;
+import org.primefaces.model.charts.data.Point;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
-
-import org.primefaces.model.charts.data.BubblePoint;
-import org.primefaces.model.charts.data.NumericPoint;
+import java.util.Map;
 
 /**
  * Utilities for Chart components that use chartJs
@@ -53,6 +54,7 @@ public class ChartUtils {
         }
 
         boolean isList = value instanceof List;
+        boolean isMap = value instanceof Map;
 
         if (hasComma) {
             fsw.write(",");
@@ -70,10 +72,10 @@ public class ChartUtils {
                     writeText = (i == 0) ? Constants.EMPTY_STRING : ",";
                     writeText += "{\"x\":" + point.getX() + ",\"y\":" + point.getY() + ",\"r\":" + point.getR() + "}";
                 }
-                else if (item instanceof NumericPoint) {
-                    NumericPoint point = (NumericPoint) item;
+                else if (item instanceof Point) {
+                    Point point = (Point) item;
                     writeText = (i == 0) ? Constants.EMPTY_STRING : ",";
-                    writeText += "{\"x\":" + point.getX() + ",\"y\":" + point.getY() + "}";
+                    writeText += point.toJson();
                 }
                 else if (item instanceof String) {
                     String escapedText = EscapeUtils.forJavaScript((String) item);
@@ -86,6 +88,30 @@ public class ChartUtils {
                 fsw.write(Constants.EMPTY_STRING + writeText);
             }
             fsw.write("]");
+        }
+        else if (isMap) {
+            fsw.write("{");
+            boolean first = true;
+            for (Map.Entry entry : ((Map<?, ?>) value).entrySet()) {
+                String key = EscapeUtils.forJavaScript(entry.getKey().toString());
+                if (!first) {
+                    fsw.write(",");
+                }
+                else {
+                    first = false;
+                }
+                fsw.write("\"" + key + "\":");
+                if (entry.getValue() instanceof Number) {
+                    fsw.write(entry.getValue().toString());
+                }
+                else if (entry.getValue() instanceof Boolean) {
+                    fsw.write(entry.getValue().toString());
+                }
+                else {
+                    fsw.write("\"" + EscapeUtils.forJavaScript(entry.getValue().toString()) + "\"");
+                }
+            }
+            fsw.write("}");
         }
         else {
             if (value instanceof String) {

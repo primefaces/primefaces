@@ -23,25 +23,20 @@
  */
 package org.primefaces.model.charts.data;
 
-import java.io.Serializable;
+import java.util.Date;
 
-/**
- * This alternate is used for sparse datasets, such as those in scatter charts.
- * Each data point is specified using an object containing x and y properties.
- */
-public class NumericPoint extends Point<Number> implements Serializable {
+public class DatePoint extends Point<Date> {
 
     private static final long serialVersionUID = 1L;
 
-    public NumericPoint(Number x, Number y) {
-        super(x, y);
-    }
 
-    public NumericPoint() {
+    public DatePoint(Date x, Number y) {
+        super(x, y);
     }
 
     @Override
     public String toJson() {
-        return String.format("{\"x\": %s, \"y\": %s}", getX(), getY());
+        return String.format("{\"x\": %s, \"y\": %s}", getX().getTime(), getY());
     }
+
 }

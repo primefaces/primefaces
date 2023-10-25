@@ -38,7 +38,7 @@ public class PolarAreaChartDataSet extends ChartDataSet {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Number> data;
+    private List<Object> data;
     private List<String> backgroundColor;
     private List<String> borderColor;
     private List<Number> borderWidth;
@@ -49,18 +49,22 @@ public class PolarAreaChartDataSet extends ChartDataSet {
     /**
      * Gets the list of data in this dataSet
      *
-     * @return List&#60;Number&#62; list of data
+     * @return List&#60;Object&#62; list of data y value points, with the X
+     * values being provided as labels in the parent ChartData object, or an
+     * implementation of List&#60;Point&#62; for x / y tuples.
      */
-    public List<Number> getData() {
+    public List<Object> getData() {
         return data;
     }
 
     /**
      * Sets the list of data in this dataSet
      *
-     * @param data List&#60;Number&#62; list of data
+     * @param data List&#60;Object&#62; list of data y value points, with the X
+     * values being provided as labels in the parent ChartData object, or an
+     * implementation of List&#60;Point&#62; for x / y tuples.
      */
-    public void setData(List<Number> data) {
+    public void setData(List<Object> data) {
         this.data = data;
     }
 

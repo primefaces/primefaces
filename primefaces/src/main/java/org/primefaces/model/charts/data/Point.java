@@ -24,24 +24,60 @@
 package org.primefaces.model.charts.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-/**
- * This alternate is used for sparse datasets, such as those in scatter charts.
- * Each data point is specified using an object containing x and y properties.
- */
-public class NumericPoint extends Point<Number> implements Serializable {
+public abstract class Point<T> implements Serializable {
+    private T x;
+    private Number y;
 
-    private static final long serialVersionUID = 1L;
-
-    public NumericPoint(Number x, Number y) {
-        super(x, y);
+    public Point(T x, Number y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public NumericPoint() {
+    public Point() {
+    }
+
+    public T getX() {
+        return x;
+    }
+
+    public void setX(T x) {
+        this.x = x;
+    }
+
+    public Number getY() {
+        return y;
+    }
+
+    public void setY(Number y) {
+        this.y = y;
+    }
+
+    public abstract String toJson();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getX(), getY());
     }
 
     @Override
-    public String toJson() {
-        return String.format("{\"x\": %s, \"y\": %s}", getX(), getY());
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        NumericPoint other = (NumericPoint) obj;
+        return Objects.equals(getX(), other.getX()) && Objects.equals(getY(), other.getY());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{x: %s, y: %s}", getX(), getY());
     }
 }

@@ -69,7 +69,10 @@ public class LineChartDataSet extends ChartDataSet {
     /**
      * Gets the list of data in this dataSet. Can either be a Number or a type of ChartJs Point.
      *
-     * @return List&#60;Object&#62; list of data
+     * @return List&#60;Object&#62; list of y axis data, with the X
+     * values being provided as labels in the parent ChartData
+     * object, or an implementation of List&#60;Point&#62; for
+     * x / y tuples.
      */
     public List<Object> getData() {
         return data;
@@ -78,7 +81,10 @@ public class LineChartDataSet extends ChartDataSet {
     /**
      * Sets the list of data in this dataSet. Can either be a Number or a type of ChartJs Point.
      *
-     * @param data List&#60;Object&#62; list of data
+     * @param data List&#60;Object&#62; list of y axis data, with the X
+     * values being provided as labels in the parent ChartData
+     * object, or an implementation of List&#60;Point&#62; for
+     * x / y tuples.
      */
     public void setData(List<Object> data) {
         this.data = data;
