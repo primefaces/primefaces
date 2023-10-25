@@ -56,14 +56,8 @@ public class PanelGridRenderer extends CoreRenderer {
         }
     }
 
-    /**
-     * @deprecated in 13.0.0 remove in 14.0.0
-     */
-    @Deprecated
     public void encodeLegacyTableLayout(FacesContext context, PanelGrid grid) throws IOException {
         String clientId = grid.getClientId(context);
-        logDevelopmentWarning(context, "Table layout is deprecated and will be removed in future release. Please switch to responsive layout. ClientId: "
-                + clientId);
         ResponseWriter writer = context.getResponseWriter();
         int columns = grid.getColumns();
         String style = grid.getStyle();
