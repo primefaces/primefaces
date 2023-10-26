@@ -709,7 +709,10 @@
             
             // if looking in container like dialog also check for first link
             if (context) {
-                selector += ', a:first';
+                var container = $(PrimeFaces.escapeClientId(context));
+                if (container.hasClass('ui-dialog')) {
+                     selector += ', a:first';
+                }
             }
 
             setTimeout(function() {
