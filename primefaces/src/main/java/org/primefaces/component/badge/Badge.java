@@ -43,6 +43,7 @@ public class Badge extends BadgeBase {
     public static final String SEVERITY_SUCCESS_CLASS = "ui-badge-success";
     public static final String SEVERITY_WARNING_CLASS = "ui-badge-warning";
     public static final String SEVERITY_DANGER_CLASS = "ui-badge-danger";
+    public static final String LABEL_CLASS = "ui-badge-label";
     public static final String ICON_CLASS = "ui-badge-icon";
 
     public BadgeRenderer getRenderer() {
