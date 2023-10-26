@@ -2823,6 +2823,11 @@
                         return !$this.isDateEquals(date, dateMeta);
                     });
                     this.updateModel(event, value);
+                    
+                    // #10850 notify unselect
+                    if (this.options.onSelect) {
+                        this.options.onSelect.call(this, event, value);
+                    }
                 }
                 else if (!this.options.maxDateCount || !this.value || this.options.maxDateCount > this.value.length) {
                     this.selectDate(event, dateMeta);
