@@ -713,7 +713,15 @@
          * @param {string} [context] The ID of a container with an element to focus
          */
         focus: function(id, context) {
-            var selector = ':not(:submit):not(:button):input:visible:enabled[name], a:first';
+            var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
+            
+            // if looking in container like dialog also check for first link
+            if (context) {
+                var container = $(PrimeFaces.escapeClientId(context));
+                if (container.hasClass('ui-dialog')) {
+                     selector += ', a:first';
+                }
+            }
 
             setTimeout(function() {
                 var focusFirstElement = function(elements) {
