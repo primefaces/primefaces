@@ -40,11 +40,12 @@ treetable and more.
 | filterMatchMode | startsWith | String | Match mode for filtering.
 | filterMaxLength | null | Integer | Maximum number of characters for an input filter.
 | filterPosition | bottom | String | Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.
+| filterPlaceholder | null | String | Placeholder for plain input text style filters.
 | filterStyle | null | String | Inline style of the filter element
 | filterStyleClass | null | String | Style class of the filter element
 | filterValue | null | Object | Value of the filter field.
 | footerText | null | String | Shortcut for footer facet.
-| groupRow | false | Boolean | Speficies whether to group rows based on the column data.
+| groupRow | false | Boolean | Specifies whether to group rows based on the column data.
 | headerText | null | String | Shortcut for header facet.
 | nullSortOrder             | 1                  | Integer          |  Defines where the null values are placed in ascending sort order. Default value is "1" meaning null values are placed at the end in ascending mode and at beginning in descending mode. Set to "-1" for the opposite behavior.
 | resizable | true | Boolean | Specifies resizable feature at column level. Datatable's resizableColumns must be enabled to use this option.

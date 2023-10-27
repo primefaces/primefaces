@@ -770,6 +770,10 @@ public class TreeTableRenderer extends DataRenderer {
                 writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
             }
 
+            if (column.getFilterPlaceholder() != null) {
+                writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
+            }
+
             writer.endElement("input");
         }
         else {

@@ -22,6 +22,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     * JPALazyDataModel now supports case insensitive filters with `setCaseSensitive(false);`
     * JPALazyDataModel now supports wildcard filters with `setWildcardSupport(true);` so you can use `*`, `%`, `_` or `?` in filter
     * JPALazyDataModel now supports builder pattern for constructor.
+    * Added `filterPlaceholder` for `Column` and `Columns`
 
 * Messages
     * Added `clearMessages` widget method to clear all current messages.
@@ -36,6 +37,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * TieredMenu
     * Added `showDelay` delay in milliseconds before displaying the submenu. Default is 0 meaning immediate.
     * Added `hideDelay` delay in milliseconds before hiding the submenu., if 0 not hidden until document.click(). Default is 0.
+    
+* TreeTable
+    * Added `filterPlaceholder` for `Column` and `Columns`
     
 * Wizard
     * Added `disableOnAjax` attribute to disable next and back navigation buttons during Ajax requests triggered by them.

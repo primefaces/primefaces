@@ -38,6 +38,8 @@ Columns is used by datatable to create columns dynamically.
 | filterMatchMode | startsWith | String | Match mode for filtering.
 | filterMaxLength | null | Integer | Maximum number of characters for an input filter.
 | filterOptions | null | Object | A collection of selectitems for filter dropdown.
+| filterPosition | bottom | String | Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.
+| filterPlaceholder | null | String | Placeholder for plain input text style filters.
 | filterStyle | null | String | Inline style of the filter element
 | filterStyleClass | null | String | Style class of the filter element
 | filterValue | null | Object | Value of the filter field.
