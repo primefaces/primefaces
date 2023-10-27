@@ -33,7 +33,7 @@ public class SpinnerView {
     private int number1;
     private double number2;
     private int number3;
-    private int number4;
+    private int number4 = 15;
     private int number5;
     private int number6;
     private int number7;

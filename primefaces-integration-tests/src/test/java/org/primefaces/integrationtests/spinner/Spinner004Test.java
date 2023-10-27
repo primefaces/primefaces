@@ -51,7 +51,7 @@ public class Spinner004Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("€0.33", spinner.getValue());
+        Assertions.assertEquals("€0,33", spinner.getValue());
         assertOutputLabel(page, "0.33");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
@@ -69,7 +69,7 @@ public class Spinner004Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("€1456.78", spinner.getValue()); // TODO: this expected result seems odd to me
+        Assertions.assertEquals("€1.456,78", spinner.getValue());
         assertOutputLabel(page, "1456.78");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
