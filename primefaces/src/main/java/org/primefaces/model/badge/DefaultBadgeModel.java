@@ -34,6 +34,8 @@ public class DefaultBadgeModel implements BadgeModel, Serializable {
     private String size;
     private String style;
     private String styleClass;
+    private String icon;
+    private String iconPos;
     private boolean visible = true;
 
     @Override
@@ -96,6 +98,26 @@ public class DefaultBadgeModel implements BadgeModel, Serializable {
         this.visible = visible;
     }
 
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    @Override
+    public String getIconPos() {
+        return iconPos;
+    }
+
+    @Override
+    public void setIconPos(String iconPos) {
+        this.iconPos = iconPos;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -130,6 +152,16 @@ public class DefaultBadgeModel implements BadgeModel, Serializable {
 
         public Builder styleClass(String styleClass) {
             badgeModel.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder icon(String icon) {
+            badgeModel.setIcon(icon);
+            return this;
+        }
+
+        public Builder iconPos(String iconPos) {
+            badgeModel.setIconPos(iconPos);
             return this;
         }
 

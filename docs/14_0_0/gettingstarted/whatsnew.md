@@ -11,6 +11,9 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 * Accordion
     * Added `toggleSpeed` for toggle speed animation duration.
     * Added `scrollIntoView` to allow the active tab to be scrolled into the viewport
+    
+* Badge
+    * Added `icon` and `iconPos` to allow icons to be used in badge
 
 * DataExporter
     * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled

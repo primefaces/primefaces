@@ -53,6 +53,20 @@
 	            <p:badge value="0" visible="false">
 	                <i class="pi pi-bell" style="font-size: 2rem"/>
 	            </p:badge>
+	            
+	            <h5>Icon</h5>
+                <p:badge icon="pi pi-bell" severity="danger">
+                    <p:commandButton value="Alerts" />
+                </p:badge>
+                <p:badge icon="pi pi-envelope" severity="danger">
+                    <p:commandButton value="Emails" styleClass="ml-4"/>
+                </p:badge>
+                <p:badge icon="pi pi-plus" iconPos="left" value=" 99" severity="danger" >
+                    <p:commandButton value="Left Icon" styleClass="ml-4"/>
+                </p:badge>
+                <p:badge icon="pi pi-plus" iconPos="right" value="99 " severity="danger">
+                    <p:commandButton value="Right Icon" styleClass="ml-4"/>
+                </p:badge>
             </h:form>
         </div>
     </ui:define>
