@@ -14,6 +14,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
     
 * Badge
     * Added `icon` and `iconPos` to allow icons to be used in badge
+    * Added 'onclick` to allow client side click of badge. If not set it delegates the click to its target element
 
 * DataExporter
     * Added `bufferSize` to control how many items are fetched at a time when `DataTable#lazy` is enabled

@@ -63,6 +63,7 @@ public class Badge extends BadgeBase {
                 .styleClass(getStyleClass())
                 .icon(getIcon())
                 .iconPos(getIconPos())
+                .onClick(getOnclick())
                 .visible(isVisible())
                 .build();
     }

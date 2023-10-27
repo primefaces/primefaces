@@ -57,4 +57,8 @@ public interface BadgeModel {
 
     void setIconPos(String iconPos);
 
+    String getOnclick();
+
+    void setOnclick(String onClick);
+
 }

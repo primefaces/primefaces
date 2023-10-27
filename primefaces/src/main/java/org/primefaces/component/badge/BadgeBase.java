@@ -40,7 +40,8 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
         styleClass,
         visible,
         icon,
-        iconPos
+        iconPos,
+        onclick
     }
 
     public BadgeBase() {
@@ -113,5 +114,13 @@ public abstract class BadgeBase extends UIComponentBase implements Widget {
 
     public void setIconPos(String iconPos) {
         getStateHelper().put(PropertyKeys.iconPos, iconPos);
+    }
+
+    public String getOnclick() {
+        return (String) getStateHelper().eval(PropertyKeys.onclick, null);
+    }
+
+    public void setOnclick(String onClick) {
+        getStateHelper().put(PropertyKeys.onclick, onClick);
     }
 }
