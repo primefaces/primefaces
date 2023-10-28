@@ -228,6 +228,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                             getWrapped().writeAttribute(attributeName, attributeValue, null);
                         }
                     }
+                    if (state.isDeferred()) {
+                        getWrapped().writeAttribute("defer", "defer", null);
+                    }
                     getWrapped().endElement(SCRIPT_TAG);
                 }
             }
@@ -239,9 +242,10 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 List<String> inlines = entry.getValue();
 
                 String id = UUID.randomUUID().toString();
-                String merged = mergeAndMinimizeInlineScripts(id, type, inlines);
+                String merged = mergeAndMinimizeInlineScripts(id, type, inlines, state.isDeferred());
 
                 if (LangUtils.isNotBlank(merged)) {
+
                     getWrapped().startElement(SCRIPT_TAG, null);
                     getWrapped().writeAttribute("id", id, null);
                     getWrapped().writeAttribute(TYPE_ATTRIBUTE, type, null);
@@ -268,7 +272,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines) {
+    protected String mergeAndMinimizeInlineScripts(String id, String type, List<String> inlines, boolean deferred) {
         StringBuilder script = new StringBuilder(inlines.size() * 100);
         for (int i = 0; i < inlines.size(); i++) {
             if (i > 0) {
@@ -301,6 +305,11 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                     minimized += ";";
                 }
                 minimized += "document.getElementById('" + id + "').remove();";
+
+                // deferred scripts have to wait until scripts are loaded before it can execute inline
+                if (deferred) {
+                    minimized = String.format("document.addEventListener(\"DOMContentLoaded\", function() {%s});", minimized);
+                }
             }
         }
 

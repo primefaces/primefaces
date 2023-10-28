@@ -28,7 +28,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 | INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load messages for the client side validation (CSV) from server via the MessageInterpolator. |
 | LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like PF('widgetVar').method(). |
 | MARK_INPUT_AS_INVALID_ON_ERROR_MSG | false | Marks a input as invalid, when a FacesMessage is added for a UIInput with 'SEVERITY_ERROR'. This will show the red border on the client side, when the input is updated. |
-| MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller HTML output. |
+| MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller HTML output.  Values `true`, `false` and `defer`. Defer will set the scripts to the `defer` script attribute. |
 | MULTI_VIEW_STATE_STORE | session | Store MultiViewState per Session ('session') or per ClientWindow ('client-window') |
 | PRIME_ICONS | true | Auto includes PrimeIcons font based icons. True by default for most themes use PrimeIcons. Only disable if you know you do not use PrimeIcons. |
 | RESET_VALUES | false | When enabled, AJAX updated inputs are always reset. |
