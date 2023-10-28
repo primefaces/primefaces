@@ -53,6 +53,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         filterMatchMode,
         filterMaxLength,
         filterPosition,
+        filterPlaceholder,
         filterStyle,
         filterStyleClass,
         filterValue,
@@ -166,6 +167,15 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     public void setFilterPosition(String filterPosition) {
         getStateHelper().put(PropertyKeys.filterPosition, filterPosition);
+    }
+
+    @Override
+    public String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     @Override

@@ -157,6 +157,8 @@ public interface UIColumn {
 
     String getFilterPosition();
 
+    String getFilterPlaceholder();
+
     UIComponent getFacet(String facet);
 
     Object getFilterBy();

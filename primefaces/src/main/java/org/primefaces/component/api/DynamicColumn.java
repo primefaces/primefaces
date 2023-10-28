@@ -363,4 +363,9 @@ public class DynamicColumn implements UIColumn {
         return columns.getTitle();
     }
 
+    @Override
+    public String getFilterPlaceholder() {
+        return columns.getFilterPlaceholder();
+    }
+
 }

@@ -5564,6 +5564,14 @@
         </attribute>
         <attribute>
             <description>
+                <![CDATA[Placeholder for plain input text style filters.]]>
+            </description>
+            <name>filterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
                 <![CDATA[Defines the number of rows the column spans.]]>
             </description>
             <name>rowspan</name>
@@ -6012,6 +6020,14 @@
                 <![CDATA[Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.]]>
             </description>
             <name>filterPosition</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[Placeholder for plain input text style filters.]]>
+            </description>
+            <name>filterPlaceholder</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
