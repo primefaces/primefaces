@@ -7,6 +7,7 @@
   - [Configuration](/gettingstarted/configuration.md)
   - [Hello World](/gettingstarted/helloworld.md)
   - [Whats New](/gettingstarted/whatsnew.md)
+  - [Community Projects](/gettingstarted/community.md)
   - [Migration Guide](../migrationguide/migrationguide.md)
 
 - Core

@@ -1060,6 +1060,20 @@ JPALazyDataModel<MyEntity> lazyDataModel = JPALazyDataModel.<MyEntity>builder())
         })
         ...
 ```
+### FlowLogix JPALazyDataModel (PrimeFaces Community)
+`JPALazyDataModel` implementation that's fully integrated with Jakarta EE and `@Inject`able.
+
+```java
+@Named
+@ViewScoped
+public class UserViewer implements Serializable {
+    @Inject
+    // optional configuration annotation
+    @LazyModelConfig(caseInsensitive = true)
+    JPALazyDataModel<UserEntity> lazyModel;
+}
+```
+Developer's guide is available at https://docs.flowlogix.com/#section-jpa-lazymodel. Project page is available at https://github.com/flowlogix/flowlogix
 
 ### DefaultLazyDataModel
 
