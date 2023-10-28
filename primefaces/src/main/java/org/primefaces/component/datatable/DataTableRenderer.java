@@ -797,7 +797,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
         }
 
-        if (column.getFilterPlaceholder() != null) {
+        if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
             writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
         }
 

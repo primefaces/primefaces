@@ -51,6 +51,7 @@ import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
@@ -770,7 +771,7 @@ public class TreeTableRenderer extends DataRenderer {
                 writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
             }
 
-            if (column.getFilterPlaceholder() != null) {
+            if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
                 writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
             }
 
