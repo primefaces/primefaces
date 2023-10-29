@@ -477,8 +477,8 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
     }
 
     @Override
-    public String getConverter() {
-        return (String) getStateHelper().eval(PropertyKeys.converter, null);
+    public Object getConverter() {
+        return getStateHelper().eval(PropertyKeys.converter, null);
     }
 
     public void setConverter(Object converter) {
