@@ -243,6 +243,8 @@ public interface UIColumn {
 
     int getDisplayPriority();
 
+    Object getConverter();
+
     default <C extends UIComponent & ValueHolder> C getFilterComponent() {
         UIComponent filterFacet = getFacet("filter");
         if (filterFacet != null) {

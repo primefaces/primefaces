@@ -225,17 +225,17 @@ public class ComponentUtils {
         return context.getApplication().createConverter(forClass);
     }
 
-    public static Converter toConverter(FacesContext context, Object object) {
-        if (object == null) {
+    public static Converter toConverter(FacesContext context, Object converter) {
+        if (converter == null) {
             return null;
         }
-        if (object instanceof Converter) {
-            return (Converter) object;
+        if (converter instanceof Converter) {
+            return (Converter) converter;
         }
-        if (object instanceof String) {
-            return context.getApplication().createConverter((String) object);
+        if (converter instanceof String) {
+            return context.getApplication().createConverter((String) converter);
         }
-        throw new FacesException("Unsupported type " + object.getClass());
+        throw new FacesException("Unsupported type: " + converter.getClass());
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {

@@ -35,6 +35,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
@@ -201,6 +202,18 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                         ? column.getContainerClientId(context) + separator + "filter"
                         : column.getClientId(context) + separator + "filter";
                 filterValue = params.get(valueHolderClientId);
+            }
+
+            if (filterMeta.isShortFieldNotation()) {
+                UIComponent source = column instanceof DynamicColumn
+                        ? ((DynamicColumn) column).getColumns()
+                        : (UIComponent) column;
+                try {
+                    filterValue = ComponentUtils.getConvertedValue(context, source, column.getConverter(), filterValue);
+                }
+                catch (ConverterException ex) {
+                    filterValue = null;
+                }
             }
 
             if (filterValue != null) {
