@@ -8,6 +8,7 @@
 .ui-overlay-badge {
     position: relative;
     display: inline-block;
+    cursor: pointer;
 }
 
 .ui-overlay-badge .ui-badge {

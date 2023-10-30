@@ -119,6 +119,14 @@ public class BadgeRenderer extends CoreRenderer {
             writer.writeAttribute("style", model.getStyle(), "style");
         }
 
+        if (model.getOnclick() != null) {
+            writer.writeAttribute("onclick", model.getOnclick(), "onclick");
+        }
+        else if (renderChildren) {
+            // delegate click of badge to its child component
+            writer.writeAttribute("onclick", "$(this).next().click();", "onclick");
+        }
+
         encodeValue(context, badge, model);
         writer.endElement("span");
 

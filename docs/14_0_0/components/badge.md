@@ -27,6 +27,7 @@ Badge is a small status indicator for another element.
 | styleClass | null | String | StyleClass of the badge.
 | icon | null | String | Icon of the badge as a CSS class.
 | iconPos | left | String | Position of the icon.
+| onclick | null | String | Client side callback to execute when the badge element clicked. If not set it delegates the click to its target element.
 | visible | true | Boolean | Whether to hide the badge (but render the children).
 
 ## Getting Started
