@@ -705,7 +705,15 @@
          * @param {string} [context] The ID of a container with an element to focus
          */
         focus: function(id, context) {
-            var selector = ':not(:submit):not(:button):input:visible:enabled[name], a:first';
+            var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
+            
+            // if looking in container like dialog also check for first link
+            if (context) {
+                var container = $(PrimeFaces.escapeClientId(context));
+                if (container.hasClass('ui-dialog')) {
+                     selector += ', a:first';
+                }
+            }
 
             setTimeout(function() {
                 var focusFirstElement = function(elements) {
@@ -1018,8 +1026,13 @@
          * return `true` when the widget was rendered, or `false` when the widget still needs to be rendered later.
          */
         addDeferredRender: function(widgetId, containerId, fn) {
-            this.removeDeferredRenders(widgetId); // remove existing
-            this.deferredRenders.push({widget: widgetId, container: containerId, callback: fn});
+            // remove existing
+            this.deferredRenders = this.deferredRenders.filter(deferredRender => {
+                return !(deferredRender.widget === widgetId && deferredRender.container === containerId);
+            });
+
+            // add new
+            this.deferredRenders.push({ widget: widgetId, container: containerId, callback: fn });
         },
 
         /**
@@ -1035,13 +1048,9 @@
          * @param {string} widgetId The ID of a deferred widget.
          */
         removeDeferredRenders: function(widgetId) {
-            for(var i = (this.deferredRenders.length - 1); i >= 0; i--) {
-                var deferredRender = this.deferredRenders[i];
-
-                if(deferredRender.widget === widgetId) {
-                    this.deferredRenders.splice(i, 1);
-                }
-            }
+            this.deferredRenders = this.deferredRenders.filter(function(deferredRender) {
+                return deferredRender.widget !== widgetId;
+            });
         },
 
         /**
