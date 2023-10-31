@@ -60,6 +60,7 @@ import org.primefaces.util.LocaleUtils;
  * - Middle Facet
  * - Registered Resources
  * - Client Validation Scripts
+ * - Locales
  * - PF Client Side Settings
  * - PF Initialization Scripts
  * - Head Content

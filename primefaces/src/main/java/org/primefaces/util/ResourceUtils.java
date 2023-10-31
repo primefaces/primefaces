@@ -23,11 +23,9 @@
  */
 package org.primefaces.util;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -37,9 +35,17 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ResourceUtils {
 
@@ -259,51 +265,21 @@ public class ResourceUtils {
         return RENDERER_STYLESHEET.equals(component.getRendererType());
     }
 
-    public static List<ResourceInfo> getComponentResources(FacesContext context) {
-        List<ResourceInfo> resourceInfos = new ArrayList<>();
-
-        List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
-        if (resources != null) {
-            for (int i = 0; i < resources.size(); i++) {
-                UIComponent resource = resources.get(i);
-                ResourceUtils.ResourceInfo resourceInfo = newResourceInfo(resource);
-                if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
-                    resourceInfos.add(resourceInfo);
-                }
-            }
-        }
-
-        return resourceInfos;
+    public static String getResourceName(UIComponent component) {
+        return (String) component.getAttributes().get("name");
     }
 
-    public static boolean isInline(ResourceInfo resourceInfo) {
-        if (resourceInfo != null) {
-            return LangUtils.isBlank(resourceInfo.getLibrary()) && LangUtils.isBlank(resourceInfo.getName());
+    public static String getResourceLibrary(UIComponent component) {
+        return (String) component.getAttributes().get("library");
+    }
+
+    public static boolean isInline(UIComponent component) {
+        if (component != null) {
+            return LangUtils.isBlank(getResourceName(component))
+                    && LangUtils.isBlank(getResourceLibrary(component));
         }
 
         return false;
-    }
-
-    public static ResourceInfo newResourceInfo(UIComponent component) {
-
-        if (!(component instanceof UIOutput)) {
-            return null;
-        }
-
-        String library = (String) component.getAttributes().get("library");
-        String name = (String) component.getAttributes().get("name");
-
-        return new ResourceInfo(library, name, component);
-    }
-
-    public static Resource newResource(ResourceInfo resourceInfo, FacesContext context) {
-        Resource resource = context.getApplication().getResourceHandler().createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-
-        if (resource == null) {
-            throw new FacesException("Resource '" + resourceInfo.getName() + "' in library '" + resourceInfo.getLibrary() + "' not found!");
-        }
-
-        return resource;
     }
 
     public static String getMonitorKeyCookieName(FacesContext context, ValueExpression monitorKey) {
@@ -361,58 +337,5 @@ public class ResourceUtils {
         }
 
         return !isResourceNotFound(resource) ? resource : null;
-    }
-
-    public static class ResourceInfo implements Serializable {
-
-        private static final long serialVersionUID = 1L;
-
-        private String library;
-        private String name;
-        private UIComponent resource;
-
-        public ResourceInfo(String library, String name, UIComponent resource) {
-            this.library = library;
-            this.name = name;
-            this.resource = resource;
-        }
-
-        public String getLibrary() {
-            return library;
-        }
-
-        public void setLibrary(String library) {
-            this.library = library;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public UIComponent getResource() {
-            return resource;
-        }
-
-        public void setResource(UIComponent resource) {
-            this.resource = resource;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ResourceInfo that = (ResourceInfo) o;
-            return Objects.equals(library, that.library) &&
-                    Objects.equals(name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(library, name);
-        }
     }
 }
