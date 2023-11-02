@@ -272,13 +272,15 @@ public class DataTable extends DataTableBase {
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         super.processEvent(event);
 
-        // restore "value" from "filteredValue" - we must work on filtered data when filtering is active
-        // in future we might remember filtered rowKeys and skip them while rendering instead of doing it this way
+        // restored filter-state if it was filtered in the previous request
         if (event instanceof PostRestoreStateEvent
                 && this == event.getComponent()
+                && !isLazy()
                 && isFilteringEnabled()
-                && !isLazy()) {
+                && isFilteringCurrentlyActive()) {
 
+            // restore "value" from "filteredValue" - we must work on filtered data
+            // in future we might remember filtered rowKeys and skip them while rendering instead of doing it this way
             ValueExpression ve = getValueExpression(PropertyKeys.filteredValue.name());
             if (ve != null) {
                 List<?> filteredValue = getFilteredValue();
@@ -290,9 +292,7 @@ public class DataTable extends DataTableBase {
                 // trigger filter as previous requests were filtered
                 // in older PF versions, we stored the filtered data in the viewstate but this blows up memory
                 // and caused bugs with editing and serialization like #7999
-                if (isFilteringCurrentlyActive()) {
-                    filterAndSort();
-                }
+                filterAndSort();
             }
         }
     }
