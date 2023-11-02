@@ -79,12 +79,7 @@ public class DataTable028Test extends AbstractDataTableTest {
         getButtonSave().click();
 
         // Assert
-        if (xhtml.contains("Without")) {
-            assertAfterBb3UpdateSorted();
-        }
-        else {
-            assertAfterBb3Update();
-        }
+        assertAfterBb3UpdateSorted();
 
         assertNoJavascriptErrors();
     }
