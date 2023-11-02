@@ -205,11 +205,8 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             }
 
             if (filterMeta.isShortFieldNotation()) {
-                UIComponent source = column instanceof DynamicColumn
-                        ? ((DynamicColumn) column).getColumns()
-                        : (UIComponent) column;
                 try {
-                    filterValue = ComponentUtils.getConvertedValue(context, source, column.getConverter(), filterValue);
+                    filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
                 }
                 catch (ConverterException ex) {
                     filterValue = null;
@@ -526,9 +523,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
         Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
-        UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
-        Object converter = column instanceof ColumnBase ? ((ColumnBase) column).getConverter() : null;
-        return ComponentUtils.getConvertedAsString(context, component, converter, value);
+        return ComponentUtils.getConvertedAsString(context, column.asUIComponent(), column.getConverter(), value);
     }
 
     default boolean isFilteringCurrentlyActive() {

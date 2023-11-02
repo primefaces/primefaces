@@ -93,7 +93,7 @@ public class FilterMeta implements Serializable {
             filterByVE = UIColumn.createValueExpressionFromField(context, var, field);
         }
 
-        boolean shortFieldNotation = field != null && column.getChildren().isEmpty();
+        boolean shortFieldNotation = field != null && column.getFacet("filter") != null;
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
         FilterConstraint constraint = FilterConstraints.of(matchMode);
 

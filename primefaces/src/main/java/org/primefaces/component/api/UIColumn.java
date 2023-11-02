@@ -264,4 +264,11 @@ public interface UIColumn {
         }
         return null;
     }
+
+    default UIComponent asUIComponent() {
+        if (this instanceof UIComponent) {
+            return (UIComponent) this;
+        }
+        throw new UnsupportedOperationException(getClass().getName() + "#asUIComponent is not implemented");
+    }
 }
