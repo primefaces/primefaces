@@ -148,10 +148,6 @@ public class FileUploadUtilsTest {
         when(fileUpload.getAccept()).thenReturn("image/tiff");
         Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", png)));
 
-        //Tampered - Apache Tika or Mime Type must be in the classpath for this to work
-        when(fileUpload.getAccept()).thenReturn("image/gif");
-        Assertions.assertFalse(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.gif", "image/gif", exe)));
-        Assertions.assertTrue(FileUploadUtils.isValidType(appContext, fileUpload, createFile("test.png", "image/png", gif)));
     }
 
     @Test

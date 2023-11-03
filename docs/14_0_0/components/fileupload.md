@@ -74,7 +74,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | uploadButtonTitle | null | String | Native title tooltip for upload button
 | uploadIcon | pi pi-upload | String | The icon of upload button
 | uploadLabel | Upload | String | Label of the upload button.
-| validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false.
+| validateContentType | false | Boolean | Whether content type validation should be performed, based on the types defined in the accept attribute. Default is false. **NOTE:** By default the file type gets detected using the file extension, provide a custom FileTypeDetector implementation for more sophisticated detection methods.
 | validator | null | MethodExpr | A method expression that refers to a method validating the input.
 | validatorMessage | null | String | Message to be displayed when validation fails.
 | value | null | Object | Value of the component than can be either an EL expression of a literal text.
