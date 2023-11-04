@@ -54,21 +54,19 @@ public class FilterMeta implements Serializable {
     private Object filterValue; // should be null if empty string/collection/array/object
     private MatchMode matchMode = MatchMode.CONTAINS;
     private FilterConstraint constraint;
-    private boolean shortFieldNotation;
 
     public FilterMeta() {
         // NOOP
     }
 
     FilterMeta(String columnKey, String field, FilterConstraint constraint,
-               ValueExpression filterBy, Object filterValue, MatchMode matchMode, boolean shortFieldNotation) {
+               ValueExpression filterBy, Object filterValue, MatchMode matchMode) {
         this.field = field;
         this.columnKey = columnKey;
         this.filterBy = filterBy;
         this.constraint = constraint;
         this.filterValue = resetToNullIfEmpty(filterValue);
         this.matchMode = matchMode;
-        this.shortFieldNotation = shortFieldNotation;
     }
 
     public static FilterMeta of(FacesContext context, String var, UIColumn column) {
@@ -93,7 +91,6 @@ public class FilterMeta implements Serializable {
             filterByVE = UIColumn.createValueExpressionFromField(context, var, field);
         }
 
-        boolean shortFieldNotation = field != null && column.getFacet("filter") != null;
         MatchMode matchMode = MatchMode.of(column.getFilterMatchMode());
         FilterConstraint constraint = FilterConstraints.of(matchMode);
 
@@ -114,8 +111,7 @@ public class FilterMeta implements Serializable {
                               constraint,
                               filterByVE,
                               filterValue,
-                              matchMode,
-                              shortFieldNotation);
+                              matchMode);
     }
 
     public static FilterMeta of(Object globalFilterValue, MethodExpression globalFilterFunction) {
@@ -128,8 +124,7 @@ public class FilterMeta implements Serializable {
                               constraint,
                               null,
                               globalFilterValue,
-                              MatchMode.GLOBAL,
-                              false);
+                              MatchMode.GLOBAL);
     }
 
     public static <T> T resetToNullIfEmpty(T filterValue) {
@@ -196,10 +191,6 @@ public class FilterMeta implements Serializable {
             ((DynamicColumn) column).applyStatelessModel();
         }
         return filterBy.getValue(elContext);
-    }
-
-    public boolean isShortFieldNotation() {
-        return shortFieldNotation;
     }
 
     public static Builder builder() {

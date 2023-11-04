@@ -202,10 +202,9 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                         ? column.getContainerClientId(context) + separator + "filter"
                         : column.getClientId(context) + separator + "filter";
                 filterValue = params.get(valueHolderClientId);
-            }
 
-            if (filterMeta.isShortFieldNotation()) {
                 try {
+                    // if no custom filter provided and conversion necessary, use UIColumn#converter instead
                     filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
                 }
                 catch (ConverterException ex) {
