@@ -26,7 +26,6 @@ package org.primefaces.component.columns;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -41,11 +40,6 @@ public class Columns extends ColumnsBase {
 
     private CellEditor cellEditor;
     private List<DynamicColumn> dynamicColumns;
-
-    @Override
-    public String getSelectionMode() {
-        return null;
-    }
 
     @Override
     public CellEditor getCellEditor() {

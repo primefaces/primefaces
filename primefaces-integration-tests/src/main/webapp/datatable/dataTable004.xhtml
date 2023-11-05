@@ -21,7 +21,7 @@
             </p:messages>
 
             <p:dataTable id="datatable" value="#{dataTable004.progLanguages}" var="lang"
-                         selectionMode="single" selection="#{dataTable004.selectedProgLanguage}" rowKey="#{lang.id}" disabledSelection="#{dataTable004.isSelectionDisabled(lang)}">
+                         selection="#{dataTable004.selectedProgLanguage}" rowKey="#{lang.id}" disabledSelection="#{dataTable004.isSelectionDisabled(lang)}">
                 <p:ajax event="rowSelect" listener="#{dataTable004.onRowSelect}" />
                 <p:ajax event="rowUnselect" listener="#{dataTable004.onRowUnselect}" />
 

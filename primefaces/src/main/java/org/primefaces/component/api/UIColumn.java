@@ -141,7 +141,7 @@ public interface UIColumn {
 
     String getClientId(FacesContext context);
 
-    String getSelectionMode();
+    boolean isSelectionBox();
 
     boolean isResizable();
 

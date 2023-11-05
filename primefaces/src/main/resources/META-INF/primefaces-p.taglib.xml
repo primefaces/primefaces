@@ -5540,14 +5540,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A collection of selectitems for filter dropdown.]]>
-            </description>
-            <name>filterOptions</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Match mode for filtering.]]>
             </description>
             <name>filterMatchMode</name>
@@ -5604,11 +5596,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enables selection mode, valid values are "single" and "multiple".]]>
+                <![CDATA[Indicates whether or not the column should contain a radiobutton or checkbox for selection]]>
             </description>
-            <name>selectionMode</name>
+            <name>selectionBox</name>
             <required>false</required>
-            <type>java.lang.String</type>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>

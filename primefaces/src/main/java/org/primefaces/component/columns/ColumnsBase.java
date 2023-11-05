@@ -66,6 +66,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         responsivePriority,
         rowspan,
         selectRow,
+        selectionBox,
         sortBy,
         sortFunction,
         sortOrder,
@@ -475,4 +476,12 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
+    @Override
+    public boolean isSelectionBox() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, null);
+    }
+
+    public void setSelectionBox(boolean selectionBox) {
+        getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
+    }
 }

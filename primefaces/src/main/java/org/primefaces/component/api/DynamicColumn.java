@@ -25,7 +25,6 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -100,8 +99,8 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getSelectionMode() {
-        return columns.getSelectionMode();
+    public boolean isSelectionBox() {
+        return columns.isSelectionBox();
     }
 
     @Override
