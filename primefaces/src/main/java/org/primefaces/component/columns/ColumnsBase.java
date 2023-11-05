@@ -478,7 +478,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
 
     @Override
     public boolean isSelectionBox() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, null);
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
     }
 
     public void setSelectionBox(boolean selectionBox) {
