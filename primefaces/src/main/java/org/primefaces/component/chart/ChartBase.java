@@ -33,7 +33,7 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public static final String DEFAULT_RENDERER = "org.primefaces.component.ChardRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.ChartRenderer";
 
     public ChartBase() {
         setRendererType(DEFAULT_RENDERER);
