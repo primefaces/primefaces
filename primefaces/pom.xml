@@ -558,7 +558,7 @@
                         <resourcesSet>
                             <includes>
                                 <include>calendar/**</include>
-                                <include>chart/**</include>
+                                <include>chart/1-widget.js</include>
                                 <include>charts/**</include>
                                 <include>clock/**</include>
                                 <include>colorpicker/**</include>
