@@ -47,6 +47,7 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
     public enum PropertyKeys {
         widgetVar,
         value,
+        extender,
         ariaLabel,
         style,
         styleClass
@@ -90,5 +91,13 @@ public abstract class ChartBase extends UIComponentBase implements Widget, Clien
 
     public void setAriaLabel(String ariaLabel) {
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+    public String getExtender() {
+        return (String) getStateHelper().eval(PropertyKeys.extender, null);
+    }
+
+    public void setExtender(String extender) {
+        getStateHelper().put(PropertyKeys.extender, extender);
     }
 }

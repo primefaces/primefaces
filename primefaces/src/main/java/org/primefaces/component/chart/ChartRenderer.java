@@ -74,7 +74,8 @@ public class ChartRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Chart chart) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Chart", chart)
-                .nativeAttr("config", chart.getValue());
+                .nativeAttr("config", chart.getValue())
+                .attr("extender", chart.getExtender());
 
         encodeClientBehaviors(context, chart);
 
