@@ -59,17 +59,12 @@ if (!PrimeFaces.csp) {
          */
         isFacesForm: function(form) {
             if (form.method === 'post') {
-                var children = form.children;
-                for (var i = 0; i < children.length; i++) {
-                    var child = children[i];
-                    if (child instanceof HTMLInputElement) {
-                        if (child.name.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
-                            return true;
-                        }
+                for (child in form.children) {
+                    if (child instanceof HTMLInputElement && child.name && child.name.includes(PrimeFaces.VIEW_STATE)) {
+                        return true;
                     }
                 }
             }
-
             return false;
         },
 
