@@ -30,6 +30,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -241,7 +242,8 @@ public class FileUploadUtils {
             return true;
         }
 
-        Path tempFile = Files.createTempDirectory("pf-fileupload").resolve(fileName);
+        Path tempDirectory = Files.createTempDirectory("pf-fileupload");
+        Path tempFile = Files.createTempFile(tempDirectory, UUID.randomUUID().toString(), null);
 
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
@@ -250,7 +252,18 @@ public class FileUploadUtils {
                 }
             }
 
+
             String contentType = context.getFileTypeDetector().probeContentType(tempFile);
+
+            // We want to force the FileTypeDetector impl to try to detect the file type by its content,
+            // this is why we intentionally hide the original file name/extension at first because both
+            // tika and mime-types go the easy way of looking up the file extension if possible.
+            // If this first attempt failed we try again, but now while preserving the original file name/extension
+            // to e.g. make the JDK default FileTypeDetector work
+            if (contentType == null) {
+                tempFile = Files.move(tempFile, tempDirectory.resolve(fileName));
+                contentType = context.getFileTypeDetector().probeContentType(tempFile);
+            }
 
             if (contentType == null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
@@ -290,26 +303,31 @@ public class FileUploadUtils {
             }
         }
         finally {
-            try {
-                Files.delete(tempFile);
-            }
-            catch (Exception ex) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
-                            tempFile.toAbsolutePath()), ex);
-                    try {
-                        tempFile.toFile().deleteOnExit();
-                    }
-                    catch (Exception ex1) {
-                        if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
-                                    tempFile.toAbsolutePath()), ex1);
-                        }
+            deleteTempFile(tempFile);
+            deleteTempFile(tempDirectory);
+        }
+        return true;
+    }
+
+    private static void deleteTempFile(Path toDelete) {
+        try {
+            Files.delete(toDelete);
+        }
+        catch (Exception ex) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
+                        toDelete.toAbsolutePath()), ex);
+                try {
+                    toDelete.toFile().deleteOnExit();
+                }
+                catch (Exception ex1) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
+                                toDelete.toAbsolutePath()), ex1);
                     }
                 }
             }
         }
-        return true;
     }
 
     public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
