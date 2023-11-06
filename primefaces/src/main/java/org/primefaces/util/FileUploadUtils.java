@@ -323,11 +323,11 @@ public class FileUploadUtils {
         PrimeApplicationContext appContext = PrimeApplicationContext.getCurrentInstance(context);
 
         if (sizeLimit != null && uploadedFile.getSize() > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), ""));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidSizeMessage(), null));
         }
 
         if (!isValidType(appContext, fileUpload, uploadedFile)) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), null));
         }
 
         if (fileUpload.isVirusScan()) {
@@ -344,7 +344,7 @@ public class FileUploadUtils {
         }
 
         if (sizeLimit != null && totalPartSize > sizeLimit) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), ""));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, fileUpload.getInvalidFileMessage(), null));
         }
     }
 
