@@ -104,7 +104,7 @@ public class FileUpload extends FileUploadBase {
 
                 context.addMessage(getClientId(), e instanceof ValidatorException
                         ? ((ValidatorException) e).getFacesMessage()
-                        : new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
+                        : new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
             }
         }
     }
