@@ -262,10 +262,10 @@ public class FileUploadUtils {
             // If this first attempt failed we try again, but now while preserving the original file name/extension
             // to e.g. make the JDK default FileTypeDetector work
             if (contentType == null) {
-                String fileExtension = getFileExtension(fileName);
+                String fileExtension = FilenameUtils.getExtension(fileName);
 
-                if (fileExtension != null) {
-                    Path newTempFile = Files.createTempFile(tempFilePrefix, fileExtension);
+                if (!fileExtension.isEmpty()) {
+                    Path newTempFile = Files.createTempFile(tempFilePrefix, "." + fileExtension);
                     tempFile = Files.move(tempFile, newTempFile, StandardCopyOption.REPLACE_EXISTING);
                     contentType = context.getFileTypeDetector().probeContentType(tempFile);
                 }
@@ -329,15 +329,6 @@ public class FileUploadUtils {
             }
         }
         return true;
-    }
-
-    private static String getFileExtension(String fileName) {
-        int dotIndex = fileName.lastIndexOf(".");
-        if (dotIndex < 0) {
-            return null;
-        }
-
-        return fileName.substring(dotIndex);
     }
 
     public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
