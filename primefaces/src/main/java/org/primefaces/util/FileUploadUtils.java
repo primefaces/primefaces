@@ -243,7 +243,7 @@ public class FileUploadUtils {
         }
 
         String tempFilePrefix = UUID.randomUUID().toString();
-        Path tempFile = Files.createTempFile(tempFilePrefix, null);
+        Path tempFile = Files.createTempFile(tempFilePrefix, "");
 
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
@@ -252,7 +252,24 @@ public class FileUploadUtils {
                 }
             }
 
+
             String contentType = context.getFileTypeDetector().probeContentType(tempFile);
+
+            // We want to force the FileTypeDetector impl to try to detect the file type by its content,
+            // this is why we intentionally hide the original file name/extension at first because both
+            // tika and mime-types go the easy way of looking up the file extension if possible.
+            // If this first attempt failed we try again, but now while preserving the original file name/extension
+            // to e.g. make the JDK default FileTypeDetector work
+            if (contentType == null) {
+                String fileExtension = FilenameUtils.getExtension(fileName);
+
+                if (!fileExtension.isEmpty()) {
+                    String newFileName = tempFile.getFileName().toString() + "." + fileExtension;
+                    tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
+
+                    contentType = context.getFileTypeDetector().probeContentType(tempFile);
+                }
+            }
 
             if (contentType == null) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
