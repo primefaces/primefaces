@@ -271,21 +271,19 @@ public class FileUploadUtils {
         //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
         String[] accepts = fileUpload.getAccept().split(",");
         final String filenameLC = fileName.toLowerCase();
-        final String contentLC = contentType.toLowerCase();
+        final String contentTypeLC = contentType.toLowerCase();
 
         boolean accepted = Stream.of(accepts)
                 .map(String::trim)
                 .anyMatch(accept -> {
                     // first try with extension
                     if (accept.startsWith(".") && filenameLC.endsWith(accept)) {
-                        LOGGER.log(Level.FINE, () -> String.format("The file extension %s of the uploaded file %s is accepted", accept, fileName));
+                        LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", accept, fileName));
                         return true;
                     }
                     // or try with IANA media types
-                    if (FilenameUtils.wildcardMatch(contentLC, accept)) {
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.log(Level.FINE, () -> String.format("The content type %s of the uploaded file %s is accepted by %s", contentLC, fileName, accept));
-                        }
+                    if (FilenameUtils.wildcardMatch(contentTypeLC, accept)) {
+                        LOGGER.log(Level.FINE, () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, accept));
                         return true;
                     }
 
@@ -293,7 +291,7 @@ public class FileUploadUtils {
                 });
 
         if (!accepted) {
-            LOGGER.log(Level.FINE, () -> String.format("The uploaded file %s with content type %s does not match the accept specification %s", fileName, contentLC,
+            LOGGER.log(Level.FINE, () -> String.format("Uploaded file %s with content type %s does not match the accept specification %s", fileName, contentTypeLC,
                     fileUpload.getAccept()));
             return false;
         }
