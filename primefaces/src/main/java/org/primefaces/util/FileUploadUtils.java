@@ -243,7 +243,7 @@ public class FileUploadUtils {
         }
 
         String tempFilePrefix = UUID.randomUUID().toString();
-        Path tempFile = Files.createTempFile(tempFilePrefix, null);
+        Path tempFile = Files.createTempFile(tempFilePrefix, "");
 
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
@@ -264,7 +264,7 @@ public class FileUploadUtils {
                 String fileExtension = FilenameUtils.getExtension(fileName);
 
                 if (!fileExtension.isEmpty()) {
-                    String newFileName = FilenameUtils.removeExtension(tempFile.getFileName().toString()) + "." + fileExtension;
+                    String newFileName = tempFile.getFileName().toString() + "." + fileExtension;
                     tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
 
                     contentType = context.getFileTypeDetector().probeContentType(tempFile);
