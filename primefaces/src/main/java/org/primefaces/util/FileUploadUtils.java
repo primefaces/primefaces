@@ -27,6 +27,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -242,8 +243,8 @@ public class FileUploadUtils {
             return true;
         }
 
-        Path tempDirectory = Files.createTempDirectory("pf-fileupload");
-        Path tempFile = Files.createTempFile(tempDirectory, UUID.randomUUID().toString(), null);
+        String tempFilePrefix = UUID.randomUUID().toString();
+        Path tempFile = Files.createTempFile(tempFilePrefix, null);
 
         try {
             try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
@@ -261,8 +262,13 @@ public class FileUploadUtils {
             // If this first attempt failed we try again, but now while preserving the original file name/extension
             // to e.g. make the JDK default FileTypeDetector work
             if (contentType == null) {
-                tempFile = Files.move(tempFile, tempDirectory.resolve(fileName));
-                contentType = context.getFileTypeDetector().probeContentType(tempFile);
+                String fileExtension = getFileExtension(fileName);
+
+                if (fileExtension != null) {
+                    Path newTempFile = Files.createTempFile(tempFilePrefix, fileExtension);
+                    tempFile = Files.move(tempFile, newTempFile, StandardCopyOption.REPLACE_EXISTING);
+                    contentType = context.getFileTypeDetector().probeContentType(tempFile);
+                }
             }
 
             if (contentType == null) {
@@ -303,31 +309,35 @@ public class FileUploadUtils {
             }
         }
         finally {
-            deleteTempFile(tempFile);
-            deleteTempFile(tempDirectory);
-        }
-        return true;
-    }
-
-    private static void deleteTempFile(Path toDelete) {
-        try {
-            Files.delete(toDelete);
-        }
-        catch (Exception ex) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
-                        toDelete.toAbsolutePath()), ex);
-                try {
-                    toDelete.toFile().deleteOnExit();
-                }
-                catch (Exception ex1) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
-                                toDelete.toAbsolutePath()), ex1);
+            try {
+                Files.delete(tempFile);
+            }
+            catch (Exception ex) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
+                            tempFile.toAbsolutePath()), ex);
+                    try {
+                        tempFile.toFile().deleteOnExit();
+                    }
+                    catch (Exception ex1) {
+                        if (LOGGER.isLoggable(Level.WARNING)) {
+                            LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
+                                    tempFile.toAbsolutePath()), ex1);
+                        }
                     }
                 }
             }
         }
+        return true;
+    }
+
+    private static String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex < 0) {
+            return null;
+        }
+
+        return fileName.substring(dotIndex);
     }
 
     public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
