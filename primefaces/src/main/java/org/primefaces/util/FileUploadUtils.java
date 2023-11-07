@@ -27,7 +27,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -265,8 +264,9 @@ public class FileUploadUtils {
                 String fileExtension = FilenameUtils.getExtension(fileName);
 
                 if (!fileExtension.isEmpty()) {
-                    Path newTempFile = Files.createTempFile(tempFilePrefix, "." + fileExtension);
-                    tempFile = Files.move(tempFile, newTempFile, StandardCopyOption.REPLACE_EXISTING);
+                    String newFileName = FilenameUtils.removeExtension(tempFile.getFileName().toString()) + "." + fileExtension;
+                    tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
+
                     contentType = context.getFileTypeDetector().probeContentType(tempFile);
                 }
             }
