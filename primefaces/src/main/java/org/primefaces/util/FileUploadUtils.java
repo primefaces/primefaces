@@ -228,7 +228,8 @@ public class FileUploadUtils {
         return LangUtils.substring(jsRegex, start, end);
     }
 
-    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, FileUpload fileUpload, String fileName, InputStream stream) throws IOException {
+    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, FileUpload fileUpload, String fileName, InputStream stream)
+            throws IOException {
         if (!fileUpload.isValidateContentType()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Content type checking is disabled");
@@ -283,7 +284,8 @@ public class FileUploadUtils {
                     }
                     // or try with IANA media types
                     if (FilenameUtils.wildcardMatch(contentTypeLC, accept)) {
-                        LOGGER.log(Level.FINE, () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, accept));
+                        LOGGER.log(Level.FINE,
+                                () -> String.format("Content type %s of the uploaded file %s is accepted by %s", contentTypeLC, fileName, accept));
                         return true;
                     }
 
@@ -291,8 +293,9 @@ public class FileUploadUtils {
                 });
 
         if (!accepted) {
-            LOGGER.log(Level.FINE, () -> String.format("Uploaded file %s with content type %s does not match the accept specification %s", fileName, contentTypeLC,
-                    fileUpload.getAccept()));
+            LOGGER.log(Level.FINE,
+                    () -> String.format("Uploaded file %s with content type %s does not match the accept specification %s",
+                            fileName, contentTypeLC, fileUpload.getAccept()));
             return false;
         }
 
