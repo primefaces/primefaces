@@ -30,7 +30,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -66,7 +65,6 @@ public class FileUploadUtils {
 
     private FileUploadUtils() {
     }
-
 
     public static String requireValidFilename(String filename) {
         if (LangUtils.isBlank(filename)) {
@@ -224,13 +222,13 @@ public class FileUploadUtils {
             start = 1;
         }
         char endChar = jsRegex.charAt(end);
-        if (endChar != '/' && endChar == 'i' || endChar == 'g') {
+        if (endChar == 'i' || endChar == 'g') {
             end = end - 1;
         }
         return LangUtils.substring(jsRegex, start, end);
     }
 
-    private static boolean isValidFileContent(PrimeApplicationContext context, FileUpload fileUpload, String fileName, InputStream stream) throws IOException {
+    private static boolean isValidFileContent(PrimeApplicationContext primeAppContext, FileUpload fileUpload, String fileName, InputStream stream) throws IOException {
         if (!fileUpload.isValidateContentType()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Content type checking is disabled");
@@ -238,22 +236,18 @@ public class FileUploadUtils {
             return true;
         }
         if (LangUtils.isBlank(fileUpload.getAccept())) {
-            //Short circuit
             return true;
         }
 
-        String tempFilePrefix = UUID.randomUUID().toString();
-        Path tempFile = Files.createTempFile(tempFilePrefix, "");
+        String prefix = FilenameUtils.removeExtension(fileName);
+        Path tempFile = Files.createTempFile(prefix, Constants.EMPTY_STRING);
+        String contentType = null;
 
-        try {
-            try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream))) {
-                try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
-                    IOUtils.copyLarge(in, out);
-                }
-            }
+        try (InputStream in = new PushbackInputStream(new BufferedInputStream(stream));
+             OutputStream out = Files.newOutputStream(tempFile)) {
+            IOUtils.copyLarge(in, out);
 
-
-            String contentType = context.getFileTypeDetector().probeContentType(tempFile);
+            contentType = primeAppContext.getFileTypeDetector().probeContentType(tempFile);
 
             // We want to force the FileTypeDetector impl to try to detect the file type by its content,
             // this is why we intentionally hide the original file name/extension at first because both
@@ -261,74 +255,71 @@ public class FileUploadUtils {
             // If this first attempt failed we try again, but now while preserving the original file name/extension
             // to e.g. make the JDK default FileTypeDetector work
             if (contentType == null) {
-                String fileExtension = FilenameUtils.getExtension(fileName);
-
-                if (!fileExtension.isEmpty()) {
-                    String newFileName = tempFile.getFileName().toString() + "." + fileExtension;
-                    tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
-
-                    contentType = context.getFileTypeDetector().probeContentType(tempFile);
-                }
-            }
-
-            if (contentType == null) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +
-                            "FileTypeDetector implementation", fileName));
-                }
-                return false;
-            }
-
-            //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
-            String[] accepts = fileUpload.getAccept().split(",");
-            boolean accepted = false;
-            for (String accept : accepts) {
-                accept = accept.trim().toLowerCase();
-                if (accept.startsWith(".") && fileName.toLowerCase().endsWith(accept)) {
-                    accepted = true;
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(String.format("The file extension %s of the uploaded file %s is accepted", accept, fileName));
-                    }
-                    break;
-                }
-                //Now we have a media type that may contain wildcards
-                if (FilenameUtils.wildcardMatch(contentType.toLowerCase(), accept)) {
-                    accepted = true;
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(String.format("The content type %s of the uploaded file %s is accepted by %s", contentType, fileName, accept));
-                    }
-                    break;
-                }
-            }
-            if (!accepted) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(String.format("The uploaded file %s with content type %s does not match the accept specification %s", fileName, contentType,
-                            fileUpload.getAccept()));
-                }
-                return false;
+                tempFile = Files.move(tempFile, tempFile.resolveSibling(fileName));
+                contentType = primeAppContext.getFileTypeDetector().probeContentType(tempFile);
             }
         }
         finally {
-            try {
-                Files.delete(tempFile);
-            }
-            catch (Exception ex) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
-                            tempFile.toAbsolutePath()), ex);
-                    try {
-                        tempFile.toFile().deleteOnExit();
+            deleteFile(tempFile);
+        }
+
+        if (contentType == null) {
+            LOGGER.log(Level.WARNING, () -> String.format("Could not determine content type of uploaded file %s", fileName));
+            return false;
+        }
+
+        //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
+        String[] accepts = fileUpload.getAccept().split(",");
+        final String filenameLC = fileName.toLowerCase();
+        final String contentLC = contentType.toLowerCase();
+
+        boolean accepted = Stream.of(accepts)
+                .map(String::trim)
+                .anyMatch(accept -> {
+                    // first try with extension
+                    if (accept.startsWith(".") && filenameLC.endsWith(accept)) {
+                        LOGGER.log(Level.FINE, () -> String.format("The file extension %s of the uploaded file %s is accepted", accept, fileName));
+                        return true;
                     }
-                    catch (Exception ex1) {
-                        if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
-                                    tempFile.toAbsolutePath()), ex1);
+                    // or try with IANA media types
+                    if (FilenameUtils.wildcardMatch(contentLC, accept)) {
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.log(Level.FINE, () -> String.format("The content type %s of the uploaded file %s is accepted by %s", contentLC, fileName, accept));
                         }
+                        return true;
+                    }
+
+                    return false;
+                });
+
+        if (!accepted) {
+            LOGGER.log(Level.FINE, () -> String.format("The uploaded file %s with content type %s does not match the accept specification %s", fileName, contentLC,
+                    fileUpload.getAccept()));
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void deleteFile(Path tempFile) {
+        try {
+            Files.delete(tempFile);
+        }
+        catch (Exception ex) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
+                        tempFile.toAbsolutePath()), ex);
+                try {
+                    tempFile.toFile().deleteOnExit();
+                }
+                catch (Exception ex1) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
+                                tempFile.toAbsolutePath()), ex1);
                     }
                 }
             }
         }
-        return true;
     }
 
     public static void performVirusScan(FacesContext facesContext, UploadedFile file) throws VirusException {
