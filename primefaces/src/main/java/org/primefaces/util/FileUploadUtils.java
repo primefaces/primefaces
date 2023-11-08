@@ -256,7 +256,8 @@ public class FileUploadUtils {
             // If this first attempt failed we try again, but now while preserving the original file name/extension
             // to e.g. make the JDK default FileTypeDetector work
             if (contentType == null) {
-                tempFile = Files.move(tempFile, tempFile.resolveSibling(fileName));
+                String newFileName = tempFile.getFileName().toString() + "." + FilenameUtils.getExtension(fileName);
+                tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
                 contentType = primeAppContext.getFileTypeDetector().probeContentType(tempFile);
             }
         }
@@ -307,18 +308,14 @@ public class FileUploadUtils {
             Files.delete(tempFile);
         }
         catch (Exception ex) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
-                        tempFile.toAbsolutePath()), ex);
-                try {
-                    tempFile.toFile().deleteOnExit();
-                }
-                catch (Exception ex1) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
-                                tempFile.toAbsolutePath()), ex1);
-                    }
-                }
+            LOGGER.log(Level.WARNING, ex,
+                    () -> String.format("Could not delete temporary file %s, will try to delete on JVM exit", tempFile.toAbsolutePath()));
+            try {
+                tempFile.toFile().deleteOnExit();
+            }
+            catch (Exception ex1) {
+                LOGGER.log(Level.WARNING, ex1, 
+                        () -> String.format("Could not register temporary file %s for deletion on JVM exit", tempFile.toAbsolutePath()));
             }
         }
     }
