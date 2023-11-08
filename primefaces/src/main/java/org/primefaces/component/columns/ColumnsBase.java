@@ -37,6 +37,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         ariaHeaderText,
         caseSensitiveSort,
         colspan,
+        converter,
         displayPriority,
         draggable,
         exportFooterValue,
@@ -475,4 +476,12 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
+    @Override
+    public Object getConverter() {
+        return getStateHelper().eval(PropertyKeys.converter, null);
+    }
+
+    public void setConverter(Object converter) {
+        getStateHelper().put(PropertyKeys.converter, converter);
+    }
 }
