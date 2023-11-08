@@ -5993,14 +5993,6 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[A collection of selectitems for filter dropdown.]]>
-            </description>
-            <name>filterOptions</name>
-            <required>false</required>
-            <type>java.lang.Object</type>
-        </attribute>
-        <attribute>
-            <description>
                 <![CDATA[Match mode for filtering.]]>
             </description>
             <name>filterMatchMode</name>
@@ -6254,6 +6246,15 @@
             <name>displayPriority</name>
             <required>false</required>
             <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description>
+                <![CDATA[An EL expression or a literal text that defines a converter for the component. When it's an EL expression, it's resolved to a converter instance.
+    In case it's a static text, it must refer to a converter id.]]>
+            </description>
+            <name>converter</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
         </attribute>
     </tag>
     <tag>

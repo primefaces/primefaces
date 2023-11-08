@@ -200,6 +200,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         getStateHelper().put(PropertyKeys.colspan, colspan);
     }
 
+    @Override
     public Object getConverter() {
         return getStateHelper().eval(PropertyKeys.converter, null);
     }

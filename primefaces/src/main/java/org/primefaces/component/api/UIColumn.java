@@ -243,6 +243,8 @@ public interface UIColumn {
 
     int getDisplayPriority();
 
+    Object getConverter();
+
     default <C extends UIComponent & ValueHolder> C getFilterComponent() {
         UIComponent filterFacet = getFacet("filter");
         if (filterFacet != null) {
@@ -261,5 +263,12 @@ public interface UIColumn {
             }
         }
         return null;
+    }
+
+    default UIComponent asUIComponent() {
+        if (this instanceof UIComponent) {
+            return (UIComponent) this;
+        }
+        throw new UnsupportedOperationException(getClass().getName() + "#asUIComponent is not implemented");
     }
 }

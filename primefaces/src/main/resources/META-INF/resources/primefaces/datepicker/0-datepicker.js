@@ -217,9 +217,6 @@
             // #6047 round to nearest stepMinute on even if editing using keyboard
             this.viewDate = this.isDate(this.viewDate) ? new Date(this.viewDate) : new Date();
             this.viewDate.setMinutes(this.stepMinute(this.viewDate.getMinutes()));
-            if (!this.options.viewDate) {
-                this.options.viewDate = this.viewDate;
-            }
 
             this.options.minDate = this.parseMinMaxValue(this.options.minDate);
             this.options.maxDate = this.parseMinMaxValue(this.options.maxDate);
@@ -236,6 +233,10 @@
                         this.viewDate = new Date(this.options.maxDate.getTime());
                     }
                 }
+            }
+
+            if (!this.options.viewDate) {
+                this.options.viewDate = this.viewDate;
             }
 
             this.hasCustomYearRange = this.options.yearRange !== null;

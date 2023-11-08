@@ -76,7 +76,8 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
         if (last > filteredValues.size()) {
             last = filteredValues.size();
         }
-        return filteredValues.subList(first, last);
+        // new ArrayList as #subList isnt serializable
+        return new ArrayList<>(filteredValues.subList(first, last));
     }
 
     protected void sort(List<T> values) {

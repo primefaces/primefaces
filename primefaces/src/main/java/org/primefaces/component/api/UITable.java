@@ -35,6 +35,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.search.SearchExpressionHint;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.column.ColumnBase;
 import org.primefaces.component.headerrow.HeaderRow;
@@ -201,6 +202,14 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                         ? column.getContainerClientId(context) + separator + "filter"
                         : column.getClientId(context) + separator + "filter";
                 filterValue = params.get(valueHolderClientId);
+
+                try {
+                    // if no custom filter provided and conversion necessary, use UIColumn#converter instead
+                    filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
+                }
+                catch (ConverterException ex) {
+                    filterValue = null;
+                }
             }
 
             if (filterValue != null) {
@@ -513,9 +522,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
 
     default String getConvertedFieldValue(FacesContext context, UIColumn column) {
         Object value = UIColumn.createValueExpressionFromField(context, getVar(), column.getField()).getValue(context.getELContext());
-        UIComponent component = column instanceof DynamicColumn ? ((DynamicColumn) column).getColumns() : (UIComponent) column;
-        Object converter = column instanceof ColumnBase ? ((ColumnBase) column).getConverter() : null;
-        return ComponentUtils.getConvertedAsString(context, component, converter, value);
+        return ComponentUtils.getConvertedAsString(context, column.asUIComponent(), column.getConverter(), value);
     }
 
     default boolean isFilteringCurrentlyActive() {

@@ -37,6 +37,10 @@ if (!PrimeFaces.csp) {
             var forms = document.getElementsByTagName("form");
             for (var i = 0; i < forms.length; i++) {
                 var form = forms[i];
+                if (!PrimeFaces.csp.isFacesForm(form)) {
+                    continue;
+                }
+
                 var input = form.elements[PrimeFaces.csp.NONCE_INPUT];
                 if (!input) {
                     input = document.createElement("input");
@@ -46,6 +50,22 @@ if (!PrimeFaces.csp) {
                 }
                 input.setAttribute("value", nonce);
             }
+        },
+
+        /**
+         * Checks if the given form is a Faces form.
+         * @param {HTMLInputElement} [form] The form to check.
+         * @return {boolean} true if the form is a Faces form.
+         */
+        isFacesForm: function(form) {
+            if (form.method === 'post') {
+                for (child in form.children) {
+                    if (child instanceof HTMLInputElement && child.name && child.name.includes(PrimeFaces.VIEW_STATE)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         },
 
         /**

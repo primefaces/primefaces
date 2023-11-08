@@ -37,6 +37,7 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         ariaHeaderText,
         caseSensitiveSort,
         colspan,
+        converter,
         displayPriority,
         draggable,
         exportFooterValue,
@@ -476,12 +477,20 @@ public abstract class ColumnsBase extends UIData implements UIColumn {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
-    @Override
     public boolean isSelectionBox() {
         return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
     }
 
     public void setSelectionBox(boolean selectionBox) {
         getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
+    }
+
+    @Override
+    public Object getConverter() {
+        return getStateHelper().eval(PropertyKeys.converter, null);
+    }
+
+    public void setConverter(Object converter) {
+        getStateHelper().put(PropertyKeys.converter, converter);
     }
 }

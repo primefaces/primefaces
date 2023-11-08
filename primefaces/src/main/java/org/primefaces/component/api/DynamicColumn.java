@@ -50,6 +50,11 @@ public class DynamicColumn implements UIColumn {
         this.columnKey = baseColumnKey + separatorChar + index;
     }
 
+    @Override
+    public UIComponent asUIComponent() {
+        return columns;
+    }
+
     public int getIndex() {
         return index;
     }
@@ -367,4 +372,8 @@ public class DynamicColumn implements UIColumn {
         return columns.getFilterPlaceholder();
     }
 
+    @Override
+    public Object getConverter() {
+        return columns.getConverter();
+    }
 }
