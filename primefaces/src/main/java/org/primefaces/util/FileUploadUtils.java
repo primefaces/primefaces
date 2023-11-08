@@ -314,7 +314,7 @@ public class FileUploadUtils {
                 tempFile.toFile().deleteOnExit();
             }
             catch (Exception ex1) {
-                LOGGER.log(Level.WARNING, ex1, 
+                LOGGER.log(Level.WARNING, ex1,
                         () -> String.format("Could not register temporary file %s for deletion on JVM exit", tempFile.toAbsolutePath()));
             }
         }
