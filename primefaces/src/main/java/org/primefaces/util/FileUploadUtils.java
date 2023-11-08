@@ -256,9 +256,12 @@ public class FileUploadUtils {
             // If this first attempt failed we try again, but now while preserving the original file name/extension
             // to e.g. make the JDK default FileTypeDetector work
             if (contentType == null) {
-                String newFileName = tempFile.getFileName().toString() + "." + FilenameUtils.getExtension(fileName);
-                tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
-                contentType = primeAppContext.getFileTypeDetector().probeContentType(tempFile);
+                String extension = FilenameUtils.getExtension(fileName);
+                if (!extension.isEmpty()) {
+                    String newFileName = tempFile.getFileName().toString() + "." + extension;
+                    tempFile = Files.move(tempFile, tempFile.resolveSibling(newFileName));
+                    contentType = primeAppContext.getFileTypeDetector().probeContentType(tempFile);
+                }
             }
         }
         finally {
@@ -278,7 +281,7 @@ public class FileUploadUtils {
         boolean accepted = Stream.of(accepts)
                 .map(String::trim)
                 .anyMatch(accept -> {
-                    // first try with extension
+                    // try with extension first
                     if (accept.startsWith(".") && filenameLC.endsWith(accept)) {
                         LOGGER.log(Level.FINE, () -> String.format("File extension %s of the uploaded file %s is accepted", accept, fileName));
                         return true;
