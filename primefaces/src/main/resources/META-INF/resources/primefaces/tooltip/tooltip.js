@@ -172,9 +172,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                 }
             })
             .on(this.cfg.hideEvent + '.tooltip', this.cfg.globalSelector, function() {
-                if ($this.globalTitle) {
-                    $this.hide();
-                }
+                $this.hide();
             });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.tooltip' + '_align', $this.jq, function() {
