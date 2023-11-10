@@ -7,7 +7,6 @@
     <artifactId>primefaces-parent</artifactId>
     <packaging>pom</packaging>
     <version>13.0.4-SNAPSHOT</version>
-
     <name>PrimeFaces Parent</name>
     <url>https://www.primefaces.org</url>
 
