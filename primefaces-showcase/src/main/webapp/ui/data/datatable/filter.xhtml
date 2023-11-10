@@ -72,7 +72,7 @@
 
                     <p:column field="date" headerText="Join Date" filterMatchMode="between">
                         <f:facet name="filter">
-                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" />
+                            <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" converter="javax.faces.DateTime" />
                         </f:facet>
                     </p:column>
 
