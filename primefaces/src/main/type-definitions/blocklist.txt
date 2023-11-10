@@ -2,6 +2,7 @@
 # Mainly third-party with doc comments libraries we do not want to document.
 chartjs/0-chartjs.min.js
 chart/0-chartjs.min.js
+chart/1-chartjs-adapter-moment.min.js
 inputnumber/0-autoNumeric.js
 keyboard/0-jquery.keypad.js
 moment/moment-timezone-with-data.js
