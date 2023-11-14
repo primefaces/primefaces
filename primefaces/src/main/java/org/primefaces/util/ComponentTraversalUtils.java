@@ -57,12 +57,20 @@ public class ComponentTraversalUtils {
     }
 
     public static <T> T first(Class<T> type, UIComponent base) {
+        return first(type, base, false);
+    }
+
+    public static <T> T first(Class<T> type, UIComponent base, boolean considerBase) {
+        if (considerBase && type.isAssignableFrom(base.getClass())) {
+            return (T) base;
+        }
+
         T result = null;
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext()) {
             UIComponent kid = kids.next();
-            if (type.isInstance(kid)) {
+            if (type.isAssignableFrom(kid.getClass())) {
                 result = (T) kid;
                 break;
             }

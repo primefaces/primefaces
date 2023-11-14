@@ -248,7 +248,7 @@ public interface UIColumn {
 
     default <C extends UIComponent & EditableValueHolder> C getFilterValueHolder() {
         UIComponent filterFacet = getFacet("filter");
-        return (C) ComponentTraversalUtils.first(EditableValueHolder.class, filterFacet);
+        return (C) ComponentTraversalUtils.first(EditableValueHolder.class, filterFacet, true);
     }
 
     default UIComponent asUIComponent() {
