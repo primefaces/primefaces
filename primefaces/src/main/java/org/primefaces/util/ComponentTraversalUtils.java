@@ -62,7 +62,7 @@ public class ComponentTraversalUtils {
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext()) {
             UIComponent kid = kids.next();
-            if (type.isAssignableFrom(kid.getClass())) {
+            if (type.isInstance(kid)) {
                 result = (T) kid;
                 break;
             }
