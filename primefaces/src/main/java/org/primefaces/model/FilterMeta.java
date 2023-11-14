@@ -100,7 +100,7 @@ public class FilterMeta implements Serializable {
 
         Object filterValue = column.getFilterValue();
         if (filterValue == null) {
-            ValueHolder valueHolder = column.getFilterEditableValueHolder();
+            ValueHolder valueHolder = column.getFilterValueHolder();
             if (valueHolder != null) {
                 filterValue = valueHolder.getValue();
             }

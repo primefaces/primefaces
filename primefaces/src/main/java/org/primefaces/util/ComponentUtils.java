@@ -794,27 +794,4 @@ public class ComponentUtils {
             return value;
         }
     }
-
-    public static <T> T findComponent(UIComponent root, Class<T> childType) {
-        if (root != null) {
-            if (childType.isInstance(root)) {
-                return (T) root;
-            }
-
-            return findComponentInChildren(root, childType);
-        }
-
-        return null;
-    }
-
-    public static <T> T findComponentInChildren(UIComponent parent, Class<T> childType) {
-        if (parent.getChildCount() > 0) {
-            for (UIComponent child : parent.getChildren()) {
-                if (childType.isInstance(child) && child.isRendered()) {
-                    return (T) child;
-                }
-            }
-        }
-        return null;
-    }
 }

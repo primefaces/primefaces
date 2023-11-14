@@ -38,7 +38,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.model.MatchMode;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
@@ -246,9 +246,9 @@ public interface UIColumn {
 
     Object getConverter();
 
-    default <C extends UIComponent & EditableValueHolder> C getFilterEditableValueHolder() {
+    default <C extends UIComponent & EditableValueHolder> C getFilterValueHolder() {
         UIComponent filterFacet = getFacet("filter");
-        return (C) ComponentUtils.findComponent(filterFacet, EditableValueHolder.class);
+        return (C) ComponentTraversalUtils.first(EditableValueHolder.class, filterFacet);
     }
 
     default UIComponent asUIComponent() {

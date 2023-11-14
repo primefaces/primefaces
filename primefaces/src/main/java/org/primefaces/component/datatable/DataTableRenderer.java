@@ -752,7 +752,7 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            EditableValueHolder filterValueHolder = column.getFilterEditableValueHolder();
+            EditableValueHolder filterValueHolder = column.getFilterValueHolder();
             filterValueHolder.setValue(filterValue);
 
             writer.startElement("div", null);
