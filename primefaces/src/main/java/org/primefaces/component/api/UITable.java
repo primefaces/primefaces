@@ -190,12 +190,12 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            UIComponent filterFacet = column.getFilterValueHolder();
-            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
+            ValueHolder filterValueHolder = column.getFilterValueHolder();
+            boolean hasCustomFilter = filterValueHolder != null;
 
             Object filterValue;
             if (hasCustomFilter) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
+                filterValue = filterValueHolder.getLocalValue();
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn
