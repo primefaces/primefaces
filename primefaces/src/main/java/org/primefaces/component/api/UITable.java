@@ -190,7 +190,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            UIComponent filterFacet = column.getFilterComponent();
+            UIComponent filterFacet = column.getFilterEditableValueHolder();
             boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
 
             Object filterValue;
