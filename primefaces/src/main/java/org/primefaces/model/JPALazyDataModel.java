@@ -354,7 +354,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
     @Override
     public String getRowKey(T obj) {
-        return String.valueOf(rowKeyProvider.apply(obj));
+        Object rowKey = rowKeyProvider.apply(obj);
+        return rowKey == null ? null : String.valueOf(rowKey);
     }
 
     public static <T> Builder<T> builder() {
