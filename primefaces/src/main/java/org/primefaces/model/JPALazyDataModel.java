@@ -486,10 +486,10 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
                     SingularAttribute<?, ?> idAttribute = entityType.getDeclaredId(idType.getJavaType());
                     model.rowKeyField = idAttribute.getName();
-                    if (model.rowKeyType != null) {
+                    if (model.rowKeyType == null) {
                         model.rowKeyType = idType.getJavaType();
                     }
-                    if (model.rowKeyProvider != null) {
+                    if (model.rowKeyProvider == null) {
                         model.rowKeyProvider = obj -> emf.getPersistenceUnitUtil().getIdentifier(obj);
                     }
                 }
@@ -498,10 +498,10 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
                     PropertyDescriptorResolver propResolver =
                             PrimeApplicationContext.getCurrentInstance(context).getPropertyDescriptorResolver();
 
-                    if (model.rowKeyType != null) {
+                    if (model.rowKeyType == null) {
                         model.rowKeyType = propResolver.get(model.entityClass, model.rowKeyField).getPropertyType();
                     }
-                    if (model.rowKeyProvider != null) {
+                    if (model.rowKeyProvider == null) {
                         model.rowKeyProvider = obj -> propResolver.getValue(obj, model.rowKeyField);
                     }
                 }
