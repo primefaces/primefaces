@@ -31,6 +31,7 @@ if (window.PrimeFaces) {
     cancel: "Abbrechen",
     completed: "Abgeschlossen",
     pending: "Ausstehend",
+    fileSizeTypes: ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
     dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
     dayNamesShort: ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
     dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
@@ -121,7 +122,7 @@ if (window.PrimeFaces) {
     },
   };
 
-// custom PF labels
+  // custom PF labels
   PrimeFaces.locales["de"] = $.extend(true, {}, PrimeFaces.locales["de"], {
     weekNumberTitle: "W",
     isRTL: false,
@@ -233,7 +234,7 @@ if (window.PrimeFaces) {
     },
   });
 
-// Austrian
+  // Austrian
   PrimeFaces.locales["de_AT"] = $.extend(true, {}, PrimeFaces.locales["de"], {
     monthNames: ["Jänner", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
     monthNamesShort: ["Jän", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],

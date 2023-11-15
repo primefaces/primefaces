@@ -45,6 +45,7 @@ if (window.PrimeFaces) {
     strong: "Fuerte",
     passwordPrompt: "Escriba una contraseña",
     emptyFilterMessage: "Sin opciones disponibles",
+    emptySearchMessage: "Sin opciones disponibles",
     emptyMessage: "No se han encontrado resultados",
     aria: {
       trueLabel: "Verdadero",
@@ -98,7 +99,7 @@ if (window.PrimeFaces) {
     },
   };
 
-// custom PF labels
+  // custom PF labels
   PrimeFaces.locales["es"] = $.extend(true, {}, PrimeFaces.locales["es"], {
     weekNumberTitle: "S",
     isRTL: false,
