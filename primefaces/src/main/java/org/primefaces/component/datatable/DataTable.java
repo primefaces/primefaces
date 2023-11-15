@@ -635,7 +635,10 @@ public class DataTable extends DataTableBase {
     }
 
     public String getSelectedRowKeysAsString() {
-        return String.join(",", getSelectedRowKeys());
+        return getSelectedRowKeys()
+                .stream()
+                .filter(s -> s != null && !s.isBlank())
+                .collect(Collectors.joining(","));
     }
 
     public boolean isSelectAll() {
