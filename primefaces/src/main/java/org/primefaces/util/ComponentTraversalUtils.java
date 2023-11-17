@@ -57,20 +57,12 @@ public class ComponentTraversalUtils {
     }
 
     public static <T> T first(Class<T> type, UIComponent base) {
-        return first(type, base, false, true);
-    }
-
-    public static <T> T first(Class<T> type, UIComponent base, boolean considerBase, boolean skipUnrendered) {
-        if (considerBase && type.isAssignableFrom(base.getClass()) && (skipUnrendered || base.isRendered())) {
-            return (T) base;
-        }
-
         T result = null;
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext()) {
             UIComponent kid = kids.next();
-            if (type.isAssignableFrom(kid.getClass()) && (skipUnrendered || kid.isRendered())) {
+            if (type.isAssignableFrom(kid.getClass())) {
                 result = (T) kid;
                 break;
             }
@@ -196,5 +188,25 @@ public class ComponentTraversalUtils {
 
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
+    }
+
+    public static <T> T firstChildOrItself(Class<T> childType, UIComponent base) {
+        if (childType.isInstance(base) && base.isRendered()) {
+            return (T) base;
+        }
+
+        return firstChild(childType, base);
+    }
+
+    public static <T> T firstChild(Class<T> childType, UIComponent base) {
+        if (base.getChildCount() > 0) {
+            for (UIComponent child : base.getChildren()) {
+                if (childType.isInstance(child) && child.isRendered() ) {
+                    return (T) base;
+                }
+            }
+        }
+
+        return null;
     }
 }
