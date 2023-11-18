@@ -250,7 +250,7 @@ public interface UIColumn {
     default EditableValueHolder getFilterValueHolder() {
         UIComponent filterFacet = getFacet("filter");
         if (ComponentUtils.shouldRenderFacet(filterFacet)) {
-            return ComponentTraversalUtils.firstChildOrItself(EditableValueHolder.class, filterFacet);
+            return ComponentTraversalUtils.firstChildRenderedOrSelf(EditableValueHolder.class, filterFacet);
         }
         return null;
     }

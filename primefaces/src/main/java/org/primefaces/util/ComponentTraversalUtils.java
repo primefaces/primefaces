@@ -190,15 +190,22 @@ public class ComponentTraversalUtils {
         return (UIComponent) closest(NamingContainer.class, component);
     }
 
-    public static <T> T firstChildOrItself(Class<T> childType, UIComponent base) {
-        if (childType.isInstance(base) && base.isRendered()) {
+    public static <T> T firstChildRenderedOrSelf(Class<T> childType, UIComponent base) {
+        if (!base.isRendered()) {
+            return null;
+        }
+        else if (childType.isInstance(base)) {
             return (T) base;
         }
 
-        return firstChild(childType, base);
+        return firstChildRendered(childType, base);
     }
 
-    public static <T> T firstChild(Class<T> childType, UIComponent base) {
+    public static <T> T firstChildRendered(Class<T> childType, UIComponent base) {
+        if (!base.isRendered()) {
+            return null;
+        }
+
         if (base.getChildCount() > 0) {
             for (UIComponent child : base.getChildren()) {
                 if (childType.isInstance(child) && child.isRendered() ) {
