@@ -209,7 +209,7 @@ public class ComponentTraversalUtils {
         if (base.getChildCount() > 0) {
             for (UIComponent child : base.getChildren()) {
                 if (childType.isInstance(child) && child.isRendered() ) {
-                    return (T) base;
+                    return (T) child;
                 }
             }
         }
