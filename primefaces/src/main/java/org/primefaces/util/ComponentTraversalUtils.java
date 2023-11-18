@@ -191,7 +191,7 @@ public class ComponentTraversalUtils {
     }
 
     public static <T> T firstChildRenderedOrSelf(Class<T> childType, UIComponent base) {
-        if (!base.isRendered()) {
+        if (base == null || !base.isRendered()) {
             return null;
         }
         else if (childType.isInstance(base)) {
@@ -202,7 +202,7 @@ public class ComponentTraversalUtils {
     }
 
     public static <T> T firstChildRendered(Class<T> childType, UIComponent base) {
-        if (!base.isRendered()) {
+        if (base == null || !base.isRendered()) {
             return null;
         }
 
