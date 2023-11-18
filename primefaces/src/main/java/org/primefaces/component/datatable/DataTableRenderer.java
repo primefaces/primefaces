@@ -772,14 +772,14 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent filterFacet = column.getFilterComponent();
+        UIComponent filterFacet = column.getFacet("filter");
 
         if (!ComponentUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
             Object filterValue = table.getFilterValue(column);
-            ((ValueHolder) filterFacet).setValue(filterValue);
+            column.setFilterValueToValueHolder(context, filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataTable.COLUMN_CUSTOM_FILTER_CLASS, null);

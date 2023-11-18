@@ -189,4 +189,31 @@ public class ComponentTraversalUtils {
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
     }
+
+    public static <T> T firstChildRenderedOrSelf(Class<T> childType, UIComponent base) {
+        if (base == null || !base.isRendered()) {
+            return null;
+        }
+        else if (childType.isInstance(base)) {
+            return (T) base;
+        }
+
+        return firstChildRendered(childType, base);
+    }
+
+    public static <T> T firstChildRendered(Class<T> childType, UIComponent base) {
+        if (base == null || !base.isRendered()) {
+            return null;
+        }
+
+        if (base.getChildCount() > 0) {
+            for (UIComponent child : base.getChildren()) {
+                if (childType.isInstance(child) && child.isRendered() ) {
+                    return (T) child;
+                }
+            }
+        }
+
+        return null;
+    }
 }

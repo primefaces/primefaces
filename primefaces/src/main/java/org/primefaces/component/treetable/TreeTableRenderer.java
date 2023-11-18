@@ -777,9 +777,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
         else {
             Object filterValue = tt.getFilterValue(column);
-            if (filterValue != null) {
-                ((ValueHolder) filterFacet).setValue(filterValue);
-            }
+            column.setFilterValueToValueHolder(context, filterValue);
 
             writer.startElement("div", null);
             writer.writeAttribute("class", TreeTable.COLUMN_CUSTOM_FILTER_CLASS, null);

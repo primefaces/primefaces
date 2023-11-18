@@ -25,19 +25,23 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.model.MatchMode;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.CompositeUtils;
+import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
@@ -241,23 +245,27 @@ public interface UIColumn {
 
     int getDisplayPriority();
 
-    default <C extends UIComponent & ValueHolder> C getFilterComponent() {
+    default EditableValueHolderState getFilterValueHolder(FacesContext context) {
         UIComponent filterFacet = getFacet("filter");
         if (filterFacet != null) {
-            if (filterFacet instanceof ValueHolder) {
-                return (C) filterFacet;
-            }
-
-            for (UIComponent child : filterFacet.getChildren()) {
-                if (!child.isRendered()) {
-                    continue;
-                }
-
-                if (child instanceof ValueHolder) {
-                    return (C) child;
-                }
-            }
+            AtomicReference<EditableValueHolderState> stateRef = new AtomicReference<>(null);
+            CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (fc, target) -> {
+                EditableValueHolderState state = new EditableValueHolderState();
+                state.setValue(((EditableValueHolder) target).getValue());
+                stateRef.set(state);
+            });
+            return stateRef.get();
         }
+
         return null;
     }
+
+    default void setFilterValueToValueHolder(FacesContext context, Object value) {
+        UIComponent filterFacet = getFacet("filter");
+
+        CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (ctx, component) -> {
+            ((EditableValueHolder) component).setValue(value);
+        });
+    }
+
 }

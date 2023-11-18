@@ -40,6 +40,7 @@ import org.primefaces.model.filter.FilterConstraint;
 import org.primefaces.model.filter.FilterConstraints;
 import org.primefaces.model.filter.FunctionFilterConstraint;
 import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.LangUtils;
 
 public class FilterMeta implements Serializable {
@@ -100,7 +101,7 @@ public class FilterMeta implements Serializable {
 
         Object filterValue = column.getFilterValue();
         if (filterValue == null) {
-            ValueHolder valueHolder = column.getFilterComponent();
+            EditableValueHolderState valueHolder = column.getFilterValueHolder(context);
             if (valueHolder != null) {
                 filterValue = valueHolder.getValue();
             }

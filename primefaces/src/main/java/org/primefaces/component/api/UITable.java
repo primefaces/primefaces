@@ -45,6 +45,7 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EditableValueHolderState;
 import org.primefaces.util.LangUtils;
 
 public interface UITable<T extends UITableState> extends ColumnAware, MultiViewStateAware<T> {
@@ -202,12 +203,11 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                 ((DynamicColumn) column).applyModel();
             }
 
-            UIComponent filterFacet = column.getFilterComponent();
-            boolean hasCustomFilter = ComponentUtils.shouldRenderFacet(filterFacet);
+            EditableValueHolderState editableValueHolderState = column.getFilterValueHolder(context);
 
             Object filterValue;
-            if (hasCustomFilter) {
-                filterValue = ((ValueHolder) filterFacet).getLocalValue();
+            if (editableValueHolderState != null) {
+                filterValue = editableValueHolderState.getValue();
             }
             else {
                 String valueHolderClientId = column instanceof DynamicColumn

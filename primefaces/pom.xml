@@ -475,59 +475,6 @@
             </plugin>
 
             <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <configuration>
-                    <licenseSets>
-                        <licenseSet>
-                            <header>../conf/header.txt</header>
-                            <excludes>
-                                <exclude>**/json/JSON*.java</exclude>
-                            </excludes>
-                        </licenseSet>
-                    </licenseSets>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>2.2.0</version>
-                <executions>
-                    <execution>
-                        <id>aggregate-download-licenses</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>aggregate-download-licenses</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>add-third-party</id>
-                        <goals>
-                            <goal>add-third-party</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludedScopes>test,provided</excludedScopes>
-                    <outputDirectory>${project.basedir}/target/classes/META-INF/licenses/</outputDirectory>
-                    <licensesOutputFile>${project.basedir}/target/classes/META-INF/licenses/licenses-generated.xml</licensesOutputFile>
-                    <licensesOutputDirectory>${project.basedir}/target/classes/META-INF/licenses/</licensesOutputDirectory>
-                    <licenseUrlReplacements>
-                        <licenseUrlReplacement>
-                            <regexp>.*BSD-3.*</regexp>
-                            <replacement>https://raw.githubusercontent.com/teamdigitale/licenses/master/BSD-3-Clause</replacement>
-                        </licenseUrlReplacement>
-                        <licenseUrlReplacement>
-                            <regexp>.*json.*</regexp>
-                            <replacement>https://raw.githubusercontent.com/stleary/JSON-java/master/LICENSE</replacement>
-                        </licenseUrlReplacement>
-                    </licenseUrlReplacements>
-                </configuration>
-            </plugin>
-
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
