@@ -32,6 +32,7 @@ locales/locale-ky.js
 locales/locale-ko.js
 locales/locale-lt.js
 locales/locale-lv.js
+locales/locale-ms.js
 locales/locale-nl.js
 locales/locale-no.js
 locales/locale-pl.js

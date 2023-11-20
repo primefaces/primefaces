@@ -31,13 +31,14 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.model.MatchMode;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
 
 public interface UIColumn {
@@ -245,24 +246,9 @@ public interface UIColumn {
 
     Object getConverter();
 
-    default <C extends UIComponent & ValueHolder> C getFilterComponent() {
+    default EditableValueHolder getFilterValueHolder() {
         UIComponent filterFacet = getFacet("filter");
-        if (filterFacet != null) {
-            if (filterFacet instanceof ValueHolder) {
-                return (C) filterFacet;
-            }
-
-            for (UIComponent child : filterFacet.getChildren()) {
-                if (!child.isRendered()) {
-                    continue;
-                }
-
-                if (child instanceof ValueHolder) {
-                    return (C) child;
-                }
-            }
-        }
-        return null;
+        return ComponentTraversalUtils.firstChildRenderedOrSelf(EditableValueHolder.class, filterFacet);
     }
 
     default UIComponent asUIComponent() {
