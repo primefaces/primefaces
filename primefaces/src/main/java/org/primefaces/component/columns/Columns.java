@@ -26,13 +26,13 @@ package org.primefaces.component.columns;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.LangUtils;
 
 public class Columns extends ColumnsBase {
@@ -50,11 +50,7 @@ public class Columns extends ColumnsBase {
     @Override
     public CellEditor getCellEditor() {
         if (cellEditor == null) {
-            for (UIComponent child : getChildren()) {
-                if (child instanceof CellEditor) {
-                    cellEditor = (CellEditor) child;
-                }
-            }
+            cellEditor = ComponentTraversalUtils.firstChildRendered(CellEditor.class, this);
         }
 
         return cellEditor;
