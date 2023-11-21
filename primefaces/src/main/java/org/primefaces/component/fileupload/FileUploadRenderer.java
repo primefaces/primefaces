@@ -237,9 +237,11 @@ public class FileUploadRenderer extends CoreRenderer {
 
             writer.endElement("span");
 
-            writer.startElement("span", fileUpload);
-            writer.writeAttribute("class", FileUpload.FILENAME_CLASS, null);
-            writer.endElement("span");
+            if (fileUpload.isDisplayClientSideMessages()) {
+                writer.startElement("span", fileUpload);
+                writer.writeAttribute("class", FileUpload.FILENAME_CLASS, null);
+                writer.endElement("span");
+            }
 
             writer.endElement("span");
         }

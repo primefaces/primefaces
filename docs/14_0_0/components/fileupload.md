@@ -35,6 +35,7 @@ powered rich solution with graceful degradation for legacy browsers.
 | converter | null | Converter/String | An el expression or a literal text that defines a converter for the component. When it’s an EL expression, it’s resolved to a converter instance. In case it’s a static text, it must refer to a converter id.
 | converterMessage | null | String | Message to be displayed when conversion fails.
 | disabled | false | Boolean | Disables component when set true.
+| displayClientSideMessages | true | Boolean | Simple Mode: if client side messages like filename or validation messages should be displayed. 
 | dragDropSupport | true | Boolean | Specifies dragdrop based file selection from filesystem, default is true and works only on supported browsers.
 | dropZone | null | String | Component that should be used as custom drop zone.
 | fileLimit | null | Integer | Maximum number of files allowed to upload.

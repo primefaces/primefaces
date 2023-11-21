@@ -28,6 +28,15 @@
             </h:form>
         </div>
         <div class="card">
+            <h5>Single (without displaying filename or other client side messages)</h5>
+            <h:form>
+                <p:fileUpload value="#{fileUploadView.file}" mode="simple" skinSimple="true" auto="true"
+                              process="@this" update="messages"
+                              displayClientSideMessages="false"
+                              listener="#{fileUploadView.handleFileUpload}"/>
+            </h:form>
+        </div>
+        <div class="card">
             <h5>Multiple</h5>
             <h:form>
                 <p:fileUpload value="#{fileUploadView.files}" mode="simple" skinSimple="true" multiple="true"

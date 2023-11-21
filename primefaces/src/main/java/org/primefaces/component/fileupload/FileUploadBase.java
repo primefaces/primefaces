@@ -82,7 +82,8 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         chooseButtonStyleClass,
         uploadButtonStyleClass,
         cancelButtonStyleClass,
-        dropZone
+        dropZone,
+        displayClientSideMessages
     }
 
     public FileUploadBase() {
@@ -485,5 +486,13 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setDropZone(String dropZone) {
         getStateHelper().put(PropertyKeys.dropZone, dropZone);
+    }
+
+    public boolean isDisplayClientSideMessages() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.displayClientSideMessages, true);
+    }
+
+    public void setDisplayClientSideMessages(boolean displayClientSideMessages) {
+        getStateHelper().put(PropertyKeys.displayClientSideMessages, displayClientSideMessages);
     }
 }
