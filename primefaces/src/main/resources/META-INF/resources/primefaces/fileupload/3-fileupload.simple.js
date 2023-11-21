@@ -24,6 +24,7 @@
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
+ * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
