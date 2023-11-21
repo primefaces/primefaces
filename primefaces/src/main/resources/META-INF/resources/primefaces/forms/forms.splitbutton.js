@@ -172,38 +172,17 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        $this.ajaxCount = 0;
-        $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if ($this.isXhrSource(settings)) {
-                $this.ajaxCount++;
-                if ($this.ajaxCount > 1) {
-                    return;
-                }
-                $this.button.addClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false) {
-                    $this.disable();
-                }
-                var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
-                var uiIcon = $this.button.find('.ui-icon');
-                if (uiIcon.length) {
-                    var prefix = 'ui-button-icon-';
-                    loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
-                }
-                $this.button.prepend(loadIcon);
+        PrimeFaces.bindButtonInlineAjaxStatus($this, $this.button, function(widget, settings) {
+            // Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
+            var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
+            if (sourceId === null) {
+                return false;
             }
-        }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings, args) {
-            if ($this.isXhrSource(settings)) {
-                $this.ajaxCount--;
-                if ($this.ajaxCount > 0 || args.redirect) {
-                    return;
-                }
-                $this.button.removeClass('ui-state-loading');
-                if ($this.cfg.disableOnAjax !== false && !$this.cfg.disabledAttr) {
-                    $this.enable();
-                }
-                $this.button.find('.ui-icon-loading').remove();
+            if ($this.id === sourceId) {
+                return true;
             }
-        });        
+            return $this.menuitems.find('[id="' + sourceId + '"]').length;
+        });
 
         if(this.cfg.filter) {
             this.setupFilterMatcher();
@@ -212,25 +191,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
             this.bindFilterEvents();
         }
-    },
-
-    /**
-     * Checks whether the ID of the button, or one if its menu items equals the source ID from the provided settings.
-     *
-     * @param {JQuery.AjaxSettings} settings containing source ID.
-     * @returns {boolean} `true` if the ID of the button, or one if its menu items equals the source ID from the
-     * provided settings.
-     * @private
-     */
-    isXhrSource: function(settings) {
-        var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
-        if (sourceId === null) {
-            return false;
-        }
-        if (this.id === sourceId) {
-            return true;
-        }
-        return this.menuitems.find('[id="' + sourceId + '"]').length;
     },
 
     /**

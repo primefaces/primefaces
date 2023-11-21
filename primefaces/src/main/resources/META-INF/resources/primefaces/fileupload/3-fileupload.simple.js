@@ -56,6 +56,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
             if (!this.input.prop('disabled')) {
                 this.bindEvents();
+                this.bindTriggers();
             }
         }
         else if (this.cfg.auto) {
@@ -166,6 +167,14 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     /**
+     * Sets up the global event listeners on the button.
+     * @private
+     */
+    bindTriggers: function() {
+        PrimeFaces.bindButtonInlineAjaxStatus(this, this.button);
+    },
+
+    /**
      * Validates the given file against the current validation settings
      * @private
      * @param {File} file Uploaded file to validate.
@@ -255,6 +264,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         var xhrOptions = {
             url: PrimeFaces.ajax.Utils.getPostUrl(this.form),
             portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix),
+            source: this.id,
             type : "POST",
             cache : false,
             dataType : "xml",
@@ -284,6 +294,8 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.cfg.onerror.call(this, xhr, status, errorThrown);
                 }
 
+                $(document).trigger('pfAjaxError', [xhr, this, errorThrown]);
+
                 PrimeFaces.error('Request return with error:' + status + '.');
             })
             .done(function(data, status, xhr) {
@@ -294,6 +306,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     //call user callback
                     if($this.cfg.onsuccess) {
                         parsed = $this.cfg.onsuccess.call(this, data, status, xhr);
+                    }
+
+                    if($this.cfg.global) {
+                        $(document).trigger('pfAjaxSuccess', [xhr, this]);
                     }
 
                     //do not execute default handler as response already has been parsed
@@ -325,6 +341,6 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.Queue.addXHR(jqXhr);
 
-    }
+    },
 
 });
