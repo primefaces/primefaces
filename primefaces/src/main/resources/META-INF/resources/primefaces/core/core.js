@@ -382,7 +382,7 @@
          * Applies the inline AJAX status (ui-state-loading) to the given widget / button.
          * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
          * @param {JQuery} [button] The button DOM element.
-         * @param {(widget, settings) => boolean} [isXhrSource] Callback that checks if the widget is the source of the current AJAX request.
+         * @param {(PrimeFaces.widget.BaseWidget, JQuery.AjaxSettings) => boolean} [isXhrSource] Callback that checks if the widget is the source of the current AJAX request.
          */
         bindButtonInlineAjaxStatus: function(widget, button, isXhrSource) {
             if (!isXhrSource) {
