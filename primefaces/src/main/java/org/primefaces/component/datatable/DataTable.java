@@ -663,14 +663,7 @@ public class DataTable extends DataTableBase {
 
     @Override
     public HeaderRow getHeaderRow() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child.isRendered() && child instanceof HeaderRow) {
-                return (HeaderRow) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(HeaderRow.class, this);
     }
 
     @Override

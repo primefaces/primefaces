@@ -206,11 +206,10 @@ public class ComponentTraversalUtils {
             return null;
         }
 
-        if (base.getChildCount() > 0) {
-            for (UIComponent child : base.getChildren()) {
-                if (childType.isInstance(child) && child.isRendered() ) {
-                    return (T) child;
-                }
+        for (int i = 0; i < base.getChildCount(); i++) {
+            UIComponent child = base.getChildren().get(i);
+            if (childType.isInstance(child) && child.isRendered() ) {
+                return (T) child;
             }
         }
 
