@@ -429,10 +429,11 @@ declare namespace PrimeFaces {
     }
 
     /**
-     * A faces message with a short summary message and a more detailed message. Used by the client-side validation
-     * framework.
+     * A 'FacesMessage' with a short summary message and a more detailed message, as well as a severity level that
+     * indicates the type of this message. Used by the client-side validation framework and some widgets such as the
+     * growl widget.
      */
-    export interface FacesMessageBase {
+    export interface FacesMessage {
         /**
          * A short summary of the message.
          */
@@ -442,14 +443,7 @@ declare namespace PrimeFaces {
          * In-depth details of the message.
          */
         detail: string;
-    }
 
-    /**
-     * A faces message with a short summary message and a more detailed message, as well as a severity level that
-     * indicates the type of this message. Used by the client-side validation framework and some widgets such as the
-     * growl widget.
-     */
-    export interface FacesMessage extends FacesMessageBase {
         /**
          * The severity of this message, i.e. whether it is an information message, a warning message, or an error
          * message.
