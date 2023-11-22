@@ -85,7 +85,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         String uri = DynamicContentSrcBuilder.buildStreaming(context, currentComponent, value, false);
         String monitorKeyCookieName = ResourceUtils.getMonitorKeyCookieName(context, monitorKey);
         PrimeFaces.current().executeScript(String.format("PrimeFaces.download('%s', '%s', '%s', '%s')",
-                uri, content.getContentType(), content.getName(), monitorKeyCookieName));
+                uri, content.getContentType(), EscapeUtils.forJavaScript(content.getName()), monitorKeyCookieName));
     }
 
     protected void regularDownload(FacesContext context, StreamedContent content) {
