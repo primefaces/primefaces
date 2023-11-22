@@ -290,7 +290,7 @@ if (window.PrimeFaces) {
                 }
             }
 
-            PrimeFaces.validation.validateInput(element, highlight);
+            PrimeFaces.validation.validateInput(element, element, highlight);
 
             if (!vc.isEmpty()) {
                 if (uiMessage) {
@@ -387,7 +387,7 @@ if (window.PrimeFaces) {
 
                         if (validator) {
                             try {
-                                validator.validate(source, element, newValue);
+                                validator.validate(element, newValue);
                             }
                             catch (ve) {
                                 var validatorMessageStr = element.data('p-vmsg');
@@ -717,6 +717,9 @@ if (window.PrimeFaces) {
             }
             else if (element.is(':checkbox')) {
                 value = element.data('p-grouped') ? $('input:checkbox[name="' + $.escapeSelector(element.attr('name')) + '"]:checked').val(): element.prop('checked').toString();
+            }
+            else if (element.is(':file')) {
+                value = element[0].files;
             }
             else {
                 value = element.val();
