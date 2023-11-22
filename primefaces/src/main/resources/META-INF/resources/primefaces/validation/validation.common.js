@@ -489,7 +489,7 @@ if (window.PrimeFaces) {
 
         /**
          * A map between the client ID of an element and a list of faces message for that element.
-         * @type {Record<string, PrimeFaces.FacesMessageBase[]>}
+         * @type {Record<string, PrimeFaces.FacesMessage[]>}
          */
         messages: {},
 
@@ -503,13 +503,17 @@ if (window.PrimeFaces) {
         /**
          * Adds a faces message to the given element.
          * @param {JQuery} element Element to which to add the message.
-         * @param {PrimeFaces.FacesMessageBase} msg Message to add to the given message. 
+         * @param {PrimeFaces.FacesMessage} msg Message to add to the given message.
          */
         addMessage: function(element, msg) {
             var clientId = element.data(PrimeFaces.CLIENT_ID_DATA)||element.attr('id');
 
             if(!this.messages[clientId]) {
                 this.messages[clientId] = [];
+            }
+
+            if (!msg.severity) {
+                msg.severity = "error";
             }
 
             this.messages[clientId].push(msg);
@@ -552,7 +556,7 @@ if (window.PrimeFaces) {
          * Shortcut for PrimeFaces.validation.Utils.getMessage.
          * @param {string} key The i18n key of a message, such as `javax.faces.component.UIInput.REQUIRED` or
          * `javax.faces.validator.LengthValidator.MINIMUM`.
-         * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
+         * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
         getMessage: function(key) {
@@ -610,7 +614,7 @@ if (window.PrimeFaces) {
         /**
          * Given the container element of a ui message, renders the given message to that element.
          * @param {JQuery} uiMessage The container element of the message, usually with the class `ui-message`.
-         * @param {PrimeFaces.FacesMessageBase} msg Message to render to the given element. 
+         * @param {PrimeFaces.FacesMessage} msg Message to render to the given element.
          */
         renderUIMessage: function(uiMessage, msg) {
             var display = uiMessage.data('display');
@@ -642,7 +646,7 @@ if (window.PrimeFaces) {
          * `javax.faces.validator.LengthValidator.MINIMUM`.
          * @param {string[]} params A list of parameters for the placeholders. The first item is ignored. The item at
          * index `i` corresponds to the placeholder `{i-1}`.
-         * @return {PrimeFaces.FacesMessageBase | null} The localized faces message for the given key, or `null` if no
+         * @return {PrimeFaces.FacesMessage | null} The localized faces message for the given key, or `null` if no
          * translation was found for the key.
          */
         getMessage: function(key, params) {
@@ -745,7 +749,7 @@ if (window.PrimeFaces) {
 
         /**
          * Renders all given messages in the given container.
-         * @param {Record<string, PrimeFaces.FacesMessageBase[]>} messages The messages to render.
+         * @param {Record<string, PrimeFaces.FacesMessage[]>} messages The messages to render.
          * @param {JQuery} container The container for the messages. Either the element with the class `ui-messages`, or
          * a parent of such an element.
          */
