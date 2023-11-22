@@ -379,6 +379,62 @@
         },
 
         /**
+         * Applies the inline AJAX status (ui-state-loading) to the given widget / button.
+         * @param {PrimeFaces.widget.BaseWidget} [widget] the widget.
+         * @param {JQuery} [button] The button DOM element.
+         * @param {(widget: PrimeFaces.widget.BaseWidget, settings: JQuery.AjaxSettings) => boolean} [isXhrSource] Callback that checks if the widget is the source of the current AJAX request.
+         */
+        bindButtonInlineAjaxStatus: function(widget, button, isXhrSource) {
+            if (!isXhrSource) {
+                isXhrSource = function(widget, settings) {
+                    return PrimeFaces.ajax.Utils.isXhrSource(widget, settings);
+                };
+            }
+
+            widget.ajaxCount = 0;
+            $(document).on('pfAjaxSend.' + widget.id, function(e, xhr, settings) {
+                if (isXhrSource.call(this, widget, settings)) {
+                    widget.ajaxCount++;
+                    if (widget.ajaxCount > 1) {
+                        return;
+                    }
+
+                    button.addClass('ui-state-loading');
+
+                    if (widget.hasOwnProperty('disable')
+                        && widget.cfg.disableOnAjax !== false) {
+                        widget.disable();
+                    }
+
+                    var loadIcon = $('<span class="ui-icon-loading ui-icon ui-c pi pi-spin pi-spinner"></span>');
+                    var uiIcon = button.find('.ui-icon');
+                    if (uiIcon.length) {
+                        var prefix = 'ui-button-icon-';
+                        loadIcon.addClass(prefix + uiIcon.attr('class').includes(prefix + 'left') ? 'left' : 'right');
+                    }
+                    button.prepend(loadIcon);
+                }
+            }).on('pfAjaxComplete.' + widget.id, function(e, xhr, settings, args) {
+                if (isXhrSource.call(this, widget, settings)) {
+                    widget.ajaxCount--;
+                    if (widget.ajaxCount > 0 || args.redirect) {
+                        return;
+                    }
+
+                    button.removeClass('ui-state-loading');
+
+                    if (widget.hasOwnProperty('enable')
+                        && widget.cfg.disableOnAjax !== false
+                        && !widget.cfg.disabledAttr) {
+                        widget.enable();
+                    }
+
+                    button.find('.ui-icon-loading').remove();
+                }
+            });
+        },
+
+        /**
          * SELECT elements may have different states, such as `hovering` or `focused`. For each state, there is a
          * corresponding style class that is added to the select when it is in that state, such as `ui-state-hover` or
          * `ui-state-focus`. These classes are used by CSS rules for styling. This method sets up a select element so

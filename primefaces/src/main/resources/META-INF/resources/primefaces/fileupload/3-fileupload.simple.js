@@ -24,6 +24,8 @@
  * @prop {number} cfg.maxFileSize Maximum allowed size in bytes for files.
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
+ * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
+ * @prop {boolean} cfg.displayFilename Wheter the filename should be displayed.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
@@ -56,6 +58,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
             if (!this.input.prop('disabled')) {
                 this.bindEvents();
+                this.bindTriggers();
             }
         }
         else if (this.cfg.auto) {
@@ -135,7 +138,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                 } else {
                     // If everything is ok, format the message and display it
-                    if (files.length > 0) {
+                    if (files.length > 0 && $this.cfg.displayFilename) {
                         var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
 
                         if (files.length > 1) {
@@ -163,6 +166,14 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             $this.button.removeClass('ui-state-focus');
         });
 
+    },
+
+    /**
+     * Sets up the global event listeners on the button.
+     * @private
+     */
+    bindTriggers: function() {
+        PrimeFaces.bindButtonInlineAjaxStatus(this, this.button);
     },
 
     /**
@@ -255,6 +266,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         var xhrOptions = {
             url: PrimeFaces.ajax.Utils.getPostUrl(this.form),
             portletForms: PrimeFaces.ajax.Utils.getPorletForms(this.form, parameterPrefix),
+            source: this.id,
             type : "POST",
             cache : false,
             dataType : "xml",
@@ -284,6 +296,8 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     $this.cfg.onerror.call(this, xhr, status, errorThrown);
                 }
 
+                $(document).trigger('pfAjaxError', [xhr, this, errorThrown]);
+
                 PrimeFaces.error('Request return with error:' + status + '.');
             })
             .done(function(data, status, xhr) {
@@ -294,6 +308,10 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     //call user callback
                     if($this.cfg.onsuccess) {
                         parsed = $this.cfg.onsuccess.call(this, data, status, xhr);
+                    }
+
+                    if($this.cfg.global) {
+                        $(document).trigger('pfAjaxSuccess', [xhr, this]);
                     }
 
                     //do not execute default handler as response already has been parsed
@@ -325,6 +343,6 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.ajax.Queue.addXHR(jqXhr);
 
-    }
+    },
 
 });
