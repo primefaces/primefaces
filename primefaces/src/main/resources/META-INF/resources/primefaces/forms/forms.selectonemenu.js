@@ -34,6 +34,7 @@
  * @prop {boolean} isTabbing Whether the current process is handling the tab key.
  * @prop {JQuery} [items] The DOM elements for the available selectable options.
  * @prop {JQuery} [itemsContainer] The DOM element for the container with the available selectable options.
+ * @prop {boolean} [querying] Whether an AJAX request for the autocompletion items is currently in progress.
  * @prop {JQuery} itemsWrapper The DOM element for the wrapper with the container with the available selectable options.
  * @prop {JQuery} focusInput The hidden input that can be focused via the tab key etc. (only used with editable="true")
  * @prop {boolean} hasFloatLabel Is this component wrapped in a float label.
@@ -1399,8 +1400,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
      * @private
      */
     dynamicPanelLoad: function() {
-        var $this = this,
-        options = {
+        var $this = this;
+        $this.setQuerying(true);
+        
+        var options = {
             source: this.id,
             process: this.id,
             update: this.id,
@@ -1432,6 +1435,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                 $this.initContents();
                 $this.bindItemEvents();
+                $this.setQuerying(false);
             }
         };
 
@@ -1467,6 +1471,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 handleMethod.call(this, event);
             }
         }
+    },
+
+    /**
+     * Sets the querying state.
+     * @param {boolean} state Querying state to set.
+     * @private
+     */
+    setQuerying: function(state) {
+        if (state && !this.querying) {
+            this.jq.addClass('ui-state-loading');
+            this.menuIcon.prepend('<span class="ui-icon-loading pi pi-spin pi-spinner"></span>');
+                
+        }
+        else if (!state && this.querying) {
+            this.jq.removeClass('ui-state-loading');
+            this.menuIcon.find('.ui-icon-loading').remove();
+        }
+        this.querying = state;
     },
 
     /**
