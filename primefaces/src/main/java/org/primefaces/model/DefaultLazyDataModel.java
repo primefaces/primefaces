@@ -179,7 +179,7 @@ public class DefaultLazyDataModel<T> extends LazyDataModel<T> {
     }
 
     public static class Builder<T> {
-        final DefaultLazyDataModel<T> model;
+        private final DefaultLazyDataModel<T> model;
 
         public Builder() {
             model = new DefaultLazyDataModel<>();

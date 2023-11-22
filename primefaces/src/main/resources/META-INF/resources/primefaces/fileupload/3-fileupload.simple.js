@@ -25,6 +25,7 @@
  * @prop {string} cfg.messageTemplate Message template to use when displaying file validation errors.
  * @prop {boolean} cfg.skinSimple Whether to apply theming to the simple upload widget.
  * @forcedProp {number} [ajaxCount] Number of concurrent active Ajax requests.
+ * @prop {boolean} cfg.displayFilename Wheter the filename should be displayed.
  */
 PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
 
@@ -137,7 +138,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
                     }
                 } else {
                     // If everything is ok, format the message and display it
-                    if (files.length > 0) {
+                    if (files.length > 0 && $this.cfg.displayFilename) {
                         var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name).replace('{size}', $this.formatSize(files[0].size));
 
                         if (files.length > 1) {
