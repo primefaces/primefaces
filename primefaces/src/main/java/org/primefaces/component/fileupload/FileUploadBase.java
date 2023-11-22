@@ -23,8 +23,10 @@
  */
 package org.primefaces.component.fileupload;
 
-import javax.faces.component.UIInput;
 import org.primefaces.component.api.Widget;
+import org.primefaces.util.ComponentUtils;
+
+import javax.faces.component.UIInput;
 
 public abstract class FileUploadBase extends UIInput implements Widget {
 
@@ -82,7 +84,8 @@ public abstract class FileUploadBase extends UIInput implements Widget {
         chooseButtonStyleClass,
         uploadButtonStyleClass,
         cancelButtonStyleClass,
-        dropZone
+        dropZone,
+        displayFilename
     }
 
     public FileUploadBase() {
@@ -485,5 +488,18 @@ public abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setDropZone(String dropZone) {
         getStateHelper().put(PropertyKeys.dropZone, dropZone);
+    }
+
+    public boolean isDisplayFilename() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.displayFilename, () -> {
+            if (getMode().equals("simple") && isAuto()) {
+                return false;
+            }
+            return true;
+        });
+    }
+
+    public void setDisplayFilename(boolean displayFilename) {
+        getStateHelper().put(PropertyKeys.displayFilename, displayFilename);
     }
 }

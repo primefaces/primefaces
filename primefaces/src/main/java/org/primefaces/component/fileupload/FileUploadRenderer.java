@@ -97,7 +97,8 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         else {
             wb.init("SimpleFileUpload", fileUpload)
-                    .attr("skinSimple", fileUpload.isSkinSimple(), false);
+                    .attr("skinSimple", fileUpload.isSkinSimple(), false)
+                    .attr("displayFilename", fileUpload.isDisplayFilename());
         }
 
         wb.attr("mode", fileUpload.getMode())
