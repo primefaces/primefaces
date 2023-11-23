@@ -181,7 +181,7 @@ public class DataScrollerRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataScroller", ds)
                 .attr("chunkSize", chunkSize)
-                .attr("totalSize", ds.getRowCount())
+                .attr("totalSize", getTotalSize(ds))
                 .attr("loadEvent", loadEvent)
                 .attr("mode", ds.getMode(), "document")
                 .attr("buffer", ds.getBuffer())
@@ -191,6 +191,16 @@ public class DataScrollerRenderer extends CoreRenderer {
         encodeClientBehaviors(context, ds);
 
         wb.finish();
+    }
+    
+    private static int getTotalSize(DataScroller ds) {
+        if ( ds.isLazy() ) {
+            LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
+            if (lazyModel != null){
+                return lazyModel.count(Collections.emptyMap());
+            }
+        }
+        return ds.getRowCount();
     }
 
     protected void loadChunk(FacesContext context, DataScroller ds, int start, int size) throws IOException {
