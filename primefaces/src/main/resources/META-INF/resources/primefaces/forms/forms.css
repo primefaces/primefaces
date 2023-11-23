@@ -288,6 +288,20 @@
     cursor: default;
 }
 
+/* loading */
+.ui-selectonemenu .ui-icon-loading {
+    position: absolute;
+    top: 50%;
+    margin-top: -0.5rem;
+    margin-left: -3rem;
+    margin-right: 0;
+}
+
+.ui-selectonemenu-rtl .ui-icon-loading {
+    margin-left: 0;
+    margin-right: -3rem;
+}
+
 .ui-selectonemenu-panel {
     position: absolute;
     height: auto;
