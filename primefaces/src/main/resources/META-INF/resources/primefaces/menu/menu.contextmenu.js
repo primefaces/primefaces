@@ -34,6 +34,7 @@
  * @prop {string | JQuery} jqTargetId ID selector or DOM element of the target, i.e. the element this context menu
  * belongs to.
  * @prop {PrimeFaces.CssTransitionHandler | null} [transition] Handler for CSS transitions used by this widget.
+ *@prop {JQuery} swipe Object holding the touch swipe reference.
  * 
  * @interface {PrimeFaces.widget.ContextMenuCfg} cfg The configuration for the {@link  ContextMenu| ContextMenu widget}.
  * You can access this configuration via {@link PrimeFaces.widget.BaseWidget.cfg|BaseWidget.cfg}. Please note that this
@@ -86,7 +87,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             });
 
             if (PrimeFaces.env.isTouchable(this.cfg)) {
-                $(document).swipe({
+                $this.swipe = $(document).swipe({
                     longTap:function(e, target) {
                        $this.show(e);
                     }
@@ -155,15 +156,15 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if (this.cfg.target === undefined) {
             var event = 'contextmenu.' + this.id + '_contextmenu';
             $(document).off(event);
-            if (PrimeFaces.env.isTouchable(this.cfg)) {
-                $(document).swipe().destroy();
+            if (PrimeFaces.env.isTouchable(this.cfg) && this.swipe) {
+                this.swipe.destroy();
             }
         }
         else {
             var event = this.cfg.event + '.' + this.id + '_contextmenu';
             $(document).off(event, this.jqTargetId);
-            if (PrimeFaces.env.isTouchable(this.cfg)) {
-                this.jqTarget.swipe().destroy();
+            if (PrimeFaces.env.isTouchable(this.cfg) && this.swipe) {
+                this.swipe.destroy();
             }
         }
     },
@@ -229,7 +230,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 $(document.body).addClass('ui-touch-selection-disabled');
              }
 
-             $this.jqTarget.swipe({
+             $this.swipe = $this.jqTarget.swipe({
                  longTap:function(e, target) {
                       $this.show(e);
                  }
