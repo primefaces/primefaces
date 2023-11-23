@@ -86,7 +86,7 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         this.input.on('change.fileupload', function() {
             var files = $this.input[0].files;
             if (files) {
-                // If everything is ok, format the message and display it
+                // display filename
                 if (files.length > 0 && $this.cfg.displayFilename) {
                     var toDisplay = $this.cfg.messageTemplate.replace('{name}', files[0].name)
                         .replace('{size}', PrimeFaces.utils.formatBytes(files[0].size));
