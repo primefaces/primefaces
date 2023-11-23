@@ -193,8 +193,8 @@ public class DataScrollerRenderer extends CoreRenderer {
         wb.finish();
     }
     
-    private static int getTotalSize(DataScroller ds) {
-        if ( ds.isLazy() ) {
+    protected int getTotalSize(DataScroller ds) {
+        if (ds.isLazy()) {
             LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
             if (lazyModel != null){
                 return lazyModel.count(Collections.emptyMap());
