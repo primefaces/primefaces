@@ -105,4 +105,37 @@ if (window.PrimeFaces) {
         }
     };
 
+    PrimeFaces.validator['primefaces.File'] = {
+        FILE_LIMIT_MESSAGE_ID: 'primefaces.FileValidator.FILE_LIMIT',
+        ALLOW_TYPES_MESSAGE_ID: 'primefaces.FileValidator.ALLOW_TYPES',
+        SIZE_LIMIT_MESSAGE_ID: 'primefaces.FileValidator.SIZE_LIMIT',
+
+        validate: function(element, value) {
+            if(value !== null) {
+
+                var filelimit = element.data('p-filelimit'),
+                    allowtypes = element.data('p-allowtypes'),
+                    sizelimit = element.data('p-sizelimit'),
+                    vc = PrimeFaces.validation.ValidationContext;
+
+                if (filelimit && value.length > filelimit) {
+                    throw vc.getMessage(this.FILE_LIMIT_MESSAGE_ID, filelimit);
+                }
+
+                for (var file of value) {
+                    if (allowtypes) {
+                        allowtypes = allowtypes.substring(1, allowtypes.length - 1); // remove leading and ending slash
+                        var allowtypesRegExp = new RegExp(allowtypes);
+                        if (!allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name))  {
+                            throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name);
+                        }
+                    }
+
+                    if (sizelimit && file.size > sizelimit) {
+                        throw vc.getMessage(this.SIZE_LIMIT_MESSAGE_ID, file.name, PrimeFaces.utils.formatBytes(sizelimit));
+                    }
+                }
+            }
+        },
+    };
 }
