@@ -38,7 +38,6 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget {
         model,
         style,
         styleClass,
-        autoDisplay,
         delay,
         activeIndex,
         orientation
@@ -84,14 +83,6 @@ public abstract class MegaMenuBase extends AbstractMenu implements Widget {
 
     public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isAutoDisplay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
-    }
-
-    public void setAutoDisplay(boolean autoDisplay) {
-        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
     }
 
     public int getActiveIndex() {

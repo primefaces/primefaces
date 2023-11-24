@@ -75,6 +75,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      *
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
+     *
+     * @deprecated Use {@link JPALazyDataModel#builder()} instead
      */
     @Deprecated
     public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager) {
@@ -88,7 +90,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
      * @param rowKeyField The name of the rowKey property (e.g. "id")
-     * @deprecated use the builder instead
+     *
+     * @deprecated Use {@link JPALazyDataModel#builder()} instead
      */
     @Deprecated
     public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, String rowKeyField) {
@@ -102,7 +105,8 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
      * @param entityClass The entity class
      * @param entityManager The {@link EntityManager}
      * @param rowKeyConverter The converter, which will be used for converting the entity to a rowKey and vice versa
-     * @deprecated use the builder instead
+     *
+     * @deprecated Use {@link JPALazyDataModel#builder()} instead
      */
     @Deprecated
     public JPALazyDataModel(Class<T> entityClass, SerializableSupplier<EntityManager> entityManager, Converter<T> rowKeyConverter) {

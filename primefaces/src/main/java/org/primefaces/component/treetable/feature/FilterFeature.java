@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -51,8 +50,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 
 public class FilterFeature implements TreeTableFeature {
-
-    private static final Logger LOGGER = Logger.getLogger(FilterFeature.class.getName());
 
     @Override
     public void decode(FacesContext context, TreeTable table) {
