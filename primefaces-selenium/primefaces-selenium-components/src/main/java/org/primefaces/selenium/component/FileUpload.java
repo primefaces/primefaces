@@ -183,6 +183,15 @@ public abstract class FileUpload extends AbstractInputComponent {
     }
 
     /**
+     * Gets the displayed filename.
+     *
+     * @return the widget's value
+     */
+    public String getFilename() {
+        return findElement(By.className("ui-fileupload-filename")).getText();
+    }
+
+    /**
      * Gets the values displayed by the widget.
      *
      * @return the widget's values

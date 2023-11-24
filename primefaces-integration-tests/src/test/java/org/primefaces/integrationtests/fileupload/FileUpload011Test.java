@@ -113,7 +113,7 @@ public class FileUpload011Test extends AbstractFileUploadTest {
         // Act
         File file = chooseBigFile(0);
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file.getName()), fileUpload.getWidgetValues().toString());
+        Assertions.assertTrue(fileUpload.getFilename().startsWith(file.getName()), fileUpload.getFilename().toString());
         fileUpload.getAdvancedUploadButton().click();
 
         // Assert

@@ -13,10 +13,12 @@
 
         <h:form id="form">
 
+            <p:messages id="msgs" />
+
             <p:fileUpload id="fileupload"
                           value="#{fileUploadHandler.files}"
                           mode="simple" skinSimple="true" multiple="true" auto="true"
-                          process="@this" update="uploadedfiles"
+                          process="@this" update="msgs uploadedfiles"
                           listener="#{fileUploadHandler.handleFilesUpload}"
                           fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
 
