@@ -491,7 +491,7 @@ public abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isDisplayFilename() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.displayFilename, () -> !getMode().equals("simple") || !isAuto());
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.displayFilename, () -> !(getMode().equals("simple") && isAuto()));
     }
 
     public void setDisplayFilename(boolean displayFilename) {
