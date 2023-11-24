@@ -17,7 +17,7 @@
             </p:messages>
 
             <p:dataTable id="datatable" value="#{dataTable036.progLanguages}" var="lang"
-                         selectionMode="single" selection="#{dataTable036.selectedProgLanguage}" rowKey="#{lang.id}"
+                         selection="#{dataTable036.selectedProgLanguage}" rowKey="#{lang.id}"
                          paginator="true" rows="4"
                          multiViewState="true">
                 <p:ajax event="rowSelect" listener="#{dataTable036.onRowSelect}" />

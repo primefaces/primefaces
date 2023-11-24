@@ -104,8 +104,8 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
-    public String getSelectionMode() {
-        return columns.getSelectionMode();
+    public boolean isSelectionBox() {
+        return columns.isSelectionBox();
     }
 
     @Override

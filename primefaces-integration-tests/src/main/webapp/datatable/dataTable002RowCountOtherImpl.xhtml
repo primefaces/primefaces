@@ -18,7 +18,7 @@
 
             <p:dataTable id="datatable" widgetVar="datatable" value="#{dataTable002RowCountOtherImpl.lazyDataModel}" var="lang"
                          paginator="true" rows="10" filterEvent="enter"
-                         selectionMode="single" selection="#{dataTable002RowCountOtherImpl.selectedProgrammingLanguage}">
+                         selection="#{dataTable002RowCountOtherImpl.selectedProgrammingLanguage}">
                 <p:ajax event="rowSelect" listener="#{dataTable002RowCountOtherImpl.onRowSelect}"/>
 
                 <p:column field="id" headerText="ID"/>

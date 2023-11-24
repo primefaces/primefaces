@@ -164,10 +164,10 @@ public class DataTableRenderer extends DataRenderer {
         //Selection
         wb.attr("selectionMode", selectionMode, null)
                 .attr("selectionPageOnly", table.isSelectionPageOnly(), true)
-                .attr("rowSelectMode", table.getRowSelectMode(), "new")
+                .attr("rowSelectMode", table.getSelectionRowMode(), "new")
                 .attr("nativeElements", table.isNativeElements(), false)
                 .attr("rowSelector", table.getRowSelector(), null)
-                .attr("disabledTextSelection", table.isDisabledTextSelection(), true);
+                .attr("disabledTextSelection", table.isSelectionTextDisabled(), true);
 
         //Filtering
         if (table.isFilteringEnabled()) {
@@ -590,7 +590,7 @@ public class DataTableRenderer extends DataRenderer {
         boolean sortable = table.isColumnSortable(context, column);
         boolean filterable = table.isColumnFilterable(context, column);
         boolean isGroupedColumn = column.isGroupRow();
-        String selectionMode = column.getSelectionMode();
+        boolean selectionBox = column.isSelectionBox();
         SortMeta sortMeta = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
         boolean draggable = table.isDraggableColumns() && column.isDraggable();
@@ -605,7 +605,7 @@ public class DataTableRenderer extends DataRenderer {
                 .add(DataTable.COLUMN_HEADER_CLASS)
                 .add(sortable, DataTable.SORTABLE_COLUMN_CLASS)
                 .add(filterable, DataTable.FILTER_COLUMN_CLASS)
-                .add(selectionMode != null, DataTable.SELECTION_COLUMN_CLASS)
+                .add(selectionBox, DataTable.SELECTION_COLUMN_CLASS)
                 .add(isGroupedColumn, DataTable.GROUPED_COLUMN_CLASS)
                 .add(resizable,  DataTable.RESIZABLE_COLUMN_CLASS)
                 .add(draggable, DataTable.DRAGGABLE_COLUMN_CLASS)
@@ -679,7 +679,7 @@ public class DataTableRenderer extends DataRenderer {
             encodeColumnHeaderContent(context, table, column, sortMeta);
         }
 
-        if ("multiple".equalsIgnoreCase(selectionMode) && table.isShowSelectAll()) {
+        if (selectionBox && "multiple".equalsIgnoreCase(table.getSelectionMode()) && table.isShowSelectAll()) {
             encodeCheckbox(context, table, table.isSelectAll(), false, HTML.CHECKBOX_ALL_CLASS, true);
         }
 
@@ -1000,7 +1000,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("id", tbodyClientId, null);
             writer.writeAttribute("class", DataTable.DATA_CLASS, null);
 
-            if (table.isRowSelectionEnabled()) {
+            if (table.isSelectionEnabled()) {
                 writer.writeAttribute("tabindex", table.getTabindex(), null);
             }
         }
@@ -1129,7 +1129,7 @@ public class DataTableRenderer extends DataRenderer {
 
         //Preselection
         boolean selected = selectionEnabled && table.getSelectedRowKeys().contains(rowKey);
-        boolean disabled = table.isDisabledSelection();
+        boolean disabled = table.isSelectionDisabled();
         boolean allowSelection = selectionEnabled && !disabled;
         boolean expanded = table.isExpandedRow() || (rowExpansionAvailable && table.getExpandedRowKeys().contains(rowKey));
 
@@ -1194,7 +1194,7 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean columnSelectionEnabled = column.getSelectionMode() != null;
+        boolean columnSelectionEnabled = column.isSelectionBox();
         boolean isGroupedColumn = column.isGroupRow();
         CellEditor editor = column.getCellEditor();
         boolean editorEnabled = editor != null && editor.isRendered();
@@ -1424,7 +1424,7 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeColumnSelection(FacesContext context, DataTable table, UIColumn column, boolean selected, boolean rowSelectionEnabled)
             throws IOException {
 
-        String selectionMode = column.getSelectionMode();
+        String selectionMode = table.getSelectionMode();
 
         if ("single".equalsIgnoreCase(selectionMode)) {
             encodeRadio(context, table, selected, !rowSelectionEnabled);
