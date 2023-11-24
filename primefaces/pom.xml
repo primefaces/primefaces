@@ -1186,31 +1186,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>security-checks</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.owasp</groupId>
-                        <artifactId>dependency-check-maven</artifactId>
-                        <version>8.3.1</version>
-                        <configuration>
-                            <skipProvidedScope>false</skipProvidedScope>
-                            <skipRuntimeScope>false</skipRuntimeScope>
-                            <failBuildOnCVSS>5</failBuildOnCVSS>
-                            <suppressionFile>${project.basedir}/src/conf/owasp-suppressions.xml</suppressionFile>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <!-- Quick build for developers which skips many build steps for speed -->
         <profile>
             <id>quick</id>
