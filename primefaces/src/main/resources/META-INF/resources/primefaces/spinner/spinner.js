@@ -141,6 +141,9 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                     $this.updateValue();
                     $this.format();
                 break;
+                
+                case 'Backspace':
+                    return;
 
                 default:
                     //do nothing
