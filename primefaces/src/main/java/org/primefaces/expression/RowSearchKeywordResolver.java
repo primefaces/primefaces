@@ -29,11 +29,11 @@ import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.search.SearchExpressionContext;
 import javax.faces.component.search.SearchKeywordContext;
 import javax.faces.component.search.SearchKeywordResolver;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.columns.Columns;
@@ -73,8 +73,6 @@ public class RowSearchKeywordResolver extends SearchKeywordResolver {
             if (!data.isRowAvailable()) {
                 return;
             }
-
-            char separatorChar = UINamingContainer.getSeparatorChar(facesContext);
 
             for (UIComponent column : data.getChildren()) {
                 // handle dynamic columns

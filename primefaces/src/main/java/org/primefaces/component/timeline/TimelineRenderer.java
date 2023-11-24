@@ -23,8 +23,6 @@
  */
 package org.primefaces.component.timeline;
 
-import static java.util.stream.Collectors.toList;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -32,7 +30,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -42,6 +39,7 @@ import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.*;
+import static java.util.stream.Collectors.toList;
 
 public class TimelineRenderer extends CoreRenderer {
 
@@ -432,7 +430,6 @@ public class TimelineRenderer extends CoreRenderer {
                     fsw.write(",");
                 }
                 fsw.write("remove: " + event.isEditableRemove());
-                isSet = true;
             }
             fsw.write("}");
         }

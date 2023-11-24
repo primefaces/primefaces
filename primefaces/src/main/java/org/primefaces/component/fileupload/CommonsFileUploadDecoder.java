@@ -26,7 +26,6 @@ package org.primefaces.component.fileupload;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequestWrapper;
@@ -38,6 +37,9 @@ import org.primefaces.util.FileUploadUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.webapp.MultipartRequest;
 
+/**
+ * @deprecated Use {@link NativeFileUploadDecoder} instead
+ */
 @Deprecated(forRemoval = true, since = "14.0.0")
 public class CommonsFileUploadDecoder extends AbstractFileUploadDecoder<MultipartRequest> {
 

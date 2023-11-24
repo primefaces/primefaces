@@ -26,24 +26,22 @@ package org.primefaces.webapp;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import java.util.Map.Entry;
+import org.primefaces.component.fileupload.NativeFileUploadDecoder;
 
+/**
+ * @deprecated Use {@link NativeFileUploadDecoder} instead
+ */
 @Deprecated(forRemoval = true, since = "14.0.0")
 public class MultipartRequest extends HttpServletRequestWrapper {
 

@@ -540,14 +540,7 @@ public class DataTable extends DataTableBase {
     }
 
     public RowExpansion getRowExpansion() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof RowExpansion) {
-                return (RowExpansion) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(RowExpansion.class, this);
     }
 
     @Override
@@ -561,14 +554,7 @@ public class DataTable extends DataTableBase {
     }
 
     public SubTable getSubTable() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof SubTable) {
-                return (SubTable) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(SubTable.class, this);
     }
 
     public String getRowKey(Object object) {
