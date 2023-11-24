@@ -154,6 +154,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.keyboardTarget.attr('aria-labelledby', this.labelId);
             }
             this.keyboardTarget.attr('aria-expanded', false);
+            this.jq.attr('aria-expanded', false);
         }
 
         this.renderLabel();
@@ -1026,6 +1027,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onEntered: function() {
                     $this.keyboardTarget.attr('aria-expanded', true);
+                    $this.jq.attr('aria-expanded', true);
                     $this.postShow();
                     $this.bindPanelEvents();
                 }
@@ -1046,6 +1048,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 },
                 onExited: function() {
                     $this.keyboardTarget.attr('aria-expanded', false);
+                    $this.jq.attr('aria-expanded', false);
                     $this.postHide();
                 }
             });
