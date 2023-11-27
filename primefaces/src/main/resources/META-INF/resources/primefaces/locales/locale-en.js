@@ -140,6 +140,7 @@ if (window.PrimeFaces) {
     allDayText: "All Day",
     moreLinkText: "More...",
     noEventsText: "No Events",
+    unexpectedError: "Unexpected error",
     aria: {
       "datatable.sort.ASC": "activate to sort column ascending",
       "datatable.sort.DESC": "activate to sort column descending",

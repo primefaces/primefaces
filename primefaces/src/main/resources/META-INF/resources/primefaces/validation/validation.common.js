@@ -517,6 +517,14 @@ if (window.PrimeFaces) {
                 this.messages[clientId] = [];
             }
 
+            // in case of a exception, just a object is passed, not a FacesMessage
+            if (!msg.hasOwnProperty('summary') && !msg.hasOwnProperty('detail')) {
+                msg = {
+                    summary : PrimeFaces.getLocaleSettings()['unexpectedError'],
+                    detail : msg.toString()
+                };
+            }
+
             if (!msg.severity) {
                 msg.severity = "error";
             }
@@ -659,20 +667,22 @@ if (window.PrimeFaces) {
             var bundle = (locale.messages && locale.messages[key]) ? locale : PrimeFaces.locales['en_US'];
 
             var summary = bundle.messages[key];
-            if (summary) {
-                summary = PrimeFaces.validation.Utils.format(summary, params);
-                
-                var detail = bundle.messages[key + '_detail'];
-                detail = (detail) ? PrimeFaces.validation.Utils.format(detail, params) : summary;
-
+            if (!summary) {
                 return {
-                    summary: summary,
-                    detail: detail
+                    summary: "### Message '" + key + "' not found ###",
+                    detail: "### Message '" + key + "' not found ###"
                 };
             }
- 
-            return null;
-   
+
+            summary = PrimeFaces.validation.Utils.format(summary, params);
+
+            var detail = bundle.messages[key + '_detail'];
+            detail = (detail) ? PrimeFaces.validation.Utils.format(detail, params) : summary;
+
+            return {
+                summary: summary,
+                detail: detail
+            };
         },
 
         /**

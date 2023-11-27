@@ -86,7 +86,8 @@ Side Validation, messages property is used as the bundle for the locale.
      list: 'Agenda',
      allDayText: 'All Day',
      moreLinkText: 'More...',
-     noEventsText: 'No Events',
+     noEventsText: 'No Events', 
+     unexpectedError: 'Unexpected error',
      aria: {
          'datatable.sort.ASC': 'activate to sort column ascending',
          'datatable.sort.DESC': 'activate to sort column descending',
@@ -108,7 +109,7 @@ Side Validation, messages property is used as the bundle for the locale.
          'messages.ERROR': 'Error',
          'messages.FATAL': 'Fatal',
          'messages.INFO': 'Information',
-         'messages.WARN': 'Warning'
+         'messages.WARN': 'Warning',
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',
@@ -161,6 +162,12 @@ Side Validation, messages property is used as the bundle for the locale.
          'javax.faces.validator.RegexValidator.NOT_MATCHED_detail': 'Regex pattern of \'{0}\' not matched.',
          'javax.faces.validator.RegexValidator.MATCH_EXCEPTION': 'Error in regular expression.',
          'javax.faces.validator.RegexValidator.MATCH_EXCEPTION_detail': 'Error in regular expression, \'{0}\'.',
+         'primefaces.FileValidator.FILE_LIMIT': 'Maximum number of files exceeded.',
+         'primefaces.FileValidator.FILE_LIMIT_detail': 'Maximum number: {0}.',
+         'primefaces.FileValidator.ALLOW_TYPES': 'Invalid file type.',
+         'primefaces.FileValidator.ALLOW_TYPES_detail': 'Invalid file type: \'{0}\'.',
+         'primefaces.FileValidator.SIZE_LIMIT': 'Invalid file size.',
+         'primefaces.FileValidator.SIZE_LIMIT_detail': 'File \'{0}\' must not be larger than {1}.',
          //optional for bean validation integration in client side validation
          'javax.faces.validator.BeanValidator.MESSAGE': '{0}',
          'javax.validation.constraints.AssertFalse.message': 'must be false.',

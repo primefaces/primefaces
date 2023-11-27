@@ -118,17 +118,20 @@ if (window.PrimeFaces) {
                     sizelimit = element.data('p-sizelimit'),
                     vc = PrimeFaces.validation.ValidationContext;
 
+                var allowtypesRegExp = null;
+                if (allowtypes) {
+                    // remove leading and ending slash
+                    var transformedAllowtypes = allowtypes.substring(1, allowtypes.length - 1);
+                    allowtypesRegExp = new RegExp(transformedAllowtypes);
+                }
+
                 if (filelimit && value.length > filelimit) {
                     throw vc.getMessage(this.FILE_LIMIT_MESSAGE_ID, filelimit);
                 }
 
                 for (var file of value) {
-                    if (allowtypes) {
-                        allowtypes = allowtypes.substring(1, allowtypes.length - 1); // remove leading and ending slash
-                        var allowtypesRegExp = new RegExp(allowtypes);
-                        if (!allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name))  {
-                            throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name);
-                        }
+                    if (allowtypesRegExp && !allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name))  {
+                        throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name);
                     }
 
                     if (sizelimit && file.size > sizelimit) {
