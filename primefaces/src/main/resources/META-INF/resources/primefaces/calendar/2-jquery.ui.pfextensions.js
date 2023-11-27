@@ -141,7 +141,7 @@
         html += "</div>"; // Close datepicker_header
         return html;
     };
-    
+
     $.datepicker._updateDatepicker = function (inst) {
 
         // don't popup the datepicker if there is another instance already opened
@@ -153,7 +153,9 @@
         if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
                 var $this = this;
                 setTimeout( function() {
-                    $this._base_updateDatepicker(inst);
+                    if (typeof $this._base_updateDatepicker === 'function') {
+                        $this._base_updateDatepicker(inst);
+                    }
 
                     // Reload the time control when changing something in the input text field.
                     var tp_inst = $this._get(inst, 'timepicker');
