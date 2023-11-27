@@ -120,7 +120,8 @@ if (window.PrimeFaces) {
 
                 var allowtypesRegExp = null;
                 if (allowtypes) {
-                    // remove leading and ending slash
+                    // normally a regex is a object like /(\.|\/)(csv)$/
+                    // but as we parse the data-attribute from string to RegEx object, we must remove leading and ending slashes
                     var transformedAllowtypes = allowtypes.substring(1, allowtypes.length - 1);
                     allowtypesRegExp = new RegExp(transformedAllowtypes);
                 }
@@ -130,7 +131,7 @@ if (window.PrimeFaces) {
                 }
 
                 for (var file of value) {
-                    if (allowtypesRegExp && !allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name))  {
+                    if (allowtypesRegExp && (!allowtypesRegExp.test(file.type) && !allowtypesRegExp.test(file.name)))  {
                         throw vc.getMessage(this.ALLOW_TYPES_MESSAGE_ID, file.name);
                     }
 

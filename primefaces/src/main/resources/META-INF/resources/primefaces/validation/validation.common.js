@@ -517,7 +517,7 @@ if (window.PrimeFaces) {
                 this.messages[clientId] = [];
             }
 
-            // in case of a exception, just a object is passed, not a FacesMessage
+            // in case of a exception -> lets wrap it into a 'unexcepted error'
             if (!msg.hasOwnProperty('summary') && !msg.hasOwnProperty('detail')) {
                 msg = {
                     summary : PrimeFaces.getLocaleSettings()['unexpectedError'],
