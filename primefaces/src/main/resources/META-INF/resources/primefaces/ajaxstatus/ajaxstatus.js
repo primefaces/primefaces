@@ -102,7 +102,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             $this.trigger('success', [xhr, settings]);
         })
         .on('pfAjaxComplete', function(e, xhr, settings, args) {
-            if($this.timeout && !args.redirect) {
+            if($this.timeout && args && !args.redirect) {
                 $this.deleteTimeout();
             }
             $this.trigger('complete', [xhr, settings, args]);
@@ -176,7 +176,7 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             // if the current request leads in a redirect, skip hiding the previous facet (in best case this is the start-facet)
             // when a sucess/error-facet is defined, this wont work as expected as the 'redirect' information is not available before
             var pfArgs = args[2];
-            if (pfArgs.redirect) {
+            if (!pfArgs || pfArgs.redirect) {
                 return;
             }
 
