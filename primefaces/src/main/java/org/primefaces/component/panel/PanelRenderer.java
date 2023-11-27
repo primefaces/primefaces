@@ -25,7 +25,6 @@ package org.primefaces.component.panel;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -172,12 +171,7 @@ public class PanelRenderer extends CoreRenderer {
     protected boolean shouldRenderHeader(FacesContext context, Panel panel) throws IOException {
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
-
-        if (headerText == null && !shouldRenderFacet) {
-            return false;
-        }
-        return true;
+        return headerText != null || ComponentUtils.shouldRenderFacet(header, panel.isRenderEmptyFacets());
     }
 
     protected void encodeHeader(FacesContext context, Panel panel, Menu optionsMenu) throws IOException {

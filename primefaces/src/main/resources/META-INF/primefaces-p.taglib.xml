@@ -5596,11 +5596,11 @@
         </attribute>
         <attribute>
             <description>
-                <![CDATA[Enables selection mode, valid values are "single" and "multiple".]]>
+                <![CDATA[Indicates whether or not the column should contain a radiobutton or checkbox for selection]]>
             </description>
-            <name>selectionMode</name>
+            <name>selectionBox</name>
             <required>false</required>
-            <type>java.lang.String</type>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description>
@@ -8688,7 +8688,7 @@
             <description>
                 <![CDATA[Disables row selection when true.]]>
             </description>
-            <name>disabledSelection</name>
+            <name>selectionDisabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
@@ -8696,7 +8696,7 @@
             <description>
                 <![CDATA[Defines row select mode for checkbox based selection, valid values are new (default), and none.]]>
             </description>
-            <name>rowSelectMode</name>
+            <name>selectionRowMode</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
@@ -8752,7 +8752,7 @@
             <description>
                 <![CDATA[Disables text selection on row click. Default is true.]]>
             </description>
-            <name>disabledTextSelection</name>
+            <name>selectionTextDisabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

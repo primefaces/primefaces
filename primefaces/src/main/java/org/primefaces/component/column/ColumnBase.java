@@ -69,7 +69,7 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
         responsivePriority,
         rowspan,
         selectRow,
-        selectionMode,
+        selectionBox,
         sortBy,
         sortFunction,
         sortOrder,
@@ -228,12 +228,12 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
     }
 
     @Override
-    public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+    public boolean isSelectionBox() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionBox, false);
     }
 
-    public void setSelectionMode(String selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
+    public void setSelectionBox(boolean selectionBox) {
+        getStateHelper().put(PropertyKeys.selectionBox, selectionBox);
     }
 
     @Override

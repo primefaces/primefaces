@@ -204,7 +204,7 @@ public class SelectionFeature implements DataTableFeature {
             requestMap.put(var, o);
         }
 
-        boolean selectable = table.isSelectionEnabled() && !table.isDisabledSelection();
+        boolean selectable = table.isSelectionEnabled() && !table.isSelectionDisabled();
 
         if (!containsVar) {
             requestMap.remove(var);

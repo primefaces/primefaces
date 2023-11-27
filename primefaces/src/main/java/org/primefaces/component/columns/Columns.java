@@ -43,11 +43,6 @@ public class Columns extends ColumnsBase {
     private List<DynamicColumn> dynamicColumns;
 
     @Override
-    public String getSelectionMode() {
-        return null;
-    }
-
-    @Override
     public CellEditor getCellEditor() {
         if (cellEditor == null) {
             cellEditor = ComponentTraversalUtils.firstChildRendered(CellEditor.class, this);

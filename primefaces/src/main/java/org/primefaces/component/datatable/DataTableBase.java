@@ -49,8 +49,8 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         dataLocale,
         dir,
         disableContextMenuIfEmpty,
-        disabledSelection,
-        disabledTextSelection,
+        selectionDisabled,
+        selectionTextDisabled,
         draggableColumns,
         draggableRows,
         draggableRowsFunction,
@@ -87,7 +87,6 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         rowExpandMode,
         rowHover,
         rowKey,
-        rowSelectMode,
         rowSelector,
         rowStyleClass,
         rowTitle,
@@ -96,10 +95,11 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         scrollRows,
         scrollWidth,
         scrollable,
+        selectAllFilteredOnly,
         selection,
         selectionMode,
         selectionPageOnly,
-        selectAllFilteredOnly,
+        selectionRowMode,
         skipChildren,
         sortBy,
         sortMode,
@@ -415,20 +415,20 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.expandedRow, expandedRow);
     }
 
-    public boolean isDisabledSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabledSelection, false);
+    public boolean isSelectionDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionDisabled, false);
     }
 
-    public void setDisabledSelection(boolean disabledSelection) {
-        getStateHelper().put(PropertyKeys.disabledSelection, disabledSelection);
+    public void setSelectionDisabled(boolean selectionDisabled) {
+        getStateHelper().put(PropertyKeys.selectionDisabled, selectionDisabled);
     }
 
-    public String getRowSelectMode() {
-        return (String) getStateHelper().eval(PropertyKeys.rowSelectMode, "new");
+    public String getSelectionRowMode() {
+        return (String) getStateHelper().eval(PropertyKeys.selectionRowMode, "new");
     }
 
-    public void setRowSelectMode(String rowSelectMode) {
-        getStateHelper().put(PropertyKeys.rowSelectMode, rowSelectMode);
+    public void setSelectionRowMode(String rowSelectMode) {
+        getStateHelper().put(PropertyKeys.selectionRowMode, rowSelectMode);
     }
 
     public String getRowExpandMode() {
@@ -479,12 +479,12 @@ public abstract class DataTableBase extends UIPageableData implements Widget, RT
         getStateHelper().put(PropertyKeys.skipChildren, skipChildren);
     }
 
-    public boolean isDisabledTextSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabledTextSelection, true);
+    public boolean isSelectionTextDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectionTextDisabled, true);
     }
 
-    public void setDisabledTextSelection(boolean disabledTextSelection) {
-        getStateHelper().put(PropertyKeys.disabledTextSelection, disabledTextSelection);
+    public void setSelectionTextDisabled(boolean selectionTextDisabled) {
+        getStateHelper().put(PropertyKeys.selectionTextDisabled, selectionTextDisabled);
     }
 
     public String getTabindex() {

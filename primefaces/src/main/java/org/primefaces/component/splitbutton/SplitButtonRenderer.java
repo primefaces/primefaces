@@ -118,7 +118,6 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
     protected void encodeDefaultButton(FacesContext context, SplitButton button, String id) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String value = (String) button.getValue();
         String icon = button.getIcon();
         String onclick = buildOnclick(context, button);
 
@@ -134,7 +133,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         writer.writeAttribute("name", id, "name");
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-        if (onclick.length() > 0) {
+        if (!onclick.isEmpty()) {
             if (button.requiresConfirmation()) {
                 writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
                 // data-pfconfirmcommand is added to the div

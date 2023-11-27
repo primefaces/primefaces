@@ -230,42 +230,27 @@ public class DataTable extends DataTableBase {
         return "cancel".equals(value);
     }
 
-    public boolean isRowSelectionEnabled() {
-        return getSelectionMode() != null;
-    }
-
-    public boolean isColumnSelectionEnabled() {
-        return LangUtils.isNotBlank(getColumnSelectionMode());
-    }
-
-    public String getColumnSelectionMode() {
+    public boolean hasSelectionColumn() {
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child instanceof Column)) {
-                String selectionMode = ((Column) child).getSelectionMode();
-                if (selectionMode != null) {
-                    return selectionMode;
+                boolean selectionBox = ((Column) child).isSelectionBox();
+                if (selectionBox) {
+                    return true;
                 }
             }
         }
 
-        return null;
+        return false;
     }
 
     public boolean isSelectionEnabled() {
-        return isRowSelectionEnabled() || isColumnSelectionEnabled();
+        return getSelectionMode() != null;
     }
 
     public boolean isSingleSelectionMode() {
         String selectionMode = getSelectionMode();
-
-        if (LangUtils.isNotBlank(selectionMode)) {
-            return "single".equalsIgnoreCase(selectionMode);
-        }
-        else {
-            String columnSelectionMode = getColumnSelectionMode();
-            return "single".equalsIgnoreCase(columnSelectionMode);
-        }
+        return "single".equalsIgnoreCase(selectionMode);
     }
 
     @Override
@@ -555,14 +540,7 @@ public class DataTable extends DataTableBase {
     }
 
     public RowExpansion getRowExpansion() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof RowExpansion) {
-                return (RowExpansion) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(RowExpansion.class, this);
     }
 
     @Override
@@ -576,14 +554,7 @@ public class DataTable extends DataTableBase {
     }
 
     public SubTable getSubTable() {
-        for (int i = 0; i < getChildCount(); i++) {
-            UIComponent child = getChildren().get(i);
-            if (child instanceof SubTable) {
-                return (SubTable) child;
-            }
-        }
-
-        return null;
+        return ComponentTraversalUtils.firstChildRendered(SubTable.class, this);
     }
 
     public String getRowKey(Object object) {
@@ -708,9 +679,8 @@ public class DataTable extends DataTableBase {
     }
 
     public String resolveSelectionMode() {
-        String columnSelectionMode = getColumnSelectionMode();
-        if (LangUtils.isNotBlank(columnSelectionMode)) {
-            return "single".equals(columnSelectionMode) ? "radio" : "checkbox";
+        if (hasSelectionColumn()) {
+            return isSingleSelectionMode() ? "radio" : "checkbox";
         }
         else {
             return getSelectionMode();
