@@ -67,7 +67,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
         <junit.version>5.10.1</junit.version>
-        <poi.version>5.2.4</poi.version>
+        <poi.version>5.2.5</poi.version>
 
         <npm.token/>
         <npm.username/>
