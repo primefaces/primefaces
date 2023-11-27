@@ -109,7 +109,7 @@ Side Validation, messages property is used as the bundle for the locale.
          'messages.ERROR': 'Error',
          'messages.FATAL': 'Fatal',
          'messages.INFO': 'Information',
-         'messages.WARN': 'Warning',
+         'messages.WARN': 'Warning'
      },
      messages: { //optional for Client Side Validation
          'javax.faces.component.UIInput.REQUIRED': '{0}: Validation Error: Value is required.',
