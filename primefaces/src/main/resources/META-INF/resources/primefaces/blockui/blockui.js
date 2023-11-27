@@ -40,7 +40,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.render();
 
         if (this.cfg.triggers) {
-            this.bindTriggers();
+            var $this = this;
+            setTimeout(function() {$this.bindTriggers() }, 1);
         }
 
         if (this.cfg.blocked) {
