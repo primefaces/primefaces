@@ -281,6 +281,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * @inheritdoc
      */
     _render: function() {
+        var $this = this;
         this.isRTL = this.jq.hasClass('ui-datatable-rtl');
         this.cfg.partialUpdate = (this.cfg.partialUpdate === false) ? false : true;
 
@@ -302,7 +303,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.stickyHeader) {
-            this.setupStickyHeader();
+            setTimeout(function () {$this.setupStickyHeader();}, 1);
         }
 
         if(this.cfg.onRowClick) {

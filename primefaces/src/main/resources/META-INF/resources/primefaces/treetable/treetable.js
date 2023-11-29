@@ -145,6 +145,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
      * @inheritdoc
      */
     _render: function() {
+        var $this = this;
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
@@ -165,7 +166,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.stickyHeader) {
-            this.setupStickyHeader();
+            setTimeout(function () {$this.setupStickyHeader();}, 1);
         }
 
         if(this.cfg.editable) {
