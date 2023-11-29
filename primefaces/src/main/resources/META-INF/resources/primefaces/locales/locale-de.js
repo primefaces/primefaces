@@ -70,6 +70,7 @@ if (window.PrimeFaces) {
     emptySelectionMessage: "Kein ausgewähltes Element",
     emptySearchMessage: "Keine Ergebnisse gefunden",
     emptyMessage: "Keine Einträge gefunden",
+    unexpectedError: "Unbekannter Fehler",
     aria: {
       trueLabel: "Wahr",
       falseLabel: "Falsch",

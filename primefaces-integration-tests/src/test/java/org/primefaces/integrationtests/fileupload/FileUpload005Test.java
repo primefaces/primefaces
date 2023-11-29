@@ -30,6 +30,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
+import org.primefaces.selenium.component.Messages;
 
 /**
  * Tests advanced single file upload.
@@ -48,7 +49,7 @@ public class FileUpload005Test extends AbstractFileUploadTest {
         // Act
         File file = locateClientSideFile("file1.csv");
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file.getName()), fileUpload.getWidgetValues().toString());
+        Assertions.assertTrue(fileUpload.getFilename().startsWith(file.getName()), fileUpload.getFilename().toString());
         fileUpload.getAdvancedUploadButton().click();
         wait4File(page.uploadedFiles, 1, file.getName());
 
@@ -213,6 +214,9 @@ public class FileUpload005Test extends AbstractFileUploadTest {
     }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
         @FindBy(id = "form:fileupload")
         FileUpload fileupload;
 

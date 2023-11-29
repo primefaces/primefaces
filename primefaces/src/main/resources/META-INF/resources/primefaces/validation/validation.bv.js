@@ -363,23 +363,25 @@ if (window.PrimeFaces) {
             var summary = bundle.messages[key];
             var detail = bundle.messages[key + '_detail'];
 
-            if(summary) {
-                summary = PrimeFaces.validation.Utils.formatBV(summary, arguments);
-                detail = (detail) ? PrimeFaces.validation.Utils.formatBV(detail, arguments) : summary;
-
-                // see #7069
-                // simulate the message handling of the server side BeanValidator
-                var wrapperBundle = (locale.messages && locale.messages['javax.faces.validator.BeanValidator.MESSAGE']) ? locale : PrimeFaces.locales['en_US'];
-                var wrapper = wrapperBundle.messages['javax.faces.validator.BeanValidator.MESSAGE'];
-                var label = PrimeFaces.validation.Utils.getLabel(element);
-                summary = wrapper.replace("{0}", summary).replace("{1}", label);
-                detail = wrapper.replace("{0}", detail).replace("{1}", label);
-
-                return { summary : summary, detail : detail };
+            if (!summary) {
+                return {
+                    summary: "### Message '" + key + "' not found ###",
+                    detail: "### Message '" + key + "' not found ###"
+                };
             }
-            else {
-                return { summary : "### Message '" + key + "' not found ###", detail : "### Message '" + key + "' not found ###" };
-            }
+
+            summary = PrimeFaces.validation.Utils.formatBV(summary, arguments);
+            detail = (detail) ? PrimeFaces.validation.Utils.formatBV(detail, arguments) : summary;
+
+            // see #7069
+            // simulate the message handling of the server side BeanValidator
+            var wrapperBundle = (locale.messages && locale.messages['javax.faces.validator.BeanValidator.MESSAGE']) ? locale : PrimeFaces.locales['en_US'];
+            var wrapper = wrapperBundle.messages['javax.faces.validator.BeanValidator.MESSAGE'];
+            var label = PrimeFaces.validation.Utils.getLabel(element);
+            summary = wrapper.replace("{0}", summary).replace("{1}", label);
+            detail = wrapper.replace("{0}", detail).replace("{1}", label);
+
+            return { summary : summary, detail : detail };
         }
     };
 

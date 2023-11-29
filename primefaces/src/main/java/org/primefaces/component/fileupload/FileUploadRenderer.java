@@ -23,13 +23,7 @@
  */
 package org.primefaces.component.fileupload;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
+import org.apache.poi.util.StringUtil;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
@@ -37,6 +31,16 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
 import org.primefaces.util.WidgetBuilder;
+import org.primefaces.validate.ClientValidator;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class FileUploadRenderer extends CoreRenderer {
 
@@ -321,6 +325,37 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         if (fileUpload.getTitle() != null) {
             writer.writeAttribute("title", fileUpload.getTitle(), null);
+        }
+
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, fileUpload, new ClientValidator() {
+                @Override
+                public Map<String, Object> getMetadata() {
+                    HashMap metadata = new HashMap();
+
+                    int fileLimit = fileUpload.getFileLimit();
+                    if (fileLimit != Integer.MAX_VALUE) {
+                        metadata.put("data-p-filelimit", fileLimit);
+                    }
+
+                    long sizeLimit = fileUpload.getSizeLimit();
+                    if (sizeLimit != Long.MAX_VALUE) {
+                        metadata.put("data-p-sizelimit", sizeLimit);
+                    }
+
+                    String allowTypes = fileUpload.getAllowTypes();
+                    if (!StringUtil.isBlank(allowTypes)) {
+                        metadata.put("data-p-allowtypes", allowTypes);
+                    }
+
+                    return metadata;
+                }
+
+                @Override
+                public String getValidatorId() {
+                    return "primefaces.File";
+                }
+            });
         }
 
         renderDynamicPassThruAttributes(context, fileUpload);
