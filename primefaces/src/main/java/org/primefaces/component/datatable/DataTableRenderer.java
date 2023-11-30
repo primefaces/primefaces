@@ -986,7 +986,7 @@ public class DataTableRenderer extends DataRenderer {
             rowCountToRender = Math.min(table.getScrollRows() * 2, rowCount);
         }
         else if (table.isLiveScroll()) {
-            rowCountToRender = table.getScrollRows() + table.getScrollOffset();
+            rowCountToRender = rows == 0 ? (table.getScrollRows() + table.getScrollOffset()) : rows;
         }
         else {
             rowCountToRender = rows == 0 ? rowCount : rows;
