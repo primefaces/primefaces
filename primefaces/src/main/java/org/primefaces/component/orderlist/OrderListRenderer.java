@@ -108,9 +108,14 @@ public class OrderListRenderer extends CoreRenderer {
         String clientId = ol.getClientId(context);
         UIComponent caption = ol.getFacet("caption");
         String listStyleClass = OrderList.LIST_CLASS;
-        String columnGridClass = ol.getControlsLocation().equals("none")
-                ? GridLayoutUtils.getColumnClass(flex, 1)
-                : (flex ? "col-12 md:col-10" : "ui-g-12 ui-md-10");
+
+        String columnGridClass;
+        if ("none".equals(ol.getControlsLocation())) {
+            columnGridClass = GridLayoutUtils.getColumnClass(flex, 1);
+        }
+        else {
+            columnGridClass = flex ? "col-12 md:col-10" : "ui-g-12 ui-md-10";
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("class", columnGridClass, null);
