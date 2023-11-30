@@ -125,7 +125,9 @@ public class DataScrollerRenderer extends CoreRenderer {
 
         if (inline && ds.isVirtualScroll()) {
             int virtualScrollRowCount = (chunkSize * 2);
-            int rowCountToRender = (isLazy && rowCount == 0) ? virtualScrollRowCount : ((virtualScrollRowCount > rowCount) ? rowCount : virtualScrollRowCount);
+            int rowCountToRender = (isLazy && rowCount == 0)
+                    ? virtualScrollRowCount
+                    : Math.min(virtualScrollRowCount, rowCount);
 
             if (ds.isStartAtBottom()) {
                 int totalPage = (int) Math.ceil(rowCount * 1d / chunkSize);

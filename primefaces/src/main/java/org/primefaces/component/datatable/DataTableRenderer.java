@@ -980,11 +980,16 @@ public class DataTableRenderer extends DataRenderer {
         int rows = table.getRows();
         int first = table.isClientCacheRequest(context) ? Integer.parseInt(params.get(clientId + "_first")) + rows : table.getFirst();
         int rowCount = table.getRowCount();
-        int rowCountToRender = rows == 0 ? (table.isLiveScroll() ? (table.getScrollRows() + table.getScrollOffset()) : rowCount) : rows;
 
+        int rowCountToRender;
         if (table.isVirtualScroll()) {
-            int virtualScrollRowCount = (table.getScrollRows() * 2);
-            rowCountToRender = Math.min(virtualScrollRowCount, rowCount);
+            rowCountToRender = Math.min(table.getScrollRows() * 2, rowCount);
+        }
+        else if (table.isLiveScroll()) {
+            rowCountToRender = rows == 0 ? (table.getScrollRows() + table.getScrollOffset()) : rows;
+        }
+        else {
+            rowCountToRender = rows == 0 ? rowCount : rows;
         }
 
         int frozenRows = table.getFrozenRows();
