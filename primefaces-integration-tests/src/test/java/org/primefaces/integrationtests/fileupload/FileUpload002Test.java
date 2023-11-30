@@ -31,6 +31,7 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
+import org.primefaces.selenium.component.Messages;
 
 /**
  * Tests basic multiple file upload.
@@ -49,7 +50,7 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         // Act
         File file = locateClientSideFile("file1.csv");
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file.getName()), fileUpload.getWidgetValue());
+        Assertions.assertTrue(fileUpload.getFilename().startsWith(file.getName()), fileUpload.getFilename());
         page.button.click();
         wait4File(page.uploadedFiles, 1, file.getName());
 
@@ -72,8 +73,8 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2);
 
         // the widget shows only the first file name and the number of additional files
-        Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file1.getName()), fileUpload.getWidgetValue());
-        Assertions.assertTrue(fileUpload.getWidgetValue().matches(".*\\+\\s*1$"));
+        Assertions.assertTrue(fileUpload.getFilename().startsWith(file1.getName()), fileUpload.getFilename());
+        Assertions.assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
         wait4File(page.uploadedFiles, file1.getName());
 
@@ -96,8 +97,8 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file1, file2);
 
         // the widget shows only the first file name and the number of additional files
-        Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file1.getName()), fileUpload.getWidgetValue());
-        Assertions.assertTrue(fileUpload.getWidgetValue().matches(".*\\+\\s*1$"));
+        Assertions.assertTrue(fileUpload.getFilename().startsWith(file1.getName()), fileUpload.getFilename());
+        Assertions.assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
         wait4File(page.uploadedFiles, 1, file1.getName());
 
@@ -111,8 +112,8 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         fileUpload.setValue(file3, file4);
 
         // the widget shows only the first file name and the number of additional files
-        Assertions.assertTrue(fileUpload.getWidgetValue().startsWith(file3.getName()), fileUpload.getWidgetValue());
-        Assertions.assertTrue(fileUpload.getWidgetValue().matches(".*\\+\\s*1$"));
+        Assertions.assertTrue(fileUpload.getFilename().startsWith(file3.getName()), fileUpload.getFilename());
+        Assertions.assertTrue(fileUpload.getFilename().matches(".*\\+\\s*1$"));
         page.button.click();
         wait4File(page.uploadedFiles, 3, file3.getName());
 
@@ -128,9 +129,6 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
-        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
-        Assertions.assertNotNull(fileLimitMsg);
-        Assertions.assertFalse(fileLimitMsg.isEmpty());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -138,13 +136,14 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         File file3 = locateClientSideFile("file3.csv");
         fileUpload.setValue(file1, file2, file3);
 
-        // the widget shows only the file limit message
-        Assertions.assertTrue(fileUpload.getWidgetValue().equals(fileLimitMsg));
         page.button.click();
         wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
         assertNoJavascriptErrors();
+        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
+        Assertions.assertEquals("Maximum number of files exceeded.",
+                page.messages.getMessage(0).getSummary());
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
@@ -156,19 +155,18 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
-        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
-        Assertions.assertNotNull(invalidSizeMsg);
-        Assertions.assertFalse(invalidSizeMsg.isEmpty());
 
         // Act
         File file = locateClientSideFile("file3.csv");
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValue().contains(invalidSizeMsg));
-        Assertions.assertTrue(fileUpload.getWidgetValue().contains(file.getName()));
+        Assertions.assertTrue(fileUpload.getFilename().contains(file.getName()));
         page.button.click();
         wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
+        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
+        Assertions.assertEquals("Invalid file size.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
@@ -181,19 +179,18 @@ public class FileUpload002Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
-        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
-        Assertions.assertNotNull(invalidTypeMsg);
-        Assertions.assertFalse(invalidTypeMsg.isEmpty());
 
         // Act
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file);
-        Assertions.assertTrue(fileUpload.getWidgetValue().contains(invalidTypeMsg));
-        Assertions.assertTrue(fileUpload.getWidgetValue().contains(file.getName()));
+        Assertions.assertTrue(fileUpload.getFilename().contains(file.getName()));
         page.button.click();
         wait4EmptyMesssage(page.uploadedFiles);
 
         // Assert
+        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
+        Assertions.assertEquals("Invalid file type.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         // Primefaces sends "empty" request if mode=simple skinSimple=true
         assertUploadedFiles(page.uploadedFiles);
@@ -213,6 +210,9 @@ public class FileUpload002Test extends AbstractFileUploadTest {
     }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
         @FindBy(id = "form:fileupload")
         FileUpload fileupload;
 

@@ -12,11 +12,12 @@
     <h:body>
 
         <h:form id="form">
+            <p:messages id="msgs" />
 
             <p:fileUpload id="fileupload" widgetVar="fileUpload"
                           listener="#{fileUploadHandler.handleFileUpload}" 
                           mode="advanced" dragDropSupport="false"
-                          update="uploadedfiles"
+                          update="uploadedfiles msgs"
                           fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">

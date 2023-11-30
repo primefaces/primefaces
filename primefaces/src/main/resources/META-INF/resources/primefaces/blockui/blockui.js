@@ -40,7 +40,9 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
         this.render();
 
         if (this.cfg.triggers) {
-            this.bindTriggers();
+            // #10970 must wait until all components have been rendered and ready
+            var $this = this;
+            PrimeFaces.queueTask(function() { $this.bindTriggers() }, 1);
         }
 
         if (this.cfg.blocked) {

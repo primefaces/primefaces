@@ -30,6 +30,7 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.FileUpload;
+import org.primefaces.selenium.component.Messages;
 
 /**
  * Tests basic auto multiple file upload.
@@ -106,9 +107,6 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
-        String fileLimitMsg = fileUpload.getWidgetConfiguration().getString("fileLimitMessage");
-        Assertions.assertNotNull(fileLimitMsg);
-        Assertions.assertFalse(fileLimitMsg.isEmpty());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -118,7 +116,9 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         fileUpload.setValue(false, file1, file2, file3);
 
         // Assert
-        Assertions.assertEquals("Maximum number of files exceeded", fileUpload.getWidgetValue());
+        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
+        Assertions.assertEquals("Maximum number of files exceeded.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
@@ -131,16 +131,15 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
-        String invalidSizeMsg = fileUpload.getWidgetConfiguration().getString("invalidSizeMessage");
-        Assertions.assertNotNull(invalidSizeMsg);
-        Assertions.assertFalse(invalidSizeMsg.isEmpty());
 
         // Act
         File file = locateClientSideFile("file3.csv");
         fileUpload.setValue(file, false);
 
         // Assert
-        Assertions.assertTrue(fileUpload.getWidgetValue().contains("Invalid file size: file3.csv"));
+        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
+        Assertions.assertEquals("Invalid file size.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
@@ -152,16 +151,15 @@ public class FileUpload004Test extends AbstractFileUploadTest {
         // Arrange
         FileUpload fileUpload = page.fileupload;
         Assertions.assertEquals("", fileUpload.getValue());
-        String invalidTypeMsg = fileUpload.getWidgetConfiguration().getString("invalidFileMessage");
-        Assertions.assertNotNull(invalidTypeMsg);
-        Assertions.assertFalse(invalidTypeMsg.isEmpty());
 
         // Act
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file, false);
 
         // Assert
-        Assertions.assertEquals("Invalid file type: file1.png 67 Bytes", fileUpload.getWidgetValue());
+        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
+        Assertions.assertEquals("Invalid file type.",
+                page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
         assertConfiguration(fileUpload);
@@ -179,6 +177,9 @@ public class FileUpload004Test extends AbstractFileUploadTest {
     }
 
     public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
         @FindBy(id = "form:fileupload")
         FileUpload fileupload;
 

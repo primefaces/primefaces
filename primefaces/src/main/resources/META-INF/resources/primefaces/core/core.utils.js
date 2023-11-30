@@ -837,6 +837,7 @@ if (!PrimeFaces.utils) {
 
             return null;
         },
+
         /**
          * Count the bytes of the inputtext.
          * borrowed from the ckeditor wordcount plugin
@@ -853,6 +854,27 @@ if (!PrimeFaces.utils) {
             }
             return count;
         },
+
+        /**
+         * Formats the given data size in a more human-friendly format, e.g. `1.5 MB` etc.
+         * @param {number} bytes File size in bytes to format
+         * @return {string} The given file size, formatted in a more human-friendly format.
+         */
+        formatBytes: function(bytes) {
+            if (bytes === undefined)
+                return '';
+
+            if (bytes === 0)
+                return 'N/A';
+
+            var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+            if (i === 0)
+                return bytes + ' ' + sizes[i];
+            else
+                return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+        },
+
         /**
          * This method concatenates the classes into a string according to the condition of the arguments and returns it.
          * @private

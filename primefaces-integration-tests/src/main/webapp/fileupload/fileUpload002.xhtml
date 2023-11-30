@@ -13,12 +13,15 @@
 
         <h:form id="form" enctype="multipart/form-data">
 
+            <p:messages id="msgs" />
+
             <p:fileUpload id="fileupload"
                           value="#{fileUploadHandler.files}"
                           mode="simple" skinSimple="true" multiple="true"
                           fileLimit="2" sizeLimit="100" virusScan="true" allowTypes="/(\.|\/)(csv)$/"/>
 
-            <p:commandButton id="button" value="Submit" ajax="false" update="@form" action="#{fileUploadHandler.uploadFiles}"/>
+            <p:commandButton id="button" value="Submit" ajax="false" update="@form" action="#{fileUploadHandler.uploadFiles}"
+                validateClient="true" />
 
             <p:dataTable id="uploadedfiles" var="file" value="#{fileUploadView.uploadedFiles}">
                 <p:column headerText="Name">
