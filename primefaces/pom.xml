@@ -20,7 +20,7 @@
         <minify.disabled>true</minify.disabled>
         <jakarta.jar.skip>false</jakarta.jar.skip>
         <resources.dir.compressed>${project.build.directory}/classes/META-INF/resources/primefaces</resources.dir.compressed>
-        <mockito.version>5.7.0</mockito.version>
+        <mockito.version>5.8.0</mockito.version>
     </properties>
 
     <dependencies>
