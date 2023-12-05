@@ -839,7 +839,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.fitViewport();
             }
 
-            if ($this.isVisible()) {
+            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
                 // instant reinit position
                 $this.initPosition();
             }
@@ -849,7 +849,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             }
         });
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
-            if ($this.isVisible()) {
+            if ($this.isVisible() && !$this.cfg.absolutePositioned) {
                 // instant reinit position
                 $this.initPosition();
             }
