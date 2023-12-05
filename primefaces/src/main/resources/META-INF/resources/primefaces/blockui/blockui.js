@@ -102,7 +102,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
-            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
+            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings, true)) {
                 $this.show();
             }
             else {
@@ -110,12 +110,12 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
                 setTimeout(function() { $this.alignOverlay() }, 0);
             }
         }).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
-            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings)) {
+            if (!$this.cfg.blocked && $this.isXhrSourceATrigger(settings, false)) {
                 $this.hide();
             }
         }).on('pfAjaxUpdated.' + this.id, function(e, xhr, settings) {
             // subscribe to all DOM update events so we can resize even if another DOM element changed
-            if (!$this.cfg.blocked && !$this.isXhrSourceATrigger(settings)) {
+            if (!$this.cfg.blocked && !$this.isXhrSourceATrigger(settings, true)) {
                 setTimeout(function() { $this.alignOverlay() }, 0);
             }
         });
@@ -125,10 +125,11 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
      * Checks whether one of component's triggers equals the source ID from the provided settings.
      *
      * @param {JQuery.AjaxSettings} settings containing source ID.
+     * @param {boolean} triggerMustExist flag to check if the trigger must exist
      * @returns {boolean} `true` if if one of component's triggers equals the source ID from the provided settings.
      * @private
      */
-    isXhrSourceATrigger: function(settings) {
+    isXhrSourceATrigger: function(settings, triggerMustExist) {
         var sourceId = PrimeFaces.ajax.Utils.getSourceId(settings);
         if (!sourceId) {
             return false;
@@ -138,7 +139,7 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         // if trigger is null it has been removed from DOM so we need to hide the block UI
         if (!triggers || triggers.length === 0) {
-            return true;
+            return !triggerMustExist;
         }
 
         return $.inArray(sourceId, triggers) !== -1;
