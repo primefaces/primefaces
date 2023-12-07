@@ -238,8 +238,9 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
                    // #11076 dialog support of input
                    var dialog = $($this.cfg.parent);
                    var colorInput = dialog.find('#clr-color-value');
-                   colorInput.zIndex(9999);
-                   colorInput.parent().zIndex(9999);
+                   var newZIndex = PrimeFaces.nextZindex();
+                   colorInput.zIndex(newZIndex);
+                   colorInput.parent().zIndex(newZIndex);
                 }
             });
         }
