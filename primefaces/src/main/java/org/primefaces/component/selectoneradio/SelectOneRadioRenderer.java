@@ -151,7 +151,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
                 String columnClass = (colMod < columnClasses.length) ? columnClasses[colMod].trim() : "";
                 if (!columnClass.contains("md-") && !columnClass.contains("col-") && !lineDirection) {
-                    columnClass += (!"".equals(columnClass) ? " " : "") + GridLayoutUtils.getFlexColumnClass(columns);
+                    columnClass += (!"".equals(columnClass) ? " " : "") + GridLayoutUtils.getColumnClass(flex, columns);
                 }
 
                 writer.startElement("div", null);
