@@ -231,9 +231,17 @@ PrimeFaces.widget.ColorPicker = PrimeFaces.widget.BaseWidget.extend({
                 $this.callBehavior('change');
             });
         }
-        if ($this.hasBehavior('open')) {
+        if ($this.hasBehavior('open') || $this.cfg.parent) {
             $this.input.on('open.colorpicker', function(e) {
                 $this.callBehavior('open');
+                
+                if ($this.cfg.parent) {
+                   // #11076 dialog support of input
+                   var dialog = $($this.cfg.parent);
+                   var colorInput = dialog.find('#clr-color-value');
+                   colorInput.zIndex(9999);
+                   colorInput.parent().zIndex(9999);
+                }
             });
         }
 
