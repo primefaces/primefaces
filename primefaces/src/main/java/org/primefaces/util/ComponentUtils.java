@@ -23,17 +23,12 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.component.api.*;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.csp.CspResponseWriter;
+
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -52,12 +47,18 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.primefaces.component.api.*;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.csp.CspResponseWriter;
 import static org.primefaces.renderkit.RendererUtils.getRenderKit;
 
 public class ComponentUtils {
@@ -526,6 +527,29 @@ public class ComponentUtils {
         }
 
         return false;
+    }
+
+    public static void findValueHoldersInFacet(FacesContext context, UIComponent facet, ContextCallback callback) {
+        // the facet contains multiple childs, so its wrapped inside a UIPanel
+        if (facet instanceof UIPanel) {
+            for (int i = 0; i < facet.getChildCount(); i++) {
+                UIComponent child = facet.getChildren().get(i);
+                if (child instanceof ValueHolder) {
+                    callback.invokeContextCallback(context, child);
+                }
+            }
+        }
+        // the facet contains only one child now, which means that the facet is the child component
+        else {
+            // the child is a ValueHolder, independent if it's a composite or not
+            if (facet instanceof ValueHolder) {
+                callback.invokeContextCallback(context, facet);
+            }
+            // try to check for cc:editableValueHolder
+            else if (CompositeUtils.isComposite(facet)) {
+                CompositeUtils.invokeOnDeepestEditableValueHolder(context, facet, callback);
+            }
+        }
     }
 
     /**
