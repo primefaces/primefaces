@@ -23,13 +23,15 @@
  */
 package org.primefaces.application;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.primefaces.application.exceptionhandler.PrimeExceptionHandler;
 
 import javax.el.ELException;
 import javax.faces.FacesException;
+
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,35 +42,35 @@ public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
     }
 
     @Test
-    public void testEvaluateErrorPageWithExplicitType() {
+    void evaluateErrorPageWithExplicitType() {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new FacesException());
-        Assertions.assertEquals(FacesException.class.getName(), errorPage);
+        assertEquals(FacesException.class.getName(), errorPage);
     }
 
     @Test
-    public void testEvaluateErrorPageWithHierarchy() {
+    void evaluateErrorPageWithHierarchy() {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new ELException());
-        Assertions.assertEquals(RuntimeException.class.getName(), errorPage);
+        assertEquals(RuntimeException.class.getName(), errorPage);
     }
 
     @Test
-    public void testEvaluateErrorPageWithException() {
+    void evaluateErrorPageWithException() {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new Exception());
-        Assertions.assertEquals(Exception.class.getName(), errorPage);
+        assertEquals(Exception.class.getName(), errorPage);
     }
 
     @Test
-    public void testEvaluateErrorPageWithDefaultErrorPage() {
+    void evaluateErrorPageWithDefaultErrorPage() {
         Map<String, String> errorPages = getErrorPages();
 
         String errorPage = evaluateErrorPage(errorPages, new Throwable());
-        Assertions.assertEquals("", errorPage);
+        assertEquals("", errorPage);
     }
 
     private Map<String, String> getErrorPages() {

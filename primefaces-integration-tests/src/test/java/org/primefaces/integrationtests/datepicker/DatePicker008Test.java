@@ -23,10 +23,12 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.time.LocalDate;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -39,15 +41,15 @@ import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 
-public class DatePicker008Test extends AbstractDatePickerTest {
+class DatePicker008Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: AJAX set date")
-    public void testAjaxBasic(Page page) {
+    void ajaxBasic(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
         LocalDate value = LocalDate.of(1985, 7, 4);
 
         // Act
@@ -57,7 +59,7 @@ public class DatePicker008Test extends AbstractDatePickerTest {
         // Assert
         assertDate(panel, "July", "1985");
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(value, newValue);
+        assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -65,10 +67,10 @@ public class DatePicker008Test extends AbstractDatePickerTest {
     @Test
     @Order(2)
     @DisplayName("DatePicker: AJAX close popup")
-    public void testAjaxClosePopup(Page page) {
+    void ajaxClosePopup(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
         LocalDate value = LocalDate.of(1985, 7, 4);
 
         // Act
@@ -84,7 +86,7 @@ public class DatePicker008Test extends AbstractDatePickerTest {
     @Test
     @Order(3)
     @DisplayName("DatePicker: AJAX select date via click on day in the next month")
-    public void testAjaxSelectDateNextMonth(Page page) {
+    void ajaxSelectDateNextMonth(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDate value = LocalDate.of(1985, 7, 4);
@@ -97,9 +99,9 @@ public class DatePicker008Test extends AbstractDatePickerTest {
 
         // Assert
         LocalDate expectedDate = LocalDate.of(1985, 8, 31);
-        Assertions.assertEquals(expectedDate, datePicker.getValueAsLocalDate());
+        assertEquals(expectedDate, datePicker.getValueAsLocalDate());
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(expectedDate, newValue);
+        assertEquals(expectedDate, newValue);
         assertMessage(page, "1985-08-31");
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -107,7 +109,7 @@ public class DatePicker008Test extends AbstractDatePickerTest {
     @Test
     @Order(4)
     @DisplayName("DatePicker: AJAX select date via click on day in the previous month")
-    public void testAjaxSelectDatePreviousMonth(Page page) {
+    void ajaxSelectDatePreviousMonth(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
         LocalDate value = LocalDate.of(1985, 7, 4);
@@ -120,9 +122,9 @@ public class DatePicker008Test extends AbstractDatePickerTest {
 
         // Assert selected value
         LocalDate expectedDate = LocalDate.of(1985, 6, 8);
-        Assertions.assertEquals(expectedDate, datePicker.getValueAsLocalDate());
+        assertEquals(expectedDate, datePicker.getValueAsLocalDate());
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(expectedDate, newValue);
+        assertEquals(expectedDate, newValue);
         assertMessage(page, "1985-06-08");
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -130,10 +132,10 @@ public class DatePicker008Test extends AbstractDatePickerTest {
     @Test
     @Order(5)
     @DisplayName("DatePicker: AJAX date using widget setDate() API.")
-    public void testAjaxSetDateWidgetApi(Page page) {
+    void ajaxSetDateWidgetApi(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
         LocalDate value = LocalDate.of(1985, 7, 4);
 
         // Act
@@ -144,7 +146,7 @@ public class DatePicker008Test extends AbstractDatePickerTest {
         // Assert
         assertDate(datePicker.getPanel(), "July", "1985");
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(value, newValue);
+        assertEquals(value, newValue);
         assertMessage(page, "1985-07-04");
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -153,15 +155,15 @@ public class DatePicker008Test extends AbstractDatePickerTest {
         Messages messages = page.messages;
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
         Msg msg = messages.getMessage(0);
-        Assertions.assertEquals(message, msg.getDetail());
+        assertEquals(message, msg.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
-        Assertions.assertEquals("single", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
+        assertEquals("single", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

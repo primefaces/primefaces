@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.inputmask;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,85 +35,85 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputMask;
 
-public class InputMask004Test extends AbstractInputMaskTest {
+class InputMask004Test extends AbstractInputMaskTest {
 
     @Test
     @Order(1)
     @DisplayName("InputMask: GitHub #6469 Optional test with server side validation.")
-    public void testOptionalAreaCode1(final Page page) {
+    void optionalAreaCode1(final Page page) {
         // Arrange
         final InputMask inputMask = page.optional;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("1");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("1", inputMask.getValue());
-        Assertions.assertEquals("1", inputMask.getWidgetValueUnmasked());
+        assertEquals("1", inputMask.getValue());
+        assertEquals("1", inputMask.getWidgetValueUnmasked());
         assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     @Test
     @Order(2)
     @DisplayName("InputMask: GitHub #6469 Optional test with server side validation.")
-    public void testOptionalAreaCode2(final Page page) {
+    void optionalAreaCode2(final Page page) {
         // Arrange
         final InputMask inputMask = page.optional;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("12");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("12", inputMask.getWidgetValueUnmasked());
-        Assertions.assertEquals("12__", inputMask.getValue());
+        assertEquals("12", inputMask.getWidgetValueUnmasked());
+        assertEquals("12__", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     @Test
     @Order(3)
     @DisplayName("InputMask: GitHub #6469 Optional test with server side validation.")
-    public void testOptionalAreaCode3(final Page page) {
+    void optionalAreaCode3(final Page page) {
         // Arrange
         final InputMask inputMask = page.optional;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("123");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("123", inputMask.getWidgetValueUnmasked());
-        Assertions.assertEquals("123_", inputMask.getValue());
+        assertEquals("123", inputMask.getWidgetValueUnmasked());
+        assertEquals("123_", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     @Test
     @Order(4)
     @DisplayName("InputMask: GitHub #6469 Optional test with server side validation.")
-    public void testOptionalAreaCode4(final Page page) {
+    void optionalAreaCode4(final Page page) {
         // Arrange
         final InputMask inputMask = page.optional;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("1234");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("1234", inputMask.getValue());
-        Assertions.assertEquals("1234", inputMask.getWidgetValueUnmasked());
+        assertEquals("1234", inputMask.getValue());
+        assertEquals("1234", inputMask.getWidgetValueUnmasked());
         assertConfiguration(inputMask.getWidgetConfiguration(), "9[999]");
     }
 
     private void assertConfiguration(JSONObject cfg, String mask) {
         assertNoJavascriptErrors();
         System.out.println("InputMask Config = " + cfg);
-        Assertions.assertEquals(mask, cfg.getString("mask"));
-        Assertions.assertFalse(cfg.getBoolean(AbstractInputMaskTest.AUTO_CLEAR));
+        assertEquals(mask, cfg.getString("mask"));
+        assertFalse(cfg.getBoolean(AbstractInputMaskTest.AUTO_CLEAR));
     }
 
     public static class Page extends AbstractPrimePage {

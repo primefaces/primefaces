@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,27 +37,29 @@ import org.primefaces.selenium.component.model.tree.TreeNode;
 
 import java.util.List;
 
-public class Tree005Test extends AbstractTreeTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class Tree005Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: FilterFunction")
-    public void testFilterFunction(Page page) {
+    void filterFunction(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
-        Assertions.assertEquals(true, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(2).getWebElement().isDisplayed());
+        assertTrue(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertTrue(children.get(2).getWebElement().isDisplayed());
 
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
@@ -67,17 +68,17 @@ public class Tree005Test extends AbstractTreeTest {
         // Assert
         children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         // L1
-        Assertions.assertEquals(false, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(false, children.get(2).getWebElement().isDisplayed());
+        assertFalse(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertFalse(children.get(2).getWebElement().isDisplayed());
         // L2
-        Assertions.assertEquals(false, children.get(1).getChildren().get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getChildren().get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(false, children.get(1).getChildren().get(2).getWebElement().isDisplayed());
+        assertFalse(children.get(1).getChildren().get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getChildren().get(1).getWebElement().isDisplayed());
+        assertFalse(children.get(1).getChildren().get(2).getWebElement().isDisplayed());
 
         // Act
         filter.clear();
@@ -86,9 +87,9 @@ public class Tree005Test extends AbstractTreeTest {
         // Assert
         children = tree.getChildren();
 
-        Assertions.assertEquals(true, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(2).getWebElement().isDisplayed());
+        assertTrue(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertTrue(children.get(2).getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }

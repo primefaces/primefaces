@@ -23,28 +23,33 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable008Test extends AbstractDataTableTest {
+class DataTable008Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: filter numeric values #8246")
-    public void testFilterIssue_8246(Page page) {
+    void filterIssue_8246(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act - do some filtering
         dataTable.selectPage(1);
@@ -52,7 +57,7 @@ public class DataTable008Test extends AbstractDataTableTest {
         Objects.requireNonNull(dataTable.getHeader().getCell("First appeared").orElse(null)).setFilterValue("2010", "change", 0);
 
         // Assert
-        Assertions.assertEquals("2010", getFirstAppearedFilterElt(dataTable).getAttribute("value"));
+        assertEquals("2010", getFirstAppearedFilterElt(dataTable).getAttribute("value"));
         List<ProgrammingLanguage> langsFiltered = languages.stream()
                     .sorted(Comparator.comparing(ProgrammingLanguage::getName))
                     .filter(l -> l.getFirstAppeared() >= 2010)
@@ -67,19 +72,19 @@ public class DataTable008Test extends AbstractDataTableTest {
     @Order(2)
     @DisplayName("DataTable: filter - issue 5481 - https://github.com/primefaces/primefaces/issues/5481")
     @Disabled("Disabled because DataTable-filter does not support @SessionScoped - see https://github.com/primefaces/primefaces/issues/7373")
-    public void testFilterIssue_5481(Page page) {
+    void filterIssue_5481(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
-        testFilterIssue_8246(page);
+        filterIssue_8246(page);
 
         // Act - reload page and go to page 2 (filter is visually removed but to some degree due to SessionScoped-bean still there)
         page.getWebDriver().navigate().refresh();
         dataTable.selectPage(2);
 
         // Assert
-        Assertions.assertEquals("", getFirstAppearedFilterElt(dataTable).getAttribute("value"));
+        assertEquals("", getFirstAppearedFilterElt(dataTable).getAttribute("value"));
         List<ProgrammingLanguage> langsUnfilteredPage2 = languages.stream()
                     .sorted(Comparator.comparing(ProgrammingLanguage::getName))
                     .skip(3)
@@ -97,7 +102,7 @@ public class DataTable008Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
+        assertTrue(cfg.has("paginator"));
     }
 
     public static class Page extends AbstractPrimePage {

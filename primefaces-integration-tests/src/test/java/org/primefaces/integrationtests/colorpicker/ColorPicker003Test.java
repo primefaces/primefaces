@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.colorpicker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,12 +36,12 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.Messages;
 
-public class ColorPicker003Test extends AbstractColorPickerTest {
+class ColorPicker003Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
     @DisplayName("ColorPicker: AJAX open event")
-    public void testAjaxOpen(Page page) {
+    void ajaxOpen(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerOpenClose;
 
@@ -56,7 +57,7 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     @Test
     @Order(2)
     @DisplayName("ColorPicker: AJAX close event")
-    public void testAjaxClose(Page page) {
+    void ajaxClose(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerOpenClose;
 
@@ -73,10 +74,10 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     @Test
     @Order(3)
     @DisplayName("ColorPicker: AJAX change event same format")
-    public void testAjaxChangeSameFormat(Page page) {
+    void ajaxChangeSameFormat(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerAjax;
-        Assertions.assertEquals("#e9c46a", colorPicker.getColor());
+        assertEquals("#e9c46a", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("#ff00ff");
@@ -89,10 +90,10 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     @Test
     @Order(3)
     @DisplayName("ColorPicker: AJAX change event new format")
-    public void testAjaxChangeNewFormat(Page page) {
+    void ajaxChangeNewFormat(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPickerAjax;
-        Assertions.assertEquals("#e9c46a", colorPicker.getColor());
+        assertEquals("#e9c46a", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("rgb(0, 183, 255)");
@@ -106,14 +107,14 @@ public class ColorPicker003Test extends AbstractColorPickerTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("ColorPicker Config = " + cfg);
-        Assertions.assertEquals("popup", cfg.getString("mode"));
+        assertEquals("popup", cfg.getString("mode"));
         if (cfg.has("themeMode")) {
-            Assertions.assertEquals("light", cfg.getString("themeMode"));
+            assertEquals("light", cfg.getString("themeMode"));
         }
-        Assertions.assertFalse(cfg.has("theme"));
-        Assertions.assertEquals("en", cfg.getString("locale"));
-        Assertions.assertTrue(cfg.getBoolean("clearButton"));
-        Assertions.assertTrue(cfg.getBoolean("closeButton"));
+        assertFalse(cfg.has("theme"));
+        assertEquals("en", cfg.getString("locale"));
+        assertTrue(cfg.getBoolean("clearButton"));
+        assertTrue(cfg.getBoolean("closeButton"));
     }
 
     public static class Page extends AbstractPrimePage {

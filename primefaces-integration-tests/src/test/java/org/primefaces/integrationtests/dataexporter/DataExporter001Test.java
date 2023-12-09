@@ -23,10 +23,15 @@
  */
 package org.primefaces.integrationtests.dataexporter;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
@@ -34,19 +39,19 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataExporter001Test extends AbstractDataExporterTest {
+class DataExporter001Test extends AbstractDataExporterTest {
 
     @Test
     @Order(1)
     @DisplayName("Exporter: CSV download")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testCsv(Page page) throws IOException {
+    void csv(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages.csv");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(5, dataTable.getRows().size());
+        assertEquals(5, dataTable.getRows().size());
 
         // Act
         page.buttonCsv.click();
@@ -62,12 +67,12 @@ public class DataExporter001Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: XML download")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testXml(Page page) throws IOException {
+    void xml(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages.xml");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(5, dataTable.getRows().size());
+        assertEquals(5, dataTable.getRows().size());
 
         // Act
         page.buttonXml.click();
@@ -83,12 +88,12 @@ public class DataExporter001Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: TXT download")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testTxt(Page page) throws IOException {
+    void txt(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages.txt");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(5, dataTable.getRows().size());
+        assertEquals(5, dataTable.getRows().size());
 
         // Act
         page.buttonTxt.click();
@@ -104,12 +109,12 @@ public class DataExporter001Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: XLSX download")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testXlsx(Page page) throws IOException {
+    void xlsx(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages.xlsx");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(5, dataTable.getRows().size());
+        assertEquals(5, dataTable.getRows().size());
 
         // Act
         page.buttonXlsx.click();
@@ -125,12 +130,12 @@ public class DataExporter001Test extends AbstractDataExporterTest {
     @DisplayName("Exporter: PDF download")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testPdf(Page page) throws IOException {
+    void pdf(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages.pdf");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(5, dataTable.getRows().size());
+        assertEquals(5, dataTable.getRows().size());
 
         // Act
         page.buttonPdf.click();

@@ -39,7 +39,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAdd() {
+    void add() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -51,7 +51,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAddTrue() {
+    void addTrue() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -63,7 +63,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAddFalse() {
+    void addFalse() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -75,7 +75,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAttribute() {
+    void attribute() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -87,7 +87,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testNullAttribute() {
+    void nullAttribute() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -99,7 +99,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAddTrueStyle() {
+    void addTrueStyle() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -111,7 +111,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testAddFalseStyle() {
+    void addFalseStyle() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 
@@ -123,7 +123,7 @@ class StyleBuilderTest {
     }
 
     @Test
-    void testComplex() {
+    void complex() {
         // Arrange
         StyleBuilder builder = getStyleBuilder();
 

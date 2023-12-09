@@ -24,7 +24,10 @@
 package org.primefaces.integrationtests.selectmanymenu;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.integrationtests.general.model.Driver;
 import org.primefaces.integrationtests.general.service.RealDriverService;
@@ -35,15 +38,19 @@ import org.primefaces.selenium.component.SelectManyMenu;
 import org.primefaces.selenium.component.base.ComponentUtils;
 
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
+class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
 
     private RealDriverService driverService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         driverService = new RealDriverService();
         driverService.init();
     }
@@ -51,13 +58,13 @@ public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
     @Test
     @Order(1)
     @DisplayName("SelectManyMenu: filter")
-    public void testFilter(Page page) {
+    void filter(Page page) {
         List<Driver> drivers = driverService.getDrivers();
 
         // Arrange
         SelectManyMenu selectManyMenu = page.selectManyMenu;
         assertSelected(selectManyMenu, Arrays.asList("Max", "Charles"));
-        Assertions.assertEquals(drivers.size(), selectManyMenu.getLabels().size());
+        assertEquals(drivers.size(), selectManyMenu.getLabels().size());
         selectManyMenu.deselect("Charles");
 
         // Act + Assert - Loop
@@ -68,7 +75,7 @@ public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
             ComponentUtils.sendKeys(selectManyMenu.getFilterInput(), f);
 
             // Assert
-            Assertions.assertEquals(
+            assertEquals(
                     drivers.stream().filter(d -> d.getName().startsWith(f)).collect(Collectors.toList()).size(),
                     selectManyMenu.getLabels().size());
         });
@@ -79,16 +86,16 @@ public class SelectManyMenu003Test extends AbstractSelectManyMenuTest {
 
         // Assert
         assertSelected(selectManyMenu, Arrays.asList("Max", "Lando"));
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("selected drivers"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Max,Lando"));
         assertConfiguration(selectManyMenu.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectManyMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("id"));
+        assertTrue(cfg.has("id"));
     }
 
     public static class Page extends AbstractPrimePage {

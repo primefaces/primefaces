@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.core.ajax;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,12 +38,12 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class CoreAjax001Test extends AbstractPrimePageTest {
+class CoreAjax001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Core-AJAX: keep vertical scroll-position after ajax-update - https://github.com/primefaces/primefaces/issues/6700")
-    public void testAjaxScrollPosition(Page page) {
+    void ajaxScrollPosition(Page page) {
         if (PrimeSelenium.isSafari()) {
             System.out.println(
                         "Test disabled on Safari until Safari fixes the bug: https://github.com/primefaces-extensions/primefaces-integration-tests/issues/100");
@@ -49,7 +51,7 @@ public class CoreAjax001Test extends AbstractPrimePageTest {
         }
         // Arrange
         Long scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
-        Assertions.assertEquals(0, scrollTop);
+        assertEquals(0, scrollTop);
         PrimeSelenium.executeScript("$(document).scrollTop(200);");
 
         // Act
@@ -58,7 +60,7 @@ public class CoreAjax001Test extends AbstractPrimePageTest {
 
         // Assert
         scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
-        Assertions.assertEquals(200, scrollTop);
+        assertEquals(200, scrollTop);
         assertNoJavascriptErrors();
 
         // Act
@@ -66,7 +68,7 @@ public class CoreAjax001Test extends AbstractPrimePageTest {
 
         // Assert
         scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
-        Assertions.assertEquals(200, scrollTop);
+        assertEquals(200, scrollTop);
         assertNoJavascriptErrors();
 
         // Act
@@ -77,9 +79,9 @@ public class CoreAjax001Test extends AbstractPrimePageTest {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(page.inputtext.getInput()));
 
         PrimeSelenium.enableAnimations();
-        Assertions.assertEquals(page.inputtext.getInput().getAttribute("id"), page.getWebDriver().switchTo().activeElement().getAttribute("id"));
+        assertEquals(page.inputtext.getInput().getAttribute("id"), page.getWebDriver().switchTo().activeElement().getAttribute("id"));
         scrollTop = PrimeSelenium.executeScript("return $(document).scrollTop();");
-        Assertions.assertTrue(scrollTop > 200);
+        assertTrue(scrollTop > 200);
         assertNoJavascriptErrors();
     }
 

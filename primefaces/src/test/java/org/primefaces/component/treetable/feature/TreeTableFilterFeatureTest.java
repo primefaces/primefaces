@@ -23,16 +23,17 @@
  */
 package org.primefaces.component.treetable.feature;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
-public class TreeTableFilterFeatureTest {
+class TreeTableFilterFeatureTest {
 
     @Test
-    public void testCloneTreeNodeWithCustomNodeConstructor() {
+    void cloneTreeNodeWithCustomNodeConstructor() {
         FilterFeature filterFeature = new FilterFeature();
 
         DefaultTreeNode root = new DefaultTreeNode();
@@ -42,12 +43,12 @@ public class TreeTableFilterFeatureTest {
 
         TreeNode cloneCustomNode = filterFeature.cloneTreeNode(customNode, cloneRoot);
 
-        Assertions.assertEquals(1, cloneRoot.getChildren().size());
-        Assertions.assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
+        assertEquals(1, cloneRoot.getChildren().size());
+        assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
     }
 
     @Test
-    public void testCloneTreeNodeWithBuiltInNodeConstructor() {
+    void cloneTreeNodeWithBuiltInNodeConstructor() {
         FilterFeature filterFeature = new FilterFeature();
 
         DefaultTreeNode root = new DefaultTreeNode();
@@ -57,7 +58,7 @@ public class TreeTableFilterFeatureTest {
 
         TreeNode cloneCustomNode = filterFeature.cloneTreeNode(regularNode, cloneRoot);
 
-        Assertions.assertEquals(1, cloneRoot.getChildren().size());
-        Assertions.assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
+        assertEquals(1, cloneRoot.getChildren().size());
+        assertEquals(cloneCustomNode, cloneRoot.getChildren().get(0));
     }
 }

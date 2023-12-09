@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.treetable;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,19 +35,19 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 
-public class TreeTable005Test extends AbstractTreeTableTest {
+class TreeTable005Test extends AbstractTreeTableTest {
 
     @Test
     @Order(6)
     @DisplayName("TreeTable: inital empty")
-    public void testShowSelectedNodes(Page page) {
+    void showSelectedNodes(Page page) {
         TreeTable treeTable = page.treeTable;
 
-        Assertions.assertTrue(treeTable.isEmpty());
+        assertTrue(treeTable.isEmpty());
 
         page.populate.click();
 
-        Assertions.assertFalse(treeTable.isEmpty());
+        assertFalse(treeTable.isEmpty());
     }
 
     public static class Page extends AbstractPrimePage {

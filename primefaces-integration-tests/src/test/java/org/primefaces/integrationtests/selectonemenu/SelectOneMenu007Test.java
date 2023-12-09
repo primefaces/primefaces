@@ -23,10 +23,12 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -40,12 +42,12 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectOneMenu;
 import org.primefaces.selenium.component.model.Msg;
 
-public class SelectOneMenu007Test extends AbstractPrimePageTest {
+class SelectOneMenu007Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: GitHub #6922 grouped clicking on the same one twice")
-    public void testGroupingSelect(Page page) {
+    void groupingSelect(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
         selectOneMenu.toggleDropdown();
@@ -64,7 +66,7 @@ public class SelectOneMenu007Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectOneMenu: GitHub #6514 grouping with escaped label")
-    public void testGroupingEscapedLabel(Page page) {
+    void groupingEscapedLabel(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
         selectOneMenu.toggleDropdown();
@@ -75,7 +77,7 @@ public class SelectOneMenu007Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals(selectOneMenu.getLabel().getText(), "<span>Turks &amp; Caicos<span>");
+        assertEquals("<span>Turks &amp; Caicos<span>", selectOneMenu.getLabel().getText());
         assertMessage(page, 0, "Country", "Turks & Caicos");
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -83,24 +85,24 @@ public class SelectOneMenu007Test extends AbstractPrimePageTest {
     private void assertItems(Page page, int itemCount, int groupCount) {
         SelectOneMenu selectOneMenu = page.selectOneMenu;
         List<WebElement> groups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
-        Assertions.assertEquals(groupCount, groups.size());
+        assertEquals(groupCount, groups.size());
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(itemCount, options.size());
+        assertEquals(itemCount, options.size());
     }
 
     private void assertMessage(Page page, int index, String summary, String detail) {
         Msg message = page.messages.getMessage(index);
-        Assertions.assertEquals(summary, message.getSummary());
-        Assertions.assertEquals(detail, message.getDetail());
+        assertEquals(summary, message.getSummary());
+        assertEquals(detail, message.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
-        Assertions.assertEquals("auto", cfg.getString("autoWidth"));
-        Assertions.assertTrue(cfg.getBoolean("renderPanelContentOnClient"));
-        Assertions.assertEquals("Grouping", cfg.getString("label"));
+        assertTrue(cfg.has("appendTo"));
+        assertEquals("auto", cfg.getString("autoWidth"));
+        assertTrue(cfg.getBoolean("renderPanelContentOnClient"));
+        assertEquals("Grouping", cfg.getString("label"));
     }
 
     public static class Page extends AbstractPrimePage {

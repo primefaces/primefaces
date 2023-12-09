@@ -23,11 +23,13 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.HasCapabilities;
 import org.primefaces.integrationtests.AbstractTableTest;
 import org.primefaces.selenium.component.DataTable;
@@ -82,13 +84,13 @@ public abstract class AbstractDataTableTest extends AbstractTableTest {
 
     protected void assertRows(List<Row> rows, List<ProgrammingLanguage> langs) {
         int expectedSize = langs.size();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(expectedSize, rows.size());
+        assertNotNull(rows);
+        assertEquals(expectedSize, rows.size());
 
         int row = 0;
         for (ProgrammingLanguage programmingLanguage : langs) {
             String rowText = rows.get(row).getCell(0).getText();
-            Assertions.assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
+            assertEquals(programmingLanguage.getId(), Integer.parseInt(rowText.trim()));
             row++;
         }
     }

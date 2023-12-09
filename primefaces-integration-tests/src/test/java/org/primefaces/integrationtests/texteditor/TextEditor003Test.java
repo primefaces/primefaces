@@ -37,10 +37,10 @@ import org.primefaces.selenium.component.TextEditor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TextEditor003Test extends AbstractPrimePageTest {
+class TextEditor003Test extends AbstractPrimePageTest {
 
     @Test
-    public void testFocusLostToButton(Page page) {
+    void focusLostToButton(Page page) {
         // Arrange
         Messages messages = page.messages;
         TextEditor textEditor = page.editor;
@@ -57,7 +57,7 @@ public class TextEditor003Test extends AbstractPrimePageTest {
     }
 
     @Test
-    public void testNoBlurOnPaste(Page page) {
+    void noBlurOnPaste(Page page) {
         // Arrange
         Messages messages = page.messages;
         WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
@@ -75,7 +75,7 @@ public class TextEditor003Test extends AbstractPrimePageTest {
     }
 
     @Test
-    public void testNoBlurOnToolbar(Page page) {
+    void noBlurOnToolbar(Page page) {
         // Arrange
         Messages messages = page.messages;
         WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));

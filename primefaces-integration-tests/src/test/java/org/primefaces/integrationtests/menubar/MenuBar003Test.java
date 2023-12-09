@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.menubar;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,12 +39,12 @@ import org.primefaces.selenium.component.Menubar;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 
-public class MenuBar003Test extends AbstractPrimePageTest {
+class MenuBar003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("MenuBar: RequestScoped model executing AJAX menu item using MenuItem Coordinates")
-    public void testModelAjaxMenuItem(Page page) {
+    void modelAjaxMenuItem(Page page) {
         // Arrange
         Menubar menubar = page.menubar;
 
@@ -58,7 +60,7 @@ public class MenuBar003Test extends AbstractPrimePageTest {
     @Test
     @Order(21)
     @DisplayName("MenuBar: RequestScoped model executing non-AJAX menu item using MenuItem Coordinates")
-    public void testModelNonAjaxMenuItem(Page page) {
+    void modelNonAjaxMenuItem(Page page) {
         // Arrange
         Menubar menubar = page.menubar;
 
@@ -75,15 +77,15 @@ public class MenuBar003Test extends AbstractPrimePageTest {
         Messages messages = page.messages;
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
         Msg msg = messages.getMessage(0);
-        Assertions.assertEquals(message, msg.getDetail());
+        assertEquals(message, msg.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("MenuBar Config = " + cfg);
-        Assertions.assertTrue(cfg.has("toggleEvent"));
-        Assertions.assertTrue(cfg.has("autoDisplay"));
-        Assertions.assertEquals("click", cfg.getString("toggleEvent"));
+        assertTrue(cfg.has("toggleEvent"));
+        assertTrue(cfg.has("autoDisplay"));
+        assertEquals("click", cfg.getString("toggleEvent"));
     }
 
     public static class Page extends AbstractPrimePage {

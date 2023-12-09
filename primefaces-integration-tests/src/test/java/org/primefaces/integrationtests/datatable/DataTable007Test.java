@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -39,40 +40,40 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.datatable.Row;
 
-public class DataTable007Test extends AbstractDataTableTest {
+class DataTable007Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: Add-Row")
-    public void testAddRow(Page page) {
+    void addRow(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
         List<Row> rows = dataTable.getRows();
-        Assertions.assertEquals(5, rows.size()); // only 5 rows to start
+        assertEquals(5, rows.size()); // only 5 rows to start
 
         // Act
         page.btnAddRow.click();
 
         // Assert
         rows = dataTable.getRows();
-        Assertions.assertEquals(6, rows.size()); // now has 6 after row added
+        assertEquals(6, rows.size()); // now has 6 after row added
         Row row = dataTable.getRow(5);
         assertDisplayed(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-pencil")));
         assertNotDisplayed(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-close")));
-        Assertions.assertEquals("Smalltalk", row.getCell(1).getText());
-        Assertions.assertEquals("6", row.getCell(0).getText());
-        Assertions.assertEquals("New Language added", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Smalltalk", page.messages.getMessage(0).getDetail());
+        assertEquals("Smalltalk", row.getCell(1).getText());
+        assertEquals("6", row.getCell(0).getText());
+        assertEquals("New Language added", page.messages.getMessage(0).getSummary());
+        assertEquals("Smalltalk", page.messages.getMessage(0).getDetail());
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("DataTable: Edit-Row")
-    public void testEditRow(Page page) {
+    void editRow(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act - edit and cancel
         Row row = dataTable.getRow(1);
@@ -87,10 +88,10 @@ public class DataTable007Test extends AbstractDataTableTest {
         row = dataTable.getRow(1);
         assertDisplayed(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-pencil")));
         assertNotDisplayed(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-close")));
-        Assertions.assertEquals(languages.get(1).getName(), row.getCell(1).getText());
-        Assertions.assertEquals(Integer.toString(languages.get(1).getFirstAppeared()), row.getCell(2).getText());
-        Assertions.assertEquals("Edit Cancelled", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals(Integer.toString(languages.get(1).getId()), page.messages.getMessage(0).getDetail());
+        assertEquals(languages.get(1).getName(), row.getCell(1).getText());
+        assertEquals(Integer.toString(languages.get(1).getFirstAppeared()), row.getCell(2).getText());
+        assertEquals("Edit Cancelled", page.messages.getMessage(0).getSummary());
+        assertEquals(Integer.toString(languages.get(1).getId()), page.messages.getMessage(0).getDetail());
 
         // Act - edit and accept
         row = dataTable.getRow(2);
@@ -105,18 +106,18 @@ public class DataTable007Test extends AbstractDataTableTest {
         row = dataTable.getRow(2);
         assertDisplayed(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-pencil")));
         assertNotDisplayed(row.getCell(3).getWebElement().findElement(By.className("ui-row-editor-close")));
-        Assertions.assertEquals("abc", row.getCell(1).getText());
-        Assertions.assertEquals("2020", row.getCell(2).getText());
-        Assertions.assertEquals("ProgrammingLanguage Edited", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals(Integer.toString(languages.get(2).getId()), page.messages.getMessage(0).getDetail());
+        assertEquals("abc", row.getCell(1).getText());
+        assertEquals("2020", row.getCell(2).getText());
+        assertEquals("ProgrammingLanguage Edited", page.messages.getMessage(0).getSummary());
+        assertEquals(Integer.toString(languages.get(2).getId()), page.messages.getMessage(0).getDetail());
 
         // Act - submit
         page.btnSubmit.click();
 
         // Assert
         row = dataTable.getRow(2);
-        Assertions.assertEquals("abc", row.getCell(1).getText());
-        Assertions.assertEquals("2020", row.getCell(2).getText());
+        assertEquals("abc", row.getCell(1).getText());
+        assertEquals("2020", row.getCell(2).getText());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -124,10 +125,10 @@ public class DataTable007Test extends AbstractDataTableTest {
     @Test
     @Order(3)
     @DisplayName("DataTable: GitHub #1442 Filter combined with Edit-Row; https://github.com/primefaces/primefaces/issues/1442")
-    public void testFilterAndEditRow_1442(Page page) {
+    void filterAndEditRow_1442(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act - filter
         dataTable.filter("Name", "Java");
@@ -150,8 +151,8 @@ public class DataTable007Test extends AbstractDataTableTest {
 
         // Assert
         row = dataTable.getRow(2);
-        Assertions.assertEquals("abc", row.getCell(1).getText());
-        Assertions.assertEquals("2020", row.getCell(2).getText());
+        assertEquals("abc", row.getCell(1).getText());
+        assertEquals("2020", row.getCell(2).getText());
 
         assertConfiguration(dataTable.getWidgetConfiguration());
     }
@@ -159,7 +160,7 @@ public class DataTable007Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("editable"));
+        assertTrue(cfg.has("editable"));
     }
 
     public static class Page extends AbstractPrimePage {

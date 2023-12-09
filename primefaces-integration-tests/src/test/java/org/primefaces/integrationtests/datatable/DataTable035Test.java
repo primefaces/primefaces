@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -32,27 +34,29 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable035Test extends AbstractDataTableTest {
+class DataTable035Test extends AbstractDataTableTest {
 
     @Test
     @DisplayName("DataTable: Manually assign selection doesnt show")
-    public void test(Page page) throws InterruptedException {
+    void test(Page page) throws InterruptedException {
+        assertDoesNotThrow(() -> {
 
-        // trigger selection on row1
-        WebElement nameRow1 = getWebDriver().findElement(By.id("form:datatable:1:name"));
-        PrimeSelenium.guardAjax(nameRow1).click();
+            // trigger selection on row1
+            WebElement nameRow1 = getWebDriver().findElement(By.id("form:datatable:1:name"));
+            PrimeSelenium.guardAjax(nameRow1).click();
 
-        // assert selection
-        WebElement row1 = page.dataTable.findElement(By.cssSelector("tr[data-ri='1']"));
-        assertCss(row1, "ui-state-highlight");
+            // assert selection
+            WebElement row1 = page.dataTable.findElement(By.cssSelector("tr[data-ri='1']"));
+            assertCss(row1, "ui-state-highlight");
 
-        // trigger selection on row2 via button
-        WebElement buttonRow2 = getWebDriver().findElement(By.id("form:datatable:2:select"));
-        PrimeSelenium.guardAjax(buttonRow2).click();
+            // trigger selection on row2 via button
+            WebElement buttonRow2 = getWebDriver().findElement(By.id("form:datatable:2:select"));
+            PrimeSelenium.guardAjax(buttonRow2).click();
 
-        // assert selection
-        WebElement row2 = page.dataTable.findElement(By.cssSelector("tr[data-ri='2']"));
-        assertCss(row2, "ui-state-highlight");
+            // assert selection
+            WebElement row2 = page.dataTable.findElement(By.cssSelector("tr[data-ri='2']"));
+            assertCss(row2, "ui-state-highlight");
+        });
     }
 
     public static class Page extends AbstractPrimePage {

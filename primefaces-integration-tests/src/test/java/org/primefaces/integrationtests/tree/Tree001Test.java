@@ -23,9 +23,10 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -40,44 +41,44 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
-public class Tree001Test extends AbstractTreeTest {
+class Tree001Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: Basic & Toggling")
-    public void testBasicAndToggling(Page page) {
+    void basicAndToggling(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         List<TreeNode> firstChildren = first.getChildren();
-        Assertions.assertNotNull(firstChildren);
-        Assertions.assertEquals(2, firstChildren.size());
+        assertNotNull(firstChildren);
+        assertEquals(2, firstChildren.size());
 
         TreeNode firstOfFirst = firstChildren.get(0);
-        Assertions.assertFalse(firstOfFirst.getWebElement().isDisplayed());
+        assertFalse(firstOfFirst.getWebElement().isDisplayed());
 
         // Act
         first.toggle();
 
         // Assert
-        Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
-        Assertions.assertEquals("Work", firstOfFirst.getLabelText());
+        assertTrue(firstOfFirst.getWebElement().isDisplayed());
+        assertEquals("Work", firstOfFirst.getLabelText());
         assertMessage(page.messages, 0, "Expanded", "Documents");
 
         // Act Pt. 2
         first.toggle();
 
         // Assert Pt. 2
-        Assertions.assertFalse(firstOfFirst.getWebElement().isDisplayed());
+        assertFalse(firstOfFirst.getWebElement().isDisplayed());
         assertMessage(page.messages, 0, "Collapsed", "Documents");
 
         assertConfiguration(tree.getWidgetConfiguration());
@@ -86,33 +87,33 @@ public class Tree001Test extends AbstractTreeTest {
     @Test
     @Order(2)
     @DisplayName("Tree: Ajax update")
-    public void testAjaxUpdate(Page page) {
+    void ajaxUpdate(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         TreeNode second = children.get(1);
-        Assertions.assertEquals("Events", second.getLabelText());
+        assertEquals("Events", second.getLabelText());
 
         TreeNode third = children.get(2);
-        Assertions.assertEquals("Movies", third.getLabelText());
+        assertEquals("Movies", third.getLabelText());
 
         first.toggle();
 
         List<TreeNode> firstChildren = first.getChildren();
-        Assertions.assertNotNull(firstChildren);
-        Assertions.assertEquals(2, firstChildren.size());
+        assertNotNull(firstChildren);
+        assertEquals(2, firstChildren.size());
 
         TreeNode firstOfFirst = firstChildren.get(0);
-        Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
+        assertTrue(firstOfFirst.getWebElement().isDisplayed());
 
         // Act
         PrimeSelenium.guardAjax(page.buttonUpdate).click();
@@ -120,29 +121,29 @@ public class Tree001Test extends AbstractTreeTest {
         // Assert
         children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         second = children.get(1);
-        Assertions.assertEquals("Events", second.getLabelText());
+        assertEquals("Events", second.getLabelText());
 
         third = children.get(2);
-        Assertions.assertEquals("Movies", third.getLabelText());
+        assertEquals("Movies", third.getLabelText());
 
-        Assertions.assertTrue(tree.isDisplayed());
-        Assertions.assertTrue(first.getWebElement().isDisplayed());
-        Assertions.assertTrue(second.getWebElement().isDisplayed());
-        Assertions.assertTrue(third.getWebElement().isDisplayed());
+        assertTrue(tree.isDisplayed());
+        assertTrue(first.getWebElement().isDisplayed());
+        assertTrue(second.getWebElement().isDisplayed());
+        assertTrue(third.getWebElement().isDisplayed());
 
         firstChildren = first.getChildren();
-        Assertions.assertNotNull(firstChildren);
-        Assertions.assertEquals(2, firstChildren.size());
+        assertNotNull(firstChildren);
+        assertEquals(2, firstChildren.size());
 
         firstOfFirst = firstChildren.get(0);
-        Assertions.assertTrue(firstOfFirst.getWebElement().isDisplayed());
+        assertTrue(firstOfFirst.getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
@@ -150,10 +151,10 @@ public class Tree001Test extends AbstractTreeTest {
     @Test
     @Order(3)
     @DisplayName("Tree: Tab and arrow keys to select")
-    public void testTabbing(Page page) {
+    void tabbing(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         // Act
         Actions actions = new Actions(page.getWebDriver());
@@ -162,20 +163,20 @@ public class Tree001Test extends AbstractTreeTest {
 
         // Assert
         List<TreeNode> children = tree.getChildren();
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode second = children.get(1);
-        Assertions.assertEquals("Events", second.getLabelText());
-        Assertions.assertTrue(second.getWebElement().isDisplayed());
+        assertEquals("Events", second.getLabelText());
+        assertTrue(second.getWebElement().isDisplayed());
 
         List<TreeNode> secondChildren = second.getChildren();
-        Assertions.assertNotNull(secondChildren);
-        Assertions.assertEquals(3, secondChildren.size());
+        assertNotNull(secondChildren);
+        assertEquals(3, secondChildren.size());
 
-        Assertions.assertTrue(secondChildren.get(0).getWebElement().isDisplayed());
-        Assertions.assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
-        Assertions.assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
+        assertTrue(secondChildren.get(0).getWebElement().isDisplayed());
+        assertTrue(secondChildren.get(1).getWebElement().isDisplayed());
+        assertTrue(secondChildren.get(2).getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }

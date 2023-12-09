@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -31,26 +32,26 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.html.SelectOneMenu;
 
-public class DataTable040Test extends AbstractDataTableTest {
+class DataTable040Test extends AbstractDataTableTest {
 
     @Test
     @DisplayName("p:dataTable: Asign null value")
-    public void testP(Page page) throws InterruptedException {
+    void p(Page page) throws InterruptedException {
         SelectOneMenu menu = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:datatable:4:price"));
 
         menu.select("Sold");
 
-        Assertions.assertEquals("Sold", menu.getSelectedLabel());
+        assertEquals("Sold", menu.getSelectedLabel());
     }
 
     @Test
     @DisplayName("h:dataTable: Asign null value")
-    public void testH(Page page) throws InterruptedException {
+    void h(Page page) throws InterruptedException {
         SelectOneMenu menu = PrimeSelenium.createFragment(SelectOneMenu.class, By.id("form:hDatatable:4:price"));
 
         menu.select("Sold");
 
-        Assertions.assertEquals("Sold", menu.getSelectedLabel());
+        assertEquals("Sold", menu.getSelectedLabel());
     }
 
     public static class Page extends AbstractPrimePage {
