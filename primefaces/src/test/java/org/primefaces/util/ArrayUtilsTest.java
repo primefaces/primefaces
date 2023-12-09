@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class ArrayUtilsTest {
+class ArrayUtilsTest {
 
     @Test
-    public void shouldConcatTwoArrays() {
+    void shouldConcatTwoArrays() {
         String[] arr1 = new String[]{"a", "b", "c"};
         String[] arr2 = new String[]{"d", "e", "f"};
 

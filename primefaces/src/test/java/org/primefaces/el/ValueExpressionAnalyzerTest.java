@@ -24,13 +24,16 @@
 package org.primefaces.el;
 
 import de.odysseus.el.ExpressionFactoryImpl;
+
 import javax.el.ExpressionFactory;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.primefaces.context.PrimeApplicationContext;
@@ -42,7 +45,7 @@ import org.primefaces.mock.pf.PrimeRequestContextMock;
 public class ValueExpressionAnalyzerTest {
 
     @BeforeEach
-    public void init() {
+    void init() {
         FacesContext facesContext = new FacesContextMock();
 
         PrimeApplicationContextMock applicationContext = new PrimeApplicationContextMock(facesContext);
@@ -53,13 +56,13 @@ public class ValueExpressionAnalyzerTest {
     }
 
     @AfterEach
-    public void destroy() {
+    void destroy() {
         PrimeRequestContext.setCurrentInstance(null, FacesContext.getCurrentInstance());
         FacesContext.getCurrentInstance().release();
     }
 
     @Test
-    public void firstLevelValueReference() {
+    void firstLevelValueReference() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -71,11 +74,11 @@ public class ValueExpressionAnalyzerTest {
                 context,
                 factory.createValueExpression(context, "#{bean}", MyBean.class));
 
-        Assertions.assertEquals(bean, ve.getValue(context));
+        assertEquals(bean, ve.getValue(context));
     }
 
     @Test
-    public void secondLevelValueReference() {
+    void secondLevelValueReference() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -88,11 +91,11 @@ public class ValueExpressionAnalyzerTest {
                 context,
                 factory.createValueExpression(context, "#{bean.container}", MyContainer.class));
 
-        Assertions.assertEquals(bean.getContainer(), ve.getValue(context));
+        assertEquals(bean.getContainer(), ve.getValue(context));
     }
 
     @Test
-    public void secondLevelNullValueReference() {
+    void secondLevelNullValueReference() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -104,11 +107,11 @@ public class ValueExpressionAnalyzerTest {
                 context,
                 factory.createValueExpression(context, "#{bean.container}", MyContainer.class));
 
-        Assertions.assertEquals(null, ve.getValue(context));
+        assertNull(ve.getValue(context));
     }
 
     @Test
-    public void thirdLevelValueReference() {
+    void thirdLevelValueReference() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -122,11 +125,11 @@ public class ValueExpressionAnalyzerTest {
                 context,
                 factory.createValueExpression(context, "#{bean.container.value}", String.class));
 
-        Assertions.assertEquals("test", ve.getValue(context));
+        assertEquals("test", ve.getValue(context));
     }
 
     @Test
-    public void thirdLevelNullValueReference() {
+    void thirdLevelNullValueReference() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -134,16 +137,16 @@ public class ValueExpressionAnalyzerTest {
         de.odysseus.el.util.SimpleContext context = new de.odysseus.el.util.SimpleContext();
         context.setVariable("bean", factory.createValueExpression(bean, MyBean.class));
 
-        Assertions.assertThrows(PropertyNotFoundException.class, () -> {
+        assertThrows(PropertyNotFoundException.class, () -> {
             ValueExpression ve = ValueExpressionAnalyzer.getExpression(
                     context,
                     factory.createValueExpression(context, "#{bean.container.value}", String.class));
-            Assertions.assertEquals(null, ve.getValue(context));
+            assertNull(ve.getValue(context));
         });
     }
 
     @Test
-    public void secondLevelMethodExpression() {
+    void secondLevelMethodExpression() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -157,11 +160,11 @@ public class ValueExpressionAnalyzerTest {
                 context,
                 factory.createValueExpression(context, "#{bean.getContainer().value}", String.class));
 
-        Assertions.assertEquals("test", ve.getValue(context));
+        assertEquals("test", ve.getValue(context));
     }
 
     @Test
-    public void thirdLevelMethodExpression() {
+    void thirdLevelMethodExpression() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -175,11 +178,11 @@ public class ValueExpressionAnalyzerTest {
                 context,
                 factory.createValueExpression(context, "#{bean.container.getValue()}", String.class));
 
-        Assertions.assertEquals("test", ve.getValue(context));
+        assertEquals("test", ve.getValue(context));
     }
 
     @Test
-    public void secondAndThirdLevelMethodExpression() {
+    void secondAndThirdLevelMethodExpression() {
         ExpressionFactory factory = newExpressionFactory();
 
         MyBean bean = new MyBean();
@@ -193,7 +196,7 @@ public class ValueExpressionAnalyzerTest {
                 context,
                 factory.createValueExpression(context, "#{bean.getContainer().getValue()}", String.class));
 
-        Assertions.assertEquals("test", ve.getValue(context));
+        assertEquals("test", ve.getValue(context));
     }
 
     public ExpressionFactory newExpressionFactory() {

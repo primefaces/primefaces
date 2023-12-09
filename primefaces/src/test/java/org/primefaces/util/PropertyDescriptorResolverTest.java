@@ -23,39 +23,40 @@
  */
 package org.primefaces.util;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.beans.PropertyDescriptor;
 import javax.faces.FacesException;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class PropertyDescriptorResolverTest {
+class PropertyDescriptorResolverTest {
 
     @Test
-    public void testGetPropertyDescriptor() {
+    void getPropertyDescriptor() {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         PropertyDescriptor pd = propResolver.get(A.class, "name");
-        Assertions.assertNotNull(pd);
-        Assertions.assertEquals(String.class, pd.getPropertyType());
+        assertNotNull(pd);
+        assertEquals(String.class, pd.getPropertyType());
 
         pd = propResolver.get(B.class, "bool1");
-        Assertions.assertNotNull(pd);
-        Assertions.assertEquals(boolean.class, pd.getPropertyType());
+        assertNotNull(pd);
+        assertEquals(boolean.class, pd.getPropertyType());
 
         pd = propResolver.get(B.class, "bool2");
-        Assertions.assertNotNull(pd);
-        Assertions.assertEquals(Boolean.class, pd.getPropertyType());
+        assertNotNull(pd);
+        assertEquals(Boolean.class, pd.getPropertyType());
 
         pd = propResolver.get(C.class, "b.dummyEnum");
-        Assertions.assertNotNull(pd);
-        Assertions.assertEquals(DummyEnum.class, pd.getPropertyType());
+        assertNotNull(pd);
+        assertEquals(DummyEnum.class, pd.getPropertyType());
 
-        Assertions.assertThrows(FacesException.class, () -> propResolver.get(C.class, "unknown"));
+        assertThrows(FacesException.class, () -> propResolver.get(C.class, "unknown"));
     }
 
     @Test
-    public void testGetValueFromPropertyDescriptor() {
+    void getValueFromPropertyDescriptor() {
         PropertyDescriptorResolver propResolver = new PropertyDescriptorResolver.DefaultResolver();
 
         B b = new B("b", true, Boolean.FALSE, DummyEnum.X);
@@ -63,15 +64,15 @@ public class PropertyDescriptorResolverTest {
         C c = new C(d);
 
         Object obj = propResolver.getValue(c, "b");
-        Assertions.assertEquals(d, obj);
+        assertEquals(d, obj);
 
         obj = propResolver.getValue(c, "b.dummyEnum");
-        Assertions.assertEquals(DummyEnum.Z, obj);
+        assertEquals(DummyEnum.Z, obj);
 
         obj = propResolver.getValue(c, "b.foo");
-        Assertions.assertEquals(123, obj);
+        assertEquals(123, obj);
 
-        Assertions.assertThrows(FacesException.class, () -> propResolver.getValue(b, "unknown"));
+        assertThrows(FacesException.class, () -> propResolver.getValue(b, "unknown"));
     }
 
     private abstract class A {

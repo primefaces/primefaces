@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -36,24 +38,24 @@ import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.ToggleSwitch;
 
-public class DataTable032Test extends AbstractDataTableTest {
+class DataTable032Test extends AbstractDataTableTest {
 
     @Test
     @DisplayName("DataTable: disableSelection")
-    public void testDisabledRowSelection(Page page) {
+    void disabledRowSelection(Page page) {
 
         // rows are always "ui-selection-column", indepdent of if the current row is selection disabled or not
         WebElement firstCell = page.dataTable.getCell(0, 0).getWebElement();
         WebElement secondCell = page.dataTable.getCell(1, 0).getWebElement();
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(firstCell, "ui-selection-column"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(secondCell, "ui-selection-column"));
+        assertTrue(PrimeSelenium.hasCssClass(firstCell, "ui-selection-column"));
+        assertTrue(PrimeSelenium.hasCssClass(secondCell, "ui-selection-column"));
 
         // not selectable yet, try to trigger it, check CSS should be disabled
         WebElement radio = firstCell.findElement(By.className("ui-radiobutton-box"));
         assertCss(radio, "ui-state-disabled");
         assertNotClickable(radio);
         firstCell.click();
-        Assertions.assertTrue(page.messages.isEmpty());
+        assertTrue(page.messages.isEmpty());
 
         // make it selectable now
         ToggleSwitch toggleSwitch = PrimeSelenium.createFragment(ToggleSwitch.class, By.id("form:datatable:0:toggle"));
@@ -67,7 +69,7 @@ public class DataTable032Test extends AbstractDataTableTest {
         radio = firstCell.findElement(By.className("ui-radiobutton-box"));
         assertCss(radio, "ui-state-active");
 
-        Assertions.assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
+        assertEquals("ProgrammingLanguage Selected", page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
     }
 

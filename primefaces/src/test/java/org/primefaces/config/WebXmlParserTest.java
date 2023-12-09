@@ -42,7 +42,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class WebXmlParserTest {
+class WebXmlParserTest {
 
     private static final String XPATH_FACTORY_SYSTEM_PROPERTY =
             XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI;
@@ -63,7 +63,7 @@ public class WebXmlParserTest {
     }
 
     @BeforeEach
-    public void mockContext() throws Exception {
+    void mockContext() throws Exception {
         context = mock(FacesContext.class);
         extContext = mock(ExternalContext.class);
         when(context.getExternalContext()).thenReturn(extContext);
@@ -71,7 +71,7 @@ public class WebXmlParserTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         System.clearProperty(XPATH_FACTORY_SYSTEM_PROPERTY);
     }
 
@@ -84,7 +84,7 @@ public class WebXmlParserTest {
 
     @ParameterizedTest
     @MethodSource("data")
-    public void testSaxon(String pathToWebXml) throws MalformedURLException {
+    void saxon(String pathToWebXml) throws MalformedURLException {
         when(extContext.getResource(anyString())).thenReturn(this.getClass().getResource(pathToWebXml));
         configureXpathFactory(net.sf.saxon.xpath.XPathFactoryImpl.class);
         Map<String, String> errorPages = WebXmlParser.getErrorPages(context);
@@ -93,7 +93,7 @@ public class WebXmlParserTest {
 
     @ParameterizedTest
     @MethodSource("data")
-    public void testInternalJaxp(String pathToWebXml) throws MalformedURLException {
+    void internalJaxp(String pathToWebXml) throws MalformedURLException {
         when(extContext.getResource(anyString())).thenReturn(this.getClass().getResource(pathToWebXml));
         System.clearProperty(XPATH_FACTORY_SYSTEM_PROPERTY); //back to system-default
         Map<String, String> errorPages = WebXmlParser.getErrorPages(context);

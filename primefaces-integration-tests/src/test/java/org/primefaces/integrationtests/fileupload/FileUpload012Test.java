@@ -24,7 +24,6 @@
 
 package org.primefaces.integrationtests.fileupload;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
@@ -34,14 +33,17 @@ import org.primefaces.selenium.component.FileUpload;
 
 import java.io.File;
 
-@Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
-public class FileUpload012Test extends AbstractFileUploadTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+// Selenium SafariDriver does not support file uploads
+@Tag("SafariExclude")
+class FileUpload012Test extends AbstractFileUploadTest {
 
     @Test
-    public void testValidateContentTypeAllowedFile(Page page) {
+    void validateContentTypeAllowedFile(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.csv");
@@ -53,10 +55,10 @@ public class FileUpload012Test extends AbstractFileUploadTest {
     }
 
     @Test
-    public void testValidateContentTypeDisallowedFile(Page page) {
+    void validateContentTypeDisallowedFile(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.pdf");

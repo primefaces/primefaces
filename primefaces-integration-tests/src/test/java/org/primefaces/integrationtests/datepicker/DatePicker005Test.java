@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,12 +38,12 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
 
-public class DatePicker005Test extends AbstractDatePickerTest {
+class DatePicker005Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: preselected range")
-    public void testPreselectedRange(Page page) {
+    void preselectedRange(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
 
@@ -50,51 +51,51 @@ public class DatePicker005Test extends AbstractDatePickerTest {
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
 
         // Assert Panel
-        Assertions.assertNotNull(panel);
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("20")), "ui-state-active"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("25")), "ui-state-active"));
-        Assertions.assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("19")), "ui-state-active"));
-        Assertions.assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("26")), "ui-state-active"));
-        Assertions.assertEquals(6, panel.findElements(By.className("ui-state-active")).size());
+        assertNotNull(panel);
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("20")), "ui-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("25")), "ui-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("19")), "ui-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("26")), "ui-state-active"));
+        assertEquals(6, panel.findElements(By.className("ui-state-active")).size());
 
         // Assert Submit Value
         page.button.click();
-        Assertions.assertEquals("08/20/2020 - 08/25/2020", page.messages.getMessage(0).getDetail());
+        assertEquals("08/20/2020 - 08/25/2020", page.messages.getMessage(0).getDetail());
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("DatePicker: select range")
-    public void testSelectRange(Page page) {
+    void selectRange(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
 
         // Act
         WebElement panel = datePicker.showPanel(); // focus to bring up panel
-        Assertions.assertNotNull(panel);
+        assertNotNull(panel);
         panel.findElement(By.linkText("3")).click();
         panel.findElement(By.linkText("5")).click();
 
         // Assert Panel
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("3")), "ui-state-active"));
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("5")), "ui-state-active"));
-        Assertions.assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("2")), "ui-state-active"));
-        Assertions.assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("6")), "ui-state-active"));
-        Assertions.assertEquals(3, panel.findElements(By.className("ui-state-active")).size());
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("3")), "ui-state-active"));
+        assertTrue(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("5")), "ui-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("2")), "ui-state-active"));
+        assertFalse(PrimeSelenium.hasCssClass(panel.findElement(By.linkText("6")), "ui-state-active"));
+        assertEquals(3, panel.findElements(By.className("ui-state-active")).size());
 
         // Assert Submit Value
         page.button.click();
-        Assertions.assertEquals("08/03/2020 - 08/05/2020", page.messages.getMessage(0).getDetail());
+        assertEquals("08/03/2020 - 08/05/2020", page.messages.getMessage(0).getDetail());
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
-        Assertions.assertEquals("range", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
+        assertEquals("range", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

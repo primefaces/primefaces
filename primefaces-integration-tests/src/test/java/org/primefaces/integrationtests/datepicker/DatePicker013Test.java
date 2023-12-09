@@ -24,37 +24,42 @@
 package org.primefaces.integrationtests.datepicker;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDateTime;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 
-public class DatePicker013Test extends AbstractDatePickerTest {
+class DatePicker013Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @Tag("Jsf22Exclude")
     @DisplayName("DatePicker: f:convertDateTime vs internal conversion")
-    public void testFConvertDateTimeVsInternal(Page page) {
+    void fConvertDateTimeVsInternal(Page page) {
         // Arrange
         DatePicker datePicker1 = page.datePicker1;
         DatePicker datePicker2 = page.datePicker2;
         LocalDateTime expected = LocalDateTime.of(2021, 1, 10, 1, 16, 04);
 
         // Assert
-        Assertions.assertEquals(expected, datePicker1.getValue());
-        Assertions.assertEquals(expected, datePicker2.getValue());
+        assertEquals(expected, datePicker1.getValue());
+        assertEquals(expected, datePicker2.getValue());
 
         // Act
         page.button.click();
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals(expected, datePicker1.getValue());
-        Assertions.assertEquals(expected, datePicker2.getValue());
+        assertEquals(expected, datePicker1.getValue());
+        assertEquals(expected, datePicker2.getValue());
     }
 
     public static class Page extends AbstractPrimePage {

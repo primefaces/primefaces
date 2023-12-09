@@ -23,6 +23,8 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -31,13 +33,15 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu010Test extends AbstractPrimePageTest {
+class SelectOneMenu010Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: basic usecase with groups")
-    public void testBasic(Page page) {
-        page.selectOneMenu.select(1);
+    void basic(Page page) {
+        assertDoesNotThrow(() -> {
+            page.selectOneMenu.select(1);
+        });
     }
 
     public static class Page extends AbstractPrimePage {

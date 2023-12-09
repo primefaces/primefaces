@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.selectcheckboxmenu;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,12 +36,12 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectCheckboxMenu;
 
-public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
+class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectCheckboxMenu: select value and submit")
-    public void testSubmit(Page page) {
+    void submit(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         String value = "London";
@@ -62,7 +63,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectCheckboxMenu: disable the input")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         String value = "Rome";
@@ -81,7 +82,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("SelectCheckboxMenu: enable the input")
-    public void testEnabled(Page page) {
+    void enabled(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         String value = "Paris";
@@ -103,7 +104,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("SelectCheckboxMenu: check all the values")
-    public void testCheckAll(Page page) {
+    void checkAll(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         assertSelected(menu, 0);
@@ -131,7 +132,7 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("SelectCheckboxMenu: uncheck all the values")
-    public void testUncheckAll(Page page) {
+    void uncheckAll(Page page) {
         // Arrange
         SelectCheckboxMenu menu = page.selectCheckboxMenu;
         menu.checkAll();
@@ -149,23 +150,23 @@ public class SelectCheckboxMenu001Test extends AbstractPrimePageTest {
     }
 
     private void assertSelected(SelectCheckboxMenu menu, int count) {
-        Assertions.assertEquals(count, menu.getSelectedCheckboxes().size());
+        assertEquals(count, menu.getSelectedCheckboxes().size());
     }
 
     private void assertLabel(SelectCheckboxMenu menu, String label) {
-        Assertions.assertEquals(label, menu.getLabel().getText());
+        assertEquals(label, menu.getLabel().getText());
     }
 
     private void assertValue(WebElement checkbox, String value) {
-        Assertions.assertEquals(value, checkbox.getAttribute("value"));
-        Assertions.assertEquals("aria-checked", checkbox.getDomAttribute("aria-checked"));
+        assertEquals(value, checkbox.getAttribute("value"));
+        assertEquals("aria-checked", checkbox.getDomAttribute("aria-checked"));
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
-        Assertions.assertFalse(cfg.getBoolean("dynamic"));
-        Assertions.assertTrue(cfg.getBoolean("showHeader"));
-        Assertions.assertEquals("@(body)", cfg.get("appendTo"));
+        assertFalse(cfg.getBoolean("dynamic"));
+        assertTrue(cfg.getBoolean("showHeader"));
+        assertEquals("@(body)", cfg.get("appendTo"));
         System.out.println("SelectCheckboxMenu Config = " + cfg);
     }
 

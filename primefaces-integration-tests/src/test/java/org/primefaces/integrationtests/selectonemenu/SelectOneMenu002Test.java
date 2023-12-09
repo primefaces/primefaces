@@ -23,10 +23,12 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,22 +40,22 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectOneMenu;
 
-public class SelectOneMenu002Test extends AbstractPrimePageTest {
+class SelectOneMenu002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: SelectItemGroup")
-    public void testSelectItemGroup(Page page) {
+    void selectItemGroup(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Select One", selectOneMenu.getSelectedLabel());
+        assertEquals("Select One", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.select("Volkswagen");
         page.button.click();
 
         // Assert - part 1
-        Assertions.assertEquals("Volkswagen", selectOneMenu.getSelectedLabel());
+        assertEquals("Volkswagen", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act
@@ -62,14 +64,14 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         // Assert - part 2
         // items
         List<WebElement> optgroups = selectOneMenu.getInput().findElements(By.tagName("optgroup"));
-        Assertions.assertEquals(2, optgroups.size());
+        assertEquals(2, optgroups.size());
         List<WebElement> options = selectOneMenu.getInput().findElements(By.tagName("option"));
-        Assertions.assertEquals(11, options.size());
+        assertEquals(11, options.size());
         // panel-content
         optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
-        Assertions.assertEquals(2, optgroups.size());
+        assertEquals(2, optgroups.size());
         options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(11, options.size());
+        assertEquals(11, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -77,7 +79,7 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectOneMenu: escape=true/false")
-    public void testEscape(Page page) {
+    void escape(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -86,14 +88,14 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
 
         // Assert - part 1
         List<WebElement> optgroups = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item-group"));
-        Assertions.assertEquals("German Cars", optgroups.get(0).getText());
-        Assertions.assertEquals("American <Cars>", optgroups.get(1).getText());
+        assertEquals("German Cars", optgroups.get(0).getText());
+        assertEquals("American <Cars>", optgroups.get(1).getText());
 
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals("Mercedes", options.get(2).getText());
-        Assertions.assertEquals("Chry<sler", options.get(4).getText());
-        Assertions.assertEquals("GitHub \"9336\" Quoted", options.get(8).getText());
-        Assertions.assertEquals("< GitHub <i>9336</i>", options.get(9).getText());
+        assertEquals("Mercedes", options.get(2).getText());
+        assertEquals("Chry<sler", options.get(4).getText());
+        assertEquals("GitHub \"9336\" Quoted", options.get(8).getText());
+        assertEquals("< GitHub <i>9336</i>", options.get(9).getText());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
@@ -101,35 +103,35 @@ public class SelectOneMenu002Test extends AbstractPrimePageTest {
         selectOneMenu.select("Ford & Lincoln");
 
         // Assert - part 2
-        Assertions.assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
+        assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act - part 3
         page.button.click();
 
         // Assert - part 3
-        Assertions.assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
+        assertEquals("Ford & Lincoln", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act - part 4
         selectOneMenu.select("< GitHub <i>9336</i>");
 
         // Assert - part 4
-        Assertions.assertEquals("< GitHub <i>9336</i>", selectOneMenu.getSelectedLabel());
+        assertEquals("< GitHub <i>9336</i>", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act - part 5
         selectOneMenu.select("GitHub \"9336\" Quoted");
 
         // Assert - part 5
-        Assertions.assertEquals("GitHub \"9336\" Quoted", selectOneMenu.getSelectedLabel());
+        assertEquals("GitHub \"9336\" Quoted", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

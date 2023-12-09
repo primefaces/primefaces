@@ -35,13 +35,13 @@ import org.junit.jupiter.api.Test;
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 
-public class TerminalAutoCompleteTest {
+class TerminalAutoCompleteTest {
 
     private Terminal terminal;
     private TerminalAutoCompleteModel model;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         terminal = new Terminal();
 
         model = new TerminalAutoCompleteModel();
@@ -58,13 +58,13 @@ public class TerminalAutoCompleteTest {
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         terminal = null;
         model = null;
     }
 
     @Test
-    public void givenGThenReturnsGit() {
+    void givenGThenReturnsGit() {
         // given
         String input = "g";
         String[] args = {};
@@ -78,7 +78,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenGitThenReturnsAllSecondLevelArguments() {
+    void givenGitThenReturnsAllSecondLevelArguments() {
         // given
         String input = "git";
         String[] args = {};
@@ -92,7 +92,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenGitCThenReturnsCommitAndCheckout() {
+    void givenGitCThenReturnsCommitAndCheckout() {
         // given
         String input = "git";
         String[] args = {"c"};
@@ -106,7 +106,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenGitCThenReturnsCommit() {
+    void givenGitCThenReturnsCommit() {
         // given
         String input = "git";
         String[] args = {"co"};
@@ -120,7 +120,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenGitPThenReturnsPullAndPush() {
+    void givenGitPThenReturnsPullAndPush() {
         // given
         String input = "git";
         String[] args = {"p"};
@@ -134,7 +134,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenGitRThenReturnsRebase() {
+    void givenGitRThenReturnsRebase() {
         // given
         String input = "git";
         String[] args = {"r"};
@@ -148,7 +148,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenGitPushOThenReturnsGitPushOrigin() {
+    void givenGitPushOThenReturnsGitPushOrigin() {
         // given
         String input = "git";
         String[] args = {"push", "o"};
@@ -162,7 +162,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenGitPushOriginThenReturnsGitPushOriginMaster() {
+    void givenGitPushOriginThenReturnsGitPushOriginMaster() {
         // given
         String input = "git";
         String[] args = {"push", "origin"};

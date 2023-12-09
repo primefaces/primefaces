@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.slider;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,16 +38,16 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Slider;
 
-public class Slider001Test extends AbstractPrimePageTest {
+class Slider001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Slider: int-value")
-    public void testIntValue(Page page) {
+    void intValue(Page page) {
         // Arrange
         Slider slider = page.sliderInt;
         InputText inputText = page.inputInt;
-        Assertions.assertEquals(5, slider.getValue().intValue());
+        assertEquals(5, slider.getValue().intValue());
 
         // Act - add value
         slider.setValue(8);
@@ -61,11 +63,11 @@ public class Slider001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Slider: float-value")
-    public void testFloatValue(Page page) {
+    void floatValue(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
         InputText inputText = page.inputFloat;
-        Assertions.assertEquals(3.14f, slider.getValue().floatValue());
+        assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value
         slider.setValue(9.9f);
@@ -81,11 +83,11 @@ public class Slider001Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("Slider: Negative not accepted if min >= 0")
-    public void testNegativeRejected(Page page) {
+    void negativeRejected(Page page) {
         // Arrange
         Slider slider = page.sliderInt;
         InputText inputText = page.inputInt;
-        Assertions.assertEquals(5, slider.getValue().intValue());
+        assertEquals(5, slider.getValue().intValue());
 
         // Act - add value
         inputText.setValue("-7");
@@ -101,11 +103,11 @@ public class Slider001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("Slider: Decimal not accepted if integer only and max reached")
-    public void testDecimalRejected(Page page) {
+    void decimalRejected(Page page) {
         // Arrange
         Slider slider = page.sliderInt;
         InputText inputText = page.inputInt;
-        Assertions.assertEquals(5, slider.getValue().intValue());
+        assertEquals(5, slider.getValue().intValue());
 
         // Act - add value
         inputText.setValue("6.4");
@@ -115,19 +117,19 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
         assertIntConfiguration(slider.getWidgetConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("Slider: Negative accepted if min < 0")
-    public void testNegativeAccepted(Page page) {
+    void negativeAccepted(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
         InputText inputText = page.inputFloat;
-        Assertions.assertEquals(3.14f, slider.getValue().floatValue());
+        assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value
         inputText.setValue("-3.87");
@@ -143,11 +145,11 @@ public class Slider001Test extends AbstractPrimePageTest {
     @Test
     @Order(6)
     @DisplayName("Slider: Only allow one negative symbol")
-    public void testMultipleNegativesRejected(Page page) {
+    void multipleNegativesRejected(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
         InputText inputText = page.inputFloat;
-        Assertions.assertEquals(3.14f, slider.getValue().floatValue());
+        assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value
         inputText.setValue("-4.5-6");
@@ -163,11 +165,11 @@ public class Slider001Test extends AbstractPrimePageTest {
     @Test
     @Order(6)
     @DisplayName("Slider: Only allow one decimal symbol")
-    public void testMultipleDecimalsRejected(Page page) {
+    void multipleDecimalsRejected(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
         InputText inputText = page.inputFloat;
-        Assertions.assertEquals(3.14f, slider.getValue().floatValue());
+        assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value
         inputText.setValue("2.9...8");
@@ -183,10 +185,10 @@ public class Slider001Test extends AbstractPrimePageTest {
     @Test
     @Order(7)
     @DisplayName("Slider: Don't allow value past minimum")
-    public void testMinimum(Page page) {
+    void minimum(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
-        Assertions.assertEquals(3.14f, slider.getValue().floatValue());
+        assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value
         slider.setValue(-11.0f);
@@ -194,18 +196,18 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
         assertFloatConfiguration(slider.getWidgetConfiguration());
     }
 
     @Test
     @Order(8)
     @DisplayName("Slider: Don't allow value past maximum")
-    public void testMaximum(Page page) {
+    void maximum(Page page) {
         // Arrange
         Slider slider = page.sliderfloat;
-        Assertions.assertEquals(3.14f, slider.getValue().floatValue());
+        assertEquals(3.14f, slider.getValue().floatValue());
 
         // Act - add value
         slider.setValue(11.99f);
@@ -213,40 +215,40 @@ public class Slider001Test extends AbstractPrimePageTest {
 
         // Assert
         // Mojarra and MyFaces have slightly different behaviour - we check their common behaviour
-        Assertions.assertEquals(1, page.messages.getAllMessages().size());
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
+        assertEquals(1, page.messages.getAllMessages().size());
+        assertTrue(page.messages.getMessage(0).getSummary().contains("Value is out of range."));
         assertFloatConfiguration(slider.getWidgetConfiguration());
     }
 
     private void assertValue(Slider slider, InputText inputText, Number value) {
         if (value instanceof Integer) {
-            Assertions.assertEquals(value.intValue(), slider.getValue().intValue());
+            assertEquals(value.intValue(), slider.getValue().intValue());
         }
         else {
-            Assertions.assertEquals(value.floatValue(), slider.getValue().floatValue());
+            assertEquals(value.floatValue(), slider.getValue().floatValue());
         }
-        Assertions.assertEquals(value.toString(), inputText.getValue());
+        assertEquals(value.toString(), inputText.getValue());
     }
 
     private void assertFloatConfiguration(JSONObject cfg) {
         assertConfiguration(cfg);
-        Assertions.assertEquals(-10, cfg.getInt("min"));
-        Assertions.assertEquals(10, cfg.getInt("max"));
-        Assertions.assertEquals("0.01", cfg.get("step").toString());
+        assertEquals(-10, cfg.getInt("min"));
+        assertEquals(10, cfg.getInt("max"));
+        assertEquals("0.01", cfg.get("step").toString());
     }
 
     private void assertIntConfiguration(JSONObject cfg) {
         assertConfiguration(cfg);
-        Assertions.assertEquals(0, cfg.getInt("min"));
-        Assertions.assertEquals(50, cfg.getInt("max"));
-        Assertions.assertEquals(1, cfg.getInt("step"));
+        assertEquals(0, cfg.getInt("min"));
+        assertEquals(50, cfg.getInt("max"));
+        assertEquals(1, cfg.getInt("step"));
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Slider Config = " + cfg);
-        Assertions.assertTrue(cfg.has("id"));
-        Assertions.assertTrue(cfg.getBoolean("animate"));
+        assertTrue(cfg.has("id"));
+        assertTrue(cfg.getBoolean("animate"));
     }
 
     public static class Page extends AbstractPrimePage {

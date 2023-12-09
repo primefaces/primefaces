@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,70 +34,72 @@ import org.primefaces.selenium.component.model.tree.TreeNode;
 
 import java.util.List;
 
-public class Tree007Test extends AbstractTreeTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class Tree007Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: Partial/Selection with preselection")
-    public void testPreselection(Page page) {
+    void preselection(Page page) {
 
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
-        Assertions.assertNotNull(children);
+        assertNotNull(children);
 
         TreeNode documentsNode = children.get(0);
-        Assertions.assertTrue(documentsNode.isPartialSelected());
-        Assertions.assertFalse(documentsNode.isExpanded());
+        assertTrue(documentsNode.isPartialSelected());
+        assertFalse(documentsNode.isExpanded());
 
         TreeNode eventsNode = children.get(1);
-        Assertions.assertTrue(eventsNode.isSelected());
-        Assertions.assertFalse(eventsNode.isExpanded());
+        assertTrue(eventsNode.isSelected());
+        assertFalse(eventsNode.isExpanded());
         eventsNode.toggle();
-        Assertions.assertTrue(eventsNode.isExpanded());
+        assertTrue(eventsNode.isExpanded());
 
         TreeNode meetingNode = eventsNode.getChildren().get(0);
-        Assertions.assertTrue(meetingNode.isSelected());
+        assertTrue(meetingNode.isSelected());
         meetingNode.select();
-        Assertions.assertFalse(meetingNode.isSelected());
+        assertFalse(meetingNode.isSelected());
 
-        Assertions.assertTrue(eventsNode.isPartialSelected());
+        assertTrue(eventsNode.isPartialSelected());
     }
 
     @Test
     @Order(1)
     @DisplayName("Tree: Partial/Selection Without preselection")
-    public void testWithoutPreselection(PageWithoutPreselection page) {
+    void withoutPreselection(PageWithoutPreselection page) {
 
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
-        Assertions.assertNotNull(children);
+        assertNotNull(children);
 
         TreeNode documentsNode = children.get(0);
-        Assertions.assertFalse(documentsNode.isSelected());
-        Assertions.assertFalse(documentsNode.isExpanded());
+        assertFalse(documentsNode.isSelected());
+        assertFalse(documentsNode.isExpanded());
 
         TreeNode eventsNode = children.get(1);
-        Assertions.assertFalse(eventsNode.isSelected());
-        Assertions.assertFalse(eventsNode.isExpanded());
+        assertFalse(eventsNode.isSelected());
+        assertFalse(eventsNode.isExpanded());
         eventsNode.toggle();
-        Assertions.assertTrue(eventsNode.isExpanded());
+        assertTrue(eventsNode.isExpanded());
 
         eventsNode.select();
 
-        Assertions.assertTrue(eventsNode.isSelected());
+        assertTrue(eventsNode.isSelected());
 
         TreeNode meetingNode = eventsNode.getChildren().get(0);
-        Assertions.assertTrue(meetingNode.isSelected());
+        assertTrue(meetingNode.isSelected());
         meetingNode.select();
 
-        Assertions.assertFalse(meetingNode.isSelected());
-        Assertions.assertTrue(eventsNode.isPartialSelected());
+        assertFalse(meetingNode.isSelected());
+        assertTrue(eventsNode.isPartialSelected());
     }
 
     public static class Page extends AbstractPrimePage {

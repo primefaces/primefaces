@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,45 +38,45 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.model.datatable.Row;
 
-public class DataTable016Test extends AbstractDataTableTest {
+class DataTable016Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: RowGroup - header row and summary row")
-    public void testRowGroup(Page page) {
+    void rowGroup(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         //page.button.click();
 
         // Assert
-        Assertions.assertNotNull(dataTable.getHeaderWebElement());
+        assertNotNull(dataTable.getHeaderWebElement());
 
         List<WebElement> rowElts = dataTable.getRowsWebElement();
-        Assertions.assertNotNull(rowElts);
-        Assertions.assertEquals(languages.size() + 2 + 2, rowElts.size()); //plus 2 header-rows plus 2 summary-rows
+        assertNotNull(rowElts);
+        assertEquals(languages.size() + 2 + 2, rowElts.size()); //plus 2 header-rows plus 2 summary-rows
 
         List<Row> rows = dataTable.getRows();
-        Assertions.assertNotNull(rows);
-        Assertions.assertEquals(languages.size() + 2 + 2, rows.size()); //plus 2 header-rows plus 2 summary-rows
+        assertNotNull(rows);
+        assertEquals(languages.size() + 2 + 2, rows.size()); //plus 2 header-rows plus 2 summary-rows
 
         //check header-rows
-        Assertions.assertEquals("4", dataTable.getCell(0, 0).getWebElement().getAttribute("colspan"));
-        Assertions.assertEquals("COMPILED", dataTable.getCell(0, 0).getText());
-        Assertions.assertEquals(1, dataTable.getCell(0, 0).getWebElement().findElements(By.className("ui-rowgroup-toggler")).size());
-        Assertions.assertEquals("4", dataTable.getCell(4, 0).getWebElement().getAttribute("colspan"));
-        Assertions.assertEquals("INTERPRETED", dataTable.getCell(4, 0).getText());
-        Assertions.assertEquals(1, dataTable.getCell(4, 0).getWebElement().findElements(By.className("ui-rowgroup-toggler")).size());
+        assertEquals("4", dataTable.getCell(0, 0).getWebElement().getAttribute("colspan"));
+        assertEquals("COMPILED", dataTable.getCell(0, 0).getText());
+        assertEquals(1, dataTable.getCell(0, 0).getWebElement().findElements(By.className("ui-rowgroup-toggler")).size());
+        assertEquals("4", dataTable.getCell(4, 0).getWebElement().getAttribute("colspan"));
+        assertEquals("INTERPRETED", dataTable.getCell(4, 0).getText());
+        assertEquals(1, dataTable.getCell(4, 0).getWebElement().findElements(By.className("ui-rowgroup-toggler")).size());
 
         //check summary-rows
-        Assertions.assertEquals("3", dataTable.getCell(3, 0).getWebElement().getAttribute("colspan"));
-        Assertions.assertEquals("Total programming languages:", dataTable.getCell(3, 0).getText());
-        Assertions.assertEquals("2", dataTable.getCell(3, 1).getText());
-        Assertions.assertEquals("3", dataTable.getCell(8, 0).getWebElement().getAttribute("colspan"));
-        Assertions.assertEquals("Total programming languages:", dataTable.getCell(8, 0).getText());
-        Assertions.assertEquals("3", dataTable.getCell(8, 1).getText());
+        assertEquals("3", dataTable.getCell(3, 0).getWebElement().getAttribute("colspan"));
+        assertEquals("Total programming languages:", dataTable.getCell(3, 0).getText());
+        assertEquals("2", dataTable.getCell(3, 1).getText());
+        assertEquals("3", dataTable.getCell(8, 0).getWebElement().getAttribute("colspan"));
+        assertEquals("Total programming languages:", dataTable.getCell(8, 0).getText());
+        assertEquals("3", dataTable.getCell(8, 1).getText());
 
         //remove header- and summary-rows
         rows.remove(8); //second summary-row
@@ -91,7 +92,7 @@ public class DataTable016Test extends AbstractDataTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("groupColumnIndexes"));
+        assertTrue(cfg.has("groupColumnIndexes"));
     }
 
     public static class Page extends AbstractPrimePage {

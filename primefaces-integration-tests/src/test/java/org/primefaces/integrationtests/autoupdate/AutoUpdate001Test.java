@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.autoupdate;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,12 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 
-public class AutoUpdate001Test extends AbstractPrimePageTest {
+class AutoUpdate001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("AutoUpdate: Globally update all AutoUpdate components")
-    public void testGlobal(Page page) {
+    void global(Page page) {
         // Arrange
         assertInitialValues(page);
 
@@ -47,15 +48,15 @@ public class AutoUpdate001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("global", page.displayGlobal.getText());
-        Assertions.assertEquals("", page.displayEvent1.getText());
-        Assertions.assertEquals("", page.displayEvent2.getText());
+        assertEquals("global", page.displayGlobal.getText());
+        assertEquals("", page.displayEvent1.getText());
+        assertEquals("", page.displayEvent2.getText());
     }
 
     @Test
     @Order(2)
     @DisplayName("AutoUpdate: Pub/Sub only update the events subscribed")
-    public void testPubSubEvent1(Page page) {
+    void pubSubEvent1(Page page) {
         // Arrange
         assertInitialValues(page);
 
@@ -64,15 +65,15 @@ public class AutoUpdate001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("one", page.displayGlobal.getText());
-        Assertions.assertEquals("one", page.displayEvent1.getText());
-        Assertions.assertEquals("", page.displayEvent2.getText());
+        assertEquals("one", page.displayGlobal.getText());
+        assertEquals("one", page.displayEvent1.getText());
+        assertEquals("", page.displayEvent2.getText());
     }
 
     @Test
     @Order(3)
     @DisplayName("AutoUpdate: Pub/Sub only update the events subscribed")
-    public void testPubSubEvent2(Page page) {
+    void pubSubEvent2(Page page) {
         // Arrange
         assertInitialValues(page);
 
@@ -81,15 +82,15 @@ public class AutoUpdate001Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("two", page.displayGlobal.getText());
-        Assertions.assertEquals("", page.displayEvent1.getText());
-        Assertions.assertEquals("two", page.displayEvent2.getText());
+        assertEquals("two", page.displayGlobal.getText());
+        assertEquals("", page.displayEvent1.getText());
+        assertEquals("two", page.displayEvent2.getText());
     }
 
     private void assertInitialValues(Page page) {
-        Assertions.assertEquals("", page.displayGlobal.getText());
-        Assertions.assertEquals("", page.displayEvent1.getText());
-        Assertions.assertEquals("", page.displayEvent2.getText());
+        assertEquals("", page.displayGlobal.getText());
+        assertEquals("", page.displayEvent1.getText());
+        assertEquals("", page.displayEvent2.getText());
     }
 
     public static class Page extends AbstractPrimePage {

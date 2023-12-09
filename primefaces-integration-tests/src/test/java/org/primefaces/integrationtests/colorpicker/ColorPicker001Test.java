@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.colorpicker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,15 +37,15 @@ import org.primefaces.selenium.component.ColorPicker;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-public class ColorPicker001Test extends AbstractColorPickerTest {
+class ColorPicker001Test extends AbstractColorPickerTest {
 
     @Test
     @Order(1)
     @DisplayName("ColorPicker: validate popup is displayed on click")
-    public void testPopupOnClick(Page page) {
+    void popupOnClick(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.click();
@@ -59,10 +60,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(2)
     @DisplayName("ColorPicker: Hex setColor widget method")
-    public void testSetHexColor(Page page) {
+    void setHexColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("#A427aE");
@@ -76,10 +77,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(3)
     @DisplayName("ColorPicker: Hex Alpha setColor widget method")
-    public void testSetHexAlphaColor(Page page) {
+    void setHexAlphaColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("#0080009e");
@@ -93,10 +94,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(4)
     @DisplayName("ColorPicker: RGB setColor widget method")
-    public void testSetRgbColor(Page page) {
+    void setRgbColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("RGB(0,48,108)");
@@ -110,10 +111,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(5)
     @DisplayName("ColorPicker: RGB Alpha setColor widget method")
-    public void testSetRgbAlphaColor(Page page) {
+    void setRgbAlphaColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("rgba(255, 0, 0, 0.68)");
@@ -127,10 +128,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(6)
     @DisplayName("ColorPicker: HSL setColor widget method")
-    public void testSetHslColor(Page page) {
+    void setHslColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("HSL(171, 55%, 20%)");
@@ -144,10 +145,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(7)
     @DisplayName("ColorPicker: HSL Alpha setColor widget method")
-    public void testSetHslAlphaColor(Page page) {
+    void setHslAlphaColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.setColor("hsla(0, 100%, 50%, 0.68)");
@@ -161,10 +162,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(8)
     @DisplayName("ColorPicker: Invalid color format should be prevented server side")
-    public void testSetInvalidColor(Page page) {
+    void setInvalidColor(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertEquals("#2a9d8f", colorPicker.getColor());
+        assertEquals("#2a9d8f", colorPicker.getColor());
 
         // Act
         colorPicker.getInput().sendKeys("XXXXX");
@@ -178,17 +179,17 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(9)
     @DisplayName("ColorPicker: Use disable() widget method to disable component")
-    public void testDisable(Page page) {
+    void disable(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertTrue(colorPicker.isEnabled());
+        assertTrue(colorPicker.isEnabled());
 
         // Act
         colorPicker.disable();
         WebElement panel = colorPicker.showPanel();
 
         // Assert
-        Assertions.assertFalse(colorPicker.isEnabled());
+        assertFalse(colorPicker.isEnabled());
         assertNotDisplayed(panel);
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
@@ -196,18 +197,18 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(10)
     @DisplayName("ColorPicker: Use enable() widget method to enable component")
-    public void testEnable(Page page) {
+    void enable(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
         colorPicker.disable();
-        Assertions.assertFalse(colorPicker.isEnabled());
+        assertFalse(colorPicker.isEnabled());
 
         // Act
         colorPicker.enable();
         WebElement panel = colorPicker.showPanel();
 
         // Assert
-        Assertions.assertTrue(colorPicker.isEnabled());
+        assertTrue(colorPicker.isEnabled());
         assertDisplayed(panel);
         assertConfiguration(colorPicker.getWidgetConfiguration());
     }
@@ -215,10 +216,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(11)
     @DisplayName("ColorPicker: Destroy the widget and make sure its no longer a picker")
-    public void testDestroy(Page page) {
+    void destroy(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertTrue(colorPicker.isEnabled());
+        assertTrue(colorPicker.isEnabled());
         WebElement triggerButton = colorPicker.getTriggerButton();
         assertClickable(triggerButton);
 
@@ -233,10 +234,10 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(12)
     @DisplayName("ColorPicker: Trigger the popup wih keyboard")
-    public void testKeyboardAccessibility(Page page) {
+    void keyboardAccessibility(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
-        Assertions.assertTrue(colorPicker.isEnabled());
+        assertTrue(colorPicker.isEnabled());
         WebElement triggerButton = colorPicker.getTriggerButton();
         assertClickable(triggerButton);
 
@@ -251,7 +252,7 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     @Test
     @Order(13)
     @DisplayName("ColorPicker: Check all ARIA labels")
-    public void testAria(Page page) {
+    void aria(Page page) {
         // Arrange
         ColorPicker colorPicker = page.colorPicker;
 
@@ -275,15 +276,15 @@ public class ColorPicker001Test extends AbstractColorPickerTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("ColorPicker Config = " + cfg);
-        Assertions.assertEquals("popup", cfg.getString("mode"));
-        Assertions.assertEquals("light", cfg.getString("themeMode"));
-        Assertions.assertEquals("pill", cfg.getString("theme"));
-        Assertions.assertEquals("en", cfg.getString("locale"));
-        Assertions.assertEquals("Clear", cfg.getString("clearLabel"));
-        Assertions.assertEquals("Close", cfg.getString("closeLabel"));
-        Assertions.assertTrue(cfg.getBoolean("clearButton"));
-        Assertions.assertTrue(cfg.getBoolean("closeButton"));
-        Assertions.assertTrue(cfg.getBoolean("formatToggle"));
+        assertEquals("popup", cfg.getString("mode"));
+        assertEquals("light", cfg.getString("themeMode"));
+        assertEquals("pill", cfg.getString("theme"));
+        assertEquals("en", cfg.getString("locale"));
+        assertEquals("Clear", cfg.getString("clearLabel"));
+        assertEquals("Close", cfg.getString("closeLabel"));
+        assertTrue(cfg.getBoolean("clearButton"));
+        assertTrue(cfg.getBoolean("closeButton"));
+        assertTrue(cfg.getBoolean("formatToggle"));
     }
 
     public static class Page extends AbstractPrimePage {

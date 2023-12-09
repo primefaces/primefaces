@@ -31,10 +31,10 @@ import org.primefaces.selenium.component.DataTable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Datatable041Test extends AbstractPrimePageTest {
+class Datatable041Test extends AbstractPrimePageTest {
 
     @Test
-    public void testRowExpansion(Page page) {
+    void rowExpansion(Page page) {
         // Act
         page.dataTable.getRow(0).toggle();
         page.dataTable.getRow(1).toggle();

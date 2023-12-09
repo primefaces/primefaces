@@ -23,9 +23,11 @@
  */
 package org.primefaces.integrationtests.timeline;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -38,12 +40,12 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Timeline;
 import org.primefaces.selenium.component.model.Msg;
 
-public class Timeline002Test extends AbstractPrimePageTest {
+class Timeline002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Timeline: GitHub #6721 B.C. Dates show and check for JS-errors")
-    public void testBCDates_6721(Page page) {
+    void bCDates_6721(Page page) {
         // Arrange
         Timeline timeline = page.timeline;
 
@@ -53,19 +55,19 @@ public class Timeline002Test extends AbstractPrimePageTest {
 
         // Assert
         Msg message = page.messages.getMessage(0);
-        Assertions.assertEquals("Selected event:", message.getSummary());
-        Assertions.assertEquals("164 B.C.", message.getDetail());
+        assertEquals("Selected event:", message.getSummary());
+        assertEquals("164 B.C.", message.getDetail());
         assertConfiguration(timeline.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Timeline Config = " + cfg);
-        Assertions.assertTrue(cfg.has("data"));
+        assertTrue(cfg.has("data"));
         JSONArray data = cfg.getJSONArray("data");
         JSONObject event = data.getJSONObject(0);
-        Assertions.assertEquals("-000164-06", event.getString("start").substring(0, 10));
-        Assertions.assertEquals("164 B.C.", event.get("content"));
+        assertEquals("-000164-06", event.getString("start").substring(0, 10));
+        assertEquals("164 B.C.", event.get("content"));
     }
 
     public static class Page extends AbstractPrimePage {

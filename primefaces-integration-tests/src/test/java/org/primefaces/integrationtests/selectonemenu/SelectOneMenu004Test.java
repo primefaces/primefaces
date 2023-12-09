@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.selectonemenu;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -40,12 +39,14 @@ import org.primefaces.selenium.component.SelectOneMenu;
 
 import java.util.List;
 
-public class SelectOneMenu004Test extends AbstractPrimePageTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class SelectOneMenu004Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: dynamic - load items on demand")
-    public void testDynamic(Page page) {
+    void dynamic(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
@@ -58,14 +59,14 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
         catch (NoSuchElementException ex) {
 
         }
-        Assertions.assertEquals(false, contentPanelExists);
+        assertFalse(contentPanelExists);
 
         // Act
         selectOneMenu.toggleDropdown();
 
         // Assert
         List<WebElement> options = selectOneMenu.getItems().findElements(By.className("ui-selectonemenu-item"));
-        Assertions.assertEquals(5, options.size());
+        assertEquals(5, options.size());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -73,7 +74,7 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("SelectOneMenu: dynamic - don´t loose selection on submit")
-    public void testDynamic2(Page page) {
+    void dynamic2(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu2;
 
@@ -81,8 +82,8 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertTrue(page.messages.getMessage(0).getSummary().contains("console2"));
-        Assertions.assertTrue(page.messages.getMessage(0).getDetail().contains("PS4"));
+        assertTrue(page.messages.getMessage(0).getSummary().contains("console2"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("PS4"));
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -90,7 +91,7 @@ public class SelectOneMenu004Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("dynamic"));
+        assertTrue(cfg.has("dynamic"));
     }
 
     public static class Page extends AbstractPrimePage {

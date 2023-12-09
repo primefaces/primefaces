@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.selectonemenu;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,22 +34,22 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.*;
 
-public class SelectOneMenu001Test extends AbstractPrimePageTest {
+class SelectOneMenu001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: basic usecase")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.select("Max");
         page.button.click();
 
         // Assert - part 1
-        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertEquals("Max", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act
@@ -56,17 +57,17 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert - part 2
-        Assertions.assertEquals("Charles", selectOneMenu.getSelectedLabel());
+        assertEquals("Charles", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("SelectOneMenu: Selecting a record by typing some letters #4682")
-    public void testSelectingByTypingSomeLetters(Page page) {
+    void selectingByTypingSomeLetters(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.getLabel().sendKeys("La");
@@ -74,7 +75,7 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert - part 1
-        Assertions.assertEquals("Lando", selectOneMenu.getSelectedLabel());
+        assertEquals("Lando", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
 
         // Act
@@ -83,17 +84,17 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert - part 2
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("SelectOneMenu: show panel")
-    public void testShowPanel(Page page) {
+    void showPanel(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.show();
@@ -106,10 +107,10 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("SelectOneMenu: hide panel")
-    public void testHidePanel(Page page) {
+    void hidePanel(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.show();
@@ -123,10 +124,10 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("SelectOneMenu: disable panel")
-    public void testDisablePanel(Page page) {
+    void disablePanel(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.disable();
@@ -134,17 +135,17 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert - value should not be accepted
         assertNotClickable(selectOneMenu);
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(6)
     @DisplayName("SelectOneMenu: enable panel")
-    public void testEnablePanel(Page page) {
+    void enablePanel(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.disable();
@@ -153,82 +154,82 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
 
         // Assert
         assertClickable(selectOneMenu);
-        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertEquals("Max", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(7)
     @DisplayName("SelectOneMenu: selectValue via JavaScript")
-    public void testJsSelectValue(Page page) {
+    void jsSelectValue(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.selectByValue("2");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertEquals("Max", selectOneMenu.getSelectedLabel());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(8)
     @DisplayName("SelectOneMenu: itemSelect - event")
-    public void testItemSelect(Page page) {
+    void itemSelect(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.select("Max");
 
         // Assert - part 1
-        Assertions.assertEquals("2", page.messages.getMessage(0).getDetail());
-        Assertions.assertEquals("Driver-ID (itemSelect)", page.messages.getMessage(0).getSummary());
+        assertEquals("2", page.messages.getMessage(0).getDetail());
+        assertEquals("Driver-ID (itemSelect)", page.messages.getMessage(0).getSummary());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(9)
     @DisplayName("SelectOneMenu: change - event")
-    public void testChange(Page page) {
+    void change(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu2;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.select("Max");
 
         // Assert - part 1
-        Assertions.assertEquals("2", page.messages.getMessage(0).getDetail());
-        Assertions.assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
+        assertEquals("2", page.messages.getMessage(0).getDetail());
+        assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
 
     @Test
     @Order(10)
     @DisplayName("SelectOneMenu: alwaysDisplayLabel")
-    public void testAlwaysDisplayLabel(Page page) {
+    void alwaysDisplayLabel(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu2;
-        Assertions.assertEquals("Lewis", selectOneMenu.getSelectedLabel());
+        assertEquals("Lewis", selectOneMenu.getSelectedLabel());
         page.alwaysDisplayLabel.check();
-        Assertions.assertEquals("Select a driver", selectOneMenu.getSelectedLabel());
+        assertEquals("Select a driver", selectOneMenu.getSelectedLabel());
 
         // Act
         selectOneMenu.select("Max");
 
         // Assert
-        Assertions.assertEquals("2", page.messages.getMessage(0).getDetail());
-        Assertions.assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Select a driver", selectOneMenu.getSelectedLabel());
+        assertEquals("2", page.messages.getMessage(0).getDetail());
+        assertEquals("Driver-ID (change)", page.messages.getMessage(0).getSummary());
+        assertEquals("Select a driver", selectOneMenu.getSelectedLabel());
 
         // Act
         page.alwaysDisplayLabel.uncheck();
-        Assertions.assertEquals("Max", selectOneMenu.getSelectedLabel());
+        assertEquals("Max", selectOneMenu.getSelectedLabel());
 
         assertConfiguration(selectOneMenu.getWidgetConfiguration());
     }
@@ -236,23 +237,23 @@ public class SelectOneMenu001Test extends AbstractPrimePageTest {
     @Test
     @Order(11)
     @DisplayName("SelectOneMenu: getAssignedLabelText")
-    public void testAssignedLabelText(Page page) {
+    void assignedLabelText(Page page) {
         // Arrange
         SelectOneMenu selectOneMenu = page.selectOneMenu;
 
         // Test
-        Assertions.assertNotNull(selectOneMenu.getAssignedLabel());
-        Assertions.assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
+        assertNotNull(selectOneMenu.getAssignedLabel());
+        assertEquals("SelectOneMenu", selectOneMenu.getAssignedLabelText());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectOneMenu Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
-        Assertions.assertEquals("auto", cfg.getString("autoWidth"));
-        Assertions.assertFalse(cfg.getBoolean("dynamic"));
-        Assertions.assertEquals("fade", cfg.getString("effect"));
-        Assertions.assertEquals("normal", cfg.getString("effectSpeed"));
+        assertTrue(cfg.has("appendTo"));
+        assertEquals("auto", cfg.getString("autoWidth"));
+        assertFalse(cfg.getBoolean("dynamic"));
+        assertEquals("fade", cfg.getString("effect"));
+        assertEquals("normal", cfg.getString("effectSpeed"));
     }
 
     public static class Page extends AbstractPrimePage {

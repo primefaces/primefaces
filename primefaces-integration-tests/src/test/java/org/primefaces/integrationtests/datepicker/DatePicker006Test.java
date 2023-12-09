@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.datepicker;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalDate;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,15 +37,15 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DatePicker;
 import org.primefaces.selenium.component.Messages;
 
-public class DatePicker006Test extends AbstractDatePickerTest {
+class DatePicker006Test extends AbstractDatePickerTest {
 
     @Test
     @Order(1)
     @DisplayName("DatePicker: GitHub #6506 using java.sql.Date")
-    public void testSqlDateMinMax(Page page) {
+    void sqlDateMinMax(Page page) {
         // Arrange
         DatePicker datePicker = page.datePicker;
-        Assertions.assertEquals(null, datePicker.getValue());
+        assertNull(datePicker.getValue());
         LocalDate value = LocalDate.now();
 
         // Act
@@ -52,16 +53,16 @@ public class DatePicker006Test extends AbstractDatePickerTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals(value.toString(), page.messages.getMessage(0).getDetail());
+        assertEquals(value.toString(), page.messages.getMessage(0).getDetail());
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DatePicker Config = " + cfg);
-        Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
-        Assertions.assertEquals("single", cfg.getString("selectionMode"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
+        assertEquals("single", cfg.getString("selectionMode"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

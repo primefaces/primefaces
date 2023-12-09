@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.rating;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,216 +37,216 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Rating;
 
-public class Rating001Test extends AbstractPrimePageTest {
+class Rating001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Rating: set value and cancel value using AJAX")
-    public void testAjax(Page page) {
+    void ajax(Page page) {
         // Arrange
         Rating rating = page.ratingAjax;
         Messages messages = page.messages;
-        Assertions.assertNull(rating.getValue());
+        assertNull(rating.getValue());
 
         // Act - add value
         rating.setValue(4);
 
         // Assert - rate-event
-        Assertions.assertEquals(4L, rating.getValue());
-        Assertions.assertEquals("Rate Event", messages.getMessage(0).getSummary());
-        Assertions.assertEquals("You rated:4", messages.getMessage(0).getDetail());
+        assertEquals(4L, rating.getValue());
+        assertEquals("Rate Event", messages.getMessage(0).getSummary());
+        assertEquals("You rated:4", messages.getMessage(0).getDetail());
 
         // Act - cancel value
         rating.cancel();
 
         // Assert
-        Assertions.assertNull(rating.getValue());
-        Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
+        assertNull(rating.getValue());
+        assertEquals("Cancel Event", messages.getMessage(0).getSummary());
+        assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("Rating: widget reset() method")
-    public void testAjaxReset(Page page) {
+    void ajaxReset(Page page) {
         // Arrange
         Rating rating = page.ratingAjax;
         Messages messages = page.messages;
-        Assertions.assertNull(rating.getValue());
+        assertNull(rating.getValue());
 
         // Act - add value
         rating.setValue(4);
 
         // Assert - rate-event
-        Assertions.assertEquals(4L, rating.getValue());
-        Assertions.assertEquals("Rate Event", messages.getMessage(0).getSummary());
-        Assertions.assertEquals("You rated:4", messages.getMessage(0).getDetail());
+        assertEquals(4L, rating.getValue());
+        assertEquals("Rate Event", messages.getMessage(0).getSummary());
+        assertEquals("You rated:4", messages.getMessage(0).getDetail());
 
         // Act - cancel value
         rating.reset();
 
         // Assert
-        Assertions.assertNull(rating.getValue());
-        Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
+        assertNull(rating.getValue());
+        assertEquals("Cancel Event", messages.getMessage(0).getSummary());
+        assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("Rating: read only")
-    public void testReadonly(Page page) {
+    void readonly(Page page) {
         // Arrange
         Rating rating = page.ratingReadOnly;
-        Assertions.assertEquals(3L, rating.getValue());
-        Assertions.assertTrue(rating.isReadOnly());
+        assertEquals(3L, rating.getValue());
+        assertTrue(rating.isReadOnly());
 
         // Act
         rating.setValue(5);
 
         // Assert
-        Assertions.assertEquals(3L, rating.getValue());
+        assertEquals(3L, rating.getValue());
         JSONObject cfg = assertConfiguration(rating.getWidgetConfiguration());
-        Assertions.assertTrue(cfg.getBoolean("readonly"));
+        assertTrue(cfg.getBoolean("readonly"));
     }
 
     @Test
     @Order(4)
     @DisplayName("Rating: disabled")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         Rating rating = page.ratingDisabled;
-        Assertions.assertEquals(3L, rating.getValue());
-        Assertions.assertTrue(rating.isDisabled());
+        assertEquals(3L, rating.getValue());
+        assertTrue(rating.isDisabled());
 
         // Act
         rating.setValue(5);
 
         // Assert
-        Assertions.assertEquals(3L, rating.getValue());
+        assertEquals(3L, rating.getValue());
         JSONObject cfg = assertConfiguration(rating.getWidgetConfiguration());
-        Assertions.assertTrue(cfg.getBoolean("disabled"));
+        assertTrue(cfg.getBoolean("disabled"));
     }
 
     @Test
     @Order(5)
     @DisplayName("Rating: enable and disable")
-    public void testEnableAndDisable(Page page) {
+    void enableAndDisable(Page page) {
         // Arrange
         Rating rating = page.ratingDisabled;
-        Assertions.assertEquals(3L, rating.getValue());
-        Assertions.assertTrue(rating.isDisabled());
+        assertEquals(3L, rating.getValue());
+        assertTrue(rating.isDisabled());
 
         // Act - enable
         rating.enable();
         rating.setValue(5);
 
         // Assert
-        Assertions.assertTrue(rating.isEnabled());
-        Assertions.assertEquals(5L, rating.getValue());
+        assertTrue(rating.isEnabled());
+        assertEquals(5L, rating.getValue());
 
         // Act - disable
         rating.disable();
         rating.setValue(1);
 
         // Assert
-        Assertions.assertTrue(rating.isDisabled());
-        Assertions.assertEquals(5L, rating.getValue());
+        assertTrue(rating.isDisabled());
+        assertEquals(5L, rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(6)
     @DisplayName("Rating: set value to a string should default it to no stars")
-    public void testInvalidNumberClientSide(Page page) {
+    void invalidNumberClientSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
-        Assertions.assertEquals(2L, rating.getValue());
+        assertEquals(2L, rating.getValue());
 
         // Act
         PrimeSelenium.executeScript(rating.getWidgetByIdScript() + ".setValue('abc');");
 
         // Assert
-        Assertions.assertNull(rating.getValue());
+        assertNull(rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(7)
     @DisplayName("Rating: set value below minimum should set to no stars")
-    public void testMinimumClientSide(Page page) {
+    void minimumClientSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
-        Assertions.assertEquals(2L, rating.getValue());
+        assertEquals(2L, rating.getValue());
 
         // Act
         rating.setValue(-1);
 
         // Assert
-        Assertions.assertNull(rating.getValue());
+        assertNull(rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(8)
     @DisplayName("Rating: set value above maximum should set to max stars")
-    public void testMaximumClientSide(Page page) {
+    void maximumClientSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
-        Assertions.assertEquals(2L, rating.getValue());
+        assertEquals(2L, rating.getValue());
 
         // Act
         rating.setValue(14);
 
         // Assert
-        Assertions.assertEquals(8L, rating.getValue());
+        assertEquals(8L, rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(9)
     @DisplayName("Rating: Submit value below minimum should return original value")
-    public void testMinimumServerSide(Page page) {
+    void minimumServerSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
-        Assertions.assertEquals(2L, rating.getValue());
+        assertEquals(2L, rating.getValue());
 
         // Act
         PrimeSelenium.setHiddenInput(rating.getInput(), "-1");
-        Assertions.assertEquals("0", rating.getInput().getAttribute("value"));
+        assertEquals("0", rating.getInput().getAttribute("value"));
         page.submit.click();
 
         // Assert
-        Assertions.assertEquals(2L, rating.getValue());
+        assertEquals(2L, rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(10)
     @DisplayName("Rating: Submit value above maximum should return max value")
-    public void testMaximumServerSide(Page page) {
+    void maximumServerSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
-        Assertions.assertEquals(2L, rating.getValue());
+        assertEquals(2L, rating.getValue());
 
         // Act
         PrimeSelenium.setHiddenInput(rating.getInput(), "14");
-        Assertions.assertEquals("8", rating.getInput().getAttribute("value"));
+        assertEquals("8", rating.getInput().getAttribute("value"));
         page.submit.click();
 
         // Assert
-        Assertions.assertEquals(8L, rating.getValue());
+        assertEquals(8L, rating.getValue());
         assertConfiguration(rating.getWidgetConfiguration());
     }
 
     @Test
     @Order(11)
     @DisplayName("Rating: set value to a string should default range to exact middle of min and max")
-    public void testInvalidNumberServerSide(Page page) {
+    void invalidNumberServerSide(Page page) {
         // Arrange
         Rating rating = page.ratingMinMax;
-        Assertions.assertEquals(2L, rating.getValue());
+        assertEquals(2L, rating.getValue());
 
         // Act
         PrimeSelenium.setHiddenInput(rating.getInput(), "def");
@@ -253,35 +254,35 @@ public class Rating001Test extends AbstractPrimePageTest {
 
         // Assert
         // 4 is the exact middle between min=0 max=8 which is range default
-        Assertions.assertEquals(4L, rating.getValue());
+        assertEquals(4L, rating.getValue());
     }
 
     @Test
     @Order(11)
     @DisplayName("Rating: cancel the value and check it should be NULL server side")
-    public void testCancelSetsNull(Page page) {
+    void cancelSetsNull(Page page) {
         // Arrange
         Rating rating = page.ratingAjax;
         Messages messages = page.messages;
-        Assertions.assertNull(rating.getValue());
+        assertNull(rating.getValue());
 
         // Act
         rating.setValue(3);
         rating.cancel();
-        Assertions.assertEquals("Cancel Event", messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
+        assertEquals("Cancel Event", messages.getMessage(0).getSummary());
+        assertEquals("Rate Reset:null", messages.getMessage(0).getDetail());
 
         // Act
         page.submit.click();
 
         // Assert
-        Assertions.assertNull(rating.getValue());
+        assertNull(rating.getValue());
     }
 
     private JSONObject assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Rating Config = " + cfg);
-        Assertions.assertTrue(cfg.has("id"));
+        assertTrue(cfg.has("id"));
         return cfg;
     }
 

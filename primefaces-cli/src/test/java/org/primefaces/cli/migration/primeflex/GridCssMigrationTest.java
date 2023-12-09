@@ -23,7 +23,8 @@
  */
 package org.primefaces.cli.migration.primeflex;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +41,7 @@ class GridCssMigrationTest {
     void migrateGridCSS2V2Grid() {
         String source = "<div class=\"ui-g\"><div class=\"ui-g-2 ui-md-6\"></div><div class=\"ui-g-10 ui-md-6\"></div></div>";
         String result = MIGRATION.migrateSource(source);
-        Assertions.assertEquals("<div class=\"p-grid\"><div class=\"p-col-2 p-md-6\"></div><div class=\"p-col-10 p-md-6\"></div></div>", result);
+        assertEquals("<div class=\"p-grid\"><div class=\"p-col-2 p-md-6\"></div><div class=\"p-col-10 p-md-6\"></div></div>", result);
     }
 
 }

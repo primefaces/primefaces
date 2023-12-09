@@ -24,7 +24,6 @@
 package org.primefaces.integrationtests.fileupload;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -36,19 +35,22 @@ import org.primefaces.selenium.component.Messages;
 
 import java.io.File;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Tests basic auto single file upload.
  * p:fileUpload mode=simple auto=true multiple=false (skinSimple=true)
  */
-@Tag("SafariExclude") // Selenium SafariDriver does not support file uploads
-public class FileUpload003Test extends AbstractFileUploadTest {
+// Selenium SafariDriver does not support file uploads
+@Tag("SafariExclude")
+class FileUpload003Test extends AbstractFileUploadTest {
 
     @Test
     @Order(1)
-    public void testBasicAutoSingleUpload(Page page) {
+    void basicAutoSingleUpload(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.csv");
@@ -62,10 +64,10 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
     @Test
     @Order(2)
-    public void testBasicAutoSingleUploadTwice(Page page) {
+    void basicAutoSingleUploadTwice(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file1 = locateClientSideFile("file1.csv");
@@ -87,18 +89,18 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
     @Test
     @Order(3)
-    public void testBasicAutoSingleUploadSizeLimit(Page page) {
+    void basicAutoSingleUploadSizeLimit(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file3.csv");
         fileUpload.setValue(file, false);
 
         // Assert
-        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
-        Assertions.assertEquals("Invalid file size.",
+        assertFalse(page.messages.getAllMessages().isEmpty());
+        assertEquals("Invalid file size.",
                 page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
@@ -107,18 +109,18 @@ public class FileUpload003Test extends AbstractFileUploadTest {
 
     @Test
     @Order(4)
-    public void testBasicAutoSingleUploadAllowTypes(Page page) {
+    void basicAutoSingleUploadAllowTypes(Page page) {
         // Arrange
         FileUpload fileUpload = page.fileupload;
-        Assertions.assertEquals("", fileUpload.getValue());
+        assertEquals("", fileUpload.getValue());
 
         // Act
         File file = locateClientSideFile("file1.png");
         fileUpload.setValue(file, false);
 
         // Assert
-        Assertions.assertFalse(page.messages.getAllMessages().isEmpty());
-        Assertions.assertEquals("Invalid file type.",
+        assertFalse(page.messages.getAllMessages().isEmpty());
+        assertEquals("Invalid file type.",
                 page.messages.getMessage(0).getSummary());
         assertNoJavascriptErrors();
         assertUploadedFiles(page.uploadedFiles);
@@ -128,13 +130,13 @@ public class FileUpload003Test extends AbstractFileUploadTest {
     private void assertConfiguration(FileUpload fileUpload) {
         JSONObject cfg = fileUpload.getWidgetConfiguration();
         System.out.println("FileInput Config = " + cfg);
-        Assertions.assertEquals("{name} {size}", cfg.getString("messageTemplate"));
-        Assertions.assertTrue(cfg.getBoolean("skinSimple"));
-        Assertions.assertTrue(cfg.getBoolean("auto"));
-        Assertions.assertEquals(1, cfg.getInt("fileLimit"));
-        Assertions.assertEquals(100, cfg.getInt("maxFileSize"));
-        Assertions.assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
-        Assertions.assertNull(fileUpload.getInput().getAttribute("multiple"));
+        assertEquals("{name} {size}", cfg.getString("messageTemplate"));
+        assertTrue(cfg.getBoolean("skinSimple"));
+        assertTrue(cfg.getBoolean("auto"));
+        assertEquals(1, cfg.getInt("fileLimit"));
+        assertEquals(100, cfg.getInt("maxFileSize"));
+        assertEquals("/(\\.|\\/)(csv)$/", cfg.getString("allowTypes"));
+        assertNull(fileUpload.getInput().getAttribute("multiple"));
     }
 
     public static class Page extends AbstractPrimePage {

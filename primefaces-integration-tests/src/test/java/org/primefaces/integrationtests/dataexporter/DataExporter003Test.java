@@ -23,10 +23,15 @@
  */
 package org.primefaces.integrationtests.dataexporter;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
@@ -34,19 +39,19 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataExporter003Test extends AbstractDataExporterTest {
+class DataExporter003Test extends AbstractDataExporterTest {
 
     @Test
     @Order(1)
     @DisplayName("Exporter: #8205 XML ExportTag and ExportRowTag attributes ")
     @Tag("SafariExclude")
     @Tag("FirefoxExclude")
-    public void testXml(Page page) throws IOException {
+    void xml(Page page) throws IOException {
         // Arrange
         final String actualFileName = getActualFile("languages-custom-tags.xml");
         File actual = assertDownloadFileNotExists(actualFileName);
         DataTable dataTable = page.dataTable;
-        Assertions.assertEquals(3, dataTable.getRows().size());
+        assertEquals(3, dataTable.getRows().size());
 
         // Act
         page.buttonXml.click();

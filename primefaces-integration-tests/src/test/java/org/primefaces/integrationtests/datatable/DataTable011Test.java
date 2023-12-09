@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,16 +36,16 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable011Test extends AbstractDataTableTest {
+class DataTable011Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: sort and delete (button with fixed id) - "
             + "https://stackoverflow.com/questions/24754118/after-sorting-it-deletes-the-wrong-line-of-primefaces-datatable")
-    public void testSortAndDelete(Page page) {
+    void sortAndDelete(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         dataTable.sort("Name");
@@ -52,7 +53,7 @@ public class DataTable011Test extends AbstractDataTableTest {
 
         // Assert
         page.dataTable.getRows()
-                    .forEach(row -> Assertions.assertNotEquals("1", row.getCell(0).getText()));
+                    .forEach(row -> assertNotEquals("1", row.getCell(0).getText()));
         assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
@@ -60,10 +61,10 @@ public class DataTable011Test extends AbstractDataTableTest {
     @Order(2)
     @DisplayName("DataTable: sort and delete (delete-button get´s object as parameter) - "
             + "https://stackoverflow.com/questions/24754118/after-sorting-it-deletes-the-wrong-line-of-primefaces-datatable")
-    public void testSortAndDeleteV2(Page page) {
+    void sortAndDeleteV2(Page page) {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
 
         // Act
         dataTable.sort("Name");
@@ -71,14 +72,14 @@ public class DataTable011Test extends AbstractDataTableTest {
 
         // Assert
         page.dataTable.getRows()
-                    .forEach(row -> Assertions.assertNotEquals("1", row.getCell(0).getText()));
+                    .forEach(row -> assertNotEquals("1", row.getCell(0).getText()));
         assertConfiguration(page.dataTable.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("DataTable Config = " + cfg);
-        Assertions.assertTrue(cfg.has("paginator"));
+        assertTrue(cfg.has("paginator"));
     }
 
     public static class Page extends AbstractPrimePage {

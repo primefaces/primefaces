@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -44,13 +46,13 @@ public class AbstractTableTest extends AbstractPrimePageTest {
             default:
                 break;
         }
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
+        assertTrue(PrimeSelenium.hasCssClass(header.findElement(By.className("ui-sortable-column-icon")), directionClass));
         WebElement badge = header.findElement(By.className("ui-sortable-column-badge"));
         if (sortPriority > 0) {
-            Assertions.assertEquals(sortPriority, Integer.parseInt(badge.getText()));
+            assertEquals(sortPriority, Integer.parseInt(badge.getText()));
         }
         else {
-            Assertions.assertEquals("", badge.getText());
+            assertEquals("", badge.getText());
         }
     }
 

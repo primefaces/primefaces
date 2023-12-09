@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -32,41 +34,41 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 
-public class DataTable031Test extends AbstractDataTableTest {
+class DataTable031Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: filter display old value - https://github.com/primefaces/primefaces/issues/7845")
-    public void testFilterSortEdit(Page page) {
-        Assertions.assertSame(page.dataTable.getRows().size(), 0);
+    void filterSortEdit(Page page) {
+        assertSame(0, page.dataTable.getRows().size());
 
         // display "Data 1 *"
         page.toogle.click();
-        Assertions.assertSame(page.dataTable.getRows().size(), 4);
-        Assertions.assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
+        assertSame(4, page.dataTable.getRows().size());
+        assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
 
         // filter for "Data 1 *"
         page.dataTable.filter("data", "Data 1");
-        Assertions.assertSame(page.dataTable.getRows().size(), 4);
-        Assertions.assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
+        assertSame(4, page.dataTable.getRows().size());
+        assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
 
         // display "Data 2", filter is still "Data 1", so no data should be displayed
         page.toogle.click();
-        Assertions.assertSame(page.dataTable.getRows().size(), 0);
+        assertSame(0, page.dataTable.getRows().size());
 
         // reset filter
         page.dataTable.removeFilter("data");
-        Assertions.assertSame(page.dataTable.getRows().size(), 4);
-        Assertions.assertEquals("Data 2 1", page.dataTable.getRows().get(0).getCell(0).getText());
+        assertSame(4, page.dataTable.getRows().size());
+        assertEquals("Data 2 1", page.dataTable.getRows().get(0).getCell(0).getText());
 
         // filter for "Data 1 *", so no rows because we still have Data 2
         page.dataTable.filter("data", "Data 1");
-        Assertions.assertSame(page.dataTable.getRows().size(), 0);
+        assertSame(0, page.dataTable.getRows().size());
 
         // switch to "Data 1"
         page.toogle.click();
-        Assertions.assertSame(page.dataTable.getRows().size(), 4);
-        Assertions.assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
+        assertSame(4, page.dataTable.getRows().size());
+        assertEquals("Data 1 1", page.dataTable.getRows().get(0).getCell(0).getText());
     }
 
     public static class Page extends AbstractPrimePage {

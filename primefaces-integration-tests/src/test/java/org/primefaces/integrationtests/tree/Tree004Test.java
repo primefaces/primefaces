@@ -23,7 +23,6 @@
  */
 package org.primefaces.integrationtests.tree;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -43,23 +42,25 @@ import org.primefaces.selenium.component.model.tree.TreeNode;
 
 import java.util.List;
 
-public class Tree004Test extends AbstractTreeTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class Tree004Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: Multiple selection")
-    public void testMultipleSelection(Page page) {
+    void multipleSelection(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         // Act
         first.select();
@@ -99,18 +100,18 @@ public class Tree004Test extends AbstractTreeTest {
     @Test
     @Order(2)
     @DisplayName("Tree: Multiple selection - cross-check without metakay")
-    public void testMultipleSelectionWithoutMetakey(Page page) {
+    void multipleSelectionWithoutMetakey(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         // Act
         first.select();
@@ -132,22 +133,22 @@ public class Tree004Test extends AbstractTreeTest {
     @Test
     @Order(3)
     @DisplayName("Tree: Filter")
-    public void testFilter(Page page) {
+    void filter(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
-        Assertions.assertEquals(true, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(2).getWebElement().isDisplayed());
+        assertTrue(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertTrue(children.get(2).getWebElement().isDisplayed());
 
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
@@ -156,17 +157,17 @@ public class Tree004Test extends AbstractTreeTest {
         // Assert
         children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         // L1
-        Assertions.assertEquals(false, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(false, children.get(2).getWebElement().isDisplayed());
+        assertFalse(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertFalse(children.get(2).getWebElement().isDisplayed());
         // L2
-        Assertions.assertEquals(false, children.get(1).getChildren().get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getChildren().get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(false, children.get(1).getChildren().get(2).getWebElement().isDisplayed());
+        assertFalse(children.get(1).getChildren().get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getChildren().get(1).getWebElement().isDisplayed());
+        assertFalse(children.get(1).getChildren().get(2).getWebElement().isDisplayed());
 
         // Act
         filter.clear();
@@ -175,9 +176,9 @@ public class Tree004Test extends AbstractTreeTest {
         // Assert
         children = tree.getChildren();
 
-        Assertions.assertEquals(true, children.get(0).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(1).getWebElement().isDisplayed());
-        Assertions.assertEquals(true, children.get(2).getWebElement().isDisplayed());
+        assertTrue(children.get(0).getWebElement().isDisplayed());
+        assertTrue(children.get(1).getWebElement().isDisplayed());
+        assertTrue(children.get(2).getWebElement().isDisplayed());
 
         assertConfiguration(tree.getWidgetConfiguration());
     }
@@ -185,19 +186,19 @@ public class Tree004Test extends AbstractTreeTest {
     @Test
     @Order(4)
     @DisplayName("Tree: Multiple selection + Filter, https://github.com/primefaces/primefaces/issues/3926")
-    public void testFilterWithMultipleSelection(Page page) {
+    void filterWithMultipleSelection(Page page) {
         // Arrange
         Tree tree = page.tree;
         page.selection.select("checkbox");
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         // Act
         WebElement filter = tree.findElement(By.cssSelector("input.ui-tree-filter"));
@@ -208,10 +209,10 @@ public class Tree004Test extends AbstractTreeTest {
         // Assert
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-minus"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-check"));
 
@@ -223,15 +224,15 @@ public class Tree004Test extends AbstractTreeTest {
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch");
         children = tree.getChildren();
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(0).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-blank"));
         // TODO: currently broken (2021-09-12)
         // Assertions.assertTrue(PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("ui-chkbox-icon")), "ui-icon-minus"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-check"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(2).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-blank"));
 
@@ -242,22 +243,22 @@ public class Tree004Test extends AbstractTreeTest {
         // Assert Pt. 3
         page.buttonShowSelectedNodes.click();
         assertMessage(page.messages, 0, "Selected nodes", "Product Launch,Meeting,Report Review,Events");
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(0).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-blank"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(1).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-check"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(1).getChildren().get(0).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-check"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(1).getChildren().get(1).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-check"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(1).getChildren().get(2).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-check"));
-        Assertions.assertTrue(
+        assertTrue(
                 PrimeSelenium.hasCssClass(children.get(2).getWebElement().findElement(By.className("ui-chkbox-icon")),
                         "ui-icon-blank"));
 

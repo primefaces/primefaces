@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.spinner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,27 +42,27 @@ public class Spinner001Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Spinner: Test integer increment by 1")
-    public void testSpinUp(Page page) {
+    void spinUp(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         spinner.increment();
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("1", spinner.getValue());
+        assertEquals("1", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("Spinner: Test integer decrement by 2")
-    public void testSpinDown(Page page) {
+    void spinDown(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         spinner.decrement();
@@ -69,72 +70,72 @@ public class Spinner001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("-2", spinner.getValue());
+        assertEquals("-2", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("Spinner: GitHub #5579 Test integer invalid characters should be ignored")
-    public void testInvalidCharacter(Page page) {
+    void invalidCharacter(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         ComponentUtils.sendKeys(spinner.getInput(), "abc");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("Spinner: GitHub #5579 Test integer should not allow decimal separator")
-    public void testDecimalSeparator(Page page) {
+    void decimalSeparator(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "3.4");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("34", spinner.getValue());
+        assertEquals("34", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     @Test
     @Order(5)
     @DisplayName("Spinner: GitHub #5579 Test integer should allow thousand separator")
-    public void testThousandSeparator(Page page) {
+    void thousandSeparator(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "1,456");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("1,456", spinner.getValue());
+        assertEquals("1,456", spinner.getValue());
         assertConfiguration(spinner.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Spinner Config = " + cfg);
-        Assertions.assertEquals(1, cfg.getInt("step"));
-        Assertions.assertEquals(".", cfg.get("decimalSeparator"));
-        Assertions.assertEquals(",", cfg.get("thousandSeparator"));
+        assertEquals(1, cfg.getInt("step"));
+        assertEquals(".", cfg.get("decimalSeparator"));
+        assertEquals(",", cfg.get("thousandSeparator"));
         if (cfg.has("decimalPlaces")) {
-            Assertions.assertEquals("0", cfg.get("decimalPlaces"));
+            assertEquals("0", cfg.get("decimalPlaces"));
         }
         if (cfg.has("precision")) {
-            Assertions.assertEquals(0, cfg.getInt("precision"));
+            assertEquals(0, cfg.getInt("precision"));
         }
     }
 

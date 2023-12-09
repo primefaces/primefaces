@@ -44,19 +44,19 @@ class SecurityUtilsTest {
     private ExternalContext externalContext;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         FacesContext context = spy(FacesContextMock.class);
         externalContext = mock(ExternalContext.class);
         when(context.getExternalContext()).thenReturn(externalContext);
     }
 
     @AfterEach
-    public void teardown() {
+    void teardown() {
         externalContext = null;
     }
 
     @Test
-    public void testIfGranted() {
+    void ifGranted() {
         when(externalContext.isUserInRole("A")).thenReturn(false);
         assertFalse(SecurityUtils.ifGranted("A"));
 
@@ -65,7 +65,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    public void testIfAllGranted() {
+    void ifAllGranted() {
         when(externalContext.isUserInRole("A")).thenReturn(false);
         when(externalContext.isUserInRole("B")).thenReturn(false);
         assertFalse(SecurityUtils.ifAllGranted("A,B"));
@@ -80,7 +80,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    public void testIfAnyGranted() {
+    void ifAnyGranted() {
         when(externalContext.isUserInRole("A")).thenReturn(false);
         when(externalContext.isUserInRole("B")).thenReturn(false);
         assertFalse(SecurityUtils.ifAnyGranted("A,B"));
@@ -91,7 +91,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    public void testIfNoneGranted() {
+    void ifNoneGranted() {
         when(externalContext.isUserInRole("A")).thenReturn(false);
         when(externalContext.isUserInRole("B")).thenReturn(false);
         assertTrue(SecurityUtils.ifNoneGranted("A,B"));
@@ -102,7 +102,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    public void testConvertRoles() {
+    void convertRoles() {
         Consumer<Stream<String>> assertStream = s -> {
             assertNotNull(s);
             List<String> roles = s.collect(Collectors.toList());

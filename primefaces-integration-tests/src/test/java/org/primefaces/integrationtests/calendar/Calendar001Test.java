@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.calendar;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDate;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -39,15 +40,15 @@ import org.primefaces.selenium.component.Calendar;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 
-public class Calendar001Test extends AbstractPrimePageTest {
+class Calendar001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Calendar: AJAX set date")
-    public void testAjaxBasic(Page page) {
+    void ajaxBasic(Page page) {
         // Arrange
         Calendar datePicker = page.datePicker;
-        Assertions.assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
+        assertEquals(LocalDate.now(), datePicker.getValue().toLocalDate());
         LocalDate value1 = LocalDate.of(2015, 10, 30);
         LocalDate value2 = LocalDate.of(1985, 7, 4);
 
@@ -57,7 +58,7 @@ public class Calendar001Test extends AbstractPrimePageTest {
 
         // Assert
         LocalDate newValue = datePicker.getValueAsLocalDate();
-        Assertions.assertEquals(value2, newValue);
+        assertEquals(value2, newValue);
         assertMessage(page, "1985-07-04");
         assertConfiguration(datePicker.getWidgetConfiguration());
     }
@@ -66,13 +67,13 @@ public class Calendar001Test extends AbstractPrimePageTest {
         Messages messages = page.messages;
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
         Msg msg = messages.getMessage(0);
-        Assertions.assertEquals(message, msg.getDetail());
+        assertEquals(message, msg.getDetail());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Calendar Config = " + cfg);
-        Assertions.assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
+        assertEquals("mm/dd/yy", cfg.getString("dateFormat"));
     }
 
     public static class Page extends AbstractPrimePage {

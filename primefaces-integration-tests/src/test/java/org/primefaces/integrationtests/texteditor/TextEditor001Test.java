@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.texteditor;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -32,25 +34,25 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.TextEditor;
 
-public class TextEditor001Test extends AbstractPrimePageTest {
+class TextEditor001Test extends AbstractPrimePageTest {
 
     @Test
-    public void testSubmit(Page page) {
+    void submit(Page page) {
         // Arrange
         TextEditor editor = page.textEditor;
-        Assertions.assertEquals("", editor.getValue());
+        assertEquals("", editor.getValue());
 
         // Act
         editor.setValue("hello!");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("<p>hello!</p>", editor.getValue());
+        assertEquals("<p>hello!</p>", editor.getValue());
         assertConfiguration(editor.getWidgetConfiguration());
     }
 
     @Test
-    public void testClear(Page page) {
+    void clear(Page page) {
         // Arrange
         TextEditor editor = page.textEditor;
 
@@ -59,15 +61,15 @@ public class TextEditor001Test extends AbstractPrimePageTest {
         editor.clear();
 
         // Assert
-        Assertions.assertEquals("", editor.getEditorValue());
+        assertEquals("", editor.getEditorValue());
         assertConfiguration(editor.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TextEditor Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("toolbarVisible"));
-        Assertions.assertEquals("snow", cfg.getString("theme"));
+        assertTrue(cfg.getBoolean("toolbarVisible"));
+        assertEquals("snow", cfg.getString("theme"));
     }
 
     public static class Page extends AbstractPrimePage {

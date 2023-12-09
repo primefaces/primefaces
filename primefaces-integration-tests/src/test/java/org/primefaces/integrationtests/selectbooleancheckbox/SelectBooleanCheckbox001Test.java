@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.selectbooleancheckbox;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
@@ -32,79 +34,79 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.SelectBooleanCheckbox;
 
-public class SelectBooleanCheckbox001Test extends AbstractPrimePageTest {
+class SelectBooleanCheckbox001Test extends AbstractPrimePageTest {
 
     @Test
-    public void testSubmit(Page page) {
+    void submit(Page page) {
         // Arrange
         SelectBooleanCheckbox checkbox = page.checkbox;
-        Assertions.assertFalse(checkbox.getValue());
+        assertFalse(checkbox.getValue());
 
         // Act
         checkbox.click();
         page.button.click();
 
         // Assert
-        Assertions.assertTrue(checkbox.getValue());
+        assertTrue(checkbox.getValue());
         assertConfiguration(checkbox.getWidgetConfiguration());
     }
 
     @Test
-    public void testToggleTrue(Page page) {
+    void toggleTrue(Page page) {
         // Arrange
         SelectBooleanCheckbox checkbox = page.checkbox;
-        Assertions.assertFalse(checkbox.getValue());
+        assertFalse(checkbox.getValue());
 
         // Act
         checkbox.toggle();
 
         // Assert
-        Assertions.assertTrue(checkbox.getValue());
+        assertTrue(checkbox.getValue());
         assertConfiguration(checkbox.getWidgetConfiguration());
     }
 
     @Test
-    public void testToggleFalse(Page page) {
+    void toggleFalse(Page page) {
         // Arrange
         SelectBooleanCheckbox checkbox = page.checkbox;
         checkbox.setValue(true);
-        Assertions.assertTrue(checkbox.getValue());
+        assertTrue(checkbox.getValue());
 
         // Act
         checkbox.toggle();
 
         // Assert
-        Assertions.assertFalse(checkbox.getValue());
+        assertFalse(checkbox.getValue());
         assertConfiguration(checkbox.getWidgetConfiguration());
     }
 
     @Test
-    public void testUncheck(Page page) {
+    void uncheck(Page page) {
         // Arrange
         SelectBooleanCheckbox checkbox = page.checkbox;
         checkbox.setValue(true);
-        Assertions.assertTrue(checkbox.getValue());
+        assertTrue(checkbox.getValue());
 
         // Act
         checkbox.uncheck();
 
         // Assert
-        Assertions.assertFalse(checkbox.getValue());
+        assertFalse(checkbox.getValue());
         assertConfiguration(checkbox.getWidgetConfiguration());
     }
 
     @Test
-    public void testCheck(Page page) {
+    void check(Page page) {
         // Arrange
         SelectBooleanCheckbox checkbox = page.checkbox;
         checkbox.setValue(false);
-        Assertions.assertFalse(checkbox.getValue());
+        assertFalse(checkbox.getValue());
 
         // Act
         checkbox.check();
 
         // Assert
-        Assertions.assertTrue(checkbox.getValue());
+        assertTrue(checkbox.getValue());
         assertConfiguration(checkbox.getWidgetConfiguration());
     }
 

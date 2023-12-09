@@ -23,47 +23,49 @@
  */
 package org.primefaces.renderkit;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import org.primefaces.model.menu.DefaultMenuItem;
 
-public class MenuItemAwareRendererTest extends MenuItemAwareRenderer {
+class MenuItemAwareRendererTest extends MenuItemAwareRenderer {
 
     @Test
-    public void testIsMenuItemSubmitting() {
+    void isMenuItemSubmitting() {
         DefaultMenuItem item = null;
 
         item = new DefaultMenuItem();
         item.setOncomplete("test");
-        Assertions.assertFalse(isMenuItemSubmitting(null, null, item));
+        assertFalse(isMenuItemSubmitting(null, null, item));
 
         item = new DefaultMenuItem();
         item.setCommand("#{test.test()}");
-        Assertions.assertTrue(isMenuItemSubmitting(null, null, item));
+        assertTrue(isMenuItemSubmitting(null, null, item));
 
         item = new DefaultMenuItem();
         item.setFunction((menuitem) -> {
             return "test";
         });
-        Assertions.assertTrue(isMenuItemSubmitting(null, null, item));
+        assertTrue(isMenuItemSubmitting(null, null, item));
 
         item = new DefaultMenuItem();
         item.setUpdate("test");
-        Assertions.assertTrue(isMenuItemSubmitting(null, null, item));
+        assertTrue(isMenuItemSubmitting(null, null, item));
 
         item = new DefaultMenuItem();
         item.setProcess("test");
-        Assertions.assertTrue(isMenuItemSubmitting(null, null, item));
+        assertTrue(isMenuItemSubmitting(null, null, item));
 
         item = new DefaultMenuItem();
         item.setProcess("test");
         item.setAjax(false);
-        Assertions.assertFalse(isMenuItemSubmitting(null, null, item));
+        assertFalse(isMenuItemSubmitting(null, null, item));
 
         item = new DefaultMenuItem();
         item.setResetValues(true);
         item.setAjax(false);
-        Assertions.assertFalse(isMenuItemSubmitting(null, null, item));
+        assertFalse(isMenuItemSubmitting(null, null, item));
     }
 
 }
