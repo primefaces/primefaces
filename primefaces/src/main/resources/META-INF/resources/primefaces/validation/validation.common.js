@@ -292,6 +292,11 @@ if (window.PrimeFaces) {
 
             PrimeFaces.validation.validateInput(element, element, highlight);
 
+            $('[data-pf-validateclient-dynamic]').each((index, btn) => {
+                console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
+
+            });
+
             if (!vc.isEmpty()) {
                 if (uiMessage) {
                     PrimeFaces.validation.Utils.renderUIMessage(uiMessage, vc.messages[clientId][0]);

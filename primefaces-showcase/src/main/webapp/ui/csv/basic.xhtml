@@ -52,6 +52,7 @@
                     <h:outputLabel for="money" value="Currency ($):"/>
                     <p:inputText id="money" value="#{validationView.money}" label="Currency">
                         <f:convertNumber type="currency" currencySymbol="$"/>
+                        <p:clientValidator event="keyup"/>
                     </p:inputText>
                     <p:message for="money"/>
                     <h:outputText value="#{validationView.money}">
@@ -119,7 +120,7 @@
                     <h:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
                                    />
                     <p:datePicker id="localDate3" value="#{validationView.localDate3}" pattern="MM/dd/yyyy"
-                                    label="LocalDate (Java8; PF DatePicker)">
+                                    label="LocalDate (Java8; PF DatePicker)" required="true">
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                     </p:datePicker>
                     <p:message for="localDate3"/>
@@ -140,11 +141,11 @@
                 <p:defaultCommand target="btnAjax"/>
 
                 <div class="pt-3">
-                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Disabled" ajax="false"  styleClass="mr-2"/>
-                    <p:commandButton value="Remote Command" type="button" onclick="rc()" />
+                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Disabled" ajax="false" styleClass="mr-2"/>
+                    <p:commandButton value="Remote Command" type="button" enabledByValidateClient="true" onclick="rc()" />
                 </div>
                 
             </h:form>
