@@ -24,7 +24,7 @@ if (window.PrimeFaces) {
                 delete cfg[option];
             }
         }
-        
+
         var highlight = cfg.highlight || true;
         var focus = cfg.focus || true;
         var renderMessages = cfg.renderMessages || true;
@@ -32,21 +32,8 @@ if (window.PrimeFaces) {
 
         var $source = $(cfg.source);
 
-        var process;
-        if (cfg.ajax && cfg.process) {
-            process = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.process);
-        }
-        else {
-            process = $source.closest('form');
-        }
-
-        var update;
-        if (cfg.ajax && cfg.update) {
-            update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.update);
-        }
-        else {
-            update = $source.closest('form');
-        }
+        var process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
+        var update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
 
         return PrimeFaces.validation.validate($source, process, update, highlight, focus, renderMessages, validateInvisibleElements);
     };
@@ -295,6 +282,19 @@ if (window.PrimeFaces) {
             $('[data-pf-validateclient-dynamic]').each((index, btn) => {
                 console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
 
+                const $source = $(btn);
+                const cfg = { ajax: btn.dataset.pfValidateclientAjax, process: btn.dataset.pfValidateclientProcess, update: btn.dataset.pfValidateclientUpdate};
+                const process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
+                const update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
+
+                const widget = PrimeFaces.getWidgetById(btn.id);
+
+                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
+                    widget.enable();
+                }
+                else {
+                    widget.disable();
+                }
             });
 
             if (!vc.isEmpty()) {
@@ -875,6 +875,22 @@ if (window.PrimeFaces) {
                         }
                     }
                 }
+            }
+        },
+
+        resolveProcess: function(cfg, $source) {
+            if (cfg.ajax && cfg.process) {
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.process);
+            } else {
+                return $source.closest('form');
+            }
+        },
+
+        resolveUpdate: function(cfg, $source) {
+            if (cfg.ajax && cfg.update) {
+                return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector($source, cfg.update);
+            } else {
+                return $source.closest('form');
             }
         }
     };
