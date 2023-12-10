@@ -56,9 +56,9 @@ public class StaticMessage extends StaticMessageBase {
 
     @Override
     public void queueEvent(final FacesEvent event) {
-        final FacesContext context = getFacesContext();
-        final Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        final String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        FacesContext context = getFacesContext();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             final AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
