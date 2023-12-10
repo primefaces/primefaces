@@ -27,6 +27,8 @@ display | both | String | Defines the display mode.
 escape | true | Boolean | Defines whether HTML would be escaped or not.
 style | null | String | Style of main container element.
 styleClass | null | String | Style class of main container.
+closable | false | Boolean | Adds a close icon to hide the message.
+widgetVar | null | String | Name of the client side widget.
 
 
 ## Getting Started with StaticMessage

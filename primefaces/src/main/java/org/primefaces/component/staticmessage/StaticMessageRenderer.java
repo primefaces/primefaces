@@ -27,9 +27,16 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.messages.Messages;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class StaticMessageRenderer extends UINotificationRenderer {
+
+    @Override
+    public void decode(final FacesContext context, final UIComponent component) {
+        decodeBehaviors(context, component);
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -45,13 +52,11 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         String severity = staticMessage.getSeverity();
         severity = severity == null ? "info" : severity.toLowerCase();
 
-        String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
-        if (iconOnly) {
-            styleClass += " ui-message-icon-only ui-helper-clearfix";
-        }
-        if (staticMessage.getStyleClass() != null) {
-            styleClass += " " + staticMessage.getStyleClass();
-        }
+        String styleClass = getStyleClassBuilder(context)
+                .add("ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all")
+                .add(iconOnly, "ui-message-icon-only ui-helper-clearfix")
+                .add(staticMessage.getStyleClass())
+                .build();
 
         String style = staticMessage.getStyle();
 
@@ -63,6 +68,10 @@ public class StaticMessageRenderer extends UINotificationRenderer {
             writer.writeAttribute("style", style, null);
         }
 
+        if (staticMessage.isClosable()) {
+            encodeCloseIcon(context, staticMessage);
+        }
+
         if (!"text".equals(display)) {
             encodeIcon(writer, severity, detail, iconOnly);
         }
@@ -72,6 +81,8 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         }
 
         writer.endElement("div");
+
+        encodeScript(context, staticMessage);
     }
 
     protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
@@ -97,5 +108,29 @@ public class StaticMessageRenderer extends UINotificationRenderer {
             writer.writeAttribute("title", title, null);
         }
         writer.endElement("span");
+    }
+
+    protected void encodeCloseIcon(FacesContext context, StaticMessage staticMessage) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("a", null);
+        writer.writeAttribute("href", "#", null);
+        writer.writeAttribute("class", Messages.CLOSE_LINK_CLASS, null);
+        writer.writeAttribute("onclick", "$(this).parent().slideUp();return false;", null);
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Messages.CLOSE_ICON_CLASS, null);
+        writer.endElement("span");
+
+        writer.endElement("a");
+    }
+
+    protected void encodeScript(FacesContext context, StaticMessage staticMessage) throws IOException {
+        final WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("StaticMessage", staticMessage);
+
+        encodeClientBehaviors(context, staticMessage);
+
+        wb.finish();
     }
 }

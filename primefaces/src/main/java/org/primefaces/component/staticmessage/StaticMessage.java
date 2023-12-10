@@ -23,11 +23,61 @@
  */
 package org.primefaces.component.staticmessage;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
+import org.primefaces.util.Constants;
 
 @ResourceDependency(library = "primefaces", name = "components.css")
 public class StaticMessage extends StaticMessageBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.StaticMessage";
+
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>(1);
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return EVENT_NAMES.iterator().next();
+    }
+
+    @Override
+    public Collection<String> getUnobstrusiveEventNames() {
+        return getEventNames();
+    }
+
+    @Override
+    public void queueEvent(final FacesEvent event) {
+        final FacesContext context = getFacesContext();
+        final Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        final String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+
+        if (eventName != null && event instanceof AjaxBehaviorEvent) {
+            final AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
+
+            if ("close".equals(eventName)) {
+                customEvents.put(eventName, ajaxBehaviorEvent);
+                super.queueEvent(ajaxBehaviorEvent);
+            }
+        }
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        // reset component for MyFaces view pooling
+        if (customEvents != null) {
+            customEvents.clear();
+        }
+
+        return super.saveState(context);
+    }
 
 }

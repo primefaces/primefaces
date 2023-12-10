@@ -674,6 +674,7 @@
                                 <include>wizard/wizard.css</include>
                                 <include>chips/chips.css</include>
                                 <include>sidebar/sidebar.css</include>
+                                <include>staticmessage/staticmessage.css</include>
                                 <include>dataview/dataview.css</include>
                                 <include>datepicker/datepicker.css</include>
                             </includes>
@@ -780,6 +781,7 @@
                                 <include>splitter/splitter.js</include>
                                 <include>spotlight/spotlight.js</include>
                                 <include>speeddial/speeddial.js</include>
+                                <include>staticmessage/staticmessage.js</include>
                                 <include>sticky/sticky.js</include>
                                 <include>tabview/tabview.js</include>
                                 <include>tagcloud/tagcloud.js</include>
