@@ -159,4 +159,16 @@ public class ValidationView {
     public void setUiLibrary(String uiLibrary) {
         this.uiLibrary = uiLibrary;
     }
+
+    public void modifyValues() {
+        setText("Mike");
+        setInteger(123);
+        setDoubleNumber(6.3);
+    }
+
+    public void clearValues() {
+        setText(null);
+        setInteger(null);
+        setDoubleNumber(null);
+    }
 }

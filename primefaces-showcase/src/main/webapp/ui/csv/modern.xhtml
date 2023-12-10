@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="description">
-        Immedate client side validation and commandButton only enabled after successful CSV.
+        Immediate client side validation and commandButton only enabled after successful CSV.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/csv"/>
@@ -23,7 +23,7 @@
                 </p:messages>
 
                 <h:panelGrid id="grid" columns="4" cellpadding="7">
-                    <h:outputLabel for="name" value="Name (3-50 characters):"/>
+                    <p:outputLabel for="name" value="Name (3-50 characters):"/>
                     <p:inputText id="name" value="#{validationView.text}" required="true" label="Name">
                         <f:validateLength minimum="3" maximum="50"/>
                         <p:clientValidator event="keyup" />
@@ -31,16 +31,15 @@
                     <p:message for="name"/>
                     <h:outputText value="#{validationView.text}"/>
 
-                    <h:outputLabel for="number" value="Number (Length 2 - 3):"/>
+                    <p:outputLabel for="number" value="Number:"/>
                     <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
                                     validateMask="false" required="true">
-                        <f:validateLength minimum="2" maximum="3"/>
                         <p:clientValidator event="keyup" />
                     </p:inputMask>
                     <p:message for="number"/>
                     <h:outputText value="#{validationView.integer}"/>
                     
-                    <h:outputLabel for="dd" value="Double (5.5 - 8.5):"/>
+                    <p:outputLabel for="dd" value="Double (5.5 - 8.5):"/>
                     <p:inputText id="dd" value="#{validationView.doubleNumber}"
                                     converterMessage="Cannot convert to double." required="true">
                         <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
@@ -50,7 +49,7 @@
                     <h:outputText value="#{validationView.doubleNumber}"/>
 
 
-                    <h:outputLabel for="regex" value="Regex (^[a-zA-Z]+$):"/>
+                    <p:outputLabel for="regex" value="Regex (^[a-zA-Z]+$):"/>
                     <p:inputText id="regex" value="#{validationView.regexText}"
                                     validatorMessage="Value does not match pattern." required="true">
                         <f:validateRegex pattern="^[a-zA-Z]+$"/>
@@ -59,12 +58,11 @@
                     <p:message for="regex"/>
                     <h:outputText value="#{validationView.regexText}"/>
 
-                    <h:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
+                    <p:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
                                    />
                     <p:datePicker id="localDate3" value="#{validationView.localDate3}" pattern="MM/dd/yyyy"
                                     label="LocalDate (Java8; PF DatePicker)" required="true">
-                        <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
-                        <p:clientValidator event="keyup" />
+                        <p:clientValidator />
                     </p:datePicker>
                     <p:message for="localDate3"/>
                     <h:outputText value="#{validationView.localDate3}">
@@ -78,7 +76,10 @@
                         <f:selectItem itemLabel="Angular" itemValue="Angular" />
                         <f:selectItem itemLabel="React" itemValue="React" />
                         <f:selectItem itemLabel="Vue" itemValue="Vue" />
+                        <p:clientValidator />
                     </p:selectOneMenu>
+                    <p:message for="selectOneMenu"/>
+                    <h:outputText value="#{validationView.uiLibrary}"/>
                 </h:panelGrid>
 
                 <p:remoteCommand name="rc" update="grid" process="name number" validateClient="true"/>
@@ -90,6 +91,13 @@
                     <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
                     <p:commandButton value="Disabled" ajax="false" enabledByValidateClient="true" styleClass="mr-2"/>
                     <p:commandButton value="Remote Command" type="button" enabledByValidateClient="true" onclick="rc()" />
+                </div>
+
+                <div class="pt-3">
+                    Simulate server-side modifications:<br/>
+                    <p:commandButton value="Modify Values" update="@form" process="@form" action="#{validationView.modifyValues()}" styleClass="mr-2" />
+                    <p:commandButton value="Modify Values 2" update="@form" process="@this" action="#{validationView.modifyValues()}" styleClass="mr-2" />
+                    <p:commandButton value="Clear Values" update="@form" process="@form" action="#{validationView.clearValues()}" />
                 </div>
                 
             </h:form>

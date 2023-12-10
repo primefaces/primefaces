@@ -277,8 +277,6 @@ if (window.PrimeFaces) {
                 }
             }
 
-            PrimeFaces.validation.validateInput(element, element, highlight);
-
             $('[data-pf-validateclient-dynamic]').each((index, btn) => {
                 console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
 
@@ -299,7 +297,11 @@ if (window.PrimeFaces) {
                 else {
                     console.warn('No widget found for ID ' + btn.id);
                 }
+
+                vc.clear();
             });
+
+            PrimeFaces.validation.validateInput(element, element, highlight);
 
             if (!vc.isEmpty()) {
                 if (uiMessage) {
