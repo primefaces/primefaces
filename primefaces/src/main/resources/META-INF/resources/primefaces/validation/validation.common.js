@@ -289,11 +289,15 @@ if (window.PrimeFaces) {
 
                 const widget = PrimeFaces.getWidgetById(btn.id);
 
-                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
-                    widget.enable();
+                if (widget) {
+                    if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
+                        widget.enable();
+                    } else {
+                        widget.disable();
+                    }
                 }
                 else {
-                    widget.disable();
+                    console.warn('No widget found for ID ' + btn.id);
                 }
             });
 

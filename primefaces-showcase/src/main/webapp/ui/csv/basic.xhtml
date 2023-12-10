@@ -30,12 +30,12 @@
 
                     <h:outputLabel for="number" value="Number:"/>
                     <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
-                                    validateMask="false">
+                                 validateMask="false">
                         <f:validateLength minimum="2" maximum="3"/>
                     </p:inputMask>
                     <p:message for="number"/>
                     <h:outputText value="#{validationView.integer}"/>
-                    
+
                     <h:outputLabel for="color" value="Color:"/>
                     <p:colorPicker id="color" value="#{validationView.color}" required="true" label="Color"/>
                     <p:message for="color"/>
@@ -43,7 +43,7 @@
 
                     <h:outputLabel for="dd" value="Double:"/>
                     <p:inputText id="dd" value="#{validationView.doubleNumber}"
-                                    converterMessage="Cannot convert to double.">
+                                 converterMessage="Cannot convert to double.">
                         <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
                     </p:inputText>
                     <p:message for="dd"/>
@@ -52,7 +52,6 @@
                     <h:outputLabel for="money" value="Currency ($):"/>
                     <p:inputText id="money" value="#{validationView.money}" label="Currency">
                         <f:convertNumber type="currency" currencySymbol="$"/>
-                        <p:clientValidator event="keyup"/>
                     </p:inputText>
                     <p:message for="money"/>
                     <h:outputText value="#{validationView.money}">
@@ -61,7 +60,7 @@
 
                     <h:outputLabel for="regex" value="Regex (^[a-zA-Z]+$):"/>
                     <p:inputText id="regex" value="#{validationView.regexText}"
-                                    validatorMessage="Value does not match pattern.">
+                                 validatorMessage="Value does not match pattern.">
                         <f:validateRegex pattern="^[a-zA-Z]+$"/>
                     </p:inputText>
                     <p:message for="regex"/>
@@ -87,9 +86,9 @@
                     </h:outputText>
 
                     <h:outputLabel for="date3" value="Date (java.util.Date; PF DatePicker)"
-                                   />
+                    />
                     <p:datePicker id="date3" value="#{validationView.date3}" pattern="MM/dd/yyyy"
-                                    label="Date (java.util.Date; PF DatePicker)">
+                                  label="Date (java.util.Date; PF DatePicker)">
                         <f:convertDateTime pattern="MM/dd/yyyy"/>
                     </p:datePicker>
                     <p:message for="date3"/>
@@ -107,7 +106,7 @@
                     </h:outputText>
 
                     <h:outputLabel for="localDate2" value="LocalDate (Java8; PF Calendar)"
-                                   />
+                    />
                     <p:calendar id="localDate2" value="#{validationView.localDate2}" pattern="MM/dd/yyyy"
                                 label="LocalDate (Java8; PF Calendar)">
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
@@ -118,9 +117,9 @@
                     </h:outputText>
 
                     <h:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
-                                   />
+                    />
                     <p:datePicker id="localDate3" value="#{validationView.localDate3}" pattern="MM/dd/yyyy"
-                                    label="LocalDate (Java8; PF DatePicker)" required="true">
+                                  label="LocalDate (Java8; PF DatePicker)">
                         <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
                     </p:datePicker>
                     <p:message for="localDate3"/>
@@ -130,7 +129,7 @@
 
                     <h:outputLabel for="desc" value="Description"/>
                     <p:inputTextarea id="desc" value="#{validationView.description}" required="true"
-                                        label="Description">
+                                     label="Description">
                         <f:validateLength minimum="3" maximum="10"/>
                     </p:inputTextarea>
                     <p:message for="desc"/>
@@ -141,13 +140,13 @@
                 <p:defaultCommand target="btnAjax"/>
 
                 <div class="pt-3">
-                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Disabled" ajax="false" styleClass="mr-2"/>
-                    <p:commandButton value="Remote Command" type="button" enabledByValidateClient="true" onclick="rc()" />
+                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Disabled" ajax="false"  styleClass="mr-2"/>
+                    <p:commandButton value="Remote Command" type="button" onclick="rc()" />
                 </div>
-                
+
             </h:form>
         </div>
     </ui:define>

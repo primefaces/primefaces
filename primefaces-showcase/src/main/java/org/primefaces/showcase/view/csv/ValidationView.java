@@ -46,6 +46,7 @@ public class ValidationView {
     private LocalDate localDate;
     private LocalDate localDate2;
     private LocalDate localDate3;
+    private String uiLibrary;
 
     public String getText() {
         return text;
@@ -149,5 +150,13 @@ public class ValidationView {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getUiLibrary() {
+        return uiLibrary;
+    }
+
+    public void setUiLibrary(String uiLibrary) {
+        this.uiLibrary = uiLibrary;
     }
 }

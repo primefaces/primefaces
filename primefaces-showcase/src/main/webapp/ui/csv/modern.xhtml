@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Modern</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Immedate client side validation and commandButton only enabled after successful CSV.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csv"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages>
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <h:panelGrid id="grid" columns="4" cellpadding="7">
+                    <h:outputLabel for="name" value="Name (3-50 characters):"/>
+                    <p:inputText id="name" value="#{validationView.text}" required="true" label="Name">
+                        <f:validateLength minimum="3" maximum="50"/>
+                        <p:clientValidator event="keyup" />
+                    </p:inputText>
+                    <p:message for="name"/>
+                    <h:outputText value="#{validationView.text}"/>
+
+                    <h:outputLabel for="number" value="Number (Length 2 - 3):"/>
+                    <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
+                                    validateMask="false" required="true">
+                        <f:validateLength minimum="2" maximum="3"/>
+                        <p:clientValidator event="keyup" />
+                    </p:inputMask>
+                    <p:message for="number"/>
+                    <h:outputText value="#{validationView.integer}"/>
+                    
+                    <h:outputLabel for="dd" value="Double (5.5 - 8.5):"/>
+                    <p:inputText id="dd" value="#{validationView.doubleNumber}"
+                                    converterMessage="Cannot convert to double." required="true">
+                        <f:validateDoubleRange minimum="5.5" maximum="8.5"/>
+                        <p:clientValidator event="keyup" />
+                    </p:inputText>
+                    <p:message for="dd"/>
+                    <h:outputText value="#{validationView.doubleNumber}"/>
+
+
+                    <h:outputLabel for="regex" value="Regex (^[a-zA-Z]+$):"/>
+                    <p:inputText id="regex" value="#{validationView.regexText}"
+                                    validatorMessage="Value does not match pattern." required="true">
+                        <f:validateRegex pattern="^[a-zA-Z]+$"/>
+                        <p:clientValidator event="keyup" />
+                    </p:inputText>
+                    <p:message for="regex"/>
+                    <h:outputText value="#{validationView.regexText}"/>
+
+                    <h:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
+                                   />
+                    <p:datePicker id="localDate3" value="#{validationView.localDate3}" pattern="MM/dd/yyyy"
+                                    label="LocalDate (Java8; PF DatePicker)" required="true">
+                        <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                        <p:clientValidator event="keyup" />
+                    </p:datePicker>
+                    <p:message for="localDate3"/>
+                    <h:outputText value="#{validationView.localDate3}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                    </h:outputText>
+
+                    <p:outputLabel for="@next" value="Select UI-library" />
+                    <p:selectOneMenu id="selectOneMenu" value="#{validationView.uiLibrary}" required="true">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                        <f:selectItem itemLabel="JSF" itemValue="JSF" />
+                        <f:selectItem itemLabel="Angular" itemValue="Angular" />
+                        <f:selectItem itemLabel="React" itemValue="React" />
+                        <f:selectItem itemLabel="Vue" itemValue="Vue" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <p:remoteCommand name="rc" update="grid" process="name number" validateClient="true"/>
+                <p:defaultCommand target="btnAjax"/>
+
+                <div class="pt-3">
+                    <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Disabled" ajax="false" enabledByValidateClient="true" styleClass="mr-2"/>
+                    <p:commandButton value="Remote Command" type="button" enabledByValidateClient="true" onclick="rc()" />
+                </div>
+                
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
