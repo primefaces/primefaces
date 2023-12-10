@@ -36,6 +36,7 @@ widgetVar | null | String | Name of the client side widget.
 ```xhtml
 <p:staticMessage severity="info" summary="INFO!" detail="Hey, i'm a info!" />
 ```
+
 ## Display Mode
 StaticMessage component has three different display modes;
 
@@ -43,3 +44,5 @@ StaticMessage component has three different display modes;
 - icon : Only message severity is displayed and message text is visible as a tooltip.
 - both (default) : Both icon and text are displayed.
 
+## Ajax Behavior Events
+StaticMessage component has one event: `close`.
