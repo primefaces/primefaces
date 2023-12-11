@@ -121,7 +121,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.labelContainer = this.jq.find('.ui-selectcheckboxmenu-label-container');
         this.label = this.jq.find('.ui-selectcheckboxmenu-label');
         this.menuIcon = this.jq.children('.ui-selectcheckboxmenu-trigger');
-        this.triggers = this.jq.find('.ui-selectcheckboxmenu-trigger, .ui-selectcheckboxmenu-label');
+        this.triggers = this.jq;
         this.disabled = this.jq.hasClass('ui-state-disabled');
         //get the hidden checkboxes except that ones in overlay panel
         this.inputs = this.jq.children('div.ui-helper-hidden:not(.ui-input-overlay)').children(':checkbox');
@@ -138,10 +138,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.labelSeparator = (this.cfg.labelSeparator === undefined) ? ', ' : this.cfg.labelSeparator;
 
         if (!this.disabled) {
-            if (this.cfg.multiple) {
-                this.triggers = this.jq.find('.ui-selectcheckboxmenu-trigger, .ui-selectcheckboxmenu-multiple-container');
-            }
-
             if (!this.cfg.dynamic) {
                 this._renderPanel();
             }
@@ -992,6 +988,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 this.updateToggler();
 
                 if (this.cfg.multiple) {
+                    checkbox.removeClass('ui-state-focus');
                     this.removeMultipleItem(item);
                     this.alignPanel();
                 }
@@ -1167,21 +1164,20 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             box.addClass('ui-state-focus');
 
             PrimeFaces.scrollInView($this.itemContainerWrapper, box);
-        })
-            .on('blur.selectCheckboxMenu', function(e) {
+        }).on('blur.selectCheckboxMenu', function(e) {
                 var input = $(this),
                     box = input.parent().next();
 
                 box.removeClass('ui-state-focus');
-            })
-            .on('keydown.selectCheckboxMenu', function(e) {
+        })
+        .on('keydown.selectCheckboxMenu', function(e) {
                 if (e.key === ' ') {
                     e.preventDefault();
                 }
                 else if (e.key === 'Escape') {
                     $this.hide();
                 }
-            });
+        });
     },
 
     /**
