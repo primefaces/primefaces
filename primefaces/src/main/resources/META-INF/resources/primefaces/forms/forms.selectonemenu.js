@@ -805,11 +805,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case 'Enter':
-                    $this.handleEnterKey(e);
+                    $this.keyboardTarget.trigger("focus");
+                    $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: "Enter" }));
                 break;
 
                 case 'Tab':
-                    $this.handleTabKey(e);
+                    $this.keyboardTarget.trigger("focus");
+                    $this.keyboardTarget.trigger(jQuery.Event('keydown', { key: "Tab" }));
                 break;
 
                 case 'Escape':
