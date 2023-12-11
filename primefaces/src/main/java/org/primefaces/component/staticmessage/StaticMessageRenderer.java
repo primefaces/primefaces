@@ -34,7 +34,7 @@ import org.primefaces.util.WidgetBuilder;
 public class StaticMessageRenderer extends UINotificationRenderer {
 
     @Override
-    public void decode(final FacesContext context, final UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
     }
 
@@ -126,7 +126,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
     }
 
     protected void encodeScript(FacesContext context, StaticMessage staticMessage) throws IOException {
-        final WidgetBuilder wb = getWidgetBuilder(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("StaticMessage", staticMessage);
 
         encodeClientBehaviors(context, staticMessage);

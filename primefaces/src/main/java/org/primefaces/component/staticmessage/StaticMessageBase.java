@@ -63,7 +63,7 @@ public abstract class StaticMessageBase extends UIComponentBase implements Widge
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(final String widgetVar) {
+    public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 

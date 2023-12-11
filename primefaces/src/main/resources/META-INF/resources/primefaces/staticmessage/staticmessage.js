@@ -30,7 +30,9 @@ PrimeFaces.widget.StaticMessage = PrimeFaces.widget.BaseWidget.extend({
             if ($this.hasBehavior('close')) {
                 $this.callBehavior('close');
             }
-        });
+        })
+            .attr('role', 'button')
+            .attr('aria-label', PrimeFaces.getAriaLabel('close'));
     }
 
 });
