@@ -37,7 +37,11 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class WizardRenderer extends CoreRenderer {
 

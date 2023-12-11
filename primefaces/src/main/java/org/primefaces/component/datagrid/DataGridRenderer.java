@@ -31,7 +31,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.DataRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.GridLayoutUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public class DataGridRenderer extends DataRenderer {
 

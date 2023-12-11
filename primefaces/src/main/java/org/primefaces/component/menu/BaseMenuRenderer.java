@@ -37,7 +37,10 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 

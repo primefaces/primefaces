@@ -48,7 +48,11 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.*;
+import org.primefaces.util.Constants;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 

@@ -37,7 +37,11 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
 
 public class AccordionPanelRenderer extends CoreRenderer {
 
