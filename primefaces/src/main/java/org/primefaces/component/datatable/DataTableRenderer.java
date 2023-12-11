@@ -709,7 +709,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", DataTable.COLUMN_TITLE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
+        if (FacetUtils.shouldRenderFacet(header, table.isRenderEmptyFacets())) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
@@ -747,7 +747,7 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
-        if (!ComponentUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
+        if (!FacetUtils.shouldRenderFacet(filterFacet, table.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, table, column, writer);
         }
         else {
@@ -871,7 +871,7 @@ public class DataTableRenderer extends DataRenderer {
         //Footer content
         UIComponent facet = column.getFacet("footer");
         String text = column.getFooterText();
-        if (ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
+        if (FacetUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             facet.encodeAll(context);
         }
         else if (text != null) {
@@ -1028,7 +1028,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("colspan", table.getColumnsCountWithSpan(), null);
 
             UIComponent emptyFacet = table.getFacet("emptyMessage");
-            if (ComponentUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
+            if (FacetUtils.shouldRenderFacet(emptyFacet, table.isRenderEmptyFacets())) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -1365,7 +1365,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
-        if (!ComponentUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
+        if (!FacetUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();

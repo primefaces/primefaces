@@ -37,10 +37,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.expression.SearchExpressionUtils;
 
 import org.primefaces.renderkit.SelectOneRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class CascadeSelectRenderer extends SelectOneRenderer {
 
@@ -215,7 +212,7 @@ public class CascadeSelectRenderer extends SelectOneRenderer {
                 writer.writeAttribute("class", CascadeSelect.ITEM_CONTENT_CLASS, null);
                 writer.writeAttribute("tabindex", "0", null);
 
-                if (ComponentUtils.shouldRenderFacet(contentFacet)) {
+                if (FacetUtils.shouldRenderFacet(contentFacet)) {
                     contentFacet.encodeAll(context);
                 }
                 else {

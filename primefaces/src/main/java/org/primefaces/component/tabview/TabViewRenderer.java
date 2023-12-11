@@ -33,10 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class TabViewRenderer extends CoreRenderer {
 
@@ -182,7 +179,7 @@ public class TabViewRenderer extends CoreRenderer {
 
     protected void encodeFooter(FacesContext context, TabView tabView) throws IOException {
         UIComponent footerFacet = tabView.getFacet("footer");
-        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
+        if (FacetUtils.shouldRenderFacet(footerFacet)) {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-tabs-footer", null);
@@ -220,7 +217,7 @@ public class TabViewRenderer extends CoreRenderer {
         });
 
         UIComponent actionsFacet = tabView.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(actionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(actionsFacet)) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions ui-tabs-actions-global", null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(withActiveFacet.get()), null);
@@ -271,7 +268,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         writer.writeAttribute("tabindex", "-1", null);
-        if (!ComponentUtils.shouldRenderFacet(titleFacet)) {
+        if (!FacetUtils.shouldRenderFacet(titleFacet)) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
                 writer.writeText(tabTitle, null);
@@ -290,7 +287,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent optionsFacet = tab.getFacet("actions");
-        if (ComponentUtils.shouldRenderFacet(optionsFacet)) {
+        if (FacetUtils.shouldRenderFacet(optionsFacet)) {
             withFacet = true;
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);

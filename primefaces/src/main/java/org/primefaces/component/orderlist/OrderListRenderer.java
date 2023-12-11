@@ -36,10 +36,7 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.GridLayoutUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class OrderListRenderer extends CoreRenderer {
 
@@ -120,7 +117,7 @@ public class OrderListRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", columnGridClass, null);
 
-        if (ComponentUtils.shouldRenderFacet(caption)) {
+        if (FacetUtils.shouldRenderFacet(caption)) {
             encodeCaption(context, caption);
             listStyleClass += " ui-corner-bottom";
         }

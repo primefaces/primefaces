@@ -48,11 +48,8 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
+
 import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeTableRenderer extends DataRenderer {
@@ -445,7 +442,7 @@ public class TreeTableRenderer extends DataRenderer {
             writer.startElement("td", null);
             writer.writeAttribute("colspan", tt.getColumnsCount(), null);
 
-            if (ComponentUtils.shouldRenderFacet(emptyFacet)) {
+            if (FacetUtils.shouldRenderFacet(emptyFacet)) {
                 emptyFacet.encodeAll(context);
             }
             else {
@@ -688,7 +685,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-column-title", null);
 
-        if (ComponentUtils.shouldRenderFacet(header)) {
+        if (FacetUtils.shouldRenderFacet(header)) {
             header.encodeAll(context);
         }
         else if (headerText != null) {
@@ -739,7 +736,7 @@ public class TreeTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent filterFacet = column.getFacet("filter");
 
-        if (!ComponentUtils.shouldRenderFacet(filterFacet)) {
+        if (!FacetUtils.shouldRenderFacet(filterFacet)) {
             String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
             boolean disableTabbing = tt.getScrollWidth() != null;
 
@@ -811,7 +808,7 @@ public class TreeTableRenderer extends DataRenderer {
     }
 
     protected void encodeFacet(FacesContext context, TreeTable tt, UIComponent facet, String styleClass) throws IOException {
-        if (!ComponentUtils.shouldRenderFacet(facet)) {
+        if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -939,7 +936,7 @@ public class TreeTableRenderer extends DataRenderer {
             writer.writeAttribute("colspan", colspan, null);
         }
 
-        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
+        if (FacetUtils.shouldRenderFacet(footerFacet)) {
             footerFacet.encodeAll(context);
         }
         else if (footerText != null) {

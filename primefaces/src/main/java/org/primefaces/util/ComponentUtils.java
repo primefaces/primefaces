@@ -407,7 +407,7 @@ public class ComponentUtils {
     }
 
     /**
-     * Duplicate code from OmniFacew project under apache license:
+     * Duplicate code from OmniFaces project under apache license:
      * https://github.com/omnifaces/omnifaces/blob/develop/license.txt
      * <p>
      * URI-encode the given string using UTF-8. URIs (paths and filenames) have different encoding rules as compared to
@@ -476,42 +476,24 @@ public class ComponentUtils {
      * @param facet The Facet component to check
      * @param alwaysRender flag to ignore children and only check the facet itself
      * @return true if the facet should be rendered, false if not
+     *
+     * @deprecated use FacetUtils
      */
+    @Deprecated
     public static boolean shouldRenderFacet(UIComponent facet, boolean alwaysRender) {
-        // no facet declared at all or facet without any content
-        if (facet == null) {
-            return false;
-        }
-
-        // user wants to always render this facet so it can be updated
-        if (alwaysRender) {
-            return true;
-        }
-
-        // the facet contains multiple childs, so its wrapped inside a UIPanel
-        // NOTE: we need a equals check as instanceof would also catch e.g. p:dialog
-        if (facet.getClass().equals(UIPanel.class)) {
-            // For any future version of JSF where the f:facet gets a rendered attribute
-            if (!facet.isRendered()) {
-                return false;
-            }
-
-            // check all childs - if all of them are rendered=false, we skip rendering the whole facet
-            return shouldRenderChildren(facet);
-        }
-
-        // the facet contains only one child now, which means that the facet is the child component
-        // we dont want to check children, just if the component is rendered=true
-        return facet.isRendered();
+        return FacetUtils.shouldRenderFacet(facet, alwaysRender);
     }
 
     /**
      * Checks if the facet and one of the first level children is rendered.
      * @param facet The Facet component to check
      * @return true when facet and one of the first level children is rendered.
+     *
+     * @deprecated use FacetUtils
      */
+    @Deprecated
     public static boolean shouldRenderFacet(UIComponent facet) {
-        return shouldRenderFacet(facet, false);
+        return FacetUtils.shouldRenderFacet(facet);
     }
 
     /**
@@ -527,29 +509,6 @@ public class ComponentUtils {
         }
 
         return false;
-    }
-
-    public static void findValueHoldersInFacet(FacesContext context, UIComponent facet, ContextCallback callback) {
-        // the facet contains multiple childs, so its wrapped inside a UIPanel
-        if (facet instanceof UIPanel) {
-            for (int i = 0; i < facet.getChildCount(); i++) {
-                UIComponent child = facet.getChildren().get(i);
-                if (child instanceof ValueHolder) {
-                    callback.invokeContextCallback(context, child);
-                }
-            }
-        }
-        // the facet contains only one child now, which means that the facet is the child component
-        else {
-            // the child is a ValueHolder, independent if it's a composite or not
-            if (facet instanceof ValueHolder) {
-                callback.invokeContextCallback(context, facet);
-            }
-            // try to check for cc:editableValueHolder
-            else if (CompositeUtils.isComposite(facet)) {
-                CompositeUtils.invokeOnDeepestEditableValueHolder(context, facet, callback);
-            }
-        }
     }
 
     /**

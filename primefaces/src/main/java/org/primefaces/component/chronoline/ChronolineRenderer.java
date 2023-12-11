@@ -24,7 +24,7 @@
 package org.primefaces.component.chronoline;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -99,7 +99,7 @@ public class ChronolineRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", Chronoline.EVENT_OPPOSITE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(oppositeFacet)) {
+        if (FacetUtils.shouldRenderFacet(oppositeFacet)) {
             oppositeFacet.encodeAll(context);
         }
         else {
@@ -116,7 +116,7 @@ public class ChronolineRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", Chronoline.EVENT_SEPARATOR_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(markerFacet)) {
+        if (FacetUtils.shouldRenderFacet(markerFacet)) {
             markerFacet.encodeAll(context);
         }
         else {

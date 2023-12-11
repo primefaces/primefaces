@@ -478,7 +478,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
     protected void encodePanelFooter(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         UIComponent facet = menu.getFacet("footer");
-        if (!ComponentUtils.shouldRenderFacet(facet)) {
+        if (!FacetUtils.shouldRenderFacet(facet)) {
             return;
         }
 
@@ -525,7 +525,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 }
 
                 UIComponent headerFacet = column.getFacet("header");
-                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+                if (FacetUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {

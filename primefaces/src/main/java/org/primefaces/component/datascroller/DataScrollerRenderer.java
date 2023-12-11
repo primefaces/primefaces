@@ -34,6 +34,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataScrollerRenderer extends CoreRenderer {
@@ -90,7 +91,7 @@ public class DataScrollerRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (ComponentUtils.shouldRenderFacet(header)) {
+        if (FacetUtils.shouldRenderFacet(header)) {
             writer.startElement("div", ds);
             writer.writeAttribute("class", DataScroller.HEADER_CLASS, null);
             header.encodeAll(context);
@@ -110,7 +111,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", DataScroller.LOADING_CLASS, null);
-        if (ComponentUtils.shouldRenderFacet(loading)) {
+        if (FacetUtils.shouldRenderFacet(loading)) {
             loading.encodeAll(context);
         }
         else {
@@ -145,7 +146,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
             writer.startElement("div", null);
             writer.writeAttribute("class", DataScroller.LOADER_CLASS, null);
-            if (rowCount > chunkSize && ComponentUtils.shouldRenderFacet(loader)) {
+            if (rowCount > chunkSize && FacetUtils.shouldRenderFacet(loader)) {
                 loader.encodeAll(context);
             }
             writer.endElement("div");
