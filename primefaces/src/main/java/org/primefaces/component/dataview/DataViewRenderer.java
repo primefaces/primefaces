@@ -270,7 +270,7 @@ public class DataViewRenderer extends DataRenderer {
 
             String columnClass = getStyleClassBuilder(context)
                     .add(DataView.GRID_LAYOUT_COLUMN_CLASS)
-                    .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
+                    .add(GridLayoutUtils.getColumnClass(flex, columns))
                     .add(dataview.getGridRowStyleClass())
                     .build();
 
