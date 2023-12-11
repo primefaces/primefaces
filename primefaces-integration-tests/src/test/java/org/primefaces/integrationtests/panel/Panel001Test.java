@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.panel;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -34,84 +35,84 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Panel;
 
-public class Panel001Test extends AbstractPrimePageTest {
+class Panel001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Panel: Close panel")
-    public void testClose(Page page) {
+    void close(Page page) {
         // Arrange
         Panel panel = page.panel;
-        Assertions.assertTrue(panel.isDisplayed());
+        assertTrue(panel.isDisplayed());
 
         // Act
         panel.close();
 
         // Assert
-        Assertions.assertFalse(panel.isDisplayed());
-        Assertions.assertFalse(page.messages.isEmpty());
-        Assertions.assertEquals("Panel Closed", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Closed panel id:'panel'", page.messages.getMessage(0).getDetail());
+        assertFalse(panel.isDisplayed());
+        assertFalse(page.messages.isEmpty());
+        assertEquals("Panel Closed", page.messages.getMessage(0).getSummary());
+        assertEquals("Closed panel id:'panel'", page.messages.getMessage(0).getDetail());
         assertConfiguration(panel.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("Panel: Collapse toggle panel")
-    public void testCollapse(Page page) {
+    void collapse(Page page) {
         // Arrange
         Panel panel = page.panel;
-        Assertions.assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
 
         // Act
         panel.collapse();
 
         // Assert
-        Assertions.assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
-        Assertions.assertFalse(page.messages.isEmpty());
-        Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
+        assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertFalse(page.messages.isEmpty());
+        assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
+        assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
         assertConfiguration(panel.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("Panel: Expand toggle panel")
-    public void testExpand(Page page) {
+    void expand(Page page) {
         // Arrange
         Panel panel = page.panel;
         panel.collapse();
-        Assertions.assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
 
         // Act
         panel.expand();
 
         // Assert
-        Assertions.assertEquals("button", panel.getHeader().getAttribute("role"));
-        Assertions.assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
-        Assertions.assertFalse(page.messages.isEmpty());
-        Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Status:VISIBLE", page.messages.getMessage(0).getDetail());
+        assertEquals("button", panel.getHeader().getAttribute("role"));
+        assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertFalse(page.messages.isEmpty());
+        assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
+        assertEquals("Status:VISIBLE", page.messages.getMessage(0).getDetail());
         assertConfiguration(panel.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("Panel: Toggle Click")
-    public void testToggle(Page page) {
+    void toggle(Page page) {
         // Arrange
         Panel panel = page.panel;
-        Assertions.assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertTrue(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
 
         // Act
         panel.toggle();
 
         // Assert
-        Assertions.assertEquals("button", panel.getHeader().getAttribute("role"));
-        Assertions.assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
-        Assertions.assertFalse(page.messages.isEmpty());
-        Assertions.assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
-        Assertions.assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
+        assertEquals("button", panel.getHeader().getAttribute("role"));
+        assertFalse(Boolean.valueOf(panel.getHeader().getAttribute("aria-expanded")));
+        assertFalse(page.messages.isEmpty());
+        assertEquals("panel toggled", page.messages.getMessage(0).getSummary());
+        assertEquals("Status:HIDDEN", page.messages.getMessage(0).getDetail());
         assertConfiguration(panel.getWidgetConfiguration());
     }
 
@@ -119,11 +120,11 @@ public class Panel001Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Panel Config = " + cfg);
-        Assertions.assertTrue(cfg.has("widgetVar"));
-        Assertions.assertTrue(cfg.getBoolean("closable"));
-        Assertions.assertTrue(cfg.getBoolean("toggleable"));
-        Assertions.assertEquals(500, cfg.getInt("closeSpeed"));
-        Assertions.assertEquals(500, cfg.getInt("toggleSpeed"));
+        assertTrue(cfg.has("widgetVar"));
+        assertTrue(cfg.getBoolean("closable"));
+        assertTrue(cfg.getBoolean("toggleable"));
+        assertEquals(500, cfg.getInt("closeSpeed"));
+        assertEquals(500, cfg.getInt("toggleSpeed"));
     }
 
     public static class Page extends AbstractPrimePage {

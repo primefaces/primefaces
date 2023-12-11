@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.inputtextarea;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,12 +37,12 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Msg;
 import org.primefaces.selenium.component.model.Severity;
 
-public class InputTextArea002Test extends AbstractPrimePageTest {
+class InputTextArea002Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("InputTextarea: Test floating label empty field does not have class 'ui-state-filled' but has 'ui-state-hover' ")
-    public void testEmptyField(Page page) {
+    void emptyField(Page page) {
         // Arrange
         InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
@@ -51,17 +52,17 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
-        Assertions.assertEquals("", inputTextarea.getValue());
+        assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
+        assertEquals("", inputTextarea.getValue());
         assertCss(inputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-hover", "ui-state-focus");
 
-        Assertions.assertEquals(0, messages.getAllMessages().size());
+        assertEquals(0, messages.getAllMessages().size());
     }
 
     @Test
     @Order(2)
     @DisplayName("InputTextarea: Test input with data has class 'ui-state-filled'")
-    public void testFilledField(Page page) {
+    void filledField(Page page) {
         // Arrange
         InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
@@ -72,16 +73,16 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
-        Assertions.assertEquals("filled", inputTextarea.getValue());
+        assertEquals("FillMe*", inputTextarea.getAssignedLabelText());
+        assertEquals("filled", inputTextarea.getValue());
         assertCss(inputTextarea, "ui-inputfield", "ui-InputTextarea", "ui-state-filled");
-        Assertions.assertEquals(0, messages.getAllMessages().size());
+        assertEquals(0, messages.getAllMessages().size());
     }
 
     @Test
     @Order(3)
     @DisplayName("InputTextarea: Test empty input submission causes required error message")
-    public void testRequiredFieldError(Page page) {
+    void requiredFieldError(Page page) {
         // Arrange
         InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
@@ -92,18 +93,18 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("", inputTextarea.getValue());
-        Assertions.assertEquals(1, messages.getAllMessages().size());
+        assertEquals("", inputTextarea.getValue());
+        assertEquals(1, messages.getAllMessages().size());
         Msg msg = messages.getAllMessages().get(0);
-        Assertions.assertEquals(Severity.ERROR, msg.getSeverity());
-        Assertions.assertEquals("InputTextArea is required!", msg.getSummary());
-        Assertions.assertEquals("InputTextArea is required!", msg.getDetail());
+        assertEquals(Severity.ERROR, msg.getSeverity());
+        assertEquals("InputTextArea is required!", msg.getSummary());
+        assertEquals("InputTextArea is required!", msg.getDetail());
     }
 
     @Test
     @Order(3)
     @DisplayName("InputTextarea: Test valid input submission does not cause an error.")
-    public void testRequiredFieldPass(Page page) {
+    void requiredFieldPass(Page page) {
         // Arrange
         InputTextarea inputTextarea = page.inputTextarea;
         Messages messages = page.messages;
@@ -114,8 +115,8 @@ public class InputTextArea002Test extends AbstractPrimePageTest {
 
         // Assert
         assertNoJavascriptErrors();
-        Assertions.assertEquals("test", inputTextarea.getValue());
-        Assertions.assertEquals(0, messages.getAllMessages().size());
+        assertEquals("test", inputTextarea.getValue());
+        assertEquals(0, messages.getAllMessages().size());
     }
 
     public static class Page extends AbstractPrimePage {

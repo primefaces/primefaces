@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.spinner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -41,17 +42,17 @@ public class Spinner006Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Spinner: GiHub #7252 Test decimalSeparator=''")
-    public void testDecimalSeparatorEmpty(Page page) {
+    void decimalSeparatorEmpty(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "12345");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("12345", spinner.getValue());
+        assertEquals("12345", spinner.getValue());
         assertOutputLabel(page, "12345");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
@@ -59,17 +60,17 @@ public class Spinner006Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Spinner: Both separators empty should not allow ' or , input")
-    public void testSeparatorsEmpty(Page page) {
+    void separatorsEmpty(Page page) {
         // Arrange
         Spinner spinner = page.spinner;
-        Assertions.assertEquals("", spinner.getValue());
+        assertEquals("", spinner.getValue());
 
         // Act
         sendKeys(spinner, "5,678.90");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("567890", spinner.getValue());
+        assertEquals("567890", spinner.getValue());
         assertOutputLabel(page, "567890");
         assertConfiguration(spinner.getWidgetConfiguration());
     }
@@ -77,12 +78,12 @@ public class Spinner006Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Spinner Config = " + cfg);
-        Assertions.assertEquals("", cfg.get("decimalSeparator"));
-        Assertions.assertEquals("", cfg.get("thousandSeparator"));
+        assertEquals("", cfg.get("decimalSeparator"));
+        assertEquals("", cfg.get("thousandSeparator"));
     }
 
     private void assertOutputLabel(Page page, String value) {
-        Assertions.assertEquals(value, page.output.getText());
+        assertEquals(value, page.output.getText());
     }
 
     public void sendKeys(Spinner spinner, CharSequence value) {

@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.datatable;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,42 +34,43 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DataTable;
-public class DataTable037Test extends AbstractDataTableTest {
+
+class DataTable037Test extends AbstractDataTableTest {
 
     @Test
     @Order(1)
     @DisplayName("DataTable: lazy paging with summary row grouping")
-    public void testSelectionMultipleWithPaging(Page page) throws InterruptedException {
+    void selectionMultipleWithPaging(Page page) throws InterruptedException {
         // Arrange
         DataTable dataTable = page.dataTable;
-        Assertions.assertNotNull(dataTable);
+        assertNotNull(dataTable);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(dataTable));
 
         // Page1 - 10 Rows
-        Assertions.assertTrue(dataTable.getText().contains("Amy Elsner"));
-        Assertions.assertFalse(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Total Customers: 10"));
+        assertTrue(dataTable.getText().contains("Amy Elsner"));
+        assertFalse(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Total Customers: 10"));
 
         dataTable.selectPage(2);
 
         // Page2 - 10 Rows
-        Assertions.assertFalse(dataTable.getText().contains("Amy Elsner"));
-        Assertions.assertTrue(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Total Customers: 10"));
+        assertFalse(dataTable.getText().contains("Amy Elsner"));
+        assertTrue(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Total Customers: 10"));
 
         dataTable.selectRowsPerPage(15);
 
         // Page1 - 15 Rows
-        Assertions.assertTrue(dataTable.getText().contains("Amy Elsner"));
-        Assertions.assertTrue(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Total Customers: 10"));
+        assertTrue(dataTable.getText().contains("Amy Elsner"));
+        assertTrue(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Total Customers: 10"));
 
         dataTable.selectPage(2);
 
         // Page2 - 15 Rows
-        Assertions.assertTrue(dataTable.getText().contains("Anna Fali"));
-        Assertions.assertTrue(dataTable.getText().contains("Asiya Javayant"));
-        Assertions.assertSame(2, StringUtils.countMatches(dataTable.getText(), "Total Customers: 10"));
+        assertTrue(dataTable.getText().contains("Anna Fali"));
+        assertTrue(dataTable.getText().contains("Asiya Javayant"));
+        assertSame(2, StringUtils.countMatches(dataTable.getText(), "Total Customers: 10"));
     }
 
     public static class Page extends AbstractPrimePage {

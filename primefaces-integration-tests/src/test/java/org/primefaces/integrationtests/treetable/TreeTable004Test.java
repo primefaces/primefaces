@@ -23,8 +23,9 @@
  */
 package org.primefaces.integrationtests.treetable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,12 +38,12 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.TreeTable;
 
-public class TreeTable004Test extends AbstractTreeTableTest {
+class TreeTable004Test extends AbstractTreeTableTest {
 
     @Test
     @Order(6)
     @DisplayName("TreeTable: multiple select")
-    public void testShowSelectedNodes(Page page) {
+    void showSelectedNodes(Page page) {
         TreeTable treeTable = page.treeTable;
         treeTable.sort("Name");
 
@@ -71,7 +72,7 @@ public class TreeTable004Test extends AbstractTreeTableTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("TreeTable Config = " + cfg);
-        Assertions.assertEquals("treeTable", cfg.getString("widgetVar"));
+        assertEquals("treeTable", cfg.getString("widgetVar"));
     }
 
     public static class Page extends AbstractPrimePage {

@@ -23,10 +23,11 @@
  */
 package org.primefaces.integrationtests.autocomplete;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -37,16 +38,16 @@ import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.AutoComplete;
 import org.primefaces.selenium.component.CommandButton;
 
-public class AutoComplete001Test extends AbstractPrimePageTest {
+class AutoComplete001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("AutoComplete: usage like normal input; without suggestions")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
-        Assertions.assertEquals("test", autoComplete.getValue());
-        Assertions.assertNotNull(autoComplete.getPanel());
+        assertEquals("test", autoComplete.getValue());
+        assertNotNull(autoComplete.getPanel());
         assertNotDisplayed(autoComplete.getPanel());
 
         // Act
@@ -55,14 +56,14 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("hello", autoComplete.getValue());
+        assertEquals("hello", autoComplete.getValue());
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("AutoComplete: usage like normal input, with suggestions")
-    public void testBasic2(Page page) {
+    void basic2(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
 
@@ -74,14 +75,14 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("bye0", autoComplete.getValue());
+        assertEquals("bye0", autoComplete.getValue());
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(3)
     @DisplayName("AutoComplete: check suggested values")
-    public void testSuggestions(Page page) {
+    void suggestions(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
 
@@ -92,24 +93,24 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert - Part 1
         assertDisplayed(autoComplete.getPanel());
-        Assertions.assertNotNull(autoComplete.getItems());
+        assertNotNull(autoComplete.getItems());
         List<String> itemValues = autoComplete.getItemValues();
-        Assertions.assertEquals(10, itemValues.size());
-        Assertions.assertEquals("Prime0", itemValues.get(0));
-        Assertions.assertEquals("Prime9", itemValues.get(9));
+        assertEquals(10, itemValues.size());
+        assertEquals("Prime0", itemValues.get(0));
+        assertEquals("Prime9", itemValues.get(9));
 
         // Act
         page.button.click();
 
         // Assert - Part 2
-        Assertions.assertEquals("Prime", autoComplete.getValue());
+        assertEquals("Prime", autoComplete.getValue());
         assertConfiguration(autoComplete.getWidgetConfiguration());
     }
 
     @Test
     @Order(4)
     @DisplayName("AutoComplete: client-side search-method")
-    public void testSearch(Page page) {
+    void search(Page page) {
         // Arrange
         AutoComplete autoComplete = page.autoComplete;
 
@@ -118,17 +119,17 @@ public class AutoComplete001Test extends AbstractPrimePageTest {
 
         // Assert
         assertDisplayed(autoComplete.getPanel());
-        Assertions.assertNotNull(autoComplete.getItems());
+        assertNotNull(autoComplete.getItems());
         List<String> itemValues = autoComplete.getItemValues();
-        Assertions.assertEquals(10, itemValues.size());
-        Assertions.assertEquals("abc0", itemValues.get(0));
-        Assertions.assertEquals("abc9", itemValues.get(9));
+        assertEquals(10, itemValues.size());
+        assertEquals("abc0", itemValues.get(0));
+        assertEquals("abc9", itemValues.get(9));
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("AutoComplete Config = " + cfg);
-        Assertions.assertTrue(cfg.has("appendTo"));
+        assertTrue(cfg.has("appendTo"));
     }
 
     public static class Page extends AbstractPrimePage {

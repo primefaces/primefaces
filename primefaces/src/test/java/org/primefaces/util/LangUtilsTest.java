@@ -28,48 +28,48 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LangUtilsTest {
+class LangUtilsTest {
 
     private static final String FOO = "foo";
     private static final String SENTENCE = "foo bar baz";
 
     @Test
-    public void getTypeFromCollectionProperty_Simple() {
+    void getTypeFromCollectionProperty_Simple() {
         Class type = LangUtils.getTypeFromCollectionProperty(new SimpleClass(), "strings");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_Inheritance() {
+    void getTypeFromCollectionProperty_Inheritance() {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteClass(), "ints");
 
         assertEquals(Integer.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_GenericInheritance() {
+    void getTypeFromCollectionProperty_GenericInheritance() {
         Class type = LangUtils.getTypeFromCollectionProperty(new ConcreteGenericClass(), "values");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
+    void getTypeFromCollectionProperty_GenericInheritance_Multilevel() {
         Class type = LangUtils.getTypeFromCollectionProperty(new DetailedConcreteGenericClass(), "values");
 
         assertEquals(String.class, type);
     }
 
     @Test
-    public void testCountMatches_char() {
+    void countMatches_char() {
         assertEquals(0, LangUtils.countMatches(null, 'D'));
         assertEquals(5, LangUtils.countMatches("one long someone sentence of one", ' '));
         assertEquals(6, LangUtils.countMatches("one long someone sentence of one", 'o'));
     }
 
     @Test
-    public void substring() {
+    void substring() {
         assertNull(LangUtils.substring(null, 0, 0));
         assertNull(LangUtils.substring(null, 1, 2));
         assertEquals("", LangUtils.substring("", 0, 0));
@@ -87,7 +87,7 @@ public class LangUtilsTest {
     }
 
     @Test
-    public void testIsParsable() {
+    void isParsable() {
         assertFalse(LangUtils.isNumeric(null));
         assertFalse(LangUtils.isNumeric(""));
         assertFalse(LangUtils.isNumeric("0xC1AB"));
@@ -110,7 +110,7 @@ public class LangUtilsTest {
     }
 
     @Test
-    public void toCapitalCase() {
+    void toCapitalCase() {
         assertEquals("", LangUtils.toCapitalCase(null));
         assertEquals("", LangUtils.toCapitalCase(""));
         assertEquals("", LangUtils.toCapitalCase(" "));

@@ -23,8 +23,10 @@
  */
 package org.primefaces.integrationtests.inputmask;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,48 +35,48 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputMask;
 
-public class InputMask002Test extends AbstractInputMaskTest {
+class InputMask002Test extends AbstractInputMaskTest {
 
     @Test
     @Order(1)
     @DisplayName("InputMask: Auto clearing the value if it does not match the mask completely")
-    public void testAutoClearNoMatch(final Page page) {
+    void autoClearNoMatch(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("222");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration());
     }
 
     @Test
     @Order(2)
     @DisplayName("InputMask: Value matches the mask completely")
-    public void testAutoClearMatch(final Page page) {
+    void autoClearMatch(final Page page) {
         // Arrange
         final InputMask inputMask = page.inputMask;
-        Assertions.assertEquals("", inputMask.getValue());
+        assertEquals("", inputMask.getValue());
 
         // Act
         inputMask.setValue("222-22-2222");
         page.button.click();
 
         // Assert
-        Assertions.assertEquals("222-22-2222", inputMask.getValue());
+        assertEquals("222-22-2222", inputMask.getValue());
         assertConfiguration(inputMask.getWidgetConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("InputMask Config = " + cfg);
-        Assertions.assertEquals("999-99-9999", cfg.getString("mask"));
-        Assertions.assertEquals("*", cfg.getString("placeholder"));
-        Assertions.assertFalse(cfg.has(AUTO_CLEAR));
+        assertEquals("999-99-9999", cfg.getString("mask"));
+        assertEquals("*", cfg.getString("placeholder"));
+        assertFalse(cfg.has(AUTO_CLEAR));
     }
 
     public static class Page extends AbstractPrimePage {

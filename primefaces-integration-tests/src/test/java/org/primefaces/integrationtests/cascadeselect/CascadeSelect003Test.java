@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.cascadeselect;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,12 @@ import org.primefaces.selenium.component.CascadeSelect;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 
-public class CascadeSelect003Test extends BaseCascadeSelectTest {
+class CascadeSelect003Test extends BaseCascadeSelectTest {
 
     @Test
     @Order(1)
     @DisplayName("CascadeSelect: select and submit item (SelectItems with converter)")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         CascadeSelect cascadeSelect = page.cascadeSelect;
         cascadeSelect.toggleDropdown();
@@ -56,7 +57,7 @@ public class CascadeSelect003Test extends BaseCascadeSelectTest {
 
         // Assert
         assertMessage(page.messages, 0, "Selected driver", "Charles");
-        Assertions.assertEquals("Charles", cascadeSelect.getSelectedLabel());
+        assertEquals("Charles", cascadeSelect.getSelectedLabel());
         assertConfiguration(cascadeSelect.getWidgetConfiguration());
     }
 

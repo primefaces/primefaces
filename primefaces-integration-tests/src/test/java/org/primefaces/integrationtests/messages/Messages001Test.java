@@ -23,7 +23,8 @@
  */
 package org.primefaces.integrationtests.messages;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,12 +37,12 @@ import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.model.Severity;
 
-public class Messages001Test extends AbstractPrimePageTest {
+class Messages001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Messages: message and validation")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         Messages messages = page.messages;
 
@@ -50,10 +51,10 @@ public class Messages001Test extends AbstractPrimePageTest {
 
         // Assert
         assertDisplayed(messages);
-        Assertions.assertEquals(1, messages.getAllMessages().size());
-        Assertions.assertTrue(messages.getMessage(0).getSummary().contains("not be null")); //Mojarra and MyFaces have slightly different messages
-        Assertions.assertEquals(Severity.ERROR, messages.getMessage(0).getSeverity());
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal2, "ui-state-error"));
+        assertEquals(1, messages.getAllMessages().size());
+        assertTrue(messages.getMessage(0).getSummary().contains("not be null")); //Mojarra and MyFaces have slightly different messages
+        assertEquals(Severity.ERROR, messages.getMessage(0).getSeverity());
+        assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal2, "ui-state-error"));
 
         // Act
         page.inputTextVal2.setValue("test123");
@@ -61,9 +62,9 @@ public class Messages001Test extends AbstractPrimePageTest {
 
         // Assert
         assertDisplayed(messages);
-        Assertions.assertEquals(1, messages.getAllMessages().size());
-        Assertions.assertEquals("Action 1", messages.getMessage(0).getSummary());
-        Assertions.assertEquals(Severity.INFO, messages.getMessage(0).getSeverity());
+        assertEquals(1, messages.getAllMessages().size());
+        assertEquals("Action 1", messages.getMessage(0).getSummary());
+        assertEquals(Severity.INFO, messages.getMessage(0).getSeverity());
 
         assertNoJavascriptErrors();
     }
@@ -71,7 +72,7 @@ public class Messages001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Messages: error-message with ClientId")
-    public void testErrorMessageWithClientId(Page page) {
+    void errorMessageWithClientId(Page page) {
         // Arrange
         Messages messages = page.messages;
         page.inputTextVal2.setValue("test123");
@@ -81,20 +82,20 @@ public class Messages001Test extends AbstractPrimePageTest {
 
         // Assert
         assertDisplayed(messages);
-        Assertions.assertEquals(1, messages.getAllMessages().size());
-        Assertions.assertEquals("Action 2", messages.getMessage(0).getSummary());
-        Assertions.assertEquals(Severity.ERROR, messages.getMessage(0).getSeverity());
-        Assertions.assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal1, "ui-state-error"));
+        assertEquals(1, messages.getAllMessages().size());
+        assertEquals("Action 2", messages.getMessage(0).getSummary());
+        assertEquals(Severity.ERROR, messages.getMessage(0).getSeverity());
+        assertTrue(PrimeSelenium.hasCssClass(page.inputTextVal1, "ui-state-error"));
 
         // Act
         page.buttonAction1.click();
 
         // Assert
         assertDisplayed(messages);
-        Assertions.assertEquals(1, messages.getAllMessages().size());
-        Assertions.assertEquals("Action 1", messages.getMessage(0).getSummary());
-        Assertions.assertEquals(Severity.INFO, messages.getMessage(0).getSeverity());
-        Assertions.assertFalse(PrimeSelenium.hasCssClass(page.inputTextVal1, "ui-state-error"));
+        assertEquals(1, messages.getAllMessages().size());
+        assertEquals("Action 1", messages.getMessage(0).getSummary());
+        assertEquals(Severity.INFO, messages.getMessage(0).getSeverity());
+        assertFalse(PrimeSelenium.hasCssClass(page.inputTextVal1, "ui-state-error"));
 
         assertNoJavascriptErrors();
     }

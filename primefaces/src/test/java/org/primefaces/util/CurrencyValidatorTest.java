@@ -36,7 +36,7 @@ import java.util.Locale;
 /**
  * Test Case for CurrencyValidator.
  */
-public class CurrencyValidatorTest {
+class CurrencyValidatorTest {
 
     private static String usDollar;
     private static String ukPound;
@@ -60,7 +60,7 @@ public class CurrencyValidatorTest {
      * Test Valid currency values
      */
     @Test
-    public void testValid() {
+    void valid() {
         CurrencyValidator validator = CurrencyValidator.getInstance();
         BigDecimal expected = new BigDecimal("1234.56");
         BigDecimal negative = new BigDecimal("-1234.56");
@@ -86,7 +86,7 @@ public class CurrencyValidatorTest {
      * Test Valid integer (non-decimal) currency values
      */
     @Test
-    public void testIntegerValid() {
+    void integerValid() {
         CurrencyValidator validator = CurrencyValidator.getInstance();
         BigDecimal expected = new BigDecimal("1234.00");
         BigDecimal negative = new BigDecimal("-1234.00");
@@ -102,7 +102,7 @@ public class CurrencyValidatorTest {
      * Test when using <f:convertNumber type="currency" />
      */
     @Test
-    public void testFromCurrency() {
+    void fromCurrency() {
         CurrencyValidator validator = CurrencyValidator.getInstance();
         BigDecimal expected = new BigDecimal("20.00");
 
@@ -114,7 +114,7 @@ public class CurrencyValidatorTest {
      * Test Infinity is not parsed
      */
     @Test
-    public void testWeirdPatternIsNotParsed() {
+    void weirdPatternIsNotParsed() {
         CurrencyValidator validator = CurrencyValidator.getInstance();
 
         Number result = validator.validate("74E12341", uk);
@@ -122,7 +122,7 @@ public class CurrencyValidatorTest {
     }
 
     @Test
-    public void testBrazilianReal() {
+    void brazilianReal() {
         // Arrange
         CurrencyValidator validator = CurrencyValidator.getInstance();
         BigDecimal expected = new BigDecimal("1234.56");

@@ -23,9 +23,11 @@
  */
 package org.primefaces.integrationtests.tree;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -40,23 +42,23 @@ import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.Tree;
 import org.primefaces.selenium.component.model.tree.TreeNode;
 
-public class Tree002Test extends AbstractTreeTest {
+class Tree002Test extends AbstractTreeTest {
 
     @Test
     @Order(1)
     @DisplayName("Tree: Single selection")
-    public void testSingleSelection(Page page) {
+    void singleSelection(Page page) {
         // Arrange
         Tree tree = page.tree;
-        Assertions.assertNotNull(tree);
+        assertNotNull(tree);
 
         List<TreeNode> children = tree.getChildren();
 
-        Assertions.assertNotNull(children);
-        Assertions.assertEquals(3, children.size());
+        assertNotNull(children);
+        assertEquals(3, children.size());
 
         TreeNode first = children.get(0);
-        Assertions.assertEquals("Documents", first.getLabelText());
+        assertEquals("Documents", first.getLabelText());
 
         // Act
         first.select();

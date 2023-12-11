@@ -23,11 +23,16 @@
  */
 package org.primefaces.integrationtests.schedule;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.*;
 import java.util.List;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -47,7 +52,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     private Schedule001 schedule001;
 
     @BeforeEach
-    public void init() {
+    void init() {
         schedule001 = new Schedule001();
         schedule001.init();
     }
@@ -55,7 +60,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     @Test
     @Order(1)
     @DisplayName("Schedule: show and check for JS-errors")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
         Schedule schedule = page.schedule;
 
@@ -69,7 +74,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Schedule: dateSelect")
-    public void testDateSelect(Page page) {
+    void dateSelect(Page page) {
         // Arrange
         Schedule schedule = page.schedule;
         page.buttonDeleteAllEvents.click();
@@ -92,7 +97,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         }
 
         String expectedMessage = "T10:00";
-        Assertions.assertTrue(msg.getDetail().endsWith(expectedMessage));
+        assertTrue(msg.getDetail().endsWith(expectedMessage));
 
         // check with different clientTimeZone and (server)timeZone - settings ------------------------
         // Arrange
@@ -111,7 +116,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
         String hourPlus1 = String.format("T%02d:00", hour + 1);
         String hourMinus1 = String.format("T%02d:00", hour - 1);
         boolean hourOK = msg.getDetail().endsWith(hourCurrent) || msg.getDetail().endsWith(hourPlus1) || msg.getDetail().endsWith(hourMinus1);
-        Assertions.assertTrue(hourOK, String.format("Expected: %s or %s or %s , Actual: %s", hourCurrent, hourPlus1, hourMinus1, msg.getDetail()));
+        assertTrue(hourOK, String.format("Expected: %s or %s or %s , Actual: %s", hourCurrent, hourPlus1, hourMinus1, msg.getDetail()));
     }
 
     private void selectSlot(Page page, String time) {
@@ -130,7 +135,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("Schedule: eventSelect")
-    public void testEventSelect(Page page) {
+    void eventSelect(Page page) {
         // Arrange
         Schedule schedule = page.schedule;
 
@@ -139,9 +144,9 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Event selected");
-        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
-        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
-        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
+        assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
+        assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
+        assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
 
         // check with different clientTimeZone and (server)timeZone - settings ------------------------
         // Arrange
@@ -152,11 +157,11 @@ public class Schedule001Test extends AbstractPrimePageTest {
 
         // Assert
         assertMessage(page, "Event selected");
-        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
+        assertEquals(schedule001.getEventModel().getEvents().get(0).getTitle(), page.selectedEventTitle.getValue());
         // DatePicker does not recognize clientTimeZone, so we see startDate and endDate transfered into server-timezone,
         // what may be confusing from a user perspective
-        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
-        Assertions.assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
+        assertEquals(schedule001.getEventModel().getEvents().get(0).getStartDate(), page.selectedEventStartDate.getValue());
+        assertEquals(schedule001.getEventModel().getEvents().get(0).getEndDate(), page.selectedEventEndDate.getValue());
 
         assertConfiguration(schedule.getWidgetConfiguration(), "en");
     }
@@ -164,7 +169,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("Schedule: GitHub #6496 locale switching")
-    public void testLocales(Page page) {
+    void locales(Page page) {
         // Arrange
         Schedule schedule = page.schedule;
 
@@ -191,21 +196,21 @@ public class Schedule001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("Schedule: event display - recognizing (server)timeZone and clientTimeZone")
-    public void testEventDisplayRecognizingClientTimeZone(Page page) {
+    void eventDisplayRecognizingClientTimeZone(Page page) {
         // Arrange
         Schedule schedule = page.schedule;
         page.buttonGerman.click();
 
         // Assert
         List<WebElement> todaysEvents = schedule.findElements(By.cssSelector(".fc-day-today .fc-daygrid-event"));
-        Assertions.assertEquals(1, todaysEvents.size());
+        assertEquals(1, todaysEvents.size());
         String eventTime = todaysEvents.get(0).findElement(By.className("fc-event-time")).getText();
         String eventTitle = todaysEvents.get(0).findElement(By.className("fc-event-title")).getText();
 
         int eventid = LocalDateTime.now().getDayOfMonth() > 1 ? 1 : 0;
         ScheduleEvent referenceEvent = schedule001.getEventModel().getEvents().get(eventid);
-        Assertions.assertEquals(referenceEvent.getTitle(), eventTitle);
-        Assertions.assertEquals(referenceEvent.getStartDate().getHour() + " Uhr", eventTime);
+        assertEquals(referenceEvent.getTitle(), eventTitle);
+        assertEquals(referenceEvent.getStartDate().getHour() + " Uhr", eventTime);
 
         // check with different clientTimeZone and (server)timeZone - settings ------------------------
         // Arrange
@@ -221,7 +226,7 @@ public class Schedule001Test extends AbstractPrimePageTest {
             }
         }
 
-        Assertions.assertEquals(
+        assertEquals(
                 (referenceEvent.getStartDate().getHour() + calcOffsetInHoursBetweenClientAndServerAndTimezone(ZonedDateTime.now())) + " Uhr",
                 eventTime);
         assertNoJavascriptErrors();
@@ -240,20 +245,20 @@ public class Schedule001Test extends AbstractPrimePageTest {
     }
 
     private void assertButton(WebElement button, String text) {
-        Assertions.assertEquals(text, button.getText());
+        assertEquals(text, button.getText());
     }
 
     private void assertMessage(Page page, String message) {
         Msg msg = page.messages.getMessage(0);
-        Assertions.assertNotNull(msg, "No messages found!");
+        assertNotNull(msg, "No messages found!");
         System.out.println("Message = " + msg);
-        Assertions.assertTrue(msg.getSummary().contains(message));
+        assertTrue(msg.getSummary().contains(message));
     }
 
     private void assertConfiguration(JSONObject cfg, String locale) {
         assertNoJavascriptErrors();
-        Assertions.assertEquals("form", cfg.getString("formId"));
-        Assertions.assertEquals(locale, cfg.getString("locale"));
+        assertEquals("form", cfg.getString("formId"));
+        assertEquals(locale, cfg.getString("locale"));
     }
 
     public static class Page extends AbstractPrimePage {

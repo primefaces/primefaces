@@ -23,7 +23,11 @@
  */
 package org.primefaces.integrationtests.clientwindow;
 
-import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,12 +38,12 @@ import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.InputText;
 import org.primefaces.selenium.component.Messages;
 
-public class ClientWindow001Test extends AbstractPrimePageTest {
+class ClientWindow001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("ClientWindow: Basic check - compare URL-Param, SessionStorage and Postback")
-    public void testBasic(Page page) {
+    void basic(Page page) {
         // Arrange
 
         // Act
@@ -47,22 +51,22 @@ public class ClientWindow001Test extends AbstractPrimePageTest {
 
         // Assert
         String url = page.getWebDriver().getCurrentUrl();
-        Assertions.assertTrue(url.contains("jfwid="));
+        assertTrue(url.contains("jfwid="));
 
         String pfWindowId = PrimeSelenium.executeScript("return sessionStorage.getItem('pf.windowId');");
-        Assertions.assertNotNull(pfWindowId);
-        Assertions.assertTrue(pfWindowId.length() > 0);
-        Assertions.assertTrue(url.endsWith(pfWindowId));
+        assertNotNull(pfWindowId);
+        assertTrue(pfWindowId.length() > 0);
+        assertTrue(url.endsWith(pfWindowId));
 
-        Assertions.assertEquals(pfWindowId, page.messages.getMessage(0).getDetail());
+        assertEquals(pfWindowId, page.messages.getMessage(0).getDetail());
 
-        Assertions.assertEquals("jfwid", page.messages.getMessage(0).getSummary());
+        assertEquals("jfwid", page.messages.getMessage(0).getSummary());
     }
 
     @Test
     @Order(2)
     @DisplayName("ClientWindow: check rendered URLs")
-    public void testRenderedUrls(Page page) {
+    void renderedUrls(Page page) {
         // Arrange
 
         // Act
@@ -71,7 +75,7 @@ public class ClientWindow001Test extends AbstractPrimePageTest {
         String pfWindowId = PrimeSelenium.executeScript("return sessionStorage.getItem('pf.windowId');");
         WebElement eltLink2Anotherpage = page.getWebDriver().findElement(By.className("link2Anotherpage"));
         String href = eltLink2Anotherpage.getAttribute("href");
-        Assertions.assertTrue(href.endsWith(pfWindowId));
+        assertTrue(href.endsWith(pfWindowId));
     }
 
     public static class Page extends AbstractPrimePage {

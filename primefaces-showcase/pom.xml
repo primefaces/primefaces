@@ -118,6 +118,12 @@
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.0.1</version>
+            <exclusions>
+                 <exclusion>
+                      <groupId>junit</groupId>
+                      <artifactId>junit</artifactId>
+                  </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Barcode -->

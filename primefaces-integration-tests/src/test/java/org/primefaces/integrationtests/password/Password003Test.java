@@ -23,21 +23,27 @@
  */
 package org.primefaces.integrationtests.password;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.JSONObject;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.Password;
 
-@Tag("FirefoxExclude") // stability-issues for Firefox (96, 97) together with Selenium 4 and password.showFeedback
-public class Password003Test extends AbstractPrimePageTest {
+// stability-issues for Firefox (96, 97) together with Selenium 4 and password.showFeedback
+@Tag("FirefoxExclude")
+class Password003Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("Password: Localization of prompt")
-    public void testLocalizationPrompt(Page page) {
+    void localizationPrompt(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -46,7 +52,7 @@ public class Password003Test extends AbstractPrimePageTest {
 
         // Assert
         WebElement feedback = password.getFeedbackPanel();
-        Assertions.assertEquals("block", feedback.getCssValue("display"));
+        assertEquals("block", feedback.getCssValue("display"));
         assertText(feedback, "Lütfen şifre giriniz");
         assertConfiguration(password.getWidgetConfiguration());
     }
@@ -54,7 +60,7 @@ public class Password003Test extends AbstractPrimePageTest {
     @Test
     @Order(2)
     @DisplayName("Password: Localization of Weak password")
-    public void testFeedbackWeak(Page page) {
+    void feedbackWeak(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -71,7 +77,7 @@ public class Password003Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("Password: Localization of Good password")
-    public void testFeedbackGood(Page page) {
+    void feedbackGood(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -88,7 +94,7 @@ public class Password003Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("Password: Localization of Strong password")
-    public void testFeedbackStrong(Page page) {
+    void feedbackStrong(Page page) {
         // Arrange
         Password password = page.password;
 
@@ -105,8 +111,8 @@ public class Password003Test extends AbstractPrimePageTest {
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Password Config = " + cfg);
-        Assertions.assertTrue(cfg.getBoolean("feedback"));
-        Assertions.assertFalse(cfg.getBoolean("inline"));
+        assertTrue(cfg.getBoolean("feedback"));
+        assertFalse(cfg.getBoolean("inline"));
     }
 
     public static class Page extends AbstractPrimePage {

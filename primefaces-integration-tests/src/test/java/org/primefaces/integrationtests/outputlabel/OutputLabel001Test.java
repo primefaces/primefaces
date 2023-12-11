@@ -23,7 +23,9 @@
  */
 package org.primefaces.integrationtests.outputlabel;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -33,26 +35,26 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.component.OutputLabel;
 
-public class OutputLabel001Test extends AbstractPrimePageTest {
+class OutputLabel001Test extends AbstractPrimePageTest {
 
     @Test
     @Order(1)
     @DisplayName("OutputLabel: required=true")
-    public void testRequired(Page page) {
+    void required(Page page) {
         // Arrange
         OutputLabel label = page.required;
 
         // Act and Assert
         assertLabel(label, "Required*", true);
         WebElement input = label.getFor();
-        Assertions.assertNotNull(input);
-        Assertions.assertEquals("form:inputrequired", input.getAttribute("id"));
+        assertNotNull(input);
+        assertEquals("form:inputrequired", input.getAttribute("id"));
     }
 
     @Test
     @Order(2)
     @DisplayName("OutputLabel: indicaterequired=false")
-    public void testIndicateRequired_False(Page page) {
+    void indicateRequired_False(Page page) {
         // Arrange
         OutputLabel label = page.notrequired;
 
@@ -63,7 +65,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(3)
     @DisplayName("OutputLabel: indicaterequired=true")
-    public void testIndicateRequired_True(Page page) {
+    void indicateRequired_True(Page page) {
         // Arrange
         OutputLabel label = page.indicaterequired;
 
@@ -74,7 +76,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(4)
     @DisplayName("OutputLabel: No bean annotations on Java bean")
-    public void testNoAnnotation(Page page) {
+    void noAnnotation(Page page) {
         // Arrange
         OutputLabel label = page.noannotations;
 
@@ -85,7 +87,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("OutputLabel: @NotNull bean validation")
-    public void testBeanValidation_NotNull(Page page) {
+    void beanValidation_NotNull(Page page) {
         // Arrange
         OutputLabel label = page.notnull;
 
@@ -96,7 +98,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("OutputLabel: @NotBlank bean validation")
-    public void testBeanValidation_NotBlank(Page page) {
+    void beanValidation_NotBlank(Page page) {
         // Arrange
         OutputLabel label = page.notblank;
 
@@ -107,7 +109,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(5)
     @DisplayName("OutputLabel: @NotEmpty bean validation")
-    public void testBeanValidation_NotEmpty(Page page) {
+    void beanValidation_NotEmpty(Page page) {
         // Arrange
         OutputLabel label = page.notempty;
 
@@ -118,7 +120,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(6)
     @DisplayName("OutputLabel: Label for input wrapped in composite not required")
-    public void testComposite1(Page page) {
+    void composite1(Page page) {
         // Arrange
         OutputLabel label = page.composite1;
 
@@ -129,7 +131,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(7)
     @DisplayName("OutputLabel: Label for input wrapped in composite, considering @NotNull")
-    public void testComposite2(Page page) {
+    void composite2(Page page) {
         // Arrange
         OutputLabel label = page.composite2;
 
@@ -140,7 +142,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(8)
     @DisplayName("OutputLabel: Label for input wrapped in composite required")
-    public void testComposite3(Page page) {
+    void composite3(Page page) {
         // Arrange
         OutputLabel label = page.composite3;
 
@@ -151,7 +153,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(9)
     @DisplayName("OutputLabel: disabled=true")
-    public void testDisabled(Page page) {
+    void disabled(Page page) {
         // Arrange
         OutputLabel label = page.disabled;
 
@@ -162,7 +164,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(10)
     @DisplayName("OutputLabel: readonly=true")
-    public void testReadOnly(Page page) {
+    void readOnly(Page page) {
         // Arrange
         OutputLabel label = page.readonly;
 
@@ -173,7 +175,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(11)
     @DisplayName("OutputLabel: disabled=true indicateRequired=autoSkipDisabled")
-    public void testDisabledSkipped(Page page) {
+    void disabledSkipped(Page page) {
         // Arrange
         OutputLabel label = page.disabledSkipped;
 
@@ -184,7 +186,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(12)
     @DisplayName("OutputLabel: readonly=true indicateRequired=autoSkipDisabled")
-    public void testReadOnlySkipped(Page page) {
+    void readOnlySkipped(Page page) {
         // Arrange
         OutputLabel label = page.readonlySkipped;
 
@@ -195,7 +197,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(13)
     @DisplayName("OutputLabel: disabled=false indicateRequired=autoSkipDisabled")
-    public void testEnabledNotSkipped(Page page) {
+    void enabledNotSkipped(Page page) {
         // Arrange
         OutputLabel label = page.enabledNotSkipped;
 
@@ -206,7 +208,7 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
     @Test
     @Order(14)
     @DisplayName("OutputLabel: readonly=false indicateRequired=autoSkipDisabled")
-    public void testReadOnlyNotSkipped(Page page) {
+    void readOnlyNotSkipped(Page page) {
         // Arrange
         OutputLabel label = page.readonlyNotSkipped;
 
@@ -216,8 +218,8 @@ public class OutputLabel001Test extends AbstractPrimePageTest {
 
 
     private void assertLabel(OutputLabel label, String text, boolean required) {
-        Assertions.assertEquals(required, label.hasRequiredIndicator());
-        Assertions.assertEquals(text, label.getText());
+        assertEquals(required, label.hasRequiredIndicator());
+        assertEquals(text, label.getText());
         assertNoJavascriptErrors();
     }
 

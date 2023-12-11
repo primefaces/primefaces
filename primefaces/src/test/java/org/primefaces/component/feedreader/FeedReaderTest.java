@@ -29,10 +29,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FeedReaderTest {
+class FeedReaderTest {
 
     @Test()
-    public void parseXXEbomb() throws Exception {
+    void parseXXEbomb() throws Exception {
         // Check CVE-2021-33813 can not be triggered in Primefaces
         // See https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33813
         // See https://alephsecurity.com/vulns/aleph-2021003
@@ -41,13 +41,13 @@ public class FeedReaderTest {
     }
 
     @Test()
-    public void parseXXE() throws Exception {
+    void parseXXE() throws Exception {
         URL feed = FeedReaderTest.class.getResource("/org/primefaces/feeds/XXE.xml");
         assertThrows(ParsingFeedException.class, () -> new FeedInput().parse(feed.toString(), 1));
     }
 
     @Test()
-    public void parseRSS() throws Exception {
+    void parseRSS() throws Exception {
         URL feed = FeedReaderTest.class.getResource("/org/primefaces/feeds/RSS2.0.xml");
         List rss = new FeedInput().parse(feed.toString(), 10);
         assertNotNull(rss);

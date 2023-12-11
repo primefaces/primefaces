@@ -36,10 +36,10 @@ import org.primefaces.selenium.component.TextEditor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TextEditor004Test extends AbstractPrimePageTest {
+class TextEditor004Test extends AbstractPrimePageTest {
     @Test
     @DisplayName("TextEditor: change event not fired if editor is not blurred")
-    public void testNoChange(Page page) {
+    void noChange(Page page) {
         // Arrange
         Messages messages = page.messages;
         WebElement quillEditor = page.editor.findElement(By.className("ql-editor"));
@@ -53,7 +53,7 @@ public class TextEditor004Test extends AbstractPrimePageTest {
 
     @Test
     @DisplayName("TextEditor: change event fired if editor is blurred")
-    public void testChangeEvent(Page page) {
+    void changeEvent(Page page) {
         // Arrange
         Messages messages = page.messages;
         WebElement outside = page.outside;

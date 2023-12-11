@@ -25,7 +25,8 @@ package org.primefaces.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
@@ -38,14 +39,14 @@ import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.pf.PrimeConfigurationMock;
 
-public class WidgetBuilderTest {
+class WidgetBuilderTest {
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
         return new WidgetBuilder(context, new PrimeConfigurationMock(context, new PrimeEnvironment(context)));
     }
 
     @Test
-    public void init() throws IOException {
+    void init() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
@@ -64,7 +65,7 @@ public class WidgetBuilderTest {
     }
 
     @Test
-    public void initWithMoveScriptsToBottom() throws IOException {
+    void initWithMoveScriptsToBottom() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
 
         FacesContext context = new FacesContextMock(writer);
@@ -84,7 +85,7 @@ public class WidgetBuilderTest {
     }
 
     @Test
-    public void initWithWindowLoad() throws IOException {
+    void initWithWindowLoad() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
@@ -99,7 +100,7 @@ public class WidgetBuilderTest {
     }
 
     @Test
-    public void initWithComponentLoad() throws IOException {
+    void initWithComponentLoad() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
@@ -115,7 +116,7 @@ public class WidgetBuilderTest {
     }
 
     @Test
-    public void shouldBuildWithAttributes() throws IOException {
+    void shouldBuildWithAttributes() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
@@ -138,7 +139,7 @@ public class WidgetBuilderTest {
     }
 
     @Test
-    public void shouldBuildWithCallbacks() throws IOException {
+    void shouldBuildWithCallbacks() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
         FacesContext context = new FacesContextMock(writer);
 
@@ -161,7 +162,7 @@ public class WidgetBuilderTest {
     }
 
     @Test
-    public void attributeDefaultValueIsNotEncoded() throws IOException {
+    void attributeDefaultValueIsNotEncoded() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
 
         FacesContext context = new FacesContextMock(writer);
@@ -187,7 +188,7 @@ public class WidgetBuilderTest {
     }
 
     @Test
-    public void attrJavascriptEscapeJavascript() throws IOException {
+    void attrJavascriptEscapeJavascript() throws IOException {
         CollectingResponseWriter writer = new CollectingResponseWriter();
 
         FacesContext context = new FacesContextMock(writer);
