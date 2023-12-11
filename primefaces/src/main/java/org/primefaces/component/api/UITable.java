@@ -44,6 +44,7 @@ import org.primefaces.model.ColumnMeta;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.LocaleUtils;
 
@@ -550,7 +551,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             if (child.isRendered() && (child instanceof UIColumn)) {
                 UIColumn column = (UIColumn) child;
 
-                if (column.getFooterText() != null || ComponentUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
                     return true;
                 }
             }

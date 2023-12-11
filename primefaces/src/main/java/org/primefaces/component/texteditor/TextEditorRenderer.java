@@ -98,7 +98,7 @@ public class TextEditorRenderer extends InputRenderer {
         renderARIARequired(context, editor);
         renderARIAInvalid(context, editor);
 
-        if (editor.isToolbarVisible() && ComponentUtils.shouldRenderFacet(toolbar)) {
+        if (editor.isToolbarVisible() && FacetUtils.shouldRenderFacet(toolbar)) {
             writer.startElement("div", editor);
             writer.writeAttribute("id", clientId + "_toolbar", null);
             writer.writeAttribute("class", "ui-editor-toolbar", null);

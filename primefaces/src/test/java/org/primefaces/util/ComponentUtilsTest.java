@@ -54,22 +54,22 @@ class ComponentUtilsTest {
     }
 
     @Test
-    void shouldRenderFacet_nullFacet() {
-        assertFalse(ComponentUtils.shouldRenderFacet(null));
+    public void shouldRenderFacet_nullFacet() {
+        assertFalse(FacetUtils.shouldRenderFacet(null));
     }
 
     @Test
     void shouldRenderFacet_facetRenderedFalse() {
         UIComponent component = mock(AccordionPanel.class);
         when(component.isRendered()).thenReturn(false);
-        assertFalse(ComponentUtils.shouldRenderFacet(component));
+        assertFalse(FacetUtils.shouldRenderFacet(component));
     }
 
     @Test
     void shouldRenderFacet_facetSingleChild() {
         UIComponent component = mock(AccordionPanel.class);
         when(component.isRendered()).thenReturn(true);
-        assertTrue(ComponentUtils.shouldRenderFacet(component));
+        assertTrue(FacetUtils.shouldRenderFacet(component));
     }
 
     @Test
@@ -82,7 +82,7 @@ class ComponentUtilsTest {
         facet.setRendered(true);
         facet.getChildren().add(children);
 
-        assertFalse(ComponentUtils.shouldRenderFacet(facet));
+        assertFalse(FacetUtils.shouldRenderFacet(facet));
     }
 
     @Test
@@ -95,7 +95,7 @@ class ComponentUtilsTest {
         facet.setRendered(true);
         facet.getChildren().add(children);
 
-        assertTrue(ComponentUtils.shouldRenderFacet(facet));
+        assertTrue(FacetUtils.shouldRenderFacet(facet));
     }
 
     @Test
@@ -108,7 +108,7 @@ class ComponentUtilsTest {
         facet.setRendered(false);
         facet.getChildren().add(children);
 
-        assertFalse(ComponentUtils.shouldRenderFacet(facet));
+        assertFalse(FacetUtils.shouldRenderFacet(facet));
     }
 
     class TransientStateHelperMock implements TransientStateHelper {

@@ -37,7 +37,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.renderkit.MenuItemAwareRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -79,7 +79,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
         if (isMenuItemComponent) {
             UIComponent uiMenuItem = (UIComponent) menuitem;
             UIComponent custom = uiMenuItem.getFacet("custom");
-            if (ComponentUtils.shouldRenderFacet(custom)) {
+            if (FacetUtils.shouldRenderFacet(custom)) {
                 custom.encodeAll(context);
                 return;
             }

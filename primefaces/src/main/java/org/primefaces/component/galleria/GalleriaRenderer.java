@@ -36,7 +36,7 @@ import org.primefaces.component.api.IterationStatus;
 import org.primefaces.model.ResponsiveOption;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class GalleriaRenderer extends CoreRenderer {
@@ -74,7 +74,7 @@ public class GalleriaRenderer extends CoreRenderer {
     protected void encodeHeader(FacesContext context, Galleria galleria) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = galleria.getFacet("header");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
             writer.startElement("div", null);
@@ -101,7 +101,7 @@ public class GalleriaRenderer extends CoreRenderer {
     protected void encodeFooter(FacesContext context, Galleria galleria) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = galleria.getFacet("footer");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (shouldRenderFacet) {
             writer.startElement("div", null);
@@ -164,7 +164,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeCaptions(FacesContext context, Galleria galleria) throws IOException {
         UIComponent facet = galleria.getFacet("caption");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (galleria.isShowCaption() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
@@ -217,7 +217,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeIndicators(FacesContext context, Galleria galleria) throws IOException {
         UIComponent facet = galleria.getFacet("indicator");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (galleria.isShowIndicators() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();
@@ -288,7 +288,7 @@ public class GalleriaRenderer extends CoreRenderer {
 
     public void encodeThumbnails(FacesContext context, Galleria galleria) throws IOException {
         UIComponent facet = galleria.getFacet("thumbnail");
-        boolean shouldRenderFacet = ComponentUtils.shouldRenderFacet(facet);
+        boolean shouldRenderFacet = FacetUtils.shouldRenderFacet(facet);
 
         if (galleria.isShowThumbnails() && shouldRenderFacet) {
             ResponseWriter writer = context.getResponseWriter();

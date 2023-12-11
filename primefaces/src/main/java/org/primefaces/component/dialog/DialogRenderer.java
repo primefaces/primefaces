@@ -32,6 +32,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -139,7 +140,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", dialog.getClientId(context) + "_title", null);
         writer.writeAttribute("class", Dialog.TITLE_CLASS, null);
 
-        if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+        if (FacetUtils.shouldRenderFacet(headerFacet)) {
             headerFacet.encodeAll(context);
         }
         else if (header != null) {
@@ -176,7 +177,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("class", Dialog.FOOTER_CLASS, null);
 
         writer.startElement("div", null);
-        if (ComponentUtils.shouldRenderFacet(footerFacet)) {
+        if (FacetUtils.shouldRenderFacet(footerFacet)) {
             footerFacet.encodeAll(context);
         }
         else if (footer != null) {

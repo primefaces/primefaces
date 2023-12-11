@@ -29,7 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
 public class CardRenderer extends CoreRenderer {
@@ -99,7 +99,7 @@ public class CardRenderer extends CoreRenderer {
         }
         else {
             UIComponent facet = card.getFacet(facetName);
-            if (ComponentUtils.shouldRenderFacet(facet)) {
+            if (FacetUtils.shouldRenderFacet(facet)) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", cssClass, null);
                 facet.encodeAll(context);
