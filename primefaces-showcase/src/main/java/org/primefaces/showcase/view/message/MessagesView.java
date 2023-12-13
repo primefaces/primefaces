@@ -23,14 +23,17 @@
  */
 package org.primefaces.showcase.view.message;
 
-import javax.enterprise.context.RequestScoped;
+import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 @Named
-@RequestScoped
-public class MessagesView {
+@ViewScoped
+public class MessagesView implements Serializable {
+
+    private boolean closed;
 
     public void info() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Message Content"));
@@ -42,5 +45,14 @@ public class MessagesView {
 
     public void error() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Message Content."));
+    }
+
+    public void onClose() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Message is closed", null));
+        closed = true;
+    }
+
+    public boolean isClosed() {
+        return closed;
     }
 }
