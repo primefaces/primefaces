@@ -532,7 +532,7 @@ PrimeFaces.widget.DatePicker = PrimeFaces.widget.BaseWidget.extend({
      * Hide the popup panel.
      */
     hide: function() {
-        this.jq.data().primeDatePicker.hideOverlay();
+        this.jq.data().primeDatePicker.onEscapeKey();
     },
 
     /**

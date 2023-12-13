@@ -1886,11 +1886,7 @@
             }
 
             if (event.keyCode === 9 || event.keyCode === 27) {
-                if (this.options.touchUI) {
-                    this.disableModality();
-                }
-
-                this.hideOverlay();
+                this.onEscapeKey(event);
             }
         },
 
@@ -2204,6 +2200,15 @@
             if (this.timePickerTimer) {
                 clearTimeout(this.timePickerTimer);
                 this.timePickerTimer = null;
+            }
+        },
+        
+        onEscapeKey: function(event) {
+            if (this.mask) {
+                this.disableModality();
+            }
+            else {
+                this.hideOverlay();
             }
         },
 
