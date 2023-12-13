@@ -225,8 +225,8 @@ if (window.PrimeFaces) {
       "primefaces.FileValidator.SIZE_LIMIT_detail": "Datoteka '{0}' ne smije biti veća od {1}.",
       //optional for bean validation integration in client side validation
       "javax.faces.validator.BeanValidator.MESSAGE": "{0}",
-      "javax.validation.constraints.AssertFalse.message": "mora biti lažno (true).",
-      "javax.validation.constraints.AssertTrue.message": "mora biti istinito (false).",
+      "javax.validation.constraints.AssertFalse.message": "mora biti lažno (false).",
+      "javax.validation.constraints.AssertTrue.message": "mora biti istinito (true).",
       "javax.validation.constraints.DecimalMax.message": "mora biti manje ili jednako {0}.",
       "javax.validation.constraints.DecimalMin.message": "mora biti veće ili jednako {0}.",
       "javax.validation.constraints.Digits.message": "numerička vrijednost izvan granica (očekivano &lt;{0} znamenki&gt;.&lt;{1} znamenki&gt;).",
