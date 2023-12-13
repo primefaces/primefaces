@@ -2212,11 +2212,12 @@
         },
 
         onEscapeKey: function(event) {
-            if (this.options.touchUI) {
+            if (this.mask) {
                 this.disableModality();
             }
-
-            this.hideOverlay();
+            else {
+                this.hideOverlay();
+            }
         },
 
         onUserInput: function(event) {
