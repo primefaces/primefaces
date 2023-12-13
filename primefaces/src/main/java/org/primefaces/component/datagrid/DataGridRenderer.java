@@ -177,7 +177,7 @@ public class DataGridRenderer extends DataRenderer {
 
         String columnClass = getStyleClassBuilder(context)
                 .add(DataGrid.COLUMN_CLASS)
-                .add(flex, GridLayoutUtils.getColumnClass(flex, columns))
+                .add(GridLayoutUtils.getColumnClass(flex, columns))
                 .add(grid.getRowStyleClass())
                 .build();
 
