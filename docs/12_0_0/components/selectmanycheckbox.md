@@ -93,6 +93,18 @@ Widget: _PrimeFaces.widget.SelectManyCheckbox_
 | --- | --- | --- | --- |
 | disable() | - | void | Disables the input field |
 | enable() | - | void | Enables the input field |
+
+## Ajax Behavior Events
+
+The following AJAX behavior events are available for this component. If no event is specified the default event is called.  
+  
+**Default Event:** `valueChange`  
+**Available Events:** `blur, change, click, dblclick, focus, keydown, keypress, keyup, mousedown, mousemove, mouseout, mouseover, mouseup, select, valueChange`  
+
+```xhtml
+<p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
+```
+
 ## Skinning
 SelectManyCheckbox resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is
