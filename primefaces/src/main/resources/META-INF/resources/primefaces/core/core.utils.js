@@ -1059,4 +1059,9 @@ if (!PrimeFaces.utils) {
         },
     };
 
+    // set animation state globally
+    if (PrimeFaces.env.prefersReducedMotion) {
+        PrimeFaces.utils.disableAnimations();
+        PrimeFaces.warn("Animations are disabled because OS has requested prefers-reduced-motion: reduce")
+    }
 }

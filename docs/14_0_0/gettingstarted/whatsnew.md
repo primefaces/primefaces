@@ -10,6 +10,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/14_0_0/#/../
 
 * Core
     * `MOVE_SCRIPTS_TO_BOTTOM` adds new option `defer` to defer loading scripts
+    * OS settings for `prefers-reduced-motion: reduce` is now respected and PF disables all animations
 
 * Accordion
     * Added `toggleSpeed` for toggle speed animation duration.
