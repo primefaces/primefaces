@@ -583,7 +583,14 @@ if (!PrimeFaces.utils) {
          * @return {boolean} `true` if the key is a meta key, or `false` otherwise.
          */
         isMetaKey: function(e) {
-            return PrimeFaces.env.browser.mac ? e.metaKey : e.ctrlKey;
+            if (e.originalEvent) {
+                // original event returns the metakey value at the time the event was generated
+                return PrimeFaces.env.browser.mac ? e.originalEvent.metaKey : e.originalEvent.ctrlKey;
+            }
+            else {
+                // jQuery returns the real time value of the meta key
+                return PrimeFaces.env.browser.mac ? e.metaKey  : e.ctrlKey;
+            }
         },
 
         /**
@@ -603,18 +610,14 @@ if (!PrimeFaces.utils) {
         isPrintableKey: function(e) {
             return e && e.key && (e.key.length === 1 || e.key === 'Unidentified');
         },
-
+        
         /**
-         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
+         * Checks if the key pressed is cut, copy, or paste.
          * @param {JQuery.TriggeredEvent} e The key event that occurred.
-         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
+         * @return {boolean} `true` if the key is cut/copy/paste, or `false` otherwise.
          */
-        ignoreFilterKey: function(e) {
+        isClipboardKey: function(e) {
             switch (e.key) {
-                case 'Backspace':
-                case 'Enter':
-                case 'Delete':
-                    return false;
                 case 'a':
                 case 'A':
                 case 'c':
@@ -623,8 +626,28 @@ if (!PrimeFaces.utils) {
                 case 'X':
                 case 'v':
                 case 'V':
-                    // allow select all, cut, copy, paste
                     return PrimeFaces.utils.isMetaKey(e);
+                default:
+                    return false;
+            }
+        },
+
+        /**
+         * Ignores unprintable keys on filter input text box. Useful in filter input events in many components.
+         * @param {JQuery.TriggeredEvent} e The key event that occurred.
+         * @return {boolean} `true` if the one of the keys to ignore was pressed, or `false` otherwise.
+         */
+        ignoreFilterKey: function(e) {
+            // cut copy paste allows filter to trigger
+            if (PrimeFaces.utils.isClipboardKey(e)) {
+                return false;
+            }
+            // backspace,enter,delete trigger a filter as well as printable key like 'a'
+            switch (e.key) {
+                case 'Backspace':
+                case 'Enter':
+                case 'Delete':
+                    return false;
                 default:
                     return !PrimeFaces.utils.isPrintableKey(e);
             }
