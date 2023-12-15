@@ -143,6 +143,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 break;
                 
                 case 'Backspace':
+                case 'Delete':
                     return;
 
                 default:
@@ -151,7 +152,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             }
 
             // #8958 allow TAB, F1, F12 etc
-            if (PrimeFaces.utils.ignoreFilterKey(e)) {
+            if (!PrimeFaces.utils.isPrintableKey(e)) {
+                return;
+            }
+            // #10714 allow clipboard events
+            if (PrimeFaces.utils.isClipboardKey(e)) {
                 return;
             }
 
