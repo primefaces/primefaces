@@ -165,6 +165,8 @@ if (!PrimeFaces.expressions) {
 
             var parenthesesCounter = 0;
 
+            if (!expression) {return expressions;}
+
             for (var i = 0; i < expression.length; i++) {
                 var c = expression[i];
 
