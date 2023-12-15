@@ -5,7 +5,7 @@ are many other third party libraries and plugins used to support features.
 
 | Library | Version | URL |
 | --- | --- | --- |
-| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.0 | https://github.com/autoNumeric/autoNumeric |
+| [AutoNumeric](../jsdocs/classes/node_modules_autonumeric.export_-1.html) | 4.10.1 | https://github.com/autoNumeric/autoNumeric |
 | [Chart.js](../jsdocs/classes/node_modules__types_chart_js.export_-1.html) | 3.9.1 | https://www.chartjs.org |
 | [Coloris](../jsdocs/interfaces/src_PrimeFaces.Coloris.html) | 0.21.1 | https://github.com/mdbassit/Coloris |
 | [Cookie](../jsdocs/modules/node_modules__types_js_cookie.html) | 3.0.5 | https://github.com/js-cookie/js-cookie |
