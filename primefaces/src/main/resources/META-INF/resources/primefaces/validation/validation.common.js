@@ -234,6 +234,38 @@ if (window.PrimeFaces) {
         },
 
         /**
+         * Validates the CSV-requirements of a commmandbutton.
+         * @param btn
+         * @param vc
+         */
+        validateButtonCsvRequirements: function (btn) {
+            console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
+
+            const $source = $(btn);
+            const cfg = {
+                ajax: btn.dataset.pfValidateclientAjax,
+                process: btn.dataset.pfValidateclientProcess,
+                update: btn.dataset.pfValidateclientUpdate
+            };
+            const process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
+            const update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
+
+            const widget = PrimeFaces.getWidgetById(btn.id);
+
+            if (widget) {
+                if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
+                    widget.enable();
+                } else {
+                    widget.disable();
+                }
+            } else {
+                console.warn('No widget found for ID ' + btn.id);
+            }
+
+            PrimeFaces.validation.ValidationContext.clear();
+        },
+
+        /**
          * Performs a client-side validation of the given element. The context of this validation is a single field only.
          * If the element is valid, removes old messages from the element.
          * If the value of the element is invalid, adds the appropriate validation failure messages.
@@ -278,27 +310,7 @@ if (window.PrimeFaces) {
             }
 
             $('[data-pf-validateclient-dynamic]').each((index, btn) => {
-                console.log('CSV - ' + btn.id + ' - ' + btn.innerText + '; ajax: ' + btn.dataset.pfValidateclientAjax + '; process: ' + btn.dataset.pfValidateclientProcess + '; update: ' + btn.dataset.pfValidateclientUpdate);
-
-                const $source = $(btn);
-                const cfg = { ajax: btn.dataset.pfValidateclientAjax, process: btn.dataset.pfValidateclientProcess, update: btn.dataset.pfValidateclientUpdate};
-                const process = PrimeFaces.validation.Utils.resolveProcess(cfg, $source);
-                const update = PrimeFaces.validation.Utils.resolveUpdate(cfg, $source);
-
-                const widget = PrimeFaces.getWidgetById(btn.id);
-
-                if (widget) {
-                    if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
-                        widget.enable();
-                    } else {
-                        widget.disable();
-                    }
-                }
-                else {
-                    console.warn('No widget found for ID ' + btn.id);
-                }
-
-                vc.clear();
+                this.validateButtonCsvRequirements(btn);
             });
 
             PrimeFaces.validation.validateInput(element, element, highlight);

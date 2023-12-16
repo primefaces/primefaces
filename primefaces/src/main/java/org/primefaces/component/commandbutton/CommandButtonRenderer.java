@@ -170,7 +170,8 @@ public class CommandButtonRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("CommandButton", button)
             .attr("disableOnAjax", button.isDisableOnAjax(), true)
-            .attr("disabledAttr", button.isDisabled(), false);
+            .attr("disabledAttr", button.isDisabled(), false)
+            .attr("validateClientDynamic", button.isEnabledByValidateClient(), false);
 
         encodeClientBehaviors(context, button);
 
