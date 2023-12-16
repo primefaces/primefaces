@@ -24,6 +24,8 @@
 package org.primefaces.util;
 
 import java.io.*;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -102,6 +104,7 @@ public class FileUploadUtils {
             throw validationError("Invalid path: (" + filePath + ") contains unprintable character: " + ch);
         }
 
+        filePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
         if (PERCENTS_PAT.matcher(filePath).find()) {
             throw validationError("Invalid path: " + filePath);
         }
