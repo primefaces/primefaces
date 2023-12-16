@@ -23,11 +23,15 @@
  */
 package org.primefaces.util;
 
+import javax.faces.component.ContextCallback;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UniqueIdVendor;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.faces.component.*;
-import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
 
@@ -188,17 +192,6 @@ public class ComponentTraversalUtils {
 
     public static UIComponent closestNamingContainer(UIComponent component) {
         return (UIComponent) closest(NamingContainer.class, component);
-    }
-
-    public static <T> T firstChildRenderedOrSelf(Class<T> childType, UIComponent base) {
-        if (base == null || !base.isRendered()) {
-            return null;
-        }
-        else if (childType.isInstance(base)) {
-            return (T) base;
-        }
-
-        return firstChildRendered(childType, base);
     }
 
     public static <T> T firstChildRendered(Class<T> childType, UIComponent base) {
