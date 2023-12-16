@@ -176,6 +176,31 @@ class FileUploadUtilsTest {
     }
 
     @Test
+    void requireValidFilePath_AbsoluteFileWithWindowsSpaces() {
+        // Unix systems can start with / but Windows cannot
+        String os = System.getProperty("os.name").toLowerCase();
+
+        // Arrange
+        String relativePath = "/D:/Development/OS%20Projects/primefaces/primefaces/target/test-classes/test.png";
+
+        // Act
+        if (os.contains("win")) {
+            try {
+                FileUploadUtils.requireValidFilePath(relativePath, false);
+                fail("File was absolute path and should have failed");
+            }
+            catch (ValidatorException e) {
+                // Assert
+                assertEquals("Invalid directory, name does not match the canonical path.", e.getFacesMessage().getDetail());
+            }
+        }
+        else {
+            String result = FileUploadUtils.requireValidFilePath(relativePath, false);
+            assertTrue(result.endsWith("test.png"));
+        }
+    }
+
+    @Test
     void requireValidFilePath_PathTraversal() {
         // Arrange
         String relativePath = "../../test.png";
