@@ -20,6 +20,14 @@
             body .ui-panelgrid .ui-panelgrid-cell {
                 padding: 0.5rem;
             }
+
+            button[data-pf-csv-valid="true"], input[data-pf-csv-valid="true"] {
+                border-color: green;
+            }
+
+            button[data-pf-csv-valid="false"], input[data-pf-csv-valid="red"] {
+                border-color: red;
+            }
         </style>
 
         <div class="card">

@@ -271,10 +271,12 @@ if (window.PrimeFaces) {
 
             if (widget) {
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
-                    $(btn).data('data-pf-csv-valid', true);
+                    //widget.jq.data('pf-csv-valid', true);
+                    widget.jq[0].dataset.pfCsvValid = 'true';
                     widget.enable();
                 } else {
-                    $(btn).data('data-pf-csv-valid', true);
+                    //widget.jq.data('pf-csv-valid', false);
+                    widget.jq[0].dataset.pfCsvValid = 'false';
                     widget.disable();
                 }
             } else {
@@ -450,14 +452,16 @@ if (window.PrimeFaces) {
             if (valid) {
                 highlighter.unhighlight(element);
                 element.attr('aria-invalid', false);
-                element.data('data-pf-csv-valid', false);
+                //element.data('pf-csv-valid', true);
+                element[0].dataset.pfCsvValid = 'true';
             }
             else {
                 if (highlight) {
                     highlighter.highlight(element);
                 }
                 element.attr('aria-invalid', true);
-                element.data('data-pf-csv-valid', true);
+                //element.data('pf-csv-valid', false);
+                element[0].dataset.pfCsvValid = 'false';
             }
         },
 
