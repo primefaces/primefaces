@@ -33,8 +33,8 @@ import org.primefaces.component.treetable.TreeTable;
 import org.primefaces.util.FacetUtils;
 
 import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
@@ -121,8 +121,8 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
                 AtomicBoolean invoked = new AtomicBoolean(false);
                 List<Object> values = new ArrayList<>(1);
 
-                FacetUtils.invokeOnValueHolder(FacesContext.getCurrentInstance(), inputFacet, (ctx, component) -> {
-                    values.add(((ValueHolder) component).getValue());
+                FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), inputFacet, (ctx, component) -> {
+                    values.add(((EditableValueHolder) component).getValue());
                     invoked.set(true);
                 });
 

@@ -24,9 +24,11 @@
 package org.primefaces.util;
 
 import javax.faces.component.ContextCallback;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
-import javax.faces.component.ValueHolder;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 
 public class FacetUtils {
@@ -78,27 +80,25 @@ public class FacetUtils {
         return shouldRenderFacet(facet, false);
     }
 
-    public static void invokeOnValueHolder(FacesContext context, UIComponent facet, ContextCallback callback) {
-        // the facet contains multiple childs, so its wrapped inside a UIPanel
-        if (facet instanceof UIPanel) {
-            for (int i = 0; i < facet.getChildCount(); i++) {
-                UIComponent child = facet.getChildren().get(i);
-                if (child instanceof ValueHolder) {
-                    callback.invokeContextCallback(context, child);
-                }
-            }
-        }
-        // the facet contains only one child now, which means that the facet is the child component
-        else {
-            // the child is a ValueHolder, independent if it's a composite or not
-            if (facet instanceof ValueHolder) {
-                callback.invokeContextCallback(context, facet);
+    public static void invokeOnEditableValueHolder(FacesContext context, UIComponent facet, ContextCallback callback) {
+
+        VisitContext visitContext = VisitContext.createVisitContext(context, null,
+                ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+
+        // loop through all facet components
+        // sometimes its not enough to check the first component as it may be wrapped in some layout-components
+        facet.visitTree(visitContext, (ctx, component) -> {
+            // the child is a EditableValueHolder, independent if it's a composite or not
+            if (component instanceof EditableValueHolder) {
+                callback.invokeContextCallback(context, component);
             }
             // try to check for cc:editableValueHolder
-            else if (CompositeUtils.isComposite(facet)) {
-                CompositeUtils.invokeOnDeepestEditableValueHolder(context, facet, callback);
+            else if (CompositeUtils.isComposite(component)) {
+                CompositeUtils.invokeOnDeepestEditableValueHolder(context, component, callback);
             }
-        }
+
+            return VisitResult.ACCEPT;
+        });
     }
 
 }

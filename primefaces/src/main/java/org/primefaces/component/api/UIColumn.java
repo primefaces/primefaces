@@ -23,10 +23,11 @@
  */
 package org.primefaces.component.api;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.primefaces.component.celleditor.CellEditor;
+import org.primefaces.model.MatchMode;
+import org.primefaces.util.FacetUtils;
+import org.primefaces.util.LangUtils;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -35,11 +36,11 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.celleditor.CellEditor;
-import org.primefaces.model.MatchMode;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.LangUtils;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface UIColumn {
 
@@ -246,9 +247,26 @@ public interface UIColumn {
 
     Object getConverter();
 
-    default EditableValueHolder getFilterValueHolder() {
+    default Object getFilterValueFromValueHolder() {
         UIComponent filterFacet = getFacet("filter");
-        return ComponentTraversalUtils.firstChildRenderedOrSelf(EditableValueHolder.class, filterFacet);
+        if (filterFacet == null) {
+            return null;
+        }
+        AtomicReference<Object> filterValue = new AtomicReference<>(null);
+
+        FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), filterFacet, (ctx, component) -> {
+            filterValue.set(((EditableValueHolder) component).getValue());
+        });
+
+        return filterValue.get();
+    }
+
+    default void setFilterValueToValueHolder(Object value) {
+        UIComponent filterFacet = getFacet("filter");
+
+        FacetUtils.invokeOnEditableValueHolder(FacesContext.getCurrentInstance(), filterFacet, (ctx, component) -> {
+            ((EditableValueHolder) component).setValue(value);
+        });
     }
 
     default UIComponent asUIComponent() {
