@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+<cc:interface>
+</cc:interface>
+
+<cc:implementation>
+    <p:inputText id="filter" type="search"
+                 onchange="PF('wgtTable').filter()"
+                 style="width:15rem; border-color: red;"
+                 placeholder="Composite filter..."/>
+</cc:implementation>
+</html>
