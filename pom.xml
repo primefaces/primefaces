@@ -59,6 +59,10 @@
             <id>christophs78</id>
             <name>Christoph Straßer</name>
         </developer>
+        <developer>
+            <id>jepsar</id>
+            <name>Jasper de Vries</name>
+        </developer>
     </developers>
 
     <properties>
