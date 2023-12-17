@@ -4,11 +4,13 @@
       xmlns:p="http://primefaces.org/ui">
 
 <cc:interface>
+    <cc:attribute name="tableWidgetVar" required="true" type="java.lang.String" />
+    <cc:editableValueHolder name="filter" />
 </cc:interface>
 
 <cc:implementation>
     <p:inputText id="filter" type="search"
-                 onchange="PF('wgtTable').filter()"
+                 onchange="PF('#{cc.attrs.tableWidgetVar}').filter()"
                  style="width:15rem; border-color: red;"
                  placeholder="Composite filter..."/>
 </cc:implementation>
