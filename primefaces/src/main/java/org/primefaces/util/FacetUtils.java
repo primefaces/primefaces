@@ -95,6 +95,8 @@ public class FacetUtils {
             // try to check for cc:editableValueHolder
             else if (CompositeUtils.isComposite(component)) {
                 CompositeUtils.invokeOnDeepestEditableValueHolder(context, component, callback);
+                // skip subtree, a user must use cc:editableValueHolder
+                return VisitResult.REJECT;
             }
 
             return VisitResult.ACCEPT;
