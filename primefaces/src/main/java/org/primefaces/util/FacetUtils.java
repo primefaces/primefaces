@@ -90,14 +90,7 @@ public class FacetUtils {
         facet.visitTree(visitContext, (ctx, component) -> {
 
             if (CompositeUtils.isComposite(component)) {
-                // a composite can implement EditableValueHolder
-                if (component instanceof EditableValueHolder) {
-                    callback.invokeContextCallback(context, component);
-                }
-                // otherwise try to check for cc:editableValueHolder
-                else {
-                    CompositeUtils.invokeOnDeepestEditableValueHolder(context, component, callback);
-                }
+                CompositeUtils.invokeOnDeepestEditableValueHolder(context, component, callback);
 
                 // skip composite subtree
                 // a user must implement EditableValueHolder or use cc:editableValueHolder
