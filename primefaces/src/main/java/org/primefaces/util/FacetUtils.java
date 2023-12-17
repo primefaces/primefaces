@@ -88,13 +88,16 @@ public class FacetUtils {
         // loop through all facet components
         // sometimes its not enough to check the first component as it may be wrapped in some layout-components
         facet.visitTree(visitContext, (ctx, component) -> {
-            // the child is a EditableValueHolder, independent if it's a composite or not
-            if (component instanceof EditableValueHolder) {
-                callback.invokeContextCallback(context, component);
-            }
-            // try to check for cc:editableValueHolder
-            else if (CompositeUtils.isComposite(component)) {
+
+            if (CompositeUtils.isComposite(component)) {
                 CompositeUtils.invokeOnDeepestEditableValueHolder(context, component, callback);
+
+                // skip composite subtree
+                // a user must implement EditableValueHolder or use cc:editableValueHolder
+                return VisitResult.REJECT;
+            }
+            else if (component instanceof EditableValueHolder) {
+                callback.invokeContextCallback(context, component);
             }
 
             return VisitResult.ACCEPT;

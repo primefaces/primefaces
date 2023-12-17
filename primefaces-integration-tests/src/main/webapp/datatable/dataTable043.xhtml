@@ -22,7 +22,7 @@
                 <f:facet name="header">
                     <div class="p-d-flex p-ai-center p-jc-between">
                         <span>Composite Filter</span>
-                        <composite:dataTableFilter id="globalFilter"/>
+                        <composite:dataTableFilter id="globalFilter" tableWidgetVar="wgtTable" />
                     </div>
                 </f:facet>
 
@@ -35,7 +35,7 @@
                 <p:column headerText="Name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains">
                     <h:outputText value="#{lang.name}"/>
                     <f:facet name="filter">
-                       <composite:dataTableFilter id="nameFilter"/>
+                       <composite:dataTableFilter id="nameFilter" tableWidgetVar="wgtTable"/>
                     </f:facet>
                 </p:column>
 
