@@ -163,7 +163,6 @@ public class ValidationView {
     public void modifyValues() {
         setText("Mike");
         setInteger(123);
-        setDoubleNumber(6.3);
     }
 
     public void modifyInteger() {

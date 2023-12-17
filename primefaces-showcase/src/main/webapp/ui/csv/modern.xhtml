@@ -16,13 +16,21 @@
     <ui:param name="documentationLink" value="/core/csv"/>
 
     <ui:define name="implementation">
+        <style type="text/css">
+            body .ui-panelgrid .ui-panelgrid-cell {
+                padding: 0.5rem;
+            }
+        </style>
+
         <div class="card">
             <h:form>
                 <p:messages>
                     <p:autoUpdate/>
                 </p:messages>
 
-                <h:panelGrid id="grid" columns="4" cellpadding="7">
+                <p:panelGrid id="gridName" columns="4" layout="flex"
+                             columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
+                             contentStyleClass="align-items-baseline ui-fluid">
                     <p:outputLabel for="name" value="Name (3-50 characters):"/>
                     <p:inputText id="name" value="#{validationView.text}" required="true" label="Name">
                         <f:validateLength minimum="3" maximum="50"/>
@@ -30,21 +38,23 @@
                     </p:inputText>
                     <p:message for="name"/>
                     <h:outputText value="#{validationView.text}"/>
+                </p:panelGrid>
 
+                <p:panelGrid id="gridNumber" columns="4" layout="flex"
+                             columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
+                             contentStyleClass="align-items-baseline ui-fluid">
                     <p:outputLabel for="number" value="Number:"/>
-                    <p:outputPanel id="panelNumberInput" style="display: inline">
-                        <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
-                                        validateMask="false" required="true">
-                            <p:clientValidator event="keyup" />
-                        </p:inputMask>
-                    </p:outputPanel>
-                    <p:outputPanel id="panelNumberMsg" style="display: inline">
-                        <p:message for="number"/>
-                    </p:outputPanel>
-                    <p:outputPanel id="panelNumberOutput" style="display: inline">
-                        <h:outputText value="#{validationView.integer}"/>
-                    </p:outputPanel>
-                    
+                    <p:inputMask id="number" value="#{validationView.integer}" label="Number" mask="9[99]"
+                                    validateMask="false" required="true">
+                        <p:clientValidator event="keyup" />
+                    </p:inputMask>
+                    <p:message for="number"/>
+                    <h:outputText value="#{validationView.integer}"/>
+                </p:panelGrid>
+
+                <p:panelGrid id="gridEverythingElse" columns="4" layout="flex"
+                             columnClasses="col-12 xl:col-3, col-12 xl:col-2, col-12 xl:col-5, col-12 xl:col-2"
+                             contentStyleClass="align-items-baseline ui-fluid">
                     <p:outputLabel for="dd" value="Double (5.5 - 8.5):"/>
                     <p:inputText id="dd" value="#{validationView.doubleNumber}"
                                     converterMessage="Cannot convert to double." required="true">
@@ -67,7 +77,7 @@
                     <p:outputLabel for="localDate3" value="LocalDate (Java8; PF DatePicker)"
                                    />
                     <p:datePicker id="localDate3" value="#{validationView.localDate3}" pattern="MM/dd/yyyy"
-                                    label="LocalDate (Java8; PF DatePicker)" required="true">
+                                    label="LocalDate (DatePicker)" required="true">
                         <p:clientValidator />
                     </p:datePicker>
                     <p:message for="localDate3"/>
@@ -86,24 +96,23 @@
                     </p:selectOneMenu>
                     <p:message for="selectOneMenu"/>
                     <h:outputText value="#{validationView.uiLibrary}"/>
-                </h:panelGrid>
+                </p:panelGrid>
 
-                <p:remoteCommand name="rc" update="grid" process="name number" validateClient="true"/>
+                <p:remoteCommand name="rc" update="gridName gridNumber" process="name number" validateClient="true"/>
                 <p:defaultCommand target="btnAjax"/>
 
                 <div class="pt-3">
                     <p:commandButton value="Non-Ajax" ajax="false" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Ajax" id="btnAjax" update="grid"  validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
-                    <p:commandButton value="Partial" update="grid" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Ajax" id="btnAjax" update="@form"  validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
+                    <p:commandButton value="Partial (name + number)" update="gridName gridNumber" process="name number" validateClient="true" enabledByValidateClient="true" styleClass="mr-2" />
                     <p:commandButton value="Disabled" ajax="false" enabledByValidateClient="true" styleClass="mr-2"/>
                     <p:commandButton value="Remote Command" type="button" enabledByValidateClient="true" onclick="rc()" />
                 </div>
 
                 <div class="pt-3">
                     Simulate server-side modifications:<br/>
-                    <p:commandButton value="Modify Values" update="@form" process="@form" action="#{validationView.modifyValues()}" styleClass="mr-2" />
-                    <p:commandButton value="Modify Values 2" update="@form" process="@this" action="#{validationView.modifyValues()}" styleClass="mr-2" />
-                    <p:commandButton value="Modify Number" update="panelNumberInput panelNumberMsg panelNumberOutput" process="@this" action="#{validationView.modifyInteger()}" styleClass="mr-2" />
+                    <p:commandButton value="Modify Name + Number" update="gridName gridNumber" process="@this" action="#{validationView.modifyValues()}" styleClass="mr-2" />
+                    <p:commandButton value="Modify Number" update="gridNumber" process="@this" action="#{validationView.modifyInteger()}" styleClass="mr-2" />
                     <p:commandButton value="Clear Values" update="@form" process="@this" action="#{validationView.clearValues()}" />
                 </div>
                 
