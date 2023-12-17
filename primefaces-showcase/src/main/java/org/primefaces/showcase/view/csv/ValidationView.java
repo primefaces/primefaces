@@ -166,6 +166,10 @@ public class ValidationView {
         setDoubleNumber(6.3);
     }
 
+    public void modifyInteger() {
+        setInteger(456);
+    }
+
     public void clearValues() {
         setText(null);
         setInteger(null);

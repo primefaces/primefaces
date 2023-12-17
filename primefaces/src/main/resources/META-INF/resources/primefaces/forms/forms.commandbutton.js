@@ -27,12 +27,12 @@ PrimeFaces.widget.CommandButton = PrimeFaces.widget.BaseWidget.extend({
         this.bindTriggers();
 
         if (cfg.validateClientDynamic) {
-            console.log("CommandButton should be enabled/disabled dynamic");
-            // TODO: do this a bit later so all other inputs a initialized?
             let that = this;
             setTimeout( function() {
-                PrimeFaces.validation.validateButtonCsvRequirements(that.jq[0]); // TODO: which code runs when we click the button - are there some possible synergies - refactoring possible?
+                PrimeFaces.validation.validateButtonCsvRequirements(that.jq[0]); // TODO: Which code runs when we click the button? Are there some possible synergies? Refactoring possible?
             }, 0 );
+
+            PrimeFaces.validation.bindAjaxComplete(); // TODO: do this only once for the whole page not per CommandButton!
         }
     },
 

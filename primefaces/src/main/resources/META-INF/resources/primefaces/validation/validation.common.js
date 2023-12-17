@@ -7,7 +7,7 @@ if (window.PrimeFaces) {
      * A shortcut for `PrimeFaces.validation.validate` used by server-side renderers.
      * If the `ajax` attribute is set to `true` (the default is `false`), all inputs configured by the `process` attribute are validated
      * and all messages for the inputs configured by the `update` attribute are rendered.
-     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the the parent form, of the `source` attribute, are processed and updated.
+     * Otherwise, if the `ajax` attribute is set to the `false`, all inputs of the parent form, of the `source` attribute, are processed and updated.
      * @function
      * @param {Partial<PrimeFaces.validation.ShorthandConfiguration>} cfg An configuration.
      * @return {boolean} `true` if the request would not result in validation errors, or `false` otherwise.
@@ -233,8 +233,18 @@ if (window.PrimeFaces) {
             return false;
         },
 
+
         /**
-         * Validates the CSV-requirements of a commmandbutton.
+         * Searches for all CommandButtons with turned on dynamic CSV and triggers CSV.
+         */
+        validateButtonsCsvRequirements: function () {
+            $('[data-pf-validateclient-dynamic]').each((index, btn) => {
+                this.validateButtonCsvRequirements(btn);
+            });
+        },
+
+        /**
+         * Validates the CSV-requirements of a CommandButton.
          * @param btn
          * @param vc
          */
@@ -254,8 +264,10 @@ if (window.PrimeFaces) {
 
             if (widget) {
                 if (PrimeFaces.validation.validate($source, process, update, false, false, false, false)) {
+                    $(btn).data('data-pf-csv-valid', true);
                     widget.enable();
                 } else {
+                    $(btn).data('data-pf-csv-valid', true);
                     widget.disable();
                 }
             } else {
@@ -309,9 +321,7 @@ if (window.PrimeFaces) {
                 }
             }
 
-            $('[data-pf-validateclient-dynamic]').each((index, btn) => {
-                this.validateButtonCsvRequirements(btn);
-            });
+            this.validateButtonsCsvRequirements();
 
             PrimeFaces.validation.validateInput(element, element, highlight);
 
@@ -433,17 +443,19 @@ if (window.PrimeFaces) {
             if (valid) {
                 highlighter.unhighlight(element);
                 element.attr('aria-invalid', false);
+                element.data('data-pf-csv-valid', false);
             }
             else {
                 if (highlight) {
                     highlighter.highlight(element);
                 }
                 element.attr('aria-invalid', true);
+                element.data('data-pf-csv-valid', true);
             }
         },
 
         /**
-         * __NOTE__: This is a internal method and should only by used by `PrimeFaces.validation.validate`.
+         * __NOTE__: This is an internal method and should only be used by `PrimeFaces.validation.validate`.
          *
          * Performs a client-side validation of (the value of) the given container element. If the element is valid,
          * removes old messages from the element. If the value of the element is invalid, adds the appropriate
@@ -505,6 +517,32 @@ if (window.PrimeFaces) {
             }
 
             return valid;
+        },
+
+
+        /**
+         * __NOTE__: This is an internal method and should only be used by PrimeFaces itself.
+         *
+         * Bind to Ajax-Complete-events to update CSV-state after an Ajax-call may have changes state.
+         * @internal
+         */
+        bindAjaxComplete: function() {
+            var doc = $(document),
+                $this = this;
+
+            doc.on('pfAjaxComplete', function(e, xhr, settings, args) {
+                $this.validateButtonsCsvRequirements();
+            });
+
+            // also bind to JSF (f:ajax) events
+            // NOTE: PF always fires "complete" as last event, whereas JSF last events are either "success" or "error"
+            if (window.jsf && jsf.ajax) {
+                jsf.ajax.addOnEvent(function(data) {
+                    if(data.status === 'success' || data.status === 'error') {
+                        $this.validateButtonsCsvRequirements();
+                    }
+                });
+            }
         }
     };
 
