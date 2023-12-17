@@ -132,6 +132,13 @@ if (window.PrimeFaces) {
     PrimeFaces.validation = {
 
         /**
+         * Is the Ajax-complete-handler bound?
+         * @type {boolean}
+         * @private
+         */
+        ajaxCompleteBound: false,
+
+        /**
          * Parameter shortcut mapping for the method `PrimeFaces.vb`.
          * @type {Record<string, string>}
          */
@@ -523,10 +530,14 @@ if (window.PrimeFaces) {
         /**
          * __NOTE__: This is an internal method and should only be used by PrimeFaces itself.
          *
-         * Bind to Ajax-Complete-events to update CSV-state after an Ajax-call may have changes state.
+         * Bind to Ajax-Complete-events to update CSV-state after an Ajax-call may have changed state.
          * @internal
          */
         bindAjaxComplete: function() {
+            if (this.ajaxCompleteBound) return;
+
+            console.log('Bind to Ajax-Complete-events to update CSV-state after an Ajax-call may have changed state');
+
             var doc = $(document),
                 $this = this;
 
@@ -543,6 +554,8 @@ if (window.PrimeFaces) {
                     }
                 });
             }
+
+            this.ajaxCompleteBound = true;
         }
     };
 
