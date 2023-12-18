@@ -2428,13 +2428,7 @@
             if (this.options.minDate) {
                 let firstDayOfMonth = new Date(newViewDate.getTime());
 
-                if (firstDayOfMonth.getMonth() === 0) {
-                    firstDayOfMonth.setMonth(11, 1);
-                    firstDayOfMonth.setFullYear(firstDayOfMonth.getFullYear() - 1);
-                } else {
-                    firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
-                }
-
+                firstDayOfMonth.setMonth(firstDayOfMonth.getMonth(), 1);
                 firstDayOfMonth.setHours(0);
                 firstDayOfMonth.setMinutes(0);
                 firstDayOfMonth.setSeconds(0);
@@ -2450,13 +2444,7 @@
             if (this.options.maxDate) {
                 let lastDayOfMonth = new Date(newViewDate.getTime());
 
-                if (lastDayOfMonth.getMonth() === 11) {
-                    lastDayOfMonth.setMonth(0, 1);
-                    lastDayOfMonth.setFullYear(lastDayOfMonth.getFullYear() + 1);
-                } else {
-                    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
-                }
-
+                lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
                 lastDayOfMonth.setHours(0);
                 lastDayOfMonth.setMinutes(0);
                 lastDayOfMonth.setSeconds(0);
