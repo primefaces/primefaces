@@ -138,6 +138,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     $this.updateValue();
                     $this.format();
                 break;

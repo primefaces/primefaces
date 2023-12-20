@@ -166,6 +166,7 @@ PrimeFaces.widget.CascadeSelect = PrimeFaces.widget.DynamicOverlayWidget.extend(
                         break;
 
                     case 'Enter':
+                    case 'NumpadEnter':
                         item.children('.ui-cascadeselect-item-content').trigger('click.cascadeselect');
                         if (!item.hasClass('ui-cascadeselect-item-group')) {
                             $this.input.trigger('focus.cascadeselect');
